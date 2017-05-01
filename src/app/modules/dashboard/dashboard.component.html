@@ -1,0 +1,24 @@
+<p>This is dashboard</p>
+
+<h2>Single log</h2>
+
+<div *ngIf="log">
+    <ul>
+        <li>
+            id: {{log.id}}
+        </li>
+        <li>
+            message: {{log.errorMessage}}
+        </li>
+        <li>
+            user: {{log.user}}
+        </li>
+    </ul>
+</div>
+
+<h2>Logs</h2>
+<ul *ngFor="let log of logs">
+    <li>
+        {{log.id}} - {{log.errorMessage}}
+    </li>
+</ul>
