@@ -1,4 +1,4 @@
-import { IItem } from '../repository/iitem.class';
+import { IItem } from '../../repository/iitem.class';
 
 export class Log implements IItem {
     constructor(

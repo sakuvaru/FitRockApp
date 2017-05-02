@@ -5,6 +5,9 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
 
+// authentication
+import { AuthModule } from './auth/auth.module';
+
 // main components
 import { HeaderComponent } from './modules/shared/header.component';
 import { FooterComponent } from './modules/shared/footer.component';
@@ -14,7 +17,7 @@ import { NotFoundComponent } from './modules/shared/not-found.component';
 import { AppComponent } from './app.component';
 
 // custom modules
-import { RepositoryModule } from './services/repository/repository.module';
+import { RepositoryModule } from './repository/repository.module';
 import { ServicesModule } from './services/services.module';
 import { DashboardModule } from './modules/dashboard/dashboard.module';
 
@@ -38,6 +41,9 @@ import { DashboardModule } from './modules/dashboard/dashboard.module';
       }
     ]),
 
+    // authentication
+    AuthModule,
+
     // default modules
     BrowserModule,
     FormsModule,
@@ -48,7 +54,9 @@ import { DashboardModule } from './modules/dashboard/dashboard.module';
     RepositoryModule,
     ServicesModule
   ],
-  providers: [],
+  providers: [
+    
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

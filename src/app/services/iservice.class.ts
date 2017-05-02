@@ -1,5 +1,5 @@
-import { IItem } from './repository/iitem.class';
-import { IOption } from './repository/ioption.class';
+import { IItem } from '../repository/iitem.class';
+import { IOption } from '../repository/ioption.class';
 
 export interface IService<T extends IItem> {
     type: string

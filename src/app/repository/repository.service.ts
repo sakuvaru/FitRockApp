@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Headers, Http } from '@angular/http';
+import { Headers } from '@angular/http';
 import { ResponseSingle } from './response-single.class';
 import { ResponseMultiple } from './response-multiple.class';
 import { IOption } from './ioption.class';
+import { AuthHttp } from 'angular2-jwt';
 import 'rxjs/add/operator/toPromise';
 
 @Injectable()
@@ -10,7 +11,7 @@ export class RepositoryService {
 
     private apiUrl = "http://localhost:61466/type";
 
-    constructor(private http: Http) { }
+    constructor(private authHttp: AuthHttp) { }
 
     private getBaseUrl(type: string): string {
         return this.apiUrl + "/" + type;
@@ -40,7 +41,7 @@ export class RepositoryService {
 
         url = this.addOptionsToUrl(url, options);
 
-        return this.http.get(url)
+        return this.authHttp.get(url)
             .toPromise()
             .then(response => response.json() as ResponseMultiple)
             .catch(this.handleError);
@@ -52,7 +53,7 @@ export class RepositoryService {
 
         url = this.addOptionsToUrl(url, options);
 
-        return this.http.get(url)
+        return this.authHttp.get(url)
             .toPromise()
             .then(response => (response.json() as ResponseSingle))
             .catch(this.handleError);
@@ -63,7 +64,7 @@ export class RepositoryService {
 
         url = this.addOptionsToUrl(url, options);
 
-        return this.http.get(url)
+        return this.authHttp.get(url)
             .toPromise()
             .then(response => (response.json() as ResponseSingle))
             .catch(this.handleError);
@@ -74,7 +75,7 @@ export class RepositoryService {
 
         url = this.addOptionsToUrl(url, options);
 
-        return this.http.get(url)
+        return this.authHttp.get(url)
             .toPromise()
             .then(response => (response.json() as ResponseSingle))
             .catch(this.handleError);

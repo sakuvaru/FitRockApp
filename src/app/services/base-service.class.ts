@@ -1,8 +1,8 @@
-import { RepositoryService } from './repository/repository.service';
-import { IItem } from './repository/iitem.class';
-import { ResponseSingle } from './repository/response-single.class';
-import { ResponseMultiple } from './repository/response-multiple.class';
-import { IOption } from './repository/ioption.class';
+import { RepositoryService } from '../repository/repository.service';
+import { IItem } from '../repository/iitem.class';
+import { ResponseSingle } from '../repository/response-single.class';
+import { ResponseMultiple } from '../repository/response-multiple.class';
+import { IOption } from '../repository/ioption.class';
 
 export abstract class BaseService<T extends IItem>  {
 
