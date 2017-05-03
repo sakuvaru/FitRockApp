@@ -20,6 +20,7 @@ import { AppComponent } from './app.component';
 import { RepositoryModule } from './repository/repository.module';
 import { ServicesModule } from './services/services.module';
 import { DashboardModule } from './modules/dashboard/dashboard.module';
+import { LoginModule } from './modules/login/login.module';
 
 @NgModule({
   declarations: [
@@ -52,7 +53,8 @@ import { DashboardModule } from './modules/dashboard/dashboard.module';
     // custom modules
     DashboardModule,
     RepositoryModule,
-    ServicesModule
+    ServicesModule,
+    LoginModule
   ],
   providers: [
     

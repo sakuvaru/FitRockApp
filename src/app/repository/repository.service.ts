@@ -4,12 +4,13 @@ import { ResponseSingle } from './response-single.class';
 import { ResponseMultiple } from './response-multiple.class';
 import { IOption } from './ioption.class';
 import { AuthHttp } from 'angular2-jwt';
+import { AppConfig } from '../core/config/app.config';
 import 'rxjs/add/operator/toPromise';
 
 @Injectable()
 export class RepositoryService {
 
-    private apiUrl = "http://localhost:61466/type";
+    private apiUrl = AppConfig.RepositoryApiEndpoint;
 
     constructor(private authHttp: AuthHttp) { }
 
