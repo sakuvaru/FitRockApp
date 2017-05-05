@@ -1,13 +1,15 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { AuthService } from '../../auth/auth.service';
-import { AuthTypeEnum } from '../../auth/auth-type.enum';
 import { Router } from '@angular/router';
+
+// auth0 class exposed by auth0 js
 
 @Component({
     selector: 'login-form',
     templateUrl: 'login-form.component.html'
 })
-export class LoginFormComponent{
+export class LoginFormComponent {
+
     // event outputs
     @Output() onLoginEvent = new EventEmitter<boolean>();
     @Output() onLogoutEvent = new EventEmitter();
@@ -19,23 +21,25 @@ export class LoginFormComponent{
     constructor(private authService: AuthService, private router: Router) { }
 
     // event methods
-    onSubmit() { 
-        this.authService.authenticate(this.username, this.password, AuthTypeEnum.auth0_standard)
-            .then(isAuthenticated => this.handleAuthentication(isAuthenticated))
+    onSubmit() {
+        var success = this.authService.authenticate(this.username, this.password);
+
+        if (success) {
+            // user was logged in
+            this.onLoginEvent.emit(true);
+        }
+        else {
+            // authentication failed
+            this.onLoginEvent.emit(false);
+        }
     }
 
-    onLogout(){
+    onLogout() {
         this.authService.logout();
         this.onLogoutEvent.emit();
     }
 
-    // helper methods
-    private handleAuthentication(isAuthenticated: boolean){
-      if (isAuthenticated){
-          this.onLoginEvent.emit(true);
-      }
-      else{
-         this.onLoginEvent.emit(false); 
-      }
+    onLoginWithGoogle() {
+        this.authService.loginWithGoogle();
     }
 }

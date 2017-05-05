@@ -1,93 +1,111 @@
 import { Injectable } from '@angular/core';
 import { TokenService } from './token.service';
-import { AuthTypeEnum } from './auth-type.enum';
 import { Http } from '@angular/http';
 import { JwtHelper } from 'angular2-jwt';
 import { AppConfig } from '../core/config/app.config';
-import { Auth0StandardRequest } from './models/auth0-standard-request.class';
 import { Auth0ErrorResponse } from './models/auth0-error-response.class';
 import { CurrentUser } from './models/current-user.class';
+import { Router } from '@angular/router';
 
+// auth0 class exposed by auth0 js
+declare var auth0: any;
+
+/*
+Authentication service requirements:
+Auth0 js library: https://github.com/auth0/auth0.js
+Documentation info: https://auth0.com/docs/quickstart/spa/angular2/02-custom-login
+
+In order for auth service to work, the id_token needs to be extraced from URL (hash) after being redirected
+from login provided (google, facebook, auth0..). Therefore the 'handleAuthentication' method
+can be called in 'app.component.ts' (all requests) or in a specific callback page for this purpose
+*/
 @Injectable()
 export class AuthService {
 
+    // Configure Auth0
+    private auth0 = new auth0.WebAuth({
+        domain: AppConfig.Auth0_Domain,
+        clientID: AppConfig.Auth0_ClientId,
+        redirectUri: AppConfig.Auth0_RedirectUri,
+        responseType: AppConfig.Auth0_ResponseType,
+        scope: AppConfig.Auth0_Scope
+    });
+
     private jwtHelper = new JwtHelper();
 
-    constructor(private tokenService: TokenService, private http: Http) {
+    constructor(private tokenService: TokenService, private http: Http, private router: Router) {
     }
 
-    private getAuth0StandardRequestBody(username: string, password: string): Auth0StandardRequest {
-        return new Auth0StandardRequest(
-            AppConfig.ClientId,
-            username,
-            password
-        );
-    }
-
-    private handleAuthenticationError(response: Auth0ErrorResponse): boolean{
-        if (response == null){
+    private handleAuthenticationError(response: Auth0ErrorResponse): boolean {
+        if (response == null) {
             throw Error("Response from Auth0 is missing");
         }
 
         // log error
-        console.log(response.error_description);
+        console.log(response.description);
 
         return false;
     }
 
-    private handleAuthenticationRespose(response: Auth0StandardRequest): boolean{
-            if (response == null){
-                throw Error("Invalid response from Auth0");
-            }
-
-            // check if token is valid/expired
-            if (this.jwtHelper.isTokenExpired(response.id_token)) {
-                throw new Error('Your session has expired, please log-in again');
-            }
-
-            // save JWT token
-            this.tokenService.setToken(response.id_token);
-
-            return true;
-    }
-
-    getCurrentUser(): CurrentUser{
-        if (!this.isAuthenticated()){
+    public getCurrentUser(): CurrentUser {
+        if (!this.isAuthenticated()) {
             return new CurrentUser(false)
         }
 
-        var decodedToken = this.jwtHelper.decodeToken(this.tokenService.getToken());
+        var decodedToken = this.jwtHelper.decodeToken(this.tokenService.getIdToken());
 
         return new CurrentUser(true, decodedToken["email"], decodedToken["nickname"]);
     }
 
-    authenticate(username: string, password: string, type: AuthTypeEnum): Promise<boolean> {
-        if (type === AuthTypeEnum.auth0_standard) {
-            // send request ang get JWT token
-            return this.http.post(
-                AppConfig.Auth0Endpoint,
-                this.getAuth0StandardRequestBody(username, password),
-            ).toPromise()
-                .then(response => this.handleAuthenticationRespose(response.json() as Auth0StandardRequest))
-                .catch(response => this.handleAuthenticationError(response.json() as Auth0ErrorResponse));
-        }
-        else {
-            throw new Error('Unsupported authentication type "' + type + '"');
-        }
+    public authenticate(username: string, password: string): boolean {
+        this.auth0.redirect.loginWithCredentials({
+            connection: AppConfig.Auth0_UserPasswordConnectionName,
+            username,
+            password
+        }, errorResponse => {
+            if (errorResponse) {
+                this.handleAuthenticationError(errorResponse as Auth0ErrorResponse);
+                return false;
+            }
+        });
+
+        return true;
     }
 
-    logout(): void{
-        // for log-out simply remove token from local storage
-        this.tokenService.removeToken();
+    public handleAuthentication(): void {
+        this.auth0.parseHash({ _idTokenVerification: false }, (err, authResult) => {
+            if (err) {
+                console.log(`Error: ${err.errorDescription}`)
+            }
+            if (authResult && authResult.accessToken && authResult.idToken) {
+                window.location.hash = '';
+                this.tokenService.setAccessToken(authResult.accessToken);
+                this.tokenService.setIdToken(authResult.idToken);
+            }
+        });
     }
 
-    isAuthenticated(): boolean {
-        if (!this.tokenService.getToken()) {
+    public loginWithGoogle(): void {
+        this.auth0.authorize({
+            connection: AppConfig.Auth0_GoogleConnectionName,
+        });
+    }
+
+    public logout(): void {
+        // to logout simply remove tokens
+        this.tokenService.removeAccessToken();
+        this.tokenService.removeIdToken();
+    }
+
+    public isAuthenticated(): boolean {
+        var idToken = this.tokenService.getIdToken();
+
+        if (!idToken) {
             // missing token - not authenticated
             return false;
         }
 
-        if (this.jwtHelper.isTokenExpired(this.tokenService.getToken())) {
+        if (this.jwtHelper.isTokenExpired(idToken)) {
             // token is not valid or expired
             return false;
         }

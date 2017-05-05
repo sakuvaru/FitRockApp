@@ -4,19 +4,33 @@ import { AppConfig } from '../core/config/app.config';
 @Injectable()
 export class TokenService {
 
-    private tokenName = AppConfig.TokenName;
+    private accessTokenName = AppConfig.Auth0_AccessTokenStorageName;
+    private idTokenName = AppConfig.Auth0_IdTokenStorageName;
 
     constructor() { }
 
-    getToken(): string {
-        return localStorage.getItem(this.tokenName);
+    getAccessToken(): string {
+        return localStorage.getItem(this.accessTokenName);
     }
 
-    setToken(token: string): void {
-        localStorage.setItem(this.tokenName, token);
+    setAccessToken(token: string): void {
+        localStorage.setItem(this.accessTokenName, token);
     }
 
-    removeToken(): void{
-        localStorage.removeItem(this.tokenName);
+    removeAccessToken(): void{
+        localStorage.removeItem(this.accessTokenName);
+    }
+
+    
+    getIdToken(): string {
+        return localStorage.getItem(this.idTokenName);
+    }
+
+    setIdToken(token: string): void {
+        localStorage.setItem(this.idTokenName, token);
+    }
+
+    removeIdToken(): void{
+        localStorage.removeItem(this.idTokenName);
     }
 }
