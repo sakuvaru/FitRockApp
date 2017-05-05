@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'unauthorized',
@@ -6,4 +7,5 @@ import { Component, Input } from '@angular/core';
 })
 export class UnauthorizedComponent {
 
+constructor(private router: Router){}
 }

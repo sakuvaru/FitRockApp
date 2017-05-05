@@ -1,8 +1,12 @@
 <p>This is dashboard</p>
 
 <h3>
-    Current user is authenticated: {{isAuthenticated}}
+    Current user is authenticated: {{currentUser.isAuthenticated}} - {{currentUser.codename}}
 </h3>
+
+<p>
+    <button (click)="onLogout()" type="submit">Logout</button>
+</p>
 
 <h2>Single log</h2>
 

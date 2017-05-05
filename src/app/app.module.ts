@@ -8,43 +8,31 @@ import { RouterModule } from '@angular/router';
 // authentication
 import { AuthModule } from './auth/auth.module';
 
-// main components
-import { HeaderComponent } from './modules/shared/header.component';
-import { FooterComponent } from './modules/shared/footer.component';
-import { NotFoundComponent } from './modules/shared/not-found.component';
-import { UnauthorizedComponent } from './modules/shared/unauthorized.component';
-
 // main app
 import { AppComponent } from './app.component';
 
 // custom modules
+import { SharedModule } from './modules/shared/shared.module';
 import { RepositoryModule } from './repository/repository.module';
 import { ServicesModule } from './services/services.module';
 import { DashboardModule } from './modules/dashboard/dashboard.module';
 import { LoginModule } from './modules/login/login.module';
+import { AppConfig } from './core/config/app.config';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HeaderComponent,
-    FooterComponent,
-    NotFoundComponent,
-    UnauthorizedComponent
   ],
   imports: [
     // route config
        RouterModule.forRoot([
       {
         path: '',
-        redirectTo: '/dash', pathMatch: 'full'
-      },
-      {
-        path: 'unauthorized',
-        component: UnauthorizedComponent
+        redirectTo: AppConfig.DashboardPath, pathMatch: 'full'
       },
       {
         path: '**',
-        component: NotFoundComponent
+        redirectTo: "/" + AppConfig.NotFoundPath
       }
     ]),
 
@@ -57,6 +45,7 @@ import { LoginModule } from './modules/login/login.module';
     HttpModule,
 
     // custom modules
+    SharedModule,
     DashboardModule,
     RepositoryModule,
     ServicesModule,

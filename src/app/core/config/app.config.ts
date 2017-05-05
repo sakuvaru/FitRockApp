@@ -1,5 +1,10 @@
 
 export class AppConfig {
+    // app
+    public static DashboardPath = "client";
+    public static NotFoundPath = "notfound";
+    public static UnauthorizedPath = "unauthorized";
+
     // web api config
     public static RepositoryApiEndpoint = "http://localhost:61466/type";
 

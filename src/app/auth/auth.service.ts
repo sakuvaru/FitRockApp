@@ -6,6 +6,7 @@ import { JwtHelper } from 'angular2-jwt';
 import { AppConfig } from '../core/config/app.config';
 import { Auth0StandardRequest } from './models/auth0-standard-request.class';
 import { Auth0ErrorResponse } from './models/auth0-error-response.class';
+import { CurrentUser } from './models/current-user.class';
 
 @Injectable()
 export class AuthService {
@@ -48,6 +49,16 @@ export class AuthService {
             this.tokenService.setToken(response.id_token);
 
             return true;
+    }
+
+    getCurrentUser(): CurrentUser{
+        if (!this.isAuthenticated()){
+            return new CurrentUser(false)
+        }
+
+        var decodedToken = this.jwtHelper.decodeToken(this.tokenService.getToken());
+
+        return new CurrentUser(true, decodedToken["email"], decodedToken["nickname"]);
     }
 
     authenticate(username: string, password: string, type: AuthTypeEnum): Promise<boolean> {

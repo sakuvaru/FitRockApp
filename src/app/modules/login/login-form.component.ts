@@ -1,22 +1,24 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { AuthService } from '../../auth/auth.service';
 import { AuthTypeEnum } from '../../auth/auth-type.enum';
-import { RouterModule, Router } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
-    selector: 'login',
-    templateUrl: 'login.component.html'
+    selector: 'login-form',
+    templateUrl: 'login-form.component.html'
 })
-export class LoginComponent implements OnInit{
+export class LoginFormComponent{
+    // event outputs
+    @Output() onLoginEvent = new EventEmitter<boolean>();
+    @Output() onLogoutEvent = new EventEmitter();
+
+    // properties
     private username: string;
     private password: string;
-    private authResult: string;
 
     constructor(private authService: AuthService, private router: Router) { }
 
-    ngOnInit(): void {
-    }
-
+    // event methods
     onSubmit() { 
         this.authService.authenticate(this.username, this.password, AuthTypeEnum.auth0_standard)
             .then(isAuthenticated => this.handleAuthentication(isAuthenticated))
@@ -24,15 +26,16 @@ export class LoginComponent implements OnInit{
 
     onLogout(){
         this.authService.logout();
+        this.onLogoutEvent.emit();
     }
 
+    // helper methods
     private handleAuthentication(isAuthenticated: boolean){
-        if (isAuthenticated){
-            this.router.navigate(['/dash']);
-        }
-        else{
-            console.log("FAIL");
-            this.authResult = "Fail";
-        }
+      if (isAuthenticated){
+          this.onLoginEvent.emit(true);
+      }
+      else{
+         this.onLoginEvent.emit(false); 
+      }
     }
 }
