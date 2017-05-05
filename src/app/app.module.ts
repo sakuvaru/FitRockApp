@@ -12,6 +12,7 @@ import { AuthModule } from './auth/auth.module';
 import { HeaderComponent } from './modules/shared/header.component';
 import { FooterComponent } from './modules/shared/footer.component';
 import { NotFoundComponent } from './modules/shared/not-found.component';
+import { UnauthorizedComponent } from './modules/shared/unauthorized.component';
 
 // main app
 import { AppComponent } from './app.component';
@@ -27,7 +28,8 @@ import { LoginModule } from './modules/login/login.module';
     AppComponent,
     HeaderComponent,
     FooterComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    UnauthorizedComponent
   ],
   imports: [
     // route config
@@ -35,6 +37,10 @@ import { LoginModule } from './modules/login/login.module';
       {
         path: '',
         redirectTo: '/dash', pathMatch: 'full'
+      },
+      {
+        path: 'unauthorized',
+        component: UnauthorizedComponent
       },
       {
         path: '**',

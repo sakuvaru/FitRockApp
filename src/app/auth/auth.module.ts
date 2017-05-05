@@ -4,6 +4,7 @@ import { AuthHttp, AuthConfig } from 'angular2-jwt';
 import { AppConfig } from '../core/config/app.config';
 import { TokenService } from './token.service';
 import { AuthService } from './auth.service';
+import { AuthGuardService } from './auth-guard.service';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp(
@@ -21,7 +22,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
       deps: [Http, RequestOptions]
     },
     AuthService,
-    TokenService
+    TokenService,
+    AuthGuardService
   ]
 })
 export class AuthModule {}

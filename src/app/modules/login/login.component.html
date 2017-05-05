@@ -1,1 +1,15 @@
 <h1>Login</h1>
+
+<form #loginForm="ngForm" (ngSubmit)="onSubmit()">
+    <input [(ngModel)]="username" placeholder="Username" name="username" required>
+    <br />
+    <input [(ngModel)]="password" type="password" name="password" required>
+    <br />
+    <button type="submit">Submit</button>
+</form>
+
+<p>{{authResult}}</p>
+
+<p>
+    <button (click)="onLogout()" type="submit">Logout</button>
+</p>
