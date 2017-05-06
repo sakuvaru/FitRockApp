@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 export class LoginFormComponent {
 
     // event outputs
-    @Output() onLoginEvent = new EventEmitter<boolean>();
+    @Output() onLoginEvent = new EventEmitter();
     @Output() onLogoutEvent = new EventEmitter();
 
     // properties
@@ -22,24 +22,17 @@ export class LoginFormComponent {
 
     // event methods
     onSubmit() {
+        this.onLoginEvent.emit();
         var success = this.authService.authenticate(this.username, this.password);
-
-        if (success) {
-            // user was logged in
-            this.onLoginEvent.emit(true);
-        }
-        else {
-            // authentication failed
-            this.onLoginEvent.emit(false);
-        }
     }
 
     onLogout() {
-        this.authService.logout();
         this.onLogoutEvent.emit();
+        this.authService.logout();
     }
 
     onLoginWithGoogle() {
+        this.onLoginEvent.emit();
         this.authService.loginWithGoogle();
     }
 }

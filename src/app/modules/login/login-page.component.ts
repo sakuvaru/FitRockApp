@@ -2,29 +2,34 @@ import { Component, Input } from '@angular/core';
 import { RouterModule, Router } from '@angular/router';
 import { AuthService } from '../../auth/auth.service';
 import { AppConfig } from '../../core/config/app.config';
+import { TdLoadingService, LoadingMode, LoadingType } from '@covalent/core';
+import { BaseComponent } from '../base/base.component';
 
 @Component({
     templateUrl: 'login-page.component.html'
 })
-export class LoginPageComponent {
+export class LoginPageComponent extends BaseComponent{
 
-    constructor(private router: Router, private authService: AuthService) { 
+    constructor(private router: Router, private authService: AuthService, private _loadingService: TdLoadingService)
+    { super(_loadingService)
         // go to dashboard if user is already logged
-        if (this.authService.isAuthenticated()){
-            this.router.navigate([AppConfig.DashboardPath]);
+        if (this.authService.isAuthenticated()) {
+            this.router.navigate([AppConfig.ClientPath]);
         }
+
+        this._loadingService.create({
+            name: 'configFullscreenDemo',
+            mode: LoadingMode.Indeterminate,
+            type: LoadingType.Linear,
+            color: 'accent',
+        });
     }
 
-    private handleLogin(isAuthenticated: boolean) {
-        if (isAuthenticated) {
-            this.router.navigate([AppConfig.DashboardPath]);
-        }
-        else {
-            console.log("Login failed");
-        }
+    toggleConfigFullscreenDemo(): void {
+        this.registerLoader();
     }
 
-    private handleLogout() {
-        console.log("You logged out");
+    handleLogin(): void {
+       this.registerLoader();
     }
 }

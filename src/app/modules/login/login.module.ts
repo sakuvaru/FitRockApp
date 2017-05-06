@@ -9,7 +9,7 @@ import { LoginRouter } from './login.routing';
     imports: [
         CommonModule,
         FormsModule,
-        LoginRouter
+        LoginRouter,
     ],
     declarations: [
         LoginPageComponent,

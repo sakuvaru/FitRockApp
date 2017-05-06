@@ -1,3 +1,7 @@
 <h1>Login</h1>
 
-<login-form (onLoginEvent)="handleLogin($event)" (onLogoutEvent)="handleLogout()"></login-form>
+<login-form (onLoginEvent)="handleLogin()"></login-form>
+
+<div layout="row">
+  <button md-button color="primary" (click)="toggleConfigFullscreenDemo()" class="text-upper">Toggle Loader</button>
+</div>

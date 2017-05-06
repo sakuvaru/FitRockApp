@@ -3,10 +3,14 @@ import { RouterModule, Routes } from '@angular/router';
 import { AppConfig } from '../../core/config/app.config';
 import { NotFoundComponent } from './not-found.component';
 import { UnauthorizedComponent } from './unauthorized.component';
+import { SimpleLayoutComponent } from '../../layouts/simple-layout.component';
+import { AdminLayoutComponent } from '../../layouts/admin-layout.component';
 
-const routes: Routes = [
-    { path: AppConfig.NotFoundPath, component: NotFoundComponent },
-    { path: AppConfig.UnauthorizedPath, component: UnauthorizedComponent },
+export const routes: Routes = [
+  { path: AppConfig.PublicPath, component: SimpleLayoutComponent, children:[
+     { path: AppConfig.NotFoundPath, component: NotFoundComponent},
+     { path: AppConfig.UnauthorizedPath, component: UnauthorizedComponent},
+  ]}
 ];
 
 @NgModule({

@@ -2,9 +2,12 @@
 export class AppConfig {
     // app
     public static AppName = 'Fit Rock';
-    public static DashboardPath = 'client';
+    public static PublicPath = 'public';
+    public static DefaultPath = 'login';
+    public static ClientPath = 'client';
     public static NotFoundPath = 'notfound';
     public static UnauthorizedPath = 'unauthorized';
+    public static LoginPath = 'login';
 
     // web api config
     public static RepositoryApiEndpoint = 'http://localhost:61466/type';

@@ -4,6 +4,15 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+// Covalent modules
+// Info: https://teradata.github.io/covalent/#/docs
+import { CovalentCoreModule } from '@covalent/core';
+
+// material angular
+// Info: https://material.angular.io/guide/getting-started
+import 'hammerjs';
 
 // authentication
 import { AuthModule } from './auth/auth.module';
@@ -12,6 +21,7 @@ import { AuthModule } from './auth/auth.module';
 import { AppComponent } from './app.component';
 
 // custom modules
+import { LayoutsModule } from './layouts/layouts.module';
 import { SharedModule } from './modules/shared/shared.module';
 import { RepositoryModule } from './repository/repository.module';
 import { ServicesModule } from './services/services.module';
@@ -21,30 +31,35 @@ import { AppConfig } from './core/config/app.config';
 
 @NgModule({
   declarations: [
-    AppComponent,
+    AppComponent
   ],
   imports: [
+    // angular modules
+    BrowserModule,
+    FormsModule,
+    HttpModule,
+    BrowserAnimationsModule,
+
     // route config
-       RouterModule.forRoot([
+    RouterModule.forRoot([
       {
         path: '',
-        redirectTo: AppConfig.DashboardPath, pathMatch: 'full'
+        redirectTo: AppConfig.PublicPath + '/' + AppConfig.DefaultPath, pathMatch: 'full'
       },
       {
         path: '**',
-        redirectTo: "/" + AppConfig.NotFoundPath
+        redirectTo: AppConfig.PublicPath + '/' + AppConfig.NotFoundPath
       }
     ]),
+
+    // covalent
+    CovalentCoreModule,
 
     // authentication
     AuthModule,
 
-    // default modules
-    BrowserModule,
-    FormsModule,
-    HttpModule,
-
     // custom modules
+    LayoutsModule,
     SharedModule,
     DashboardModule,
     RepositoryModule,
@@ -52,7 +67,7 @@ import { AppConfig } from './core/config/app.config';
     LoginModule
   ],
   providers: [
-    
+
   ],
   bootstrap: [AppComponent]
 })
