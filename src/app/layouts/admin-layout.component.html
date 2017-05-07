@@ -1,4 +1,4 @@
-<td-layout-nav toolbarTitle="{{appName}}" logo="home" navigationRoute="/client">
+<td-layout-nav toolbarTitle="{{appData.appName}}" logo="home" navigationRoute="/client">
   <td-layout-manage-list #manageList
           [opened]="media.registerQuery('gt-sm') | async"
           [mode]="(media.registerQuery('gt-sm') | async) ? 'side' :  'over'"

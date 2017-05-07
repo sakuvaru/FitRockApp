@@ -4,12 +4,15 @@ import { IComponent } from './icomponent.interface';
 import { AppDataService } from '../../core/app-data.service';
 import { AppData } from '../app-data.class';
 import { ComponentDependencyService } from '../../core/component-dependency.service';
+import { Subscription } from 'rxjs/Subscription';
+import { RepositoryService } from '../../repository/repository.service';
 
 @Component({
 })
 export abstract class BaseComponent implements IComponent, OnInit {
     // name of the full screen loader - can be anything
     private fullscreenLoaderName = "fullscreen-loader";
+    private loaderSubscription: Subscription;
 
     constructor(protected dependencies: ComponentDependencyService) {
         // init shared app Data
@@ -22,14 +25,32 @@ export abstract class BaseComponent implements IComponent, OnInit {
             type: LoadingType.Linear,
             color: 'primary',
         });
+
+        // subscribe to loading events
+        this.loaderSubscription = dependencies.repositoryService.requestStateChanged$.subscribe(
+            requestFinished => {
+                this.showLoader(requestFinished);
+            });
     }
 
     abstract initAppData(): AppData;
-    
+
+    private showLoader(isEnabled: boolean): void{
+        if (isEnabled){
+            this.registerLoader();
+        }
+        else{
+            this.resolveLoader();
+        }
+    }
+
     ngOnInit(): void {
         // stop all loaders on init
-        this.dependencies.loadingService.resolve(this.fullscreenLoaderName);
+        this.resolveLoader();
+    }
 
+    resolveLoader(): void{
+        this.dependencies.loadingService.resolve(this.fullscreenLoaderName);
     }
 
     registerLoader(): void {

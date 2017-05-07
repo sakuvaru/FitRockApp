@@ -14,7 +14,7 @@ export class AppDataService {
   appDataChanged$ = this.appDataSource.asObservable();
 
   // Service message commands
-  setAppData(appData: AppData) {
+  setAppData(appData: AppData): void {
     this.appDataSource.next(appData);
   }
 }
