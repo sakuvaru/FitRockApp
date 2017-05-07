@@ -1,22 +1,32 @@
 <td-layout-nav toolbarTitle="{{appData.appName}}" logo="home" navigationRoute="/client">
-  <td-layout-manage-list #manageList
-          [opened]="media.registerQuery('gt-sm') | async"
-          [mode]="(media.registerQuery('gt-sm') | async) ? 'side' :  'over'"
-          [sidenavWidth]="(media.registerQuery('gt-xs') | async) ? '257px' : '100%'">
+  <td-layout-manage-list #manageList [opened]="media.registerQuery('gt-sm') | async" [mode]="(media.registerQuery('gt-sm') | async) ? 'side' :  'over'"
+    [sidenavWidth]="(media.registerQuery('gt-xs') | async) ? '257px' : '100%'">
     <md-toolbar td-sidenav-content>
       <span>{{appData.mainTitle}}</span>
     </md-toolbar>
-    <md-nav-list td-sidenav-content
-                 (click)="!media.query('gt-sm') && manageList.close()">
-      <a md-list-item routerLink="/client"><md-icon>home</md-icon>Dashboard</a>
-      <a md-list-item routerLink="/client/clients"><md-icon>people</md-icon>Clients</a>
-      <a md-list-item routerLink="/public/login"><md-icon>public</md-icon>Login</a>
+    <md-nav-list td-sidenav-content (click)="!media.query('gt-sm') && manageList.close()">
+      <a md-list-item routerLink="/client">
+        <md-icon>home</md-icon>Dashboard</a>
+      <a md-list-item routerLink="/client/clients">
+        <md-icon>people</md-icon>Clients</a>
+      <a md-list-item routerLink="/public/login">
+        <md-icon>public</md-icon>Login</a>
     </md-nav-list>
     <div td-toolbar-content layout="row" layout-align="start center" flex>
       <span>{{appData.subTitle}}</span>
       <span flex></span>
       <button md-icon-button><md-icon class="md-24">settings</md-icon></button>
-      <button md-icon-button><md-icon class="md-24">more_vert</md-icon></button>
+      <button md-icon-button [mdMenuTriggerFor]="toolbarMenu1"><md-icon>more_vert</md-icon></button>
+      <md-menu #toolbarMenu1="mdMenu">
+        <button md-menu-item>
+      <md-icon>settings</md-icon>
+      <span>Settings</span>
+    </button>
+        <button md-menu-item>
+      <md-icon>exit_to_app</md-icon>
+      <span>Sign out</span>
+    </button>
+      </md-menu>
     </div>
     <router-outlet></router-outlet>
     <td-layout-footer-inner>
@@ -24,6 +34,6 @@
     </td-layout-footer-inner>
   </td-layout-manage-list>
   <td-layout-footer>
-    Optional footer
+    <footer></footer>
   </td-layout-footer>
 </td-layout-nav>

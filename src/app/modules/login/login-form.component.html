@@ -1,17 +1,48 @@
-<form #loginForm="ngForm" (ngSubmit)="onSubmit()">
-    <input [(ngModel)]="username" placeholder="Username" name="username" required>
-    <br />
-    <input [(ngModel)]="password" type="password" name="password" required>
-    <br />
-    <button type="submit">Submit</button>
-</form>
+<md-card class="push-bottom">
+    <md-card-content class="push-bottom-none">
+        <p>
+            <a (click)="loginWithGoogle()" color="primary" md-raised-button>Log In with Google</a>
+        </p>
+        <p>
+            <a (click)="loginWithFacebook()" color="primary" md-raised-button>Log In with Facebook</a>
+        </p>
+    </md-card-content>
+</md-card>
 
-<div>
-    <button type="button" class="btn btn-default btn-primary" (click)="onLoginWithGoogle()">
-      Log In with Google
-  </button>
-</div>
-
-<p>
-    <button (click)="onLogout()" type="submit">Logout</button>
-</p>
+<md-card>
+    <md-card-title layout="row" layout-align="start center">
+        <span class="md-title">Login</span></md-card-title>
+    <md-card-subtitle>sign in with your credentials</md-card-subtitle>
+    <md-divider></md-divider>
+    <md-card-content class="push-bottom-none">
+        <form #loginForm="ngForm">
+            <div layout="row">
+                <md-input-container flex>
+                    <input mdInput #userElement #userControl="ngModel" placeholder="Username" type="text" maxlength="30" name="username" [(ngModel)]="username"
+                        required>
+                    <md-hint align="start">
+                        <span [hidden]="!userControl.errors?.required || userControl.pristine" class="tc-red-600">Required</span>
+                    </md-hint>
+                    <md-hint align="end">{{userElement.value.length}} / 30</md-hint>
+                </md-input-container>
+            </div>
+            <div layout="row" class="push-top-sm">
+                <md-input-container flex>
+                    <input mdInput #passElement #passControl="ngModel" placeholder="Password" type="password" name="password" [(ngModel)]="password"
+                        required>
+                    <md-hint align="start">
+                        <span [hidden]="!passControl.errors?.required || passControl.pristine" class="tc-red-600">Required</span>
+                    </md-hint>
+                    <md-hint align="end">Something hard to guess</md-hint>
+                </md-input-container>
+            </div>
+        </form>
+        <div id="invalid-auth-msg" *ngIf="invalidError" class="tc-red-600 text-center" flex>The username or password is incorrect. Please try again.</div>
+    </md-card-content>
+    <md-divider></md-divider>
+    <md-card-actions>
+        <div layout="row">
+            <button flex md-raised-button color="accent" [disabled]="!loginForm.form.valid" (click)="onLogin()" class="text-upper">Sign In</button>
+        </div>
+    </md-card-actions>
+</md-card>

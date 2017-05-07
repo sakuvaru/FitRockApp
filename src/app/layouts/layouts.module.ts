@@ -1,11 +1,14 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { SimpleLayoutComponent } from './simple-layout.component';
-import { AdminLayoutComponent } from './admin-layout.component';
 
 // Covalent modules for Angular2
 import { CovalentCoreModule } from '@covalent/core';
+
+// components
+import { SimpleLayoutComponent } from './simple-layout.component';
+import { AdminLayoutComponent } from './admin-layout.component';
+import { FooterComponent } from './shared/footer.component';
 
 @NgModule({
     imports: [
@@ -15,7 +18,8 @@ import { CovalentCoreModule } from '@covalent/core';
     ],
     declarations: [
         SimpleLayoutComponent,
-        AdminLayoutComponent
+        AdminLayoutComponent,
+        FooterComponent
     ]
 })
 export class LayoutsModule { }

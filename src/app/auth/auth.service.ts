@@ -44,6 +44,9 @@ export class AuthService {
         // log error
         console.log(response.description);
 
+        // redirect back to logon page
+        this.router.navigate([AppConfig.PublicPath + '/' + AppConfig.LoginPath], { queryParams: { result: "error" } })
+
         return false;
     }
 
@@ -75,7 +78,7 @@ export class AuthService {
     public handleAuthentication(): void {
         this.auth0.parseHash({ _idTokenVerification: false }, (err, authResult) => {
             if (err) {
-                console.log(`Error: ${err.errorDescription}`)
+                this.handleAuthenticationError(err);
             }
             if (authResult && authResult.accessToken && authResult.idToken) {
                 window.location.hash = '';
@@ -88,6 +91,12 @@ export class AuthService {
     public loginWithGoogle(): void {
         this.auth0.authorize({
             connection: AppConfig.Auth0_GoogleConnectionName,
+        });
+    }
+
+    public loginWithFacebook(): void {
+        this.auth0.authorize({
+            connection: AppConfig.Auth0_FacebookConnectionName,
         });
     }
 

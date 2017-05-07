@@ -1,11 +1,14 @@
-import { Component, Input, OnDestroy } from '@angular/core';
+// common
+import { Component, Input, Output, OnDestroy } from '@angular/core';
 import { AppConfig } from '../core/config/app.config';
+import { BaseComponent } from '../core/base/base.component';
+import { AppData } from '../core/app-data.class';
+import { ComponentDependencyService } from '../core/component-dependency.service';
+
+// required by component
 import { TdMediaService } from '@covalent/core';
 import { AppDataService } from '../core/app-data.service';
 import { Subscription } from 'rxjs/Subscription';
-import { AppData } from '../core/app-data.class';
-
-import { ComponentDependencyService } from '../core/component-dependency.service';
 
 @Component({
     templateUrl: 'admin-layout.component.html'
@@ -29,7 +32,6 @@ export class AdminLayoutComponent implements OnDestroy {
         // note required by 'Covalent' for its templates
         // source: https://teradata.github.io/covalent/#/layouts/manage-list
         this.dependencies.mediaService.broadcast();
-
     }
 
     ngOnDestroy() {

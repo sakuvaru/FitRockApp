@@ -11,19 +11,21 @@ import { RouterModule, Router } from '@angular/router';
 @Component({
     templateUrl: 'login-page.component.html'
 })
-export class LoginPageComponent extends BaseComponent {
+export class LogoutComponent extends BaseComponent {
 
     constructor(
+        private router: Router,
         protected dependencies: ComponentDependencyService) {
         super(dependencies)
 
-        // go to dashboard if user is already logged
-        if (this.dependencies.authService.isAuthenticated()) {
-            this.dependencies.router.navigate([AppConfig.ClientPath]);
-        }
+        // logout user
+        this.dependencies.authService.logout();
+
+        // redirect after logging-out
+        this.router.navigate([AppConfig.PublicPath + '/' + AppConfig.RedirectAfterLogoutPath]);
     }
 
     initAppData(): AppData {
-        return new AppData("Login");
+        return new AppData("Logout");
     }
 }

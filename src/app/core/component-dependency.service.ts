@@ -1,6 +1,7 @@
 import { Injectable, Injector } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import { AppData } from './app-data.class';
+import { Router, ActivatedRoute } from '@angular/router';
 
 // Comnponent's common services
 import { AuthService } from '../auth/auth.service';
@@ -14,6 +15,9 @@ import { RepositoryService } from '../repository/repository.service';
 @Injectable()
 export class ComponentDependencyService {
 
+    public router: Router;
+    public activatedRoute: ActivatedRoute;
+
     public authService: AuthService;
     public mediaService: TdMediaService;
     public appDataService: AppDataService;
@@ -22,6 +26,9 @@ export class ComponentDependencyService {
 
     constructor(private injector: Injector) {
         // use Angular's injector to get service instances
+        this.router = injector.get(Router);
+        this.activatedRoute = injector.get(ActivatedRoute);
+
         this.authService = injector.get(AuthService);
         this.mediaService = injector.get(TdMediaService);
         this.appDataService = injector.get(AppDataService);
