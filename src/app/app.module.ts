@@ -21,6 +21,7 @@ import { AuthModule } from './auth/auth.module';
 import { AppComponent } from './app.component';
 
 // custom modules
+import { CoreModule } from './core/core.module';
 import { LayoutsModule } from './layouts/layouts.module';
 import { SharedModule } from './modules/shared/shared.module';
 import { RepositoryModule } from './repository/repository.module';
@@ -28,6 +29,7 @@ import { ServicesModule } from './services/services.module';
 import { DashboardModule } from './modules/dashboard/dashboard.module';
 import { LoginModule } from './modules/login/login.module';
 import { AppConfig } from './core/config/app.config';
+import { ClientsModule } from './modules/clients/clients.module';
 
 @NgModule({
   declarations: [
@@ -59,12 +61,14 @@ import { AppConfig } from './core/config/app.config';
     AuthModule,
 
     // custom modules
+    CoreModule,
     LayoutsModule,
     SharedModule,
     DashboardModule,
     RepositoryModule,
     ServicesModule,
-    LoginModule
+    LoginModule,
+    ClientsModule
   ],
   providers: [
 

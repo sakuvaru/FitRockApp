@@ -2,6 +2,9 @@
 export class AppConfig {
     // app
     public static AppName = 'Fit Rock';
+    public static MainTitle = 'Menu';
+
+    // base route config
     public static PublicPath = 'public';
     public static DefaultPath = 'login';
     public static ClientPath = 'client';

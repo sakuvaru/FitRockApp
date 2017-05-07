@@ -7,27 +7,29 @@ import { AuthGuardService } from '../../auth/auth-guard.service';
 // config
 import { AppConfig } from '../../core/config/app.config';
 
-// components
-import { DashboardComponent } from './dashboard.component';
+// layouts
 import { SimpleLayoutComponent } from '../../layouts/simple-layout.component';
 import { AdminLayoutComponent } from '../../layouts/admin-layout.component';
 
+// components
+import { SampleComponent } from './_sample.component';
+
 const routes: Routes = [
-  {
-    path: AppConfig.ClientPath, canActivate: [AuthGuardService], component: AdminLayoutComponent, children: [
-      { path: '', component: DashboardComponent },
-    ]
-  }
+    {
+        path: AppConfig.ClientPath, component: AdminLayoutComponent, canActivate: [AuthGuardService], children: [
+            { path: 'sampleRoute', component: SampleComponent },
+        ]
+    }
 ];
 
 @NgModule({
-  declarations: [
-  ],
-  imports: [
-    RouterModule.forChild(routes)
-  ],
-  exports: [
-    RouterModule
-  ]
+    declarations: [
+    ],
+    imports: [
+        RouterModule.forChild(routes)
+    ],
+    exports: [
+        RouterModule
+    ]
 })
-export class DashboardRouter { }
+export class SampleRouter { }

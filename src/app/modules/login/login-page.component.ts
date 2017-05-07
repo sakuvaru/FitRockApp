@@ -1,28 +1,27 @@
-import { Component, Input } from '@angular/core';
-import { RouterModule, Router } from '@angular/router';
-import { AuthService } from '../../auth/auth.service';
+// common
+import { Component, Input, Output } from '@angular/core';
 import { AppConfig } from '../../core/config/app.config';
-import { TdLoadingService, LoadingMode, LoadingType } from '@covalent/core';
-import { BaseComponent } from '../base/base.component';
+import { BaseComponent } from '../../core/base/base.component';
+import { AppData } from '../../core/app-data.class';
+import { ComponentDependencyService } from '../../core/component-dependency.service';
+
+// required by component
+import { RouterModule, Router } from '@angular/router';
 
 @Component({
     templateUrl: 'login-page.component.html'
 })
-export class LoginPageComponent extends BaseComponent{
+export class LoginPageComponent extends BaseComponent {
 
-    constructor(private router: Router, private authService: AuthService, private _loadingService: TdLoadingService)
-    { super(_loadingService)
+    constructor(
+        private router: Router,
+        protected dependencies: ComponentDependencyService) {
+        super(dependencies)
+        
         // go to dashboard if user is already logged
-        if (this.authService.isAuthenticated()) {
+        if (this.dependencies.authService.isAuthenticated()) {
             this.router.navigate([AppConfig.ClientPath]);
         }
-
-        this._loadingService.create({
-            name: 'configFullscreenDemo',
-            mode: LoadingMode.Indeterminate,
-            type: LoadingType.Linear,
-            color: 'accent',
-        });
     }
 
     toggleConfigFullscreenDemo(): void {
@@ -30,6 +29,10 @@ export class LoginPageComponent extends BaseComponent{
     }
 
     handleLogin(): void {
-       this.registerLoader();
+        this.registerLoader();
+    }
+
+    initAppData(): AppData {
+        return new AppData("Login");
     }
 }

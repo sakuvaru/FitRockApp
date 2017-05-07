@@ -4,15 +4,16 @@
           [mode]="(media.registerQuery('gt-sm') | async) ? 'side' :  'over'"
           [sidenavWidth]="(media.registerQuery('gt-xs') | async) ? '257px' : '100%'">
     <md-toolbar td-sidenav-content>
-      <span>Optional Title</span>
+      <span>{{appData.mainTitle}}</span>
     </md-toolbar>
     <md-nav-list td-sidenav-content
                  (click)="!media.query('gt-sm') && manageList.close()">
-      <a md-list-item><md-icon>folder</md-icon>Item Name</a>
-      <a md-list-item routerLink="/public/login"><md-icon>people</md-icon>Login</a>
+      <a md-list-item routerLink="/client"><md-icon>home</md-icon>Dashboard</a>
+      <a md-list-item routerLink="/client/clients"><md-icon>people</md-icon>Clients</a>
+      <a md-list-item routerLink="/public/login"><md-icon>public</md-icon>Login</a>
     </md-nav-list>
     <div td-toolbar-content layout="row" layout-align="start center" flex>
-      <span>Optional Subtitle</span>
+      <span>{{appData.subTitle}}</span>
       <span flex></span>
       <button md-icon-button><md-icon class="md-24">settings</md-icon></button>
       <button md-icon-button><md-icon class="md-24">more_vert</md-icon></button>

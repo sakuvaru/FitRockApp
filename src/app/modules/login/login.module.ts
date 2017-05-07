@@ -1,9 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+
+// components
+import { LoginRouter } from './login.routing';
+
+// router
 import { LoginFormComponent } from './login-form.component';
 import { LoginPageComponent } from './login-page.component';
-import { LoginRouter } from './login.routing';
 
 @NgModule({
     imports: [
