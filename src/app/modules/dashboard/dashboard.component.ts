@@ -38,7 +38,8 @@ export class DashboardComponent extends BaseComponent implements OnInit {
         );
 
         this.logService.getById(1).subscribe(
-            log => this.log = log
+            log => this.log = log,
+            error => console.log(error)
         );
 
         /*
@@ -65,6 +66,8 @@ export class DashboardComponent extends BaseComponent implements OnInit {
             log => console.log(log)
         );
         */
+
+        //this.logService.delete(1).subscribe( isSuccess => console.log(isSuccess));
 
         this.currentUser = this.authService.getCurrentUser();
     }

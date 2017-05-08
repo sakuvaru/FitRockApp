@@ -7,6 +7,8 @@ import { AppConfig } from '../config/app.config';
 import { ComponentDependencyService } from '../../core/component-dependency.service';
 import { Subscription } from 'rxjs/Subscription';
 import { RepositoryService } from '../../repository/repository.service';
+import { ErrorResponse } from '../../repository/error-response.class';
+import { ResponseTypeEnum } from '../../repository/response-type.enum';
 
 @Component({
 })
@@ -37,27 +39,34 @@ export abstract class BaseComponent implements IComponent, OnInit {
             });
 
         // suscribe to error events
-         this.repositoryErrorSubscription = dependencies.repositoryService.requestErrorChange$.subscribe(
-            errorMessage => {
-                this.handleRepositoryError(errorMessage);
+        this.repositoryErrorSubscription = dependencies.repositoryService.requestErrorChange$.subscribe(
+            error => {
+                this.handleRepositoryError(error);
             });
     }
 
     abstract initAppData(): AppData;
 
-    private showLoader(isEnabled: boolean): void{
-        if (isEnabled){
+    private showLoader(isEnabled: boolean): void {
+        if (isEnabled) {
             this.registerLoader();
         }
-        else{
+        else {
             this.resolveLoader();
         }
     }
 
-    private handleRepositoryError(errorMessage: string){
-        if (errorMessage){
+    protected redirectToErrorPage() {
+        this.dependencies.router.navigate([AppConfig.PublicPath + '/' + AppConfig.ErrorPath]);
+    }
+
+    private handleRepositoryError(error: ErrorResponse) {
+        if (error.statusType === ResponseTypeEnum.internalServerError ||
+            error.statusType === ResponseTypeEnum.unknown ||
+            error.statusType === ResponseTypeEnum.badRequest ||
+            error.statusType === ResponseTypeEnum.forbidden) {
             // redirect to error page
-            this.dependencies.router.navigate([AppConfig.PublicPath + '/' + AppConfig.ErrorPath]);
+            this.dependencies.router.navigate([AppConfig.PublicPath + '/' + AppConfig.ErrorPath], { queryParams: { result: error.statusType } });
         }
     }
 
@@ -66,7 +75,7 @@ export abstract class BaseComponent implements IComponent, OnInit {
         this.resolveLoader();
     }
 
-    resolveLoader(): void{
+    resolveLoader(): void {
         this.dependencies.loadingService.resolve(this.fullscreenLoaderName);
     }
 

@@ -1,6 +1,7 @@
 import { RepositoryService } from '../repository/repository.service';
 import { IItem } from '../repository/iitem.class';
 import { IService } from './iservice.class';
+import { ResponseDelete } from '../repository/response-delete.class';
 import { ResponseEdit } from '../repository/response-edit.class';
 import { ResponseCreate } from '../repository/response-create.class';
 import { ResponseSingle } from '../repository/response-single.class';
@@ -26,6 +27,13 @@ export abstract class BaseService<T extends IItem> implements IService<T>{
 
     protected mapEdit(response: ResponseEdit): T {
         return this.mapItem(response.item);
+    }
+
+     protected mapDelete(response: ResponseDelete): boolean {
+        if (response.result === 200){
+            return true;
+        }
+        return false;
     }
 
     protected mapGetSingle(response: ResponseSingle): T {
@@ -61,5 +69,9 @@ export abstract class BaseService<T extends IItem> implements IService<T>{
 
     edit(obj: T): Observable<T> {
         return this.repositoryService.edit(this.type, obj).map(response => this.mapEdit(response));
+    }
+    
+    delete(id: number): Observable<boolean> {
+        return this.repositoryService.delete(this.type, id).map(response => this.mapDelete(response));
     }
 }

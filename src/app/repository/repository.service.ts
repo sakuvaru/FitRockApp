@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Headers, RequestOptions } from '@angular/http';
+import { ErrorResponse } from './error-response.class';
+import { ResponseDelete } from './response-delete.class';
 import { ResponseEdit } from './response-edit.class';
 import { ResponseCreate } from './response-create.class';
 import { ResponseSingle } from './response-single.class';
@@ -24,7 +26,7 @@ export class RepositoryService {
 
     // Observable string sources
     private processingRequestSource = new Subject<boolean>();
-    private requestErrorSource = new Subject<string>();
+    private requestErrorSource = new Subject<ErrorResponse>();
 
     // Observable string streams
     requestStateChanged$ = this.processingRequestSource.asObservable();
@@ -39,8 +41,8 @@ export class RepositoryService {
         this.processingRequestSource.next(true);
     }
 
-    raiseError(errorMessage: string) {
-        this.requestErrorSource.next(errorMessage);
+    raiseError(errorResponse: ErrorResponse) {
+        this.requestErrorSource.next(errorResponse);
     }
 
     constructor(private authHttp: AuthHttp, private appDataService: AppDataService) {
@@ -66,17 +68,23 @@ export class RepositoryService {
 
     private handleError(error: Response | any): Observable<any> {
         // use a remote logging later on
-        let errMsg: string;
+
+        var errorResponse: ErrorResponse;
+        var errMsg: string;
+
         if (error instanceof Response) {
-            const body = error.json() || '';
-            const err = body.error || JSON.stringify(body);
-            errMsg = `${this.genericErrorMessage}: ${error.status} - ${error.statusText || ''} ${err}`;
+            errMsg = `${this.genericErrorMessage}: ${error.status} - ${error.statusText || ''} ${error}`;
+            
+            errorResponse = new ErrorResponse(errMsg, error.status);
+
         } else {
             errMsg = error.message ? error.message : error.toString();
+
+            errorResponse = new ErrorResponse(error.message, error.status);
         }
 
         // raise error
-        this.raiseError(errMsg);
+        this.raiseError(errorResponse);
 
         return Observable.throw(errMsg);
     }
@@ -181,6 +189,22 @@ export class RepositoryService {
         var url = this.getBaseUrl(type) + '/edit';
 
         return this.authHttp.post(url, body, options)
+            .map(this.extractData)
+            .catch(response => {
+                return this.handleError(response);
+            })
+            ._finally(() => {
+                this.finishRequest();
+            });
+    }
+
+    delete(type: string, id: number): Observable<ResponseDelete> {
+        var headers = new Headers({ 'Content-Type': 'application/json' });
+        var options = new RequestOptions({ headers: headers });
+
+        var url = this.getBaseUrl(type) + '/delete/' + id;
+
+        return this.authHttp.delete(url, options)
             .map(this.extractData)
             .catch(response => {
                 return this.handleError(response);
