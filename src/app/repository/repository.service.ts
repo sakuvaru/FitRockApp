@@ -38,7 +38,6 @@ export class RepositoryService {
     }
 
     raiseError(errorMessage: string) {
-        this.processingRequestSource.next(false);
         this.requestErrorSource.next(errorMessage);
     }
 
@@ -63,12 +62,21 @@ export class RepositoryService {
         return url;
     }
 
-    private handleError(error: any): Promise<any> {
-        console.error(this.genericErrorMessage, error);
+    private handleError(error: Response | any): Observable<any> {
+        // use a remote logging later on
+        let errMsg: string;
+        if (error instanceof Response) {
+            const body = error.json() || '';
+            const err = body.error || JSON.stringify(body);
+            errMsg = `${this.genericErrorMessage}: ${error.status} - ${error.statusText || ''} ${err}`;
+        } else {
+            errMsg = error.message ? error.message : error.toString();
+        }
 
-        this.raiseError(error.message || error)
+        // raise error
+        this.raiseError(errMsg);
 
-        return Promise.reject(error.message || error);
+        return Observable.throw(errMsg);
     }
 
     private extractData(response: Response) {
@@ -86,7 +94,9 @@ export class RepositoryService {
 
         return this.authHttp.get(url)
             .map(this.extractData)
-            .catch(this.handleError)
+            .catch(response => {
+                return this.handleError(response);
+            })
             ._finally(() => {
                 this.finishRequest();
             });
@@ -102,7 +112,9 @@ export class RepositoryService {
 
         return this.authHttp.get(url)
             .map(this.extractData)
-            .catch(this.handleError)
+            .catch(response => {
+                return this.handleError(response);
+            })
             ._finally(() => {
                 this.finishRequest();
             });
@@ -118,7 +130,9 @@ export class RepositoryService {
 
         return this.authHttp.get(url)
             .map(this.extractData)
-            .catch(this.handleError)
+            .catch(response => {
+                return this.handleError(response);
+            })
             ._finally(() => {
                 this.finishRequest();
             });
@@ -134,7 +148,9 @@ export class RepositoryService {
 
         return this.authHttp.get(url)
             .map(this.extractData)
-            .catch(this.handleError)
+            .catch(response => {
+                return this.handleError(response);
+            })
             ._finally(() => {
                 this.finishRequest();
             });
