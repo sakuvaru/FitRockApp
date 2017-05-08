@@ -12,16 +12,16 @@ export class ErrorResponse {
             this.statusType = ResponseTypeEnum.unknown;
         }
         else if (statusCode === 500) {
-            this.statusType = ResponseTypeEnum.unknown;
+            this.statusType = ResponseTypeEnum.internalServerError;
         }
         else if (statusCode === 200) {
-            this.statusType = ResponseTypeEnum.unknown;
+            this.statusType = ResponseTypeEnum.success;
         }
         else if (statusCode === 403) {
-            this.statusType = ResponseTypeEnum.unknown;
+            this.statusType = ResponseTypeEnum.forbidden;
         }
         else if (statusCode === 400) {
-            this.statusType = ResponseTypeEnum.unknown;
+            this.statusType = ResponseTypeEnum.badRequest;
         }
         else if (statusCode === 404) {
             this.statusType = ResponseTypeEnum.notFound;
