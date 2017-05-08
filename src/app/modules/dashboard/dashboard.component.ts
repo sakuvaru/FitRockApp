@@ -34,7 +34,7 @@ export class DashboardComponent extends BaseComponent implements OnInit {
 
     ngOnInit(): void {
         this.logService.getAll([new Limit(5), new OrderByDescending("id")]).then(logs => this.logs = logs);
-        this.logService.getById(1).then(log => this.log = log);
+        //this.logService.getById(1).then(log => this.log = log);
         this.currentUser = this.authService.getCurrentUser();
     }
 

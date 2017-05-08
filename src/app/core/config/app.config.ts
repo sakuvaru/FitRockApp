@@ -13,6 +13,7 @@ export class AppConfig {
     public static LoginPath = 'login';
     public static LogoutPath = 'logout';
     public static RedirectAfterLogoutPath = 'login';
+    public static ErrorPath = 'error';
 
     // web api config
     public static RepositoryApiEndpoint = 'http://localhost:61466/type';
