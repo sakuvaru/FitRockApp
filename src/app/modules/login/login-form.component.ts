@@ -24,33 +24,36 @@ export class LoginFormComponent extends BaseComponent {
 
     private loginFailed: boolean;
 
-    constructor(protected dependencies: ComponentDependencyService) { super(dependencies) 
-        // process failed attempts
-        this.dependencies.activatedRoute
-            .queryParams
-            .subscribe(params => {
-                this.processLogonResponse(params['result']);
-            });
+    constructor(protected dependencies: ComponentDependencyService) {
+        super(dependencies)
+        {
 
-        this.processLogonResponse(this.dependencies.activatedRoute.queryParams['result']);
+        // subscribe to changes in fragment (hash) because AuthService will redirect back to this page
+        // with random fragment to ensure that the page can reload its data
+        this.dependencies.activatedRoute.fragment.subscribe((fragment: string) => {
+            this.processFailedLogonRedirect()
+            });
+        }
     }
 
-     initAppData(): AppData {
+    initAppData(): AppData {
         return new AppData("Login");
     }
 
-    private processLogonResponse(result: string) {
-        this.resolveLoader();
-        // auth service will redirect back to logon page with query param 'result=error' if login fails
-        if (result === 'error'){
+    private processFailedLogonRedirect() {
+        var result = this.dependencies.activatedRoute.queryParams['result'];
+
+        // auth service will redirect back to logon page with query param 'result=error' and radnom fragment (hash) if login fails
+        if (result === 'error') {
             this.loginFailed = true;
             this.onLoginFailedEvent.emit();
-            // remove 'result' query param from URL so that subsequent login attempts are processed
-            this.dependencies.router.navigate([AppConfig.PublicPath + '/' + AppConfig.LoginPath]);
         }
-        else{
+        else {
             this.loginFailed = false;
         }
+
+        // hide loader now
+        this.resolveLoader();
     }
 
     // event methods

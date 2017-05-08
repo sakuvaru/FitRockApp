@@ -9,7 +9,6 @@ import { Log } from '../../services/log/log.class';
 import { WhereEquals, OrderBy, OrderByDescending, Limit, Include, IncludeMultiple } from '../../repository/options.class';
 import { LogService } from '../../services/log/log.service';
 import { CurrentUser } from '../../auth/models/current-user.class';
-import { AuthService } from '../../auth/auth.service';
 
 @Component({
     selector: 'dashboard',
@@ -23,7 +22,6 @@ export class DashboardComponent extends BaseComponent implements OnInit {
 
     constructor(
         private logService: LogService,
-        private authService: AuthService,
         protected dependencies: ComponentDependencyService) {
         super(dependencies)
     }
@@ -37,7 +35,7 @@ export class DashboardComponent extends BaseComponent implements OnInit {
                 logs => this.logs = logs
         );
 
-        this.logService.getById(1).subscribe(
+        this.logService.getById(2).subscribe(
             log => this.log = log,
             error => console.log(error)
         );
@@ -54,6 +52,7 @@ export class DashboardComponent extends BaseComponent implements OnInit {
             log => console.log(log.errorMessage)
         );
         
+        
 
         // edit log
         var editLog = new Log({
@@ -69,10 +68,10 @@ export class DashboardComponent extends BaseComponent implements OnInit {
 
         //this.logService.delete(1).subscribe( isSuccess => console.log(isSuccess));
 
-        this.currentUser = this.authService.getCurrentUser();
+        this.currentUser = this.dependencies.authService.getCurrentUser();
     }
 
     onLogout(): void {
-        this.authService.logout();
+        this.dependencies.authService.logout();
     }
 }

@@ -11,8 +11,14 @@
 
 <md-card>
     <md-card-title layout="row" layout-align="start center">
-        <span class="md-title">Login</span></md-card-title>
-    <md-card-subtitle>sign in with your credentials</md-card-subtitle>
+        <span class="md-title">Login</span>
+    </md-card-title>
+    <md-card-subtitle *ngIf="!loginFailed">
+        sign in with your credentials
+    </md-card-subtitle>
+    <md-card-subtitle *ngIf="loginFailed" class="tc-red-600">
+        Your login attempt was not successful, please check your username & password
+    </md-card-subtitle>
     <md-divider></md-divider>
     <md-card-content class="push-bottom-none">
         <form #loginForm="ngForm">
