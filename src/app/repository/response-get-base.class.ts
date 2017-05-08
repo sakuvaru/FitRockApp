@@ -1,4 +1,4 @@
-export class ResponseBase {
+export class ResponseGetBase {
     constructor(
         public fromCache: boolean,
         public timeCreated: Date,

@@ -41,6 +41,17 @@ export class DashboardComponent extends BaseComponent implements OnInit {
             log => this.log = log
         );
 
+        // create sample log
+        var newLog = new Log({
+            user: 'Smurf',
+            errorMessage: 'This is a test error',
+            stacktrace: 'stacktrace here'
+        });
+
+        this.logService.create(newLog).subscribe(
+            log => console.log(log.errorMessage)
+        );
+
         this.currentUser = this.authService.getCurrentUser();
     }
 

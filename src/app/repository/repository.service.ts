@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Headers, RequestOptions } from '@angular/http';
+import { ResponseCreate } from './response-create.class';
 import { ResponseSingle } from './response-single.class';
 import { ResponseMultiple } from './response-multiple.class';
 import { IOption } from './ioption.class';
@@ -156,21 +157,14 @@ export class RepositoryService {
             });
     }
 
-    /* create(type: string, message: string, stacktrace: string): Promise<any> {
-    var headers = new Headers({ 'Content-Type': 'application/json' });
-    var options = new RequestOptions({ headers: headers });
+    create(type: string, body: any): Observable<ResponseCreate> {
+        var headers = new Headers({ 'Content-Type': 'application/json' });
+        var options = new RequestOptions({ headers: headers });
 
-    var url = this.getBaseUrl(type) + 'create';
+        var url = this.getBaseUrl(type) + '/create';
 
-    return this.authHttp.post(url, { name, message }, options)
-                    .map(this.extractData)
-                    .catch(this.handleError)
-                    .toPromise();
-     }
-
-     private extractData(res: Response) {
-  let body = res.json();
-  return body || { };
-}*/
-
+        return this.authHttp.post(url, body, options)
+            .map(this.extractData)
+            .catch(this.handleError)
+    }
 }

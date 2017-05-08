@@ -1,5 +1,5 @@
 export interface IItem {
-    id: number,
+    id?: number,
     codename: string,
     guid: string,
     created: Date,

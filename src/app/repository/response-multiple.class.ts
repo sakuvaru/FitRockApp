@@ -1,6 +1,6 @@
-import { ResponseBase } from './response-base.class';
+import { ResponseGetBase } from './response-get-base.class';
 
-export class ResponseMultiple extends ResponseBase {
+export class ResponseMultiple extends ResponseGetBase {
   constructor(
     fromCache: boolean,
     timeCreated: Date,

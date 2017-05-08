@@ -1,6 +1,7 @@
 import { RepositoryService } from '../repository/repository.service';
 import { IItem } from '../repository/iitem.class';
 import { IService } from './iservice.class';
+import { ResponseCreate } from '../repository/response-create.class';
 import { ResponseSingle } from '../repository/response-single.class';
 import { ResponseMultiple } from '../repository/response-multiple.class';
 import { IOption } from '../repository/ioption.class';
@@ -16,6 +17,10 @@ export abstract class BaseService<T extends IItem> implements IService<T>{
         }
 
         return item as T;
+    }
+
+    protected mapCreate(response: ResponseCreate): T{
+        return this.mapItem(response.item);
     }
 
     protected mapSingle(response: ResponseSingle): T {
@@ -43,5 +48,9 @@ export abstract class BaseService<T extends IItem> implements IService<T>{
 
     getById(id: number, options?: IOption[]): Observable<T> {
         return this.repositoryService.getById(this.type, id, options).map(response => this.mapSingle(response));
+    }
+
+    create(obj: T): Observable<T>{
+        return this.repositoryService.create(this.type, obj).map(response => this.mapCreate(response));
     }
 }
