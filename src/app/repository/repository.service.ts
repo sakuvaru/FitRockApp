@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Headers, RequestOptions } from '@angular/http';
+import { ResponseEdit } from './response-edit.class';
 import { ResponseCreate } from './response-create.class';
 import { ResponseSingle } from './response-single.class';
 import { ResponseMultiple } from './response-multiple.class';
@@ -165,6 +166,27 @@ export class RepositoryService {
 
         return this.authHttp.post(url, body, options)
             .map(this.extractData)
-            .catch(this.handleError)
+            .catch(response => {
+                return this.handleError(response);
+            })
+            ._finally(() => {
+                this.finishRequest();
+            });
+    }
+
+    edit(type: string, body: any): Observable<ResponseEdit> {
+        var headers = new Headers({ 'Content-Type': 'application/json' });
+        var options = new RequestOptions({ headers: headers });
+
+        var url = this.getBaseUrl(type) + '/edit';
+
+        return this.authHttp.post(url, body, options)
+            .map(this.extractData)
+            .catch(response => {
+                return this.handleError(response);
+            })
+            ._finally(() => {
+                this.finishRequest();
+            });
     }
 }

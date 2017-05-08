@@ -41,6 +41,7 @@ export class DashboardComponent extends BaseComponent implements OnInit {
             log => this.log = log
         );
 
+        /*
         // create sample log
         var newLog = new Log({
             user: 'Smurf',
@@ -51,6 +52,19 @@ export class DashboardComponent extends BaseComponent implements OnInit {
         this.logService.create(newLog).subscribe(
             log => console.log(log.errorMessage)
         );
+        
+
+        // edit log
+        var editLog = new Log({
+            errorMessage: "This was edited by smurfie",
+            user:'Smurfy smurf',
+            id: 1
+        });
+
+        this.logService.edit(editLog).subscribe(
+            log => console.log(log)
+        );
+        */
 
         this.currentUser = this.authService.getCurrentUser();
     }

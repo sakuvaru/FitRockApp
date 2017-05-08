@@ -12,10 +12,11 @@ export class Log implements IItem {
     public errorMessage: string;
 
     constructor(
-        fields?: {
+        public fields?: {
             user?: string,
             stacktrace?: string,
-            errorMessage?: string
+            errorMessage?: string,
+            id?: number
         }) {
         if (fields) Object.assign(this, fields);
     }
