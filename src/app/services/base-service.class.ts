@@ -1,10 +1,12 @@
 import { RepositoryService } from '../repository/repository.service';
 import { IItem } from '../repository/iitem.class';
+import { IService } from './iservice.class';
 import { ResponseSingle } from '../repository/response-single.class';
 import { ResponseMultiple } from '../repository/response-multiple.class';
 import { IOption } from '../repository/ioption.class';
+import { Observable } from 'rxjs/Observable';
 
-export abstract class BaseService<T extends IItem>  {
+export abstract class BaseService<T extends IItem> implements IService<T>{
 
     constructor(protected repositoryService: RepositoryService, public type: string) { }
 
@@ -27,19 +29,19 @@ export abstract class BaseService<T extends IItem>  {
         });
     }
 
-    getAll(options?: IOption[]): Promise<T[]> {
-        return this.repositoryService.getAll(this.type, options).then(response => this.mapMultiple(response));
+    getAll(options?: IOption[]): Observable<T[]> {
+        return this.repositoryService.getAll(this.type, options).map(response => this.mapMultiple(response));
     }
 
-    getByCodename(codename: string, options?: IOption[]): Promise<T> {
-        return this.repositoryService.getByCodename(this.type, codename, options).then(response => this.mapSingle(response));
+    getByCodename(codename: string, options?: IOption[]): Observable<T> {
+        return this.repositoryService.getByCodename(this.type, codename, options).map(response => this.mapSingle(response));
     }
 
-    getByGuid(guid: string, options?: IOption[]): Promise<T> {
-        return this.repositoryService.getByGuid(this.type, guid, options).then(response => this.mapSingle(response));
+    getByGuid(guid: string, options?: IOption[]): Observable<T> {
+        return this.repositoryService.getByGuid(this.type, guid, options).map(response => this.mapSingle(response));
     }
 
-    getById(id: number, options?: IOption[]): Promise<T> {
-        return this.repositoryService.getById(this.type, id, options).then(response => this.mapSingle(response));
+    getById(id: number, options?: IOption[]): Observable<T> {
+        return this.repositoryService.getById(this.type, id, options).map(response => this.mapSingle(response));
     }
 }

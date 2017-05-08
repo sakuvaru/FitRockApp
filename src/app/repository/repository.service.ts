@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Headers } from '@angular/http';
+import { Headers, RequestOptions } from '@angular/http';
 import { ResponseSingle } from './response-single.class';
 import { ResponseMultiple } from './response-multiple.class';
 import { IOption } from './ioption.class';
@@ -7,7 +7,11 @@ import { AuthHttp } from 'angular2-jwt';
 import { AppConfig } from '../core/config/app.config';
 import { AppDataService } from '../core/app-data.service';
 import { Subject } from 'rxjs/Subject';
-import 'rxjs/add/operator/toPromise';
+import { Observable } from 'rxjs/Observable';
+import { Response } from '@angular/http';
+
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/map';
 
 @Injectable()
 export class RepositoryService {
@@ -42,17 +46,17 @@ export class RepositoryService {
     }
 
     private getBaseUrl(type: string): string {
-        return this.apiUrl + "/" + type;
+        return this.apiUrl + '/' + type;
     }
 
     private addOptionsToUrl(url: string, options?: IOption[]): string {
         if (options) {
             options.forEach(filter => {
                 if (url.indexOf('?') > -1) {
-                    url = url + "&" + filter.GetParam() + "=" + filter.GetParamValue();
+                    url = url + '&' + filter.GetParam() + '=' + filter.GetParamValue();
                 }
                 else {
-                    url = url + "?" + filter.GetParam() + "=" + filter.GetParamValue();
+                    url = url + '?' + filter.GetParam() + '=' + filter.GetParamValue();
                 }
             });
         }
@@ -62,93 +66,95 @@ export class RepositoryService {
     private handleError(error: any): Promise<any> {
         console.error(this.genericErrorMessage, error);
 
-        // raise error
-        var errorMessage = error.message;
-        if (errorMessage) {
-            this.raiseError(errorMessage);
-        }
-        else {
-            // no error specific message was provided
-            // happens for example when web service is not available 
-            this.raiseError(this.genericErrorMessage);
-        }
+        this.raiseError(error.message || error)
 
         return Promise.reject(error.message || error);
     }
 
-    getAll(type: string, options?: IOption[]): Promise<ResponseMultiple> {
+    private extractData(response: Response) {
+        let body = response.json();
+        return body || {};
+    }
+
+    getAll(type: string, options?: IOption[]): Observable<ResponseMultiple> {
         // trigger request
         this.startRequest();
 
-        var url = this.getBaseUrl(type) + "/getall";
+        var url = this.getBaseUrl(type) + '/getall';
 
         url = this.addOptionsToUrl(url, options);
 
         return this.authHttp.get(url)
-            .toPromise()
-            .then(response => {
+            .map(this.extractData)
+            .catch(this.handleError)
+            ._finally(() => {
                 this.finishRequest();
-                return response.json() as ResponseMultiple;
-            })
-            .catch(error => {
-                this.handleError(error);
             });
     }
 
-    getByCodename(type: string, codename: string, options?: IOption[]): Promise<ResponseSingle> {
+    getByCodename(type: string, codename: string, options?: IOption[]): Observable<ResponseSingle> {
         // trigger request
         this.startRequest();
 
-        var url = this.getBaseUrl(type) + "/getbycodename/" + codename;
+        var url = this.getBaseUrl(type) + '/getbycodename/' + codename;
 
         url = this.addOptionsToUrl(url, options);
 
         return this.authHttp.get(url)
-            .toPromise()
-            .then(response => {
+            .map(this.extractData)
+            .catch(this.handleError)
+            ._finally(() => {
                 this.finishRequest();
-                return response.json() as ResponseSingle;
-            })
-            .catch(error => {
-                this.handleError(error);
             });
     }
 
-    getByGuid(type: string, guid: string, options?: IOption[]): Promise<ResponseSingle> {
+    getByGuid(type: string, guid: string, options?: IOption[]): Observable<ResponseSingle> {
         // trigger request
         this.startRequest();
 
-        var url = this.getBaseUrl(type) + "/getbyguid/" + guid;
+        var url = this.getBaseUrl(type) + '/getbyguid/' + guid;
 
         url = this.addOptionsToUrl(url, options);
 
         return this.authHttp.get(url)
-            .toPromise()
-            .then(response => {
+            .map(this.extractData)
+            .catch(this.handleError)
+            ._finally(() => {
                 this.finishRequest();
-                return response.json() as ResponseSingle;
-            })
-            .catch(error => {
-                this.handleError(error);
             });
     }
 
-    getById(type: string, id: number, options?: IOption[]): Promise<ResponseSingle> {
+    getById(type: string, id: number, options?: IOption[]): Observable<ResponseSingle> {
         // trigger request
         this.startRequest();
 
-        var url = this.getBaseUrl(type) + "/getbyid/" + id;
+        var url = this.getBaseUrl(type) + '/getbyid/' + id;
 
         url = this.addOptionsToUrl(url, options);
 
         return this.authHttp.get(url)
-            .toPromise()
-            .then(response => {
+            .map(this.extractData)
+            .catch(this.handleError)
+            ._finally(() => {
                 this.finishRequest();
-                return response.json() as ResponseSingle;
-            })
-            .catch(error => {
-                this.handleError(error);
             });
     }
+
+    /* create(type: string, message: string, stacktrace: string): Promise<any> {
+    var headers = new Headers({ 'Content-Type': 'application/json' });
+    var options = new RequestOptions({ headers: headers });
+
+    var url = this.getBaseUrl(type) + 'create';
+
+    return this.authHttp.post(url, { name, message }, options)
+                    .map(this.extractData)
+                    .catch(this.handleError)
+                    .toPromise();
+     }
+
+     private extractData(res: Response) {
+  let body = res.json();
+  return body || { };
+}*/
+
 }
