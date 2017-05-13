@@ -1,21 +1,25 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { DynamicFormModule } from '../../core/dynamic-form/dynamic-form.module';
+
 // guard
 import { AuthGuardService } from '../../core/auth/auth-guard.service';
 
 // config
 import { AppConfig } from '../../core/config/app.config';
 
-// components
+// layouts
 import { SimpleLayoutComponent } from '../../layouts/simple-layout.component';
 import { AdminLayoutComponent } from '../../layouts/admin-layout.component';
-import { ClientsOverviewComponent } from './clients-overview.component';
+
+// components
+import { FormComponent } from './_form.component';
 
 const routes: Routes = [
     {
         path: AppConfig.ClientPath, component: AdminLayoutComponent, canActivate: [AuthGuardService], children: [
-            { path: 'clients', component: ClientsOverviewComponent },
+            { path: 'form', component: FormComponent },
         ]
     }
 ];
@@ -24,10 +28,11 @@ const routes: Routes = [
     declarations: [
     ],
     imports: [
-        RouterModule.forChild(routes)
+        RouterModule.forChild(routes),
+        DynamicFormModule
     ],
     exports: [
         RouterModule
     ]
 })
-export class ClientsRouter { }
+export class FormRouter { }

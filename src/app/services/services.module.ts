@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 
 // services to import
-import { LogService } from './log/log.service';
+import { LogService } from './log.service';
 
 @NgModule({
     imports: [

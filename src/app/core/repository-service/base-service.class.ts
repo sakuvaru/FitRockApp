@@ -1,12 +1,12 @@
-import { RepositoryService } from '../repository/repository.service';
-import { IItem } from '../repository/iitem.class';
+import { RepositoryService } from '../../repository/repository.service';
+import { IItem } from '../../repository/iitem.class';
 import { IService } from './iservice.class';
-import { ResponseDelete } from '../repository/response-delete.class';
-import { ResponseEdit } from '../repository/response-edit.class';
-import { ResponseCreate } from '../repository/response-create.class';
-import { ResponseSingle } from '../repository/response-single.class';
-import { ResponseMultiple } from '../repository/response-multiple.class';
-import { IOption } from '../repository/ioption.class';
+import { ResponseDelete } from '../../repository/response-delete.class';
+import { ResponseEdit } from '../../repository/response-edit.class';
+import { ResponseCreate } from '../../repository/response-create.class';
+import { ResponseSingle } from '../../repository/response-single.class';
+import { ResponseMultiple } from '../../repository/response-multiple.class';
+import { IOption } from '../../repository/ioption.class';
 import { Observable } from 'rxjs/Observable';
 
 export abstract class BaseService<T extends IItem> implements IService<T>{

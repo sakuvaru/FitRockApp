@@ -1,0 +1,22 @@
+<div [formGroup]="form">
+  <div [ngSwitch]="question.controlType">
+
+    <!-- Question types -->
+
+    <md-input-container *ngSwitchCase="'textbox'">
+      <input mdInput placeholder="{{getPlaceholder()}}" [formControlName]="question.key" [id]="question.key" [type]="question.type">
+    </md-input-container>
+
+    <div *ngSwitchCase="'hidden'">
+      <input type="hidden" value="{{question.value}}">
+    </div>
+
+    <div *ngSwitchCase="'dropdown'">
+      <label [attr.for]="question.key">{{question.label}}</label>
+      <select [id]="question.key" [formControlName]="question.key">
+      <option *ngFor="let opt of question.options" [value]="opt.key">{{opt.value}}</option>
+    </select>
+    </div>
+
+  </div>
+</div>

@@ -9,12 +9,16 @@ import { Subscription } from 'rxjs/Subscription';
 import { RepositoryService } from '../../repository/repository.service';
 import { ErrorResponse } from '../../repository/error-response.class';
 import { ResponseTypeEnum } from '../../repository/response-type.enum';
+import { MdSnackBar } from '@angular/material';
 
 @Component({
 })
 export abstract class BaseComponent implements IComponent, OnInit {
     // name of the full screen loader - can be anything
     private fullscreenLoaderName = "fullscreen-loader";
+
+    // snackbar config
+    private snackbarDefaultDuration = 2500;
 
     // subscriptions
     private loaderSubscription: Subscription;
@@ -47,6 +51,15 @@ export abstract class BaseComponent implements IComponent, OnInit {
 
     abstract initAppData(): AppData;
 
+    // ----------------------- Events --------------------- // 
+
+    ngOnInit(): void {
+        // stop all loaders on init
+        this.resolveLoader();
+    }
+
+    // --------------------- Private methods -------------- // 
+
     private showLoader(isEnabled: boolean): void {
         if (isEnabled) {
             this.registerLoader();
@@ -54,10 +67,6 @@ export abstract class BaseComponent implements IComponent, OnInit {
         else {
             this.resolveLoader();
         }
-    }
-
-    protected redirectToErrorPage() {
-        this.dependencies.router.navigate([AppConfig.PublicPath + '/' + AppConfig.ErrorPath]);
     }
 
     private handleRepositoryError(error: ErrorResponse) {
@@ -70,9 +79,18 @@ export abstract class BaseComponent implements IComponent, OnInit {
         }
     }
 
-    ngOnInit(): void {
-        // stop all loaders on init
-        this.resolveLoader();
+    // --------------- Public methods ------------------- //
+
+    showSnackbar(message: string): void {
+        let snackBarRef = this.dependencies.snackbarService.open(message, null, { duration: this.snackbarDefaultDuration });
+    }
+
+    showSavedSnackbar(): void {
+        this.showSnackbar("Uloženo");
+    }
+
+    redirectToErrorPage(): void {
+        this.dependencies.router.navigate([AppConfig.PublicPath + '/' + AppConfig.ErrorPath]);
     }
 
     resolveLoader(): void {

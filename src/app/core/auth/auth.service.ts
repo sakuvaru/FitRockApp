@@ -2,11 +2,11 @@ import { Injectable } from '@angular/core';
 import { TokenService } from './token.service';
 import { Http } from '@angular/http';
 import { JwtHelper } from 'angular2-jwt';
-import { AppConfig } from '../core/config/app.config';
+import { AppConfig } from '../config/app.config';
 import { Auth0ErrorResponse } from './models/auth0-error-response.class';
 import { CurrentUser } from './models/current-user.class';
 import { Router } from '@angular/router';
-import { Guid } from '../utilities/general.class';
+import { Guid } from '../../utilities/general.class';
 
 // auth0 class exposed by auth0 js
 declare var auth0: any;

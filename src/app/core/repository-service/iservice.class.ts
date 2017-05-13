@@ -1,5 +1,5 @@
-import { IItem } from '../repository/iitem.class';
-import { IOption } from '../repository/ioption.class';
+import { IItem } from '../../repository/iitem.class';
+import { IOption } from '../../repository/ioption.class';
 import { Observable } from 'rxjs/Observable';
 
 export interface IService<T extends IItem> {
@@ -17,4 +17,8 @@ export interface IService<T extends IItem> {
     edit(obj: T): Observable<T>;
 
     delete(id: number): Observable<boolean>;
+
+    create(obj: T): Observable<T>;
+    
+    delete(id: number): Observable<boolean>
 }

@@ -1,9 +1,16 @@
 import { AppData } from '../app-data.class';
 
 export interface IComponent {
-    ngOnInit(): void;
+
+    initAppData(): AppData
+
+    redirectToErrorPage(): void;
+
+    resolveLoader(): void;
+
     registerLoader(): void;
 
-    // implement to register shared app data
-    initAppData(): AppData
-    }
+    showSnackbar(message: string): void;
+
+    showSavedSnackbar(): void;
+}

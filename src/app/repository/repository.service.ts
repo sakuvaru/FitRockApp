@@ -167,11 +167,14 @@ export class RepositoryService {
     }
 
     create(type: string, body: any): Observable<ResponseCreate> {
+        // trigger request
+        this.startRequest();
+
         var headers = new Headers({ 'Content-Type': 'application/json' });
         var options = new RequestOptions({ headers: headers });
 
         var url = this.getBaseUrl(type) + '/create';
-
+        
         return this.authHttp.post(url, body, options)
             .map(this.extractData)
             .catch(response => {
@@ -183,6 +186,9 @@ export class RepositoryService {
     }
 
     edit(type: string, body: any): Observable<ResponseEdit> {
+        // trigger request
+        this.startRequest();
+
         var headers = new Headers({ 'Content-Type': 'application/json' });
         var options = new RequestOptions({ headers: headers });
 
@@ -199,6 +205,9 @@ export class RepositoryService {
     }
 
     delete(type: string, id: number): Observable<ResponseDelete> {
+        // trigger request
+        this.startRequest();
+
         var headers = new Headers({ 'Content-Type': 'application/json' });
         var options = new RequestOptions({ headers: headers });
 

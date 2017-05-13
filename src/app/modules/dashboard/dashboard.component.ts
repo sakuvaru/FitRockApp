@@ -5,10 +5,10 @@ import { AppData } from '../../core/app-data.class';
 import { ComponentDependencyService } from '../../core/component-dependency.service';
 
 // required by component
-import { Log } from '../../services/log/log.class';
+import { Log } from '../../models/log.class';
 import { WhereEquals, OrderBy, OrderByDescending, Limit, Include, IncludeMultiple } from '../../repository/options.class';
-import { LogService } from '../../services/log/log.service';
-import { CurrentUser } from '../../auth/models/current-user.class';
+import { LogService } from '../../services/log.service';
+import { CurrentUser } from '../../core/auth/models/current-user.class';
 
 @Component({
     selector: 'dashboard',

@@ -1,7 +1,7 @@
 // default/angular modules
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -15,7 +15,11 @@ import { CovalentCoreModule } from '@covalent/core';
 import 'hammerjs';
 
 // authentication
-import { AuthModule } from './auth/auth.module';
+import { AuthModule } from './core/auth/auth.module';
+
+// dynamic forms
+import { DynamicFormModule} from './core/dynamic-form/dynamic-form.module';
+import { FormServicesModule } from './forms/form-services.module';
 
 // main app
 import { AppComponent } from './app.component';
@@ -31,6 +35,10 @@ import { LoginModule } from './modules/login/login.module';
 import { AppConfig } from './core/config/app.config';
 import { ClientsModule } from './modules/clients/clients.module';
 
+
+// test form module
+import { FormModule } from './modules/_forms/_form.module';
+
 @NgModule({
   declarations: [
     AppComponent
@@ -41,6 +49,7 @@ import { ClientsModule } from './modules/clients/clients.module';
     FormsModule,
     HttpModule,
     BrowserAnimationsModule,
+    ReactiveFormsModule,
 
     // route config
     RouterModule.forRoot([
@@ -60,6 +69,10 @@ import { ClientsModule } from './modules/clients/clients.module';
     // authentication
     AuthModule,
 
+    // dynamic forms
+    DynamicFormModule,
+    FormServicesModule,
+
     // custom modules
     CoreModule,
     LayoutsModule,
@@ -68,7 +81,10 @@ import { ClientsModule } from './modules/clients/clients.module';
     RepositoryModule,
     ServicesModule,
     LoginModule,
-    ClientsModule
+    ClientsModule,
+
+    // test form module
+    FormModule
   ],
   providers: [
 

@@ -1,0 +1,11 @@
+<h2>Insert form</h2>
+
+<div>
+    <dynamic-form [questions]="insertFields" (onSubmitEvent)="handleInsertSubmit($event)"></dynamic-form>
+</div>
+
+<h2>Edit form</h2>
+
+<div>
+    <dynamic-form [questions]="editFields" (onSubmitEvent)="handleEditSubmit($event)"></dynamic-form>
+</div>
