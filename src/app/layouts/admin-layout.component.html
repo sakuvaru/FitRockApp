@@ -6,33 +6,41 @@
     </md-toolbar>
     <md-nav-list td-sidenav-content (click)="!media.query('gt-sm') && manageList.close()">
       <a md-list-item routerLink="/client">
-        <md-icon>home</md-icon>Dashboard</a>
+        <md-icon>home</md-icon>Dashboard
+      </a>
       <a md-list-item routerLink="/client/clients">
-        <md-icon>people</md-icon>Clients</a>
-         <a md-list-item routerLink="/client/form">
-        <md-icon>home</md-icon>Forms</a>
+        <md-icon>people</md-icon>Clients
+      </a>
+      <a md-list-item routerLink="/todo">
+        <md-icon>fitness_center</md-icon>Training plans
+      </a>
+       <a md-list-item routerLink="/todo">
+        <md-icon>free_breakfast</md-icon>Meal plans
+      </a>
+        <a md-list-item routerLink="/todo">
+        <md-icon>place</md-icon>Locations
+      </a>
+      <a md-list-item routerLink="/client/form">
+        <md-icon>home</md-icon>Forms
+      </a>
       <a md-list-item routerLink="/public/login">
-        <md-icon>public</md-icon>Login</a>
+        <md-icon>public</md-icon>Login
+      </a>
     </md-nav-list>
     <div td-toolbar-content layout="row" layout-align="start center" flex>
       <span>{{appData.subTitle}}</span>
       <span flex></span>
-      <button md-icon-button><md-icon class="md-24">settings</md-icon></button>
-      <button md-icon-button [mdMenuTriggerFor]="toolbarMenu1"><md-icon>more_vert</md-icon></button>
-      <md-menu #toolbarMenu1="mdMenu">
-        <button md-menu-item>
-      <md-icon>settings</md-icon>
-      <span>Settings</span>
-    </button>
-        <button md-menu-item>
-      <md-icon>exit_to_app</md-icon>
-      <span>Sign out</span>
-    </button>
+      <button md-icon-button [mdMenuTriggerFor]="toolbarMenu"><md-icon>settings</md-icon></button>
+      <md-menu #toolbarMenu="mdMenu">
+        <button md-menu-item routerLink="/public/logout">
+          <md-icon>exit_to_app</md-icon>
+           Odhlásit
+        </button>
       </md-menu>
     </div>
     <router-outlet></router-outlet>
     <td-layout-footer-inner>
-      Optional inner footer
+      <!-- optional footer -->
     </td-layout-footer-inner>
   </td-layout-manage-list>
   <td-layout-footer>

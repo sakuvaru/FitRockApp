@@ -11,11 +11,17 @@ import { AppConfig } from '../../core/config/app.config';
 import { SimpleLayoutComponent } from '../../layouts/simple-layout.component';
 import { AdminLayoutComponent } from '../../layouts/admin-layout.component';
 import { ClientsOverviewComponent } from './clients-overview.component';
+import { NewClientComponent } from './new-client.component';
 
 const routes: Routes = [
     {
         path: AppConfig.ClientPath, component: AdminLayoutComponent, canActivate: [AuthGuardService], children: [
-            { path: 'clients', component: ClientsOverviewComponent },
+            {
+                path: 'clients', component: ClientsOverviewComponent
+            },
+            {
+                path: 'clients/new', component: NewClientComponent
+            },
         ]
     }
 ];

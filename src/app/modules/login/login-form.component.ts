@@ -1,5 +1,7 @@
 // common
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { BaseField } from '../../core/dynamic-form/base-field.class';
 import { AppConfig } from '../../core/config/app.config';
 import { BaseComponent } from '../../core/base/base.component';
 import { AppData } from '../../core/app-data.class';

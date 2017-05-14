@@ -35,7 +35,6 @@ import { LoginModule } from './modules/login/login.module';
 import { AppConfig } from './core/config/app.config';
 import { ClientsModule } from './modules/clients/clients.module';
 
-
 // test form module
 import { FormModule } from './modules/_forms/_form.module';
 

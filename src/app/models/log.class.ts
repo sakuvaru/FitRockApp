@@ -1,6 +1,5 @@
 import { IItem } from '../repository/iitem.class';
 import { BaseField } from '../core/dynamic-form/base-field.class';
-import { DropdownField, TextField } from '../core/dynamic-form/field-types';
 
 export class Log implements IItem {
 
