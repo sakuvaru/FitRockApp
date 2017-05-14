@@ -1,10 +1,10 @@
-<div>
-  <form (ngSubmit)="onSubmit()" [formGroup]="form">
-    <div *ngFor="let question of questions" class="form-row">
+<div *ngIf="form">
+  <form (ngSubmit)="onSubmit()" [formGroup]="form" autocomplete="off">
+    <div *ngFor="let question of questions">
       <df-question [question]="question" [form]="form"></df-question>
     </div>
-    <div class="form-row">
-      <button md-raised-button color="accent" type="submit" [disabled]="!form.valid">Uložit</button>
+    <div layout="row" layout-margin>
+      <button md-raised-button color="accent" type="submit" [disabled]="!form.valid">{{getSubmitText()}}</button>
     </div>
   </form>
 </div>

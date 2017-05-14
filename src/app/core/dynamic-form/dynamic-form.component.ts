@@ -1,4 +1,4 @@
-import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
+import { Component, Input, Output, OnInit, EventEmitter, OnChanges, SimpleChange } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { BaseField } from './base-field.class';
 import { FieldControlService } from './field-control.service';
@@ -10,19 +10,42 @@ import { FieldControlService } from './field-control.service';
     templateUrl: './dynamic-form.component.html',
     providers: [FieldControlService]
 })
-export class DynamicFormComponent implements OnInit {
+export class DynamicFormComponent implements OnInit, OnChanges {
+
+    private defaultSubmitText = "Uložit";
+
     // output events
     @Output() onSubmitEvent = new EventEmitter<FormGroup>();
 
-    // input
+    // inputs
     @Input() questions: BaseField<any>[] = [];
+
+    @Input() submitText: string;
 
     form: FormGroup;
 
     constructor(private fieldControlService: FieldControlService) { }
 
+    private getSubmitText() {
+        if (this.submitText) {
+            return this.submitText;
+        }
+
+        return this.defaultSubmitText;
+    }
+
     ngOnInit() {
-        this.form = this.fieldControlService.toFormGroup(this.questions);
+        // try to initialize component if questions are available during init
+        if (this.questions) {
+            this.form = this.fieldControlService.toFormGroup(this.questions);
+        }
+    }
+
+    ngOnChanges(changes: { [propKey: string]: SimpleChange }) {
+        // re-initalize form when questions changes because dynamic form may receive question after the initilization of component
+        if (changes.questions){
+            this.form = this.fieldControlService.toFormGroup(changes.questions.currentValue);
+        }
     }
 
     onSubmit() {

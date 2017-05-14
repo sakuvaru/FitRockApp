@@ -15,12 +15,11 @@ export class DynamicFormQuestionComponent {
 
   @Input() form: FormGroup;
 
-  private getPlaceholder(): string {
-    if (this.question.required) {
-      return this.question.label + '*';
+  private showLengthHint(): boolean{
+    if (this.question.maxLength > 0){
+      return true;
     }
-
-    return this.question.label;
+    return false;
   }
 
   get isValid() { return this.form.controls[this.question.key].valid; }

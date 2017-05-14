@@ -23,8 +23,8 @@ export class FormComponent extends BaseComponent {
         protected dependencies: ComponentDependencyService) {
         super(dependencies)
 
-        this.insertFields = logFormsService.getInsertFields();
-        this.editFields = logFormsService.getEditFields(2);
+        logFormsService.getInsertFields().subscribe(fields => this.insertFields = fields);
+        logFormsService.getEditFields(2).subscribe(fields => this.editFields = fields);
     }
 
     initAppData(): AppData {

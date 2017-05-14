@@ -1,22 +1,29 @@
-<div [formGroup]="form">
-  <div [ngSwitch]="question.controlType">
+<div layout="row" layout-margin [formGroup]="form" [ngSwitch]="question.controlType">
+  <!-- Question types -->
 
-    <!-- Question types -->
+  <md-input-container *ngSwitchCase="'textbox'" flex hintLabel="{{question.hint}}">
+    <input mdInput value="{{question.value}}" required="{{question.required}}" placeholder="{{question.label}}" [formControlName]="question.key"
+      [id]="question.key" [type]="question.type" #elem>
+    <md-hint *ngIf="showLengthHint()" [ngClass]="{'tc-red-600': elem.value.length > question.maxLength}" align="end">{{elem.value.length}} / {{question.maxLength}}</md-hint>
+    <md-error>Chybně vyplněné pole</md-error>
+  </md-input-container>
 
-    <md-input-container *ngSwitchCase="'textbox'">
-      <input mdInput placeholder="{{getPlaceholder()}}" [formControlName]="question.key" [id]="question.key" [type]="question.type">
-    </md-input-container>
+  <md-input-container *ngSwitchCase="'textarea'" flex hintLabel="{{question.hint}}">
+    <textarea mdTextareaAutosize mdAutosizeMinRows="{{question.minAutosizeRows}}" mdAutosizeMaxRows="{{question.maxAutosizeRows}}" mdInput value="{{question.value}}" required="{{question.required}}" placeholder="{{question.label}}" [formControlName]="question.key"
+      [id]="question.key" [type]="question.type" #elem>
+    </textarea>
+    <md-hint *ngIf="showLengthHint()" [ngClass]="{'tc-red-600': elem.value.length > question.maxLength}" align="end">{{elem.value.length}} / {{question.maxLength}}</md-hint>
+    <md-error>Chybně vyplněné pole</md-error>
+  </md-input-container>
 
-    <div *ngSwitchCase="'hidden'">
-      <input type="hidden" value="{{question.value}}">
-    </div>
+  <div *ngSwitchCase="'hidden'">
+    <input type="hidden" value="{{question.value}}">
+  </div>
 
-    <div *ngSwitchCase="'dropdown'">
-      <label [attr.for]="question.key">{{question.label}}</label>
-      <select [id]="question.key" [formControlName]="question.key">
+  <div *ngSwitchCase="'dropdown'">
+    <label [attr.for]="question.key">{{question.label}}</label>
+    <select [id]="question.key" [formControlName]="question.key">
       <option *ngFor="let opt of question.options" [value]="opt.key">{{opt.value}}</option>
     </select>
-    </div>
-
   </div>
 </div>

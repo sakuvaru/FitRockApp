@@ -20,6 +20,16 @@ export class TextField extends BaseField<string> {
   }
 }
 
+export class TextAreaField extends BaseField<string> {
+  controlType = 'textarea';
+  type: string;
+
+  constructor(options: {} = {}) {
+    super(options);
+    this.type = options['type'] || '';
+  }
+}
+
 export class HiddenField extends BaseField<string> {
   controlType = 'hidden';
   type: string;

@@ -11,16 +11,16 @@ import { Observable } from 'rxjs/Observable';
 
 //Note - nested generics are not currently supported by Typescript 2 (13.5.2017) => take types in constructor
 @Injectable()
-export abstract class BaseFormService<TItem extends IItem> implements IFormsService {
+export abstract class BaseFormService<TItem extends IItem> implements IFormsService<TItem> {
 
     constructor(
         protected service: IService<IItem>,
     ) {
     }
 
-    abstract getInsertFields(): BaseField<any>[];
+    abstract getInsertFields(): Observable<BaseField<any>[]>;
 
-    abstract getEditFields(itemId: number): BaseField<any>[];
+    abstract getEditFields(itemId: number): Observable<BaseField<any>[]>;
 
     saveInsertForm(form: FormGroup): Observable<IItem> {
         return this.service.create((form as any) as TItem);

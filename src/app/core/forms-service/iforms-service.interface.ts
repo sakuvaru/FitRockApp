@@ -5,11 +5,11 @@ import { IService } from '../../core/repository-service/iservice.class';
 import { IItem } from '../../repository/iitem.class';
 import { Observable } from 'rxjs/Observable';
 
-export interface IFormsService {
+export interface IFormsService<TItem extends IItem>{
 
-    getInsertFields(): BaseField<any>[];
+    getInsertFields(): Observable<BaseField<any>[]>;
 
-    getEditFields(itemId: number): BaseField<any>[];
+    getEditFields(itemId: number): Observable<BaseField<any>[]>;
 
     saveInsertForm(form: FormGroup): Observable<IItem>;
 

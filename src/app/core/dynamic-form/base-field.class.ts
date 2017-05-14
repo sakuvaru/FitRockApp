@@ -5,13 +5,23 @@ export class BaseField<T>{
     required: boolean;
     order: number;
     controlType: string;
+    maxLength: number;
+    minLength: number;
+    hint: string;
+    maxAutosizeRows: number;
+    minAutosizeRows: number;
     constructor(options: {
         value?: T,
         key?: string,
         label?: string,
         required?: boolean,
         order?: number,
-        controlType?: string
+        controlType?: string,
+        maxLength?: number,
+        minLength?: number,
+        hint?: string,
+        maxAutosizeRows?: number,
+        minAutosizeRows?: number
     } = {}) {
         this.value = options.value;
         this.key = options.key || '';
@@ -19,5 +29,10 @@ export class BaseField<T>{
         this.required = !!options.required;
         this.order = options.order === undefined ? 1 : options.order;
         this.controlType = options.controlType || '';
+        this.minLength = options.minLength;
+        this.maxLength = options.maxLength;
+        this.hint = options.hint;
+        this.maxAutosizeRows = options.maxAutosizeRows || 10;
+        this.minAutosizeRows = options.minAutosizeRows || 3
     }
 }
