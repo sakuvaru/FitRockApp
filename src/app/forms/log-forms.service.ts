@@ -39,7 +39,7 @@ export class LogFormsService extends BaseFormService<Log> implements IFormsServi
                 value: '',
                 required: false,
                 order: 2,
-                maxLength: 500,
+                maxLength: 5000,
             }),
             new TextField({
                 key: 'user',
@@ -78,7 +78,7 @@ export class LogFormsService extends BaseFormService<Log> implements IFormsServi
                     type: 'text',
                     required: false,
                     order: 2,
-                    maxLength: 500,
+                    maxLength: 5000,
                     value: item.stacktrace
                 }),
                 new TextField({
