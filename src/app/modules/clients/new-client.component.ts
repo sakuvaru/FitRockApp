@@ -7,7 +7,7 @@ import { AppData } from '../../core/app-data.class';
 import { ComponentDependencyService } from '../../core/component-dependency.service';
 
 // required by component
-import { ClientFormsService } from '../../forms/client-forms.service';
+import { UserFormsService } from '../../forms/user-forms.service';
 
 @Component({
     templateUrl: 'new-client.component.html'
@@ -17,11 +17,11 @@ export class NewClientComponent extends BaseComponent{
     private insertFields: BaseField<any>[];
 
    constructor(
-       private clientFormsService: ClientFormsService,
+       private userFormsService: UserFormsService,
        protected componentDependencyService: ComponentDependencyService){
       super(componentDependencyService)
 
-      this.clientFormsService.getInsertFields().subscribe(fields => {
+      this.userFormsService.getInsertFields().subscribe(fields => {
           this.insertFields = fields;
           // set trainer id
           var trainerIdField = this.insertFields.find(m => m.key == 'trainerId');
@@ -34,7 +34,7 @@ export class NewClientComponent extends BaseComponent{
    }
 
    private handleInsert(form: FormGroup): void {
-        this.clientFormsService.saveInsertForm(form).subscribe(item => {
+        this.userFormsService.saveInsertForm(form).subscribe(item => {
             console.log(item);
             this.showSavedSnackbar();
         });

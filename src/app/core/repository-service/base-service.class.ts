@@ -29,8 +29,8 @@ export abstract class BaseService<T extends IItem> implements IService<T>{
         return this.mapItem(response.item);
     }
 
-     protected mapDelete(response: ResponseDelete): boolean {
-        if (response.result === 200){
+    protected mapDelete(response: ResponseDelete): boolean {
+        if (response.result === 200) {
             return true;
         }
         return false;
@@ -45,6 +45,14 @@ export abstract class BaseService<T extends IItem> implements IService<T>{
         return response.items.map(function (item) {
             return that.mapItem(item);
         });
+    }
+
+    getMultiple(action: string, options?: IOption[]): Observable<T[]> {
+        return this.repositoryService.getMultiple(this.type, action, options).map(response => this.mapGetMultiple(response));
+    }
+
+    getSingle(action: string, options?: IOption[]): Observable<T> {
+        return this.repositoryService.getSingle(this.type, action, options).map(response => this.mapGetSingle(response));
     }
 
     getAll(options?: IOption[]): Observable<T[]> {
@@ -70,7 +78,7 @@ export abstract class BaseService<T extends IItem> implements IService<T>{
     edit(obj: T): Observable<T> {
         return this.repositoryService.edit(this.type, obj).map(response => this.mapEdit(response));
     }
-    
+
     delete(id: number): Observable<boolean> {
         return this.repositoryService.delete(this.type, id).map(response => this.mapDelete(response));
     }

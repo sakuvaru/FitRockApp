@@ -1,14 +1,19 @@
 import { IItem } from '../repository/iitem.class';
 import { BaseField } from '../core/dynamic-form/base-field.class';
 
-export class Client implements IItem {
+export class User implements IItem {
 
     public codename: string;
     public guid: string;
     public created: Date;
     public updated: Date;
     public id: number;
-    public trainerId: number;
+    public fistName: string;
+    public lastName: string;
+    public email: string;
+    public isClient: boolean;
+    public isAdmin: boolean;
+    public trainerUserId: number;
     public birthDate: Date;
     public isFemale: boolean;
     public city: string;
@@ -24,7 +29,12 @@ export class Client implements IItem {
             stacktrace?: string,
             errorMessage?: string,
             id?: number,
-            trainerId: number,
+            fistName?: string;
+            lastName?: string;
+            email?: string;
+            isClient?: boolean;
+            isAdmin?: boolean;
+            trainerUserId?: number;
             birthDate?: Date,
             isFemale?: boolean,
             city?: string,

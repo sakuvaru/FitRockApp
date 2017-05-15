@@ -74,7 +74,7 @@ export class RepositoryService {
 
         if (error instanceof Response) {
             errMsg = `${this.genericErrorMessage}: ${error.status} - ${error.statusText || ''} ${error}`;
-            
+
             errorResponse = new ErrorResponse(errMsg, error.status);
 
         } else {
@@ -94,11 +94,11 @@ export class RepositoryService {
         return body || {};
     }
 
-    getAll(type: string, options?: IOption[]): Observable<ResponseMultiple> {
+    getMultiple(type: string, action: string, options?: IOption[]): Observable<ResponseMultiple> {
         // trigger request
         this.startRequest();
 
-        var url = this.getBaseUrl(type) + '/getall';
+        var url = this.getBaseUrl(type) + '/' + action;
 
         url = this.addOptionsToUrl(url, options);
 
@@ -110,60 +110,40 @@ export class RepositoryService {
             ._finally(() => {
                 this.finishRequest();
             });
+    }
+
+     getSingle(type: string, action: string, options?: IOption[]): Observable<ResponseSingle> {
+        // trigger request
+        this.startRequest();
+
+        var url = this.getBaseUrl(type) + '/' + action;
+
+        url = this.addOptionsToUrl(url, options);
+
+        return this.authHttp.get(url)
+            .map(this.extractData)
+            .catch(response => {
+                return this.handleError(response);
+            })
+            ._finally(() => {
+                this.finishRequest();
+            });
+    }
+
+    getAll(type: string, options?: IOption[]): Observable<ResponseMultiple> {
+        return this.getMultiple(type, 'getall', options);
     }
 
     getByCodename(type: string, codename: string, options?: IOption[]): Observable<ResponseSingle> {
-        // trigger request
-        this.startRequest();
-
-        var url = this.getBaseUrl(type) + '/getbycodename/' + codename;
-
-        url = this.addOptionsToUrl(url, options);
-
-        return this.authHttp.get(url)
-            .map(this.extractData)
-            .catch(response => {
-                return this.handleError(response);
-            })
-            ._finally(() => {
-                this.finishRequest();
-            });
+        return this.getSingle(type,  'getbycodename/' + codename);
     }
 
     getByGuid(type: string, guid: string, options?: IOption[]): Observable<ResponseSingle> {
-        // trigger request
-        this.startRequest();
-
-        var url = this.getBaseUrl(type) + '/getbyguid/' + guid;
-
-        url = this.addOptionsToUrl(url, options);
-
-        return this.authHttp.get(url)
-            .map(this.extractData)
-            .catch(response => {
-                return this.handleError(response);
-            })
-            ._finally(() => {
-                this.finishRequest();
-            });
+        return this.getSingle(type,  'getbyguid/' + guid);
     }
 
     getById(type: string, id: number, options?: IOption[]): Observable<ResponseSingle> {
-        // trigger request
-        this.startRequest();
-
-        var url = this.getBaseUrl(type) + '/getbyid/' + id;
-
-        url = this.addOptionsToUrl(url, options);
-
-        return this.authHttp.get(url)
-            .map(this.extractData)
-            .catch(response => {
-                return this.handleError(response);
-            })
-            ._finally(() => {
-                this.finishRequest();
-            });
+         return this.getSingle(type,  'getbyid/' + id);
     }
 
     create(type: string, body: any): Observable<ResponseCreate> {
@@ -174,7 +154,7 @@ export class RepositoryService {
         var options = new RequestOptions({ headers: headers });
 
         var url = this.getBaseUrl(type) + '/create';
-        
+
         return this.authHttp.post(url, body, options)
             .map(this.extractData)
             .catch(response => {

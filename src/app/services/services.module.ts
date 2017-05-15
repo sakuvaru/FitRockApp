@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 
 // services to import
 import { LogService } from './log.service';
-import { ClientService } from './client.service';
+import { UserService } from './user.service';
 
 @NgModule({
     imports: [
@@ -11,7 +11,7 @@ import { ClientService } from './client.service';
     ],
     providers: [
         LogService,
-        ClientService
+        UserService
     ]
 })
 export class ServicesModule { }

@@ -10,14 +10,14 @@ import { TextField, DropdownField, HiddenField, TextAreaField } from '../core/dy
 import { Observable } from 'rxjs/Observable';
 
 // service specific imports
-import { Client } from '../models/client.class';
-import { ClientService } from '../services/client.service';
+import { User } from '../models/user.class';
+import { UserService } from '../services/user.service';
 
 @Injectable()
-export class ClientFormsService extends BaseFormService<Client> implements IFormsService<Client> {
+export class UserFormsService extends BaseFormService<User> implements IFormsService<User> {
 
     constructor(
-        protected clientService: ClientService
+        protected clientService: UserService
     ) {
         super(clientService)
     }
@@ -28,6 +28,15 @@ export class ClientFormsService extends BaseFormService<Client> implements IForm
                 key: 'trainerId',
                 required: true,
                 order: 1,
+            }),
+             new TextField({
+                key: 'email',
+                label: 'E-mail',
+                type: 'text',
+                value: '',
+                required: true,
+                order: 1,
+                maxLength: 100
             }),
             new TextField({
                 key: 'birthDay',
@@ -41,7 +50,7 @@ export class ClientFormsService extends BaseFormService<Client> implements IForm
                 key: 'isFemale',
                 label: 'Je žena',
                 type: 'text',
-                value: '',
+                value: false,
                 required: false,
                 order: 1,
             }),

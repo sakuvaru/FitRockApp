@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 // form services
 import { LogFormsService } from './log-forms.service';
-import { ClientFormsService } from './client-forms.service';
+import { UserFormsService } from './user-forms.service';
 
 @NgModule({
     imports: [
@@ -13,7 +13,7 @@ import { ClientFormsService } from './client-forms.service';
     ],
     providers: [
         LogFormsService,
-        ClientFormsService
+        UserFormsService
     ]
 })
 export class FormServicesModule { }

@@ -10,6 +10,9 @@ import { AppDataService } from './app-data.service';
 import { TdLoadingService } from '@covalent/core';
 import { RepositoryService } from '../repository/repository.service';
 
+// services
+import { UserService } from '../services/user.service';
+
 // Angular material
 import { MdSnackBar } from '@angular/material';
 
@@ -21,12 +24,16 @@ export class ComponentDependencyService {
     public router: Router;
     public activatedRoute: ActivatedRoute;
 
+    // common services
     public authService: AuthService;
     public mediaService: TdMediaService;
     public appDataService: AppDataService;
     public loadingService: TdLoadingService;
     public repositoryService: RepositoryService;
     public snackbarService: MdSnackBar
+
+    // services
+    public userService: UserService;
 
     constructor(private injector: Injector) {
         // use Angular's injector to get service instances
@@ -40,5 +47,7 @@ export class ComponentDependencyService {
         this.repositoryService = injector.get(RepositoryService);
 
         this.snackbarService = injector.get(MdSnackBar);
+
+        this.userService = injector.get(UserService);
     }
 }
