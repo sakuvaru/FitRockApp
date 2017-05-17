@@ -14,13 +14,30 @@ import { ITdDataTableColumn, TdDialogService } from '@covalent/core';
 })
 export class ClientsOverviewComponent extends BaseComponent {
 
-   columns: ITdDataTableColumn[] = [
+  columns: ITdDataTableColumn[] = [
+    { name: 'id', label: 'Id' },
     { name: 'email', label: 'E-mail' },
     { name: 'firstName', label: 'First name' },
-    { name: 'lastName', label: 'Last name' }
+    { name: 'lastName', label: 'Last name' },
+    { name: 'email', label: 'E-mail' },
   ];
 
   basicData: any[];
+
+   data: any[] = [
+    { sku: '1452-2', item: 'Pork Chops', price: 32.11 },
+    { sku: '1421-0', item: 'Prime Rib', price: 41.15 },
+  ];
+  columns2: ITdDataTableColumn[] = [
+    { name: 'sku', label: 'SKU #', tooltip: 'Stock Keeping Unit' },
+    { name: 'item', label: 'Item name' },
+     { name: 'item', label: 'Item name' },
+      { name: 'item', label: 'Item name' },
+       { name: 'item', label: 'Item name' },
+        { name: 'item', label: 'Item name' },
+    { name: 'price', label: 'Price (US$)', numeric: true, format: v => v.toFixed(2) },
+  ];
+
 
   constructor(
     private _dialogService: TdDialogService,

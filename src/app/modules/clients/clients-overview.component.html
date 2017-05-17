@@ -1,5 +1,5 @@
-<md-card>
-  <md-card-content>
+<!--<md-card class="mat-card">
+  <md-card-content class="mat-card-content">
       <table td-data-table>
   <th td-data-table-column>
     Comments
@@ -24,6 +24,31 @@
     <button md-raised-button color="accent" routerLink="/client/clients/new">Nový klient</button>
   </md-card-actions>
 </md-card>
+-->
 
-
-
+<div flex-gt-sm="100">
+  <md-card>
+    <md-card-title>Title</md-card-title>
+    <md-card-content>
+      <div class="w-table-container">
+      <table td-data-table>
+        <th td-data-table-column>
+          <md-icon>comment</md-icon>
+          <span>Comments</span>
+        </th>
+        <th td-data-table-column *ngFor="let column of columns2" [numeric]="column.numeric">
+          {{column.label}}
+        </th>
+        <tr td-data-table-row *ngFor="let row of data">
+          <td td-data-table-cell (click)="openPrompt(row, 'comments')">
+            <button md-button [class.mat-accent]="!row['comments']">{{row['comments'] || 'Add Comment'}}</button>
+          </td>
+          <td td-data-table-cell *ngFor="let column of columns2" [numeric]="column.numeric">
+            {{column.format ? column.format(row[column.name]) : row[column.name]}}
+          </td>
+        </tr>
+      </table>
+      </div>
+    </md-card-content>
+  </md-card>
+</div>
