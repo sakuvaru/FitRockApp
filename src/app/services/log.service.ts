@@ -11,4 +11,8 @@ export class LogService extends BaseService<Log> implements IService<Log>{
     constructor(repositoryService: RepositoryService) { 
         super (repositoryService, "log")
     }
+
+    createEmptyItem(): Log{
+        return new Log();
+    }
 }

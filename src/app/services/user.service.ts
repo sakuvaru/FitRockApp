@@ -22,7 +22,13 @@ export class UserService extends BaseService<User> implements IService<User>{
         super(repositoryService, "user")
     }
 
+    createEmptyItem(): User {
+        return new User();
+    }
+
     getClients(options?: IOption[]): Observable<User[]> {
         return this.getMultiple('getclients', options);
     }
+
+
 }

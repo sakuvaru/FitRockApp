@@ -8,7 +8,7 @@ export class User implements IItem {
     public created: Date;
     public updated: Date;
     public id: number;
-    public fistName: string;
+    public firstName: string;
     public lastName: string;
     public email: string;
     public isClient: boolean;
@@ -29,7 +29,7 @@ export class User implements IItem {
             stacktrace?: string,
             errorMessage?: string,
             id?: number,
-            fistName?: string;
+            firstName?: string;
             lastName?: string;
             email?: string;
             isClient?: boolean;
@@ -45,5 +45,9 @@ export class User implements IItem {
             trainerPublicNotes?: string,
         }) {
         if (fields) Object.assign(this, fields);
+    }
+
+    getFullName(): string {
+        return this.firstName + ' ' + this.lastName;
     }
 }

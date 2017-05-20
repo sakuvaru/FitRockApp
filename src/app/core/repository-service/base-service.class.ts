@@ -9,23 +9,34 @@ import { ResponseMultiple } from '../../repository/response-multiple.class';
 import { IOption } from '../../repository/ioption.class';
 import { Observable } from 'rxjs/Observable';
 
-export abstract class BaseService<T extends IItem> implements IService<T>{
+import { User } from '../../models/user.class';
+export abstract class BaseService<TItem extends IItem> implements IService<TItem>{
 
     constructor(protected repositoryService: RepositoryService, public type: string) { }
 
-    protected mapItem(item: any): T {
+    // each service class needs to be responsible for creating proper type of objects 
+    // because returning 'item as TItem' will not convert actual object to type
+    abstract createEmptyItem<TItem extends IItem>(): TItem;
+
+    protected mapItem(item: IItem): TItem {
         if (!item) {
             return null;
         }
 
-        return item as T;
+        // create new item of proper type
+        var typedItem = this.createEmptyItem<TItem>();
+
+        // assign all properties
+        Object.assign(typedItem, item);
+
+        return typedItem;
     }
 
-    protected mapCreate(response: ResponseCreate): T {
+    protected mapCreate(response: ResponseCreate): TItem {
         return this.mapItem(response.item);
     }
 
-    protected mapEdit(response: ResponseEdit): T {
+    protected mapEdit(response: ResponseEdit): TItem {
         return this.mapItem(response.item);
     }
 
@@ -36,46 +47,46 @@ export abstract class BaseService<T extends IItem> implements IService<T>{
         return false;
     }
 
-    protected mapGetSingle(response: ResponseSingle): T {
+    protected mapGetSingle(response: ResponseSingle): TItem {
         return this.mapItem(response.item);
     }
 
-    protected mapGetMultiple(response: ResponseMultiple): T[] {
+    protected mapGetMultiple(response: ResponseMultiple): TItem[] {
         var that = this;
         return response.items.map(function (item) {
             return that.mapItem(item);
         });
     }
 
-    getMultiple(action: string, options?: IOption[]): Observable<T[]> {
+    getMultiple(action: string, options?: IOption[]): Observable<TItem[]> {
         return this.repositoryService.getMultiple(this.type, action, options).map(response => this.mapGetMultiple(response));
     }
 
-    getSingle(action: string, options?: IOption[]): Observable<T> {
+    getSingle(action: string, options?: IOption[]): Observable<TItem> {
         return this.repositoryService.getSingle(this.type, action, options).map(response => this.mapGetSingle(response));
     }
 
-    getAll(options?: IOption[]): Observable<T[]> {
+    getAll(options?: IOption[]): Observable<TItem[]> {
         return this.repositoryService.getAll(this.type, options).map(response => this.mapGetMultiple(response));
     }
 
-    getByCodename(codename: string, options?: IOption[]): Observable<T> {
+    getByCodename(codename: string, options?: IOption[]): Observable<TItem> {
         return this.repositoryService.getByCodename(this.type, codename, options).map(response => this.mapGetSingle(response));
     }
 
-    getByGuid(guid: string, options?: IOption[]): Observable<T> {
+    getByGuid(guid: string, options?: IOption[]): Observable<TItem> {
         return this.repositoryService.getByGuid(this.type, guid, options).map(response => this.mapGetSingle(response));
     }
 
-    getById(id: number, options?: IOption[]): Observable<T> {
+    getById(id: number, options?: IOption[]): Observable<TItem> {
         return this.repositoryService.getById(this.type, id, options).map(response => this.mapGetSingle(response));
     }
 
-    create(obj: T): Observable<T> {
+    create(obj: TItem): Observable<TItem> {
         return this.repositoryService.create(this.type, obj).map(response => this.mapCreate(response));
     }
 
-    edit(obj: T): Observable<T> {
+    edit(obj: TItem): Observable<TItem> {
         return this.repositoryService.edit(this.type, obj).map(response => this.mapEdit(response));
     }
 

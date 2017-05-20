@@ -1,4 +1,5 @@
 import { ResponseGetBase } from './response-get-base.class';
+import { IItem } from './iitem.class';
 
 export class ResponseMultiple extends ResponseGetBase {
   constructor(
@@ -7,7 +8,7 @@ export class ResponseMultiple extends ResponseGetBase {
     type: string,
     action: string,
     result: number,
-    public items: any[]
+    public items: IItem[]
   ) {
     super(
       fromCache,

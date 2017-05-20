@@ -26,29 +26,34 @@
 </md-card>
 -->
 
-<div flex-gt-sm="100">
-  <md-card>
-    <md-card-title>Title</md-card-title>
-    <md-card-content>
-      <div class="w-table-container">
-      <table td-data-table>
-        <th td-data-table-column>
-          <md-icon>comment</md-icon>
-          <span>Comments</span>
-        </th>
-        <th td-data-table-column *ngFor="let column of columns2" [numeric]="column.numeric">
-          {{column.label}}
-        </th>
-        <tr td-data-table-row *ngFor="let row of data">
-          <td td-data-table-cell (click)="openPrompt(row, 'comments')">
-            <button md-button [class.mat-accent]="!row['comments']">{{row['comments'] || 'Add Comment'}}</button>
-          </td>
-          <td td-data-table-cell *ngFor="let column of columns2" [numeric]="column.numeric">
-            {{column.format ? column.format(row[column.name]) : row[column.name]}}
-          </td>
-        </tr>
-      </table>
-      </div>
-    </md-card-content>
-  </md-card>
-</div>
+<md-card tdmediatoggle="gt-xs" class="mat-card">
+  <td-search-box class="push-left push-right" placeholder="search" [alwaysVisible]="true" ></td-search-box>
+  <md-divider></md-divider>
+  <md-list role="list" class="">
+    <md-list-item class="tc-grey-500">
+      <span flex>
+          Klient
+      </span>
+      <span flex="25">
+          Poslední přihlášení
+      </span>
+      <span flex="20" class="text-center">
+          Akce
+      </span>
+    </md-list-item>
+    <md-list-item *ngFor="let client of clients">
+      <span flex>
+        {{client.getFullName()}}
+      </span>
+      <span flex="25">
+        poslední přihlášení
+      </span>
+      <span flex="20" class="text-center">
+        <button md-icon-button>
+          <md-icon>more_vert</md-icon>
+        </button>
+      </span>
+    </md-list-item>
+  </md-list>
+</md-card>
+
