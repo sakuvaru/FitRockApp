@@ -1,6 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+// core module
+import { CoreModule } from '../../core/core.module';
+
 // components
 import { NotFoundComponent } from './not-found.component';
 import { UnauthorizedComponent } from './unauthorized.component';
@@ -13,17 +16,18 @@ import { SharedRouter } from './shared.routing';
     imports: [
         CommonModule,
         SharedRouter,
+        CoreModule
     ],
     declarations: [
         NotFoundComponent,
         UnauthorizedComponent,
-        ErrorComponent
+        ErrorComponent,
     ],
     // Shared components need to be exported so that other modules can use them, as 
     // otherwise they can be used only within the same module
     exports: [
         NotFoundComponent,
-        UnauthorizedComponent
+        UnauthorizedComponent,
     ],
 })
 export class SharedModule { }

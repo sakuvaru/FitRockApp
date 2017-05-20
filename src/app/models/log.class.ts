@@ -1,5 +1,5 @@
 import { IItem } from '../repository/iitem.class';
-import { BaseField } from '../core/dynamic-form/base-field.class';
+import { BaseField } from '../core/web-components/dynamic-form/base-field.class';
 
 export class Log implements IItem {
 

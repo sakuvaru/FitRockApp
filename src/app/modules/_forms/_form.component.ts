@@ -5,7 +5,10 @@ import { AppConfig } from '../../core/config/app.config';
 import { BaseComponent } from '../../core/base/base.component';
 import { AppData } from '../../core/app-data.class';
 import { ComponentDependencyService } from '../../core/component-dependency.service';
-import { BaseField } from '../../core/dynamic-form/base-field.class';
+import { BaseField } from '../../core/web-components/dynamic-form/base-field.class';
+import { DataTableField } from '../../core/web-components/data-table/data-table-field.class';
+import { DataTableConfig } from '../../core/web-components/data-table/data-table.config';
+import { AlignEnum } from '../../core/web-components/data-table/align-enum';
 
 // required by component
 import { LogFormsService } from '../../forms/log-forms.service';

@@ -1,6 +1,6 @@
 import { FormGroup } from '@angular/forms';
 
-import { BaseField } from '../dynamic-form/base-field.class';
+import { BaseField } from '../web-components/dynamic-form/base-field.class';
 import { IService } from '../../core/repository-service/iservice.class';
 import { IItem } from '../../repository/iitem.class';
 import { Observable } from 'rxjs/Observable';

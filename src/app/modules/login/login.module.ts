@@ -2,8 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-// Covalent modules for Angular2
-import { CovalentCoreModule } from '@covalent/core';
+// core module
+import { CoreModule } from '../../core/core.module';
 
 // router
 import { LoginRouter } from './login.routing';
@@ -18,7 +18,7 @@ import { LogoutComponent } from './logout.component';
         CommonModule,
         FormsModule,
         LoginRouter,
-        CovalentCoreModule
+        CoreModule
     ],
     declarations: [
         LoginPageComponent,

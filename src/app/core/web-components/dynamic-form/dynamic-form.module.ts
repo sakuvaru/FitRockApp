@@ -7,6 +7,9 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 // NOTE: see https://angular.io/docs/ts/latest/cookbook/dynamic-form.html for more details
 
+// Covalent modules for Angular2
+import { CovalentCoreModule } from '@covalent/core';
+
 // services
 import { FieldControlService } from './field-control.service';
 
@@ -14,8 +17,7 @@ import { FieldControlService } from './field-control.service';
 import { DynamicFormQuestionComponent } from './dynamic-form-question.component';
 import { DynamicFormComponent } from './dynamic-form.component';
 
-// Covalent modules for Angular2
-import { CovalentCoreModule } from '@covalent/core';
+
 
 @NgModule({
     imports: [

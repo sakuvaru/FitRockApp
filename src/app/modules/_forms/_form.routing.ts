@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { DynamicFormModule } from '../../core/dynamic-form/dynamic-form.module';
+// core
+import { CoreModule } from '../../core/core.module';
 
 // guard
 import { AuthGuardService } from '../../core/auth/auth-guard.service';
@@ -29,7 +30,7 @@ const routes: Routes = [
     ],
     imports: [
         RouterModule.forChild(routes),
-        DynamicFormModule
+        CoreModule
     ],
     exports: [
         RouterModule

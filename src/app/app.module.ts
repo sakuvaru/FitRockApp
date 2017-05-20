@@ -6,10 +6,6 @@ import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-// Covalent modules
-// Info: https://teradata.github.io/covalent/#/docs
-import { CovalentCoreModule } from '@covalent/core';
-
 // material angular
 // Info: https://material.angular.io/guide/getting-started
 import 'hammerjs';
@@ -18,7 +14,6 @@ import 'hammerjs';
 import { AuthModule } from './core/auth/auth.module';
 
 // dynamic forms
-import { DynamicFormModule} from './core/dynamic-form/dynamic-form.module';
 import { FormServicesModule } from './forms/form-services.module';
 
 // main app
@@ -50,6 +45,9 @@ import { FormModule } from './modules/_forms/_form.module';
     BrowserAnimationsModule,
     ReactiveFormsModule,
 
+    // Core module
+    CoreModule,
+
     // route config
     RouterModule.forRoot([
       {
@@ -62,18 +60,13 @@ import { FormModule } from './modules/_forms/_form.module';
       }
     ]),
 
-    // covalent
-    CovalentCoreModule,
-
     // authentication
     AuthModule,
 
     // dynamic forms
-    DynamicFormModule,
     FormServicesModule,
 
     // custom modules
-    CoreModule,
     LayoutsModule,
     SharedModule,
     DashboardModule,

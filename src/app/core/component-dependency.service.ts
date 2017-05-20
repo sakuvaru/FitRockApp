@@ -21,8 +21,8 @@ import { MdSnackBar } from '@angular/material';
 @Injectable()
 export class ComponentDependencyService {
 
+    // url handling
     public router: Router;
-    public activatedRoute: ActivatedRoute;
 
     // common services
     public authService: AuthService;
@@ -38,7 +38,6 @@ export class ComponentDependencyService {
     constructor(private injector: Injector) {
         // use Angular's injector to get service instances
         this.router = injector.get(Router);
-        this.activatedRoute = injector.get(ActivatedRoute);
 
         this.authService = injector.get(AuthService);
         this.mediaService = injector.get(TdMediaService);

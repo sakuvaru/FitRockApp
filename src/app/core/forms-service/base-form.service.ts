@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
 import { IFormsService } from './iforms-service.interface';
-import { BaseField } from '../dynamic-form/base-field.class';
-import { TextField, DropdownField, HiddenField } from '../dynamic-form/field-types';
+import { BaseField } from '../web-components/dynamic-form/base-field.class';
+import { TextField, DropdownField, HiddenField } from '../web-components/dynamic-form/field-types';
 
 import { IService } from '../../core/repository-service/iservice.class';
 import { IItem } from '../../repository/iitem.class';

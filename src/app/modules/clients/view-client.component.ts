@@ -12,17 +12,29 @@ import { DataTableConfig } from '../../core/web-components/data-table/data-table
 import { AlignEnum } from '../../core/web-components/data-table/align-enum';
 
 // required by component
+import { User } from '../../models/user.class';
+import 'rxjs/add/operator/switchMap';
 
 @Component({
-    templateUrl: 'sample.component.html'
+    templateUrl: 'view-client.component.html'
 })
-export class SampleComponent extends BaseComponent {
+export class ViewClientComponent extends BaseComponent implements OnInit {
+
+    private client: User;
+
     constructor(
-        protected dependencies: ComponentDependencyService) {
-        super(dependencies)
+        private activatedRoute: ActivatedRoute,
+        protected componentDependencyService: ComponentDependencyService) {
+        super(componentDependencyService)
+    }
+
+    ngOnInit(): void {
+        this.activatedRoute.params
+            .switchMap((params: Params) => this.dependencies.userService.getById(+params['id']))
+            .subscribe(user => this.client = user);
     }
 
     initAppData(): AppData {
-        return new AppData("Sample");
+        return new AppData("Klient");
     }
 }

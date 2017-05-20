@@ -5,8 +5,8 @@ import { FormGroup } from '@angular/forms';
 // required imports
 import { BaseFormService } from '../core/forms-service/base-form.service';
 import { IFormsService } from '../core/forms-service/iforms-service.interface';
-import { BaseField } from '../core/dynamic-form/base-field.class';
-import { TextField, DropdownField, HiddenField, TextAreaField } from '../core/dynamic-form/field-types';
+import { BaseField } from '../core/web-components/dynamic-form/base-field.class';
+import { TextField, DropdownField, HiddenField, TextAreaField } from '../core/web-components/dynamic-form/field-types';
 import { Observable } from 'rxjs/Observable';
 
 // service specific imports

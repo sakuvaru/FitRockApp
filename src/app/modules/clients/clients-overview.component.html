@@ -26,34 +26,35 @@
 </md-card>
 -->
 
-<md-card tdmediatoggle="gt-xs" class="mat-card">
-  <td-search-box class="push-left push-right" placeholder="search" [alwaysVisible]="true" ></td-search-box>
+<data-table [items]="clients" [fields]="fields" [config]="config"></data-table>
+
+<md-card tdmediatoggle="gt-xs" class="push">
+  <td-search-box class="push-left push-right" placeholder="search" [alwaysVisible]="true"></td-search-box>
   <md-divider></md-divider>
-  <md-list role="list" class="">
-    <md-list-item class="tc-grey-500">
+  <md-nav-list role="list">
+    <md-list-item disableRipple="true" class="tc-grey-500">
       <span flex>
           Klient
       </span>
-      <span flex="25">
+      <span flex="25" class="text-right">
           Poslední přihlášení
       </span>
-      <span flex="20" class="text-center">
-          Akce
-      </span>
     </md-list-item>
-    <md-list-item *ngFor="let client of clients">
-      <span flex>
+    <div *ngFor="let client of clients">
+      <md-divider></md-divider>
+      <md-list-item [routerLink]="['/client/clients/view', 4]">
+        <span flex>
         {{client.getFullName()}}
       </span>
-      <span flex="25">
-        poslední přihlášení
+        <span flex="25" class="text-right md-caption tc-grey-500">
+         dd
       </span>
-      <span flex="20" class="text-center">
-        <button md-icon-button>
-          <md-icon>more_vert</md-icon>
-        </button>
-      </span>
-    </md-list-item>
-  </md-list>
+      </md-list-item>
+    </div>
+    <div *ngIf="clients != null && clients.length == 0" layout="row" layout-align="center">
+      <h3>No results here</h3>
+    </div>
+  </md-nav-list>
 </md-card>
 
+<fixed-button url="/client/clients/new"></fixed-button>
