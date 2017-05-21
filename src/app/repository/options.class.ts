@@ -11,7 +11,7 @@ export class Include implements IOption {
     }
 
     public GetParamValue(): string {
-        return this.field;
+        return this.field.trim();
     }
 }
 
@@ -42,6 +42,21 @@ export class Limit implements IOption {
 
     public GetParamValue(): string {
         return this.limit.toString();
+    }
+}
+
+export class PageSize implements IOption {
+
+    constructor(
+        public pageSize: number,
+    ) { }
+
+    public GetParam(): string {
+        return "pageSize";
+    }
+
+    public GetParamValue(): string {
+        return this.pageSize.toString();
     }
 }
 
@@ -82,10 +97,40 @@ export class WhereEquals implements IOption {
     ) { }
 
     public GetParam(): string {
-        return "whereequals." + this.field;
+        return "whereequals." + this.field.trim();
     }
 
     public GetParamValue(): string {
-        return this.value;
+        return this.value.trim();
+    }
+}
+
+export class WhereLike implements IOption {
+    constructor(
+        public field: string,
+        public value: string
+    ) { }
+
+    public GetParam(): string {
+        return "wherelike." + this.field.trim();
+    }
+
+    public GetParamValue(): string {
+        return this.value.trim();
+    }
+}
+
+export class WhereLikeMultiple implements IOption {
+    constructor(
+        public fields: string[],
+        public value: string
+    ) { }
+
+    public GetParam(): string {
+        return "wherelike." + this.fields.map(m => m).join('+');
+    }
+
+    public GetParamValue(): string {
+        return this.value.trim();
     }
 }

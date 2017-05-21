@@ -9,6 +9,8 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ButtonsModule } from './buttons/buttons.module';
 import { DataTableModule } from './data-table/data-table.module';
 import { DynamicFormModule } from './dynamic-form/dynamic-form.module';
+import { LoaderModule } from './loader/loader.module';
+import { PagerModule } from './pager/pager.module';
 
 @NgModule({
     imports: [
@@ -19,7 +21,9 @@ import { DynamicFormModule } from './dynamic-form/dynamic-form.module';
     exports: [
         DynamicFormModule,
         DataTableModule,
-        ButtonsModule
+        ButtonsModule,
+        LoaderModule,
+        PagerModule
     ]
 })
 export class WebComponentsModule { }

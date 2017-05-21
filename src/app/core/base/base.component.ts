@@ -55,7 +55,7 @@ export abstract class BaseComponent implements IComponent, OnInit {
 
     ngOnInit(): void {
         // stop all loaders on init
-        this.resolveLoader();
+       this.resolveLoader();
     }
 
     // --------------------- Private methods -------------- // 

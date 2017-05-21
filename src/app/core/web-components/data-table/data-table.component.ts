@@ -1,28 +1,43 @@
 // core
 import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
+import { Router } from '@angular/router';
 
 // required by component
 import { DataTableField } from './data-table-field.class';
 import { DataTableConfig } from './data-table.config';
 import { AlignEnum } from './align-enum';
+import { TdLoadingService } from '@covalent/core';
 
 @Component({
     selector: 'data-table',
     templateUrl: 'data-table.component.html'
 })
 export class DataTableComponent {
+    // data
     @Input() items: any;
     @Input() fields: DataTableField<any>[];
     @Input() config: DataTableConfig<any>;
 
+    // pager
+    @Input() hasNextPage: boolean;
+    @Input() totalPages: number;
+    @Input() pageSize: number;
+
+    // events
     @Output() onSearch = new EventEmitter<string>();
 
-    constructor() {
+    // variables
+    private currentPage: number = 1;
+
+    constructor(
+        private router: Router,
+        private loadingService: TdLoadingService
+    ) {
+        this.loadingService.register('overlayStarSyntax');
     }
 
     // event emitters
-    private handleSearch(searchTerm: string): void{
-        console.log(searchTerm);
+    private handleSearch(searchTerm: string): void {
         this.onSearch.emit(searchTerm);
     }
 
@@ -63,5 +78,27 @@ export class DataTableComponent {
         }
 
         return this.config.url(item);
+    }
+
+    private getAvatarUrl(item: any): string {
+        if (!this.config.avatarUrl) {
+            return null;
+        }
+
+        return this.config.avatarUrl(item);
+    }
+
+    private getIcon(item: any): string {
+        if (!this.config.icon) {
+            return null;
+        }
+
+        return this.config.icon(item);
+    }
+
+    private onItemClick(item: any): void{
+        var url = this.getItemUrl(item);
+
+        this.router.navigate([url]);
     }
 }

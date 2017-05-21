@@ -1,16 +1,26 @@
 <md-card tdmediatoggle="gt-xs" class="push">
-  <td-search-box *ngIf="config.showSearch" (searchDebounce)="handleSearch($event)" class="push-left push-right" placeholder="search" [alwaysVisible]="true"></td-search-box>
+  <td-search-box *ngIf="config.showSearch" (searchDebounce)="handleSearch($event)" class="push-left push-right" placeholder="hledat"
+    [alwaysVisible]="true"></td-search-box>
   <md-divider *ngIf="config.showSearch"></md-divider>
-  <md-nav-list role="list">
+  <md-list role="list" class="bgc-indigo-200">
     <md-list-item *ngIf="config.showHeader" disableRipple="true">
       <span *ngFor="let field of fields" flex="field.flex" class="{{getTextAlignClass(field)}}">
           {{field.label}}
         </span>
     </md-list-item>
+  </md-list>
+
+  <!-- Nav list with link -->
+  <md-nav-list *ngIf="config.url" role="list" class="pad-top-none">
     <div *ngFor="let item of items; let i=index">
       <md-divider *ngIf="!isFirstItem(i) || config.showHeader"></md-divider>
-      <md-list-item [routerLink]="getItemUrl(item)">
-        <span *ngFor="let field of fields" flex="field.flex" [class.tc-grey-500]="field.isSubtle" [class.md-caption]="field.isSubtle" class="{{getTextAlignClass(field)}}">
+      <md-list-item (click)="onItemClick(item)">
+        <img *ngIf="config.avatarUrl" md-list-avatar src="{{getAvatarUrl()}}" alt="" class="push-right">
+        <md-icon *ngIf="config.icon" md-list-icon>{{getIcon()}}</md-icon>
+
+        <span *ngFor="let field of fields" flex="field.flex" [class.tc-grey-500]="field.isSubtle" [class.md-caption]="field.isSubtle"
+          class="{{getTextAlignClass(field)}}">
+          
           {{getFieldValue(field, item)}}
         </span>
       </md-list-item>
@@ -19,4 +29,30 @@
       <h3>No results here</h3>
     </div>
   </md-nav-list>
+
+  <!-- Nav list without link -->
+
+  <md-list *ngIf="!config.url" role="list" class="pad-top-none">
+    <div *ngFor="let item of items; let i=index">
+      <md-divider *ngIf="!isFirstItem(i) || config.showHeader"></md-divider>
+      <md-list-item>
+        <img *ngIf="config.avatarUrl" md-list-avatar src="{{getAvatarUrl()}}" alt="" class="push-right">
+        <md-icon *ngIf="config.icon" md-list-icon>{{getIcon()}}</md-icon>
+
+        <span *ngFor="let field of fields" flex="field.flex" [class.tc-grey-500]="field.isSubtle" [class.md-caption]="field.isSubtle"
+          class="{{getTextAlignClass(field)}}">
+          
+          {{getFieldValue(field, item)}}
+        </span>
+      </md-list-item>
+    </div>
+    <div *ngIf="items != null && items.length == 0" layout="row" layout-align="center">
+      <h3>No results here</h3>
+    </div>
+  </md-list>
+   <md-divider></md-divider>
+  <md-card-actions>
+    <button md-button>Předchozí</button>
+    <button md-button>Další</button>
+  </md-card-actions>
 </md-card>
