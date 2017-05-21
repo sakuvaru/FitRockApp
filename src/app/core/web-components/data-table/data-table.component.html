@@ -50,9 +50,15 @@
       <h3>No results here</h3>
     </div>
   </md-list>
-   <md-divider></md-divider>
-  <md-card-actions>
-    <button md-button>Předchozí</button>
-    <button md-button>Další</button>
+  <md-divider *ngIf="config.usePager"></md-divider>
+  <md-card-actions *ngIf="config.usePager">
+    <button [disabled]="!hasPreviousPage()" md-button (click)="onGoToPage(1)"><<</button>
+    <button [disabled]="!hasPreviousPage()" md-button (click)="onGoToPreviousPage()"><</button>
+    <span *ngFor="let button of getPagerButtons()">
+      <button *ngIf="!button.isActive" md-button (click)="onGoToPage(button.page)">{{button.page}}</button>
+      <button *ngIf="button.isActive" md-raised-button color="primary" (click)="onGoToPage(button.page)">{{button.page}}</button>
+    </span>
+    <button [disabled]="!hasNextPage()" md-button (click)="onGoToNextPage()">></button>
+    <button [disabled]="!hasNextPage()" md-button (click)="onGoToPage(totalPages)">>></button>
   </md-card-actions>
 </md-card>

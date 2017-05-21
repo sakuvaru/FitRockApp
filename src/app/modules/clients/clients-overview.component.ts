@@ -11,7 +11,7 @@ import { DataTableField } from '../../core/web-components/data-table/data-table-
 import { DataTableConfig } from '../../core/web-components/data-table/data-table.config';
 import { AlignEnum } from '../../core/web-components/data-table/align-enum';
 import {
-  WhereEquals, OrderBy, OrderByDescending, Limit, PageSize,
+  WhereEquals, OrderBy, OrderByDescending, Limit, PageSize, Page,
   Include, IncludeMultiple, WhereLike, WhereLikeMultiple
 } from '../../repository/options.class';
 
@@ -35,6 +35,16 @@ export class ClientsOverviewComponent extends BaseComponent {
   private config: DataTableConfig<User> = new DataTableConfig<User>({
     showHeader: true,
     showSearch: true,
+    usePager: true,
+    pagerSize: 2,
+    pagerClick: (page, pageSize) => {
+      this.loaderEnabled = true;
+      this.dependencies.userService.getClients([new PageSize(pageSize), new Page(page)])
+        .subscribe(clients => {
+          this.clients = clients;
+          this.loaderEnabled = false;
+        });
+    },
     url: (item) => 'client/clients/view/' + item.id,
     avatarUrl: (item) => 'https://semantic-ui.com/images/avatar/large/elliot.jpg'
   });
@@ -43,7 +53,7 @@ export class ClientsOverviewComponent extends BaseComponent {
     protected componentDependencyService: ComponentDependencyService) {
     super(componentDependencyService)
 
-    this.dependencies.userService.getClients([new PageSize(10)])
+    this.dependencies.userService.getClients([new PageSize(2)])
       .subscribe(clients => {
         this.clients = clients;
         this.loaderEnabled = false;
@@ -59,9 +69,9 @@ export class ClientsOverviewComponent extends BaseComponent {
     this.loaderEnabled = true;
 
     this.dependencies.userService.getClients([new WhereLikeMultiple(["FirstName", "LastName"], searchTerm)])
-    .subscribe(clients => {
-      this.clients = clients;
-      this.loaderEnabled = false;
-    });
+      .subscribe(clients => {
+        this.clients = clients;
+        this.loaderEnabled = false;
+      });
   }
 }

@@ -19,15 +19,14 @@ export class DataTableComponent {
     @Input() config: DataTableConfig<any>;
 
     // pager
-    @Input() hasNextPage: boolean;
-    @Input() totalPages: number;
-    @Input() pageSize: number;
+    @Input() totalPages: number = 25;
 
     // events
     @Output() onSearch = new EventEmitter<string>();
 
     // variables
     private currentPage: number = 1;
+    private showPagesCount = 5; // odd number
 
     constructor(
         private router: Router,
@@ -96,9 +95,68 @@ export class DataTableComponent {
         return this.config.icon(item);
     }
 
-    private onItemClick(item: any): void{
+    private onItemClick(item: any): void {
         var url = this.getItemUrl(item);
 
         this.router.navigate([url]);
     }
+
+    private onGoToPage(page: number): void {
+        this.config.pagerClick(page, this.config.pagerSize);
+        this.currentPage = page;
+    }
+
+    private onGoToPreviousPage(): void {
+        this.config.pagerClick(this.currentPage - 1, this.config.pagerSize);
+        if (this.currentPage > 1) {
+            this.currentPage--;
+        }
+    }
+
+    private onGoToNextPage(): void {
+        this.config.pagerClick(this.currentPage + 1, this.config.pagerSize);
+        if (this.currentPage < this.totalPages) {
+            this.currentPage++;
+        }
+    }
+
+    private getPagerButtons(): PagerButton[] {
+        var buttons: PagerButton[] = [];
+        var buttonOffsetCount = (this.showPagesCount - 1) / 2;
+        var startingPage: number;
+
+        startingPage = this.currentPage - buttonOffsetCount;
+        if (startingPage < 1) {
+            // starting page has to be at least 1
+            startingPage = 1;
+        }
+
+        for (let i = startingPage; i < startingPage + this.showPagesCount; i++) {
+            // do not exceed maximum page
+            if (i > this.totalPages){
+                break;
+            }
+
+            var isActive = i == this.currentPage;
+            buttons.push(new PagerButton(i, isActive));
+        }
+
+        return buttons;
+    }
+
+    private hasPreviousPage(): boolean {
+        return this.currentPage > 1;
+    }
+
+    private hasNextPage(): boolean {
+        return this.currentPage < this.totalPages;
+    }
+}
+
+class PagerButton {
+
+    constructor(
+        public page: number,
+        public isActive: boolean
+    ) { }
 }

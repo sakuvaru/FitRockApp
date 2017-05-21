@@ -1,5 +1,20 @@
 import { IOption } from './ioption.class';
 
+export class Page implements IOption {
+
+    constructor(
+        public page: number
+    ) { }
+
+    public GetParam(): string {
+        return "page";
+    }
+
+    public GetParamValue(): string {
+        return this.page.toString();
+    }
+}
+
 export class Include implements IOption {
 
     constructor(
