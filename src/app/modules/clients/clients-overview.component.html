@@ -1,6 +1,4 @@
 
-<loader name="test" [enabled]="loaderEnabled">
-   <data-table [items]="clients" [fields]="fields" [config]="config" (onSearch)="handleSearch($event)"></data-table>
-</loader>
+<data-table [fields]="fields" [config]="config"></data-table>
 
 <fixed-button url="/client/clients/new"></fixed-button>

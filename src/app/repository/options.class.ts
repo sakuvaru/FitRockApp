@@ -7,7 +7,7 @@ export class Page implements IOption {
     ) { }
 
     public GetParam(): string {
-        return "page";
+        return 'page';
     }
 
     public GetParamValue(): string {
@@ -22,10 +22,14 @@ export class Include implements IOption {
     ) { }
 
     public GetParam(): string {
-        return "include";
+        return 'include';
     }
 
     public GetParamValue(): string {
+        if (!this.field){
+            return null;
+        }
+
         return this.field.trim();
     }
 }
@@ -37,7 +41,7 @@ export class IncludeMultiple implements IOption {
     ) { }
 
     public GetParam(): string {
-        return "include";
+        return 'include';
     }
 
     public GetParamValue(): string {
@@ -52,7 +56,7 @@ export class Limit implements IOption {
     ) { }
 
     public GetParam(): string {
-        return "limit";
+        return 'limit';
     }
 
     public GetParamValue(): string {
@@ -67,7 +71,7 @@ export class PageSize implements IOption {
     ) { }
 
     public GetParam(): string {
-        return "pageSize";
+        return 'pageSize';
     }
 
     public GetParamValue(): string {
@@ -82,11 +86,11 @@ export class OrderBy implements IOption {
     ) { }
 
     public GetParam(): string {
-        return "orderby." + this.field;
+        return 'orderby.' + this.field;
     }
 
     public GetParamValue(): string {
-        return "asc";
+        return 'asc';
     }
 }
 
@@ -97,11 +101,11 @@ export class OrderByDescending implements IOption {
     ) { }
 
     public GetParam(): string {
-        return "orderby." + this.field;
+        return 'orderby.' + this.field;
     }
 
     public GetParamValue(): string {
-        return "desc";
+        return 'desc';
     }
 }
 
@@ -112,10 +116,18 @@ export class WhereEquals implements IOption {
     ) { }
 
     public GetParam(): string {
-        return "whereequals." + this.field.trim();
+        if (!this.field){
+            return '';
+        }
+
+        return 'whereequals.' + this.field.trim();
     }
 
     public GetParamValue(): string {
+        if (!this.value){
+            return '';
+        }
+
         return this.value.trim();
     }
 }
@@ -127,10 +139,18 @@ export class WhereLike implements IOption {
     ) { }
 
     public GetParam(): string {
-        return "wherelike." + this.field.trim();
+        if (!this.field){
+            return '';
+        }
+
+        return 'wherelike.' + this.field.trim();
     }
 
     public GetParamValue(): string {
+        if (!this.value){
+            return '';
+        }
+
         return this.value.trim();
     }
 }
@@ -142,10 +162,14 @@ export class WhereLikeMultiple implements IOption {
     ) { }
 
     public GetParam(): string {
-        return "wherelike." + this.fields.map(m => m).join('+');
+        return 'wherelike.' + this.fields.map(m => m).join('+');
     }
 
     public GetParamValue(): string {
+        if (!this.value){
+            return '';
+        }
+
         return this.value.trim();
     }
 }

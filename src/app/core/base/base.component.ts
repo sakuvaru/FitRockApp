@@ -62,10 +62,10 @@ export abstract class BaseComponent implements IComponent, OnInit {
 
     private showLoader(isEnabled: boolean): void {
         if (isEnabled) {
-            this.registerLoader();
+          //  this.registerLoader();
         }
         else {
-            this.resolveLoader();
+          //  this.resolveLoader();
         }
     }
 

@@ -1,5 +1,5 @@
 // common
-import { Component, Input, Output, OnInit, EventEmitter, OnChanges, SimpleChanges} from '@angular/core';
+import { Component, Input, Output, OnInit, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 
 import { TdLoadingService } from '@covalent/core';
 
@@ -7,7 +7,7 @@ import { TdLoadingService } from '@covalent/core';
     selector: 'loader',
     templateUrl: 'loader.component.html'
 })
-export class LoaderComponent implements OnChanges{
+export class LoaderComponent implements OnChanges {
     @Input() name: string;
     @Input() enabled: boolean = true;
 

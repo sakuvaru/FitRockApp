@@ -1,64 +1,66 @@
-<md-card tdmediatoggle="gt-xs" class="push">
-  <td-search-box *ngIf="config.showSearch" (searchDebounce)="handleSearch($event)" class="push-left push-right" placeholder="hledat"
-    [alwaysVisible]="true"></td-search-box>
-  <md-divider *ngIf="config.showSearch"></md-divider>
-  <md-list role="list" class="bgc-indigo-200">
-    <md-list-item *ngIf="config.showHeader" disableRipple="true">
-      <span *ngFor="let field of fields" flex="field.flex" class="{{getTextAlignClass(field)}}">
+<loader name="test" [enabled]="loaderEnabled">
+
+  <md-card tdmediatoggle="gt-xs" class="push">
+    <td-search-box *ngIf="config.showSearch" (searchDebounce)="handleSearch($event)" class="push-left push-right" placeholder="hledat"
+      [alwaysVisible]="true"></td-search-box>
+    <md-divider *ngIf="config.showSearch"></md-divider>
+    <md-list role="list" class="bgc-indigo-200">
+      <md-list-item *ngIf="config.showHeader" disableRipple="true">
+        <span *ngFor="let field of fields" flex="field.flex" class="{{getTextAlignClass(field)}}">
           {{field.label}}
         </span>
-    </md-list-item>
-  </md-list>
+      </md-list-item>
+    </md-list>
 
-  <!-- Nav list with link -->
-  <md-nav-list *ngIf="config.url" role="list" class="pad-top-none">
-    <div *ngFor="let item of items; let i=index">
-      <md-divider *ngIf="!isFirstItem(i) || config.showHeader"></md-divider>
-      <md-list-item (click)="onItemClick(item)">
-        <img *ngIf="config.avatarUrl" md-list-avatar src="{{getAvatarUrl()}}" alt="" class="push-right">
-        <md-icon *ngIf="config.icon" md-list-icon>{{getIcon()}}</md-icon>
+    <!-- Nav list with link -->
+    <md-nav-list *ngIf="config.url" role="list" class="pad-top-none">
+      <div *ngFor="let item of items; let i=index">
+        <md-divider *ngIf="!isFirstItem(i) || config.showHeader"></md-divider>
+        <md-list-item (click)="onItemClick(item)">
+          <img *ngIf="config.avatarUrl" md-list-avatar src="{{getAvatarUrl()}}" alt="" class="push-right">
+          <md-icon *ngIf="config.icon" md-list-icon>{{getIcon()}}</md-icon>
 
-        <span *ngFor="let field of fields" flex="field.flex" [class.tc-grey-500]="field.isSubtle" [class.md-caption]="field.isSubtle"
-          class="{{getTextAlignClass(field)}}">
+          <span *ngFor="let field of fields" flex="field.flex" [class.tc-grey-500]="field.isSubtle" [class.md-caption]="field.isSubtle"
+            class="{{getTextAlignClass(field)}}">
           
           {{getFieldValue(field, item)}}
         </span>
-      </md-list-item>
-    </div>
-    <div *ngIf="items != null && items.length == 0" layout="row" layout-align="center">
-      <h3>No results here</h3>
-    </div>
-  </md-nav-list>
+        </md-list-item>
+      </div>
+      <div *ngIf="items != null && items.length == 0" layout="row" layout-align="center">
+        <h3>No results here</h3>
+      </div>
+    </md-nav-list>
 
-  <!-- Nav list without link -->
+    <!-- Nav list without link -->
 
-  <md-list *ngIf="!config.url" role="list" class="pad-top-none">
-    <div *ngFor="let item of items; let i=index">
-      <md-divider *ngIf="!isFirstItem(i) || config.showHeader"></md-divider>
-      <md-list-item>
-        <img *ngIf="config.avatarUrl" md-list-avatar src="{{getAvatarUrl()}}" alt="" class="push-right">
-        <md-icon *ngIf="config.icon" md-list-icon>{{getIcon()}}</md-icon>
+    <md-list *ngIf="!config.url" role="list" class="pad-top-none">
+      <div *ngFor="let item of items; let i=index">
+        <md-divider *ngIf="!isFirstItem(i) || config.showHeader"></md-divider>
+        <md-list-item>
+          <img *ngIf="config.avatarUrl" md-list-avatar src="{{getAvatarUrl()}}" alt="" class="push-right">
+          <md-icon *ngIf="config.icon" md-list-icon>{{getIcon()}}</md-icon>
 
-        <span *ngFor="let field of fields" flex="field.flex" [class.tc-grey-500]="field.isSubtle" [class.md-caption]="field.isSubtle"
-          class="{{getTextAlignClass(field)}}">
-          
-          {{getFieldValue(field, item)}}
+          <span *ngFor="let field of fields" flex="field.flex" [class.tc-grey-500]="field.isSubtle" [class.md-caption]="field.isSubtle"
+            class="{{getTextAlignClass(field)}}">
+            {{getFieldValue(field, item)}}
         </span>
-      </md-list-item>
-    </div>
-    <div *ngIf="items != null && items.length == 0" layout="row" layout-align="center">
-      <h3>No results here</h3>
-    </div>
-  </md-list>
-  <md-divider *ngIf="config.usePager"></md-divider>
-  <md-card-actions *ngIf="config.usePager">
-    <button [disabled]="!hasPreviousPage()" md-button (click)="onGoToPage(1)"><<</button>
-    <button [disabled]="!hasPreviousPage()" md-button (click)="onGoToPreviousPage()"><</button>
-    <span *ngFor="let button of getPagerButtons()">
+        </md-list-item>
+      </div>
+      <div *ngIf="items != null && items.length == 0" layout="row" layout-align="center">
+        <h3>No results here</h3>
+      </div>
+    </md-list>
+    <md-divider *ngIf="config.showPager"></md-divider>
+    <md-card-actions *ngIf="config.showPager">
+      <button [disabled]="!hasPreviousPage()" md-button (click)="onGoToPage(1)"><<</button>
+      <button [disabled]="!hasPreviousPage()" md-button (click)="onGoToPreviousPage()"><</button>
+      <span *ngFor="let button of getPagerButtons()">
       <button *ngIf="!button.isActive" md-button (click)="onGoToPage(button.page)">{{button.page}}</button>
       <button *ngIf="button.isActive" md-raised-button color="primary" (click)="onGoToPage(button.page)">{{button.page}}</button>
     </span>
-    <button [disabled]="!hasNextPage()" md-button (click)="onGoToNextPage()">></button>
-    <button [disabled]="!hasNextPage()" md-button (click)="onGoToPage(totalPages)">>></button>
-  </md-card-actions>
-</md-card>
+      <button [disabled]="!hasNextPage()" md-button (click)="onGoToNextPage()">></button>
+      <button [disabled]="!hasNextPage()" md-button (click)="onGoToPage(totalPages)">>></button>
+    </md-card-actions>
+  </md-card>
+</loader>

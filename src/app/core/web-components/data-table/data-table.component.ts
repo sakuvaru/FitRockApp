@@ -1,20 +1,24 @@
 // core
-import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
+import { Component, Input, Output, OnInit, EventEmitter, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 // required by component
 import { DataTableField } from './data-table-field.class';
 import { DataTableConfig } from './data-table.config';
 import { AlignEnum } from './align-enum';
-import { TdLoadingService } from '@covalent/core';
+import { Observable } from 'rxjs/Observable';
+import { Guid } from '../../../utilities/general.class';
 
 @Component({
     selector: 'data-table',
     templateUrl: 'data-table.component.html'
 })
-export class DataTableComponent {
-    // data
-    @Input() items: any;
+export class DataTableComponent implements AfterViewInit {
+
+    // resolved data
+    private items: any[];
+
+    // base config
     @Input() fields: DataTableField<any>[];
     @Input() config: DataTableConfig<any>;
 
@@ -28,16 +32,52 @@ export class DataTableComponent {
     private currentPage: number = 1;
     private showPagesCount = 5; // odd number
 
+    // search
+    private searchTerm: string = null;
+
+    // loader
+    private loaderEnabled: boolean = true;
+    private loaderName: string = Guid.newGuid();
+
     constructor(
         private router: Router,
-        private loadingService: TdLoadingService
     ) {
-        this.loadingService.register('overlayStarSyntax');
+    }
+
+    ngAfterViewInit() {
+        //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
+        this.initItems();
+    }
+
+    // load methods
+    private initItems(): void {
+        this.filterItems(1);
+    }
+
+    private filterItems(page: number): void {
+        // register loader on page change
+        if (!this.loaderEnabled){
+            this.loaderEnabled = true;
+        }
+
+        this.config.loadItems(this.searchTerm, page, this.config.pagerSize).subscribe(items => {
+            this.items = items;
+            this.loaderEnabled = false;
+        });
     }
 
     // event emitters
     private handleSearch(searchTerm: string): void {
+        // set search
+        this.searchTerm = searchTerm;
+
         this.onSearch.emit(searchTerm);
+
+        // reset pager
+        this.currentPage = 1;
+
+        // search items
+        this.filterItems(this.currentPage);
     }
 
     // private methods
@@ -102,19 +142,19 @@ export class DataTableComponent {
     }
 
     private onGoToPage(page: number): void {
-        this.config.pagerClick(page, this.config.pagerSize);
+        this.filterItems(page);
         this.currentPage = page;
     }
 
     private onGoToPreviousPage(): void {
-        this.config.pagerClick(this.currentPage - 1, this.config.pagerSize);
+        this.filterItems(this.currentPage - 1);
         if (this.currentPage > 1) {
             this.currentPage--;
         }
     }
 
     private onGoToNextPage(): void {
-        this.config.pagerClick(this.currentPage + 1, this.config.pagerSize);
+        this.filterItems(this.currentPage + 1);
         if (this.currentPage < this.totalPages) {
             this.currentPage++;
         }
@@ -133,7 +173,7 @@ export class DataTableComponent {
 
         for (let i = startingPage; i < startingPage + this.showPagesCount; i++) {
             // do not exceed maximum page
-            if (i > this.totalPages){
+            if (i > this.totalPages) {
                 break;
             }
 

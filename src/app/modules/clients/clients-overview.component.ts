@@ -14,6 +14,7 @@ import {
   WhereEquals, OrderBy, OrderByDescending, Limit, PageSize, Page,
   Include, IncludeMultiple, WhereLike, WhereLikeMultiple
 } from '../../repository/options.class';
+import { Observable } from 'rxjs/Observable';
 
 // required by component
 import { User } from '../../models/user.class';
@@ -23,28 +24,20 @@ import { User } from '../../models/user.class';
 })
 export class ClientsOverviewComponent extends BaseComponent {
 
-  private clients: User[];
-
-  private loaderEnabled: boolean = true;
-
   private fields: DataTableField<User>[] = [
     { label: 'Klient', value: (item) => { return item.getFullName() }, flex: 40 },
     { label: 'E-mail', value: (item) => { return item.email }, isSubtle: true, align: AlignEnum.Right },
   ];
 
   private config: DataTableConfig<User> = new DataTableConfig<User>({
-    showHeader: true,
-    showSearch: true,
-    usePager: true,
-    pagerSize: 2,
-    pagerClick: (page, pageSize) => {
-      this.loaderEnabled = true;
-      this.dependencies.userService.getClients([new PageSize(pageSize), new Page(page)])
-        .subscribe(clients => {
-          this.clients = clients;
-          this.loaderEnabled = false;
-        });
+    loadItems: (searchTerm: string, page: number, pageSize: number) => {
+      return this.dependencies.userService.getClients(
+        [new PageSize(pageSize), new Page(page), new WhereLikeMultiple(["FirstName", "LastName"], searchTerm)])
     },
+    showPager: true,
+    showSearch: true,
+    showHeader: true,
+    pagerSize: 2,
     url: (item) => 'client/clients/view/' + item.id,
     avatarUrl: (item) => 'https://semantic-ui.com/images/avatar/large/elliot.jpg'
   });
@@ -52,26 +45,9 @@ export class ClientsOverviewComponent extends BaseComponent {
   constructor(
     protected componentDependencyService: ComponentDependencyService) {
     super(componentDependencyService)
-
-    this.dependencies.userService.getClients([new PageSize(2)])
-      .subscribe(clients => {
-        this.clients = clients;
-        this.loaderEnabled = false;
-      });
   }
 
   initAppData(): AppData {
     return new AppData("Clients");
-  }
-
-  private handleSearch(searchTerm: string): void {
-
-    this.loaderEnabled = true;
-
-    this.dependencies.userService.getClients([new WhereLikeMultiple(["FirstName", "LastName"], searchTerm)])
-      .subscribe(clients => {
-        this.clients = clients;
-        this.loaderEnabled = false;
-      });
   }
 }
