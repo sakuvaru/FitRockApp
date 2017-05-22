@@ -56,7 +56,7 @@ export class DataTableComponent implements AfterViewInit {
 
     private filterItems(page: number): void {
         // register loader on page change
-        if (!this.loaderEnabled){
+        if (!this.loaderEnabled) {
             this.loaderEnabled = true;
         }
 
@@ -169,6 +169,12 @@ export class DataTableComponent implements AfterViewInit {
         if (startingPage < 1) {
             // starting page has to be at least 1
             startingPage = 1;
+        }
+
+        if (this.currentPage >= this.totalPages - buttonOffsetCount) {
+            // display more previous items if current page is approaching maximum number of pages
+            var diff = this.currentPage - buttonOffsetCount * 2;
+            startingPage = diff;
         }
 
         for (let i = startingPage; i < startingPage + this.showPagesCount; i++) {
