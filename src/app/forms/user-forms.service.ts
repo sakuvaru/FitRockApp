@@ -109,7 +109,7 @@ export class UserFormsService extends BaseFormService<User> implements IFormsSer
     }
 
     getEditFields(itemId: number): Observable<BaseField<any>[]> {
-        return this.clientService.getById(itemId).map(item => {
+        return this.clientService.getById(itemId).map(response => {
            var fields: BaseField<any>[] = [
             new HiddenField({
                 key: 'id',
@@ -122,7 +122,7 @@ export class UserFormsService extends BaseFormService<User> implements IFormsSer
                 type: 'text',
                 required: false,
                 order: 1,
-                value: item.birthDate
+                value: response.item.birthDate
             }),
             new TextField({
                 key: 'isFemale',
@@ -130,7 +130,7 @@ export class UserFormsService extends BaseFormService<User> implements IFormsSer
                 type: 'text',
                 required: false,
                 order: 1,
-                value: item.isFemale
+                value: response.item.isFemale
             }),
            new TextField({
                 key: 'city',
@@ -139,7 +139,7 @@ export class UserFormsService extends BaseFormService<User> implements IFormsSer
                 required: false,
                 order: 1,
                 maxLength: 50,
-                value: item.city
+                value: response.item.city
             }),
             new TextField({
                 key: 'address',
@@ -148,7 +148,7 @@ export class UserFormsService extends BaseFormService<User> implements IFormsSer
                 required: false,
                 order: 1,
                 maxLength: 100,
-                value: item.address
+                value: response.item.address
             }),
             new TextField({
                 key: 'fitnessLevel',
@@ -156,7 +156,7 @@ export class UserFormsService extends BaseFormService<User> implements IFormsSer
                 type: 'text',
                 required: false,
                 order: 1,
-                value: item.fitnessLevel
+                value: response.item.fitnessLevel
             }),
             new TextAreaField({
                 key: 'medicalCondition',
@@ -165,7 +165,7 @@ export class UserFormsService extends BaseFormService<User> implements IFormsSer
                 required: false,
                 order: 1,
                 maxLength: 5000,
-                value: item.medicalCondition
+                value: response.item.medicalCondition
             }),
             new TextAreaField({
                 key: 'goal',
@@ -174,7 +174,7 @@ export class UserFormsService extends BaseFormService<User> implements IFormsSer
                 required: false,
                 order: 1,
                 maxLength: 200,
-                value: item.goal
+                value: response.item.goal
             }),
              new TextField({
                 key: 'trainerPublicNotes',
@@ -183,7 +183,7 @@ export class UserFormsService extends BaseFormService<User> implements IFormsSer
                 required: false,
                 order: 1,
                 hint: 'Klient tyto poznámky neuvidí',
-                value: item.trainerPublicNotes
+                value: response.item.trainerPublicNotes
             }),
             ];
             return fields.sort((a, b) => a.order - b.order);

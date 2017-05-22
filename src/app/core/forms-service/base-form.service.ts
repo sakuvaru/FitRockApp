@@ -8,6 +8,7 @@ import { TextField, DropdownField, HiddenField } from '../web-components/dynamic
 import { IService } from '../../core/repository-service/iservice.class';
 import { IItem } from '../../repository/iitem.class';
 import { Observable } from 'rxjs/Observable';
+import { ResponseDelete, ResponseCreate, ResponseEdit, ResponseMultiple, ResponseSingle } from '../../repository/responses';
 
 //Note - nested generics are not currently supported by Typescript 2 (13.5.2017) => take types in constructor
 @Injectable()
@@ -22,11 +23,11 @@ export abstract class BaseFormService<TItem extends IItem> implements IFormsServ
 
     abstract getEditFields(itemId: number): Observable<BaseField<any>[]>;
 
-    saveInsertForm(form: FormGroup): Observable<IItem> {
+    saveInsertForm(form: FormGroup): Observable<ResponseCreate<IItem>> {
         return this.service.create((form as any) as TItem);
     }
 
-    saveEditForm(form: FormGroup): Observable<IItem> {
+    saveEditForm(form: FormGroup): Observable<ResponseEdit<IItem>> {
         return this.service.edit((form as any) as TItem);
     }
 

@@ -56,7 +56,7 @@ export class LogFormsService extends BaseFormService<Log> implements IFormsServi
     }
 
     getEditFields(itemId: number): Observable<BaseField<any>[]> {
-        return this.logService.getById(itemId).map(item => {
+        return this.logService.getById(itemId).map(response => {
             var fields: BaseField<any>[] = [
                 new HiddenField({
                     key: 'id',
@@ -70,7 +70,7 @@ export class LogFormsService extends BaseFormService<Log> implements IFormsServi
                     type: 'text',
                     required: true,
                     order: 1,
-                    value: item.errorMessage
+                    value: response.item.errorMessage
                 }),
                 new TextAreaField({
                     key: 'stacktrace',
@@ -79,14 +79,14 @@ export class LogFormsService extends BaseFormService<Log> implements IFormsServi
                     required: false,
                     order: 2,
                     maxLength: 5000,
-                    value: item.stacktrace
+                    value: response.item.stacktrace
                 }),
                 new TextField({
                     key: 'user',
                     label: 'User',
                     required: false,
                     order: 3,
-                    value: item.user
+                    value: response.item.user
                 }),
             ];
             return fields.sort((a, b) => a.order - b.order);

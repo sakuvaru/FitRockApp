@@ -22,13 +22,11 @@ export class DataTableComponent implements AfterViewInit {
     @Input() fields: DataTableField<any>[];
     @Input() config: DataTableConfig<any>;
 
-    // pager
-    @Input() totalPages: number = 25;
-
     // events
     @Output() onSearch = new EventEmitter<string>();
 
-    // variables
+    // pager
+    private totalPages: number;
     private currentPage: number = 1;
     private showPagesCount = 5; // odd number
 
@@ -46,22 +44,19 @@ export class DataTableComponent implements AfterViewInit {
 
     ngAfterViewInit() {
         //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
-        this.initItems();
-    }
-
-    // load methods
-    private initItems(): void {
         this.filterItems(1);
     }
 
+    // load methods
     private filterItems(page: number): void {
         // register loader on page change
         if (!this.loaderEnabled) {
             this.loaderEnabled = true;
         }
 
-        this.config.loadItems(this.searchTerm, page, this.config.pagerSize).subscribe(items => {
-            this.items = items;
+        this.config.loadItems(this.searchTerm, page, this.config.pagerSize).subscribe(response => {
+            this.items = response.items;
+            this.totalPages = response.pages;
             this.loaderEnabled = false;
         });
     }
@@ -170,11 +165,16 @@ export class DataTableComponent implements AfterViewInit {
             // starting page has to be at least 1
             startingPage = 1;
         }
-
-        if (this.currentPage >= this.totalPages - buttonOffsetCount) {
+        else if (this.currentPage > this.totalPages - buttonOffsetCount) {
             // display more previous items if current page is approaching maximum number of pages
-            var diff = this.currentPage - buttonOffsetCount * 2;
-            startingPage = diff;
+            var offset = this.currentPage - this.totalPages + this.showPagesCount - 1;
+            var startingPage = this.currentPage - offset;
+
+            // do not display negative pages
+            if (startingPage < 1) {
+                // show first page
+                startingPage = 1;
+            }
         }
 
         for (let i = startingPage; i < startingPage + this.showPagesCount; i++) {

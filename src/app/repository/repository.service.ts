@@ -1,11 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Headers, RequestOptions } from '@angular/http';
 import { ErrorResponse } from './error-response.class';
-import { ResponseDelete } from './response-delete.class';
-import { ResponseEdit } from './response-edit.class';
-import { ResponseCreate } from './response-create.class';
-import { ResponseSingle } from './response-single.class';
-import { ResponseMultiple } from './response-multiple.class';
+import { ResponseDelete, ResponseCreate, ResponseEdit, ResponseMultiple, ResponseSingle } from './responses';
 import { IOption } from './ioption.class';
 import { AuthHttp } from 'angular2-jwt';
 import { AppConfig } from '../core/config/app.config';
@@ -13,6 +9,7 @@ import { AppDataService } from '../core/app-data.service';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 import { Response } from '@angular/http';
+import { IItem } from './iitem.class';
 
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
@@ -89,12 +86,12 @@ export class RepositoryService {
         return Observable.throw(errMsg);
     }
 
-    private extractData(response: Response) {
+    private extractData<TItem extends IItem>(response: Response): ResponseMultiple<TItem> {
         let body = response.json();
         return body || {};
     }
 
-    getMultiple(type: string, action: string, options?: IOption[]): Observable<ResponseMultiple> {
+    getMultiple<TItem extends IItem>(type: string, action: string, options?: IOption[]): Observable<ResponseMultiple<TItem>> {
         // trigger request
         this.startRequest();
 
@@ -112,7 +109,7 @@ export class RepositoryService {
             });
     }
 
-     getSingle(type: string, action: string, options?: IOption[]): Observable<ResponseSingle> {
+    getSingle<TItem extends IItem>(type: string, action: string, options?: IOption[]): Observable<ResponseSingle<TItem>> {
         // trigger request
         this.startRequest();
 
@@ -130,23 +127,23 @@ export class RepositoryService {
             });
     }
 
-    getAll(type: string, options?: IOption[]): Observable<ResponseMultiple> {
+    getAll<T extends IItem>(type: string, options?: IOption[]): Observable<ResponseMultiple<T>> {
         return this.getMultiple(type, 'getall', options);
     }
 
-    getByCodename(type: string, codename: string, options?: IOption[]): Observable<ResponseSingle> {
-        return this.getSingle(type,  'getbycodename/' + codename);
+    getByCodename<TItem extends IItem>(type: string, codename: string, options?: IOption[]): Observable<ResponseSingle<TItem>> {
+        return this.getSingle(type, 'getbycodename/' + codename);
     }
 
-    getByGuid(type: string, guid: string, options?: IOption[]): Observable<ResponseSingle> {
-        return this.getSingle(type,  'getbyguid/' + guid);
+    getByGuid<TItem extends IItem>(type: string, guid: string, options?: IOption[]): Observable<ResponseSingle<TItem>> {
+        return this.getSingle(type, 'getbyguid/' + guid);
     }
 
-    getById(type: string, id: number, options?: IOption[]): Observable<ResponseSingle> {
-         return this.getSingle(type,  'getbyid/' + id);
+    getById<TItem extends IItem>(type: string, id: number, options?: IOption[]): Observable<ResponseSingle<TItem>> {
+        return this.getSingle(type, 'getbyid/' + id);
     }
 
-    create(type: string, body: any): Observable<ResponseCreate> {
+    create<TItem extends IItem>(type: string, body: any): Observable<ResponseCreate<TItem>> {
         // trigger request
         this.startRequest();
 
@@ -165,7 +162,7 @@ export class RepositoryService {
             });
     }
 
-    edit(type: string, body: any): Observable<ResponseEdit> {
+    edit<TItem extends IItem>(type: string, body: any): Observable<ResponseEdit<TItem>> {
         // trigger request
         this.startRequest();
 

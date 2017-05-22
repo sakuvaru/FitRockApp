@@ -39,11 +39,11 @@ export class DashboardComponent extends BaseComponent implements OnInit {
 
     ngOnInit(): void {
         this.logService.getAll([new Limit(5), new OrderByDescending("id")]).subscribe(
-                logs => this.logs = logs
+                response => this.logs = response.items
         );
 
         this.logService.getById(2).subscribe(
-            log => this.log = log,
+            response => this.log = response.item,
             error => console.log(error)
         );
 

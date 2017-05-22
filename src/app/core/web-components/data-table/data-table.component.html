@@ -22,18 +22,21 @@
 
           <span *ngFor="let field of fields" flex="field.flex" [class.tc-grey-500]="field.isSubtle" [class.md-caption]="field.isSubtle"
             class="{{getTextAlignClass(field)}}">
-          
-          {{getFieldValue(field, item)}}
+            {{getFieldValue(field, item)}}
         </span>
         </md-list-item>
       </div>
       <div *ngIf="items != null && items.length == 0" layout="row" layout-align="center">
-        <h3>No results here</h3>
+        <div *ngIf="items != null && items.length == 0 && searchTerm" layout="row" layout-align="center">
+        <h3>{{config.searchNoItemsText}}</h3>
+      </div>
+      <div *ngIf="items != null && items.length == 0 && !searchTerm" layout="row" layout-align="center">
+        <h3>{{config.noItemsText}}</h3>
+      </div>
       </div>
     </md-nav-list>
 
     <!-- Nav list without link -->
-
     <md-list *ngIf="!config.url" role="list" class="pad-top-none">
       <div *ngFor="let item of items; let i=index">
         <md-divider *ngIf="!isFirstItem(i) || config.showHeader"></md-divider>
@@ -47,20 +50,23 @@
         </span>
         </md-list-item>
       </div>
-      <div *ngIf="items != null && items.length == 0" layout="row" layout-align="center">
-        <h3>No results here</h3>
+      <div *ngIf="items != null && items.length == 0 && searchTerm" layout="row" layout-align="center">
+        <h3>{{config.searchNoItemsText}}</h3>
+      </div>
+      <div *ngIf="items != null && items.length == 0 && !searchTerm" layout="row" layout-align="center">
+        <h3>{{config.noItemsText}}</h3>
       </div>
     </md-list>
     <md-divider *ngIf="config.showPager"></md-divider>
     <md-card-actions *ngIf="config.showPager">
-      <button [disabled]="!hasPreviousPage()" md-button (click)="onGoToPage(1)"><<</button>
-      <button [disabled]="!hasPreviousPage()" md-button (click)="onGoToPreviousPage()"><</button>
+      <button *ngIf="config.showPagerFirstLastButtons" [disabled]="!hasPreviousPage()" md-button (click)="onGoToPage(1)"><<</button>
+      <button *ngIf="config.showPagerNextPreviousButtons" [disabled]="!hasPreviousPage()" md-button (click)="onGoToPreviousPage()"><</button>
       <span *ngFor="let button of getPagerButtons()">
-      <button *ngIf="!button.isActive" md-button (click)="onGoToPage(button.page)">{{button.page}}</button>
-      <button *ngIf="button.isActive" md-raised-button color="primary" (click)="onGoToPage(button.page)">{{button.page}}</button>
+      <button *ngIf="config.showPagerNumberButtons && !button.isActive" md-button (click)="onGoToPage(button.page)">{{button.page}}</button>
+      <button *ngIf="config.showPagerNumberButtons && button.isActive" md-raised-button color="primary" (click)="onGoToPage(button.page)">{{button.page}}</button>
     </span>
-      <button [disabled]="!hasNextPage()" md-button (click)="onGoToNextPage()">></button>
-      <button [disabled]="!hasNextPage()" md-button (click)="onGoToPage(totalPages)">>></button>
+      <button *ngIf="config.showPagerNextPreviousButtons" [disabled]="!hasNextPage()" md-button (click)="onGoToNextPage()">></button>
+      <button *ngIf="config.showPagerFirstLastButtons" [disabled]="!hasNextPage()" md-button (click)="onGoToPage(totalPages)">>></button>
     </md-card-actions>
   </md-card>
 </loader>

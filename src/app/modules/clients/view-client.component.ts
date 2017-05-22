@@ -32,7 +32,7 @@ export class ViewClientComponent extends BaseComponent implements OnInit {
     ngOnInit(): void {
         this.activatedRoute.params
             .switchMap((params: Params) => this.dependencies.userService.getById(+params['id']))
-            .subscribe(user => this.client = user);
+            .subscribe(response => this.client = response.item);
     }
 
     initAppData(): AppData {
