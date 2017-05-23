@@ -1,16 +1,23 @@
 <div layout="row" layout-margin [formGroup]="form" [ngSwitch]="question.controlType">
+
   <!-- Question types -->
 
   <md-input-container *ngSwitchCase="'textbox'" flex hintLabel="{{question.hint}}">
-    <input mdInput value="{{question.value}}" [attr.maxLength]="question.maxLength > 0 ? question.maxLength : null" required="{{question.required}}" placeholder="{{question.label}}" [formControlName]="question.key"
-      [id]="question.key" [type]="question.type" #elem>
+    <input mdInput value="{{question.value}}" [attr.maxLength]="question.maxLength > 0 ? question.maxLength : null" required="{{question.required}}"
+      placeholder="{{question.label}}" [formControlName]="question.key" [id]="question.key" [type]="question.type" #elem>
     <md-hint *ngIf="showLengthHint()" [ngClass]="{'tc-red-600': elem.value.length > question.maxLength}" align="end">{{elem.value.length}} / {{question.maxLength}}</md-hint>
     <md-error>Chybně vyplněné pole</md-error>
   </md-input-container>
 
+  <div *ngSwitchCase="'checkbox'" flex>
+    <md-checkbox [checked]="question.value" [formControlName]="question.key" [id]="question.key"> {{question.label}}
+    </md-checkbox>
+  </div>
+
   <md-input-container *ngSwitchCase="'textarea'" flex hintLabel="{{question.hint}}">
-    <textarea mdTextareaAutosize mdInput mdAutosizeMinRows="{{question.minAutosizeRows}}" mdAutosizeMaxRows="{{question.maxAutosizeRows}}" [attr.maxLength]="question.maxLength > 0 ? question.maxLength : null" value="{{question.value}}" required="{{question.required}}" placeholder="{{question.label}}" [formControlName]="question.key"
-      [id]="question.key" [type]="question.type" #elem>
+    <textarea mdTextareaAutosize mdInput mdAutosizeMinRows="{{question.minAutosizeRows}}" mdAutosizeMaxRows="{{question.maxAutosizeRows}}"
+      [attr.maxLength]="question.maxLength > 0 ? question.maxLength : null" value="{{question.value}}" required="{{question.required}}"
+      placeholder="{{question.label}}" [formControlName]="question.key" [id]="question.key" [type]="question.type" #elem>
     </textarea>
     <md-hint *ngIf="showLengthHint()" [ngClass]="{'tc-red-600': elem.value.length > question.maxLength}" align="end">{{elem.value.length}} / {{question.maxLength}}</md-hint>
     <md-error>Chybně vyplněné pole</md-error>

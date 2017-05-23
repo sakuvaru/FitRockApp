@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, AfterViewInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { BaseField } from './base-field.class';
 
@@ -9,14 +9,27 @@ import { BaseField } from './base-field.class';
   templateUrl: './dynamic-form-question.component.html'
 })
 
-export class DynamicFormQuestionComponent {
+export class DynamicFormQuestionComponent implements AfterViewInit {
 
   @Input() question: BaseField<any>;
 
   @Input() form: FormGroup;
 
-  private showLengthHint(): boolean{
-    if (this.question.maxLength > 0){
+  testChecked: boolean = false;
+
+  ngAfterViewInit() {
+    //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
+
+    // set default checkbox value to false programatically (it will otherwise treat checkbox as undefined)
+    if (this.question.controlType === 'checkbox') {
+      if (!this.question.value) {
+        this.form.controls[this.question.key].setValue(false);
+      }
+    }
+  }
+
+  private showLengthHint(): boolean {
+    if (this.question.maxLength > 0) {
       return true;
     }
     return false;
