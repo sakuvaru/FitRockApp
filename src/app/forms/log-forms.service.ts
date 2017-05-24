@@ -29,7 +29,6 @@ export class LogFormsService extends BaseFormService<Log> implements IFormsServi
                 label: 'Error message',
                 type: 'text',
                 required: true,
-                order: 1,
                 maxLength: 100,
             }),
             new TextAreaField({
@@ -38,7 +37,6 @@ export class LogFormsService extends BaseFormService<Log> implements IFormsServi
                 type: 'text',
                 value: '',
                 required: false,
-                order: 2,
                 maxLength: 5000,
             }),
             new TextField({
@@ -46,13 +44,10 @@ export class LogFormsService extends BaseFormService<Log> implements IFormsServi
                 label: 'User',
                 value: '',
                 required: false,
-                order: 3
             }),
         ];
 
-        var sortedFields = fields.sort((a, b) => a.order - b.order);
-
-        return Observable.of(sortedFields);
+        return Observable.of(fields);
     }
 
     getEditFields(itemId: number): Observable<BaseField<any>[]> {
@@ -61,7 +56,6 @@ export class LogFormsService extends BaseFormService<Log> implements IFormsServi
                 new HiddenField({
                     key: 'id',
                     required: true,
-                    order: 1,
                     value: itemId
                 }),
                 new TextField({
@@ -69,7 +63,6 @@ export class LogFormsService extends BaseFormService<Log> implements IFormsServi
                     label: 'Error message',
                     type: 'text',
                     required: true,
-                    order: 1,
                     value: response.item.errorMessage
                 }),
                 new TextAreaField({
@@ -77,7 +70,6 @@ export class LogFormsService extends BaseFormService<Log> implements IFormsServi
                     label: 'Stacktrace',
                     type: 'text',
                     required: false,
-                    order: 2,
                     maxLength: 5000,
                     value: response.item.stacktrace
                 }),
@@ -85,11 +77,10 @@ export class LogFormsService extends BaseFormService<Log> implements IFormsServi
                     key: 'user',
                     label: 'User',
                     required: false,
-                    order: 3,
                     value: response.item.user
                 }),
             ];
-            return fields.sort((a, b) => a.order - b.order);
+            return fields;
         });
     }
 }

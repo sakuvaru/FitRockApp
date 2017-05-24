@@ -23,12 +23,11 @@ export abstract class BaseFormService<TItem extends IItem> implements IFormsServ
 
     abstract getEditFields(itemId: number): Observable<BaseField<any>[]>;
 
-    saveInsertForm(form: FormGroup): Observable<ResponseCreate<IItem>> {
-        return this.service.create((form as any) as TItem);
+    saveInsertForm(form: FormGroup, saveFunction: (item: TItem) => Observable<ResponseCreate<TItem>>): Observable<ResponseCreate<TItem>> {
+        return saveFunction((form as any) as TItem);
     }
 
-    saveEditForm(form: FormGroup): Observable<ResponseEdit<IItem>> {
-        return this.service.edit((form as any) as TItem);
+    saveEditForm(form: FormGroup, saveFunction: (item: TItem) => Observable<ResponseEdit<TItem>>): Observable<ResponseEdit<TItem>> {
+        return saveFunction((form as any) as TItem);
     }
-
 }

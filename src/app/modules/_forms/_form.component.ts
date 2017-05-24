@@ -36,14 +36,14 @@ export class FormComponent extends BaseComponent {
     }
 
     private handleInsertSubmit(form: FormGroup): void {
-        this.logFormsService.saveInsertForm(form).subscribe(item => {
+        this.logFormsService.saveInsertForm(form, (item) => this.dependencies.logService.create(item)).subscribe(item => {
             console.log(item);
             this.showSavedSnackbar();
         });
     }
 
     private handleEditSubmit(form: FormGroup): void {
-        this.logFormsService.saveEditForm(form).subscribe(item => {
+        this.logFormsService.saveEditForm(form, (item) => this.dependencies.logService.edit(item)).subscribe(item => {
             console.log(item);
             this.showSavedSnackbar();
         });

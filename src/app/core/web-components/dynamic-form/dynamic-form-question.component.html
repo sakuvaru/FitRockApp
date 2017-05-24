@@ -10,8 +10,17 @@
   </md-input-container>
 
   <div *ngSwitchCase="'checkbox'" flex>
-    <md-checkbox [checked]="question.value" [formControlName]="question.key" [id]="question.key"> {{question.label}}
+    <md-checkbox [checked]="question.value" [formControlName]="question.key" [id]="question.key" required="{{question.required}}" #elem> {{question.label}} 
     </md-checkbox>
+    <span *ngIf="question.required && !elem.checked" class="tc-grey-500 md-caption"> (povinné)</span>
+  </div>
+
+  <div *ngSwitchCase="'radioboolean'" flex>
+    <md-radio-group [formControlName]="question.key" [id]="question.key" required="{{question.required}}" (change)="handleRadioButtonChange($event)" #elem>
+      <md-radio-button value="true" class="push-right">{{question.trueOptionLabel}}</md-radio-button>
+      <md-radio-button value="false">{{question.falseOptionLabel}}</md-radio-button>
+    </md-radio-group>
+    <span *ngIf="question.required && showRequiredLabels" class="tc-grey-500 md-caption"> (povinné)</span>
   </div>
 
   <md-input-container *ngSwitchCase="'textarea'" flex hintLabel="{{question.hint}}">

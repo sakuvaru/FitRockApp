@@ -15,13 +15,19 @@ export class DynamicFormQuestionComponent implements AfterViewInit {
 
   @Input() form: FormGroup;
 
-  testChecked: boolean = false;
+  showRequiredLabels: boolean = true;
 
   ngAfterViewInit() {
     //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
 
     // set default checkbox value to false programatically (it will otherwise treat checkbox as undefined)
-    if (this.question.controlType === 'checkbox') {
+    if (this.question.controlType === 'checkbox' && !this.question.required) {
+      if (!this.question.value) {
+        this.form.controls[this.question.key].setValue(false);
+      }
+    }
+    // set default value for radio checkbox
+    else if (this.question.controlType === 'radioboolean' && !this.question.required) {
       if (!this.question.value) {
         this.form.controls[this.question.key].setValue(false);
       }
@@ -35,5 +41,9 @@ export class DynamicFormQuestionComponent implements AfterViewInit {
     return false;
   }
 
-  get isValid() { return this.form.controls[this.question.key].valid; }
+  private get isValid() { return this.form.controls[this.question.key].valid; }
+
+  private handleRadioButtonChange(): void{
+    this.showRequiredLabels = false;
+  }
 }

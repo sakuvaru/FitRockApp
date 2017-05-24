@@ -6,13 +6,13 @@ import { IItem } from '../../repository/iitem.class';
 import { Observable } from 'rxjs/Observable';
 import { ResponseDelete, ResponseCreate, ResponseEdit, ResponseMultiple, ResponseSingle } from '../../repository/responses';
 
-export interface IFormsService<TItem extends IItem>{
+export interface IFormsService<TItem extends IItem> {
 
     getInsertFields(): Observable<BaseField<any>[]>;
 
     getEditFields(itemId: number): Observable<BaseField<any>[]>;
 
-    saveInsertForm(form: FormGroup): Observable<ResponseCreate<IItem>>;
+    saveInsertForm(form: FormGroup, saveFunction: (item: TItem) => Observable<ResponseCreate<TItem>>): Observable<ResponseCreate<TItem>>;
 
-    saveEditForm(form: FormGroup): Observable<ResponseEdit<IItem>>;
+    saveEditForm(form: FormGroup, saveFunction: (item: TItem) => Observable<ResponseEdit<TItem>>): Observable<ResponseEdit<TItem>>;
 }

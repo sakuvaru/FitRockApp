@@ -4,8 +4,8 @@ import { IService } from './iservice.class';
 import { ResponseDelete, ResponseCreate, ResponseEdit, ResponseMultiple, ResponseSingle } from '../../repository/responses';
 import { IOption } from '../../repository/ioption.class';
 import { Observable } from 'rxjs/Observable';
-
 import { User } from '../../models/user.class';
+
 export abstract class BaseService<TItem extends IItem> implements IService<TItem>{
 
     constructor(protected repositoryService: RepositoryService, public type: string) { }
@@ -76,30 +76,38 @@ export abstract class BaseService<TItem extends IItem> implements IService<TItem
     }
 
     getAll(options?: IOption[]): Observable<ResponseMultiple<TItem>> {
-        return this.repositoryService.getAll<TItem>(this.type, options).map(response => this.mapGetMultiple(response));
+        return this.repositoryService.getMultiple<TItem>(this.type, 'getall', options).map(response => this.mapGetMultiple(response));
     }
 
     getByCodename(codename: string, options?: IOption[]): Observable<ResponseSingle<TItem>> {
-        return this.repositoryService.getByCodename<TItem>(this.type, codename, options).map(response => this.mapGetSingle(response));
+        return this.repositoryService.getSingle<TItem>(this.type, 'getbycodename/' + codename, options).map(response => this.mapGetSingle(response));
     }
 
     getByGuid(guid: string, options?: IOption[]): Observable<ResponseSingle<TItem>> {
-        return this.repositoryService.getByGuid<TItem>(this.type, guid, options).map(response => this.mapGetSingle(response));
+        return this.repositoryService.getSingle<TItem>(this.type, 'getbyguid/' + guid, options).map(response => this.mapGetSingle(response));
     }
 
     getById(id: number, options?: IOption[]): Observable<ResponseSingle<TItem>> {
-        return this.repositoryService.getById<TItem>(this.type, id, options).map(response => this.mapGetSingle(response));
+        return this.repositoryService.getSingle<TItem>(this.type, 'getbyid/' + id, options).map(response => this.mapGetSingle(response));
     }
 
     create(obj: TItem): Observable<ResponseCreate<TItem>> {
-        return this.repositoryService.create<TItem>(this.type, obj).map(response => this.mapCreate(response));
+        return this.repositoryService.create<TItem>(this.type, 'create', obj).map(response => this.mapCreate(response));
+    }
+
+    createCustom(action: string, obj: TItem): Observable<ResponseCreate<TItem>> {
+        return this.repositoryService.create<TItem>(this.type, action, obj).map(response => this.mapCreate(response));
     }
 
     edit(obj: TItem): Observable<ResponseEdit<TItem>> {
-        return this.repositoryService.edit<TItem>(this.type, obj).map(response => this.mapEdit(response));
+        return this.repositoryService.edit<TItem>(this.type, 'edit', obj).map(response => this.mapEdit(response));
+    }
+
+    editCustom(action: string, obj: TItem): Observable<ResponseEdit<TItem>> {
+        return this.repositoryService.edit<TItem>(this.type, action, obj).map(response => this.mapEdit(response));
     }
 
     delete(id: number): Observable<ResponseDelete> {
-        return this.repositoryService.delete(this.type, id).map(response => this.mapDelete(response));
+        return this.repositoryService.delete(this.type, 'delete/' + id).map(response => this.mapDelete(response));
     }
 }

@@ -25,7 +25,7 @@
             <div layout="row">
                 <md-input-container flex>
                     <input mdInput #userElement #userControl="ngModel" placeholder="Username" type="text" maxlength="30" name="username" [(ngModel)]="username"
-                        required>
+                        required autocomplete="off">
                     <md-hint align="start">
                         <span [hidden]="!userControl.errors?.required || userControl.pristine" class="tc-red-600">Required</span>
                     </md-hint>
@@ -35,7 +35,7 @@
             <div layout="row" class="push-top-sm">
                 <md-input-container flex>
                     <input mdInput #passElement #passControl="ngModel" placeholder="Password" type="password" name="password" [(ngModel)]="password"
-                        required>
+                        required autocomplete="off">
                     <md-hint align="start">
                         <span [hidden]="!passControl.errors?.required || passControl.pristine" class="tc-red-600">Required</span>
                     </md-hint>

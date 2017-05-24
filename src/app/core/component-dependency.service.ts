@@ -12,6 +12,7 @@ import { RepositoryService } from '../repository/repository.service';
 
 // services
 import { UserService } from '../services/user.service';
+import { LogService } from '../services/log.service';
 
 // Angular material
 import { MdSnackBar } from '@angular/material';
@@ -34,6 +35,7 @@ export class ComponentDependencyService {
 
     // services
     public userService: UserService;
+    public logService: LogService;
 
     constructor(private injector: Injector) {
         // use Angular's injector to get service instances
@@ -48,5 +50,6 @@ export class ComponentDependencyService {
         this.snackbarService = injector.get(MdSnackBar);
 
         this.userService = injector.get(UserService);
+        this.logService = injector.get(LogService);
     }
 }

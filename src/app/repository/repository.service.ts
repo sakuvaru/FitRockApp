@@ -127,30 +127,14 @@ export class RepositoryService {
             });
     }
 
-    getAll<T extends IItem>(type: string, options?: IOption[]): Observable<ResponseMultiple<T>> {
-        return this.getMultiple(type, 'getall', options);
-    }
-
-    getByCodename<TItem extends IItem>(type: string, codename: string, options?: IOption[]): Observable<ResponseSingle<TItem>> {
-        return this.getSingle(type, 'getbycodename/' + codename);
-    }
-
-    getByGuid<TItem extends IItem>(type: string, guid: string, options?: IOption[]): Observable<ResponseSingle<TItem>> {
-        return this.getSingle(type, 'getbyguid/' + guid);
-    }
-
-    getById<TItem extends IItem>(type: string, id: number, options?: IOption[]): Observable<ResponseSingle<TItem>> {
-        return this.getSingle(type, 'getbyid/' + id);
-    }
-
-    create<TItem extends IItem>(type: string, body: any): Observable<ResponseCreate<TItem>> {
+    create<TItem extends IItem>(type: string, action: string, body: any): Observable<ResponseCreate<TItem>> {
         // trigger request
         this.startRequest();
 
         var headers = new Headers({ 'Content-Type': 'application/json' });
         var options = new RequestOptions({ headers: headers });
 
-        var url = this.getBaseUrl(type) + '/create';
+        var url = this.getBaseUrl(type) + '/' + action;
 
         return this.authHttp.post(url, body, options)
             .map(this.extractData)
@@ -162,14 +146,14 @@ export class RepositoryService {
             });
     }
 
-    edit<TItem extends IItem>(type: string, body: any): Observable<ResponseEdit<TItem>> {
+    edit<TItem extends IItem>(type: string, action: string, body: any): Observable<ResponseEdit<TItem>> {
         // trigger request
         this.startRequest();
 
         var headers = new Headers({ 'Content-Type': 'application/json' });
         var options = new RequestOptions({ headers: headers });
 
-        var url = this.getBaseUrl(type) + '/edit';
+        var url = this.getBaseUrl(type) + '/' + action;
 
         return this.authHttp.post(url, body, options)
             .map(this.extractData)
@@ -181,14 +165,14 @@ export class RepositoryService {
             });
     }
 
-    delete(type: string, id: number): Observable<ResponseDelete> {
+    delete(type: string, action: string): Observable<ResponseDelete> {
         // trigger request
         this.startRequest();
 
         var headers = new Headers({ 'Content-Type': 'application/json' });
         var options = new RequestOptions({ headers: headers });
 
-        var url = this.getBaseUrl(type) + '/delete/' + id;
+        var url = this.getBaseUrl(type) + '/' + action;
 
         return this.authHttp.delete(url, options)
             .map(this.extractData)

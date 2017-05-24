@@ -24,4 +24,8 @@ export class UserService extends BaseService<User> implements IService<User>{
     getClients(options?: IOption[]): Observable<ResponseMultiple<User>> {
         return this.getMultiple('getclients', options);
     }
+
+    createClient(obj: User): Observable<ResponseCreate<User>> {
+        return this.createCustom('createClient', obj);
+    }
 }

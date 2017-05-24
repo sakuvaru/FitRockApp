@@ -18,30 +18,26 @@ import { UserFormsService } from '../../forms/user-forms.service';
 @Component({
     templateUrl: 'new-client.component.html'
 })
-export class NewClientComponent extends BaseComponent{
+export class NewClientComponent extends BaseComponent {
 
     private insertFields: BaseField<any>[];
 
-   constructor(
-       private userFormsService: UserFormsService,
-       protected componentDependencyService: ComponentDependencyService){
-      super(componentDependencyService)
+    constructor(
+        private userFormsService: UserFormsService,
+        protected componentDependencyService: ComponentDependencyService) {
+        super(componentDependencyService)
 
-      this.userFormsService.getInsertFields().subscribe(fields => {
-          this.insertFields = fields;
-          // set trainer id
-          var trainerIdField = this.insertFields.find(m => m.key == 'trainerId');
-          trainerIdField.value = 1;
+        this.userFormsService.getInsertFields().subscribe(fields => {
+            this.insertFields = fields;
         });
-   }
+    }
 
-   initAppData(): AppData{
-       return new AppData("Nový klient");
-   }
+    initAppData(): AppData {
+        return new AppData("Nový klient");
+    }
 
-   private handleInsert(form: FormGroup): void {
-        this.userFormsService.saveInsertForm(form).subscribe(item => {
-            console.log(item);
+    private handleInsert(form: FormGroup): void {
+        this.userFormsService.saveInsertForm(form, (item) => this.dependencies.userService.createClient(item)).subscribe(item => {
             this.showSavedSnackbar();
         });
     }

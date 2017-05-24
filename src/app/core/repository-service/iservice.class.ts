@@ -25,7 +25,11 @@ export interface IService<TItem extends IItem> {
 
     create(obj: TItem): Observable<ResponseCreate<TItem>>;
 
+    createCustom(action: string, obj: TItem): Observable<ResponseCreate<TItem>>
+
     edit(obj: TItem): Observable<ResponseEdit<TItem>>;
+
+    editCustom(action: string, obj: TItem): Observable<ResponseEdit<TItem>>
 
     delete(id: number): Observable<ResponseDelete>;
 }

@@ -3,7 +3,6 @@ export class BaseField<T>{
     key: string;
     label: string;
     required: boolean;
-    order: number;
     controlType: string;
     maxLength: number;
     minLength: number;
@@ -15,7 +14,6 @@ export class BaseField<T>{
         key?: string,
         label?: string,
         required?: boolean,
-        order?: number,
         controlType?: string,
         maxLength?: number,
         minLength?: number,
@@ -27,7 +25,6 @@ export class BaseField<T>{
         this.key = options.key || '';
         this.label = options.label || '';
         this.required = !!options.required;
-        this.order = options.order === undefined ? 1 : options.order;
         this.controlType = options.controlType || '';
         this.minLength = options.minLength;
         this.maxLength = options.maxLength;
