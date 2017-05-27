@@ -1,4 +1,4 @@
-import { IOption } from './ioption.class';
+import { IOption } from './ioption.interface';
 
 export class Page implements IOption {
 

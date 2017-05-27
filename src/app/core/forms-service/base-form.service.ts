@@ -5,8 +5,8 @@ import { IFormsService } from './iforms-service.interface';
 import { BaseField } from '../web-components/dynamic-form/base-field.class';
 import { TextField, DropdownField, HiddenField } from '../web-components/dynamic-form/field-types';
 
-import { IService } from '../../core/repository-service/iservice.class';
-import { IItem } from '../../repository/iitem.class';
+import { IService } from '../../core/type-service/iservice.class';
+import { IItem } from '../../repository/iitem.interface';
 import { Observable } from 'rxjs/Observable';
 import { ResponseDelete, ResponseCreate, ResponseEdit, ResponseMultiple, ResponseSingle } from '../../repository/responses';
 

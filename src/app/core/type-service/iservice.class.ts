@@ -1,15 +1,11 @@
-import { IItem } from '../../repository/iitem.class';
-import { IOption } from '../../repository/ioption.class';
+import { IItem } from '../../repository/iitem.interface';
+import { IOption } from '../../repository/ioption.interface';
 import { Observable } from 'rxjs/Observable';
 import { ResponseDelete, ResponseCreate, ResponseEdit, ResponseMultiple, ResponseSingle } from '../../repository/responses';
 
 export interface IService<TItem extends IItem> {
 
     type: string
-
-    // each service class needs to be responsible for creating proper type of objects 
-    // because returning 'item as TItem' will not convert actual object to type
-    createEmptyItem<TItem extends IItem>(): TItem;
 
     getMultiple(action: string, options?: IOption[]): Observable<ResponseMultiple<TItem>>;
 

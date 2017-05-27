@@ -1,186 +1,40 @@
 import { Injectable } from '@angular/core';
-import { Headers, RequestOptions } from '@angular/http';
-import { ErrorResponse } from './error-response.class';
+import { BaseRepositoryService } from './base-repository-service';
 import { ResponseDelete, ResponseCreate, ResponseEdit, ResponseMultiple, ResponseSingle } from './responses';
-import { IOption } from './ioption.class';
+import { IOption } from './ioption.interface';
+import { IItem } from './iitem.interface';
 import { AuthHttp } from 'angular2-jwt';
-import { AppConfig } from '../core/config/app.config';
-import { AppDataService } from '../core/app-data.service';
-import { Subject } from 'rxjs/Subject';
-import { Observable } from 'rxjs/Observable';
-import { Response } from '@angular/http';
-import { IItem } from './iitem.class';
+import { RepositoryConfig } from './repository.config';
 
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/map';
+import { Observable } from 'rxjs/Observable';
 
 @Injectable()
-export class RepositoryService {
+export class RepositoryService extends BaseRepositoryService {
 
-    private apiUrl = AppConfig.RepositoryApiEndpoint;
+    constructor(
+       protected authHttp: AuthHttp,
+       protected config: RepositoryConfig
+    ) { super(authHttp, config) }
 
-    private genericErrorMessage = 'An error occurred in "RepositoryService"';
-
-    // Observable string sources
-    private processingRequestSource = new Subject<boolean>();
-    private requestErrorSource = new Subject<ErrorResponse>();
-
-    // Observable string streams
-    requestStateChanged$ = this.processingRequestSource.asObservable();
-    requestErrorChange$ = this.requestErrorSource.asObservable();
-
-    // Service message commands
-    finishRequest(): void {
-        this.processingRequestSource.next(false);
+    getItems<TItem extends IItem>(type: string, action: string, options?: IOption[]): Observable<ResponseMultiple<TItem>> {
+        return super.getMultiple(type, action, options);
     }
 
-    startRequest(): void {
-        this.processingRequestSource.next(true);
+    getItem<TItem extends IItem>(type: string, action: string, options?: IOption[]): Observable<ResponseSingle<TItem>> {
+        return super.getSingle(type, action, options);
     }
 
-    raiseError(errorResponse: ErrorResponse) {
-        this.requestErrorSource.next(errorResponse);
+    create<TItem extends IItem>(type: string, action: string, obj: TItem): Observable<ResponseCreate<TItem>> {
+        return super.create<TItem>(type, action, obj);
     }
 
-    constructor(private authHttp: AuthHttp, private appDataService: AppDataService) {
+    edit<TItem extends IItem>(type: string, action: string, obj: TItem): Observable<ResponseEdit<TItem>> {
+        return super.edit<TItem>(type, action, obj);
     }
 
-    private getBaseUrl(type: string): string {
-        return this.apiUrl + '/' + type;
-    }
-
-    private addOptionsToUrl(url: string, options?: IOption[]): string {
-        if (options) {
-            options.forEach(filter => {
-                if (url.indexOf('?') > -1) {
-                    url = url + '&' + filter.GetParam() + '=' + filter.GetParamValue();
-                }
-                else {
-                    url = url + '?' + filter.GetParam() + '=' + filter.GetParamValue();
-                }
-            });
-        }
-        return url;
-    }
-
-    private handleError(error: Response | any): Observable<any> {
-        // use a remote logging later on
-
-        var errorResponse: ErrorResponse;
-        var errMsg: string;
-
-        if (error instanceof Response) {
-            errMsg = `${this.genericErrorMessage}: ${error.status} - ${error.statusText || ''} ${error}`;
-
-            errorResponse = new ErrorResponse(errMsg, error.status);
-
-        } else {
-            errMsg = error.message ? error.message : error.toString();
-
-            errorResponse = new ErrorResponse(error.message, error.status);
-        }
-
-        // raise error
-        this.raiseError(errorResponse);
-
-        return Observable.throw(errMsg);
-    }
-
-    private extractData<TItem extends IItem>(response: Response): ResponseMultiple<TItem> {
-        let body = response.json();
-        return body || {};
-    }
-
-    getMultiple<TItem extends IItem>(type: string, action: string, options?: IOption[]): Observable<ResponseMultiple<TItem>> {
-        // trigger request
-        this.startRequest();
-
-        var url = this.getBaseUrl(type) + '/' + action;
-
-        url = this.addOptionsToUrl(url, options);
-
-        return this.authHttp.get(url)
-            .map(this.extractData)
-            .catch(response => {
-                return this.handleError(response);
-            })
-            ._finally(() => {
-                this.finishRequest();
-            });
-    }
-
-    getSingle<TItem extends IItem>(type: string, action: string, options?: IOption[]): Observable<ResponseSingle<TItem>> {
-        // trigger request
-        this.startRequest();
-
-        var url = this.getBaseUrl(type) + '/' + action;
-
-        url = this.addOptionsToUrl(url, options);
-
-        return this.authHttp.get(url)
-            .map(this.extractData)
-            .catch(response => {
-                return this.handleError(response);
-            })
-            ._finally(() => {
-                this.finishRequest();
-            });
-    }
-
-    create<TItem extends IItem>(type: string, action: string, body: any): Observable<ResponseCreate<TItem>> {
-        // trigger request
-        this.startRequest();
-
-        var headers = new Headers({ 'Content-Type': 'application/json' });
-        var options = new RequestOptions({ headers: headers });
-
-        var url = this.getBaseUrl(type) + '/' + action;
-
-        return this.authHttp.post(url, body, options)
-            .map(this.extractData)
-            .catch(response => {
-                return this.handleError(response);
-            })
-            ._finally(() => {
-                this.finishRequest();
-            });
-    }
-
-    edit<TItem extends IItem>(type: string, action: string, body: any): Observable<ResponseEdit<TItem>> {
-        // trigger request
-        this.startRequest();
-
-        var headers = new Headers({ 'Content-Type': 'application/json' });
-        var options = new RequestOptions({ headers: headers });
-
-        var url = this.getBaseUrl(type) + '/' + action;
-
-        return this.authHttp.post(url, body, options)
-            .map(this.extractData)
-            .catch(response => {
-                return this.handleError(response);
-            })
-            ._finally(() => {
-                this.finishRequest();
-            });
-    }
-
-    delete(type: string, action: string): Observable<ResponseDelete> {
-        // trigger request
-        this.startRequest();
-
-        var headers = new Headers({ 'Content-Type': 'application/json' });
-        var options = new RequestOptions({ headers: headers });
-
-        var url = this.getBaseUrl(type) + '/' + action;
-
-        return this.authHttp.delete(url, options)
-            .map(this.extractData)
-            .catch(response => {
-                return this.handleError(response);
-            })
-            ._finally(() => {
-                this.finishRequest();
-            });
+    delete<TItem extends IItem>(type: string, action: string): Observable<ResponseDelete> {
+        return super.delete(type, action);
     }
 }
+
+

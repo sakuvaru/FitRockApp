@@ -46,7 +46,6 @@ export class ComponentDependencyService {
         this.appDataService = injector.get(AppDataService);
         this.loadingService = injector.get(TdLoadingService);
         this.repositoryService = injector.get(RepositoryService);
-
         this.snackbarService = injector.get(MdSnackBar);
 
         this.userService = injector.get(UserService);

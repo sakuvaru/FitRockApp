@@ -36,7 +36,7 @@ export class ClientsOverviewComponent extends BaseComponent {
     },
     showPager: true,
     showSearch: true,
-    showHeader: true,
+    showHeader: false,
     pagerSize: 10,
     url: (item) => 'client/clients/view/' + item.id,
     avatarUrl: (item) => 'https://semantic-ui.com/images/avatar/large/elliot.jpg'

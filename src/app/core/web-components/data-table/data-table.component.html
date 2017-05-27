@@ -4,8 +4,8 @@
     <td-search-box *ngIf="config.showSearch" (searchDebounce)="handleSearch($event)" class="push-left push-right" placeholder="hledat"
       [alwaysVisible]="true"></td-search-box>
     <md-divider *ngIf="config.showSearch"></md-divider>
-    <md-list role="list" class="bgc-indigo-200">
-      <md-list-item *ngIf="config.showHeader" disableRipple="true">
+    <md-list *ngIf="config.showHeader" role="list" class="bgc-indigo-200">
+      <md-list-item disableRipple="true">
         <span *ngFor="let field of fields" flex="field.flex" class="{{getTextAlignClass(field)}}">
           {{field.label}}
         </span>

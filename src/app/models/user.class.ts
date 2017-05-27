@@ -1,13 +1,7 @@
-import { IItem } from '../repository/iitem.class';
-import { BaseField } from '../core/web-components/dynamic-form/base-field.class';
+import { BaseItem } from '../repository/base-item.class';
 
-export class User implements IItem {
+export class User extends BaseItem {
 
-    public codename: string;
-    public guid: string;
-    public created: Date;
-    public updated: Date;
-    public id: number;
     public firstName: string;
     public lastName: string;
     public email: string;
@@ -22,13 +16,17 @@ export class User implements IItem {
     public medicalCondition: string;
     public goal: string;
     public trainerPublicNotes: string;
+    
+    public trainer: User;
 
     constructor(
         public fields?: {
-            user?: string,
-            stacktrace?: string,
-            errorMessage?: string,
             id?: number,
+            codename?: string,
+            guid?: string,
+            created?: Date,
+            updated?: Date,
+
             firstName?: string;
             lastName?: string;
             email?: string;
@@ -43,7 +41,7 @@ export class User implements IItem {
             medicalCondition?: string,
             goal?: string,
             trainerPublicNotes?: string,
-        }) {
+        }) { super()
         if (fields) Object.assign(this, fields);
     }
 

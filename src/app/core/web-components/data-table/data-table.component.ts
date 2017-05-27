@@ -58,6 +58,7 @@ export class DataTableComponent implements AfterViewInit {
             this.items = response.items;
             this.totalPages = response.pages;
             this.loaderEnabled = false;
+            console.log(response);
         });
     }
 

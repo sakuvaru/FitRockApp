@@ -19,15 +19,20 @@ import { FormServicesModule } from './forms/form-services.module';
 // main app
 import { AppComponent } from './app.component';
 
+// repository
+import { RepositoryServiceProvider} from './core/providers/repository-service.provider';
+import { RepositoryModule } from './repository/repository.module';
+
+// config
+import { AppConfig } from './core/config/app.config';
+
 // custom modules
 import { CoreModule } from './core/core.module';
 import { LayoutsModule } from './layouts/layouts.module';
 import { SharedModule } from './modules/shared/shared.module';
-import { RepositoryModule } from './repository/repository.module';
 import { ServicesModule } from './services/services.module';
 import { DashboardModule } from './modules/dashboard/dashboard.module';
 import { LoginModule } from './modules/login/login.module';
-import { AppConfig } from './core/config/app.config';
 import { ClientsModule } from './modules/clients/clients.module';
 
 // test form module
@@ -79,7 +84,7 @@ import { FormModule } from './modules/_forms/_form.module';
     FormModule
   ],
   providers: [
-
+    RepositoryServiceProvider
   ],
   bootstrap: [AppComponent]
 })

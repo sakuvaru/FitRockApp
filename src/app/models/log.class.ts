@@ -1,24 +1,24 @@
-import { IItem } from '../repository/iitem.class';
-import { BaseField } from '../core/web-components/dynamic-form/base-field.class';
+import { BaseItem } from '../repository/base-item.class';
 
-export class Log implements IItem {
+export class Log extends BaseItem {
 
-    public codename: string;
-    public guid: string;
-    public created: Date;
-    public updated: Date;
-    public id: number;
     public user: string;
     public stacktrace: string;
     public errorMessage: string;
 
     constructor(
         public fields?: {
+            id?: number,
+            codename?: string,
+            guid?: string,
+            created?: Date,
+            updated?: Date,
+            
             user?: string,
             stacktrace?: string,
             errorMessage?: string,
-            id?: number
         }) {
+            super()
         if (fields) Object.assign(this, fields);
     }
 }

@@ -30,7 +30,7 @@ export class DashboardComponent extends BaseComponent implements OnInit {
     constructor(
         private logService: LogService,
         protected dependencies: ComponentDependencyService) {
-        super(dependencies)
+        super(dependencies)        
     }
 
     initAppData(): AppData {
@@ -39,12 +39,17 @@ export class DashboardComponent extends BaseComponent implements OnInit {
 
     ngOnInit(): void {
         this.logService.getAll([new Limit(5), new OrderByDescending("id")]).subscribe(
-                response => this.logs = response.items
+            response => {
+                console.log(response);
+                this.logs = response.items;
+            }
         );
 
         this.logService.getById(2).subscribe(
-            response => this.log = response.item,
-            error => console.log(error)
+            response => {
+                console.log(response);
+                this.log = response.item;
+            }
         );
 
         /*

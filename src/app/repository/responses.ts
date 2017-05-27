@@ -1,79 +1,117 @@
 import { ResponseGetBase } from './response-get-base.class';
-import { IItem } from './iitem.class';
+import { IItem } from './iitem.interface';
 
 export class ResponseMultiple<T extends IItem> extends ResponseGetBase {
 
-    constructor(
-        // base properties
-        fromCache: boolean,
-        timeCreated: Date,
-        type: string,
-        action: string,
-        result: number,
+    // base properties
+    public fromCache: boolean;
+    public timeCreated: Date;
+    public type: string;
+    public action: string;
+    public result: number;
 
-        // multiple response specific properties
-        public itemstPerPage: number,
-        public page: number,
-        public totalItems: number,
-        public limit: number,
-        public pages: number,
-        public items: T[]
-    ) {
-        super(
-            fromCache,
-            timeCreated,
-            type,
-            action,
-            result
-        )
+    public itemsPerPage: number;
+    public page: number;
+    public totalItems: number;
+    public limit: number;
+    public pages: number;
+    public items: T[];
+
+    constructor(
+        public fields?: {
+            fromCache?: boolean,
+            timeCreated?: Date,
+            type?: string,
+            action?: string,
+            result?: number,
+
+            itemsPerPage?: number,
+            page?: number,
+            totalItems?: number,
+            limit?: number,
+            pages?: number,
+            items?: T[]
+        }) {
+        super()
+        if (fields) Object.assign(this, fields);
+        {
+        }
     }
 }
 
 export class ResponseSingle<T extends IItem> extends ResponseGetBase {
+
+    public fromCache: boolean;
+    public timeCreated: Date;
+    public type: string;
+    public action: string;
+    public result: number;
+    public item: T;
+
     constructor(
-        fromCache: boolean,
-        timeCreated: Date,
-        type: string,
-        action: string,
-        result: number,
-        public item: T
-    ) {
-        super(
-            fromCache,
-            timeCreated,
-            type,
-            action,
-            result
-        )
+        public fields?: {
+            fromCache?: boolean,
+            timeCreated?: Date,
+            type?: string,
+            action?: string,
+            result?: number,
+
+            item?: T
+        }) {
+        super()
+        if (fields) Object.assign(this, fields);
+        {
+        }
     }
 }
 
 export class ResponseCreate<T extends IItem> {
+
+    public item: T;
+    public result: number;
+
     constructor(
-        public item: T,
-        public result: number
-    ) {
+        public fields?: {
+            item?: T;
+            result?: number;
+        }) {
+        if (fields) Object.assign(this, fields);
+        {
+        }
     }
 }
 
 export class ResponseDelete {
 
-    public isSuccess: boolean = false;
+    public result: number;
 
     constructor(
-        public result: number
-    ) {
-        if (this.result === 200) {
-            this.isSuccess = true;
+        public fields?: {
+            result?: number;
+        }) {
+        if (fields) Object.assign(this, fields);
+        {
         }
+    }
+
+    isSuccess(): boolean {
+        return this.result === 200;
     }
 }
 
 export class ResponseEdit<T extends IItem> {
+
+    public item: T;
+    public result: number;
+
     constructor(
-        public item: T,
-        public result: number
-    ) {
+        public fields?: {
+            item?: T,
+            result?: number,
+        }) {
+        if (fields) Object.assign(this, fields);
+        {
+        }
     }
 }
 
