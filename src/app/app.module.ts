@@ -81,7 +81,7 @@ import { FormModule } from './modules/_forms/_form.module';
     ClientsModule,
 
     // test form module
-    FormModule
+    FormModule,
   ],
   providers: [
     RepositoryServiceProvider

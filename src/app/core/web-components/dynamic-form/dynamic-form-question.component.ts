@@ -15,7 +15,9 @@ export class DynamicFormQuestionComponent implements AfterViewInit {
 
   @Input() form: FormGroup;
 
-  showRequiredLabels: boolean = true;
+  private showRequiredLabels: boolean = true;
+
+  private datePickerStartDate = new Date(1980, 0, 1);
 
   ngAfterViewInit() {
     //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.

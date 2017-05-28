@@ -6,7 +6,7 @@ import { FormGroup } from '@angular/forms';
 import { BaseFormService } from '../core/forms-service/base-form.service';
 import { IFormsService } from '../core/forms-service/iforms-service.interface';
 import { BaseField } from '../core/web-components/dynamic-form/base-field.class';
-import { TextField, DropdownField, HiddenField, TextAreaField, BooleanField, RadioBooleanField } from '../core/web-components/dynamic-form/field-types';
+import { TextField, DropdownField, HiddenField, TextAreaField, BooleanField, RadioBooleanField, DateField } from '../core/web-components/dynamic-form/field-types';
 import { Observable } from 'rxjs/Observable';
 
 // service specific imports
@@ -46,12 +46,12 @@ export class UserFormsService extends BaseFormService<User> implements IFormsSer
                 required: true,
                 maxLength: 100
             }),
-            new TextField({
+            new DateField({
                 key: 'birthDay',
                 label: 'Datum narození',
                 type: 'text',
                 value: '',
-                required: false,
+                required: true,
             }),
             new RadioBooleanField(
                 'Žena',
@@ -132,7 +132,7 @@ export class UserFormsService extends BaseFormService<User> implements IFormsSer
                     maxLength: 100,
                     value: response.item.lastName
                 }),
-                new TextField({
+                new DateField({
                     key: 'birthDay',
                     label: 'Datum narození',
                     type: 'text',

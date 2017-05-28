@@ -10,6 +10,16 @@ export class DropdownField extends BaseField<string> {
   }
 }
 
+export class DateField extends BaseField<Date> {
+  controlType = 'date';
+  options: { key: string, value: string }[] = [];
+
+  constructor(options: {} = {}) {
+    super(options);
+    this.options = options['options'] || [];
+  }
+}
+
 export class BooleanField extends BaseField<boolean> {
   controlType = 'checkbox';
   type: string;
