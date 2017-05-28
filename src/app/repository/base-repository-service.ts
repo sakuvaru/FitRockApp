@@ -12,6 +12,7 @@ import { IItem } from './iitem.interface';
 import { RepositoryConfig } from './repository.config';
 import { MapService } from './map.service';
 import { TypeResolverService } from './type-resolver.service';
+import { IErrorResponse } from './ierror-response';
 
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
@@ -72,29 +73,24 @@ export abstract class BaseRepositoryService {
         return url;
     }
 
-    private handleError(error: Response | any): Observable<any> {
+    private handleError(response: Response | any): Observable<ErrorResponse> {
         // use a remote logging later on
-
         var errorResponse: ErrorResponse;
-        var errMsg: string;
 
-        if (error instanceof Response) {
-            errMsg = `${this.genericErrorMessage}: ${error.status} - ${error.statusText || ''} ${error}`;
-
-            errorResponse = new ErrorResponse(errMsg, error.status);
+        if (response instanceof Response) {
+             var iErrorResponse = response.json() as IErrorResponse;
+            errorResponse = new ErrorResponse(iErrorResponse.error, iErrorResponse.result);
 
         } else {
-            errMsg = error.message ? error.message : error.toString();
-
-            errorResponse = new ErrorResponse(error.message, error.status);
+            errorResponse = new ErrorResponse(this.genericErrorMessage, response.status);
         }
 
         // raise error
         this.raiseError(errorResponse);
 
-        console.error(error);
+        console.error(errorResponse);
 
-        return Observable.throw(errMsg);
+        return Observable.throw(errorResponse);
     }
 
     private getMultipleResponse<TItem extends IItem>(response: Response): ResponseMultiple<TItem> {

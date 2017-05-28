@@ -27,14 +27,12 @@ export class LogFormsService extends BaseFormService<Log> implements IFormsServi
             new TextField({
                 key: 'errorMessage',
                 label: 'Error message',
-                type: 'text',
                 required: true,
                 maxLength: 100,
             }),
             new TextAreaField({
                 key: 'stacktrace',
                 label: 'Stacktrace',
-                type: 'text',
                 value: '',
                 required: false,
                 maxLength: 5000,
@@ -61,14 +59,12 @@ export class LogFormsService extends BaseFormService<Log> implements IFormsServi
                 new TextField({
                     key: 'errorMessage',
                     label: 'Error message',
-                    type: 'text',
                     required: true,
                     value: response.item.errorMessage
                 }),
                 new TextAreaField({
                     key: 'stacktrace',
                     label: 'Stacktrace',
-                    type: 'text',
                     required: false,
                     maxLength: 5000,
                     value: response.item.stacktrace

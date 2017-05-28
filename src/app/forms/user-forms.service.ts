@@ -7,6 +7,7 @@ import { BaseFormService } from '../core/forms-service/base-form.service';
 import { IFormsService } from '../core/forms-service/iforms-service.interface';
 import { BaseField } from '../core/web-components/dynamic-form/base-field.class';
 import { TextField, DropdownField, HiddenField, TextAreaField, BooleanField, RadioBooleanField, DateField } from '../core/web-components/dynamic-form/field-types';
+import { DropdownFieldOption } from '../core/web-components/dynamic-form/models';
 import { Observable } from 'rxjs/Observable';
 
 // service specific imports
@@ -27,7 +28,6 @@ export class UserFormsService extends BaseFormService<User> implements IFormsSer
             new TextField({
                 key: 'email',
                 label: 'E-mail',
-                type: 'text',
                 value: '',
                 required: true,
                 maxLength: 100
@@ -35,74 +35,76 @@ export class UserFormsService extends BaseFormService<User> implements IFormsSer
             new TextField({
                 key: 'firstName',
                 label: 'Jméno',
-                type: 'text',
                 required: true,
                 maxLength: 100
             }),
             new TextField({
                 key: 'lastName',
                 label: 'Příjmení',
-                type: 'text',
                 required: true,
                 maxLength: 100
             }),
             new DateField({
                 key: 'birthDay',
                 label: 'Datum narození',
-                type: 'text',
-                value: '',
+                value: null,
                 required: true,
             }),
-            new RadioBooleanField(
-                'Žena',
-                'Muž',
-                {
-                    key: 'isFemale',
-                    label: 'Je žena',
-                    type: 'text',
-                    value: false,
-                    required: true,
-                }),
+            new RadioBooleanField({
+                trueOptionLabel: "Žena",
+                falseOptionLabel: "Muž",
+                key: 'isFemale',
+                label: 'Je žena',
+                value: false,
+                required: true,
+            }),
             new TextField({
                 key: 'city',
                 label: 'Město',
-                type: 'text',
                 required: false,
                 maxLength: 50
             }),
             new TextField({
                 key: 'address',
                 label: 'Adresa',
-                type: 'text',
                 required: false,
                 maxLength: 100
             }),
-            new TextField({
+            new DropdownField({
+                dropdownOptions: [
+                    new DropdownFieldOption("Novice", "Nováček"),
+                    new DropdownFieldOption("Intermediate", "Středně pokročilý"),
+                    new DropdownFieldOption("Advanced", "Pokročilý"),
+                    new DropdownFieldOption("FitnessCompetitor", "Závodník fitness"),
+                ],
+                width: 250,
                 key: 'fitnessLevel',
                 label: 'Úroveň',
-                type: 'text',
                 required: false,
             }),
             new TextAreaField({
                 key: 'medicalCondition',
                 label: 'Zdravotní stav',
-                type: 'text',
                 required: false,
                 maxLength: 5000
             }),
             new TextAreaField({
                 key: 'goal',
                 label: 'Cíl',
-                type: 'text',
                 required: false,
                 maxLength: 200
             }),
-            new TextField({
-                key: 'trainerPublicNotes',
-                label: 'Poznámky (soukromé',
-                type: 'text',
+            new TextAreaField({
+                key: 'trainerPrivateNotes',
+                label: 'Poznámky (soukromé)',
                 required: false,
                 hint: 'Klient tyto poznámky neuvidí'
+            }),
+            new TextAreaField({
+                key: 'trainerPublicNotes',
+                label: 'Poznámky pro klienta',
+                required: false,
+                hint: 'Klient může tyto poznámky vidět'
             }),
         ];
 
@@ -119,7 +121,6 @@ export class UserFormsService extends BaseFormService<User> implements IFormsSer
                 new TextField({
                     key: 'firstName',
                     label: 'Jméno',
-                    type: 'text',
                     required: true,
                     maxLength: 100,
                     value: response.item.firstName
@@ -127,7 +128,6 @@ export class UserFormsService extends BaseFormService<User> implements IFormsSer
                 new TextField({
                     key: 'lastName',
                     label: 'Příjmení',
-                    type: 'text',
                     required: true,
                     maxLength: 100,
                     value: response.item.lastName
@@ -135,24 +135,20 @@ export class UserFormsService extends BaseFormService<User> implements IFormsSer
                 new DateField({
                     key: 'birthDay',
                     label: 'Datum narození',
-                    type: 'text',
                     required: false,
                     value: response.item.birthDate
                 }),
-                new RadioBooleanField(
-                    'Žena',
-                    'Muž',
-                    {
-                        key: 'isFemale',
-                        label: 'Je žena',
-                        type: 'text',
-                        value: response.item.isFemale,
-                        required: true,
-                    }),
+                new RadioBooleanField({
+                    trueOptionLabel: "Žena",
+                    falseOptionLabel: "Muž",
+                    key: 'isFemale',
+                    label: 'Je žena',
+                    value: response.item.isFemale,
+                    required: true,
+                }),
                 new TextField({
                     key: 'city',
                     label: 'Město',
-                    type: 'text',
                     required: false,
                     maxLength: 50,
                     value: response.item.city
@@ -160,22 +156,26 @@ export class UserFormsService extends BaseFormService<User> implements IFormsSer
                 new TextField({
                     key: 'address',
                     label: 'Adresa',
-                    type: 'text',
                     required: false,
                     maxLength: 100,
                     value: response.item.address
                 }),
-                new TextField({
+                new DropdownField({
+                    dropdownOptions: [
+                        new DropdownFieldOption("Novice", "Nováček"),
+                        new DropdownFieldOption("Intermediate", "Středně pokročilý"),
+                        new DropdownFieldOption("Advanced", "Pokročilý"),
+                        new DropdownFieldOption("FitnessCompetitor", "Závodník fitness"),
+                    ],
+                    width: 250,
                     key: 'fitnessLevel',
                     label: 'Úroveň',
-                    type: 'text',
                     required: false,
                     value: response.item.fitnessLevel
                 }),
                 new TextAreaField({
                     key: 'medicalCondition',
                     label: 'Zdravotní stav',
-                    type: 'text',
                     required: false,
                     maxLength: 5000,
                     value: response.item.medicalCondition
@@ -183,7 +183,6 @@ export class UserFormsService extends BaseFormService<User> implements IFormsSer
                 new TextAreaField({
                     key: 'goal',
                     label: 'Cíl',
-                    type: 'text',
                     required: false,
                     maxLength: 200,
                     value: response.item.goal
@@ -191,7 +190,6 @@ export class UserFormsService extends BaseFormService<User> implements IFormsSer
                 new TextField({
                     key: 'trainerPublicNotes',
                     label: 'Poznámky (soukromé',
-                    type: 'text',
                     required: false,
                     hint: 'Klient tyto poznámky neuvidí',
                     value: response.item.trainerPublicNotes

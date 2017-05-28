@@ -45,7 +45,14 @@ export class DynamicFormQuestionComponent implements AfterViewInit {
 
   private get isValid() { return this.form.controls[this.question.key].valid; }
 
-  private handleRadioButtonChange(): void{
+  private handleRadioButtonChange(): void {
     this.showRequiredLabels = false;
+  }
+
+  private getWidthStyle(): string {
+    if (!this.question.width) {
+      return null;
+    }
+    return `${this.question.width}px`;
   }
 }

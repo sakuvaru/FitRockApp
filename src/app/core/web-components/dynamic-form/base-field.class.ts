@@ -1,14 +1,20 @@
+import { DropdownFieldOption } from './models';
+
 export class BaseField<T>{
-    value: T;
-    key: string;
-    label: string;
-    required: boolean;
-    controlType: string;
-    maxLength: number;
-    minLength: number;
-    hint: string;
-    maxAutosizeRows: number;
-    minAutosizeRows: number;
+    public value: T;
+    public key: string;
+    public label: string;
+    public required: boolean;
+    public controlType: string;
+    public maxLength: number;
+    public minLength: number;
+    public hint: string;
+    public maxAutosizeRows: number;
+    public minAutosizeRows: number;
+    public width: number;
+    public dropdownOptions: DropdownFieldOption[];
+    public trueOptionLabel: string;
+    public falseOptionLabel: string;
     constructor(options: {
         value?: T,
         key?: string,
@@ -19,17 +25,12 @@ export class BaseField<T>{
         minLength?: number,
         hint?: string,
         maxAutosizeRows?: number,
-        minAutosizeRows?: number
-    } = {}) {
-        this.value = options.value;
-        this.key = options.key || '';
-        this.label = options.label || '';
-        this.required = !!options.required;
-        this.controlType = options.controlType || '';
-        this.minLength = options.minLength;
-        this.maxLength = options.maxLength;
-        this.hint = options.hint;
-        this.maxAutosizeRows = options.maxAutosizeRows || 10;
-        this.minAutosizeRows = options.minAutosizeRows || 3
+        minAutosizeRows?: number,
+        width?: number,
+        dropdownOptions?: DropdownFieldOption[],
+        trueOptionLabel?: string,
+        falseOptionLabel?: string
+    }) {
+        Object.assign(this, options);
     }
 }

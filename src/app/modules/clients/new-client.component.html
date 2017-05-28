@@ -2,4 +2,5 @@
     <md-card-content>
         <dynamic-form submitText="Vytvořit" [questions]="insertFields" (onSubmitEvent)="handleInsert($event)"></dynamic-form>
     </md-card-content>
+    <div>{{error}}</div>
 </md-card>

@@ -1,74 +1,115 @@
 import { BaseField } from './base-field.class';
+import { DropdownFieldOption } from './models';
 
 export class DropdownField extends BaseField<string> {
-  controlType = 'dropdown';
-  options: { key: string, value: string }[] = [];
+  public controlType = 'dropdown';
 
-  constructor(options: {} = {}) {
+  constructor(
+    options?: {
+      value?: string,
+      key?: string,
+      label?: string,
+      required?: boolean,
+      hint?: string,
+      width?: number,
+      dropdownOptions?: DropdownFieldOption[],
+    }) {
     super(options);
-    this.options = options['options'] || [];
   }
 }
 
 export class DateField extends BaseField<Date> {
-  controlType = 'date';
-  options: { key: string, value: string }[] = [];
+  public controlType = 'date';
 
-  constructor(options: {} = {}) {
+  constructor(
+    options?: {
+      value?: Date,
+      key?: string,
+      label?: string,
+      required?: boolean,
+      hint?: string,
+    }) {
     super(options);
-    this.options = options['options'] || [];
   }
 }
 
 export class BooleanField extends BaseField<boolean> {
-  controlType = 'checkbox';
-  type: string;
+  public controlType = 'checkbox';
 
-  constructor(options: {} = {}) {
+  constructor(
+    options?: {
+      value?: boolean,
+      key?: string,
+      label?: string,
+      required?: boolean,
+      hint?: string,
+    }) {
     super(options);
-    this.type = options['type'] || '';
   }
 }
 
 export class RadioBooleanField extends BaseField<boolean> {
-  controlType = 'radioboolean';
-  type: string;
+  public controlType = 'radioboolean';
 
   constructor(
-    public trueOptionLabel: string,
-    public falseOptionLabel: string,
-    options: {} = {}) {
+    options?: {
+      trueOptionLabel: string,
+      falseOptionLabel: string,
+      value?: boolean,
+      key?: string,
+      label?: string,
+      required?: boolean,
+      hint?: string,
+    }) {
     super(options);
-    this.type = options['type'] || '';
   }
 }
 
 export class TextField extends BaseField<string> {
-  controlType = 'textbox';
-  type: string;
+  public controlType = 'textbox';
 
-  constructor(options: {} = {}) {
+  constructor(
+    options?: {
+      value?: string,
+      key?: string,
+      label?: string,
+      required?: boolean,
+      maxLength?: number,
+      minLength?: number,
+      hint?: string,
+    }) {
     super(options);
-    this.type = options['type'] || '';
   }
 }
 
 export class TextAreaField extends BaseField<string> {
-  controlType = 'textarea';
-  type: string;
+  public controlType = 'textarea';
 
-  constructor(options: {} = {}) {
+  constructor(
+    options?: {
+      value?: string,
+      key?: string,
+      label?: string,
+      required?: boolean,
+      maxLength?: number,
+      minLength?: number,
+      hint?: string,
+      maxAutosizeRows?: number,
+      minAutosizeRows?: number,
+    }) {
     super(options);
-    this.type = options['type'] || '';
   }
 }
 
-export class HiddenField extends BaseField<string> {
-  controlType = 'hidden';
-  type: string;
+export class HiddenField extends BaseField<any> {
+  public controlType = 'hidden';
 
-  constructor(options: {} = {}) {
+  constructor(
+    options?: {
+      value?: any,
+      key?: string,
+      required?: boolean,
+    }) {
     super(options);
-    this.type = options['type'] || '';
   }
 }

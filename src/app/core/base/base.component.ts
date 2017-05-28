@@ -55,21 +55,28 @@ export abstract class BaseComponent implements IComponent, OnInit {
 
     ngOnInit(): void {
         // stop all loaders on init
-       this.resolveLoader();
+        this.resolveLoader();
     }
 
     // --------------------- Private methods -------------- // 
 
     private showLoader(isEnabled: boolean): void {
         if (isEnabled) {
-          //  this.registerLoader();
+            //  this.registerLoader();
         }
         else {
-          //  this.resolveLoader();
+            //  this.resolveLoader();
         }
     }
 
     private handleRepositoryError(error: ErrorResponse) {
+        console.log(`Error was handled in 'BaseComponent':`);
+        console.error(error);
+    }
+
+    // --------------- Public methods ------------------- //
+
+    handleError(error: ErrorResponse) {
         if (error.statusType === ResponseTypeEnum.internalServerError ||
             error.statusType === ResponseTypeEnum.unknown ||
             error.statusType === ResponseTypeEnum.badRequest ||
@@ -78,8 +85,6 @@ export abstract class BaseComponent implements IComponent, OnInit {
             this.dependencies.router.navigate([AppConfig.PublicPath + '/' + AppConfig.ErrorPath], { queryParams: { result: error.statusType } });
         }
     }
-
-    // --------------- Public methods ------------------- //
 
     showSnackbar(message: string): void {
         let snackBarRef = this.dependencies.snackbarService.open(message, null, { duration: this.snackbarDefaultDuration });
