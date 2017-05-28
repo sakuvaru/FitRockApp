@@ -109,7 +109,7 @@ export abstract class BaseRepositoryService {
             itemsPerPage: responseMultiple.itemsPerPage,
             page: responseMultiple.page,
             result: responseMultiple.result,
-            pages: responseMultiple.page,
+            pages: responseMultiple.pages,
             timeCreated: responseMultiple.timeCreated,
             totalItems: responseMultiple.totalItems,
             type: responseMultiple.type,
