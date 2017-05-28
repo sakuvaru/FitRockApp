@@ -14,7 +14,6 @@ import { WhereEquals, OrderBy, OrderByDescending, Limit, Include, IncludeMultipl
 
 // required by component
 import { UserFormsService } from '../../forms/user-forms.service';
-import { ErrorResponse } from '../../repository/error-response.class';
 
 @Component({
     templateUrl: 'new-client.component.html'
@@ -40,10 +39,9 @@ export class NewClientComponent extends BaseComponent {
 
     private handleInsert(form: FormGroup): void {
         this.userFormsService.saveInsertForm(form, (item) => this.dependencies.userService.createClient(item))
-            .catch(response => {
-                let errorResponse = response as ErrorResponse;
-                this.error = errorResponse.error;
-                throw new Error(errorResponse.error);
+            .catch(err => {
+                this.error = err;
+                throw err
             })
             .subscribe(item => {
                 this.showSavedSnackbar();

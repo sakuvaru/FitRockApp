@@ -73,7 +73,7 @@ export abstract class BaseRepositoryService {
         return url;
     }
 
-    private handleError(response: Response | any): Observable<ErrorResponse> {
+    private handleError(response: Response | any): string {
         // use a remote logging later on
         var errorResponse: ErrorResponse;
 
@@ -90,7 +90,7 @@ export abstract class BaseRepositoryService {
 
         console.error(errorResponse);
 
-        return Observable.throw(errorResponse);
+        return errorResponse.error;
     }
 
     private getMultipleResponse<TItem extends IItem>(response: Response): ResponseMultiple<TItem> {
@@ -169,7 +169,7 @@ export abstract class BaseRepositoryService {
                 return this.getMultipleResponse(response)
             })
             .catch(response => {
-                return this.handleError(response);
+                throw this.handleError(response);
             })
             ._finally(() => {
                 this.finishRequest();
@@ -187,7 +187,7 @@ export abstract class BaseRepositoryService {
                 return this.getSingleResponse(response)
             })
             .catch(response => {
-                return this.handleError(response);
+                throw this.handleError(response);
             })
             ._finally(() => {
                 this.finishRequest();
@@ -208,7 +208,7 @@ export abstract class BaseRepositoryService {
                 return this.getCreateResponse(response)
             })
             .catch(response => {
-                return this.handleError(response);
+                throw this.handleError(response);
             })
             ._finally(() => {
                 this.finishRequest();
@@ -229,7 +229,7 @@ export abstract class BaseRepositoryService {
                 return this.getEditResponse(response)
             })
             .catch(response => {
-                return this.handleError(response);
+                throw this.handleError(response);
             })
             ._finally(() => {
                 this.finishRequest();
@@ -250,7 +250,7 @@ export abstract class BaseRepositoryService {
                 return this.getDeleteResponse(response)
             })
             .catch(response => {
-                return this.handleError(response);
+                throw this.handleError(response);
             })
             ._finally(() => {
                 this.finishRequest();
