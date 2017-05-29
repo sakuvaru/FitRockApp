@@ -14,6 +14,7 @@ import { WhereEquals, OrderBy, OrderByDescending, Limit, Include, IncludeMultipl
 
 // required by component
 import { UserFormsService } from '../../forms/user-forms.service';
+import { FormConfig } from '../../core/web-components/dynamic-form/form-config.class';
 
 @Component({
     templateUrl: 'new-client.component.html'
@@ -22,29 +23,28 @@ export class NewClientComponent extends BaseComponent {
 
     private insertFields: BaseField<any>[];
     private error: string;
+    private formConfig: FormConfig<any>;
 
     constructor(
         private userFormsService: UserFormsService,
         protected componentDependencyService: ComponentDependencyService) {
         super(componentDependencyService)
 
-        this.userFormsService.getInsertFields().subscribe(fields => {
-            this.insertFields = fields;
+        this.formConfig = this.userFormsService.getInsertForm({
+            saveFunction: (item) => this.dependencies.userService.createClient(item),
+            insertCallback: (response) => {
+                console.log("This is the response for create");
+                console.log(response);
+            },
+            errorCallback: (err) => {
+                console.log("This is error callback: " + err);
+            }
         });
     }
 
     initAppData(): AppData {
-        return new AppData("Nový klient");
-    }
-
-    private handleInsert(form: FormGroup): void {
-        this.userFormsService.saveInsertForm(form, (item) => this.dependencies.userService.createClient(item))
-            .catch(err => {
-                this.error = err;
-                throw err
-            })
-            .subscribe(item => {
-                this.showSavedSnackbar();
-            });
+        return new AppData({
+            subTitle: "Nový klient"
+        });
     }
 }

@@ -24,6 +24,8 @@ export class SampleComponent extends BaseComponent {
     }
 
     initAppData(): AppData {
-        return new AppData("Sample");
+        return new AppData({
+            subTitle: "Sample subtitle"
+        });
     }
 }

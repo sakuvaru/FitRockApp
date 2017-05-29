@@ -27,7 +27,9 @@ export class LoginPageComponent extends BaseComponent {
         }
     }
 
-    initAppData(): AppData {
-        return new AppData("Login");
+     initAppData(): AppData {
+        return new AppData({
+            subTitle: "Přihlášení"
+        });
     }
 }

@@ -18,7 +18,7 @@ export class ResponseMultiple<T extends IItem> extends ResponseGetBase {
     public items: T[];
 
     constructor(
-        public fields?: {
+        private fields?: {
             fromCache?: boolean,
             timeCreated?: Date,
             type?: string,
@@ -49,7 +49,7 @@ export class ResponseSingle<T extends IItem> extends ResponseGetBase {
     public item: T;
 
     constructor(
-        public fields?: {
+        private fields?: {
             fromCache?: boolean,
             timeCreated?: Date,
             type?: string,
@@ -71,7 +71,7 @@ export class ResponseCreate<T extends IItem> {
     public result: number;
 
     constructor(
-        public fields?: {
+        private fields?: {
             item?: T;
             result?: number;
         }) {
@@ -86,7 +86,7 @@ export class ResponseDelete {
     public result: number;
 
     constructor(
-        public fields?: {
+        private fields?: {
             result?: number;
         }) {
         if (fields) Object.assign(this, fields);
@@ -105,7 +105,7 @@ export class ResponseEdit<T extends IItem> {
     public result: number;
 
     constructor(
-        public fields?: {
+        private fields?: {
             item?: T,
             result?: number,
         }) {

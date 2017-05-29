@@ -5,6 +5,7 @@ import { IService } from '../../core/type-service/iservice.class';
 import { IItem } from '../../repository/iitem.interface';
 import { Observable } from 'rxjs/Observable';
 import { ResponseDelete, ResponseCreate, ResponseEdit, ResponseMultiple, ResponseSingle } from '../../repository/responses';
+import { FormConfig } from '../../core/web-components/dynamic-form/form-config.class';
 
 export interface IFormsService<TItem extends IItem> {
 
@@ -12,7 +13,26 @@ export interface IFormsService<TItem extends IItem> {
 
     getEditFields(itemId: number): Observable<BaseField<any>[]>;
 
-    saveInsertForm(form: FormGroup, saveFunction: (item: TItem) => Observable<ResponseCreate<TItem>>): Observable<ResponseCreate<TItem>>;
+    getInsertForm(
+        options?: {
+            saveFunction?: (item: TItem) => Observable<ResponseCreate<TItem>>,
+            showSnackBar?: boolean,
+            snackBarText?: string,
+            insertCallback?: (response: ResponseCreate<TItem>) => void,
+            updateCallback?: (response: ResponseEdit<TItem>) => void,
+            submitText?: string,
+            errorCallback?: (err: string) => void
+        }): FormConfig<TItem>;
 
-    saveEditForm(form: FormGroup, saveFunction: (item: TItem) => Observable<ResponseEdit<TItem>>): Observable<ResponseEdit<TItem>>;
+    getEditForm(
+        itemId: number,
+        options?: {
+            saveFunction?: (item: TItem) => Observable<ResponseEdit<TItem>>,
+            showSnackBar?: boolean,
+            snackBarText?: string,
+            insertCallback?: (response: ResponseCreate<TItem>) => void,
+            updateCallback?: (response: ResponseEdit<TItem>) => void,
+            submitText?: string,
+            errorCallback?: (err: string) => void
+        }): FormConfig<TItem>;
 }

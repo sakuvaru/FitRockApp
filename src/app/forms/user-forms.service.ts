@@ -1,10 +1,8 @@
 // angular imports
 import { Injectable } from '@angular/core';
-import { FormGroup } from '@angular/forms';
 
 // required imports
 import { BaseFormService } from '../core/forms-service/base-form.service';
-import { IFormsService } from '../core/forms-service/iforms-service.interface';
 import { BaseField } from '../core/web-components/dynamic-form/base-field.class';
 import { TextField, DropdownField, HiddenField, TextAreaField, BooleanField, RadioBooleanField, DateField } from '../core/web-components/dynamic-form/field-types';
 import { DropdownFieldOption } from '../core/web-components/dynamic-form/models';
@@ -15,12 +13,12 @@ import { User } from '../models/user.class';
 import { UserService } from '../services/user.service';
 
 @Injectable()
-export class UserFormsService extends BaseFormService<User> implements IFormsService<User> {
+export class UserFormsService extends BaseFormService<User>{
 
     constructor(
-        protected clientService: UserService
+        protected userService: UserService
     ) {
-        super(clientService)
+        super(userService)
     }
 
     getInsertFields(): Observable<BaseField<any>[]> {
@@ -112,7 +110,7 @@ export class UserFormsService extends BaseFormService<User> implements IFormsSer
     }
 
     getEditFields(itemId: number): Observable<BaseField<any>[]> {
-        return this.clientService.getById(itemId).map(response => {
+        return this.userService.getById(itemId).map(response => {
             var fields: BaseField<any>[] = [
                 new HiddenField({
                     key: 'id',

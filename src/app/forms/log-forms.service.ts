@@ -4,7 +4,6 @@ import { FormGroup } from '@angular/forms';
 
 // required imports
 import { BaseFormService } from '../core/forms-service/base-form.service';
-import { IFormsService } from '../core/forms-service/iforms-service.interface';
 import { BaseField } from '../core/web-components/dynamic-form/base-field.class';
 import { TextField, DropdownField, HiddenField, TextAreaField } from '../core/web-components/dynamic-form/field-types';
 import { Observable } from 'rxjs/Observable';
@@ -14,7 +13,7 @@ import { Log } from '../models/log.class';
 import { LogService } from '../services/log.service';
 
 @Injectable()
-export class LogFormsService extends BaseFormService<Log> implements IFormsService<Log> {
+export class LogFormsService extends BaseFormService<Log>{
 
     constructor(
         protected logService: LogService

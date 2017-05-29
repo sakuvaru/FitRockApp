@@ -47,7 +47,9 @@ export class ClientsOverviewComponent extends BaseComponent {
     super(componentDependencyService)
   }
 
-  initAppData(): AppData {
-    return new AppData("Clients");
-  }
+   initAppData(): AppData {
+        return new AppData({
+            subTitle: "Klienti"
+        });
+    }
 }

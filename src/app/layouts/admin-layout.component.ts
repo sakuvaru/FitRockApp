@@ -14,7 +14,7 @@ import { Subscription } from 'rxjs/Subscription';
     templateUrl: 'admin-layout.component.html'
 })
 export class AdminLayoutComponent implements OnDestroy {
-    private appData: AppData = new AppData('Dashboard');
+    private appData: AppData = new AppData();
     private media: TdMediaService;
     private subscription: Subscription;
 

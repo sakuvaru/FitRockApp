@@ -13,39 +13,28 @@ import { WhereEquals, OrderBy, OrderByDescending, Limit, Include, IncludeMultipl
 
 // required by component
 import { LogFormsService } from '../../forms/log-forms.service';
+import { FormConfig } from '../../core/web-components/dynamic-form/form-config.class';
 
 @Component({
     templateUrl: '_form.component.html'
 })
 export class FormComponent extends BaseComponent {
 
-    private insertFields: BaseField<any>[];
-    private editFields: BaseField<any>[];
+    private formEditConfig: FormConfig<any>;
+    private formInsertConfig: FormConfig<any>;
 
     constructor(
         private logFormsService: LogFormsService,
         protected dependencies: ComponentDependencyService) {
         super(dependencies)
 
-        logFormsService.getInsertFields().subscribe(fields => this.insertFields = fields);
-        logFormsService.getEditFields(2).subscribe(fields => this.editFields = fields);
+        this.logFormsService.getInsertForm();
+        this.logFormsService.getEditForm(1);
     }
 
     initAppData(): AppData {
-        return new AppData("Form");
-    }
-
-    private handleInsertSubmit(form: FormGroup): void {
-        this.logFormsService.saveInsertForm(form, (item) => this.dependencies.logService.create(item)).subscribe(item => {
-            console.log(item);
-            this.showSavedSnackbar();
-        });
-    }
-
-    private handleEditSubmit(form: FormGroup): void {
-        this.logFormsService.saveEditForm(form, (item) => this.dependencies.logService.edit(item)).subscribe(item => {
-            console.log(item);
-            this.showSavedSnackbar();
+        return new AppData({
+            subTitle: "Subtitle sample"
         });
     }
 }

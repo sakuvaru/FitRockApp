@@ -44,8 +44,8 @@ export class LoginFormComponent extends BaseComponent {
         }
     }
 
-    initAppData(): AppData {
-        return new AppData("Login");
+     initAppData(): AppData {
+        return new AppData();
     }
 
     private processFailedLogonRedirect() {

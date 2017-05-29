@@ -14,7 +14,7 @@ import { Subscription } from 'rxjs/Subscription';
     templateUrl: 'simple-layout.component.html'
 })
 export class SimpleLayoutComponent implements OnDestroy {
-    private appData: AppData = new AppData('Dashboard');
+    private appData: AppData = new AppData();
     private media: TdMediaService;
     private subscription: Subscription;
 

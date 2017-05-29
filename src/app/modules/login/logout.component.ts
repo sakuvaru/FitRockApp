@@ -30,6 +30,6 @@ export class LogoutComponent extends BaseComponent {
     }
 
     initAppData(): AppData {
-        return new AppData("Logout");
+        return new AppData();
     }
 }

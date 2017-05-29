@@ -35,7 +35,9 @@ export class ViewClientComponent extends BaseComponent implements OnInit {
             .subscribe(response => this.client = response.item);
     }
 
-    initAppData(): AppData {
-        return new AppData("Klient");
+     initAppData(): AppData {
+        return new AppData({
+            subTitle: "Klient"
+        });
     }
 }

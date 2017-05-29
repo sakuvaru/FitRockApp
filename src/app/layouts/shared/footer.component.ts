@@ -11,7 +11,7 @@ import { ComponentDependencyService } from '../../core/component-dependency.serv
     templateUrl: 'footer.component.html'
 })
 export class FooterComponent{
-    private appData: AppData = new AppData('Dashboard');
+    private appData: AppData = new AppData();
     private year: number;
 
     constructor(private dependencies: ComponentDependencyService) {
