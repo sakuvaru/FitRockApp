@@ -20,8 +20,7 @@ export class DynamicFormQuestionComponent implements AfterViewInit {
   private datePickerStartDate = new Date(1980, 0, 1);
 
   ngAfterViewInit() {
-    //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
-
+    // Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
     // set default checkbox value to false programatically (it will otherwise treat checkbox as undefined)
     if (this.question.controlType === 'checkbox' && !this.question.required) {
       if (!this.question.value) {

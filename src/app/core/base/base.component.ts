@@ -36,12 +36,6 @@ export abstract class BaseComponent implements IComponent, OnInit {
             color: 'primary',
         });
 
-        // subscribe to loading events
-        this.loaderSubscription = dependencies.repositoryService.requestStateChanged$.subscribe(
-            requestFinished => {
-                this.showLoader(requestFinished);
-            });
-
         // suscribe to error events
         this.repositoryErrorSubscription = dependencies.repositoryService.requestErrorChange$.subscribe(
             error => {
@@ -54,36 +48,21 @@ export abstract class BaseComponent implements IComponent, OnInit {
     // ----------------------- Events --------------------- // 
 
     ngOnInit(): void {
-        // stop all loaders on init
-        this.resolveLoader();
+        // stop all full screen loaders on init
+        this.resolveFullScreenLoader();
     }
 
     // --------------------- Private methods -------------- // 
 
-    private showLoader(isEnabled: boolean): void {
-        if (isEnabled) {
-            //  this.registerLoader();
-        }
-        else {
-            //  this.resolveLoader();
-        }
-    }
-
     private handleRepositoryError(error: ErrorResponse) {
-        console.log(`Error was handled in 'BaseComponent':`);
-        console.error(error);
+        // do nothing for now - possibly add logging 
     }
 
     // --------------- Public methods ------------------- //
 
-    handleError(error: ErrorResponse) {
-        if (error.statusType === ResponseTypeEnum.internalServerError ||
-            error.statusType === ResponseTypeEnum.unknown ||
-            error.statusType === ResponseTypeEnum.badRequest ||
-            error.statusType === ResponseTypeEnum.forbidden) {
-            // redirect to error page
-            this.dependencies.router.navigate([AppConfig.PublicPath + '/' + AppConfig.ErrorPath], { queryParams: { result: error.statusType } });
-        }
+    showErrorPage(error: ErrorResponse) {
+        // redirect to error page
+        this.dependencies.router.navigate([AppConfig.PublicPath + '/' + AppConfig.ErrorPath], { queryParams: { result: error.statusType } });
     }
 
     showSnackbar(message: string): void {
@@ -98,11 +77,11 @@ export abstract class BaseComponent implements IComponent, OnInit {
         this.dependencies.router.navigate([AppConfig.PublicPath + '/' + AppConfig.ErrorPath]);
     }
 
-    resolveLoader(): void {
+    resolveFullScreenLoader(): void {
         this.dependencies.loadingService.resolve(this.fullscreenLoaderName);
     }
 
-    registerLoader(): void {
+    registerFullScreenLoader(): void {
         this.dependencies.loadingService.register(this.fullscreenLoaderName);
     }
 }

@@ -61,30 +61,30 @@ export class LoginFormComponent extends BaseComponent {
         }
 
         // hide loader now
-        this.resolveLoader();
+        this.resolveFullScreenLoader();
     }
 
     // event emitters
     onLogin() {
-        this.registerLoader();
+        this.registerFullScreenLoader();
         this.onLoginEvent.emit();
         var success = this.dependencies.authService.authenticate(this.username, this.password);
     }
 
     onLogout() {
-        this.registerLoader();
+        this.registerFullScreenLoader();
         this.onLogoutEvent.emit();
         this.dependencies.authService.logout();
     }
 
     loginWithGoogle() {
-        this.registerLoader();
+        this.registerFullScreenLoader();
         this.onLoginEvent.emit();
         this.dependencies.authService.loginWithGoogle();
     }
 
     loginWithFacebook() {
-        this.registerLoader();
+        this.registerFullScreenLoader();
         this.onLoginEvent.emit();
         this.dependencies.authService.loginWithFacebook();
     }

@@ -33,8 +33,8 @@ export class NewClientComponent extends BaseComponent {
         this.formConfig = this.userFormsService.getInsertForm({
             saveFunction: (item) => this.dependencies.userService.createClient(item),
             insertCallback: (response) => {
-                console.log("This is the response for create");
-                console.log(response);
+                // redirect to view client page
+                this.dependencies.router.navigate(['/client/clients/view/', response.item.id]);
             },
             errorCallback: (err) => {
                 console.log("This is error callback: " + err);

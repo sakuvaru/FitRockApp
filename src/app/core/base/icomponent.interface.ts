@@ -6,9 +6,9 @@ export interface IComponent {
 
     redirectToErrorPage(): void;
 
-    resolveLoader(): void;
+    resolveFullScreenLoader(): void;
 
-    registerLoader(): void;
+    registerFullScreenLoader(): void;
 
     showSnackbar(message: string): void;
 

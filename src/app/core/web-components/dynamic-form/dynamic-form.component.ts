@@ -8,7 +8,7 @@ import { MdSnackBar } from '@angular/material';
 import { ResponseCreate, ResponseEdit } from '../../../repository/responses';
 
 import 'rxjs/add/operator/catch';
- 
+
 // NOTE: see https://angular.io/docs/ts/latest/cookbook/dynamic-form.html for more details
 
 @Component({
@@ -72,25 +72,23 @@ export class DynamicFormComponent implements OnInit, OnChanges {
         // save form
         if (this.config.isInsertForm()) {
             this.config.insertFunction(this.form.value)
-            .catch(err => {
-                this.handleError(err);
-                throw err;
-            })
-            .subscribe(response => {
-                this.response = response;
-                this.handleInsertAfter(response);
-            });
+                .subscribe(response => {
+                    this.response = response;
+                    this.handleInsertAfter(response);
+                },
+                (err) => this.handleError(err));
         }
         else if (this.config.isEditForm()) {
             this.config.editFunction(this.form.value)
-            .catch(err => {
-                this.handleError(err);
-                throw err;
-            })
-            .subscribe(response => {
-                this.response = response;
-                this.handleUpdateAfter(response);
-            });
+                .catch(err => {
+                    this.handleError(err);
+                    throw err;
+                })
+                .subscribe(response => {
+                    this.response = response;
+                    this.handleUpdateAfter(response);
+                },
+                (err) => this.handleError(err));
         }
         else {
             throw Error("No save function was provided to form");
@@ -103,10 +101,10 @@ export class DynamicFormComponent implements OnInit, OnChanges {
         }
     }
 
-    private handleUpdateAfter(response: ResponseEdit<any> | any ): void{
+    private handleUpdateAfter(response: ResponseEdit<any> | any): void {
         this.handleSnackBar();
-        
-        if (this.config.updateCallback){
+
+        if (this.config.updateCallback) {
             this.config.updateCallback(response);
         }
     }
@@ -114,13 +112,13 @@ export class DynamicFormComponent implements OnInit, OnChanges {
     private handleInsertAfter(response: ResponseCreate<any> | any): void {
         this.handleSnackBar();
 
-        if (this.config.insertCallback){
+        if (this.config.insertCallback) {
             this.config.insertCallback(response);
         }
     }
 
-    private handleError(err: string): void{
-        if (this.config.errorCallback){
+    private handleError(err: string): void {
+        if (this.config.errorCallback) {
             this.config.errorCallback(err);
         }
     }

@@ -88,7 +88,9 @@ export abstract class BaseRepositoryService {
         // raise error
         this.raiseError(errorResponse);
 
-        console.error(errorResponse);
+        if (this.config.logErrorsToConsole){
+            console.error(errorResponse);
+        }
 
         return errorResponse.error;
     }
