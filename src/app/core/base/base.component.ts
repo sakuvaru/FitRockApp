@@ -7,8 +7,7 @@ import { AppConfig } from '../config/app.config';
 import { ComponentDependencyService } from '../../core/component-dependency.service';
 import { Subscription } from 'rxjs/Subscription';
 import { RepositoryService } from '../../repository/repository.service';
-import { ErrorResponse } from '../../repository/error-response.class';
-import { ResponseTypeEnum } from '../../repository/response-type.enum';
+import { ErrorResponse } from '../../repository/error-responses';
 import { MdSnackBar } from '@angular/material';
 
 @Component({
@@ -60,9 +59,9 @@ export abstract class BaseComponent implements IComponent, OnInit {
 
     // --------------- Public methods ------------------- //
 
-    showErrorPage(error: ErrorResponse) {
+    showErrorPage(errorResponse: ErrorResponse) {
         // redirect to error page
-        this.dependencies.router.navigate([AppConfig.PublicPath + '/' + AppConfig.ErrorPath], { queryParams: { result: error.statusType } });
+        this.dependencies.router.navigate([AppConfig.PublicPath + '/' + AppConfig.ErrorPath], { queryParams: { result: errorResponse.error } });
     }
 
     showSnackbar(message: string): void {

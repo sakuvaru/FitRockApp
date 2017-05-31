@@ -1,6 +1,5 @@
-import { Injectable } from '@angular/core';
 import { Headers, RequestOptions } from '@angular/http';
-import { ErrorResponse } from './error-response.class';
+import { ErrorResponse, FormErrorResponse } from './error-responses';
 import { ResponseDelete, ResponseCreate, ResponseEdit, ResponseMultiple, ResponseSingle } from './responses';
 import { IResponseCreateRaw, IResponseDeleteRaw, IResponseEditRaw, IResponseMultipleRaw, IResponseSingleRaw } from './iraw-responses';
 import { IOption } from './ioption.interface';
@@ -12,12 +11,15 @@ import { IItem } from './iitem.interface';
 import { RepositoryConfig } from './repository.config';
 import { MapService } from './map.service';
 import { TypeResolverService } from './type-resolver.service';
-import { IErrorResponse } from './ierror-response';
+import { IErrorResponse, IFormErrorResponse } from './ierror-responses';
+import { ColumnValidation } from './column-validation.class';
+import { IColumnValidation } from './icolumn-validation.interface';
+import { FormValidationResult } from './form-validation-result.class';
+import { IFormValidationResult } from './iform-validation-result.interface';
 
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 
-@Injectable()
 export abstract class BaseRepositoryService {
 
     private genericErrorMessage = 'An error occurred in "RepositoryService"';
@@ -73,26 +75,46 @@ export abstract class BaseRepositoryService {
         return url;
     }
 
-    private handleError(response: Response | any): string {
+    private handleError(response: Response | any): IErrorResponse | IFormErrorResponse {
         // use a remote logging later on
         var errorResponse: ErrorResponse;
 
         if (response instanceof Response) {
-             var iErrorResponse = response.json() as IErrorResponse;
-            errorResponse = new ErrorResponse(iErrorResponse.error, iErrorResponse.result);
+            // create either 'FormResponse' or generic 'ErrorResponse'
+            var iFormErrorResponse = response.json() as IFormErrorResponse;
+            var iErrorResponse = response.json() as IErrorResponse;
+
+            // form validation error because 'formValidation' property exists
+            if (iFormErrorResponse.formValidation) {
+                var iformValidation = iFormErrorResponse.formValidation as IFormValidationResult;
+                var icolumnValidations = iformValidation.validationResult as IColumnValidation[];
+
+                var columnValidations: ColumnValidation[] = [];
+                icolumnValidations.forEach(validation => {
+                    columnValidations.push(new ColumnValidation(validation.columnName, validation.result));
+                });
+
+                var formValidation = new FormValidationResult(columnValidations);
+
+                errorResponse = new FormErrorResponse(iFormErrorResponse.error, formValidation);
+            }
+            else {
+                // generic error
+                errorResponse = new ErrorResponse(iErrorResponse.error);
+            }
 
         } else {
-            errorResponse = new ErrorResponse(this.genericErrorMessage, response.status);
+            errorResponse = new ErrorResponse(this.genericErrorMessage);
         }
 
         // raise error
         this.raiseError(errorResponse);
 
-        if (this.config.logErrorsToConsole){
+        if (this.config.logErrorsToConsole) {
             console.error(errorResponse);
         }
 
-        return errorResponse.error;
+        return errorResponse;
     }
 
     private getMultipleResponse<TItem extends IItem>(response: Response): ResponseMultiple<TItem> {

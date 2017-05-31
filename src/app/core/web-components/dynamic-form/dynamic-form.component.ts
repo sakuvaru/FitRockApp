@@ -6,6 +6,7 @@ import { FieldControlService } from './field-control.service';
 import { FormConfig } from './form-config.class';
 import { MdSnackBar } from '@angular/material';
 import { ResponseCreate, ResponseEdit } from '../../../repository/responses';
+import { FormErrorResponse, ErrorResponse } from '../../../repository/error-responses';
 
 import 'rxjs/add/operator/catch';
 
@@ -26,6 +27,8 @@ export class DynamicFormComponent implements OnInit, OnChanges {
 
     private form: FormGroup;
 
+    private submissionError: string;
+
     // output events
     @Output() onSubmitEvent = new EventEmitter<FormGroup>();
 
@@ -35,8 +38,8 @@ export class DynamicFormComponent implements OnInit, OnChanges {
     constructor(
         private fieldControlService: FieldControlService,
         private snackBarService: MdSnackBar,
-    ) { }
-
+    ) {
+    }
 
     ngOnInit() {
         // try to initialize component if config is available during init
@@ -45,6 +48,8 @@ export class DynamicFormComponent implements OnInit, OnChanges {
             this.config.fieldsLoader().subscribe(fields => {
                 this.form = this.fieldControlService.toFormGroup(fields);
                 this.questions = fields;
+                // subscribe to form changes
+                this.form.valueChanges.subscribe(response => this.handleFormChange());
             });
 
             this.submitText = this.config.submitText;
@@ -59,6 +64,8 @@ export class DynamicFormComponent implements OnInit, OnChanges {
             changes.config.currentValue.fieldsLoader().subscribe(fields => {
                 this.form = this.fieldControlService.toFormGroup(fields);
                 this.questions = fields;
+                // subscribe to form changes
+                this.form.valueChanges.subscribe(response => this.handleFormChange());
             });
 
             changes.config.currentValue.submitText = changes.config.currentValue.submitText;
@@ -76,23 +83,28 @@ export class DynamicFormComponent implements OnInit, OnChanges {
                     this.response = response;
                     this.handleInsertAfter(response);
                 },
-                (err) => this.handleError(err));
+                (err) => {
+                    this.handleError(err);
+                });
         }
         else if (this.config.isEditForm()) {
             this.config.editFunction(this.form.value)
-                .catch(err => {
-                    this.handleError(err);
-                    throw err;
-                })
                 .subscribe(response => {
                     this.response = response;
                     this.handleUpdateAfter(response);
                 },
-                (err) => this.handleError(err));
+                (err) => {
+                    this.handleError(err);
+                });
         }
         else {
             throw Error("No save function was provided to form");
         }
+    }
+
+    private handleFormChange(): void {
+        // remove error message when any input in form changes
+        this.submissionError = null;
     }
 
     private handleSnackBar(): void {
@@ -117,9 +129,20 @@ export class DynamicFormComponent implements OnInit, OnChanges {
         }
     }
 
-    private handleError(err: string): void {
+    private handleError(errorResponse: ErrorResponse | FormErrorResponse): void {
+        this.submissionError = errorResponse.error;
+
         if (this.config.errorCallback) {
-            this.config.errorCallback(err);
+            this.config.errorCallback(errorResponse);
+        }
+
+        if (errorResponse instanceof FormErrorResponse) {
+            console.log("is form error from dynamic form");
+            console.log(errorResponse.formValidation.validationResult[0].result);
+        }
+        else {
+            console.log("generic error from dynamic form");
+            console.log(errorResponse.error);
         }
     }
 }

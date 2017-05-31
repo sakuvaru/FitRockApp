@@ -6,5 +6,7 @@
     <div layout="row" layout-margin>
       <button md-raised-button color="accent" type="submit" [disabled]="!form.valid">{{submitText}}</button>
     </div>
+    <td-message *ngIf="submissionError" [label]="submissionError" color="red" icon="error"></td-message>
   </form>
 </div>
+

@@ -4,9 +4,7 @@ import { RouterModule } from '@angular/router';
 import { FormGroup } from '@angular/forms';
 import { Component, Input } from '@angular/core';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-
-// Covalent modules for Angular2
-import { CovalentCoreModule } from '@covalent/core';
+import { CovalentModule } from '../../covalent/covalent.module';
 
 // Angular material
 // https://github.com/angular/material2
@@ -24,7 +22,7 @@ import { DynamicFormComponent } from './dynamic-form.component';
     imports: [
         CommonModule,
         RouterModule, // router module needs to be exported along with the layouts so that router-outlet can be used
-        CovalentCoreModule, // covalent needs to be imported here as well because templates are using its modules
+        CovalentModule, // covalent needs to be imported here as well because templates are using its modules
         FormsModule,
         ReactiveFormsModule, // required by dynamic forms feature
         AngularMaterialModule // all of material design modules

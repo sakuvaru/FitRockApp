@@ -32,12 +32,14 @@ export class ClientsOverviewComponent extends BaseComponent {
   private config: DataTableConfig<User> = new DataTableConfig<User>({
     loadItems: (searchTerm: string, page: number, pageSize: number) => {
       return this.dependencies.userService.getClients(
-        [new PageSize(pageSize), new Page(page), new WhereLikeMultiple(["FirstName", "LastName"], searchTerm)])
+        [
+          new PageSize(pageSize), new Page(page), new WhereLikeMultiple(["FirstName", "LastName"], searchTerm)
+        ])
     },
     showPager: true,
     showSearch: true,
     showHeader: false,
-    pagerSize: 10,
+    pagerSize: 7,
     url: (item) => 'client/clients/view/' + item.id,
     avatarUrl: (item) => 'https://semantic-ui.com/images/avatar/large/elliot.jpg'
   });
@@ -47,9 +49,9 @@ export class ClientsOverviewComponent extends BaseComponent {
     super(componentDependencyService)
   }
 
-   initAppData(): AppData {
-        return new AppData({
-            subTitle: "Klienti"
-        });
-    }
+  initAppData(): AppData {
+    return new AppData({
+      subTitle: "Klienti"
+    });
+  }
 }
