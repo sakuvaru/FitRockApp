@@ -1,11 +1,8 @@
-import { FormGroup } from '@angular/forms';
-
-import { BaseField } from '../web-components/dynamic-form/base-field.class';
-import { IService } from '../../core/type-service/iservice.class';
-import { IItem } from '../../repository/interfaces/iitem.interface';
 import { Observable } from 'rxjs/Observable';
-import { ResponseDelete, ResponseCreate, ResponseEdit, ResponseMultiple, ResponseSingle } from '../../repository/models/responses';
-import { FormConfig } from '../../core/web-components/dynamic-form/form-config.class';
+
+import { BaseField, FormConfig } from '../../../lib/web-components.lib';
+import { IService } from '../../core/type-service/iservice.class';
+import { IItem, ResponseDelete, ResponseCreate, ResponseEdit, ResponseMultiple, ResponseSingle } from '../../../lib/repository.lib';
 
 export interface IFormsService<TItem extends IItem> {
 

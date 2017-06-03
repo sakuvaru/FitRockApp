@@ -1,7 +1,9 @@
-import { IItem } from '../../repository/interfaces/iitem.interface';
-import { IOption } from '../../repository/interfaces/ioption.interface';
 import { Observable } from 'rxjs/Observable';
-import { ResponseDelete, ResponseCreate, ResponseEdit, ResponseMultiple, ResponseSingle } from '../../repository/models/responses';
+
+import {
+    IItem, IOption, ResponseDelete, ResponseCreate,
+    ResponseEdit, ResponseMultiple, ResponseSingle
+} from '../../../lib/repository.lib';
 
 export interface IService<TItem extends IItem> {
 

@@ -1,16 +1,17 @@
 // angular imports
 import { Injectable } from '@angular/core';
-
-// required imports
-import { BaseFormService } from '../core/forms-service/base-form.service';
-import { BaseField } from '../core/web-components/dynamic-form/base-field.class';
-import { TextField, DropdownField, HiddenField, TextAreaField, BooleanField, RadioBooleanField, DateField } from '../core/web-components/dynamic-form/field-types';
-import { DropdownFieldOption } from '../core/web-components/dynamic-form/models';
 import { Observable } from 'rxjs/Observable';
 
+// required imports
+import { BaseFormService } from '../core';
+import {
+    BaseField, TextField, DropdownField, HiddenField, TextAreaField,
+    BooleanField, RadioBooleanField, DateField, DropdownFieldOption
+} from '../../lib/web-components.lib'
+
 // service specific imports
-import { User } from '../models/user.class';
-import { UserService } from '../services/user.service';
+import { User } from '../models';
+import { UserService } from '../services';
 
 @Injectable()
 export class UserFormsService extends BaseFormService<User>{

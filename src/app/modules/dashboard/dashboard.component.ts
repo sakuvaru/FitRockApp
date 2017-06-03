@@ -1,21 +1,14 @@
 // common
 import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
-import { Location } from '@angular/common';
 import { ActivatedRoute, Params } from '@angular/router';
-import { FormGroup } from '@angular/forms';
-import { BaseField } from '../../core/web-components/dynamic-form/base-field.class';
-import { BaseComponent } from '../../core/base/base.component';
-import { AppData } from '../../core/app-data.class';
-import { ComponentDependencyService } from '../../core/component-dependency.service';
-import { DataTableField } from '../../core/web-components/data-table/data-table-field.class';
-import { DataTableConfig } from '../../core/web-components/data-table/data-table.config';
-import { AlignEnum } from '../../core/web-components/data-table/align-enum';
+import { AppConfig, ComponentDependencyService, AppData, BaseComponent } from '../../core';
 
 // required by component
-import { Log } from '../../models/log.class';
-import { WhereEquals, OrderBy, OrderByDescending, Limit, Include, IncludeMultiple } from '../../repository/models/options';
-import { LogService } from '../../services/log.service';
-import { CurrentUser } from '../../core/auth/models/current-user.class';
+import { BaseField, FormConfig } from '../../../lib/web-components.lib';
+import { Limit, OrderByDescending } from '../../../lib/repository.lib';
+import { Log } from '../../models';
+import { LogService } from '../../services';
+import { CurrentUser } from '../../../lib/auth.lib';
 
 @Component({
     selector: 'dashboard',
@@ -30,10 +23,10 @@ export class DashboardComponent extends BaseComponent implements OnInit {
     constructor(
         private logService: LogService,
         protected dependencies: ComponentDependencyService) {
-        super(dependencies)        
+        super(dependencies)
     }
 
-     initAppData(): AppData {
+    initAppData(): AppData {
         return new AppData({
             subTitle: "Dashboard"
         });

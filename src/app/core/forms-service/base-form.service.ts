@@ -1,16 +1,12 @@
-import { Injectable } from '@angular/core';
-
-import { IFormsService } from './iforms-service.interface';
-import { BaseField } from '../web-components/dynamic-form/base-field.class';
+import { Observable } from 'rxjs/Observable';
 
 import { IService } from '../../core/type-service/iservice.class';
-import { IItem } from '../../repository/interfaces/iitem.interface';
-import { Observable } from 'rxjs/Observable';
-import { ResponseDelete, ResponseCreate, ResponseEdit, ResponseMultiple, ResponseSingle } from '../../repository/models/responses';
-import { FormConfig } from '../../core/web-components/dynamic-form/form-config.class';
+
+import { IFormsService } from './iforms-service.interface';
+import { BaseField, FormConfig } from '../../../lib/web-components.lib';
+import { IItem, ResponseDelete, ResponseCreate, ResponseEdit, ResponseMultiple, ResponseSingle } from '../../../lib/repository.lib';
 
 //Note - nested generics are not currently supported by Typescript 2 (13.5.2017) => take types in constructor
-@Injectable()
 export abstract class BaseFormService<TItem extends IItem> implements IFormsService<TItem> {
 
     constructor(

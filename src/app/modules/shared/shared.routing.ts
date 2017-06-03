@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 // config
-import { AppConfig } from '../../core/config/app.config';
+import { AppConfig } from '../../core';
 
 // layouts
 import { SimpleLayoutComponent } from '../../layouts/simple-layout.component';

@@ -1,13 +1,9 @@
 // common
-import { Component, Input, Output, OnDestroy } from '@angular/core';
-import { AppConfig } from '../core/config/app.config';
-import { BaseComponent } from '../core/base/base.component';
-import { AppData } from '../core/app-data.class';
-import { ComponentDependencyService } from '../core/component-dependency.service';
+import { Component, Input, OnDestroy } from '@angular/core';
+import { TdMediaService } from '@covalent/core';
+import { AppConfig, AppData, ComponentDependencyService, BaseComponent, AppDataService } from '../core';
 
 // required by component
-import { TdMediaService } from '@covalent/core';
-import { AppDataService } from '../core/app-data.service';
 import { Subscription } from 'rxjs/Subscription';
 
 @Component({

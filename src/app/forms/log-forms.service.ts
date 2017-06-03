@@ -1,16 +1,17 @@
 // angular imports
 import { Injectable } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-
-// required imports
-import { BaseFormService } from '../core/forms-service/base-form.service';
-import { BaseField } from '../core/web-components/dynamic-form/base-field.class';
-import { TextField, DropdownField, HiddenField, TextAreaField } from '../core/web-components/dynamic-form/field-types';
 import { Observable } from 'rxjs/Observable';
 
+// required imports
+import { BaseFormService } from '../core';
+import {
+    BaseField, TextField, DropdownField, HiddenField, TextAreaField,
+    BooleanField, RadioBooleanField, DateField, DropdownFieldOption
+} from '../../lib/web-components.lib'
+
 // service specific imports
-import { Log } from '../models/log.class';
-import { LogService } from '../services/log.service';
+import { Log } from '../models';
+import { LogService } from '../services';
 
 @Injectable()
 export class LogFormsService extends BaseFormService<Log>{

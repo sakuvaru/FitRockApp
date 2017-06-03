@@ -1,4 +1,4 @@
-import { BaseItem } from '../repository/models/base-item.class';
+import { BaseItem } from '../../lib/repository.lib';
 
 export class Log extends BaseItem {
 

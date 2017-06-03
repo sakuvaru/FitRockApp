@@ -11,7 +11,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import 'hammerjs';
 
 // authentication
-import { AuthModule } from './core/auth/auth.module';
+import { AuthModule } from '../lib/auth.lib';
 
 // dynamic forms
 import { FormServicesModule } from './forms/form-services.module';
@@ -26,10 +26,10 @@ import { RepositoryServiceProvider} from './core/providers/repository-service.pr
 import { AppConfig } from './core/config/app.config';
 
 // web components
-import { WebComponentsModule } from './core/web-components/web-components.module';
+import { WebComponentsModule } from '../lib/web-components.lib';
 
 // custom modules
-import { CoreModule } from './core/core.module';
+import { CoreModule } from './core';
 
 import { LayoutsModule } from './layouts/layouts.module';
 import { SharedModule } from './modules/shared/shared.module';

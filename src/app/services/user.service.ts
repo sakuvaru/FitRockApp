@@ -1,14 +1,13 @@
 // service common
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { RepositoryService } from '../repository/repository.service';
-import { BaseTypeService } from '../core/type-service/base-type.service';
-import { ResponseDelete, ResponseCreate, ResponseEdit, ResponseMultiple, ResponseSingle } from '../repository/models/responses';
-import { IOption } from '../repository/interfaces/ioption.interface';
-import { IncludeMultiple } from '../repository/models/options';
+import { BaseTypeService } from '../core';
 
 // required by service
-import { User } from '../models/user.class';
+import { User } from '../models';
+
+import { RepositoryService, IOption, IncludeMultiple, ResponseDelete, ResponseCreate, ResponseEdit, ResponseMultiple, ResponseSingle } from '../../lib/repository.lib';
+
 
 @Injectable()
 export class UserService extends BaseTypeService<User>{
@@ -24,7 +23,7 @@ export class UserService extends BaseTypeService<User>{
     getClients(options?: IOption[]): Observable<ResponseMultiple<User>> {
 
         options.push(new IncludeMultiple(["trainer"]));
-        
+
         return this.getMultiple('getclients', options);
     }
 

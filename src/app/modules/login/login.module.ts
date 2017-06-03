@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 // core module
-import { CoreModule } from '../../core/core.module';
+import { CoreModule } from '../../core';
 
 // router
 import { LoginRouter } from './login.routing';

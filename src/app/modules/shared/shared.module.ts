@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 // core module
-import { CoreModule } from '../../core/core.module';
+import { CoreModule } from '../../core';
 
 // components
 import { NotFoundComponent } from './not-found.component';

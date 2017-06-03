@@ -3,13 +3,11 @@ import { NgModule } from '@angular/core';
 import { Http } from '@angular/http';
 
 // config
-import { RepositoryConfig } from '../../repository/repository.config';
-import { TypeResolver } from '../../repository/models/type-resolver.class';
+import { RepositoryConfig, TypeResolver, RepositoryService } from '../../../lib/repository.lib';
 import { AppConfig } from '../../core/config/app.config';
 
 // services
-import { RepositoryService } from '../../repository/repository.service';
-import { AppDataService } from '../../core/app-data.service';
+import { AppDataService } from '../app-data/app-data.service';
 import { AuthHttp } from 'angular2-jwt';
 
 // models

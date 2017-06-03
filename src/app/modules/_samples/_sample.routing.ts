@@ -2,10 +2,10 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 // guard
-import { AuthGuardService } from '../../core/auth/auth-guard.service';
+import { AuthGuardService } from '../../../lib/auth.lib';
 
 // config
-import { AppConfig } from '../../core/config/app.config';
+import { AppConfig } from '../../core';
 
 // layouts
 import { SimpleLayoutComponent } from '../../layouts/simple-layout.component';

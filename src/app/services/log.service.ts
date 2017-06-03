@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Log } from '../models/log.class';
-import { BaseTypeService } from '../core/type-service/base-type.service';
-import { RepositoryService } from '../repository/repository.service';
+import { RepositoryService } from '../../lib/repository.lib';
+import { BaseTypeService } from '../core';
 
 @Injectable()
 export class LogService extends BaseTypeService<Log>{
