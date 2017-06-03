@@ -1,0 +1,51 @@
+import { ResponseGetBase } from '../models/response-get-base.class';
+import { IItem } from './iitem.interface';
+import { IFormValidationResult } from './iform-validation-result.interface';
+
+export interface IErrorResponseRaw{
+    error: string;
+}
+
+export interface IFormErrorResponseRaw extends IErrorResponseRaw{
+    formValidation: IFormValidationResult;
+}
+
+export interface IResponseMultipleRaw {
+
+    fromCache: boolean,
+    timeCreated: Date,
+    type: string,
+    action: string,
+
+    itemsPerPage: number,
+    page: number,
+    totalItems: number,
+    limit: number,
+    pages: number,
+    items: any
+}
+
+export interface IResponseSingleRaw {
+    fromCache: boolean,
+    timeCreated: Date,
+    type: string,
+    action: string,
+
+    item: any
+}
+
+export interface IResponseCreateRaw {
+    item: any,
+}
+
+export interface IResponseDeleteRaw {
+
+    isSuccess: boolean,
+}
+
+export interface IResponseEditRaw {
+    item: any,
+}
+
+
+

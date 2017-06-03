@@ -4,7 +4,7 @@ import { Http } from '@angular/http';
 
 // config
 import { RepositoryConfig } from '../../repository/repository.config';
-import { TypeResolver } from '../../repository/type-resolver.class';
+import { TypeResolver } from '../../repository/models/type-resolver.class';
 import { AppConfig } from '../../core/config/app.config';
 
 // services

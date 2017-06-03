@@ -21,13 +21,16 @@ import { AppComponent } from './app.component';
 
 // repository
 import { RepositoryServiceProvider} from './core/providers/repository-service.provider';
-import { RepositoryModule } from './repository/repository.module';
 
 // config
 import { AppConfig } from './core/config/app.config';
 
+// web components
+import { WebComponentsModule } from './core/web-components/web-components.module';
+
 // custom modules
 import { CoreModule } from './core/core.module';
+
 import { LayoutsModule } from './layouts/layouts.module';
 import { SharedModule } from './modules/shared/shared.module';
 import { ServicesModule } from './services/services.module';
@@ -75,16 +78,21 @@ import { FormModule } from './modules/_forms/_form.module';
     LayoutsModule,
     SharedModule,
     DashboardModule,
-    RepositoryModule,
     ServicesModule,
     LoginModule,
     ClientsModule,
 
     // test form module
     FormModule,
+
+    // web components
+    WebComponentsModule
   ],
   providers: [
     RepositoryServiceProvider
+  ],
+  exports: [
+    WebComponentsModule
   ],
   bootstrap: [AppComponent]
 })

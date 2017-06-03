@@ -1,4 +1,4 @@
-import { BaseItem } from '../repository/base-item.class';
+import { BaseItem } from '../repository/models/base-item.class';
 
 export class User extends BaseItem {
 

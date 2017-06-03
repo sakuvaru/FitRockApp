@@ -1,19 +1,21 @@
 import { Headers, RequestOptions } from '@angular/http';
-import { ResponseDelete, ResponseCreate, ResponseEdit, ResponseMultiple, ResponseSingle, ErrorResponse, FormErrorResponse } from './models/responses';
-import { IResponseCreateRaw, IResponseDeleteRaw, IResponseEditRaw, IResponseMultipleRaw, IResponseSingleRaw, IErrorResponseRaw, IFormErrorResponseRaw } from './interfaces/iraw-responses';
-import { IOption } from './interfaces/ioption.interface';
+import { ErrorResponse, FormErrorResponse } from './error-responses';
+import { ResponseDelete, ResponseCreate, ResponseEdit, ResponseMultiple, ResponseSingle } from './responses';
+import { IResponseCreateRaw, IResponseDeleteRaw, IResponseEditRaw, IResponseMultipleRaw, IResponseSingleRaw } from './iraw-responses';
+import { IOption } from './ioption.interface';
 import { AuthHttp } from 'angular2-jwt';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 import { Response } from '@angular/http';
-import { IItem } from './interfaces/iitem.interface';
+import { IItem } from './iitem.interface';
 import { RepositoryConfig } from './repository.config';
 import { MapService } from './map.service';
 import { TypeResolverService } from './type-resolver.service';
-import { ColumnValidation } from './models/column-validation.class';
-import { IColumnValidation } from './interfaces/icolumn-validation.interface';
-import { FormValidationResult } from './models/form-validation-result.class';
-import { IFormValidationResult } from './interfaces/iform-validation-result.interface';
+import { IErrorResponse, IFormErrorResponse } from './ierror-responses';
+import { ColumnValidation } from './column-validation.class';
+import { IColumnValidation } from './icolumn-validation.interface';
+import { FormValidationResult } from './form-validation-result.class';
+import { IFormValidationResult } from './iform-validation-result.interface';
 
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
@@ -73,14 +75,14 @@ export abstract class BaseRepositoryService {
         return url;
     }
 
-    private handleError(response: Response | any): IErrorResponseRaw | IFormErrorResponseRaw {
+    private handleError(response: Response | any): IErrorResponse | IFormErrorResponse {
         // use a remote logging later on
         var errorResponse: ErrorResponse;
 
         if (response instanceof Response) {
             // create either 'FormResponse' or generic 'ErrorResponse'
-            var iFormErrorResponse = response.json() as IFormErrorResponseRaw;
-            var iErrorResponse = response.json() as IErrorResponseRaw;
+            var iFormErrorResponse = response.json() as IFormErrorResponse;
+            var iErrorResponse = response.json() as IErrorResponse;
 
             // form validation error because 'formValidation' property exists
             if (iFormErrorResponse.formValidation) {
@@ -126,6 +128,7 @@ export abstract class BaseRepositoryService {
             limit: responseMultiple.limit,
             itemsPerPage: responseMultiple.itemsPerPage,
             page: responseMultiple.page,
+            result: responseMultiple.result,
             pages: responseMultiple.pages,
             timeCreated: responseMultiple.timeCreated,
             totalItems: responseMultiple.totalItems,
@@ -142,6 +145,7 @@ export abstract class BaseRepositoryService {
         return new ResponseSingle<TItem>({
             fromCache: responseSingle.fromCache,
             action: responseSingle.action,
+            result: responseSingle.result,
             timeCreated: responseSingle.timeCreated,
             type: responseSingle.type,
             item: item
@@ -155,6 +159,7 @@ export abstract class BaseRepositoryService {
 
         return new ResponseCreate<TItem>({
             item: item,
+            result: responseCreate.result
         });
     }
 
@@ -165,6 +170,7 @@ export abstract class BaseRepositoryService {
 
         return new ResponseEdit<TItem>({
             item: item,
+            result: responseEdit.result
         });
     }
 
@@ -172,6 +178,7 @@ export abstract class BaseRepositoryService {
         var responseDelete = (response.json() || {}) as IResponseDeleteRaw;
 
         return new ResponseDelete({
+            result: responseDelete.result
         });
     }
 

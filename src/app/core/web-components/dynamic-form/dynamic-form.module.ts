@@ -4,11 +4,8 @@ import { RouterModule } from '@angular/router';
 import { FormGroup } from '@angular/forms';
 import { Component, Input } from '@angular/core';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { CovalentModule } from '../../covalent/covalent.module';
 
-// Angular material
-// https://github.com/angular/material2
-import { AngularMaterialModule } from '../../material/angular-material.module';
+import { SharedWebComponentModule } from '../shared-web-components.module';
 
 // services
 import { FieldControlService } from './field-control.service';
@@ -22,10 +19,9 @@ import { DynamicFormComponent } from './dynamic-form.component';
     imports: [
         CommonModule,
         RouterModule, // router module needs to be exported along with the layouts so that router-outlet can be used
-        CovalentModule, // covalent needs to be imported here as well because templates are using its modules
+        SharedWebComponentModule,
         FormsModule,
-        ReactiveFormsModule, // required by dynamic forms feature
-        AngularMaterialModule // all of material design modules
+        ReactiveFormsModule // required by dynamic forms feature
     ],
     declarations: [
         DynamicFormQuestionComponent,

@@ -4,22 +4,24 @@ import { AppDataService } from './app-data.service';
 import { ComponentDependencyService } from './component-dependency.service';
 
 // Covalent modules for Angular2 - include here so all components can reference them in templates
-import { CovalentModule } from '../core/covalent/covalent.module';
+import { CovalentModule } from './covalent/covalent.module';
 
 // Angular meterial
 import { AngularMaterialModule } from './material/angular-material.module';
 
 // core modules - include
-import { WebComponentsModule } from './web-components/web-components.module';
 import { AuthModule } from './auth/auth.module';
+
+// web components
+import { WebComponentsModule } from './web-components/web-components.module';
 
 @NgModule({
     imports: [
         CommonModule,
-        WebComponentsModule,
         AuthModule,
         CovalentModule,
-        AngularMaterialModule
+        AngularMaterialModule,
+        WebComponentsModule
     ],
     declarations: [
     ],
@@ -28,10 +30,10 @@ import { AuthModule } from './auth/auth.module';
         ComponentDependencyService
     ],
     exports: [
-        WebComponentsModule,
         AuthModule,
         CovalentModule,
-        AngularMaterialModule
+        AngularMaterialModule,
+        WebComponentsModule
     ]
 })
 export class CoreModule { }

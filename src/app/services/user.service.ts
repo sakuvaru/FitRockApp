@@ -3,9 +3,9 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { RepositoryService } from '../repository/repository.service';
 import { BaseTypeService } from '../core/type-service/base-type.service';
-import { ResponseDelete, ResponseCreate, ResponseEdit, ResponseMultiple, ResponseSingle } from '../repository/responses';
-import { IOption } from '../repository/ioption.interface';
-import { IncludeMultiple } from '../repository/options.class';
+import { ResponseDelete, ResponseCreate, ResponseEdit, ResponseMultiple, ResponseSingle } from '../repository/models/responses';
+import { IOption } from '../repository/interfaces/ioption.interface';
+import { IncludeMultiple } from '../repository/models/options';
 
 // required by service
 import { User } from '../models/user.class';

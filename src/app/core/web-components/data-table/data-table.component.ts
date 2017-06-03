@@ -54,12 +54,14 @@ export class DataTableComponent implements AfterViewInit {
             this.loaderEnabled = true;
         }
 
-        this.config.loadItems(this.searchTerm, page, this.config.pagerSize).subscribe(response => {
-            this.items = response.items;
-            this.totalPages = response.pages;
-            this.loaderEnabled = false;
-            console.log(response);
-        });
+        this.config.loadItems(this.searchTerm, page, this.config.pagerSize)
+            .finally(() => {
+                this.loaderEnabled = false;
+            })
+            .subscribe(response => {
+                this.items = response.items;
+                this.totalPages = response.pages;
+            });
     }
 
     // event emitters

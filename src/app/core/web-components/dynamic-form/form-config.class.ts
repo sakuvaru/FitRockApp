@@ -1,9 +1,8 @@
 import { Observable } from 'rxjs/Observable';
 import { BaseField } from './base-field.class';
 import { FormGroup } from '@angular/forms';
-import { IItem } from '../../../repository/iitem.interface';
-import { ResponseCreate, ResponseEdit } from '../../../repository/responses';
-import { ErrorResponse, FormErrorResponse } from '../../../repository/error-responses';
+import { IItem } from '../../../repository/interfaces/iitem.interface';
+import { ResponseCreate, ResponseEdit, FormErrorResponse, ErrorResponse } from '../../../repository/models/responses';
 
 export class FormConfig<TItem extends IItem>{
 
@@ -15,7 +14,7 @@ export class FormConfig<TItem extends IItem>{
     public snackBarText: string;
     public insertCallback?: (response: ResponseCreate<TItem>) => void;
     public updateCallback?: (response: ResponseEdit<TItem>) => void;
-    public errorCallback?: (response: ErrorResponse | FormErrorResponse) => void;
+    public errorCallback?: (response: ErrorResponse | FormErrorResponse | any) => void;
 
     constructor(
         config: {
@@ -27,7 +26,7 @@ export class FormConfig<TItem extends IItem>{
             editFunction?: (item: TItem) => Observable<ResponseEdit<TItem>>, // insert or edit function needs to be provided
             insertCallback?: (response: ResponseCreate<TItem>) => void,
             updateCallback?: (response: ResponseEdit<TItem>) => void,
-            errorCallback?: (response: ErrorResponse | FormErrorResponse) => void;
+            errorCallback?: (response: ErrorResponse | FormErrorResponse | any) => void;
         }
     ) {
         Object.assign(this, config);

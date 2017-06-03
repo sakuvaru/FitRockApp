@@ -9,7 +9,7 @@ import { BaseField } from '../../core/web-components/dynamic-form/base-field.cla
 import { DataTableField } from '../../core/web-components/data-table/data-table-field.class';
 import { DataTableConfig } from '../../core/web-components/data-table/data-table.config';
 import { AlignEnum } from '../../core/web-components/data-table/align-enum';
-import { WhereEquals, OrderBy, OrderByDescending, Limit, Include, IncludeMultiple } from '../../repository/options.class';
+import { WhereEquals, OrderBy, OrderByDescending, Limit, Include, IncludeMultiple } from '../../repository/models/options';
 
 // required by component
 import { LogFormsService } from '../../forms/log-forms.service';

@@ -1,6 +1,6 @@
-import { TypeResolver } from './models/type-resolver.class';
+import { TypeResolver } from './type-resolver.class';
 import { TypeResolverService } from './type-resolver.service';
-import { IItem } from './interfaces/iitem.interface';
+import { IItem } from './iitem.interface';
 
 export class MapService {
     constructor(

@@ -13,7 +13,7 @@ import { AlignEnum } from '../../core/web-components/data-table/align-enum';
 
 // required by component
 import { Log } from '../../models/log.class';
-import { WhereEquals, OrderBy, OrderByDescending, Limit, Include, IncludeMultiple } from '../../repository/options.class';
+import { WhereEquals, OrderBy, OrderByDescending, Limit, Include, IncludeMultiple } from '../../repository/models/options';
 import { LogService } from '../../services/log.service';
 import { CurrentUser } from '../../core/auth/models/current-user.class';
 

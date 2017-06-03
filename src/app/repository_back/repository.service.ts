@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BaseRepositoryService } from './base-repository-service';
-import { ResponseDelete, ResponseCreate, ResponseEdit, ResponseMultiple, ResponseSingle } from './models/responses';
-import { IOption } from './interfaces/ioption.interface';
-import { IItem } from './interfaces/iitem.interface';
+import { ResponseDelete, ResponseCreate, ResponseEdit, ResponseMultiple, ResponseSingle } from './responses';
+import { IOption } from './ioption.interface';
+import { IItem } from './iitem.interface';
 import { AuthHttp } from 'angular2-jwt';
 import { RepositoryConfig } from './repository.config';
 

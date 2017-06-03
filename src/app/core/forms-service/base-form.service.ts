@@ -4,9 +4,9 @@ import { IFormsService } from './iforms-service.interface';
 import { BaseField } from '../web-components/dynamic-form/base-field.class';
 
 import { IService } from '../../core/type-service/iservice.class';
-import { IItem } from '../../repository/iitem.interface';
+import { IItem } from '../../repository/interfaces/iitem.interface';
 import { Observable } from 'rxjs/Observable';
-import { ResponseDelete, ResponseCreate, ResponseEdit, ResponseMultiple, ResponseSingle } from '../../repository/responses';
+import { ResponseDelete, ResponseCreate, ResponseEdit, ResponseMultiple, ResponseSingle } from '../../repository/models/responses';
 import { FormConfig } from '../../core/web-components/dynamic-form/form-config.class';
 
 //Note - nested generics are not currently supported by Typescript 2 (13.5.2017) => take types in constructor

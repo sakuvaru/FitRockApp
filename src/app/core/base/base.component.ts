@@ -7,7 +7,7 @@ import { AppConfig } from '../config/app.config';
 import { ComponentDependencyService } from '../../core/component-dependency.service';
 import { Subscription } from 'rxjs/Subscription';
 import { RepositoryService } from '../../repository/repository.service';
-import { ErrorResponse } from '../../repository/error-responses';
+import { ErrorResponse } from '../../repository/models/responses';
 import { MdSnackBar } from '@angular/material';
 
 @Component({

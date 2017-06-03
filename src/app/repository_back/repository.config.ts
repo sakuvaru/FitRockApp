@@ -1,4 +1,4 @@
-import { TypeResolver } from './models/type-resolver.class';
+import { TypeResolver } from './type-resolver.class';
 
 export class RepositoryConfig {
 

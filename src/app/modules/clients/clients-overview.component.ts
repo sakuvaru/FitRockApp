@@ -13,7 +13,7 @@ import { AlignEnum } from '../../core/web-components/data-table/align-enum';
 import {
   WhereEquals, OrderBy, OrderByDescending, Limit, PageSize, Page,
   Include, IncludeMultiple, WhereLike, WhereLikeMultiple
-} from '../../repository/options.class';
+} from '../../repository/models/options';
 import { Observable } from 'rxjs/Observable';
 
 // required by component

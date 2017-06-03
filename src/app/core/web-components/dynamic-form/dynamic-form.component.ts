@@ -5,8 +5,7 @@ import { BaseField } from './base-field.class';
 import { FieldControlService } from './field-control.service';
 import { FormConfig } from './form-config.class';
 import { MdSnackBar } from '@angular/material';
-import { ResponseCreate, ResponseEdit } from '../../../repository/responses';
-import { FormErrorResponse, ErrorResponse } from '../../../repository/error-responses';
+import { ResponseCreate, ResponseEdit, FormErrorResponse, ErrorResponse } from '../../../repository/models/responses';
 
 import 'rxjs/add/operator/catch';
 

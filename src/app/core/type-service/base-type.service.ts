@@ -1,10 +1,11 @@
 import { RepositoryService } from '../../repository/repository.service';
-import { IItem } from '../../repository/iitem.interface';
 import { IService } from './iservice.class';
-import { ResponseDelete, ResponseCreate, ResponseEdit, ResponseMultiple, ResponseSingle } from '../../repository/responses';
-import { IOption } from '../../repository/ioption.interface';
 import { Observable } from 'rxjs/Observable';
 import { User } from '../../models/user.class';
+
+import { IItem } from '../../repository/interfaces/iitem.interface';
+import { IOption } from '../../repository/interfaces/ioption.interface';
+import { ResponseDelete, ResponseCreate, ResponseEdit, ResponseMultiple, ResponseSingle } from '../../repository/models/responses';
 
 export abstract class BaseTypeService<TItem extends IItem> implements IService<TItem>{
 
