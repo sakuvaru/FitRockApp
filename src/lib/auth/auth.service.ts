@@ -6,7 +6,7 @@ import { AppConfig } from '../../app/core/config/app.config';
 import { Auth0ErrorResponse } from './models/auth0-error-response.class';
 import { CurrentUser } from './models/current-user.class';
 import { Router } from '@angular/router';
-import { Guid } from '../../lib/utilities.lib';
+import { Guid } from '../../lib/utilities';
 
 // auth0 class exposed by auth0 js
 declare var auth0: any;

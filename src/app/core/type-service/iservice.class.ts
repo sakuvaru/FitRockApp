@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import {
     IItem, IOption, ResponseDelete, ResponseCreate,
     ResponseEdit, ResponseMultiple, ResponseSingle
-} from '../../../lib/repository.lib';
+} from '../../../lib/repository';
 
 export interface IService<TItem extends IItem> {
 

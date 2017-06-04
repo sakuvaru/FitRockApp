@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ColumnValidation, FieldErrorEnum } from '../../repository.lib';
+import { ColumnValidation, FieldErrorEnum } from '../../repository';
 
 Injectable()
 export class FormTranslationService {

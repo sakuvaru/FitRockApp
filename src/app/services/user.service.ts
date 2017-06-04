@@ -6,7 +6,7 @@ import { BaseTypeService } from '../core';
 // required by service
 import { User } from '../models';
 
-import { RepositoryService, IOption, IncludeMultiple, ResponseDelete, ResponseCreate, ResponseEdit, ResponseMultiple, ResponseSingle } from '../../lib/repository.lib';
+import { RepositoryService, IOption, IncludeMultiple, ResponseDelete, ResponseCreate, ResponseEdit, ResponseMultiple, ResponseSingle } from '../../lib/repository';
 
 
 @Injectable()

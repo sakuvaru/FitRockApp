@@ -7,7 +7,7 @@ import { DataTableField } from './data-table-field.class';
 import { DataTableConfig } from './data-table.config';
 import { AlignEnum } from './align-enum';
 import { Observable } from 'rxjs/Observable';
-import { Guid } from '../../utilities.lib';
+import { Guid } from '../../utilities';
 
 @Component({
     selector: 'data-table',

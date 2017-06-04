@@ -7,7 +7,7 @@ import { BaseFormService } from '../core';
 import {
     BaseField, TextField, DropdownField, HiddenField, TextAreaField,
     BooleanField, RadioBooleanField, DateField, DropdownFieldOption
-} from '../../lib/web-components.lib'
+} from '../../lib/web-components'
 
 // service specific imports
 import { User } from '../models';

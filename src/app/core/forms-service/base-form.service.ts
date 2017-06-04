@@ -3,8 +3,8 @@ import { Observable } from 'rxjs/Observable';
 import { IService } from '../../core/type-service/iservice.class';
 
 import { IFormsService } from './iforms-service.interface';
-import { BaseField, FormConfig } from '../../../lib/web-components.lib';
-import { IItem, ResponseDelete, ResponseCreate, ResponseEdit, ResponseMultiple, ResponseSingle } from '../../../lib/repository.lib';
+import { BaseField, FormConfig } from '../../../lib/web-components';
+import { IItem, ResponseDelete, ResponseCreate, ResponseEdit, ResponseMultiple, ResponseSingle } from '../../../lib/repository';
 
 //Note - nested generics are not currently supported by Typescript 2 (13.5.2017) => take types in constructor
 export abstract class BaseFormService<TItem extends IItem> implements IFormsService<TItem> {

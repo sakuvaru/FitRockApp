@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import {
     RepositoryService, IItem, IOption, ResponseDelete,
     ResponseCreate, ResponseEdit, ResponseMultiple, ResponseSingle
-} from '../../../lib/repository.lib';
+} from '../../../lib/repository';
 
 export abstract class BaseTypeService<TItem extends IItem> implements IService<TItem>{
 

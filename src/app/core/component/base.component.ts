@@ -5,7 +5,7 @@ import { AppData } from '../app-data/app-data.class';
 import { AppConfig } from '../config/app.config';
 import { ComponentDependencyService } from './component-dependency.service';
 import { Subscription } from 'rxjs/Subscription';
-import { ErrorResponse, RepositoryService } from '../../../lib/repository.lib';
+import { ErrorResponse, RepositoryService } from '../../../lib/repository';
 
 @Component({
 })

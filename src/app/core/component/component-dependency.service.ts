@@ -4,11 +4,11 @@ import { AppData } from '../app-data/app-data.class';
 import { Router, ActivatedRoute } from '@angular/router';
 
 // Comnponent's common services
-import { AuthService }  from '../../../lib/auth.lib';
+import { AuthService }  from '../../../lib/auth';
 import { TdMediaService } from '@covalent/core';
 import { AppDataService } from '../app-data/app-data.service';
 import { TdLoadingService } from '@covalent/core';
-import { RepositoryService } from '../../../lib/repository.lib';
+import { RepositoryService } from '../../../lib/repository';
 
 // services
 import { UserService } from '../../services/user.service';

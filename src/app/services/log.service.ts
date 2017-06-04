@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Log } from '../models/log.class';
-import { RepositoryService } from '../../lib/repository.lib';
+import { RepositoryService } from '../../lib/repository';
 import { BaseTypeService } from '../core';
 
 @Injectable()

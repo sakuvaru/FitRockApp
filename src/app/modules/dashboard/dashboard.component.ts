@@ -4,11 +4,11 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { AppConfig, ComponentDependencyService, AppData, BaseComponent } from '../../core';
 
 // required by component
-import { BaseField, FormConfig } from '../../../lib/web-components.lib';
-import { Limit, OrderByDescending } from '../../../lib/repository.lib';
+import { BaseField, FormConfig } from '../../../lib/web-components';
+import { Limit, OrderByDescending } from '../../../lib/repository';
 import { Log } from '../../models';
 import { LogService } from '../../services';
-import { CurrentUser } from '../../../lib/auth.lib';
+import { CurrentUser } from '../../../lib/auth';
 
 @Component({
     selector: 'dashboard',

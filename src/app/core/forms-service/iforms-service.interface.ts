@@ -1,8 +1,8 @@
 import { Observable } from 'rxjs/Observable';
 
-import { BaseField, FormConfig } from '../../../lib/web-components.lib';
+import { BaseField, FormConfig } from '../../../lib/web-components';
 import { IService } from '../../core/type-service/iservice.class';
-import { IItem, ResponseDelete, ResponseCreate, ResponseEdit, ResponseMultiple, ResponseSingle } from '../../../lib/repository.lib';
+import { IItem, ResponseDelete, ResponseCreate, ResponseEdit, ResponseMultiple, ResponseSingle } from '../../../lib/repository';
 
 export interface IFormsService<TItem extends IItem> {
 

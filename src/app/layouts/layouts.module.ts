@@ -2,10 +2,10 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
-import { AngularMaterialModule } from '../../lib/material.lib';
+import { AngularMaterialModule } from '../../lib/material';
 
 // Covalent modules for Angular2
-import { CovalentModule } from '../../lib/covalent.lib';
+import { CovalentModule } from '../../lib/covalent';
 
 // components
 import { SimpleLayoutComponent } from './simple-layout.component';

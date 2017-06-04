@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { Http } from '@angular/http';
 
 // config
-import { RepositoryConfig, TypeResolver, RepositoryService } from '../../../lib/repository.lib';
+import { RepositoryConfig, TypeResolver, RepositoryService } from '../../../lib/repository';
 import { AppConfig } from '../../core/config/app.config';
 
 // services

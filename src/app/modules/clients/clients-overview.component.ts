@@ -4,8 +4,8 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { AppConfig, ComponentDependencyService, AppData, BaseComponent } from '../../core';
 
 // required by component
-import { DataTableField, DataTableConfig, AlignEnum } from '../../../lib/web-components.lib';
-import { PageSize, Page, WhereLikeMultiple } from '../../../lib/repository.lib';
+import { DataTableField, DataTableConfig, AlignEnum } from '../../../lib/web-components';
+import { PageSize, Page, WhereLikeMultiple } from '../../../lib/repository';
 import { User } from '../../models';
 
 @Component({

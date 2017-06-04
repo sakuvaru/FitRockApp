@@ -1,1 +1,0 @@
-export * from './utilities/general.class';

@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs/Observable';
-import { ResponseMultiple } from '../../repository.lib';
+import { ResponseMultiple } from '../../repository';
 
 export class DataTableConfig<T> {
     public loadItems: (searchTerm: string, page: number, pageSize: number) => Observable<ResponseMultiple<any>>;

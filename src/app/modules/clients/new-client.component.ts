@@ -4,7 +4,7 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { AppConfig, ComponentDependencyService, AppData, BaseComponent } from '../../core';
 
 // required by component
-import { BaseField, FormConfig } from '../../../lib/web-components.lib';
+import { BaseField, FormConfig } from '../../../lib/web-components';
 import { User } from '../../models';
 import { UserFormsService} from '../../forms';
 
