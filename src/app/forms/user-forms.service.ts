@@ -35,7 +35,7 @@ export class UserFormsService extends BaseFormService<User>{
             new TextField({
                 key: 'firstName',
                 label: 'Jméno',
-                required: false,
+                required: true,
                 maxLength: 100
             }),
             new TextField({
