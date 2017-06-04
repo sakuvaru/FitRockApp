@@ -29,12 +29,13 @@ export class UserFormsService extends BaseFormService<User>{
                 label: 'E-mail',
                 value: '',
                 required: true,
-                maxLength: 100
+                maxLength: 100,
+                keyAlias: 'codename'
             }),
             new TextField({
                 key: 'firstName',
                 label: 'Jméno',
-                required: true,
+                required: false,
                 maxLength: 100
             }),
             new TextField({
@@ -71,7 +72,7 @@ export class UserFormsService extends BaseFormService<User>{
             }),
             new DropdownField({
                 dropdownOptions: [
-                    new DropdownFieldOption("Novice", "Nováček"),
+                    new DropdownFieldOption("Beginner", "Začátečník"),
                     new DropdownFieldOption("Intermediate", "Středně pokročilý"),
                     new DropdownFieldOption("Advanced", "Pokročilý"),
                     new DropdownFieldOption("FitnessCompetitor", "Závodník fitness"),

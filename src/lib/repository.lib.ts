@@ -6,3 +6,5 @@ export * from './repository/repository.config';
 export * from './repository/repository.service';
 export * from './repository/models/responses';
 export * from './repository/models/options';
+export * from './repository/models/field-error.enum';
+export * from './repository/models/column-validation.class';

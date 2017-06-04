@@ -6,6 +6,7 @@ import { FieldControlService } from './field-control.service';
 import { FormConfig } from './form-config.class';
 import { MdSnackBar } from '@angular/material';
 import { ResponseCreate, ResponseEdit, FormErrorResponse, ErrorResponse } from '../../repository.lib';
+import { FormTranslationService } from '../../translation';
 
 import 'rxjs/add/operator/catch';
 
@@ -40,6 +41,7 @@ export class DynamicFormComponent implements OnInit, OnChanges {
     constructor(
         private fieldControlService: FieldControlService,
         private snackBarService: MdSnackBar,
+        private formTranslationService: FormTranslationService
     ) {
     }
 
@@ -80,6 +82,7 @@ export class DynamicFormComponent implements OnInit, OnChanges {
 
         // save form
         if (this.config.isInsertForm()) {
+            this.convertEmptyStringsToNull();
             this.config.insertFunction(this.form.value)
                 .subscribe(response => {
                     this.response = response;
@@ -90,6 +93,7 @@ export class DynamicFormComponent implements OnInit, OnChanges {
                 });
         }
         else if (this.config.isEditForm()) {
+            this.convertEmptyStringsToNull();
             this.config.editFunction(this.form.value)
                 .subscribe(response => {
                     this.response = response;
@@ -131,6 +135,16 @@ export class DynamicFormComponent implements OnInit, OnChanges {
         }
     }
 
+    private convertEmptyStringsToNull(): void {
+        this.questions.forEach(question => {
+            var formInput = this.form.controls[question.key];
+
+            if (formInput.value === '') {
+                formInput.setValue(null);
+            }
+        });
+    }
+
     private handleError(errorResponse: ErrorResponse | FormErrorResponse | any): void {
         if (this.config.errorCallback) {
             this.config.errorCallback(errorResponse);
@@ -138,18 +152,28 @@ export class DynamicFormComponent implements OnInit, OnChanges {
 
         if (errorResponse instanceof FormErrorResponse) {
             // handle form errors
-            this.submissionError = errorResponse.formValidation.message;
+            var formErrorLines: string[] = [];
 
-            // set fields as invalid
+            // handle invalid field errors
             errorResponse.formValidation.validationResult.forEach(validationResult => {
                 this.questions.forEach(question => {
                     // js is case sensitive and returned column names from server don't match those used in js
                     // loop trough the questions and compare their lowercase versions
-                    if (question.key.toLocaleLowerCase() === validationResult.columnName.toLocaleLowerCase()){
-                        this.form.controls[question.key].setErrors({ 'field_error': validationResult.result}); // message error not used yet
+                    if (question.key.toLocaleLowerCase() === validationResult.columnName.toLocaleLowerCase()
+                        ||
+                        (question.keyAlias && question.keyAlias.toLocaleLowerCase() === validationResult.columnName.toLocaleLowerCase())) {
+
+                        // field error
+                        var fieldErrorMessage = this.formTranslationService.getFormFieldErrorMessage(validationResult);
+                        this.form.controls[question.key].setErrors({ 'field_error': fieldErrorMessage });
+
+                        // form error
+                        formErrorLines.push(this.formTranslationService.getFormErrorMessage(validationResult, question.label));
                     }
                 })
             });
+            this.submissionError = formErrorLines.join('<br />');
+
         }
         else if (errorResponse instanceof ErrorResponse) {
             console.error(errorResponse);

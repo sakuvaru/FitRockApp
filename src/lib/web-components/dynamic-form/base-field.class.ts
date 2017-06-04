@@ -15,6 +15,7 @@ export class BaseField<T>{
     public dropdownOptions: DropdownFieldOption[];
     public trueOptionLabel: string;
     public falseOptionLabel: string;
+    public keyAlias: string;
     constructor(options: {
         value?: T,
         key?: string,
@@ -29,7 +30,8 @@ export class BaseField<T>{
         width?: number,
         dropdownOptions?: DropdownFieldOption[],
         trueOptionLabel?: string,
-        falseOptionLabel?: string
+        falseOptionLabel?: string,
+        keyAlias?: string
     }) {
         Object.assign(this, options);
     }

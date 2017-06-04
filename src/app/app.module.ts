@@ -28,6 +28,9 @@ import { AppConfig } from './core/config/app.config';
 // web components
 import { WebComponentsModule } from '../lib/web-components.lib';
 
+// translation
+import { TranslationModule } from '../lib/translation/';
+
 // custom modules
 import { CoreModule } from './core';
 
@@ -81,6 +84,9 @@ import { FormModule } from './modules/_forms/_form.module';
     ServicesModule,
     LoginModule,
     ClientsModule,
+
+    // translation
+    TranslationModule,
 
     // test form module
     FormModule,

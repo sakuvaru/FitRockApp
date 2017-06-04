@@ -8,6 +8,7 @@ export class DropdownField extends BaseField<string> {
     options?: {
       value?: string,
       key?: string,
+      keyAlias?: string,
       label?: string,
       required?: boolean,
       hint?: string,
@@ -25,6 +26,7 @@ export class DateField extends BaseField<Date> {
     options?: {
       value?: Date,
       key?: string,
+      keyAlias?: string,
       label?: string,
       required?: boolean,
       hint?: string,
@@ -40,6 +42,7 @@ export class BooleanField extends BaseField<boolean> {
     options?: {
       value?: boolean,
       key?: string,
+      keyAlias?: string,
       label?: string,
       required?: boolean,
       hint?: string,
@@ -57,6 +60,7 @@ export class RadioBooleanField extends BaseField<boolean> {
       falseOptionLabel: string,
       value?: boolean,
       key?: string,
+      keyAlias?: string,
       label?: string,
       required?: boolean,
       hint?: string,
@@ -72,6 +76,7 @@ export class TextField extends BaseField<string> {
     options?: {
       value?: string,
       key?: string,
+      keyAlias?: string,
       label?: string,
       required?: boolean,
       maxLength?: number,
@@ -89,6 +94,7 @@ export class TextAreaField extends BaseField<string> {
     options?: {
       value?: string,
       key?: string,
+      keyAlias?: string,
       label?: string,
       required?: boolean,
       maxLength?: number,
@@ -108,6 +114,7 @@ export class HiddenField extends BaseField<any> {
     options?: {
       value?: any,
       key?: string,
+      keyAlias?: string,
       required?: boolean,
     }) {
     super(options);
