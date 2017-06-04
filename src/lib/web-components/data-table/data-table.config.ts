@@ -15,6 +15,7 @@ export class DataTableConfig<T> {
     public showPagerNextPreviousButtons?: boolean = true;
     public showPagerFirstLastButtons?: boolean = true;
     public showPagerNumberButtons?: boolean = true;
+    public hidePagerForSinglePage?: boolean = true;
 
     constructor(
         public fields?: {
@@ -30,7 +31,8 @@ export class DataTableConfig<T> {
             noItemsText?: string,
             showPagerNextPreviousButtons?: boolean,
             showPagerFirstLastButtons?: boolean,
-            showPagerNumberButtons?: boolean
+            showPagerNumberButtons?: boolean,
+            hidePagerForSinglePage?: boolean;
         }) {
         if (fields) Object.assign(this, fields);
     }

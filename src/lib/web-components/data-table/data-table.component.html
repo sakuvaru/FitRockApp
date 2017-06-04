@@ -57,8 +57,8 @@
         <h3>{{config.noItemsText}}</h3>
       </div>
     </md-list>
-    <md-divider *ngIf="config.showPager"></md-divider>
-    <md-card-actions *ngIf="config.showPager">
+    <md-divider *ngIf="config.showPager && !(config.hidePagerForSinglePage && totalPages == 1)"></md-divider>
+    <md-card-actions *ngIf="config.showPager && !(config.hidePagerForSinglePage && totalPages == 1)">
       <button *ngIf="config.showPagerFirstLastButtons" [disabled]="!hasPreviousPage()" md-button (click)="onGoToPage(1)"><<</button>
       <button *ngIf="config.showPagerNextPreviousButtons" [disabled]="!hasPreviousPage()" md-button (click)="onGoToPreviousPage()"><</button>
       <span *ngFor="let button of getPagerButtons()">
