@@ -45,7 +45,7 @@ export class UserFormsService extends BaseFormService<User>{
                 maxLength: 100
             }),
             new DateField({
-                key: 'birthDay',
+                key: 'birthDate',
                 label: 'Datum narození',
                 value: null,
                 required: true,
@@ -133,7 +133,7 @@ export class UserFormsService extends BaseFormService<User>{
                     value: response.item.lastName
                 }),
                 new DateField({
-                    key: 'birthDay',
+                    key: 'birthDate',
                     label: 'Datum narození',
                     required: false,
                     value: response.item.birthDate
