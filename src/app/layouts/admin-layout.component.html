@@ -5,10 +5,10 @@
       <span>{{appData.mainTitle}}</span>
     </md-toolbar>
     <md-nav-list td-sidenav-content (click)="!media.query('gt-sm') && manageList.close()">
-      <a md-list-item routerLink="/client">
+      <a md-list-item [routerLink]="getTrainerUrl()">
         <md-icon>home</md-icon>Dashboard
       </a>
-      <a md-list-item routerLink="/client/clients">
+      <a md-list-item [routerLink]="getTrainerUrl('clients')">
         <md-icon>people</md-icon>Clients
       </a>
       <a md-list-item routerLink="/todo">
@@ -20,10 +20,10 @@
         <a md-list-item routerLink="/todo">
         <md-icon>place</md-icon>Locations
       </a>
-      <a md-list-item routerLink="/client/form">
+      <a md-list-item [routerLink]="getTrainerUrl('form')">
         <md-icon>home</md-icon>Forms
       </a>
-      <a md-list-item routerLink="/public/login">
+      <a md-list-item [routerLink]="getPublicUrl('login')">
         <md-icon>public</md-icon>Login
       </a>
     </md-nav-list>
@@ -32,7 +32,7 @@
       <span flex></span>
       <button md-icon-button [mdMenuTriggerFor]="toolbarMenu"><md-icon>settings</md-icon></button>
       <md-menu #toolbarMenu="mdMenu">
-        <button md-menu-item routerLink="/public/logout">
+        <button md-menu-item [routerLink]="getPublicUrl('logout')">
           <md-icon>exit_to_app</md-icon>
            Odhlásit
         </button>

@@ -3,6 +3,7 @@ import { TdLoadingService, LoadingMode, LoadingType } from '@covalent/core';
 import { IComponent } from './icomponent.interface';
 import { AppData } from '../app-data/app-data.class';
 import { AppConfig } from '../config/app.config';
+import { UrlConfig } from '../config/url.config';
 import { ComponentDependencyService } from './component-dependency.service';
 import { Subscription } from 'rxjs/Subscription';
 import { ErrorResponse, RepositoryService, ErrorReasonEnum } from '../../../lib/repository';
@@ -21,7 +22,6 @@ export abstract class BaseComponent implements IComponent, OnInit {
     private repositoryErrorSubscription: Subscription;
 
     constructor(protected dependencies: ComponentDependencyService) {
-
     }
 
     abstract initAppData(): AppData;
@@ -61,7 +61,7 @@ export abstract class BaseComponent implements IComponent, OnInit {
     private handleRepositoryError(error: ErrorResponse) {
         // don't handle form errors, but do handle other errors
         if (error.reason == ErrorReasonEnum.LicenseLimitation){
-            console.log("YOU DONT LICENSE FOR THIS ACTION, SHIT");
+            console.log("YOU DONT LICENSE FOR THIS ACTION, TODO");
         }
     }
 
@@ -69,7 +69,7 @@ export abstract class BaseComponent implements IComponent, OnInit {
 
     showErrorPage(errorResponse: ErrorResponse) {
         // redirect to error page
-        this.dependencies.router.navigate([AppConfig.PublicPath + '/' + AppConfig.ErrorPath], { queryParams: { result: errorResponse.error } });
+        this.dependencies.router.navigate([UrlConfig.getPublicUrl(UrlConfig.Error)], { queryParams: { result: errorResponse.error } });
     }
 
     showSnackbar(message: string): void {
@@ -81,7 +81,7 @@ export abstract class BaseComponent implements IComponent, OnInit {
     }
 
     redirectToErrorPage(): void {
-        this.dependencies.router.navigate([AppConfig.PublicPath + '/' + AppConfig.ErrorPath]);
+        this.dependencies.router.navigate([UrlConfig.getPublicUrl(UrlConfig.Error)]);
     }
 
     resolveFullScreenLoader(): void {
@@ -90,5 +90,17 @@ export abstract class BaseComponent implements IComponent, OnInit {
 
     registerFullScreenLoader(): void {
         this.dependencies.loadingService.register(this.fullscreenLoaderName);
+    }
+
+    getClientUrl(action?: string): string{
+        return '/' + UrlConfig.getClientUrl(action);
+    }
+
+    getPublicUrl(action?: string): string{
+        return '/' + UrlConfig.getPublicUrl(action);
+    }
+
+    getTrainerUrl(action?: string): string{
+        return '/' + UrlConfig.getTrainerUrl(action);
     }
 }

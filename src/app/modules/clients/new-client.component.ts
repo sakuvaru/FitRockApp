@@ -26,7 +26,7 @@ export class NewClientComponent extends BaseComponent {
             saveFunction: (item) => this.dependencies.userService.createClient(item),
             insertCallback: (response) => {
                 // redirect to view client page
-                this.dependencies.router.navigate(['/client/clients/view/', response.item.id]);
+                this.dependencies.router.navigate([this.getTrainerUrl('clients/view'), response.item.id]);
             },
             errorCallback: (err) => {
                 console.log("This is error callback: " + err);

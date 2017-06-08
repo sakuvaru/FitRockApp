@@ -29,7 +29,7 @@ export class ClientsOverviewComponent extends BaseComponent {
     showSearch: true,
     showHeader: false,
     pagerSize: 7,
-    url: (item) => 'client/clients/view/' + item.id,
+    url: (item) => this.getTrainerUrl('clients/view') + '/' + item.id,
     avatarUrl: (item) => 'https://semantic-ui.com/images/avatar/large/elliot.jpg'
   });
 

@@ -9,18 +9,24 @@ import { Subscription } from 'rxjs/Subscription';
 @Component({
     templateUrl: 'admin-layout.component.html'
 })
-export class AdminLayoutComponent implements OnDestroy {
+export class AdminLayoutComponent extends BaseComponent implements OnDestroy {
     private appData: AppData = new AppData();
     private media: TdMediaService;
     private subscription: Subscription;
 
-    constructor(private dependencies: ComponentDependencyService) {
+    constructor(
+        protected dependencies: ComponentDependencyService) {
+        super(dependencies)
         this.subscription = dependencies.appDataService.appDataChanged$.subscribe(
             newAppData => {
                 this.appData = newAppData;
             });
 
         this.media = dependencies.mediaService;
+    }
+
+    initAppData(): AppData {
+        return new AppData();
     }
 
     ngAfterViewInit(): void {

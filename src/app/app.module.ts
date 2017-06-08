@@ -24,6 +24,7 @@ import { RepositoryServiceProvider} from './core/providers/repository-service.pr
 
 // config
 import { AppConfig } from './core/config/app.config';
+import { UrlConfig } from './core/config/url.config';
 
 // web components
 import { WebComponentsModule } from '../lib/web-components';
@@ -63,11 +64,11 @@ import { FormModule } from './modules/_forms/_form.module';
     RouterModule.forRoot([
       {
         path: '',
-        redirectTo: AppConfig.PublicPath + '/' + AppConfig.DefaultPath, pathMatch: 'full'
+        redirectTo: UrlConfig.PublicMasterPath + '/' + UrlConfig.Default, pathMatch: 'full'
       },
       {
         path: '**',
-        redirectTo: AppConfig.PublicPath + '/' + AppConfig.NotFoundPath
+        redirectTo: UrlConfig.PublicMasterPath + '/' + UrlConfig.NotFound
       }
     ]),
 

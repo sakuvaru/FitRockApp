@@ -22,6 +22,10 @@ export function mapReason(reasonCode: number): ErrorReasonEnum {
         return ErrorReasonEnum.CoreException;
     };
 
+    if (reasonCode === 404){
+        return ErrorReasonEnum.NotFound;
+    }
+
     return ErrorReasonEnum.Other;
 }
 

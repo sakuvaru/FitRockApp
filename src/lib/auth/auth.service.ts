@@ -3,6 +3,7 @@ import { TokenService } from './token.service';
 import { Http } from '@angular/http';
 import { JwtHelper } from 'angular2-jwt';
 import { AppConfig } from '../../app/core/config/app.config';
+import { UrlConfig } from '../../app/core/config/url.config';
 import { Auth0ErrorResponse } from './models/auth0-error-response.class';
 import { CurrentUser } from './models/current-user.class';
 import { Router } from '@angular/router';
@@ -43,10 +44,10 @@ export class AuthService {
         }
 
         // log error
-        console.log(response.description);
+        console.error(response.description);
 
         // redirect back to logon page & add a random hash (hash needs to be added to URL for lifecycle check)
-        this.router.navigate([AppConfig.PublicPath + '/' + AppConfig.LoginPath], { queryParams: { result: "error" }, fragment: Guid.newGuid() })
+        this.router.navigate([UrlConfig.getPublicUrl(UrlConfig.Login)], { queryParams: { result: "error" }, fragment: Guid.newGuid() })
 
         return false;
     }

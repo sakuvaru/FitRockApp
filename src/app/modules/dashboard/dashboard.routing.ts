@@ -5,7 +5,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthGuardService } from '../../../lib/auth';
 
 // config
-import { AppConfig } from '../../core';
+import { UrlConfig } from '../../core';
 
 // components
 import { DashboardComponent } from './dashboard.component';
@@ -14,7 +14,7 @@ import { AdminLayoutComponent } from '../../layouts/admin-layout.component';
 
 const routes: Routes = [
   {
-    path: AppConfig.ClientPath, canActivate: [AuthGuardService], component: AdminLayoutComponent, children: [
+    path: UrlConfig.TrainerMasterPath, canActivate: [AuthGuardService], component: AdminLayoutComponent, children: [
       { path: '', component: DashboardComponent },
     ]
   }

@@ -5,7 +5,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthGuardService } from '../../../lib/auth';
 
 // config
-import { AppConfig } from '../../core';
+import { UrlConfig } from '../../core';
 
 // components
 import { SimpleLayoutComponent } from '../../layouts/simple-layout.component';
@@ -16,7 +16,7 @@ import { ViewClientComponent } from './view-client.component';
 
 const routes: Routes = [
     {
-        path: AppConfig.ClientPath, component: AdminLayoutComponent, canActivate: [AuthGuardService], children: [
+        path: UrlConfig.TrainerMasterPath, component: AdminLayoutComponent, canActivate: [AuthGuardService], children: [
             {
                 path: 'clients', component: ClientsOverviewComponent
             },

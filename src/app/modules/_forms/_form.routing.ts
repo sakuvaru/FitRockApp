@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 // core
-import { CoreModule, AppConfig } from '../../core';
+import { CoreModule, UrlConfig } from '../../core';
 
 // guard
 import { AuthGuardService } from '../../../lib/auth';
@@ -16,7 +16,7 @@ import { FormComponent } from './_form.component';
 
 const routes: Routes = [
     {
-        path: AppConfig.ClientPath, component: AdminLayoutComponent, canActivate: [AuthGuardService], children: [
+        path: UrlConfig.TrainerMasterPath, component: AdminLayoutComponent, canActivate: [AuthGuardService], children: [
             { path: 'form', component: FormComponent },
         ]
     }

@@ -6,7 +6,7 @@ import { SimpleLayoutComponent } from '../../layouts/simple-layout.component';
 import { AdminLayoutComponent } from '../../layouts/admin-layout.component';
 
 // config
-import { AppConfig } from '../../core';
+import { UrlConfig } from '../../core';
 
 // components
 import { LoginPageComponent } from './login-page.component';
@@ -14,9 +14,9 @@ import { LogoutComponent } from './logout.component';
 
 const routes: Routes = [
   {
-    path: AppConfig.PublicPath, component: SimpleLayoutComponent, children: [
-      { path: AppConfig.LoginPath, component: LoginPageComponent },
-      { path: AppConfig.LogoutPath, component: LogoutComponent },
+    path: UrlConfig.PublicMasterPath, component: SimpleLayoutComponent, children: [
+      { path: UrlConfig.Login, component: LoginPageComponent },
+      { path: UrlConfig.Logout, component: LogoutComponent },
     ]
   }
 ];

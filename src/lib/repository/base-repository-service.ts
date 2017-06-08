@@ -78,28 +78,33 @@ export abstract class BaseRepositoryService {
         var errorResponse: ErrorResponse;
 
         if (response instanceof Response) {
-            // create either 'FormResponse' or generic 'ErrorResponse'
-            var iFormErrorResponse = response.json() as IFormErrorResponseRaw;
-            var iErrorResponse = response.json() as IErrorResponseRaw;
-
-            // form validation error because 'formValidation' property exists
-            if (iFormErrorResponse.formValidation) {
-                var iformValidation = iFormErrorResponse.formValidation as IFormValidationResult;
-                var icolumnValidations = iformValidation.validationResult as IColumnValidation[];
-
-                var columnValidations: ColumnValidation[] = [];
-                icolumnValidations.forEach(validation => {
-                    columnValidations.push(new ColumnValidation(validation.columnName, validation.result));
-                });
-
-                var formValidation = new FormValidationResult(iformValidation.message,columnValidations);
-
-                errorResponse = new FormErrorResponse(iFormErrorResponse.error, iFormErrorResponse.reason, iFormErrorResponse.isInvalid, formValidation);
+            // 404 error
+            if (response.status === 404) {
+                errorResponse = new ErrorResponse(response.statusText, 404);
             }
             else {
-                errorResponse = new ErrorResponse(iErrorResponse.error, iErrorResponse.reason);
-            }
+                // create either 'FormResponse' or generic 'ErrorResponse'
+                var iFormErrorResponse = response.json() as IFormErrorResponseRaw;
+                var iErrorResponse = response.json() as IErrorResponseRaw;
 
+                // form validation error because 'formValidation' property exists
+                if (iFormErrorResponse.formValidation) {
+                    var iformValidation = iFormErrorResponse.formValidation as IFormValidationResult;
+                    var icolumnValidations = iformValidation.validationResult as IColumnValidation[];
+
+                    var columnValidations: ColumnValidation[] = [];
+                    icolumnValidations.forEach(validation => {
+                        columnValidations.push(new ColumnValidation(validation.columnName, validation.result));
+                    });
+
+                    var formValidation = new FormValidationResult(iformValidation.message, columnValidations);
+
+                    errorResponse = new FormErrorResponse(iFormErrorResponse.error, iFormErrorResponse.reason, iFormErrorResponse.isInvalid, formValidation);
+                }
+                else {
+                    errorResponse = new ErrorResponse(iErrorResponse.error, iErrorResponse.reason);
+                }
+            }
         } else {
             errorResponse = new ErrorResponse(this.genericErrorMessage, 0);
         }
@@ -185,7 +190,7 @@ export abstract class BaseRepositoryService {
                 return this.getMultipleResponse(response)
             })
             .catch(response => {
-                throw this.handleError(response);
+                return Observable.throw(this.handleError(response));
             })
             ._finally(() => {
                 this.finishRequest();
@@ -203,7 +208,7 @@ export abstract class BaseRepositoryService {
                 return this.getSingleResponse(response)
             })
             .catch(response => {
-                throw this.handleError(response);
+                return Observable.throw(this.handleError(response));
             })
             ._finally(() => {
                 this.finishRequest();
@@ -224,7 +229,7 @@ export abstract class BaseRepositoryService {
                 return this.getCreateResponse(response)
             })
             .catch(response => {
-                throw this.handleError(response);
+                return Observable.throw(this.handleError(response));
             })
             ._finally(() => {
                 this.finishRequest();
@@ -245,7 +250,7 @@ export abstract class BaseRepositoryService {
                 return this.getEditResponse(response)
             })
             .catch(response => {
-                throw this.handleError(response);
+                return Observable.throw(this.handleError(response));
             })
             ._finally(() => {
                 this.finishRequest();
@@ -266,7 +271,7 @@ export abstract class BaseRepositoryService {
                 return this.getDeleteResponse(response)
             })
             .catch(response => {
-                throw this.handleError(response);
+                return Observable.throw(this.handleError(response));
             })
             ._finally(() => {
                 this.finishRequest();
