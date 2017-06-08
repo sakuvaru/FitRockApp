@@ -1,18 +1,26 @@
-import { Component } from '@angular/core';
+import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
 import { AuthService } from '../lib/auth';
-import { AppConfig } from './core';
+import { ActivatedRoute, Params } from '@angular/router';
+import { AppConfig, ComponentDependencyService, AppData, BaseComponent } from './core';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent extends BaseComponent {
   private appName = AppConfig.AppName;
 
-  constructor(private authService: AuthService) {
-    // authentication needs to be handled on each request as per:
-    // https://auth0.com/docs/quickstart/spa/angular2/02-custom-login
-    this.authService.handleAuthentication();
+  constructor(
+    protected dependencies: ComponentDependencyService,
+    private authService: AuthService
+  ) {
+    super(dependencies)
+  }
+
+  initAppData(): AppData {
+    return new AppData({
+      subTitle: "Main"
+    });
   }
 }

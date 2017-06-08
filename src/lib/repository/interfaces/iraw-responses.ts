@@ -1,9 +1,11 @@
 import { ResponseGetBase } from '../models/response-get-base.class';
 import { IItem } from './iitem.interface';
 import { IFormValidationResult } from './iform-validation-result.interface';
+import { ReasonEnum } from '../models/error-reason.enum';
 
 export interface IErrorResponseRaw{
     error: string;
+    reason: ReasonEnum;
 }
 
 export interface IFormErrorResponseRaw extends IErrorResponseRaw{

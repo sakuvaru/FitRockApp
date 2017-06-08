@@ -5,7 +5,7 @@ import { AppData } from '../app-data/app-data.class';
 import { AppConfig } from '../config/app.config';
 import { ComponentDependencyService } from './component-dependency.service';
 import { Subscription } from 'rxjs/Subscription';
-import { ErrorResponse, RepositoryService } from '../../../lib/repository';
+import { ErrorResponse, RepositoryService, ErrorReasonEnum } from '../../../lib/repository';
 
 @Component({
 })
@@ -21,6 +21,20 @@ export abstract class BaseComponent implements IComponent, OnInit {
     private repositoryErrorSubscription: Subscription;
 
     constructor(protected dependencies: ComponentDependencyService) {
+
+    }
+
+    abstract initAppData(): AppData;
+
+    // ----------------------- Events --------------------- // 
+
+    ngOnInit(): void {
+        // authenticate user when logging-in (handles the params in URL and extracts token
+        // more info: https://auth0.com/docs/quickstart/spa/angular2/02-custom-login
+        if (!this.dependencies.authService.isAuthenticated()) {
+            this.dependencies.authService.handleAuthentication();
+        }
+
         // init shared app Data
         this.dependencies.appDataService.setAppData(this.initAppData());
 
@@ -32,26 +46,23 @@ export abstract class BaseComponent implements IComponent, OnInit {
             color: 'primary',
         });
 
-        // suscribe to error events
-        this.repositoryErrorSubscription = dependencies.repositoryService.requestErrorChange$.subscribe(
+        // stop all full screen loaders on init (if there are any)
+        this.resolveFullScreenLoader();
+
+        // suscribe to errors in repository service and handle them
+        this.repositoryErrorSubscription = this.dependencies.repositoryService.requestErrorChange$.subscribe(
             error => {
                 this.handleRepositoryError(error);
             });
     }
 
-    abstract initAppData(): AppData;
-
-    // ----------------------- Events --------------------- // 
-
-    ngOnInit(): void {
-        // stop all full screen loaders on init
-        this.resolveFullScreenLoader();
-    }
-
     // --------------------- Private methods -------------- // 
 
     private handleRepositoryError(error: ErrorResponse) {
-        // do nothing for now - possibly add logging 
+        // don't handle form errors, but do handle other errors
+        if (error.reason == ErrorReasonEnum.LicenseLimitation){
+            console.log("YOU DONT LICENSE FOR THIS ACTION, SHIT");
+        }
     }
 
     // --------------- Public methods ------------------- //

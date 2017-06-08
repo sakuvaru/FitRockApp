@@ -2,20 +2,52 @@ import { ResponseGetBase } from './response-get-base.class';
 import { IItem } from '../interfaces/iitem.interface';
 import { IErrorResponseRaw, IFormErrorResponseRaw } from '../interfaces/iraw-responses';
 import { IFormValidationResult } from '../interfaces/iform-validation-result.interface';
+import { ErrorReasonEnum } from './error-reason.enum';
+
+export function mapReason(reasonCode: number): ErrorReasonEnum {
+    if (reasonCode === 0) {
+        return ErrorReasonEnum.Other;
+    };
+    if (reasonCode === 1) {
+        return ErrorReasonEnum.FormError;
+    };
+    if (reasonCode === 2) {
+        return ErrorReasonEnum.LicenseLimitation;
+    };
+
+    if (reasonCode === 3) {
+        return ErrorReasonEnum.NotAuthorized;
+    };
+    if (reasonCode === 4) {
+        return ErrorReasonEnum.CoreException;
+    };
+
+    return ErrorReasonEnum.Other;
+}
 
 export class ErrorResponse implements IErrorResponseRaw {
+
+    public reason: ErrorReasonEnum;
+
     constructor(
         public error: string,
+        public reasonCode: number
     ) {
+        this.reason = mapReason(reasonCode);
     }
 }
 
 export class FormErrorResponse implements IFormErrorResponseRaw {
+
+    public reason: ErrorReasonEnum;
+
     constructor(
         public error: string,
+        public reasonCode: number,
         public isInvalid: boolean,
         public formValidation: IFormValidationResult
     ) {
+        this.reason = mapReason(reasonCode);
     }
 }
 
@@ -50,8 +82,6 @@ export class ResponseMultiple<T extends IItem> extends ResponseGetBase {
         }) {
         super()
         if (fields) Object.assign(this, fields);
-        {
-        }
     }
 }
 
@@ -74,8 +104,6 @@ export class ResponseSingle<T extends IItem> extends ResponseGetBase {
         }) {
         super()
         if (fields) Object.assign(this, fields);
-        {
-        }
     }
 }
 
@@ -89,8 +117,6 @@ export class ResponseCreate<T extends IItem> {
             result?: number;
         }) {
         if (fields) Object.assign(this, fields);
-        {
-        }
     }
 }
 
@@ -100,8 +126,6 @@ export class ResponseDelete {
         private fields?: {
         }) {
         if (fields) Object.assign(this, fields);
-        {
-        }
     }
 }
 
@@ -114,8 +138,6 @@ export class ResponseEdit<T extends IItem> {
             item?: T,
         }) {
         if (fields) Object.assign(this, fields);
-        {
-        }
     }
 }
 

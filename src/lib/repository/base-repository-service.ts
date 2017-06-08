@@ -20,7 +20,7 @@ import 'rxjs/add/operator/map';
 
 export abstract class BaseRepositoryService {
 
-    private genericErrorMessage = 'An error occurred in "RepositoryService"';
+    private genericErrorMessage = `An error occurred in 'RepositoryService'`;
 
     // services
     private mapService: MapService;
@@ -94,15 +94,14 @@ export abstract class BaseRepositoryService {
 
                 var formValidation = new FormValidationResult(iformValidation.message,columnValidations);
 
-                errorResponse = new FormErrorResponse(iFormErrorResponse.error, iFormErrorResponse.isInvalid, formValidation);
+                errorResponse = new FormErrorResponse(iFormErrorResponse.error, iFormErrorResponse.reason, iFormErrorResponse.isInvalid, formValidation);
             }
             else {
-                // generic error
-                errorResponse = new ErrorResponse(iErrorResponse.error);
+                errorResponse = new ErrorResponse(iErrorResponse.error, iErrorResponse.reason);
             }
 
         } else {
-            errorResponse = new ErrorResponse(this.genericErrorMessage);
+            errorResponse = new ErrorResponse(this.genericErrorMessage, 0);
         }
 
         // raise error

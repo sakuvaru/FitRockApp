@@ -5,7 +5,7 @@ import { BaseField } from './base-field.class';
 import { FieldControlService } from './field-control.service';
 import { FormConfig } from './form-config.class';
 import { MdSnackBar } from '@angular/material';
-import { ResponseCreate, ResponseEdit, FormErrorResponse, ErrorResponse } from '../../repository';
+import { ResponseCreate, ResponseEdit, FormErrorResponse, ErrorResponse, ErrorReasonEnum } from '../../repository';
 import { FormTranslationService } from '../../translation';
 
 import 'rxjs/add/operator/catch';
@@ -19,6 +19,7 @@ import 'rxjs/add/operator/catch';
 })
 export class DynamicFormComponent implements OnInit, OnChanges {
 
+    private insufficientLicenseError = 'Pro tuto akci nemáš dostatečnou licenci';
     private generalErrorMessagePrefix = 'Uložení se nezdařilo s chybou: ';
     private unknownErrorMessage = 'Uložení se nezdařilo s neznámou chybou. Zkontrolujte formulář s zkuste to znova.';
 
@@ -177,7 +178,13 @@ export class DynamicFormComponent implements OnInit, OnChanges {
         }
         else if (errorResponse instanceof ErrorResponse) {
             console.error(errorResponse);
-            this.submissionError = this.generalErrorMessagePrefix + errorResponse.error;
+            // handle license errors differently
+            if (errorResponse.reason === ErrorReasonEnum.LicenseLimitation) {
+                this.submissionError = this.insufficientLicenseError;
+            }
+            else{
+                this.submissionError = this.generalErrorMessagePrefix + errorResponse.error;
+            }
         }
         else {
             console.error(errorResponse);

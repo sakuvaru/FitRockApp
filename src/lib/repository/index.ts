@@ -8,3 +8,4 @@ export * from './models/responses';
 export * from './models/options';
 export * from './models/field-error.enum';
 export * from './models/column-validation.class';
+export * from './models/error-reason.enum';

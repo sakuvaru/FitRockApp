@@ -98,13 +98,15 @@ export class UserFormsService extends BaseFormService<User>{
                 key: 'trainerPrivateNotes',
                 label: 'Poznámky (soukromé)',
                 required: false,
-                hint: 'Klient tyto poznámky neuvidí'
+                hint: 'Klient tyto poznámky neuvidí',
+                minAutosizeRows: 6
             }),
             new TextAreaField({
                 key: 'trainerPublicNotes',
                 label: 'Poznámky pro klienta',
                 required: false,
-                hint: 'Klient může tyto poznámky vidět'
+                hint: 'Veřejné poznámky pro klienta',
+                minAutosizeRows: 6
             }),
         ];
 
