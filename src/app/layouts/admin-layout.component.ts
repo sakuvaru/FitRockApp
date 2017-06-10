@@ -1,5 +1,5 @@
 // common
-import { Component, Input, OnDestroy } from '@angular/core';
+import { Component, Input, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { TdMediaService } from '@covalent/core';
 import { AppConfig, AppData, ComponentDependencyService, BaseComponent, AppDataService } from '../core';
 
@@ -15,7 +15,9 @@ export class AdminLayoutComponent extends BaseComponent implements OnDestroy {
     private subscription: Subscription;
 
     constructor(
-        protected dependencies: ComponentDependencyService) {
+        protected dependencies: ComponentDependencyService,
+        private cdr: ChangeDetectorRef
+    ) {
         super(dependencies)
         this.subscription = dependencies.appDataService.appDataChanged$.subscribe(
             newAppData => {
@@ -30,10 +32,13 @@ export class AdminLayoutComponent extends BaseComponent implements OnDestroy {
     }
 
     ngAfterViewInit(): void {
+        this.media.broadcast();
         // broadcast to all listener observables when loading the page
         // note required by 'Covalent' for its templates
         // source: https://teradata.github.io/covalent/#/layouts/manage-list
-        this.dependencies.mediaService.broadcast();
+        // + broadcast change detection issue, see - https://github.com/Teradata/covalent/issues/425
+        // + fixed with ChangeDetectorRef => https://stackoverflow.com/questions/34364880/expression-has-changed-after-it-was-checked
+        this.cdr.detectChanges();
     }
 
     ngOnDestroy() {

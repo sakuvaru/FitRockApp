@@ -29,6 +29,10 @@ export abstract class BaseFormService<TItem extends IItem> implements IFormsServ
             errorCallback?: (err: string) => void
         }): FormConfig<TItem> {
 
+        if (!options) {
+            options = {};
+        }
+
         var submitText: string;
         if (options.submitText) {
             submitText = options.submitText;
@@ -65,6 +69,10 @@ export abstract class BaseFormService<TItem extends IItem> implements IFormsServ
             submitText?: string,
             errorCallback?: (err: string) => void
         }): FormConfig<TItem> {
+
+        if (!options) {
+            options = {};
+        }
 
         var submitText: string;
         if (options.submitText) {

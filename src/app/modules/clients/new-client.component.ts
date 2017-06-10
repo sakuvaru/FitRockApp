@@ -13,7 +13,6 @@ import { UserFormsService} from '../../forms';
 })
 export class NewClientComponent extends BaseComponent {
 
-    private insertFields: BaseField<any>[];
     private error: string;
     private formConfig: FormConfig<any>;
 

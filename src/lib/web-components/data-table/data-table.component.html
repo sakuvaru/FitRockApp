@@ -1,9 +1,9 @@
 <loader name="test" [enabled]="loaderEnabled">
 
   <md-card tdmediatoggle="gt-xs" class="push">
-    <td-search-box *ngIf="config.showSearch" (searchDebounce)="handleSearch($event)" class="push-left push-right" placeholder="hledat"
-      [alwaysVisible]="true"></td-search-box>
-    <md-divider *ngIf="config.showSearch"></md-divider>
+
+    <td-search-box (searchDebounce)="handleSearch($event)" class="push-left push-right" placeholder="hledat" [alwaysVisible]="true"></td-search-box>
+    <md-divider></md-divider>
     <md-list *ngIf="config.showHeader" role="list" class="bgc-indigo-200">
       <md-list-item disableRipple="true">
         <span *ngFor="let field of fields" flex="field.flex" class="{{getTextAlignClass(field)}}">
@@ -28,11 +28,11 @@
       </div>
       <div *ngIf="items != null && items.length == 0" layout="row" layout-align="center">
         <div *ngIf="items != null && items.length == 0 && searchTerm" layout="row" layout-align="center">
-        <h3>{{config.searchNoItemsText}}</h3>
-      </div>
-      <div *ngIf="items != null && items.length == 0 && !searchTerm" layout="row" layout-align="center">
-        <h3>{{config.noItemsText}}</h3>
-      </div>
+          <h3>{{config.searchNoItemsText}}</h3>
+        </div>
+        <div *ngIf="items != null && items.length == 0 && !searchTerm" layout="row" layout-align="center">
+          <h3>{{config.noItemsText}}</h3>
+        </div>
       </div>
     </md-nav-list>
 

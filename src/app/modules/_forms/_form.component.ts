@@ -21,8 +21,8 @@ export class FormComponent extends BaseComponent {
         protected dependencies: ComponentDependencyService) {
         super(dependencies)
 
-        this.logFormsService.getInsertForm();
-        this.logFormsService.getEditForm(1);
+        this.formInsertConfig = this.logFormsService.getInsertForm();
+        this.formEditConfig = this.logFormsService.getEditForm(1);
     }
 
     initAppData(): AppData {
