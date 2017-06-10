@@ -1,19 +1,19 @@
-<div layout="row" layout-margin [formGroup]="form" [ngSwitch]="question.controlType">
+<div *ngIf="question" layout="row" layout-margin [formGroup]="form" [ngSwitch]="question.controlType">
 
   <!-- Question types -->
 
-  <md-input-container *ngSwitchCase="'textbox'" flex hintLabel="{{question.hint}}">
+  <md-input-container *ngSwitchCase="'textbox'" flex hintLabel="{{questionHint}}">
     <input mdInput value="{{question.value}}" [attr.maxLength]="question.maxLength > 0 ? question.maxLength : null" required="{{question.required}}"
-      placeholder="{{question.label}}" [formControlName]="question.key" [id]="question.key" [type]="question.type" #elem>
+      placeholder="{{questionLabel}}" [formControlName]="question.key" [id]="question.key" [type]="question.type" #elem>
     <md-hint *ngIf="showLengthHint()" [ngClass]="{'tc-red-600': elem.value.length > question.maxLength}" align="end">{{elem.value.length}} / {{question.maxLength}}</md-hint>
     <md-error></md-error>
   </md-input-container>
 
   <div *ngSwitchCase="'checkbox'" flex>
     <md-checkbox [checked]="question.value" [formControlName]="question.key" [id]="question.key" required="{{question.required}}"
-      #elem> {{question.label}}
+      #elem> {{questionLabel}}
     </md-checkbox>
-    <span *ngIf="question.required && !elem.checked" class="tc-grey-500 md-caption"> (povinné)</span>
+    <span *ngIf="question.required && !elem.checked" class="tc-grey-500 md-caption"> ({{ 'form.shared.required' | translate }})</span>
   </div>
 
   <div *ngSwitchCase="'radioboolean'" flex>
@@ -22,22 +22,22 @@
       <md-radio-button value="true" class="push-right">{{question.trueOptionLabel}}</md-radio-button>
       <md-radio-button value="false">{{question.falseOptionLabel}}</md-radio-button>
     </md-radio-group>
-    <span *ngIf="question.required && showRequiredLabels" class="tc-grey-500 md-caption"> (povinné)</span>
+    <span *ngIf="question.required && showRequiredLabels" class="tc-grey-500 md-caption"> ({{ 'form.shared.required' | translate }})</span>
   </div>
 
   <div *ngSwitchCase="'date'" flex>
     <md-input-container>
-      <input mdInput [mdDatepicker]="datepicker" [formControlName]="question.key"  [id]="question.key" [placeholder]="question.label" [required]="question.required"
+      <input mdInput [mdDatepicker]="datepicker" [formControlName]="question.key"  [id]="question.key" [placeholder]="questionLabel" [required]="question.required"
         [value]="question.value">
       <button mdSuffix [mdDatepickerToggle]="datepicker"></button>
     </md-input-container>
     <md-datepicker startView="year" [startAt]="datePickerStartDate" #datepicker></md-datepicker>
   </div>
 
-  <md-input-container *ngSwitchCase="'textarea'" flex hintLabel="{{question.hint}}">
+  <md-input-container *ngSwitchCase="'textarea'" flex hintLabel="{{questionHint}}">
     <textarea mdTextareaAutosize mdInput mdAutosizeMinRows="{{question.minAutosizeRows}}" mdAutosizeMaxRows="{{question.maxAutosizeRows}}"
       [attr.maxLength]="question.maxLength > 0 ? question.maxLength : null" value="{{question.value}}" required="{{question.required}}"
-      placeholder="{{question.label}}" [formControlName]="question.key" [id]="question.key" [type]="question.type" #elem>
+      placeholder="{{questionLabel}}" [formControlName]="question.key" [id]="question.key" [type]="question.type" #elem>
     </textarea>
     <md-hint *ngIf="showLengthHint()" [ngClass]="{'tc-red-600': elem.value.length > question.maxLength}" align="end">{{elem.value.length}} / {{question.maxLength}}</md-hint>
     <md-error></md-error>
@@ -49,7 +49,7 @@
 
   <div *ngSwitchCase="'dropdown'" flex>
     <div>
-      <md-select [style.width]="getWidthStyle()" [id]="question.key" [formControlName]="question.key" [required]="question.required" [placeholder]="question.label">
+      <md-select [style.width]="getWidthStyle()" [id]="question.key" [formControlName]="question.key" [required]="question.required" [placeholder]="questionLabel">
         <md-option *ngFor="let option of question.dropdownOptions" [value]="option.value">{{option.name}}</md-option>
       </md-select>
     </div>

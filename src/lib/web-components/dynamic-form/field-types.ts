@@ -10,8 +10,10 @@ export class DropdownField extends BaseField<string> {
       key?: string,
       keyAlias?: string,
       label?: string,
+      labelKey?: string,
       required?: boolean,
       hint?: string,
+      hintKey?: string,
       width?: number,
       dropdownOptions?: DropdownFieldOption[],
     }) {
@@ -28,8 +30,10 @@ export class DateField extends BaseField<Date> {
       key?: string,
       keyAlias?: string,
       label?: string,
+      labelKey?: string,
       required?: boolean,
       hint?: string,
+      hintKey?: string
     }) {
     super(options);
   }
@@ -44,8 +48,10 @@ export class BooleanField extends BaseField<boolean> {
       key?: string,
       keyAlias?: string,
       label?: string,
+      labelKey?: string,
       required?: boolean,
       hint?: string,
+      hintKey?: string,
     }) {
     super(options);
   }
@@ -62,8 +68,10 @@ export class RadioBooleanField extends BaseField<boolean> {
       key?: string,
       keyAlias?: string,
       label?: string,
+      labelKey?: string,
       required?: boolean,
       hint?: string,
+      hintKey?: string,
     }) {
     super(options);
   }
@@ -78,10 +86,12 @@ export class TextField extends BaseField<string> {
       key?: string,
       keyAlias?: string,
       label?: string,
+      labelKey?: string,
       required?: boolean,
       maxLength?: number,
       minLength?: number,
       hint?: string,
+      hintKey?: string,
     }) {
     super(options);
   }
@@ -96,10 +106,12 @@ export class TextAreaField extends BaseField<string> {
       key?: string,
       keyAlias?: string,
       label?: string,
+      labelKey?: string,
       required?: boolean,
       maxLength?: number,
       minLength?: number,
       hint?: string,
+      hintKey?: string,
       maxAutosizeRows?: number,
       minAutosizeRows?: number,
     }) {

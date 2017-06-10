@@ -26,10 +26,4 @@ export class ViewClientComponent extends BaseComponent implements OnInit {
             .switchMap((params: Params) => this.dependencies.userService.getById(+params['id']))
             .subscribe(response => this.client = response.item);
     }
-
-     initAppData(): AppData {
-        return new AppData({
-            subTitle: "Klient"
-        });
-    }
 }

@@ -36,10 +36,6 @@ export class LoginFormComponent extends BaseComponent {
         }
     }
 
-     initAppData(): AppData {
-        return new AppData();
-    }
-
     private processFailedLogonRedirect() {
         var result = this.activatedRoute.queryParams['result'];
 

@@ -1,13 +1,14 @@
 import { Component, Input, Output, OnInit, EventEmitter, OnChanges, SimpleChange } from '@angular/core';
-
 import { FormGroup } from '@angular/forms';
 import { BaseField } from './base-field.class';
 import { FieldControlService } from './field-control.service';
 import { FormConfig } from './form-config.class';
 import { MdSnackBar } from '@angular/material';
 import { ResponseCreate, ResponseEdit, FormErrorResponse, ErrorResponse, ErrorReasonEnum } from '../../repository';
-import { FormTranslationService } from '../../translation';
+import { TranslateService } from '@ngx-translate/core';
+import { ColumnValidation, FieldErrorEnum } from '../../repository';
 
+import { Observable } from 'rxjs/Rx';
 import 'rxjs/add/operator/catch';
 
 // NOTE: see https://angular.io/docs/ts/latest/cookbook/dynamic-form.html for more details
@@ -19,19 +20,23 @@ import 'rxjs/add/operator/catch';
 })
 export class DynamicFormComponent implements OnInit, OnChanges {
 
-    private insufficientLicenseError = 'Pro tuto akci nemáš dostatečnou licenci';
-    private generalErrorMessagePrefix = 'Uložení se nezdařilo s chybou: ';
-    private unknownErrorMessage = 'Uložení se nezdařilo s neznámou chybou. Zkontrolujte formulář s zkuste to znova.';
+    private insufficientLicenseError: string;
+    private generalErrorMessagePrefix: string;
+    private unknownErrorMessage: string;
 
     private questions: BaseField<any>[];
 
     private submitText: string;
+    private snackbarText: string;
+    private savedText: string;
 
     public response: any;
 
     private form: FormGroup;
 
     private submissionError: string;
+
+    private formErrorLines: string[] = [];
 
     // output events
     @Output() onSubmitEvent = new EventEmitter<FormGroup>();
@@ -42,8 +47,12 @@ export class DynamicFormComponent implements OnInit, OnChanges {
     constructor(
         private fieldControlService: FieldControlService,
         private snackBarService: MdSnackBar,
-        private formTranslationService: FormTranslationService
+        private translateService: TranslateService
     ) {
+    }
+
+    private initForm(): void {
+
     }
 
     ngOnInit() {
@@ -57,7 +66,8 @@ export class DynamicFormComponent implements OnInit, OnChanges {
                 this.form.valueChanges.subscribe(response => this.handleFormChange());
             });
 
-            this.submitText = this.config.submitText;
+            // translate labels
+            this.translateLabels();
         }
     }
 
@@ -74,6 +84,9 @@ export class DynamicFormComponent implements OnInit, OnChanges {
             });
 
             changes.config.currentValue.submitText = changes.config.currentValue.submitText;
+
+            // translate labels
+            this.translateLabels();
         }
     }
 
@@ -109,14 +122,24 @@ export class DynamicFormComponent implements OnInit, OnChanges {
         }
     }
 
+    private translateLabels(): void {
+        this.translateService.get(this.config.submitTextKey).subscribe(key => this.submitText = key);
+        this.translateService.get(this.config.snackBarTextKey).subscribe(key => this.snackbarText = key);
+
+        this.translateService.get('form.error.insufficientLicense').subscribe(key => this.insufficientLicenseError = key);
+        this.translateService.get('form.error.saveFailedPrefix').subscribe(key => this.generalErrorMessagePrefix = key);
+        this.translateService.get('form.error.unknownFormErrorMessage').subscribe(key => this.unknownErrorMessage = key);
+    }
+
     private handleFormChange(): void {
         // remove error message when any input in form changes
         this.submissionError = null;
+        this.formErrorLines = [];
     }
 
     private handleSnackBar(): void {
         if (this.config.showSnackBar) {
-            this.snackBarService.open(this.config.snackBarText, null, { duration: 2500 });
+            this.snackBarService.open(this.snackbarText, null, { duration: 2500 });
         }
     }
 
@@ -153,7 +176,7 @@ export class DynamicFormComponent implements OnInit, OnChanges {
 
         if (errorResponse instanceof FormErrorResponse) {
             // handle form errors
-            var formErrorLines: string[] = [];
+
 
             // handle invalid field errors
             errorResponse.formValidation.validationResult.forEach(validationResult => {
@@ -165,15 +188,16 @@ export class DynamicFormComponent implements OnInit, OnChanges {
                         (question.keyAlias && question.keyAlias.toLocaleLowerCase() === validationResult.columnName.toLocaleLowerCase())) {
 
                         // field error
-                        var fieldErrorMessage = this.formTranslationService.getFormFieldErrorMessage(validationResult);
-                        this.form.controls[question.key].setErrors({ 'field_error': fieldErrorMessage });
+                        this.getFormFieldErrorMessage(validationResult).subscribe(error => {
+                            this.form.controls[question.key].setErrors({ 'field_error': error });
+                        });
 
                         // form error
-                        formErrorLines.push(this.formTranslationService.getFormErrorMessage(validationResult, question.label));
+                        this.getFormErrorMessage(validationResult, question.label).subscribe(error => this.formErrorLines.push(error))
                     }
                 })
             });
-            this.submissionError = formErrorLines.join('<br />');
+            this.submissionError = this.formErrorLines.join(', ');
 
         }
         else if (errorResponse instanceof ErrorResponse) {
@@ -182,7 +206,7 @@ export class DynamicFormComponent implements OnInit, OnChanges {
             if (errorResponse.reason === ErrorReasonEnum.LicenseLimitation) {
                 this.submissionError = this.insufficientLicenseError;
             }
-            else{
+            else {
                 this.submissionError = this.generalErrorMessagePrefix + errorResponse.error;
             }
         }
@@ -190,5 +214,42 @@ export class DynamicFormComponent implements OnInit, OnChanges {
             console.error(errorResponse);
             this.submissionError = this.unknownErrorMessage;
         }
+    }
+
+    private getFormErrorMessage(columnValidation: ColumnValidation, fieldLabel: string): Observable<string> {
+        return this.getFormFieldErrorMessage(columnValidation, fieldLabel);
+    }
+
+    private getFormFieldErrorMessage(columnValidation: ColumnValidation, fieldLabel?: string): Observable<string> {
+
+        if (columnValidation.errorType === FieldErrorEnum.InvalidCodename) {
+            if (fieldLabel) {
+                return this.translateService.get('form.error.invalidCodenameWithLabel', { label: fieldLabel});
+            }
+            return this.translateService.get('form.error.invalidCodename');
+        }
+
+        if (columnValidation.errorType === FieldErrorEnum.InvalidEmail) {
+            if (fieldLabel) {
+                return this.translateService.get('form.error.invalidEmailWithLabel', { label: fieldLabel});
+            }
+            return this.translateService.get('form.error.invalidEmail');
+        }
+
+        if (columnValidation.errorType === FieldErrorEnum.NotUnique) {
+            if (fieldLabel) {
+                return this.translateService.get('form.error.notUniqueWithLabel', { label: fieldLabel});
+            }
+            return this.translateService.get('form.error.notUnique');
+        }
+
+        if (columnValidation.errorType === FieldErrorEnum.Other) {
+            if (fieldLabel) {
+                return this.translateService.get('form.error.otherWithLabel', { label: fieldLabel});
+            }
+            return this.translateService.get('form.error.other');
+        }
+
+        return this.translateService.get('form.error.unknownn');
     }
 }

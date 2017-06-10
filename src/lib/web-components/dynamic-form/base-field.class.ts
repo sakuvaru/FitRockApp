@@ -4,11 +4,13 @@ export class BaseField<T>{
     public value: T;
     public key: string;
     public label: string;
+    public labelKey: string;
     public required: boolean;
     public controlType: string;
     public maxLength: number;
     public minLength: number;
     public hint: string;
+    public hintKey: string;
     public maxAutosizeRows: number;
     public minAutosizeRows: number;
     public width: number;
@@ -20,11 +22,13 @@ export class BaseField<T>{
         value?: T,
         key?: string,
         label?: string,
+        labelKey?: string,
         required?: boolean,
         controlType?: string,
         maxLength?: number,
         minLength?: number,
         hint?: string,
+        hintKey?: string;
         maxAutosizeRows?: number,
         minAutosizeRows?: number,
         width?: number,

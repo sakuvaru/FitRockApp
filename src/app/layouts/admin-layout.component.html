@@ -6,22 +6,22 @@
     </md-toolbar>
     <md-nav-list td-sidenav-content (click)="!media.query('gt-sm') && manageList.close()">
       <a md-list-item [routerLink]="getTrainerUrl()">
-        <md-icon>home</md-icon>Dashboard
+        <md-icon>home</md-icon>{{'menu.dashboard' | translate}}
       </a>
       <a md-list-item [routerLink]="getTrainerUrl('clients')">
-        <md-icon>people</md-icon>Clients
+        <md-icon>people</md-icon>{{'menu.clients' | translate}}
       </a>
       <a md-list-item routerLink="/todo">
-        <md-icon>fitness_center</md-icon>Training plans
+        <md-icon>fitness_center</md-icon>{{'menu.trainingPlans' | translate}}
       </a>
        <a md-list-item routerLink="/todo">
-        <md-icon>free_breakfast</md-icon>Meal plans
+        <md-icon>free_breakfast</md-icon>{{'menu.mealPlans' | translate}}
       </a>
         <a md-list-item routerLink="/todo">
-        <md-icon>place</md-icon>Locations
+        <md-icon>place</md-icon>{{'menu.locations' | translate}}
       </a>
       <a md-list-item [routerLink]="getTrainerUrl('form')">
-        <md-icon>home</md-icon>Forms
+        <md-icon>home</md-icon>{{'menu.forms' | translate}}
       </a>
       <a md-list-item [routerLink]="getPublicUrl('login')">
         <md-icon>public</md-icon>Login

@@ -24,7 +24,7 @@ export abstract class BaseComponent implements IComponent, OnInit {
     constructor(protected dependencies: ComponentDependencyService) {
     }
 
-    abstract initAppData(): AppData;
+    public appData: AppData = new AppData();
 
     // ----------------------- Events --------------------- // 
 
@@ -36,7 +36,14 @@ export abstract class BaseComponent implements IComponent, OnInit {
         }
 
         // init shared app Data
-        this.dependencies.appDataService.setAppData(this.initAppData());
+        this.dependencies.appDataService.setAppData(this.appData);
+
+        // set language version
+        // this language will be used as a fallback when a translation isn't found in the current language
+        this.dependencies.translateService.setDefaultLang('cs');
+
+        // the lang to use, if the lang isn't available, it will use the current loader to get them
+        this.dependencies.translateService.use(this.dependencies.translateService.getBrowserLang());
 
         // initialize loading
         this.dependencies.loadingService.create({
@@ -60,7 +67,7 @@ export abstract class BaseComponent implements IComponent, OnInit {
 
     private handleRepositoryError(error: ErrorResponse) {
         // don't handle form errors, but do handle other errors
-        if (error.reason == ErrorReasonEnum.LicenseLimitation){
+        if (error.reason == ErrorReasonEnum.LicenseLimitation) {
             console.log("YOU DONT LICENSE FOR THIS ACTION, TODO");
         }
     }
@@ -92,15 +99,15 @@ export abstract class BaseComponent implements IComponent, OnInit {
         this.dependencies.loadingService.register(this.fullscreenLoaderName);
     }
 
-    getClientUrl(action?: string): string{
+    getClientUrl(action?: string): string {
         return '/' + UrlConfig.getClientUrl(action);
     }
 
-    getPublicUrl(action?: string): string{
+    getPublicUrl(action?: string): string {
         return '/' + UrlConfig.getPublicUrl(action);
     }
 
-    getTrainerUrl(action?: string): string{
+    getTrainerUrl(action?: string): string {
         return '/' + UrlConfig.getTrainerUrl(action);
     }
 }

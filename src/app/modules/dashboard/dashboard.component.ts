@@ -26,12 +26,6 @@ export class DashboardComponent extends BaseComponent implements OnInit {
         super(dependencies)
     }
 
-    initAppData(): AppData {
-        return new AppData({
-            subTitle: "Dashboard"
-        });
-    }
-
     ngOnInit(): void {
         this.logService.getAll([new Limit(5), new OrderByDescending("id")]).subscribe(
             response => {

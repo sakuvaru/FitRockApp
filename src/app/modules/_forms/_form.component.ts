@@ -24,10 +24,4 @@ export class FormComponent extends BaseComponent {
         this.formInsertConfig = this.logFormsService.getInsertForm();
         this.formEditConfig = this.logFormsService.getEditForm(1);
     }
-
-    initAppData(): AppData {
-        return new AppData({
-            subTitle: "Subtitle sample"
-        });
-    }
 }

@@ -15,13 +15,17 @@ import { AuthModule } from '../../../lib/auth';
 // web components
 import { WebComponentsModule } from '../../../lib/web-components';
 
+// translation
+import { TranslateModule } from '@ngx-translate/core';
+
 @NgModule({
     imports: [
         CommonModule,
         AuthModule,
         CovalentModule,
         AngularMaterialModule,
-        WebComponentsModule
+        WebComponentsModule,
+        TranslateModule
     ],
     declarations: [
     ],
@@ -30,10 +34,12 @@ import { WebComponentsModule } from '../../../lib/web-components';
         ComponentDependencyService
     ],
     exports: [
+        CommonModule,
         AuthModule,
         CovalentModule,
         AngularMaterialModule,
-        WebComponentsModule
+        WebComponentsModule,
+        TranslateModule
     ]
 })
 export class CoreModule { }

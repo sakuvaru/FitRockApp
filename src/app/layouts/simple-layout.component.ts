@@ -9,12 +9,15 @@ import { Subscription } from 'rxjs/Subscription';
 @Component({
     templateUrl: 'simple-layout.component.html'
 })
-export class SimpleLayoutComponent implements OnDestroy {
-    private appData: AppData = new AppData();
+export class SimpleLayoutComponent extends BaseComponent implements OnDestroy {
     private media: TdMediaService;
     private subscription: Subscription;
 
-    constructor(private dependencies: ComponentDependencyService) {
+    constructor(
+        protected dependencies: ComponentDependencyService,
+    ) {
+        super(dependencies)
+        // don't forget to unsubscribe
         this.subscription = dependencies.appDataService.appDataChanged$.subscribe(
             newAppData => {
                 this.appData = newAppData;

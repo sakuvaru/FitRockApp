@@ -2,7 +2,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
+import { HttpModule, Http } from '@angular/http';
 import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -20,7 +20,7 @@ import { FormServicesModule } from './forms/form-services.module';
 import { AppComponent } from './app.component';
 
 // repository
-import { RepositoryServiceProvider} from './core/providers/repository-service.provider';
+import { RepositoryServiceProvider } from './core/providers/repository-service.provider';
 
 // config
 import { AppConfig } from './core/config/app.config';
@@ -29,8 +29,9 @@ import { UrlConfig } from './core/config/url.config';
 // web components
 import { WebComponentsModule } from '../lib/web-components';
 
-// translation
-import { TranslationModule } from '../lib/translation/';
+// translations
+import { HttpLoaderFactory } from './core/providers/translate-loader.provider';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 
 // custom modules
 import { CoreModule } from './core';
@@ -87,7 +88,13 @@ import { FormModule } from './modules/_forms/_form.module';
     ClientsModule,
 
     // translation
-    TranslationModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [Http]
+      }
+    }),
 
     // test form module
     FormModule,

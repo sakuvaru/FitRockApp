@@ -22,10 +22,10 @@ export abstract class BaseFormService<TItem extends IItem> implements IFormsServ
         options?: {
             saveFunction?: (item: TItem) => Observable<ResponseCreate<TItem>>,
             showSnackBar?: boolean,
-            snackBarText?: string,
+            snackBarTextKey?: string,
             insertCallback?: (response: ResponseCreate<TItem>) => void,
             updateCallback?: (response: ResponseEdit<TItem>) => void,
-            submitText?: string,
+            submitTextKey?: string,
             errorCallback?: (err: string) => void
         }): FormConfig<TItem> {
 
@@ -33,18 +33,18 @@ export abstract class BaseFormService<TItem extends IItem> implements IFormsServ
             options = {};
         }
 
-        var submitText: string;
-        if (options.submitText) {
-            submitText = options.submitText;
+        var submitTextKey: string;
+        if (options.submitTextKey) {
+            submitTextKey = options.submitTextKey;
         }
         else {
-            submitText = "Vytvořit";
+            submitTextKey = 'form.shared.insert';
         }
 
         return new FormConfig<TItem>({
-            submitText: submitText,
+            submitTextKey: submitTextKey,
             showSnackBar: options.showSnackBar,
-            snackBarText: options.snackBarText,
+            snackBarTextKey: options.snackBarTextKey,
             insertCallback: options.insertCallback,
             updateCallback: options.updateCallback,
             fieldsLoader: () => this.getInsertFields(),
@@ -63,10 +63,10 @@ export abstract class BaseFormService<TItem extends IItem> implements IFormsServ
         options?: {
             saveFunction?: (item: TItem) => Observable<ResponseEdit<TItem>>,
             showSnackBar?: boolean,
-            snackBarText?: string,
+            snackBarTextKey?: string,
             insertCallback?: (response: ResponseCreate<TItem>) => void,
             updateCallback?: (response: ResponseEdit<TItem>) => void,
-            submitText?: string,
+            submitTextKey?: string,
             errorCallback?: (err: string) => void
         }): FormConfig<TItem> {
 
@@ -74,18 +74,18 @@ export abstract class BaseFormService<TItem extends IItem> implements IFormsServ
             options = {};
         }
 
-        var submitText: string;
-        if (options.submitText) {
-            submitText = options.submitText;
+        var submitTextKey: string;
+        if (options.submitTextKey) {
+            submitTextKey = options.submitTextKey;
         }
         else {
-            submitText = "Uložit";
+            submitTextKey = 'form.shared.save';
         }
 
         return new FormConfig<TItem>({
-            submitText: submitText,
+            submitTextKey: submitTextKey,
             showSnackBar: options.showSnackBar,
-            snackBarText: options.snackBarText,
+            snackBarTextKey: options.snackBarTextKey,
             insertCallback: options.insertCallback,
             updateCallback: options.updateCallback,
             fieldsLoader: () => this.getEditFields(itemId),

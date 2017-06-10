@@ -34,13 +34,8 @@ export class ClientsOverviewComponent extends BaseComponent {
   });
 
   constructor(
-    protected componentDependencyService: ComponentDependencyService) {
-    super(componentDependencyService)
-  }
-
-  initAppData(): AppData {
-    return new AppData({
-      subTitle: "Klienti"
-    });
+    protected dependencies: ComponentDependencyService) {
+    super(dependencies)
+      this.dependencies.translateService.get('menu.clients').subscribe(key => this.appData.subTitle = key);
   }
 }

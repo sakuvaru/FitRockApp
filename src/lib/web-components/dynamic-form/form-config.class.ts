@@ -5,22 +5,22 @@ import { IItem, ResponseCreate, ResponseEdit, FormErrorResponse, ErrorResponse  
 
 export class FormConfig<TItem extends IItem>{
 
-    public submitText: string;
+    public submitTextKey: string;
     public fieldsLoader: () => Observable<BaseField<any>[]>;
     public insertFunction?: (item: TItem) => Observable<ResponseCreate<TItem>>;
     public editFunction?: (item: TItem) => Observable<ResponseEdit<TItem>>;
     public showSnackBar: boolean;
-    public snackBarText: string;
+    public snackBarTextKey: string;
     public insertCallback?: (response: ResponseCreate<TItem>) => void;
     public updateCallback?: (response: ResponseEdit<TItem>) => void;
     public errorCallback?: (response: ErrorResponse | FormErrorResponse | any) => void;
 
     constructor(
         config: {
-            submitText: string,
+            submitTextKey: string,
             fieldsLoader: () => Observable<BaseField<any>[]>,
             showSnackBar?: boolean,
-            snackBarText?: string,
+            snackBarTextKey?: string,
             insertFunction?: (item: TItem) => Observable<ResponseCreate<TItem>>, // insert or edit function needs to be provided
             editFunction?: (item: TItem) => Observable<ResponseEdit<TItem>>, // insert or edit function needs to be provided
             insertCallback?: (response: ResponseCreate<TItem>) => void,
@@ -31,9 +31,9 @@ export class FormConfig<TItem extends IItem>{
         Object.assign(this, config);
 
         // assign default values
-        this.snackBarText = config.snackBarText || "Uloženo";
+        this.snackBarTextKey = config.snackBarTextKey || 'form.shared.saved';
         this.showSnackBar = config.showSnackBar || true;
-        this.submitText = config.submitText || "Uložit";
+        this.submitTextKey = config.submitTextKey || "form.shared.save";
 
     }
 

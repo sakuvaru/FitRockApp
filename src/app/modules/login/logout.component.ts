@@ -18,8 +18,4 @@ export class LogoutComponent extends BaseComponent {
         // redirect after logging-out
         this.dependencies.router.navigate([UrlConfig.getPublicUrl(UrlConfig.Logout)]);
     }
-
-    initAppData(): AppData {
-        return new AppData();
-    }
 }

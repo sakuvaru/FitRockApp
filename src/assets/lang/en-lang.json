@@ -1,0 +1,11 @@
+{
+    "menu":{
+        "dashboard": "Dashboard",
+        "clients": "Clients",
+        "trainingPlans": "Training plans",
+        "mealPlans": "Meal plans",
+        "locations": "Locations",
+        "forms": "Forms"
+    },
+    "hello": "hello smurfs {{value}}"
+}

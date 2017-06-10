@@ -34,19 +34,19 @@ export class UserFormsService extends BaseFormService<User>{
             }),
             new TextField({
                 key: 'firstName',
-                label: 'Jméno',
+                labelKey: 'form.user.firstName',
                 required: true,
                 maxLength: 100
             }),
             new TextField({
                 key: 'lastName',
-                label: 'Příjmení',
+                labelKey: 'form.user.lastName',
                 required: true,
                 maxLength: 100
             }),
             new DateField({
                 key: 'birthDate',
-                label: 'Datum narození',
+                labelKey: 'form.user.birthDate',
                 value: null,
                 required: true,
             }),
@@ -54,19 +54,18 @@ export class UserFormsService extends BaseFormService<User>{
                 trueOptionLabel: "Žena",
                 falseOptionLabel: "Muž",
                 key: 'isFemale',
-                label: 'Je žena',
                 value: false,
                 required: true,
             }),
             new TextField({
                 key: 'city',
-                label: 'Město',
+                labelKey: 'form.user.city',
                 required: false,
                 maxLength: 50
             }),
             new TextField({
                 key: 'address',
-                label: 'Adresa',
+                labelKey: 'form.user.address',
                 required: false,
                 maxLength: 100
             }),
@@ -79,12 +78,12 @@ export class UserFormsService extends BaseFormService<User>{
                 ],
                 width: 250,
                 key: 'fitnessLevel',
-                label: 'Úroveň',
+                labelKey: 'form.user.level',
                 required: false,
             }),
             new TextAreaField({
                 key: 'medicalCondition',
-                label: 'Zdravotní stav',
+                labelKey: 'form.user.healthStatus',
                 required: false,
                 maxLength: 5000
             }),
@@ -96,16 +95,16 @@ export class UserFormsService extends BaseFormService<User>{
             }),
             new TextAreaField({
                 key: 'trainerPrivateNotes',
-                label: 'Poznámky (soukromé)',
+                labelKey: 'form.user.privateNotes',
                 required: false,
-                hint: 'Klient tyto poznámky neuvidí',
+                hintKey: 'form.user.privateNotesHint',
                 minAutosizeRows: 6
             }),
             new TextAreaField({
                 key: 'trainerPublicNotes',
-                label: 'Poznámky pro klienta',
+                labelKey: 'form.user.publicNotes',
                 required: false,
-                hint: 'Veřejné poznámky pro klienta',
+                hintKey: 'form.user.publicNotesHint',
                 minAutosizeRows: 6
             }),
         ];
@@ -136,7 +135,7 @@ export class UserFormsService extends BaseFormService<User>{
                 }),
                 new DateField({
                     key: 'birthDate',
-                    label: 'Datum narození',
+                    labelKey: 'Datum narození',
                     required: false,
                     value: response.item.birthDate
                 }),

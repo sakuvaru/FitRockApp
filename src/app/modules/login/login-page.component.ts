@@ -17,10 +17,4 @@ export class LoginPageComponent extends BaseComponent {
             this.dependencies.router.navigate([UrlConfig.getTrainerUrl(null)]);
         }
     }
-
-     initAppData(): AppData {
-        return new AppData({
-            subTitle: "Přihlášení"
-        });
-    }
 }

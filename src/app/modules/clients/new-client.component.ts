@@ -21,6 +21,8 @@ export class NewClientComponent extends BaseComponent {
         protected componentDependencyService: ComponentDependencyService) {
         super(componentDependencyService)
 
+        this.dependencies.translateService.get('module.clients.newClient').subscribe(key => this.appData.subTitle = key);
+
         this.formConfig = this.userFormsService.getInsertForm({
             saveFunction: (item) => this.dependencies.userService.createClient(item),
             insertCallback: (response) => {
@@ -30,12 +32,6 @@ export class NewClientComponent extends BaseComponent {
             errorCallback: (err) => {
                 console.log("This is error callback: " + err);
             }
-        });
-    }
-
-    initAppData(): AppData {
-        return new AppData({
-            subTitle: "Nový klient"
         });
     }
 }

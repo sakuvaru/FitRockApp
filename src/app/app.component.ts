@@ -17,10 +17,4 @@ export class AppComponent extends BaseComponent {
   ) {
     super(dependencies)
   }
-
-  initAppData(): AppData {
-    return new AppData({
-      subTitle: "Main"
-    });
-  }
 }

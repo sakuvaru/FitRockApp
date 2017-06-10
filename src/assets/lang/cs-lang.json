@@ -1,0 +1,60 @@
+{
+    "menu": {
+        "dashboard": "Přehled",
+        "clients": "Klienti",
+        "trainingPlans": "Tréninkové plány",
+        "mealPlans": "Jídelníčky",
+        "locations": "Místa",
+        "forms": "Formuláře"
+    },
+    "errors": {
+        "invalidLicense": "Pro tuto akci nemáš dostatečnou licenci"
+    },
+    "shared": {
+        "login": "Přihlášení",
+        "search": "Hledat"
+    },
+    "module": {
+        "clients": {
+            "newClient": "Nový klient"
+        }
+    },
+    "form": {
+        "error": {
+            "invalidCodenameWithLabel": "Pole '{{label}}' může obsahovat pouze písmena a číslice (bez mezer a speciálních znaků)",
+            "invalidCodename": "Pole může obsahovat pouze písmena a číslice (bez mezer a speciálních znaků)",
+            "invalidEmailWithLabel": "Pole '{{label}}' neobsahuje validní e-mail",
+            "invalidEmail": "Zadaný e-mail není validní",
+            "notUniqueWithLabel": "Hodnota pro '{{label}}' je již zabraná, zkus něco jiného",
+            "notUnique": "Tato hodnota je již zabraná, zkus něco jiného",
+            "otherWithLabel": "Pole '${fieldLabel}' je chybně vyplněno",
+            "other": "Pole je chybně vyplněno",
+            "unknown": "Neznámá chyba",
+            "saveFailedPrefix:": "Uložení se nezdařilo: ",
+            "unknownFormErrorMessage": "Uložení se nezdařilo s neznámou chybou. Zkontrolujte formulář s zkuste to znova.",
+            "insufficientLicense": "Pro tuto akci nemáš dostatečnou licenci"
+        },
+        "shared": {
+            "save": "Uložit",
+            "saved": "Uloženo",
+            "insert": "Vytvořit",
+            "required": "povinné"
+        },
+        "user": {
+            "male": "Muž",
+            "female": "Žena",
+            "firstName": "Jméno",
+            "lastName": "Příjmení",
+            "birthDate": "Datum narození",
+            "address": "Adresa",
+            "level": "Úroveň",
+            "city": "Město",
+            "healthStatus": "Zdravotní stav",
+            "goal": "Cíl",
+            "privateNotes": "Soukromé poznámky",
+            "privateNotesHint": "Klient tyto poznámky neuvidí",
+            "publicNotes": "Poznámky pro klienta",
+            "publicNotesHint": "Klient tyto poznámky uvidí"
+        }
+    }
+}

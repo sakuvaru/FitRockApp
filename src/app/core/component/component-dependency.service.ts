@@ -3,19 +3,22 @@ import { Subject } from 'rxjs/Subject';
 import { AppData } from '../app-data/app-data.class';
 import { Router, ActivatedRoute } from '@angular/router';
 
-// Comnponent's common services
+// Components's common services
 import { AuthService }  from '../../../lib/auth';
 import { TdMediaService } from '@covalent/core';
 import { AppDataService } from '../app-data/app-data.service';
 import { TdLoadingService } from '@covalent/core';
 import { RepositoryService } from '../../../lib/repository';
 
-// services
+// Services
 import { UserService } from '../../services/user.service';
 import { LogService } from '../../services/log.service';
 
 // Angular material
 import { MdSnackBar } from '@angular/material';
+
+// Translation service
+import { TranslateService } from '@ngx-translate/core';
 
 /// Use this class to define shared services that should be available for all conmponents
 /// This is so that each component does not have to define all common dependencies, but only the ones it needs
@@ -32,6 +35,7 @@ export class ComponentDependencyService {
     public loadingService: TdLoadingService;
     public repositoryService: RepositoryService;
     public snackbarService: MdSnackBar
+    public translateService: TranslateService;
 
     // services
     public userService: UserService;
@@ -50,5 +54,7 @@ export class ComponentDependencyService {
 
         this.userService = injector.get(UserService);
         this.logService = injector.get(LogService);
+
+        this.translateService = injector.get(TranslateService);
     }
 }

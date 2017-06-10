@@ -13,10 +13,4 @@ export class SampleComponent extends BaseComponent {
         protected dependencies: ComponentDependencyService) {
         super(dependencies)
     }
-
-    initAppData(): AppData {
-        return new AppData({
-            subTitle: "Sample subtitle"
-        });
-    }
 }

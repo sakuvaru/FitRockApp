@@ -7,19 +7,25 @@ import { CovalentModule } from '../covalent';
 // Angular meterial
 import { AngularMaterialModule } from '../material'
 
+// translation
+import { TranslateModule } from '@ngx-translate/core';
+
 @NgModule({
     imports: [
         CommonModule,
         CovalentModule,
-        AngularMaterialModule
+        AngularMaterialModule,
+        TranslateModule
     ],
     declarations: [
     ],
     providers:[
     ],
     exports: [
+        CommonModule,
         CovalentModule,
-        AngularMaterialModule
+        AngularMaterialModule,
+        TranslateModule
     ]
 })
 export class SharedWebComponentModule { }

@@ -2,7 +2,7 @@ import { AppData } from '../app-data/app-data.class';
 
 export interface IComponent {
 
-    initAppData(): AppData
+    appData: AppData;
 
     redirectToErrorPage(): void;
 

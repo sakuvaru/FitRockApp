@@ -10,7 +10,6 @@ import { Subscription } from 'rxjs/Subscription';
     templateUrl: 'admin-layout.component.html'
 })
 export class AdminLayoutComponent extends BaseComponent implements OnDestroy {
-    private appData: AppData = new AppData();
     private media: TdMediaService;
     private subscription: Subscription;
 
@@ -19,16 +18,13 @@ export class AdminLayoutComponent extends BaseComponent implements OnDestroy {
         private cdr: ChangeDetectorRef
     ) {
         super(dependencies)
+        // don't forget to unsubscribe
         this.subscription = dependencies.appDataService.appDataChanged$.subscribe(
             newAppData => {
                 this.appData = newAppData;
             });
 
         this.media = dependencies.mediaService;
-    }
-
-    initAppData(): AppData {
-        return new AppData();
     }
 
     ngAfterViewInit(): void {
@@ -42,7 +38,7 @@ export class AdminLayoutComponent extends BaseComponent implements OnDestroy {
     }
 
     ngOnDestroy() {
-        // prevent memory leak when component destroyed
+        // prevent memory leaks when component is destroyed
         // source: https://angular.io/docs/ts/latest/cookbook/component-communication.html#!#bidirectional-service
         this.subscription.unsubscribe();
     }
