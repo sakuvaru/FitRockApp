@@ -16,10 +16,13 @@ export class DynamicFormQuestionComponent implements AfterViewInit {
 
   @Input() form: FormGroup;
 
+  @Input() isEditForm: boolean;
+
   constructor(
     private translateService: TranslateService,
     private cdr: ChangeDetectorRef
-  ) { }
+  ) {
+  }
 
   private questionLabel: string;
 
@@ -29,22 +32,48 @@ export class DynamicFormQuestionComponent implements AfterViewInit {
 
   private datePickerStartDate = new Date(1980, 0, 1);
 
+  private checkBoxIsChecked: boolean = false;
+
+  private radioCheckboxTrueChecked: boolean;
+  private radioCheckboxFalseChecked: boolean;
+
   ngAfterViewInit() {
     // translation
     this.translateQuestionHint();
     this.translateQuestionLabel();
 
+    // init values
+    this.initValues();
+  }
+
+  private initValues(): void {
     // Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
     // set default checkbox value to false programatically (it will otherwise treat checkbox as undefined)
     if (this.question.controlType === 'checkbox' && !this.question.required) {
-      if (!this.question.value) {
-        this.form.controls[this.question.key].setValue(false);
+      if (this.isEditForm) {
+       this.form.controls[this.question.key].setValue(this.question.value);
       }
+      else{
+         // set default value of checkbox for insert forms
+        this.form.controls[this.question.key].setValue(this.question.defaultValue);
+      }
+
+      // set checked flag
+      this.checkBoxIsChecked = this.form.controls[this.question.key].value;
     }
     // set default value for radio checkbox
-    else if (this.question.controlType === 'radioboolean' && !this.question.required) {
-      if (!this.question.value) {
-        this.form.controls[this.question.key].setValue(false);
+    if (this.question.controlType === 'radioboolean') {
+      if (this.isEditForm) {
+        // set checkbox status based on question value
+        this.form.controls[this.question.key].setValue(this.question.value);
+        this.radioCheckboxTrueChecked = this.question.value;
+        this.radioCheckboxFalseChecked = !this.question.value;
+      }
+      else {
+        // set default value for insert forms
+        this.form.controls[this.question.key].setValue(this.question.defaultValue);
+        this.radioCheckboxTrueChecked = this.question.value;
+        this.radioCheckboxFalseChecked = !this.question.defaultValue;
       }
     }
 

@@ -22,7 +22,7 @@ export class LogFormsService extends BaseFormService<Log>{
         super(logService)
     }
 
-    getInsertFields(): Observable<BaseField<any>[]> {
+    getBaseFormFields(): Observable<BaseField<any>[]> {
         var fields: BaseField<any>[] = [
             new TextField({
                 key: 'errorMessage',
@@ -46,37 +46,5 @@ export class LogFormsService extends BaseFormService<Log>{
         ];
 
         return Observable.of(fields);
-    }
-
-    getEditFields(itemId: number): Observable<BaseField<any>[]> {
-        return this.logService.getById(itemId).map(response => {
-            var fields: BaseField<any>[] = [
-                new HiddenField({
-                    key: 'id',
-                    required: true,
-                    value: itemId
-                }),
-                new TextField({
-                    key: 'errorMessage',
-                    label: 'Error message',
-                    required: true,
-                    value: response.item.errorMessage
-                }),
-                new TextAreaField({
-                    key: 'stacktrace',
-                    label: 'Stacktrace',
-                    required: false,
-                    maxLength: 5000,
-                    value: response.item.stacktrace
-                }),
-                new TextField({
-                    key: 'user',
-                    label: 'User',
-                    required: false,
-                    value: response.item.user
-                }),
-            ];
-            return fields;
-        });
     }
 }

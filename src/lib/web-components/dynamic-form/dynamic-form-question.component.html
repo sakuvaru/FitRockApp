@@ -10,7 +10,7 @@
   </md-input-container>
 
   <div *ngSwitchCase="'checkbox'" flex>
-    <md-checkbox [checked]="question.value" [formControlName]="question.key" [id]="question.key" required="{{question.required}}"
+    <md-checkbox [checked]="question.value" [formControlName]="question.key" [id]="question.key" required="{{question.required}}" [checked]="checkBoxIsChecked"
       #elem> {{questionLabel}}
     </md-checkbox>
     <span *ngIf="question.required && !elem.checked" class="tc-grey-500 md-caption"> ({{ 'form.shared.required' | translate }})</span>
@@ -19,10 +19,9 @@
   <div *ngSwitchCase="'radioboolean'" flex>
     <md-radio-group [formControlName]="question.key" [id]="question.key" required="{{question.required}}" (change)="handleRadioButtonChange($event)"
       #elem>
-      <md-radio-button value="true" class="push-right">{{question.trueOptionLabel}}</md-radio-button>
-      <md-radio-button value="false">{{question.falseOptionLabel}}</md-radio-button>
+      <md-radio-button [checked]="radioCheckboxTrueChecked" value="true" class="push-right">{{question.trueOptionLabel}}</md-radio-button>
+      <md-radio-button [checked]="radioCheckboxFalseChecked" value="false">{{question.falseOptionLabel}}</md-radio-button>
     </md-radio-group>
-    <span *ngIf="question.required && showRequiredLabels" class="tc-grey-500 md-caption"> ({{ 'form.shared.required' | translate }})</span>
   </div>
 
   <div *ngSwitchCase="'date'" flex>

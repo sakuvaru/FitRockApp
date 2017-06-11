@@ -2,6 +2,8 @@ import { AppData } from '../app-data/app-data.class';
 
 export interface IComponent {
 
+    setSubtitle(text: string): void;
+
     appData: AppData;
 
     redirectToErrorPage(): void;

@@ -13,7 +13,6 @@ import { UserFormsService} from '../../forms';
 })
 export class NewClientComponent extends BaseComponent {
 
-    private error: string;
     private formConfig: FormConfig<any>;
 
     constructor(
@@ -21,7 +20,7 @@ export class NewClientComponent extends BaseComponent {
         protected componentDependencyService: ComponentDependencyService) {
         super(componentDependencyService)
 
-        this.dependencies.translateService.get('module.clients.newClient').subscribe(key => this.appData.subTitle = key);
+        this.dependencies.translateService.get('module.clients.newClient').subscribe(key => this.setSubtitle(key));
 
         this.formConfig = this.userFormsService.getInsertForm({
             saveFunction: (item) => this.dependencies.userService.createClient(item),
@@ -29,9 +28,6 @@ export class NewClientComponent extends BaseComponent {
                 // redirect to view client page
                 this.dependencies.router.navigate([this.getTrainerUrl('clients/view'), response.item.id]);
             },
-            errorCallback: (err) => {
-                console.log("This is error callback: " + err);
-            }
         });
     }
 }

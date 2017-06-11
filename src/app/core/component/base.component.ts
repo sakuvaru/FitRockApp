@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, SimpleChange } from '@angular/core';
 import { TdLoadingService, LoadingMode, LoadingType } from '@covalent/core';
 import { IComponent } from './icomponent.interface';
 import { AppData } from '../app-data/app-data.class';
@@ -24,6 +24,7 @@ export abstract class BaseComponent implements IComponent, OnInit {
     constructor(protected dependencies: ComponentDependencyService) {
     }
 
+    // app data
     public appData: AppData = new AppData();
 
     // ----------------------- Events --------------------- // 
@@ -61,6 +62,13 @@ export abstract class BaseComponent implements IComponent, OnInit {
             error => {
                 this.handleRepositoryError(error);
             });
+    }
+
+    // --------------------- App Data --------------------- //
+    setSubtitle(text: string): void{
+        this.appData.subTitle = text;
+        // push change to service
+        this.dependencies.appDataService.setAppData(this.appData);
     }
 
     // --------------------- Private methods -------------- // 

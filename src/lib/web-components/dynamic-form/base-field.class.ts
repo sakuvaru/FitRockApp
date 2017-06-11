@@ -2,6 +2,7 @@ import { DropdownFieldOption } from './models';
 
 export class BaseField<T>{
     public value: T;
+    public defaultValue: T;
     public key: string;
     public label: string;
     public labelKey: string;
@@ -20,6 +21,7 @@ export class BaseField<T>{
     public keyAlias: string;
     constructor(options: {
         value?: T,
+        defaultValue?: T,
         key?: string,
         label?: string,
         labelKey?: string,

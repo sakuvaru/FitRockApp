@@ -16,7 +16,8 @@
     },
     "module": {
         "clients": {
-            "newClient": "Nový klient"
+            "newClient": "Nový klient",
+            "viewClientSubtitle": "{{fullName}}"
         }
     },
     "form": {
@@ -27,10 +28,10 @@
             "invalidEmail": "Zadaný e-mail není validní",
             "notUniqueWithLabel": "Hodnota pro '{{label}}' je již zabraná, zkus něco jiného",
             "notUnique": "Tato hodnota je již zabraná, zkus něco jiného",
-            "otherWithLabel": "Pole '${fieldLabel}' je chybně vyplněno",
+            "otherWithLabel": "Pole '{{label}} je chybně vyplněno",
             "other": "Pole je chybně vyplněno",
             "unknown": "Neznámá chyba",
-            "saveFailedPrefix:": "Uložení se nezdařilo: ",
+            "saveFailedPrefix": "Uložení se nezdařilo: ",
             "unknownFormErrorMessage": "Uložení se nezdařilo s neznámou chybou. Zkontrolujte formulář s zkuste to znova.",
             "insufficientLicense": "Pro tuto akci nemáš dostatečnou licenci"
         },

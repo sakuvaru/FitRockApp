@@ -65,6 +65,7 @@ export class RadioBooleanField extends BaseField<boolean> {
       trueOptionLabel: string,
       falseOptionLabel: string,
       value?: boolean,
+      defaultValue?: boolean,
       key?: string,
       keyAlias?: string,
       label?: string,

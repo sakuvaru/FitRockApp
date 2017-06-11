@@ -6,9 +6,10 @@ import { IItem, ResponseDelete, ResponseCreate, ResponseEdit, ResponseMultiple, 
 
 export interface IFormsService<TItem extends IItem> {
 
-    getInsertFields(): Observable<BaseField<any>[]>;
-
-    getEditFields(itemId: number): Observable<BaseField<any>[]>;
+    getBaseFormFields(options?:
+        {
+            excludeFields?: string[]
+        }): Observable<BaseField<any>[]>;
 
     getInsertForm(
         options?: {
@@ -22,7 +23,10 @@ export interface IFormsService<TItem extends IItem> {
         }): FormConfig<TItem>;
 
     getEditForm(
-        itemId: number,
+        config: {
+            itemId?: number,
+            item?: TItem
+        },
         options?: {
             saveFunction?: (item: TItem) => Observable<ResponseEdit<TItem>>,
             showSnackBar?: boolean,

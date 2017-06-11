@@ -36,6 +36,6 @@ export class ClientsOverviewComponent extends BaseComponent {
   constructor(
     protected dependencies: ComponentDependencyService) {
     super(dependencies)
-      this.dependencies.translateService.get('menu.clients').subscribe(key => this.appData.subTitle = key);
+      this.dependencies.translateService.get('menu.clients').subscribe(key => this.setSubtitle(key));
   }
 }

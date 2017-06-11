@@ -1,4 +1,4 @@
-import { Component, Input, Output, OnInit, EventEmitter, OnChanges, SimpleChange } from '@angular/core';
+import { Component, Input, Output, OnInit, EventEmitter, OnChanges, SimpleChange, ChangeDetectorRef } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { BaseField } from './base-field.class';
 import { FieldControlService } from './field-control.service';
@@ -47,12 +47,9 @@ export class DynamicFormComponent implements OnInit, OnChanges {
     constructor(
         private fieldControlService: FieldControlService,
         private snackBarService: MdSnackBar,
-        private translateService: TranslateService
+        private translateService: TranslateService,
+        private cdr: ChangeDetectorRef
     ) {
-    }
-
-    private initForm(): void {
-
     }
 
     ngOnInit() {
@@ -69,12 +66,14 @@ export class DynamicFormComponent implements OnInit, OnChanges {
             // translate labels
             this.translateLabels();
         }
+
+        this.cdr.detectChanges();
     }
 
     ngOnChanges(changes: { [propKey: string]: SimpleChange }) {
         // re-initalize form when questions changes because dynamic form may recieve config with questions 
         // after the initilization of component 
-        if (changes.config) {
+        if (changes.config && changes.config.currentValue) {
             // load fields
             changes.config.currentValue.fieldsLoader().subscribe(fields => {
                 this.form = this.fieldControlService.toFormGroup(fields);
@@ -135,6 +134,9 @@ export class DynamicFormComponent implements OnInit, OnChanges {
         // remove error message when any input in form changes
         this.submissionError = null;
         this.formErrorLines = [];
+
+        // detect changes manually when changing values used in template!
+        this.cdr.detectChanges();
     }
 
     private handleSnackBar(): void {
@@ -224,28 +226,28 @@ export class DynamicFormComponent implements OnInit, OnChanges {
 
         if (columnValidation.errorType === FieldErrorEnum.InvalidCodename) {
             if (fieldLabel) {
-                return this.translateService.get('form.error.invalidCodenameWithLabel', { label: fieldLabel});
+                return this.translateService.get('form.error.invalidCodenameWithLabel', { label: fieldLabel });
             }
             return this.translateService.get('form.error.invalidCodename');
         }
 
         if (columnValidation.errorType === FieldErrorEnum.InvalidEmail) {
             if (fieldLabel) {
-                return this.translateService.get('form.error.invalidEmailWithLabel', { label: fieldLabel});
+                return this.translateService.get('form.error.invalidEmailWithLabel', { label: fieldLabel });
             }
             return this.translateService.get('form.error.invalidEmail');
         }
 
         if (columnValidation.errorType === FieldErrorEnum.NotUnique) {
             if (fieldLabel) {
-                return this.translateService.get('form.error.notUniqueWithLabel', { label: fieldLabel});
+                return this.translateService.get('form.error.notUniqueWithLabel', { label: fieldLabel });
             }
             return this.translateService.get('form.error.notUnique');
         }
 
         if (columnValidation.errorType === FieldErrorEnum.Other) {
             if (fieldLabel) {
-                return this.translateService.get('form.error.otherWithLabel', { label: fieldLabel});
+                return this.translateService.get('form.error.otherWithLabel', { label: fieldLabel });
             }
             return this.translateService.get('form.error.other');
         }

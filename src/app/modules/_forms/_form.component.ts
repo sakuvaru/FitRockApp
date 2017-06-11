@@ -22,6 +22,8 @@ export class FormComponent extends BaseComponent {
         super(dependencies)
 
         this.formInsertConfig = this.logFormsService.getInsertForm();
-        this.formEditConfig = this.logFormsService.getEditForm(1);
+        this.formEditConfig = this.logFormsService.getEditForm({
+            itemId: 1
+        });
     }
 }

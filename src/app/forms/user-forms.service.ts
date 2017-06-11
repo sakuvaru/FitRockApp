@@ -19,10 +19,13 @@ export class UserFormsService extends BaseFormService<User>{
     constructor(
         protected userService: UserService
     ) {
-        super(userService)
+        super(userService,
+        {
+            excludedEditFields: ['email']
+        })
     }
 
-    getInsertFields(): Observable<BaseField<any>[]> {
+    getBaseFormFields(): Observable<BaseField<any>[]> {
         var fields: BaseField<any>[] = [
             new TextField({
                 key: 'email',
@@ -47,15 +50,14 @@ export class UserFormsService extends BaseFormService<User>{
             new DateField({
                 key: 'birthDate',
                 labelKey: 'form.user.birthDate',
-                value: null,
                 required: true,
             }),
             new RadioBooleanField({
                 trueOptionLabel: "Žena",
                 falseOptionLabel: "Muž",
                 key: 'isFemale',
-                value: false,
                 required: true,
+                defaultValue: false
             }),
             new TextField({
                 key: 'city',
@@ -110,93 +112,5 @@ export class UserFormsService extends BaseFormService<User>{
         ];
 
         return Observable.of(fields);
-    }
-
-    getEditFields(itemId: number): Observable<BaseField<any>[]> {
-        return this.userService.getById(itemId).map(response => {
-            var fields: BaseField<any>[] = [
-                new HiddenField({
-                    key: 'id',
-                    required: true,
-                }),
-                new TextField({
-                    key: 'firstName',
-                    label: 'Jméno',
-                    required: true,
-                    maxLength: 100,
-                    value: response.item.firstName
-                }),
-                new TextField({
-                    key: 'lastName',
-                    label: 'Příjmení',
-                    required: true,
-                    maxLength: 100,
-                    value: response.item.lastName
-                }),
-                new DateField({
-                    key: 'birthDate',
-                    labelKey: 'Datum narození',
-                    required: false,
-                    value: response.item.birthDate
-                }),
-                new RadioBooleanField({
-                    trueOptionLabel: "Žena",
-                    falseOptionLabel: "Muž",
-                    key: 'isFemale',
-                    label: 'Je žena',
-                    value: response.item.isFemale,
-                    required: true,
-                }),
-                new TextField({
-                    key: 'city',
-                    label: 'Město',
-                    required: false,
-                    maxLength: 50,
-                    value: response.item.city
-                }),
-                new TextField({
-                    key: 'address',
-                    label: 'Adresa',
-                    required: false,
-                    maxLength: 100,
-                    value: response.item.address
-                }),
-                new DropdownField({
-                    dropdownOptions: [
-                        new DropdownFieldOption("Novice", "Nováček"),
-                        new DropdownFieldOption("Intermediate", "Středně pokročilý"),
-                        new DropdownFieldOption("Advanced", "Pokročilý"),
-                        new DropdownFieldOption("FitnessCompetitor", "Závodník fitness"),
-                    ],
-                    width: 250,
-                    key: 'fitnessLevel',
-                    label: 'Úroveň',
-                    required: false,
-                    value: response.item.fitnessLevel
-                }),
-                new TextAreaField({
-                    key: 'medicalCondition',
-                    label: 'Zdravotní stav',
-                    required: false,
-                    maxLength: 5000,
-                    value: response.item.medicalCondition
-                }),
-                new TextAreaField({
-                    key: 'goal',
-                    label: 'Cíl',
-                    required: false,
-                    maxLength: 200,
-                    value: response.item.goal
-                }),
-                new TextField({
-                    key: 'trainerPublicNotes',
-                    label: 'Poznámky (soukromé',
-                    required: false,
-                    hint: 'Klient tyto poznámky neuvidí',
-                    value: response.item.trainerPublicNotes
-                }),
-            ];
-            return fields;
-        });
     }
 }
