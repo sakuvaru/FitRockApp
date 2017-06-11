@@ -1,4 +1,4 @@
-import { Component, Input, AfterViewInit } from '@angular/core';
+import { Component, Input, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { BaseField } from './base-field.class';
 import { TranslateService } from '@ngx-translate/core';
@@ -17,7 +17,8 @@ export class DynamicFormQuestionComponent implements AfterViewInit {
   @Input() form: FormGroup;
 
   constructor(
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private cdr: ChangeDetectorRef
   ) { }
 
   private questionLabel: string;
@@ -46,28 +47,31 @@ export class DynamicFormQuestionComponent implements AfterViewInit {
         this.form.controls[this.question.key].setValue(false);
       }
     }
+
+    // fix angular js changes error
+    this.cdr.detectChanges();
   }
 
   private translateQuestionLabel(): void {
     if (!this.questionLabel) {
-      if (this.question.label){
+      if (this.question.label) {
         // if regular 'label' is set, use it directly without translating
         this.questionLabel = this.question.label;
       }
-      else if (this.question.labelKey){
+      else if (this.question.labelKey) {
         // if 'labelKey' is set, translate it
         this.translateService.get(this.question.labelKey).subscribe(key => this.questionLabel = key);
       }
     }
   }
 
-    private translateQuestionHint(): void {
+  private translateQuestionHint(): void {
     if (!this.questionHint) {
-      if (this.question.hint){
+      if (this.question.hint) {
         // if regular 'hint' is set, use it directly without translating
         this.questionHint = this.question.hint;
       }
-      else if (this.question.hintKey){
+      else if (this.question.hintKey) {
         // if 'hintKey' is set, translate it
         this.translateService.get(this.question.hintKey).subscribe(key => this.questionHint = key);
       }
