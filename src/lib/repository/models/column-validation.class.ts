@@ -18,6 +18,9 @@ export class ColumnValidation implements IColumnValidation {
         else if (result === 3) {
             this.errorType = FieldErrorEnum.InvalidEmail;
         }
+        else if (result === 4) {
+            this.errorType = FieldErrorEnum.NotEditable;
+        }
         else if (result === 50) {
             this.errorType = FieldErrorEnum.Other;
         }

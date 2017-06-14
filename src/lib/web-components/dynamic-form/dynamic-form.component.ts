@@ -178,7 +178,7 @@ export class DynamicFormComponent implements OnInit, OnChanges {
 
         if (errorResponse instanceof FormErrorResponse) {
             // handle form errors
-
+            var joinErrors = true;
 
             // handle invalid field errors
             errorResponse.formValidation.validationResult.forEach(validationResult => {
@@ -197,10 +197,17 @@ export class DynamicFormComponent implements OnInit, OnChanges {
                         // form error
                         this.getFormErrorMessage(validationResult, question.label).subscribe(error => this.formErrorLines.push(error))
                     }
+                    else{
+                        // field was not found in form - means that some other field failed to save, show the error to user
+                        this.submissionError = this.unknownErrorMessage;
+                        joinErrors = false;
+                        return;
+                    }
                 })
             });
-            this.submissionError = this.formErrorLines.join(', ');
-
+            if (joinErrors){
+                this.submissionError = this.formErrorLines.join(', ');
+            }
         }
         else if (errorResponse instanceof ErrorResponse) {
             console.error(errorResponse);
@@ -223,7 +230,6 @@ export class DynamicFormComponent implements OnInit, OnChanges {
     }
 
     private getFormFieldErrorMessage(columnValidation: ColumnValidation, fieldLabel?: string): Observable<string> {
-
         if (columnValidation.errorType === FieldErrorEnum.InvalidCodename) {
             if (fieldLabel) {
                 return this.translateService.get('form.error.invalidCodenameWithLabel', { label: fieldLabel });
@@ -239,6 +245,13 @@ export class DynamicFormComponent implements OnInit, OnChanges {
         }
 
         if (columnValidation.errorType === FieldErrorEnum.NotUnique) {
+            if (fieldLabel) {
+                return this.translateService.get('form.error.notEditableWithLabel', { label: fieldLabel });
+            }
+            return this.translateService.get('form.error.notEditable');
+        }
+
+         if (columnValidation.errorType === FieldErrorEnum.NotEditable) {
             if (fieldLabel) {
                 return this.translateService.get('form.error.notUniqueWithLabel', { label: fieldLabel });
             }

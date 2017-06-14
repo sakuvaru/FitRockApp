@@ -3,5 +3,6 @@ export enum FieldErrorEnum {
     InvalidCodename,
     InvalidEmail,
     Other,
+    NotEditable,
     Unknown
 }

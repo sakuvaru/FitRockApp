@@ -28,6 +28,8 @@
             "invalidEmail": "Zadaný e-mail není validní",
             "notUniqueWithLabel": "Hodnota pro '{{label}}' je již zabraná, zkus něco jiného",
             "notUnique": "Tato hodnota je již zabraná, zkus něco jiného",
+            "notEditableWithLabel": "Pole '{{label}}' nelze editovat",
+            "notEditable": "Pole nelze editovat",
             "otherWithLabel": "Pole '{{label}} je chybně vyplněno",
             "other": "Pole je chybně vyplněno",
             "unknown": "Neznámá chyba",
