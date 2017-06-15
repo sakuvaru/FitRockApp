@@ -177,8 +177,11 @@ export class DynamicFormComponent implements OnInit, OnChanges {
         }
 
         if (errorResponse instanceof FormErrorResponse) {
-            // handle form errors
-            var joinErrors = true;
+            // handle form errors without validation result
+            if (!errorResponse.formValidation.validationResult || errorResponse.formValidation.validationResult.length === 0){
+                this.submissionError = this.unknownErrorMessage;
+                return;
+            }
 
             // handle invalid field errors
             errorResponse.formValidation.validationResult.forEach(validationResult => {
@@ -197,17 +200,9 @@ export class DynamicFormComponent implements OnInit, OnChanges {
                         // form error
                         this.getFormErrorMessage(validationResult, question.label).subscribe(error => this.formErrorLines.push(error))
                     }
-                    else{
-                        // field was not found in form - means that some other field failed to save, show the error to user
-                        this.submissionError = this.unknownErrorMessage;
-                        joinErrors = false;
-                        return;
-                    }
                 })
             });
-            if (joinErrors){
                 this.submissionError = this.formErrorLines.join(', ');
-            }
         }
         else if (errorResponse instanceof ErrorResponse) {
             console.error(errorResponse);
