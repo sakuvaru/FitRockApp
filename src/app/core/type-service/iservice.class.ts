@@ -1,25 +1,17 @@
 import { Observable } from 'rxjs/Observable';
 
 import {
-    IItem, IOption, ResponseDelete, ResponseCreate,
-    ResponseEdit, ResponseMultiple, ResponseSingle
+    IItem, ResponseDelete, ResponseCreate,
+    ResponseEdit, SingleItemQueryInit, MultipleItemQuery
 } from '../../../lib/repository';
 
 export interface IService<TItem extends IItem> {
 
     type: string
 
-    getMultiple(action: string, options?: IOption[]): Observable<ResponseMultiple<TItem>>;
+    items(): MultipleItemQuery<TItem>;
 
-    getSingle(action: string, options?: IOption[]): Observable<ResponseSingle<TItem>>;
-
-    getAll(options?: IOption[]): Observable<ResponseMultiple<TItem>>;
-
-    getByCodename(codename: string, options?: IOption[]): Observable<ResponseSingle<TItem>>;
-
-    getByGuid(guid: string, options?: IOption[]): Observable<ResponseSingle<TItem>>;
-
-    getById(id: number, options?: IOption[]): Observable<ResponseSingle<TItem>>;
+    item(): SingleItemQueryInit<TItem>;
 
     create(obj: TItem): Observable<ResponseCreate<TItem>>;
 

@@ -9,3 +9,5 @@ export * from './models/options';
 export * from './models/field-error.enum';
 export * from './models/column-validation.class';
 export * from './models/error-reason.enum';
+export * from './queries/item/single-item-query.class';
+export * from './queries/item/multiple-item-query.class';

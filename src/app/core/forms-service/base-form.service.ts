@@ -153,7 +153,7 @@ export abstract class BaseFormService<TItem extends IItem> implements IFormsServ
     protected getEditFieldsFromId(itemId: number, excludedFields: string[]): Observable<BaseField<any>[]> {
         var item: TItem;
 
-        var fields = this.service.getById(itemId)
+        var fields = this.service.item().byId(itemId).get()
             .do(response => item = response.item)
             .flatMap(response => this.getBaseFormFields(excludedFields))
             .map(fields => {

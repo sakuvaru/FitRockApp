@@ -4,8 +4,6 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { AppConfig, ComponentDependencyService, AppData, BaseComponent } from '../../core';
 
 // required by component
-import { BaseField, FormConfig } from '../../../lib/web-components';
-import { Limit, OrderByDescending } from '../../../lib/repository';
 import { Log } from '../../models';
 import { LogService } from '../../services';
 import { CurrentUser } from '../../../lib/auth';
@@ -27,14 +25,14 @@ export class DashboardComponent extends BaseComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.logService.getAll([new Limit(5), new OrderByDescending("id")]).subscribe(
+        this.logService.items().limit(5).orderByDesc('id').get().subscribe(
             response => {
                 console.log(response);
                 this.logs = response.items;
             }
         );
 
-        this.logService.getById(2).subscribe(
+        this.logService.item().byId(2).get().subscribe(
             response => {
                 console.log(response);
                 this.log = response.item;

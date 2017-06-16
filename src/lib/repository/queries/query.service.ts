@@ -1,24 +1,25 @@
 import { Headers, RequestOptions } from '@angular/http';
-import { ResponseDelete, ResponseCreate, ResponseEdit, ResponseMultiple, ResponseSingle, ErrorResponse, FormErrorResponse } from './models/responses';
-import { IResponseCreateRaw, IResponseDeleteRaw, IResponseEditRaw, IResponseMultipleRaw, IResponseSingleRaw, IErrorResponseRaw, IFormErrorResponseRaw } from './interfaces/iraw-responses';
-import { IOption } from './interfaces/ioption.interface';
+import { ResponseDelete, ResponseCreate, ResponseEdit, ResponseMultiple, ResponseSingle, ErrorResponse, FormErrorResponse } from '../models/responses';
+import { IResponseCreateRaw, IResponseDeleteRaw, IResponseEditRaw, IResponseMultipleRaw, IResponseSingleRaw, IErrorResponseRaw, IFormErrorResponseRaw } from '../interfaces/iraw-responses';
+import { IOption } from '../interfaces/ioption.interface';
 import { AuthHttp } from 'angular2-jwt';
-import { Subject } from 'rxjs/Subject';
-import { Observable } from 'rxjs/Observable';
 import { Response } from '@angular/http';
-import { IItem } from './interfaces/iitem.interface';
-import { RepositoryConfig } from './repository.config';
-import { MapService } from './map.service';
-import { TypeResolverService } from './type-resolver.service';
-import { ColumnValidation } from './models/column-validation.class';
-import { IColumnValidation } from './interfaces/icolumn-validation.interface';
-import { FormValidationResult } from './models/form-validation-result.class';
-import { IFormValidationResult } from './interfaces/iform-validation-result.interface';
+import { IItem } from '../interfaces/iitem.interface';
+import { RepositoryConfig } from '../repository.config';
+import { MapService } from '../map.service';
+import { TypeResolverService } from '../type-resolver.service';
+import { ColumnValidation } from '../models/column-validation.class';
+import { IColumnValidation } from '../interfaces/icolumn-validation.interface';
+import { FormValidationResult } from '../models/form-validation-result.class';
+import { IFormValidationResult } from '../interfaces/iform-validation-result.interface';
 
+// rxjs
+import { Observable } from 'rxjs/RX';
+import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 
-export abstract class BaseRepositoryService {
+export abstract class QueryService {
 
     private genericErrorMessage = `An error occurred in 'RepositoryService'`;
 
@@ -49,14 +50,8 @@ export abstract class BaseRepositoryService {
         this.processingRequestSource.next(true);
     }
 
-    private raiseError(errorResponse: ErrorResponse) {
+    private raiseError(errorResponse: ErrorResponse): void {
         this.requestErrorSource.next(errorResponse);
-    }
-
-    private getActionUrl(type: string, action: string, options?: IOption[]): string {
-        var url = this.config.apiUrl + '/' + type + '/' + action;
-
-        return this.addOptionsToUrl(url, options);
     }
 
     private addOptionsToUrl(url: string, options?: IOption[]): string {
@@ -72,6 +67,14 @@ export abstract class BaseRepositoryService {
         }
         return url;
     }
+
+    protected getUrl(type: string, action: string, options?: IOption[]): string{
+        var url = this.config.apiUrl + '/' + type + '/' + action;
+
+        return this.addOptionsToUrl(url, options);
+    }
+
+    // error handling
 
     private handleError(response: Response | any): IErrorResponseRaw | IFormErrorResponseRaw {
         // use a remote logging later on
@@ -118,6 +121,8 @@ export abstract class BaseRepositoryService {
 
         return errorResponse;
     }
+
+    // response methods
 
     private getMultipleResponse<TItem extends IItem>(response: Response): ResponseMultiple<TItem> {
         var responseMultiple = (response.json() || {}) as IResponseMultipleRaw;
@@ -179,11 +184,9 @@ export abstract class BaseRepositoryService {
         });
     }
 
-    protected getMultiple<TItem extends IItem>(type: string, action: string, options?: IOption[]): Observable<ResponseMultiple<TItem>> {
+    protected getMultiple<TItem extends IItem>(url: string, options?: IOption[]): Observable<ResponseMultiple<TItem>> {
         // trigger request
         this.startRequest();
-
-        var url = this.getActionUrl(type, action, options);
 
         return this.authHttp.get(url)
             .map(response => {
@@ -197,11 +200,9 @@ export abstract class BaseRepositoryService {
             });
     }
 
-    protected getSingle<TItem extends IItem>(type: string, action: string, options?: IOption[]): Observable<ResponseSingle<TItem>> {
+    protected getSingle<TItem extends IItem>(url: string, options?: IOption[]): Observable<ResponseSingle<TItem>> {
         // trigger request
         this.startRequest();
-
-        var url = this.getActionUrl(type, action, options);
 
         return this.authHttp.get(url)
             .map(response => {
@@ -222,7 +223,7 @@ export abstract class BaseRepositoryService {
         var headers = new Headers({ 'Content-Type': 'application/json' });
         var options = new RequestOptions({ headers: headers });
 
-        var url = this.getActionUrl(type, action);
+        var url = this.getUrl(type, action);
 
         return this.authHttp.post(url, body, options)
             .map(response => {
@@ -243,7 +244,7 @@ export abstract class BaseRepositoryService {
         var headers = new Headers({ 'Content-Type': 'application/json' });
         var options = new RequestOptions({ headers: headers });
 
-        var url = this.getActionUrl(type, action);
+        var url = this.getUrl(type, action);
 
         return this.authHttp.post(url, body, options)
             .map(response => {
@@ -264,7 +265,7 @@ export abstract class BaseRepositoryService {
         var headers = new Headers({ 'Content-Type': 'application/json' });
         var options = new RequestOptions({ headers: headers });
 
-        var url = this.getActionUrl(type, action);
+        var url = this.getUrl(type, action);
 
         return this.authHttp.delete(url, options)
             .map(response => {

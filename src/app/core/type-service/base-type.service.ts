@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Observable';
 
 import {
     RepositoryService, IItem, IOption, ResponseDelete,
-    ResponseCreate, ResponseEdit, ResponseMultiple, ResponseSingle
+    ResponseCreate, ResponseEdit, SingleItemQueryInit, MultipleItemQuery
 } from '../../../lib/repository';
 
 export abstract class BaseTypeService<TItem extends IItem> implements IService<TItem>{
@@ -13,28 +13,12 @@ export abstract class BaseTypeService<TItem extends IItem> implements IService<T
         public type: string
     ) { }
 
-    getMultiple(action: string, options?: IOption[]): Observable<ResponseMultiple<TItem>> {
-        return this.repositoryService.getItems(this.type, action, options);
+    items(): MultipleItemQuery<TItem> {
+        return this.repositoryService.items<TItem>(this.type)
     }
 
-    getAll(options?: IOption[]): Observable<ResponseMultiple<TItem>> {
-        return this.repositoryService.getItems(this.type, 'getall', options);
-    }
-
-    getSingle(action: string, options?: IOption[]): Observable<ResponseSingle<TItem>> {
-        return this.repositoryService.getItem(this.type, action, options);
-    }
-
-    getByCodename(codename: string, options?: IOption[]): Observable<ResponseSingle<TItem>> {
-        return this.repositoryService.getItem(this.type, 'getbycodename/' + codename, options);
-    }
-
-    getByGuid(guid: string, options?: IOption[]): Observable<ResponseSingle<TItem>> {
-        return this.repositoryService.getItem(this.type, 'getbyguid/' + guid, options);
-    }
-
-    getById(id: number, options?: IOption[]): Observable<ResponseSingle<TItem>> {
-        return this.repositoryService.getItem(this.type, 'getbyid/' + id, options);
+    item(): SingleItemQueryInit<TItem> {
+        return this.repositoryService.item(this.type);
     }
 
     create(obj: TItem): Observable<ResponseCreate<TItem>> {

@@ -5,7 +5,6 @@ import { AppConfig, ComponentDependencyService, AppData, BaseComponent } from '.
 
 // required by component
 import { DataTableField, DataTableConfig, AlignEnum } from '../../../lib/web-components';
-import { PageSize, Page, WhereLikeMultiple } from '../../../lib/repository';
 import { User } from '../../models';
 
 @Component({
@@ -20,10 +19,11 @@ export class ClientsOverviewComponent extends BaseComponent {
 
   private config: DataTableConfig<User> = new DataTableConfig<User>({
     loadItems: (searchTerm: string, page: number, pageSize: number) => {
-      return this.dependencies.userService.getClients(
-        [
-          new PageSize(pageSize), new Page(page), new WhereLikeMultiple(["FirstName", "LastName"], searchTerm)
-        ])
+      return this.dependencies.userService.clients()
+      .pageSize(pageSize)
+      .page(page)
+      .WhereLikeMultiple(["FirstName", "LastName"], searchTerm)
+      .get()
     },
     showPager: true,
     showSearch: true,
