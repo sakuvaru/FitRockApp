@@ -20,7 +20,7 @@ import { FormServicesModule } from './forms/form-services.module';
 import { AppComponent } from './app.component';
 
 // repository
-import { RepositoryServiceProvider } from './core/providers/repository-service.provider';
+import { RepositoryClientProvider } from './core/providers/repository-client.provider';
 
 // config
 import { AppConfig } from './core/config/app.config';
@@ -103,7 +103,7 @@ import { FormModule } from './modules/_forms/_form.module';
     WebComponentsModule
   ],
   providers: [
-    RepositoryServiceProvider
+    RepositoryClientProvider
   ],
   exports: [
     WebComponentsModule

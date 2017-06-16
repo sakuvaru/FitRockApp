@@ -3,7 +3,7 @@ import { RepositoryConfig } from '../../repository.config';
 
 // services
 import { AuthHttp } from 'angular2-jwt';
-import { QueryService } from '../query.service';
+import { QueryService } from '../../services/query.service';
 
 export abstract class BaseQuery extends QueryService {
 

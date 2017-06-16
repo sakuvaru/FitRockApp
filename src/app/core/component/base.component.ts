@@ -6,7 +6,8 @@ import { AppConfig } from '../config/app.config';
 import { UrlConfig } from '../config/url.config';
 import { ComponentDependencyService } from './component-dependency.service';
 import { Subscription } from 'rxjs/Subscription';
-import { ErrorResponse, RepositoryService, ErrorReasonEnum } from '../../../lib/repository';
+import { ErrorResponse, ErrorReasonEnum } from '../../../lib/repository';
+
 
 @Component({
 })
@@ -58,7 +59,7 @@ export abstract class BaseComponent implements IComponent, OnInit {
         this.resolveFullScreenLoader();
 
         // suscribe to errors in repository service and handle them
-        this.repositoryErrorSubscription = this.dependencies.repositoryService.requestErrorChange$.subscribe(
+        this.repositoryErrorSubscription = this.dependencies.repositoryClient.requestErrorChange$.subscribe(
             error => {
                 this.handleRepositoryError(error);
             });

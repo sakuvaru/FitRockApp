@@ -3,7 +3,7 @@ export * from './models/type-resolver.class';
 export * from './interfaces/ioption.interface';
 export * from './models/base-item.class';
 export * from './repository.config';
-export * from './repository.service';
+export * from './repository.client';
 export * from './models/responses';
 export * from './models/options';
 export * from './models/field-error.enum';

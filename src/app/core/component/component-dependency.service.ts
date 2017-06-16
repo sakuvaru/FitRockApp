@@ -8,7 +8,7 @@ import { AuthService }  from '../../../lib/auth';
 import { TdMediaService } from '@covalent/core';
 import { AppDataService } from '../app-data/app-data.service';
 import { TdLoadingService } from '@covalent/core';
-import { RepositoryService } from '../../../lib/repository';
+import { RepositoryClient } from '../../../lib/repository';
 
 // Services
 import { UserService } from '../../services/user.service';
@@ -28,12 +28,14 @@ export class ComponentDependencyService {
     // url handling
     public router: Router;
 
+    // repository client
+    public repositoryClient: RepositoryClient;
+
     // common services
     public authService: AuthService;
     public mediaService: TdMediaService;
     public appDataService: AppDataService;
     public loadingService: TdLoadingService;
-    public repositoryService: RepositoryService;
     public snackbarService: MdSnackBar
     public translateService: TranslateService;
 
@@ -49,7 +51,7 @@ export class ComponentDependencyService {
         this.mediaService = injector.get(TdMediaService);
         this.appDataService = injector.get(AppDataService);
         this.loadingService = injector.get(TdLoadingService);
-        this.repositoryService = injector.get(RepositoryService);
+        this.repositoryClient = injector.get(RepositoryClient);
         this.snackbarService = injector.get(MdSnackBar);
 
         this.userService = injector.get(UserService);

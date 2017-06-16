@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { Http } from '@angular/http';
 
 // config
-import { RepositoryConfig, TypeResolver, RepositoryService } from '../../../lib/repository';
+import { RepositoryConfig, TypeResolver, RepositoryClient } from '../../../lib/repository';
 import { AppConfig } from '../../core/config/app.config';
 
 // services
@@ -14,7 +14,7 @@ import { AuthHttp } from 'angular2-jwt';
 import { User } from '../../models/user.class';
 import { Log } from '../../models/log.class';
 
-export function RepositoryServiceFactory(authHttp: AuthHttp) {
+export function RepositoryClientFactory(authHttp: AuthHttp) {
 
     let apiUrl = AppConfig.RepositoryApiEndpoint;
 
@@ -23,16 +23,16 @@ export function RepositoryServiceFactory(authHttp: AuthHttp) {
         new TypeResolver("log", () => new Log()),
     ];
 
-    return new RepositoryService(
+    return new RepositoryClient(
         authHttp,
         new RepositoryConfig(apiUrl, typeResolvers)
     )
 };
 
-export var RepositoryServiceProvider =
+export var RepositoryClientProvider =
     {
-        provide: RepositoryService,
-        useFactory: RepositoryServiceFactory,
+        provide: RepositoryClient,
+        useFactory: RepositoryClientFactory,
         deps: [AuthHttp]
     };
 
@@ -42,7 +42,7 @@ export var RepositoryServiceProvider =
     declarations: [
     ],
     providers: [
-        RepositoryService,
+        RepositoryClient,
     ],
 })
-export class RepositoryServiceProviderModule{ }
+export class RepositoryClientProviderModule{ }

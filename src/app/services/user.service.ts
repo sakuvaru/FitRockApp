@@ -6,14 +6,14 @@ import { BaseTypeService } from '../core';
 // required by service
 import { User } from '../models';
 
-import { MultipleItemQuery, RepositoryService, IncludeMultiple, ResponseDelete, ResponseCreate, ResponseEdit, ResponseMultiple, ResponseSingle } from '../../lib/repository';
+import { MultipleItemQuery, RepositoryClient, IncludeMultiple, ResponseDelete, ResponseCreate, ResponseEdit, ResponseMultiple, ResponseSingle } from '../../lib/repository';
 
 
 @Injectable()
 export class UserService extends BaseTypeService<User>{
 
-    constructor(repositoryService: RepositoryService) {
-        super(repositoryService, "user")
+    constructor(repositoryClient: RepositoryClient) {
+        super(repositoryClient, "user")
     }
 
     createEmptyItem(): User {

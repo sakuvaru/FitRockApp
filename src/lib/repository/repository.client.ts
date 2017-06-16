@@ -1,4 +1,4 @@
-import { QueryService } from './queries/query.service';
+import { QueryService } from './services/query.service';
 import { ResponseDelete, ResponseCreate, ResponseEdit, ResponseMultiple, ResponseSingle } from './models/responses';
 import { IItem } from './interfaces/iitem.interface';
 import { AuthHttp } from 'angular2-jwt';
@@ -9,7 +9,7 @@ import { MultipleItemQuery } from './queries/item/multiple-item-query.class';
 // rxjs
 import { Observable } from 'rxjs/Observable';
 
-export class RepositoryService extends QueryService {
+export class RepositoryClient extends QueryService {
 
     constructor(
        protected authHttp: AuthHttp,
