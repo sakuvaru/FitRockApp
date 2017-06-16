@@ -43,7 +43,7 @@ export class ViewClientComponent extends BaseComponent implements OnInit {
                         item: response.item
                     },
                     {
-                        saveFunction: (item) => this.dependencies.userService.edit(item),
+                        saveFunction: (item) => this.dependencies.userService.edit(item).set(),
                         updateCallback: (response) => {
                         },
                     });

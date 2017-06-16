@@ -1,8 +1,7 @@
 import { Observable } from 'rxjs/Observable';
 
 import {
-    IItem, ResponseDelete, ResponseCreate,
-    ResponseEdit, SingleItemQueryInit, MultipleItemQuery
+    RepositoryClient, IItem, SingleItemQueryInit, MultipleItemQuery, CreateItemQuery, EditItemQuery, DeleteItemQuery
 } from '../../../lib/repository';
 
 export interface IService<TItem extends IItem> {
@@ -13,13 +12,9 @@ export interface IService<TItem extends IItem> {
 
     item(): SingleItemQueryInit<TItem>;
 
-    create(obj: TItem): Observable<ResponseCreate<TItem>>;
+    create(item: TItem): CreateItemQuery<TItem>;
 
-    createCustom(action: string, obj: TItem): Observable<ResponseCreate<TItem>>
+    edit(item: TItem): EditItemQuery<TItem>;
 
-    edit(obj: TItem): Observable<ResponseEdit<TItem>>;
-
-    editCustom(action: string, obj: TItem): Observable<ResponseEdit<TItem>>
-
-    delete(id: number): Observable<ResponseDelete>;
+    delete(itemId: number): DeleteItemQuery;
 }

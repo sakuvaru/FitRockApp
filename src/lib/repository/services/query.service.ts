@@ -19,7 +19,7 @@ import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 
-export abstract class QueryService {
+export class QueryService {
 
     private genericErrorMessage = `An error occurred in 'RepositoryService'`;
 
@@ -216,16 +216,14 @@ export abstract class QueryService {
             });
     }
 
-    protected create<TItem extends IItem>(type: string, action: string, body: any): Observable<ResponseCreate<TItem>> {
+    protected create<TItem extends IItem>(url: string, body: any): Observable<ResponseCreate<TItem>> {
         // trigger request
         this.startRequest();
 
         var headers = new Headers({ 'Content-Type': 'application/json' });
-        var options = new RequestOptions({ headers: headers });
+        var headerOptions = new RequestOptions({ headers: headers });
 
-        var url = this.getUrl(type, action);
-
-        return this.authHttp.post(url, body, options)
+        return this.authHttp.post(url, body, headerOptions)
             .map(response => {
                 return this.getCreateResponse(response)
             })
@@ -237,16 +235,14 @@ export abstract class QueryService {
             });
     }
 
-    protected edit<TItem extends IItem>(type: string, action: string, body: any): Observable<ResponseEdit<TItem>> {
+    protected edit<TItem extends IItem>(url: string, body: any): Observable<ResponseEdit<TItem>> {
         // trigger request
         this.startRequest();
 
         var headers = new Headers({ 'Content-Type': 'application/json' });
-        var options = new RequestOptions({ headers: headers });
+        var headerOptions = new RequestOptions({ headers: headers });
 
-        var url = this.getUrl(type, action);
-
-        return this.authHttp.post(url, body, options)
+        return this.authHttp.post(url, body, headerOptions)
             .map(response => {
                 return this.getEditResponse(response)
             })
@@ -258,16 +254,14 @@ export abstract class QueryService {
             });
     }
 
-    protected delete(type: string, action: string): Observable<ResponseDelete> {
+    protected delete(url: string): Observable<ResponseDelete> {
         // trigger request
         this.startRequest();
 
         var headers = new Headers({ 'Content-Type': 'application/json' });
-        var options = new RequestOptions({ headers: headers });
+        var headerOptions = new RequestOptions({ headers: headers });
 
-        var url = this.getUrl(type, action);
-
-        return this.authHttp.delete(url, options)
+        return this.authHttp.delete(url, headerOptions)
             .map(response => {
                 return this.getDeleteResponse(response)
             })

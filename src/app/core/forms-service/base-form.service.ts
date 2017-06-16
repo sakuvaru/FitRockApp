@@ -60,7 +60,7 @@ export abstract class BaseFormService<TItem extends IItem> implements IFormsServ
                 if (options && options.saveFunction) {
                     return options.saveFunction(item);
                 }
-                return this.service.create(item);
+                return this.service.create(item).set();
             }
         })
     }
@@ -116,7 +116,7 @@ export abstract class BaseFormService<TItem extends IItem> implements IFormsServ
                 if (options && options.saveFunction) {
                     return options.saveFunction(item);
                 }
-                return this.service.edit(item);
+                return this.service.edit(item).set();
             }
         })
     }

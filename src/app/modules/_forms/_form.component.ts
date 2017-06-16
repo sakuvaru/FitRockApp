@@ -7,7 +7,6 @@ import { AppConfig, ComponentDependencyService, AppData, BaseComponent } from '.
 import { FormConfig} from '../../../lib/web-components';
 import { LogFormsService } from '../../forms';
 
-
 @Component({
     templateUrl: '_form.component.html'
 })

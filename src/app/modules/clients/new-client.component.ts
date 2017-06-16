@@ -23,7 +23,7 @@ export class NewClientComponent extends BaseComponent {
         this.dependencies.translateService.get('module.clients.newClient').subscribe(key => this.setSubtitle(key));
 
         this.formConfig = this.userFormsService.getInsertForm({
-            saveFunction: (item) => this.dependencies.userService.createClient(item),
+            saveFunction: (item) => this.dependencies.userService.createClient(item).set(),
             insertCallback: (response) => {
                 // redirect to view client page
                 this.dependencies.router.navigate([this.getTrainerUrl('clients/view'), response.item.id]);

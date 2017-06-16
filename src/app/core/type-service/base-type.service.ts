@@ -2,8 +2,7 @@ import { IService } from './iservice.class';
 import { Observable } from 'rxjs/Observable';
 
 import {
-    RepositoryClient, IItem, IOption, ResponseDelete,
-    ResponseCreate, ResponseEdit, SingleItemQueryInit, MultipleItemQuery
+    RepositoryClient, IItem, SingleItemQueryInit, MultipleItemQuery, CreateItemQuery, EditItemQuery, DeleteItemQuery
 } from '../../../lib/repository';
 
 export abstract class BaseTypeService<TItem extends IItem> implements IService<TItem>{
@@ -21,23 +20,15 @@ export abstract class BaseTypeService<TItem extends IItem> implements IService<T
         return this.repositoryClient.item(this.type);
     }
 
-    create(obj: TItem): Observable<ResponseCreate<TItem>> {
-        return this.repositoryClient.create(this.type, 'create', obj);
+    create(item: TItem): CreateItemQuery<TItem> {
+        return this.repositoryClient.create<TItem>(this.type, item);
     }
 
-    createCustom(action: string, obj: TItem): Observable<ResponseCreate<TItem>> {
-        return this.repositoryClient.create(this.type, action, obj);
+    edit(item: TItem): EditItemQuery<TItem>{
+        return this.repositoryClient.edit<TItem>(this.type, item);
     }
 
-    edit(obj: TItem): Observable<ResponseEdit<TItem>> {
-        return this.repositoryClient.edit(this.type, 'edit', obj);
-    }
-
-    editCustom(action: string, obj: TItem): Observable<ResponseEdit<TItem>> {
-        return this.repositoryClient.edit(this.type, action, obj);
-    }
-
-    delete(id: number): Observable<ResponseDelete> {
-        return this.repositoryClient.delete(this.type, 'delete/' + id);
+    delete(itemId: number): DeleteItemQuery{
+        return this.repositoryClient.delete(this.type, itemId);
     }
 }

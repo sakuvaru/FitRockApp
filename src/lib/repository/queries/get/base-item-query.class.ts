@@ -23,6 +23,8 @@ import { Observable } from 'rxjs/Rx';
 
 export abstract class BaseItemQuery<TItem extends IItem> extends BaseQuery {
 
+    abstract get(): any;
+
     protected _options: IOption[] = [];
     protected _action: string;
 

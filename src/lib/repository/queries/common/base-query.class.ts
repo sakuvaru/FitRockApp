@@ -15,5 +15,4 @@ export abstract class BaseQuery extends QueryService {
     }
 
     abstract toString(): string;
-    abstract get(): any;
 }
