@@ -1,10 +1,19 @@
-import { AppData } from '../app-data/app-data.class';
+import { IComponentConfig, MenuItem, ResourceKey } from '../component/component.config';
 
 export interface IComponent {
 
-    setSubtitle(text: string): void;
+    setConfig(options?:
+        {
+            componentTitle?: ResourceKey,
+            menuItems?: MenuItem[],
+            appName?: string,
+            menuTitle?: ResourceKey
+        }
+    ): void;
 
-    appData: AppData;
+    updateMenuItems(menuItems: MenuItem[]): void;
+
+    updateComponentTitle(title: ResourceKey): void;
 
     redirectToErrorPage(): void;
 

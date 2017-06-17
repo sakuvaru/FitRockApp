@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AppDataService } from '../app-data/app-data.service';
+import { SharedService } from '../shared-service/shared.service';
 import { ComponentDependencyService } from '../component/component-dependency.service';
 
 // Covalent modules for Angular2 - include here so all components can reference them in templates
@@ -30,7 +30,7 @@ import { TranslateModule } from '@ngx-translate/core';
     declarations: [
     ],
     providers:[
-        AppDataService,
+        SharedService,
         ComponentDependencyService
     ],
     exports: [

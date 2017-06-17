@@ -1,7 +1,7 @@
 // common
 import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { AppConfig, ComponentDependencyService, AppData, BaseComponent } from '../../core';
+import { AppConfig, ComponentDependencyService, BaseComponent } from '../../core';
 
 // required by component
 import { BaseField, FormConfig } from '../../../lib/web-components';
@@ -20,7 +20,9 @@ export class NewClientComponent extends BaseComponent {
         protected componentDependencyService: ComponentDependencyService) {
         super(componentDependencyService)
 
-        this.dependencies.translateService.get('module.clients.newClient').subscribe(key => this.setSubtitle(key));
+        this.setConfig({
+            componentTitle: { key: 'module.clients.newClient' },
+        });
 
         this.formConfig = this.userFormsService.insertForm()
             .insertFunction((item) => this.dependencies.userService.createClient(item).set())

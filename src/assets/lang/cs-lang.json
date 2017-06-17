@@ -1,5 +1,6 @@
 {
     "menu": {
+        "main": "Hlavní menu",
         "dashboard": "Přehled",
         "clients": "Klienti",
         "trainingPlans": "Tréninkové plány",

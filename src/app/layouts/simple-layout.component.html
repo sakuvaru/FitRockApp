@@ -1,4 +1,4 @@
-<td-layout-nav toolbarTitle="{{appData.appName}}" logo="logo" icon="home" color="primary" navigationRoute="/">
+<td-layout-nav toolbarTitle="{{componentConfig.appName}}" logo="logo" icon="home" color="primary" navigationRoute="/">
     <div td-toolbar-content>
     </div>
     <div layout="row" layout-padding>
@@ -7,6 +7,6 @@
         </div>
     </div>
     <td-layout-footer>
-        <footer></footer>
+        <footer [appName]="componentConfig.appName"></footer>
     </td-layout-footer>
 </td-layout-nav>

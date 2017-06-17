@@ -1,7 +1,7 @@
 // common
 import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { AppConfig, ComponentDependencyService, AppData, BaseComponent } from '../../core';
+import { AppConfig, ComponentDependencyService, BaseComponent } from '../../core';
 
 // required by component
 import { FormConfig} from '../../../lib/web-components';

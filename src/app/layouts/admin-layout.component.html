@@ -1,34 +1,16 @@
-<td-layout-nav toolbarTitle="{{appData.appName}}" logo="home" [navigationRoute]="getTrainerUrl()">
+<td-layout-nav toolbarTitle="{{componentConfig.appName}}" logo="home" [navigationRoute]="getTrainerUrl()">
   <td-layout-manage-list #manageList [opened]="media.registerQuery('gt-sm') | async" [mode]="(media.registerQuery('gt-sm') | async) ? 'side' :  'over'"
     [sidenavWidth]="(media.registerQuery('gt-xs') | async) ? '257px' : '100%'">
     <md-toolbar td-sidenav-content>
-      <span>{{appData.mainTitle}}</span>
+      <span>{{menuTitle}}</span>
     </md-toolbar>
-    <md-nav-list td-sidenav-content (click)="!media.query('gt-sm') && manageList.close()">
-      <a md-list-item [routerLink]="getTrainerUrl()">
-        <md-icon [color]="getTrainerColor('', true)">home</md-icon>{{'menu.dashboard' | translate}}
-      </a>
-      <a md-list-item [routerLink]="getTrainerUrl('clients')">
-        <md-icon [color]="getTrainerColor('clients')">people</md-icon>{{'menu.clients' | translate}}
-      </a>
-      <a md-list-item routerLink="/todo">
-        <md-icon [color]="getTrainerColor('todo')">fitness_center</md-icon>{{'menu.trainingPlans' | translate}}
-      </a>
-       <a md-list-item routerLink="/todo">
-        <md-icon [color]="getTrainerColor('todo')">free_breakfast</md-icon>{{'menu.mealPlans' | translate}}
-      </a>
-        <a md-list-item routerLink="/todo">
-        <md-icon [color]="getTrainerColor('todo')">place</md-icon>{{'menu.locations' | translate}}
-      </a>
-      <a md-list-item [routerLink]="getTrainerUrl('form')">
-        <md-icon [color]="getTrainerColor('form')">home</md-icon>{{'menu.forms' | translate}}
-      </a>
-      <a md-list-item [routerLink]="getPublicUrl('login')">
-        <md-icon [color]="getPublicColor('login', true)">public</md-icon>Login
+    <md-nav-list *ngIf="componentConfig.menuItems" td-sidenav-content (click)="!media.query('gt-sm') && manageList.close()">
+      <a *ngFor="let item of componentConfig.menuItems" md-list-item [routerLink]="getMenuItemUrl(item.action, item.type)">
+        <md-icon [color]="getMenuItemColor(item.action, item.type)">{{item.icon}}</md-icon>{{ item.label.key | translate}}
       </a>
     </md-nav-list>
     <div td-toolbar-content layout="row" layout-align="start center" flex>
-      <span>{{appData.subTitle}}</span>
+      <span>{{componentTitle}}</span>
       <span flex></span>
       <button md-icon-button [mdMenuTriggerFor]="toolbarMenu"><md-icon>settings</md-icon></button>
       <md-menu #toolbarMenu="mdMenu">
@@ -39,13 +21,13 @@
       </md-menu>
     </div>
     <md-card>
-</md-card>
+    </md-card>
     <router-outlet></router-outlet>
     <td-layout-footer-inner>
       <!-- optional footer -->
     </td-layout-footer-inner>
   </td-layout-manage-list>
   <td-layout-footer>
-    <footer></footer>
+    <footer [appName]="componentConfig.appName"></footer>
   </td-layout-footer>
 </td-layout-nav>

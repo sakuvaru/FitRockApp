@@ -1,12 +1,11 @@
 import { Injectable, Injector } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
-import { AppData } from '../app-data/app-data.class';
 import { Router } from '@angular/router';
 
 // Components's common services
 import { AuthService }  from '../../../lib/auth';
 import { TdMediaService } from '@covalent/core';
-import { AppDataService } from '../app-data/app-data.service';
+import { SharedService } from '../shared-service/shared.service';
 import { TdLoadingService } from '@covalent/core';
 import { RepositoryClient } from '../../../lib/repository';
 
@@ -37,7 +36,7 @@ export class ComponentDependencyService {
     // common services
     public authService: AuthService;
     public mediaService: TdMediaService;
-    public appDataService: AppDataService;
+    public sharedService: SharedService;
     public loadingService: TdLoadingService;
     public snackbarService: MdSnackBar
     public translateService: TranslateService;
@@ -55,7 +54,7 @@ export class ComponentDependencyService {
 
         this.authService = injector.get(AuthService);
         this.mediaService = injector.get(TdMediaService);
-        this.appDataService = injector.get(AppDataService);
+        this.sharedService = injector.get(SharedService);
         this.loadingService = injector.get(TdLoadingService);
         this.repositoryClient = injector.get(RepositoryClient);
         this.snackbarService = injector.get(MdSnackBar);

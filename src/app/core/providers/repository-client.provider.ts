@@ -7,7 +7,6 @@ import { RepositoryConfig, TypeResolver, RepositoryClient } from '../../../lib/r
 import { AppConfig } from '../../core/config/app.config';
 
 // services
-import { AppDataService } from '../app-data/app-data.service';
 import { AuthHttp } from 'angular2-jwt';
 
 // models

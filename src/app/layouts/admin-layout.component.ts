@@ -1,22 +1,29 @@
 // common
 import { Component, Input, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { TdMediaService } from '@covalent/core';
-import { AppConfig, UrlConfig, AppData, ComponentDependencyService, BaseComponent, AppDataService } from '../core';
+import {
+    ComponentDependencyService, BaseComponent,
+    IComponentConfig, MenuItemType
+} from '../core';
 
 // required by component
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs/RX';
 
 @Component({
     templateUrl: 'admin-layout.component.html'
 })
 export class AdminLayoutComponent extends BaseComponent implements OnDestroy {
     private media: TdMediaService;
-    private subscription: Subscription;
+
+    private componentTitle: string;
+    private menuTitle: string;
 
     /**
      * Part of url identifying 'client' or 'trainer' app type
      */
     private urlSegment: string;
+
+    private componentConfigSubscription: Subscription;
 
     constructor(
         protected dependencies: ComponentDependencyService,
@@ -24,11 +31,24 @@ export class AdminLayoutComponent extends BaseComponent implements OnDestroy {
     ) {
         super(dependencies)
         // don't forget to unsubscribe
-        this.subscription = dependencies.appDataService.appDataChanged$.subscribe(
-            newAppData => {
-                this.appData = newAppData;
+        this.componentConfigSubscription = dependencies.sharedService.componentConfigChanged$.subscribe(
+            componentConfig => {
+                this.componentConfig = componentConfig;
+
+                // resolve component's title using translation services
+                if (componentConfig.componentTitle) {
+                    this.dependencies.translateService.get(componentConfig.componentTitle.key, componentConfig.componentTitle.data)
+                        .subscribe(text => this.componentTitle = text);
+                }
+
+                // resolve menu title using translation services
+                if (componentConfig.menuTitle) {
+                    this.dependencies.translateService.get(componentConfig.menuTitle.key, componentConfig.menuTitle.data)
+                        .subscribe(text => this.menuTitle = text);
+                }
             });
 
+        // set alias for media
         this.media = dependencies.mediaService;
     }
 
@@ -45,43 +65,42 @@ export class AdminLayoutComponent extends BaseComponent implements OnDestroy {
     ngOnDestroy() {
         // prevent memory leaks when component is destroyed
         // source: https://angular.io/docs/ts/latest/cookbook/component-communication.html#!#bidirectional-service
-        this.subscription.unsubscribe();
+        this.componentConfigSubscription.unsubscribe();
     }
 
-    private getTrainerColor(action: string, perfectMatch: boolean): string {
-        var url = this.getTrainerUrl(action);
+    private getMenuItemUrl(action: string, type: MenuItemType): string {
+        var url;
 
-        var currentUrl = this.dependencies.router.url;
-
-        if (perfectMatch) {
-            if (url === currentUrl) {
-                return 'primary';
-            }
+        if (type === MenuItemType.client) {
+            url = this.getClientUrl(action);
+        }
+        else if (type === MenuItemType.trainer) {
+            url = this.getTrainerUrl(action);
+        }
+        else if (type === MenuItemType.public) {
+            url = this.getPublicUrl(action);
         }
         else {
-            if (currentUrl.startsWith(url)) {
-                return 'primary';
-            }
+            throw Error(`Cannot get menu item url of '${type}' type`);
         }
 
-        return null;
+        return url;
     }
 
-    private getPublicColor(action: string, perfectMatch: boolean): string {
-        var url = this.getPublicUrl(action);
+    private getMenuItemColor(action: string, type: MenuItemType): string {
+        var activeColor = 'primary';
 
+        var url = this.getMenuItemUrl(action, type);
         var currentUrl = this.dependencies.router.url;
+        
+        if (currentUrl === url) {
+            return activeColor;
+        }
 
-        if (perfectMatch) {
-            if (url === currentUrl) {
-                return 'primary';
-            }
+        if (currentUrl.startsWith(url) && currentUrl.endsWith(url)) {
+            return activeColor;
         }
-        else {
-            if (currentUrl.startsWith(url)) {
-                return 'primary';
-            }
-        }
+
         return null;
     }
 }

@@ -1,16 +1,20 @@
 import { Component, Input, OnInit, OnChanges, SimpleChange } from '@angular/core';
 import { TdLoadingService, LoadingMode, LoadingType } from '@covalent/core';
 import { IComponent } from './icomponent.interface';
-import { AppData } from '../app-data/app-data.class';
 import { AppConfig } from '../config/app.config';
 import { UrlConfig } from '../config/url.config';
 import { ComponentDependencyService } from './component-dependency.service';
-import { Subscription } from 'rxjs/Subscription';
 import { ErrorResponse, ErrorReasonEnum } from '../../../lib/repository';
+import { ComponentConfig, IComponentConfig, ResourceKey, MenuItem } from './component.config';
+import { Observable, Subscription, Subject } from 'rxjs/RX';
 
 @Component({
 })
 export abstract class BaseComponent implements IComponent, OnInit {
+
+    // component config
+    protected componentConfig: IComponentConfig = new ComponentConfig();
+
     // name of the full screen loader - can be anything
     private fullscreenLoaderName = "fullscreen-loader";
 
@@ -24,9 +28,6 @@ export abstract class BaseComponent implements IComponent, OnInit {
     constructor(protected dependencies: ComponentDependencyService) {
     }
 
-    // app data
-    public appData: AppData = new AppData();
-
     // ----------------------- Events --------------------- // 
 
     ngOnInit(): void {
@@ -36,8 +37,8 @@ export abstract class BaseComponent implements IComponent, OnInit {
             this.dependencies.authService.handleAuthentication();
         }
 
-        // init shared app Data
-        this.dependencies.appDataService.setAppData(this.appData);
+        // init component config
+        this.setConfig();
 
         // set language version
         // this language will be used as a fallback when a translation isn't found in the current language
@@ -64,11 +65,37 @@ export abstract class BaseComponent implements IComponent, OnInit {
             });
     }
 
-    // --------------------- App Data --------------------- //
-    setSubtitle(text: string): void{
-        this.appData.subTitle = text;
-        // push change to service
-        this.dependencies.appDataService.setAppData(this.appData);
+    // -------------------- Component config ------------------ //
+
+    updateMenuItems(menuItems: MenuItem[]): void {
+        this.componentConfig.menuItems = menuItems;
+        this.componentConfig.setDefaultValues();
+        this.setConfig();
+    }
+
+    updateComponentTitle(title: ResourceKey): void {
+        this.componentConfig.componentTitle = title;
+        this.componentConfig.setDefaultValues();
+        this.setConfig();
+    }
+
+    setConfig(options?:
+        {
+            componentTitle?: ResourceKey,
+            menuItems?: MenuItem[],
+            appName?: string,
+            menuTitle?: ResourceKey
+        }
+    ): void {
+        if (options) {
+            Object.assign(this.componentConfig, options);
+        }
+        this.componentConfig.setDefaultValues();
+        this.setConfigInternal();
+    }
+
+    private setConfigInternal(): void {
+        this.dependencies.sharedService.setComponentConfig(this.componentConfig);
     }
 
     // --------------------- Private methods -------------- // 
@@ -76,7 +103,7 @@ export abstract class BaseComponent implements IComponent, OnInit {
     private handleRepositoryError(error: ErrorResponse) {
         // don't handle form errors, but do handle other errors
         if (error.reason == ErrorReasonEnum.LicenseLimitation) {
-            console.log("YOU DONT LICENSE FOR THIS ACTION, TODO");
+            console.log("YOU DONT HAVE LICENSE FOR THIS ACTION, TODO");
         }
     }
 

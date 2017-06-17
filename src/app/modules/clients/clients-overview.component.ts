@@ -1,7 +1,7 @@
 // common
 import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { AppConfig, ComponentDependencyService, AppData, BaseComponent } from '../../core';
+import { AppConfig, ComponentDependencyService, BaseComponent, ComponentConfig } from '../../core';
 
 // required by component
 import { DataTableConfig, AlignEnum } from '../../../lib/web-components';
@@ -17,7 +17,10 @@ export class ClientsOverviewComponent extends BaseComponent {
   constructor(
     protected dependencies: ComponentDependencyService) {
     super(dependencies)
-    this.dependencies.translateService.get('menu.clients').subscribe(key => this.setSubtitle(key));
+
+    this.setConfig({
+      componentTitle: { key: 'menu.clients' },
+    });
 
     this.config = this.dependencies.dataTableService.dataTable<User>()
       .fields([

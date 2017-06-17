@@ -1,7 +1,7 @@
 // common
 import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { AppConfig, UrlConfig, ComponentDependencyService, AppData, BaseComponent } from '../../core';
+import { AppConfig, UrlConfig, ComponentDependencyService, BaseComponent } from '../../core';
 
 @Component({
     templateUrl: 'login-page.component.html'

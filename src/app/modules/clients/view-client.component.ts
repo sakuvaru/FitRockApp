@@ -1,9 +1,10 @@
 // common
 import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { AppConfig, ComponentDependencyService, AppData, BaseComponent } from '../../core';
+import { AppConfig, ComponentDependencyService, BaseComponent } from '../../core';
 
 // required by component
+import { ClientMenuItems } from './client-menu.items';
 import { BaseField, FormConfig } from '../../../lib/web-components';
 import { User } from '../../models';
 import 'rxjs/add/operator/switchMap';
@@ -31,11 +32,14 @@ export class ViewClientComponent extends BaseComponent implements OnInit {
             .subscribe(response => {
                 this.client = response.item;
 
-                // set title
-                this.dependencies.translateService.get('module.clients.viewClientSubtitle', { 'fullName': this.client.getFullName() })
-                    .subscribe(key => {
-                        this.setSubtitle(key)
-                    });
+                // update title
+                this.setConfig({
+                    menuItems: new ClientMenuItems(response.item.id).menuItems,
+                    componentTitle: {
+                        key: 'module.clients.viewClientSubtitle',
+                        data: { 'fullName': this.client.getFullName() }
+                    }
+                });
 
                 // get form
                 this.formConfig = this.userFormsService.editFormByItem(response.item)
