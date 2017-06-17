@@ -6,25 +6,25 @@
     </md-toolbar>
     <md-nav-list td-sidenav-content (click)="!media.query('gt-sm') && manageList.close()">
       <a md-list-item [routerLink]="getTrainerUrl()">
-        <md-icon>home</md-icon>{{'menu.dashboard' | translate}}
+        <md-icon [color]="getTrainerColor('', true)">home</md-icon>{{'menu.dashboard' | translate}}
       </a>
       <a md-list-item [routerLink]="getTrainerUrl('clients')">
-        <md-icon>people</md-icon>{{'menu.clients' | translate}}
+        <md-icon [color]="getTrainerColor('clients')">people</md-icon>{{'menu.clients' | translate}}
       </a>
       <a md-list-item routerLink="/todo">
-        <md-icon>fitness_center</md-icon>{{'menu.trainingPlans' | translate}}
+        <md-icon [color]="getTrainerColor('todo')">fitness_center</md-icon>{{'menu.trainingPlans' | translate}}
       </a>
        <a md-list-item routerLink="/todo">
-        <md-icon>free_breakfast</md-icon>{{'menu.mealPlans' | translate}}
+        <md-icon [color]="getTrainerColor('todo')">free_breakfast</md-icon>{{'menu.mealPlans' | translate}}
       </a>
         <a md-list-item routerLink="/todo">
-        <md-icon>place</md-icon>{{'menu.locations' | translate}}
+        <md-icon [color]="getTrainerColor('todo')">place</md-icon>{{'menu.locations' | translate}}
       </a>
       <a md-list-item [routerLink]="getTrainerUrl('form')">
-        <md-icon>home</md-icon>{{'menu.forms' | translate}}
+        <md-icon [color]="getTrainerColor('form')">home</md-icon>{{'menu.forms' | translate}}
       </a>
       <a md-list-item [routerLink]="getPublicUrl('login')">
-        <md-icon>public</md-icon>Login
+        <md-icon [color]="getPublicColor('login', true)">public</md-icon>Login
       </a>
     </md-nav-list>
     <div td-toolbar-content layout="row" layout-align="start center" flex>

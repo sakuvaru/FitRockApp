@@ -1,7 +1,7 @@
 import { Injectable, Injector } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import { AppData } from '../app-data/app-data.class';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 
 // Components's common services
 import { AuthService }  from '../../../lib/auth';
@@ -19,6 +19,9 @@ import { MdSnackBar } from '@angular/material';
 
 // Translation service
 import { TranslateService } from '@ngx-translate/core';
+
+// Web component services
+import { DataTableService } from '../../../lib/web-components';
 
 /// Use this class to define shared services that should be available for all conmponents
 /// This is so that each component does not have to define all common dependencies, but only the ones it needs
@@ -39,6 +42,9 @@ export class ComponentDependencyService {
     public snackbarService: MdSnackBar
     public translateService: TranslateService;
 
+    // web components
+    public dataTableService: DataTableService;
+
     // services
     public userService: UserService;
     public logService: LogService;
@@ -58,5 +64,7 @@ export class ComponentDependencyService {
         this.logService = injector.get(LogService);
 
         this.translateService = injector.get(TranslateService);
+
+        this.dataTableService = injector.get(DataTableService);
     }
 }

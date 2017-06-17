@@ -8,7 +8,6 @@ import { ComponentDependencyService } from './component-dependency.service';
 import { Subscription } from 'rxjs/Subscription';
 import { ErrorResponse, ErrorReasonEnum } from '../../../lib/repository';
 
-
 @Component({
 })
 export abstract class BaseComponent implements IComponent, OnInit {

@@ -12,14 +12,16 @@ import {
 // service specific imports
 import { User } from '../models';
 import { UserService } from '../services';
+import { DynamicFormService } from '../../lib/web-components';
 
 @Injectable()
 export class UserFormsService extends BaseFormService<User>{
 
     constructor(
-        protected userService: UserService
+        protected userService: UserService,
+        protected dynamicFormService: DynamicFormService
     ) {
-        super(userService,
+        super(userService, dynamicFormService,
         {
             excludedEditFields: ['email']
         })

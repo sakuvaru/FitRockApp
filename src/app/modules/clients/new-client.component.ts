@@ -6,14 +6,14 @@ import { AppConfig, ComponentDependencyService, AppData, BaseComponent } from '.
 // required by component
 import { BaseField, FormConfig } from '../../../lib/web-components';
 import { User } from '../../models';
-import { UserFormsService} from '../../forms';
+import { UserFormsService } from '../../forms';
 
 @Component({
     templateUrl: 'new-client.component.html'
 })
 export class NewClientComponent extends BaseComponent {
 
-    private formConfig: FormConfig<any>;
+    private formConfig: FormConfig<User>;
 
     constructor(
         private userFormsService: UserFormsService,
@@ -22,12 +22,12 @@ export class NewClientComponent extends BaseComponent {
 
         this.dependencies.translateService.get('module.clients.newClient').subscribe(key => this.setSubtitle(key));
 
-        this.formConfig = this.userFormsService.getInsertForm({
-            saveFunction: (item) => this.dependencies.userService.createClient(item).set(),
-            insertCallback: (response) => {
+        this.formConfig = this.userFormsService.insertForm()
+            .insertFunction((item) => this.dependencies.userService.createClient(item).set())
+            .callback((response) => {
                 // redirect to view client page
-                this.dependencies.router.navigate([this.getTrainerUrl('clients/view'), response.item.id]);
-            },
-        });
+                this.dependencies.router.navigate([this.getTrainerUrl('clients/view'), response.item.id])
+            })
+            .build();
     }
 }

@@ -1,9 +1,7 @@
 import { Observable } from 'rxjs/Observable';
-
 import { IService } from '../../core/type-service/iservice.class';
-
 import { IFormsService } from './iforms-service.interface';
-import { BaseField, FormConfig, HiddenField } from '../../../lib/web-components';
+import { BaseField, FormConfig, HiddenField, DynamicFormService, DynamicFormEditBuilder, DynamicFormInsertBuilder } from '../../../lib/web-components';
 import { IItem, ResponseDelete, ResponseCreate, ResponseEdit, ResponseMultiple, ResponseSingle } from '../../../lib/repository';
 
 //Note - nested generics are not currently supported by Typescript 2 (13.5.2017) => take types in constructor
@@ -13,112 +11,59 @@ export abstract class BaseFormService<TItem extends IItem> implements IFormsServ
 
     constructor(
         protected service: IService<TItem>,
+        protected dynamicFormService: DynamicFormService,
         protected config?: {
             excludedEditFields?: string[],
             excludedInsertFields?: string[]
         }
     ) {
-        if (!config){
+        if (!config) {
             this.config = {};
         }
     }
 
     abstract getBaseFormFields(options?: { excludeFields?: string[] }): Observable<BaseField<any>[]>
 
-    getInsertForm(
-        options?: {
-            saveFunction?: (item: TItem) => Observable<ResponseCreate<TItem>>,
-            showSnackBar?: boolean,
-            snackBarTextKey?: string,
-            insertCallback?: (response: ResponseCreate<TItem>) => void,
-            updateCallback?: (response: ResponseEdit<TItem>) => void,
-            submitTextKey?: string,
-            errorCallback?: (err: string) => void
-        }): FormConfig<TItem> {
+    insertForm(): DynamicFormInsertBuilder<TItem> {
+        var builder = new DynamicFormInsertBuilder<TItem>();
 
-        if (!options) {
-            options = {};
-        }
+        // set default field loader
+        builder.fieldsLoader(() => this.getInsertFields());
 
-        var submitTextKey: string;
-        if (options.submitTextKey) {
-            submitTextKey = options.submitTextKey;
-        }
-        else {
-            submitTextKey = 'form.shared.insert';
-        }
+        // set default save function
+        builder.insertFunction((item) => this.service.create(item).set())
 
-        return new FormConfig<TItem>({
-            submitTextKey: submitTextKey,
-            showSnackBar: options.showSnackBar,
-            snackBarTextKey: options.snackBarTextKey,
-            insertCallback: options.insertCallback,
-            updateCallback: options.updateCallback,
-            fieldsLoader: () => this.getInsertFields(),
-            errorCallback: options.errorCallback,
-            insertFunction: (item) => {
-                if (options && options.saveFunction) {
-                    return options.saveFunction(item);
-                }
-                return this.service.create(item).set();
-            }
-        })
+        // set default button text
+        builder.submitTextKey('form.shared.insert');
+
+        return builder;
     }
 
-    getEditForm(
-        config: {
-            itemId?: number,
-            item?: TItem
-        },
-        options?: {
-            saveFunction?: (item: TItem) => Observable<ResponseEdit<TItem>>,
-            showSnackBar?: boolean,
-            snackBarTextKey?: string,
-            insertCallback?: (response: ResponseCreate<TItem>) => void,
-            updateCallback?: (response: ResponseEdit<TItem>) => void,
-            submitTextKey?: string,
-            errorCallback?: (err: string) => void
-        }): FormConfig<TItem> {
+    editFormById(itemId: number): DynamicFormEditBuilder<TItem> {
+        var builder = new DynamicFormEditBuilder<TItem>();
 
-        if (!config.item && !config.itemId) {
-            throw `Cannot render form because neither 'itemId' or 'item' config was provided`;
-        }
+        builder.fieldsLoader(() => this.getEditFieldsFromId(itemId, this.config.excludedEditFields));
 
-        var fieldsLoader;
-        if (config.itemId) {
-            fieldsLoader = this.getEditFieldsFromId(config.itemId, this.config.excludedEditFields);
-        }
-        else {
-            fieldsLoader = this.getEditFieldsFromItem(config.item, this.config.excludedEditFields);
-        }
+        // set default save function
+        builder.editFunction((item) => this.service.edit(item).set());
 
-        if (!options) {
-            options = {};
-        }
+        // set default button text
+        builder.submitTextKey('form.shared.save');
 
-        var submitTextKey: string;
-        if (options.submitTextKey) {
-            submitTextKey = options.submitTextKey;
-        }
-        else {
-            submitTextKey = 'form.shared.save';
-        }
+        return builder;
+    }
+    editFormByItem(item: TItem): DynamicFormEditBuilder<TItem> {
+        var builder = new DynamicFormEditBuilder<TItem>();
 
-        return new FormConfig<TItem>({
-            submitTextKey: submitTextKey,
-            showSnackBar: options.showSnackBar,
-            snackBarTextKey: options.snackBarTextKey,
-            insertCallback: options.insertCallback,
-            updateCallback: options.updateCallback,
-            fieldsLoader: () => fieldsLoader,
-            errorCallback: options.errorCallback,
-            editFunction: (item) => {
-                if (options && options.saveFunction) {
-                    return options.saveFunction(item);
-                }
-                return this.service.edit(item).set();
-            }
-        })
+        builder.fieldsLoader(() => this.getEditFieldsFromItem(item, this.config.excludedEditFields));
+
+        // set default save function
+        builder.editFunction((item) => this.service.edit(item).set());
+
+        // set default button text
+        builder.submitTextKey('form.shared.save');
+
+        return builder;
     }
 
     protected excludeFields(fields: Observable<BaseField<any>[]>, excludeFields: string[]): Observable<BaseField<any>[]> {

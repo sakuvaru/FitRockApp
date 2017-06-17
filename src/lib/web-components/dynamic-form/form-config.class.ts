@@ -1,24 +1,24 @@
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs/RX';
 import { BaseField } from './base-field.class';
 import { FormGroup } from '@angular/forms';
 import { IItem, ResponseCreate, ResponseEdit, FormErrorResponse, ErrorResponse  } from '../../repository';
 
 export class FormConfig<TItem extends IItem>{
 
-    public submitTextKey: string;
+    public submitTextKey: string = 'form.shared.save'
     public fieldsLoader: () => Observable<BaseField<any>[]>;
-    public insertFunction?: (item: TItem) => Observable<ResponseCreate<TItem>>;
-    public editFunction?: (item: TItem) => Observable<ResponseEdit<TItem>>;
-    public showSnackBar: boolean;
-    public snackBarTextKey: string;
-    public insertCallback?: (response: ResponseCreate<TItem>) => void;
-    public updateCallback?: (response: ResponseEdit<TItem>) => void;
-    public errorCallback?: (response: ErrorResponse | FormErrorResponse | any) => void;
+    public insertFunction: (item: TItem) => Observable<ResponseCreate<TItem>>;
+    public editFunction: (item: TItem) => Observable<ResponseEdit<TItem>>;
+    public showSnackBar: boolean = true;
+    public snackBarTextKey: string = 'form.shared.saved';
+    public insertCallback: (response: ResponseCreate<TItem>) => void;
+    public updateCallback: (response: ResponseEdit<TItem>) => void;
+    public errorCallback: (response: ErrorResponse | FormErrorResponse | any) => void;
 
     constructor(
-        config: {
-            submitTextKey: string,
-            fieldsLoader: () => Observable<BaseField<any>[]>,
+        config?: {
+            submitTextKey?: string,
+            fieldsLoader?: () => Observable<BaseField<any>[]>,
             showSnackBar?: boolean,
             snackBarTextKey?: string,
             insertFunction?: (item: TItem) => Observable<ResponseCreate<TItem>>, // insert or edit function needs to be provided
@@ -29,12 +29,6 @@ export class FormConfig<TItem extends IItem>{
         }
     ) {
         Object.assign(this, config);
-
-        // assign default values
-        this.snackBarTextKey = config.snackBarTextKey || 'form.shared.saved';
-        this.showSnackBar = config.showSnackBar || true;
-        this.submitTextKey = config.submitTextKey || "form.shared.save";
-
     }
 
     public isInsertForm(): boolean {

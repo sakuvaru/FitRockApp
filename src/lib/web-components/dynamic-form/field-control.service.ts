@@ -1,9 +1,7 @@
-import { Injectable } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { BaseField } from './base-field.class';
 
-@Injectable()
 export class FieldControlService {
   constructor() { }
 

@@ -5,6 +5,9 @@ import { RouterModule } from '@angular/router';
 
 import { SharedWebComponentModule } from '../shared-web-components.module';
 
+// data table service
+import { DataTableService } from './data-table-service';
+
 // components
 import { DataTableComponent } from './data-table.component';
 
@@ -27,6 +30,9 @@ import { LoaderModule } from '../loader/loader.module';
     ],
     exports: [
         DataTableComponent
+    ],
+    providers:[
+        DataTableService
     ]
 })
 export class DataTableModule { }

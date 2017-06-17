@@ -1,7 +1,7 @@
 // common
 import { Component, Input, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { TdMediaService } from '@covalent/core';
-import { AppConfig, AppData, ComponentDependencyService, BaseComponent, AppDataService } from '../core';
+import { AppConfig, UrlConfig, AppData, ComponentDependencyService, BaseComponent, AppDataService } from '../core';
 
 // required by component
 import { Subscription } from 'rxjs/Subscription';
@@ -13,9 +13,14 @@ export class AdminLayoutComponent extends BaseComponent implements OnDestroy {
     private media: TdMediaService;
     private subscription: Subscription;
 
+    /**
+     * Part of url identifying 'client' or 'trainer' app type
+     */
+    private urlSegment: string;
+
     constructor(
         protected dependencies: ComponentDependencyService,
-        private cdr: ChangeDetectorRef
+        private cdr: ChangeDetectorRef,
     ) {
         super(dependencies)
         // don't forget to unsubscribe
@@ -41,5 +46,42 @@ export class AdminLayoutComponent extends BaseComponent implements OnDestroy {
         // prevent memory leaks when component is destroyed
         // source: https://angular.io/docs/ts/latest/cookbook/component-communication.html#!#bidirectional-service
         this.subscription.unsubscribe();
+    }
+
+    private getTrainerColor(action: string, perfectMatch: boolean): string {
+        var url = this.getTrainerUrl(action);
+
+        var currentUrl = this.dependencies.router.url;
+
+        if (perfectMatch) {
+            if (url === currentUrl) {
+                return 'primary';
+            }
+        }
+        else {
+            if (currentUrl.startsWith(url)) {
+                return 'primary';
+            }
+        }
+
+        return null;
+    }
+
+    private getPublicColor(action: string, perfectMatch: boolean): string {
+        var url = this.getPublicUrl(action);
+
+        var currentUrl = this.dependencies.router.url;
+
+        if (perfectMatch) {
+            if (url === currentUrl) {
+                return 'primary';
+            }
+        }
+        else {
+            if (currentUrl.startsWith(url)) {
+                return 'primary';
+            }
+        }
+        return null;
     }
 }

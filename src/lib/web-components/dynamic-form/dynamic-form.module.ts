@@ -8,7 +8,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { SharedWebComponentModule } from '../shared-web-components.module';
 
 // services
-import { FieldControlService } from './field-control.service';
+import { DynamicFormService } from './dynamic-form.service';
 
 // components
 // NOTE: see https://angular.io/docs/ts/latest/cookbook/dynamic-form.html for more details
@@ -28,7 +28,7 @@ import { DynamicFormComponent } from './dynamic-form.component';
         DynamicFormComponent
     ],
     providers: [
-        FieldControlService
+        DynamicFormService
     ],
     exports: [
         DynamicFormQuestionComponent,

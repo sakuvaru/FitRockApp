@@ -19,7 +19,6 @@ export class DataTableComponent implements AfterViewInit {
     private items: any[];
 
     // base config
-    @Input() fields: DataTableField<any>[];
     @Input() config: DataTableConfig<any>;
 
     // events
@@ -54,7 +53,7 @@ export class DataTableComponent implements AfterViewInit {
             this.loaderEnabled = true;
         }
 
-        this.config.loadItems(this.searchTerm, page, this.config.pagerSize)
+        this.config.loadResolver(this.searchTerm, page, this.config.pagerSize)
             .finally(() => {
                 this.loaderEnabled = false;
             })
@@ -94,7 +93,7 @@ export class DataTableComponent implements AfterViewInit {
     }
 
     private isLinkItem(): boolean {
-        return this.config.url != null
+        return this.config.urlResolver != null
     }
 
     private getFieldValue(field: DataTableField<any>, item: any): string {
@@ -113,24 +112,23 @@ export class DataTableComponent implements AfterViewInit {
         if (!this.isLinkItem()) {
             return null;
         }
-
-        return this.config.url(item);
+        return this.config.urlResolver(item);
     }
 
     private getAvatarUrl(item: any): string {
-        if (!this.config.avatarUrl) {
+        if (!this.config.avatarUrlResolver) {
             return null;
         }
 
-        return this.config.avatarUrl(item);
+        return this.config.avatarUrlResolver(item);
     }
 
     private getIcon(item: any): string {
-        if (!this.config.icon) {
+        if (!this.config.iconResolver) {
             return null;
         }
 
-        return this.config.icon(item);
+        return this.config.iconResolver(item);
     }
 
     private onItemClick(item: any): void {

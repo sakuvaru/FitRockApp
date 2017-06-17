@@ -6,21 +6,21 @@
     <md-divider></md-divider>
     <md-list *ngIf="config.showHeader" role="list" class="bgc-indigo-200">
       <md-list-item disableRipple="true">
-        <span *ngFor="let field of fields" flex="field.flex" class="{{getTextAlignClass(field)}}">
+        <span *ngFor="let field of config.fields" flex="field.flex" class="{{getTextAlignClass(field)}}">
           {{field.label}}
         </span>
       </md-list-item>
     </md-list>
 
     <!-- Nav list with link -->
-    <md-nav-list *ngIf="config.url" role="list" class="pad-top-none">
+    <md-nav-list *ngIf="config.urlResolver" role="list" class="pad-top-none">
       <div *ngFor="let item of items; let i=index">
         <md-divider *ngIf="!isFirstItem(i) || config.showHeader"></md-divider>
         <md-list-item (click)="onItemClick(item)">
-          <img *ngIf="config.avatarUrl" md-list-avatar src="{{getAvatarUrl()}}" alt="" class="push-right">
-          <md-icon *ngIf="config.icon" md-list-icon>{{getIcon()}}</md-icon>
+          <img *ngIf="config.avatarUrlResolver" md-list-avatar src="{{getAvatarUrl()}}" alt="" class="push-right">
+          <md-icon *ngIf="config.iconResolver" md-list-icon>{{getIcon()}}</md-icon>
 
-          <span *ngFor="let field of fields" flex="field.flex" [class.tc-grey-500]="field.isSubtle" [class.md-caption]="field.isSubtle"
+          <span *ngFor="let field of config.fields" flex="field.flex" [class.tc-grey-500]="field.isSubtle" [class.md-caption]="field.isSubtle"
             class="{{getTextAlignClass(field)}}">
             {{getFieldValue(field, item)}}
         </span>
@@ -37,14 +37,14 @@
     </md-nav-list>
 
     <!-- Nav list without link -->
-    <md-list *ngIf="!config.url" role="list" class="pad-top-none">
+    <md-list *ngIf="!config.urlResolver" role="list" class="pad-top-none">
       <div *ngFor="let item of items; let i=index">
         <md-divider *ngIf="!isFirstItem(i) || config.showHeader"></md-divider>
         <md-list-item>
-          <img *ngIf="config.avatarUrl" md-list-avatar src="{{getAvatarUrl()}}" alt="" class="push-right">
-          <md-icon *ngIf="config.icon" md-list-icon>{{getIcon()}}</md-icon>
+          <img *ngIf="config.avatarUrlResolver" md-list-avatar src="{{getAvatarUrl()}}" alt="" class="push-right">
+          <md-icon *ngIf="config.iconResolver" md-list-icon>{{getIcon()}}</md-icon>
 
-          <span *ngFor="let field of fields" flex="field.flex" [class.tc-grey-500]="field.isSubtle" [class.md-caption]="field.isSubtle"
+          <span *ngFor="let field of config.fields" flex="field.flex" [class.tc-grey-500]="field.isSubtle" [class.md-caption]="field.isSubtle"
             class="{{getTextAlignClass(field)}}">
             {{getFieldValue(field, item)}}
         </span>

@@ -1,15 +1,17 @@
 import { Observable } from 'rxjs/Observable';
 import { ResponseMultiple } from '../../repository';
+import { DataTableField } from './data-table-field.class';
 
 export class DataTableConfig<T> {
-    public loadItems: (searchTerm: string, page: number, pageSize: number) => Observable<ResponseMultiple<any>>;
+    public fields: DataTableField<any>[];
+    public loadResolver: (searchTerm: string, page: number, pageSize: number) => Observable<ResponseMultiple<any>>;
     public showHeader?: boolean = true;
     public showPager?: boolean = true;
     public showSearch?: boolean = true;
     public pagerSize?: number = 10;
-    public url?: (item: T) => string;
-    public icon?: (item: T) => string;
-    public avatarUrl?: (item: T) => string;
+    public urlResolver?: (item: T) => string;
+    public iconResolver?: (item: T) => string;
+    public avatarUrlResolver?: (item: T) => string;
     public searchNoItemsText?: string = "Nenalezeny žádné výsledky";
     public noItemsText?: string = "Nejsou zde žádné data";
     public showPagerNextPreviousButtons?: boolean = true;
@@ -18,15 +20,16 @@ export class DataTableConfig<T> {
     public hidePagerForSinglePage?: boolean = true;
 
     constructor(
-        public fields?: {
-            loadItems?: (searchTerm: string, page: number, pageSize: number) => Observable<ResponseMultiple<any>>,
+        public options?: {
+            fields: DataTableField<any>[];
+            loadResolver?: (searchTerm: string, page: number, pageSize: number) => Observable<ResponseMultiple<any>>,
             showHeader?: boolean,
             showPager?: boolean,
             showSearch?: boolean,
             pagerSize?: number,
-            url?: (item: T) => string,
-            icon?: (item: T) => string,
-            avatarUrl?: (item: T) => string,
+            urlResolver?: (item: T) => string,
+            iconResolver?: (item: T) => string,
+            avatarUrlResolver?: (item: T) => string,
             searchNoItemsText?: string,
             noItemsText?: string,
             showPagerNextPreviousButtons?: boolean,
@@ -34,7 +37,6 @@ export class DataTableConfig<T> {
             showPagerNumberButtons?: boolean,
             hidePagerForSinglePage?: boolean;
         }) {
-        if (fields) Object.assign(this, fields);
+        if (options) Object.assign(this, options);
     }
-
 }

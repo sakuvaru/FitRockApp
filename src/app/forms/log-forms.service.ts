@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 
 // required imports
 import { BaseFormService } from '../core';
+import { DynamicFormService } from '../../lib/web-components';
 import {
     BaseField, TextField, DropdownField, HiddenField, TextAreaField,
     BooleanField, RadioBooleanField, DateField, DropdownFieldOption
@@ -17,9 +18,10 @@ import { LogService } from '../services';
 export class LogFormsService extends BaseFormService<Log>{
 
     constructor(
-        protected logService: LogService
+        protected logService: LogService,
+        protected dynamicFormService: DynamicFormService
     ) {
-        super(logService)
+        super(logService, dynamicFormService)
     }
 
     getBaseFormFields(): Observable<BaseField<any>[]> {

@@ -34,19 +34,13 @@ export class ViewClientComponent extends BaseComponent implements OnInit {
                 // set title
                 this.dependencies.translateService.get('module.clients.viewClientSubtitle', { 'fullName': this.client.getFullName() })
                     .subscribe(key => {
-                       this.setSubtitle(key)
+                        this.setSubtitle(key)
                     });
 
                 // get form
-                this.formConfig = this.userFormsService.getEditForm(
-                    {
-                        item: response.item
-                    },
-                    {
-                        saveFunction: (item) => this.dependencies.userService.edit(item).set(),
-                        updateCallback: (response) => {
-                        },
-                    });
+                this.formConfig = this.userFormsService.editFormByItem(response.item)
+                    .editFunction((item) => this.dependencies.userService.edit(item).set())
+                    .build();
             });
     }
 }
