@@ -16,8 +16,8 @@ export class User extends BaseItem {
     public medicalCondition: string;
     public goal: string;
     public trainerPublicNotes: string;
-    
     public trainer: User;
+    public isActive: boolean;
 
     constructor(
         public fields?: {
@@ -26,7 +26,6 @@ export class User extends BaseItem {
             guid?: string,
             created?: Date,
             updated?: Date,
-
             firstName?: string;
             lastName?: string;
             email?: string;
@@ -41,6 +40,7 @@ export class User extends BaseItem {
             medicalCondition?: string,
             goal?: string,
             trainerPublicNotes?: string,
+            isActive?: boolean
         }) { super()
         if (fields) Object.assign(this, fields);
     }

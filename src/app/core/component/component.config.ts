@@ -14,7 +14,7 @@ export class ComponentConfig implements IComponentConfig {
     private readonly default_componentTitle: ResourceKey = { key: 'menu.dashboard' };
     private readonly default_menuItems: MenuItem[] = [
         new MenuItem({ key: 'menu.dashboard' }, 'home', MenuItemType.trainer, ''),
-        new MenuItem({ key: 'menu.clients' }, 'people', MenuItemType.trainer, 'clients'),
+        new MenuItem({ key: 'menu.clients.title' }, 'people', MenuItemType.trainer, 'clients'),
         new MenuItem({ key: 'menu.trainingPlans' }, 'fitness_center', MenuItemType.trainer, 'todo'),
         new MenuItem({ key: 'menu.mealPlans' }, 'free_breakfast', MenuItemType.trainer, 'todo'),
         new MenuItem({ key: 'menu.locations' }, 'place', MenuItemType.trainer, 'todo'),

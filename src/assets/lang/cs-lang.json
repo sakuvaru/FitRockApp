@@ -1,12 +1,21 @@
 {
     "menu": {
+        "shared":{
+            "back": "Zpět"
+        },
         "main": "Hlavní menu",
         "dashboard": "Přehled",
-        "clients": "Klienti",
+        "clients": {
+            "title": "Klienti",
+            "allClients": "Všichni",
+            "activeClients": "Aktivní",
+            "inactiveClients": "Neaktivní",
+            "editClient": "Změna údajů"
+        },
         "trainingPlans": "Tréninkové plány",
         "mealPlans": "Jídelníčky",
         "locations": "Místa",
-        "forms": "Formuláře"
+        "forms": "Formulář"
     },
     "errors": {
         "invalidLicense": "Pro tuto akci nemáš dostatečnou licenci"
@@ -58,7 +67,14 @@
             "privateNotes": "Soukromé poznámky",
             "privateNotesHint": "Klient tyto poznámky neuvidí",
             "publicNotes": "Poznámky pro klienta",
-            "publicNotesHint": "Klient tyto poznámky uvidí"
+            "publicNotesHint": "Klient tyto poznámky uvidí",
+            "isActiveHint": "Indikuje, zda s klientem aktivně pracuješ"
+        }
+    },
+    "webComponents":{
+        "dataTable": {
+            "noResultsText": "Nejsou zde žádná data",
+            "noSearchResultsText": "Nic nenalezeno"
         }
     }
 }

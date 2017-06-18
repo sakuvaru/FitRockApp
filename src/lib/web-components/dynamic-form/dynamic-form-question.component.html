@@ -10,8 +10,8 @@
   </md-input-container>
 
   <div *ngSwitchCase="'checkbox'" flex>
-    <md-checkbox [checked]="question.value" [formControlName]="question.key" [id]="question.key" required="{{question.required}}" [checked]="checkBoxIsChecked"
-      #elem> {{questionLabel}}
+    <md-checkbox [checked]="checkBoxIsChecked" [formControlName]="question.key" [id]="question.key" required="{{question.required}}"
+      #elem>&nbsp;{{questionLabel}} <span class="md-caption">({{questionHint}})</span>
     </md-checkbox>
     <span *ngIf="question.required && !elem.checked" class="tc-grey-500 md-caption"> ({{ 'form.shared.required' | translate }})</span>
   </div>
@@ -26,8 +26,8 @@
 
   <div *ngSwitchCase="'date'" flex>
     <md-input-container>
-      <input mdInput [mdDatepicker]="datepicker" [formControlName]="question.key"  [id]="question.key" [placeholder]="questionLabel" [required]="question.required"
-        [value]="question.value">
+      <input mdInput [mdDatepicker]="datepicker" [formControlName]="question.key" [id]="question.key" [placeholder]="questionLabel"
+        [required]="question.required" [value]="question.value">
       <button mdSuffix [mdDatepickerToggle]="datepicker"></button>
     </md-input-container>
     <md-datepicker startView="year" [startAt]="datePickerStartDate" #datepicker></md-datepicker>
@@ -48,7 +48,8 @@
 
   <div *ngSwitchCase="'dropdown'" flex>
     <div>
-      <md-select [style.width]="getWidthStyle()" [id]="question.key" [formControlName]="question.key" [required]="question.required" [placeholder]="questionLabel">
+      <md-select [style.width]="getWidthStyle()" [id]="question.key" [formControlName]="question.key" [required]="question.required"
+        [placeholder]="questionLabel">
         <md-option *ngFor="let option of question.dropdownOptions" [value]="option.value">{{option.name}}</md-option>
       </md-select>
     </div>

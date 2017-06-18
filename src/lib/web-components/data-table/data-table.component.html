@@ -28,10 +28,10 @@
       </div>
       <div *ngIf="items != null && items.length == 0" layout="row" layout-align="center">
         <div *ngIf="items != null && items.length == 0 && searchTerm" layout="row" layout-align="center">
-          <h3>{{config.searchNoItemsText}}</h3>
+          <h3>{{searchNoItemsText}}</h3>
         </div>
         <div *ngIf="items != null && items.length == 0 && !searchTerm" layout="row" layout-align="center">
-          <h3>{{config.noItemsText}}</h3>
+          <h3>{{noItemsText}}</h3>
         </div>
       </div>
     </md-nav-list>
@@ -51,17 +51,17 @@
         </md-list-item>
       </div>
       <div *ngIf="items != null && items.length == 0 && searchTerm" layout="row" layout-align="center">
-        <h3>{{config.searchNoItemsText}}</h3>
+        <h3>{{searchNoItemsText}}</h3>
       </div>
       <div *ngIf="items != null && items.length == 0 && !searchTerm" layout="row" layout-align="center">
-        <h3>{{config.noItemsText}}</h3>
+        <h3>{{noItemsText}}</h3>
       </div>
     </md-list>
     <md-divider *ngIf="config.showPager && !(config.hidePagerForSinglePage && totalPages == 1)"></md-divider>
     <md-card-actions *ngIf="config.showPager && !(config.hidePagerForSinglePage && totalPages == 1)">
       <button *ngIf="config.showPagerFirstLastButtons" [disabled]="!hasPreviousPage()" md-button (click)="onGoToPage(1)"><<</button>
       <button *ngIf="config.showPagerNextPreviousButtons" [disabled]="!hasPreviousPage()" md-button (click)="onGoToPreviousPage()"><</button>
-      <span *ngFor="let button of getPagerButtons()">
+      <span tdMediaToggle="sm" [mediaStyles]="{display: 'none'}" *ngFor="let button of getPagerButtons()">
       <button *ngIf="config.showPagerNumberButtons && !button.isActive" md-button (click)="onGoToPage(button.page)">{{button.page}}</button>
       <button *ngIf="config.showPagerNumberButtons && button.isActive" md-raised-button color="primary" (click)="onGoToPage(button.page)">{{button.page}}</button>
     </span>

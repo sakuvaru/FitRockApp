@@ -19,17 +19,17 @@ export class Include implements IOption {
 
     constructor(
         public field: string
-    ) { }
+    ) {
+        if (!field) {
+            throw Error(`Fields cannot be null in 'Include' otion`);
+        }
+    }
 
     public GetParam(): string {
         return 'include';
     }
 
     public GetParamValue(): string {
-        if (!this.field){
-            return null;
-        }
-
         return this.field.trim();
     }
 }
@@ -38,7 +38,11 @@ export class IncludeMultiple implements IOption {
 
     constructor(
         public fields: string[]
-    ) { }
+    ) {
+        if (!fields) {
+            throw Error(`Fields cannot be null in 'IncludeMultiple' otion`);
+        }
+    }
 
     public GetParam(): string {
         return 'include';
@@ -83,7 +87,11 @@ export class OrderBy implements IOption {
 
     constructor(
         public field: string,
-    ) { }
+    ) {
+        if (!field) {
+            throw Error(`Fields cannot be null in 'OrderBy' otion`);
+        }
+    }
 
     public GetParam(): string {
         return 'orderby.' + this.field;
@@ -98,7 +106,11 @@ export class OrderByDescending implements IOption {
 
     constructor(
         public field: string,
-    ) { }
+    ) {
+        if (!field) {
+            throw Error(`Fields cannot be null in 'OrderByDescending' otion`);
+        }
+    }
 
     public GetParam(): string {
         return 'orderby.' + this.field;
@@ -112,64 +124,70 @@ export class OrderByDescending implements IOption {
 export class WhereEquals implements IOption {
     constructor(
         public field: string,
-        public value: string
-    ) { }
+        public value: any
+    ) {
+        if (!field) {
+            throw Error(`Field cannot be null in 'WhereEquals' otion`);
+        }
+    }
 
     public GetParam(): string {
-        if (!this.field){
-            return '';
-        }
-
         return 'whereequals.' + this.field.trim();
     }
 
     public GetParamValue(): string {
-        if (!this.value){
-            return '';
-        }
-
-        return this.value.trim();
+        return processParamValue(this.value);
     }
 }
 
 export class WhereLike implements IOption {
     constructor(
         public field: string,
-        public value: string
-    ) { }
+        public value: string | number | boolean
+    ) {
+        if (!field) {
+            throw Error(`Field cannot be null in 'WhereEquals' otion`);
+        }
+    }
 
     public GetParam(): string {
-        if (!this.field){
-            return '';
-        }
-
         return 'wherelike.' + this.field.trim();
     }
 
     public GetParamValue(): string {
-        if (!this.value){
-            return '';
-        }
-
-        return this.value.trim();
+        return processParamValue(this.value);
     }
 }
 
 export class WhereLikeMultiple implements IOption {
     constructor(
         public fields: string[],
-        public value: string
-    ) { }
+        public value: string | number | boolean
+    ) {
+        if (!fields) {
+            throw Error(`Fields cannot be null in 'WhereLikeMultiple' otion`);
+        }
+    }
 
     public GetParam(): string {
         return 'wherelike.' + this.fields.map(m => m).join('+');
     }
 
     public GetParamValue(): string {
-        if (!this.value){
-            return '';
-        }
-
-        return this.value.trim();
+        return processParamValue(this.value);
     }
+}
+
+/**
+ * Gets proper 'string' value of string, number or boolean value
+ * @param value Value to be processed
+ */
+function processParamValue(value: string | number | boolean): string {
+    if (!value) {
+        if (typeof (value) === 'boolean') {
+            return 'false';
+        }
+        return '';
+    }
+    return value.toString().trim();
 }

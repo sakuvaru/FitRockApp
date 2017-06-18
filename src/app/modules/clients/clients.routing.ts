@@ -12,7 +12,9 @@ import { SimpleLayoutComponent } from '../../layouts/simple-layout.component';
 import { AdminLayoutComponent } from '../../layouts/admin-layout.component';
 import { ClientsOverviewComponent } from './clients-overview.component';
 import { NewClientComponent } from './new-client.component';
-import { ViewClientComponent } from './view-client.component';
+import { EditClientComponent } from './edit-client.component';
+import { ActiveClientsComponent } from './active-clients.component';
+import { InActiveClientsComponent } from './inactive-clients.component';
 
 const routes: Routes = [
     {
@@ -24,7 +26,13 @@ const routes: Routes = [
                 path: 'clients/new', component: NewClientComponent
             },
             {
-                path: 'clients/view/:id', component: ViewClientComponent
+                path: 'clients/edit/:id', component: EditClientComponent
+            },
+             {
+                path: 'clients/active', component: ActiveClientsComponent
+            },
+             {
+                path: 'clients/inactive', component: InActiveClientsComponent
             },
         ]
     }

@@ -111,6 +111,12 @@ export class UserFormsService extends BaseFormService<User>{
                 hintKey: 'form.user.publicNotesHint',
                 minAutosizeRows: 6
             }),
+            new BooleanField({
+                label: 'Aktivní',
+                key: 'isActive',
+                hintKey: 'form.user.isActiveHint',
+                required: false
+            }),
         ];
 
         return Observable.of(fields);

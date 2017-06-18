@@ -9,9 +9,9 @@ import { DataTableConfig, AlignEnum } from '../../../lib/web-components';
 import { User } from '../../models';
 
 @Component({
-  templateUrl: 'clients-overview.component.html'
+  templateUrl: 'active-clients.component.html'
 })
-export class ClientsOverviewComponent extends BaseComponent {
+export class ActiveClientsComponent extends BaseComponent {
 
   private config: DataTableConfig<User>;
 
@@ -22,7 +22,7 @@ export class ClientsOverviewComponent extends BaseComponent {
     this.setConfig({
       menuTitle: { key: 'menu.clients.title' },
       menuItems: new ClientOverviewMenuItems().menuItems,
-      componentTitle: { key: 'menu.clients.allClients' },
+      componentTitle: { key: 'menu.clients.activeClients' },
     });
 
     this.config = this.dependencies.dataTableService.dataTable<User>()
@@ -35,6 +35,7 @@ export class ClientsOverviewComponent extends BaseComponent {
           .pageSize(pageSize)
           .page(page)
           .WhereLikeMultiple(["FirstName", "LastName"], searchTerm)
+          .whereEquals('IsActive', true)
           .get()
       })
       .showPager(true)

@@ -4,16 +4,16 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { AppConfig, ComponentDependencyService, BaseComponent } from '../../core';
 
 // required by component
-import { ClientMenuItems } from './client-menu.items';
+import { ClientMenuItems } from './menu.items';
 import { BaseField, FormConfig } from '../../../lib/web-components';
 import { User } from '../../models';
 import 'rxjs/add/operator/switchMap';
 import { UserFormsService } from '../../forms';
 
 @Component({
-    templateUrl: 'view-client.component.html'
+    templateUrl: 'edit-client.component.html'
 })
-export class ViewClientComponent extends BaseComponent implements OnInit {
+export class EditClientComponent extends BaseComponent implements OnInit {
 
     private client: User;
     private formConfig: FormConfig<User>;
@@ -35,9 +35,12 @@ export class ViewClientComponent extends BaseComponent implements OnInit {
                 // update title
                 this.setConfig({
                     menuItems: new ClientMenuItems(response.item.id).menuItems,
-                    componentTitle: {
+                    menuTitle: {
                         key: 'module.clients.viewClientSubtitle',
                         data: { 'fullName': this.client.getFullName() }
+                    },
+                    componentTitle: {
+                        'key': 'menu.clients.editClient'
                     }
                 });
 

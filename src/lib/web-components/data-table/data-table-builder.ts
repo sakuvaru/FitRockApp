@@ -52,13 +52,13 @@ export class DataTableBuilder<T> {
         return this;
     }
 
-    searchNoItemsText(text: string): this {
-        this.config.searchNoItemsText = text;
+    searchNoItemsTextKey(text: string): this {
+        this.config.searchNoItemsTextKey = text;
         return this;
     }
 
-    noItemsText(text: string): this {
-        this.config.noItemsText = text;
+    noItemsTextKey(text: string): this {
+        this.config.noItemsTextKey = text;
         return this;
     }
 

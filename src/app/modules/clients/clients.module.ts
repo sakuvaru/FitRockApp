@@ -8,7 +8,9 @@ import { CoreModule } from '../../core';
 // components
 import { ClientsOverviewComponent } from './clients-overview.component';
 import { NewClientComponent } from './new-client.component';
-import { ViewClientComponent } from './view-client.component';
+import { EditClientComponent } from './edit-client.component';
+import { ActiveClientsComponent } from './active-clients.component';
+import { InActiveClientsComponent } from './inactive-clients.component';
 
 // router
 import { ClientsRouter } from './clients.routing';
@@ -26,7 +28,9 @@ import { SharedModule} from '../shared/shared.module';
     declarations: [
         ClientsOverviewComponent,
         NewClientComponent,
-        ViewClientComponent
+        EditClientComponent,
+        ActiveClientsComponent,
+        InActiveClientsComponent
     ]
 })
 export class ClientsModule { }

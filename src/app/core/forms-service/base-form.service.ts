@@ -122,10 +122,11 @@ export abstract class BaseFormService<TItem extends IItem> implements IFormsServ
                 fields.forEach(field => {
                     // map values for form fields
                     field.value = item[field.key];
-
-                    // append primary key column
-                    fields.push(this.getPrimaryKeyField(item.id));
                 });
+
+                // append primary key column
+                fields.push(this.getPrimaryKeyField(item.id));
+
                 return fields;
             });
 

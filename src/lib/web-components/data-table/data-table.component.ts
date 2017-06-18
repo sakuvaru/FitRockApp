@@ -8,15 +8,21 @@ import { DataTableConfig } from './data-table.config';
 import { AlignEnum } from './align-enum';
 import { Observable } from 'rxjs/Observable';
 import { Guid } from '../../utilities';
+import { TranslateService } from '@ngx-translate/core';
+import { TdMediaService } from '@covalent/core';
 
 @Component({
     selector: 'data-table',
     templateUrl: 'data-table.component.html'
 })
-export class DataTableComponent implements AfterViewInit {
+export class DataTableComponent implements AfterViewInit, OnInit {
 
     // resolved data
     private items: any[];
+
+    // translated text
+    private noItemsText: string;
+    private searchNoItemsText: string;
 
     // base config
     @Input() config: DataTableConfig<any>;
@@ -27,7 +33,7 @@ export class DataTableComponent implements AfterViewInit {
     // pager
     private totalPages: number;
     private currentPage: number = 1;
-    private showPagesCount = 5; // odd number
+    private showPagesCount = 5; // has to be an odd number
 
     // search
     private searchTerm: string = null;
@@ -38,7 +44,15 @@ export class DataTableComponent implements AfterViewInit {
 
     constructor(
         private router: Router,
+        private translateService: TranslateService,
+        private mediaService: TdMediaService
     ) {
+    }
+
+    ngOnInit() {
+        //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
+        this.translateService.get(this.config.noItemsTextKey).subscribe(text => this.noItemsText = text);
+        this.translateService.get(this.config.searchNoItemsTextKey).subscribe(text => this.searchNoItemsText = text);
     }
 
     ngAfterViewInit() {

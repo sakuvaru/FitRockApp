@@ -12,8 +12,8 @@ export class DataTableConfig<T> {
     public urlResolver?: (item: T) => string;
     public iconResolver?: (item: T) => string;
     public avatarUrlResolver?: (item: T) => string;
-    public searchNoItemsText?: string = "Nenalezeny žádné výsledky";
-    public noItemsText?: string = "Nejsou zde žádné data";
+    public searchNoItemsTextKey?: string = 'webComponents.dataTable.noSearchResultsText'
+    public noItemsTextKey?: string = 'webComponents.dataTable.noResultsText';
     public showPagerNextPreviousButtons?: boolean = true;
     public showPagerFirstLastButtons?: boolean = true;
     public showPagerNumberButtons?: boolean = true;

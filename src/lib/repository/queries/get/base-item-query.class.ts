@@ -48,17 +48,17 @@ export abstract class BaseItemQuery<TItem extends IItem> extends BaseQuery {
         return this;
     }
 
-    whereEquals(field: string, value: string): this {
+    whereEquals(field: string, value: string | number | boolean): this {
         this._options.push(new Options.WhereEquals(field, value));
         return this;
     }
 
-    whereLike(field: string, value: string): this {
+    whereLike(field: string, value: string | number | boolean): this {
         this._options.push(new Options.WhereLike(field, value));
         return this;
     }
 
-    WhereLikeMultiple(fields: string[], value: string): this {
+    WhereLikeMultiple(fields: string[], value: string | number | boolean): this {
         this._options.push(new Options.WhereLikeMultiple(fields, value));
         return this;
     }

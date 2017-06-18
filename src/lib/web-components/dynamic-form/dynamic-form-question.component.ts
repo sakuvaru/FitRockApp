@@ -51,15 +51,14 @@ export class DynamicFormQuestionComponent implements AfterViewInit {
     // set default checkbox value to false programatically (it will otherwise treat checkbox as undefined)
     if (this.question.controlType === 'checkbox' && !this.question.required) {
       if (this.isEditForm) {
-       this.form.controls[this.question.key].setValue(this.question.value);
+        this.form.controls[this.question.key].setValue(this.question.value);
+        this.checkBoxIsChecked = this.question.value;
       }
       else{
          // set default value of checkbox for insert forms
         this.form.controls[this.question.key].setValue(this.question.defaultValue);
+        this.checkBoxIsChecked = this.question.defaultValue;
       }
-
-      // set checked flag
-      this.checkBoxIsChecked = this.form.controls[this.question.key].value;
     }
     // set default value for radio checkbox
     if (this.question.controlType === 'radioboolean') {
