@@ -3,7 +3,7 @@ export interface IFormField<T> {
     defaultValue: T;
     key: string;
     required: boolean;
-    controlType: string;
+    controlType: number;
     maxLength: number;
     minLength: number;
     maxAutosizeRows: number;
