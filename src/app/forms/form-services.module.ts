@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+/*import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 // form services
@@ -17,3 +17,4 @@ import { UserFormsService } from './user-forms.service';
     ]
 })
 export class FormServicesModule { }
+*/

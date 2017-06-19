@@ -1,10 +1,10 @@
-import { Observable } from 'rxjs/Observable';
+/*import { Observable } from 'rxjs/Observable';
 import { IService } from '../../core/type-service/iservice.class';
 import { IFormsService } from './iforms-service.interface';
-import { BaseField, FormConfig, HiddenField, DynamicFormService, DynamicFormEditBuilder, DynamicFormInsertBuilder } from '../../../lib/web-components';
-import { IItem, ResponseDelete, ResponseCreate, ResponseEdit, ResponseMultiple, ResponseSingle } from '../../../lib/repository';
+import { FormConfig, HiddenField, DynamicFormService, DynamicFormEditBuilder, DynamicFormInsertBuilder } from '../../../lib/web-components';
+import { BaseField, IItem, ResponseDelete, ResponseCreate, ResponseEdit, ResponseMultiple, ResponseSingle } from '../../../lib/repository';
 
-//Note - nested generics are not currently supported by Typescript 2 (13.5.2017) => take types in constructor
+//Note - nested generics are not currently supported by Typescript 2 (13.5.2017) => take type service in constructor
 export abstract class BaseFormService<TItem extends IItem> implements IFormsService<TItem> {
 
     private defaultPrimaryKeyField: string = 'id';
@@ -22,21 +22,38 @@ export abstract class BaseFormService<TItem extends IItem> implements IFormsServ
         }
     }
 
-    abstract getBaseFormFields(options?: { excludeFields?: string[] }): Observable<BaseField<any>[]>
+    insertForm():  Observable<DynamicFormInsertBuilder<TItem>>  {
+         return this.service.insertForm().get()
+            .map(form => {
+                var builder = new DynamicFormInsertBuilder<TItem>();
 
-    insertForm(): DynamicFormInsertBuilder<TItem> {
-        var builder = new DynamicFormInsertBuilder<TItem>();
+                builder.fields(form.fields);
 
-        // set default field loader
-        builder.fieldsLoader(() => this.getInsertFields());
+                // set default save function
+                builder.insertFunction((item) => this.service.create(item).set())
 
-        // set default save function
-        builder.insertFunction((item) => this.service.create(item).set())
-
-        // set default button text
+                  // set default button text for insert
         builder.submitTextKey('form.shared.insert');
 
-        return builder;
+                return builder;
+            })
+    }
+
+    editForm(itemId: number): Observable<DynamicFormEditBuilder<TItem>> {
+        return this.service.editForm(itemId).get()
+            .map(form => {
+                var builder = new DynamicFormEditBuilder<TItem>();
+
+                builder.fields(form.fields);
+
+                // set default save function
+                builder.editFunction((item) => this.service.edit(item).set());
+
+                // set default button text for update
+                builder.submitTextKey('form.shared.save');
+
+                return builder;
+            })
     }
 
     editFormById(itemId: number): DynamicFormEditBuilder<TItem> {
@@ -47,7 +64,7 @@ export abstract class BaseFormService<TItem extends IItem> implements IFormsServ
         // set default save function
         builder.editFunction((item) => this.service.edit(item).set());
 
-        // set default button text
+        // set default button text for update
         builder.submitTextKey('form.shared.save');
 
         return builder;
@@ -60,7 +77,7 @@ export abstract class BaseFormService<TItem extends IItem> implements IFormsServ
         // set default save function
         builder.editFunction((item) => this.service.edit(item).set());
 
-        // set default button text
+        // set default button text for update
         builder.submitTextKey('form.shared.save');
 
         return builder;
@@ -145,3 +162,5 @@ export abstract class BaseFormService<TItem extends IItem> implements IFormsServ
         });
     }
 }
+
+*/

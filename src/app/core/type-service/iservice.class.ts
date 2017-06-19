@@ -1,8 +1,11 @@
 import { Observable } from 'rxjs/Observable';
 
 import {
-    RepositoryClient, IItem, SingleItemQueryInit, MultipleItemQuery, CreateItemQuery, EditItemQuery, DeleteItemQuery
+    RepositoryClient, IItem, SingleItemQueryInit, MultipleItemQuery, CreateItemQuery, EditItemQuery, DeleteItemQuery,
+    EditFormQuery, InsertFormQuery
 } from '../../../lib/repository';
+
+import { DynamicFormEditBuilder, DynamicFormInsertBuilder } from '../../../lib/web-components';
 
 export interface IService<TItem extends IItem> {
 
@@ -17,4 +20,8 @@ export interface IService<TItem extends IItem> {
     edit(item: TItem): EditItemQuery<TItem>;
 
     delete(itemId: number): DeleteItemQuery;
+
+    insertForm(): Observable<DynamicFormInsertBuilder<TItem>>;
+
+    editForm(itemId: number): Observable<DynamicFormEditBuilder<TItem>>;
 }

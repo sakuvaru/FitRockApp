@@ -1,7 +1,6 @@
 import { FormConfig } from './form-config.class';
 import { Observable } from 'rxjs/RX';
-import { BaseField } from './base-field.class';
-import { IItem, ResponseCreate, ResponseEdit, FormErrorResponse, ErrorResponse } from '../../repository';
+import { BaseField, IItem, ResponseCreate, ResponseEdit, FormErrorResponse, ErrorResponse } from '../../repository';
 
 export class DynamicFormInsertBuilder<TItem extends IItem>{
 
@@ -12,8 +11,8 @@ export class DynamicFormInsertBuilder<TItem extends IItem>{
         return this;
     }
 
-    fieldsLoader(loader: () => Observable<BaseField<any>[]>): this {
-        this.config.fieldsLoader = loader;
+    fields(fields: BaseField<any>[]): this {
+        this.config.fields = fields;
         return this;
     }
 
@@ -42,7 +41,7 @@ export class DynamicFormInsertBuilder<TItem extends IItem>{
         return this;
     }
 
-    build(): FormConfig<TItem>{
+    build(): FormConfig<TItem> {
         return this.config;
     }
 }
@@ -56,8 +55,8 @@ export class DynamicFormEditBuilder<TItem extends IItem>{
         return this;
     }
 
-    fieldsLoader(loader: () => Observable<BaseField<any>[]>): this {
-        this.config.fieldsLoader = loader;
+    fields(fields: BaseField<any>[]): this {
+        this.config.fields = fields;
         return this;
     }
 
@@ -86,7 +85,7 @@ export class DynamicFormEditBuilder<TItem extends IItem>{
         return this;
     }
 
-    build(): FormConfig<TItem>{
+    build(): FormConfig<TItem> {
         return this.config;
     }
 }

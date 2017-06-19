@@ -1,12 +1,11 @@
 import { Observable } from 'rxjs/RX';
-import { BaseField } from './base-field.class';
 import { FormGroup } from '@angular/forms';
-import { IItem, ResponseCreate, ResponseEdit, FormErrorResponse, ErrorResponse  } from '../../repository';
+import { BaseField, IItem, ResponseCreate, ResponseEdit, FormErrorResponse, ErrorResponse  } from '../../repository';
 
 export class FormConfig<TItem extends IItem>{
 
     public submitTextKey: string = 'form.shared.save'
-    public fieldsLoader: () => Observable<BaseField<any>[]>;
+    public fields: BaseField<any>[];
     public insertFunction: (item: TItem) => Observable<ResponseCreate<TItem>>;
     public editFunction: (item: TItem) => Observable<ResponseEdit<TItem>>;
     public showSnackBar: boolean = true;
@@ -18,7 +17,7 @@ export class FormConfig<TItem extends IItem>{
     constructor(
         config?: {
             submitTextKey?: string,
-            fieldsLoader?: () => Observable<BaseField<any>[]>,
+            fields: BaseField<any>[],
             showSnackBar?: boolean,
             snackBarTextKey?: string,
             insertFunction?: (item: TItem) => Observable<ResponseCreate<TItem>>, // insert or edit function needs to be provided

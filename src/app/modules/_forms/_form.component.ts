@@ -4,8 +4,7 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { AppConfig, ComponentDependencyService, BaseComponent } from '../../core';
 
 // required by component
-import { FormConfig} from '../../../lib/web-components';
-import { LogFormsService } from '../../forms';
+import { FormConfig } from '../../../lib/web-components';
 
 @Component({
     templateUrl: '_form.component.html'
@@ -16,11 +15,15 @@ export class FormComponent extends BaseComponent {
     private formInsertConfig: FormConfig<any>;
 
     constructor(
-        private logFormsService: LogFormsService,
         protected dependencies: ComponentDependencyService) {
         super(dependencies)
 
-        this.formInsertConfig = this.logFormsService.insertForm().build();
-        this.formEditConfig = this.logFormsService.editFormById(1).build();
+        this.dependencies.logService.insertForm()
+            .subscribe(form => this.formInsertConfig = form.build()
+            );
+
+        this.dependencies.logService.editForm(1)
+            .subscribe(form => this.formEditConfig = form.build()
+            );
     }
 }

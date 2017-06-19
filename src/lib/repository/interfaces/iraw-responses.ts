@@ -28,6 +28,8 @@ export interface IResponseMultipleRaw {
     items: any
 }
 
+import { BaseField } from '../models/base-field.class';
+
 export interface IResponseSingleRaw {
     fromCache: boolean,
     timeCreated: Date,
@@ -48,6 +50,12 @@ export interface IResponseDeleteRaw {
 
 export interface IResponseEditRaw {
     item: any,
+}
+
+export interface IResponseFormRaw {
+    type: string,
+    formType: string,
+    fields: BaseField<any>[]
 }
 
 

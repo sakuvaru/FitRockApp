@@ -1,6 +1,6 @@
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
-import { BaseField } from './base-field.class';
+import { BaseField } from '../../repository';
 
 export class FieldControlService {
   constructor() { }

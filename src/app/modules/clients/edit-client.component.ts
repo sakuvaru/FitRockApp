@@ -5,34 +5,30 @@ import { AppConfig, ComponentDependencyService, BaseComponent } from '../../core
 
 // required by component
 import { ClientMenuItems } from './menu.items';
-import { BaseField, FormConfig } from '../../../lib/web-components';
+import { FormConfig } from '../../../lib/web-components';
 import { User } from '../../models';
 import 'rxjs/add/operator/switchMap';
-import { UserFormsService } from '../../forms';
 
 @Component({
     templateUrl: 'edit-client.component.html'
 })
 export class EditClientComponent extends BaseComponent implements OnInit {
 
-    private client: User;
     private formConfig: FormConfig<User>;
 
     constructor(
         private activatedRoute: ActivatedRoute,
         protected componentDependencyService: ComponentDependencyService,
-        private userFormsService: UserFormsService
     ) {
         super(componentDependencyService)
     }
 
     ngOnInit(): void {
         this.activatedRoute.params
-            .switchMap((params: Params) => this.dependencies.userService.item().byId(+params['id']).get())
-            .subscribe(response => {
-                this.client = response.item;
-
+            .switchMap((params: Params) => this.dependencies.userService.editForm(+params['id']))
+            .subscribe(form => {
                 // update title
+                /*
                 this.setConfig({
                     menuItems: new ClientMenuItems(response.item.id).menuItems,
                     menuTitle: {
@@ -43,11 +39,11 @@ export class EditClientComponent extends BaseComponent implements OnInit {
                         'key': 'menu.clients.editClient'
                     }
                 });
+                */
+                console.log('ADD ITEM TO FORM RESPONSE!');
 
                 // get form
-                this.formConfig = this.userFormsService.editFormByItem(response.item)
-                    .editFunction((item) => this.dependencies.userService.edit(item).set())
-                    .build();
+                this.formConfig = form.build();
             });
     }
 }

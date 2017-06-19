@@ -1,10 +1,9 @@
 import { Component, Input, Output, OnInit, EventEmitter, OnChanges, SimpleChange, ChangeDetectorRef } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { BaseField } from './base-field.class';
 import { FieldControlService } from './field-control.service';
 import { FormConfig } from './form-config.class';
 import { MdSnackBar } from '@angular/material';
-import { ResponseCreate, ResponseEdit, FormErrorResponse, ErrorResponse, ErrorReasonEnum } from '../../repository';
+import { ResponseCreate, ResponseEdit, FormErrorResponse, ErrorResponse, ErrorReasonEnum, BaseField } from '../../repository';
 import { TranslateService } from '@ngx-translate/core';
 import { ColumnValidation, FieldErrorEnum } from '../../repository';
 
@@ -56,12 +55,10 @@ export class DynamicFormComponent implements OnInit, OnChanges {
         // try to initialize component if config is available during init
         if (this.config) {
             // load fields
-            this.config.fieldsLoader().subscribe(fields => {
-                this.form = this.fieldControlService.toFormGroup(fields);
-                this.questions = fields;
-                // subscribe to form changes
-                this.form.valueChanges.subscribe(response => this.handleFormChange());
-            });
+            this.form = this.fieldControlService.toFormGroup(this.config.fields);
+            this.questions = this.config.fields;
+            // subscribe to form changes
+            this.form.valueChanges.subscribe(response => this.handleFormChange());
 
             // translate labels
             this.translateLabels();
@@ -75,15 +72,12 @@ export class DynamicFormComponent implements OnInit, OnChanges {
         // after the initilization of component 
         if (changes.config && changes.config.currentValue) {
             // load fields
-            changes.config.currentValue.fieldsLoader().subscribe(fields => {
-                this.form = this.fieldControlService.toFormGroup(fields);
-                this.questions = fields;
-                // subscribe to form changes
-                this.form.valueChanges.subscribe(response => this.handleFormChange());
-            });
+            this.form = this.fieldControlService.toFormGroup(changes.config.currentValue.fields);
+            this.questions = changes.config.currentValue.fields;
+            // subscribe to form changes
+            this.form.valueChanges.subscribe(response => this.handleFormChange());
 
             changes.config.currentValue.submitText = changes.config.currentValue.submitText;
-
             // translate labels
             this.translateLabels();
         }
@@ -178,7 +172,7 @@ export class DynamicFormComponent implements OnInit, OnChanges {
 
         if (errorResponse instanceof FormErrorResponse) {
             // handle form errors without validation result
-            if (!errorResponse.formValidation.validationResult || errorResponse.formValidation.validationResult.length === 0){
+            if (!errorResponse.formValidation.validationResult || errorResponse.formValidation.validationResult.length === 0) {
                 this.submissionError = this.unknownErrorMessage;
                 return;
             }
@@ -198,11 +192,11 @@ export class DynamicFormComponent implements OnInit, OnChanges {
                         });
 
                         // form error
-                        this.getFormErrorMessage(validationResult, question.label).subscribe(error => this.formErrorLines.push(error))
+                        this.getFormErrorMessage(validationResult, question.key + 'TODO_GetFormErrorMessage').subscribe(error => this.formErrorLines.push(error))
                     }
                 })
             });
-                this.submissionError = this.formErrorLines.join(', ');
+            this.submissionError = this.formErrorLines.join(', ');
         }
         else if (errorResponse instanceof ErrorResponse) {
             console.error(errorResponse);
@@ -246,7 +240,7 @@ export class DynamicFormComponent implements OnInit, OnChanges {
             return this.translateService.get('form.error.notEditable');
         }
 
-         if (columnValidation.errorType === FieldErrorEnum.NotEditable) {
+        if (columnValidation.errorType === FieldErrorEnum.NotEditable) {
             if (fieldLabel) {
                 return this.translateService.get('form.error.notUniqueWithLabel', { label: fieldLabel });
             }

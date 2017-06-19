@@ -1,6 +1,6 @@
 import { Headers, RequestOptions } from '@angular/http';
-import { ResponseDelete, ResponseCreate, ResponseEdit, ResponseMultiple, ResponseSingle, ErrorResponse, FormErrorResponse } from '../models/responses';
-import { IResponseCreateRaw, IResponseDeleteRaw, IResponseEditRaw, IResponseMultipleRaw, IResponseSingleRaw, IErrorResponseRaw, IFormErrorResponseRaw } from '../interfaces/iraw-responses';
+import { ResponseForm, ResponseDelete, ResponseCreate, ResponseEdit, ResponseMultiple, ResponseSingle, ErrorResponse, FormErrorResponse } from '../models/responses';
+import { IResponseFormRaw, IResponseCreateRaw, IResponseDeleteRaw, IResponseEditRaw, IResponseMultipleRaw, IResponseSingleRaw, IErrorResponseRaw, IFormErrorResponseRaw } from '../interfaces/iraw-responses';
 import { IOption } from '../interfaces/ioption.interface';
 import { AuthHttp } from 'angular2-jwt';
 import { Response } from '@angular/http';
@@ -180,7 +180,19 @@ export class QueryService {
     private getDeleteResponse(response: Response): ResponseDelete {
         var responseDelete = (response.json() || {}) as IResponseDeleteRaw;
 
-        return new ResponseDelete({
+        return new ResponseDelete();
+    }
+
+    
+    private getFormResponse(response: Response): ResponseForm {
+        var responseForm = (response.json() || {}) as IResponseFormRaw;
+
+        var formFields = this.mapService.mapFormFields(responseForm.fields);
+
+        return new ResponseForm({
+            fields: formFields,
+            formType: responseForm.formType,
+            type: responseForm.type
         });
     }
 
@@ -264,6 +276,22 @@ export class QueryService {
         return this.authHttp.delete(url, headerOptions)
             .map(response => {
                 return this.getDeleteResponse(response)
+            })
+            .catch(response => {
+                return Observable.throw(this.handleError(response));
+            })
+            ._finally(() => {
+                this.finishRequest();
+            });
+    }
+
+     protected getForm(url: string): Observable<ResponseForm> {
+        // trigger request
+        this.startRequest();
+
+        return this.authHttp.get(url)
+            .map(response => {
+                return this.getFormResponse(response)
             })
             .catch(response => {
                 return Observable.throw(this.handleError(response));

@@ -1,7 +1,7 @@
-/* Order matters! */
-export * from './type-service/base-type.service'; // has to be first
+// ! order does matter! 
+export * from './type-service/base-type.service'; // has to be first (otherwise there is some cyclic error which webpack cannot resolve)
 
-export * from './forms-service/base-form.service';
+// other exports
 export * from './module/core.module';
 export * from './shared-service/shared.service';
 export * from './component/base.component';

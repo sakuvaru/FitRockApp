@@ -68,7 +68,11 @@
             "privateNotesHint": "Klient tyto poznámky neuvidí",
             "publicNotes": "Poznámky pro klienta",
             "publicNotesHint": "Klient tyto poznámky uvidí",
-            "isActiveHint": "Indikuje, zda s klientem aktivně pracuješ"
+            "isActiveHint": "Indikuje, zda s klientem aktivně pracuješ",
+            "beginner": "Začátečník",
+            "intermediate": "Středně pokročilý",
+            "advanced": "Pokročilý",
+            "fitnessCompetitor": "Závodník fitness"
         }
     },
     "webComponents":{

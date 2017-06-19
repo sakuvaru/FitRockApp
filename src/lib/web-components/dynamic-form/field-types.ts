@@ -1,5 +1,4 @@
-import { BaseField } from './base-field.class';
-import { DropdownFieldOption } from './models';
+import { DropdownFieldOption, BaseField } from '../../repository';
 
 export class DropdownField extends BaseField<string> {
   public controlType = 'dropdown';

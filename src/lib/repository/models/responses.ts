@@ -3,6 +3,7 @@ import { IItem } from '../interfaces/iitem.interface';
 import { IErrorResponseRaw, IFormErrorResponseRaw } from '../interfaces/iraw-responses';
 import { IFormValidationResult } from '../interfaces/iform-validation-result.interface';
 import { ErrorReasonEnum } from './error-reason.enum';
+import { BaseField } from './base-field.class';
 
 export function mapReason(reasonCode: number): ErrorReasonEnum {
     if (reasonCode === 0) {
@@ -71,7 +72,7 @@ export class ResponseMultiple<T extends IItem> extends ResponseGetBase {
     public items: T[];
 
     constructor(
-        private fields?: {
+        private options?: {
             fromCache?: boolean,
             timeCreated?: Date,
             type?: string,
@@ -85,7 +86,7 @@ export class ResponseMultiple<T extends IItem> extends ResponseGetBase {
             items?: T[]
         }) {
         super()
-        if (fields) Object.assign(this, fields);
+        if (options) Object.assign(this, options);
     }
 }
 
@@ -98,7 +99,7 @@ export class ResponseSingle<T extends IItem> extends ResponseGetBase {
     public item: T;
 
     constructor(
-        private fields?: {
+        private options?: {
             fromCache?: boolean,
             timeCreated?: Date,
             type?: string,
@@ -107,7 +108,7 @@ export class ResponseSingle<T extends IItem> extends ResponseGetBase {
             item?: T
         }) {
         super()
-        if (fields) Object.assign(this, fields);
+        if (options) Object.assign(this, options);
     }
 }
 
@@ -116,21 +117,15 @@ export class ResponseCreate<T extends IItem> {
     public item: T;
 
     constructor(
-        private fields?: {
+        private options?: {
             item?: T;
             result?: number;
         }) {
-        if (fields) Object.assign(this, fields);
+        if (options) Object.assign(this, options);
     }
 }
 
 export class ResponseDelete {
-
-    constructor(
-        private fields?: {
-        }) {
-        if (fields) Object.assign(this, fields);
-    }
 }
 
 export class ResponseEdit<T extends IItem> {
@@ -138,10 +133,26 @@ export class ResponseEdit<T extends IItem> {
     public item: T;
 
     constructor(
-        private fields?: {
+        private options?: {
             item?: T,
         }) {
-        if (fields) Object.assign(this, fields);
+        if (options) Object.assign(this, options);
+    }
+}
+
+export class ResponseForm {
+
+    public type: string;
+    public formType: string;
+    public fields: BaseField<any>[];
+
+    constructor(
+        private options?: {
+            type?: string,
+            formType?: string,
+            fields?: BaseField<any>[]
+        }) {
+        if (options) Object.assign(this, options);
     }
 }
 

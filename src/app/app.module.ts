@@ -13,9 +13,6 @@ import 'hammerjs';
 // authentication
 import { AuthModule } from '../lib/auth';
 
-// dynamic forms
-import { FormServicesModule } from './forms/form-services.module';
-
 // main app
 import { AppComponent } from './app.component';
 
@@ -75,9 +72,6 @@ import { FormModule } from './modules/_forms/_form.module';
 
     // authentication
     AuthModule,
-
-    // dynamic forms
-    FormServicesModule,
 
     // custom modules
     LayoutsModule,

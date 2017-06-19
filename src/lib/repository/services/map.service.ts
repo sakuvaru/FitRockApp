@@ -1,6 +1,8 @@
 import { TypeResolver } from '../models/type-resolver.class';
 import { TypeResolverService } from './type-resolver.service';
 import { IItem } from '../interfaces/iitem.interface';
+import { BaseField } from '../models/base-field.class';
+import { IFormField } from '../interfaces/iform-field';
 
 export class MapService {
     constructor(
@@ -67,5 +69,38 @@ export class MapService {
         });
 
         return typedItems;
+    }
+
+    mapFormFields(formFields: IFormField<any>[]): BaseField<any>[]{
+         if (!formFields){
+            return null;
+        }
+
+         var fields: BaseField<any>[] = [];
+
+        formFields.forEach(field => {
+            fields.push(this.mapFormField(field));
+        });
+
+        return fields;
+    }
+
+    mapFormField(formField: IFormField<any>): BaseField<any>{
+        return new BaseField<any>({
+            key: formField.key,
+            controlType: formField.controlType,
+            defaultValue: formField.defaultValue,
+            dropdownOptions: formField.dropdownOptions,
+            falseOptionLabel: formField.falseOptionLabel,
+            keyAlias: formField.keyAlias,
+            maxAutosizeRows: formField.maxAutosizeRows,
+            maxLength: formField.maxLength,
+            minAutosizeRows: formField.minAutosizeRows,
+            minLength: formField.minLength,
+            required: formField.required,
+            trueOptionLabel: formField.trueOptionLabel,
+            value: formField.value,
+            width: formField.width
+        });
     }
 }

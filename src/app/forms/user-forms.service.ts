@@ -1,3 +1,4 @@
+/*
 // angular imports
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
@@ -122,3 +123,4 @@ export class UserFormsService extends BaseFormService<User>{
         return Observable.of(fields);
     }
 }
+*/
