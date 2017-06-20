@@ -1,6 +1,6 @@
 import { Headers, RequestOptions } from '@angular/http';
-import { ResponseForm, ResponseDelete, ResponseCreate, ResponseEdit, ResponseMultiple, ResponseSingle, ErrorResponse, FormErrorResponse } from '../models/responses';
-import { IResponseFormRaw, IResponseCreateRaw, IResponseDeleteRaw, IResponseEditRaw, IResponseMultipleRaw, IResponseSingleRaw, IErrorResponseRaw, IFormErrorResponseRaw } from '../interfaces/iraw-responses';
+import { ResponseFormEdit, ResponseFormInsert, ResponseDelete, ResponseCreate, ResponseEdit, ResponseMultiple, ResponseSingle, ErrorResponse, FormErrorResponse } from '../models/responses';
+import { IResponseFormEditRaw, IResponseFormInsertRaw, IResponseCreateRaw, IResponseDeleteRaw, IResponseEditRaw, IResponseMultipleRaw, IResponseSingleRaw, IErrorResponseRaw, IFormErrorResponseRaw } from '../interfaces/iraw-responses';
 import { IOption } from '../interfaces/ioption.interface';
 import { AuthHttp } from 'angular2-jwt';
 import { Response } from '@angular/http';
@@ -12,6 +12,7 @@ import { ColumnValidation } from '../models/column-validation.class';
 import { IColumnValidation } from '../interfaces/icolumn-validation.interface';
 import { FormValidationResult } from '../models/form-validation-result.class';
 import { IFormValidationResult } from '../interfaces/iform-validation-result.interface';
+import { ErrorReasonEnum } from '../models/error-reason.enum';
 
 // rxjs
 import { Observable } from 'rxjs/RX';
@@ -68,7 +69,7 @@ export class QueryService {
         return url;
     }
 
-    protected getUrl(type: string, action: string, options?: IOption[]): string{
+    protected getUrl(type: string, action: string, options?: IOption[]): string {
         var url = this.config.apiUrl + '/' + type + '/' + action;
 
         return this.addOptionsToUrl(url, options);
@@ -83,7 +84,7 @@ export class QueryService {
         if (response instanceof Response) {
             // 404 error
             if (response.status === 404) {
-                errorResponse = new ErrorResponse(response.statusText, 404);
+                errorResponse = new ErrorResponse(response.statusText, ErrorReasonEnum.NotFound, response);
             }
             else {
                 // create either 'FormResponse' or generic 'ErrorResponse'
@@ -100,16 +101,16 @@ export class QueryService {
                         columnValidations.push(new ColumnValidation(validation.columnName, validation.result));
                     });
 
-                    var formValidation = new FormValidationResult(iformValidation.message, columnValidations);
+                    var formValidation = new FormValidationResult(iformValidation.message, iformValidation.isInvalid, columnValidations);
 
-                    errorResponse = new FormErrorResponse(iFormErrorResponse.error, iFormErrorResponse.reason, iFormErrorResponse.isInvalid, formValidation);
+                    errorResponse = new FormErrorResponse(iFormErrorResponse.error, iFormErrorResponse.reason, formValidation, response);
                 }
                 else {
-                    errorResponse = new ErrorResponse(iErrorResponse.error, iErrorResponse.reason);
+                    errorResponse = new ErrorResponse(iErrorResponse.error, iErrorResponse.reason, response);
                 }
             }
         } else {
-            errorResponse = new ErrorResponse(this.genericErrorMessage, 0);
+            errorResponse = new ErrorResponse(this.genericErrorMessage, ErrorReasonEnum.RepositoryException, response);
         }
 
         // raise error
@@ -183,13 +184,29 @@ export class QueryService {
         return new ResponseDelete();
     }
 
-    
-    private getFormResponse(response: Response): ResponseForm {
-        var responseForm = (response.json() || {}) as IResponseFormRaw;
+
+    private getFormEditResponse<TItem extends IItem>(response: Response): ResponseFormEdit<TItem> {
+        var responseForm = (response.json() || {}) as IResponseFormEditRaw;
+
+        var formFields = this.mapService.mapFormFields(responseForm.fields);
+        var item = this.mapService.mapItem<TItem>(responseForm.item);
+
+        return new ResponseFormEdit<TItem>({
+            fields: formFields,
+            formType: responseForm.formType,
+            type: responseForm.type,
+            fromCache: responseForm.fromCache,
+            timeCreated: responseForm.timeCreated,
+            item: item
+        });
+    }
+
+    private getFormInsertResponse(response: Response): ResponseFormInsert {
+        var responseForm = (response.json() || {}) as IResponseFormInsertRaw;
 
         var formFields = this.mapService.mapFormFields(responseForm.fields);
 
-        return new ResponseForm({
+        return new ResponseFormInsert({
             fields: formFields,
             formType: responseForm.formType,
             type: responseForm.type
@@ -285,13 +302,29 @@ export class QueryService {
             });
     }
 
-     protected getForm(url: string): Observable<ResponseForm> {
+    protected getEditForm<TItem extends IItem>(url: string): Observable<ResponseFormEdit<TItem>> {
         // trigger request
         this.startRequest();
 
         return this.authHttp.get(url)
             .map(response => {
-                return this.getFormResponse(response)
+                return this.getFormEditResponse<TItem>(response)
+            })
+            .catch(response => {
+                return Observable.throw(this.handleError(response));
+            })
+            ._finally(() => {
+                this.finishRequest();
+            });
+    }
+
+    protected getInsertForm(url: string): Observable<ResponseFormInsert> {
+        // trigger request
+        this.startRequest();
+
+        return this.authHttp.get(url)
+            .map(response => {
+                return this.getFormInsertResponse(response)
             })
             .catch(response => {
                 return Observable.throw(this.handleError(response));

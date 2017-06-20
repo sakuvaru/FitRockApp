@@ -14,5 +14,5 @@ export * from './queries/manage/edit-item-query.class';
 export * from './queries/manage/delete-item-query.class';
 export * from './queries/form/insert-form-query.class';
 export * from './queries/form/edit-form-query.class';
-export * from './models/base-field.class';
+export * from './models/form-fields';
 export * from './models/control-type.enum';

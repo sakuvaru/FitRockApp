@@ -5,6 +5,7 @@ import { RepositoryConfig } from '../../repository.config';
 import { AuthHttp } from 'angular2-jwt';
 
 // models
+import { IItem } from '../../interfaces/iitem.interface';
 import { BaseFormQuery } from './base-form-query.class';
 import { IOption } from '../../interfaces/ioption.interface';
 
@@ -13,13 +14,13 @@ import * as Options from '../../models/options';
 
 // responses
 import {
-    ResponseForm
+    ResponseFormEdit
 } from '../../models/responses';
 
 // rxjs
 import { Observable } from 'rxjs/Rx';
 
-export class EditFormQuery extends BaseFormQuery{
+export class EditFormQuery<TItem extends IItem> extends BaseFormQuery{
 
     private _defaultAction = 'getEditForm';
 
@@ -35,8 +36,8 @@ export class EditFormQuery extends BaseFormQuery{
 
     // execution
 
-    get(): Observable<ResponseForm> {
-        return super.runFormQuery();
+    get(): Observable<ResponseFormEdit<TItem>> {
+        return super.runEditFormQuery<TItem>();
     }
 
     // debug

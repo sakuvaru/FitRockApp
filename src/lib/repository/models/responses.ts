@@ -3,7 +3,7 @@ import { IItem } from '../interfaces/iitem.interface';
 import { IErrorResponseRaw, IFormErrorResponseRaw } from '../interfaces/iraw-responses';
 import { IFormValidationResult } from '../interfaces/iform-validation-result.interface';
 import { ErrorReasonEnum } from './error-reason.enum';
-import { BaseField } from './base-field.class';
+import { BaseField } from './form-fields';
 
 export function mapReason(reasonCode: number): ErrorReasonEnum {
     if (reasonCode === 0) {
@@ -22,8 +22,11 @@ export function mapReason(reasonCode: number): ErrorReasonEnum {
     if (reasonCode === 4) {
         return ErrorReasonEnum.CoreException;
     };
+    if (reasonCode === 5) {
+        return ErrorReasonEnum.RepositoryException;
+    };
 
-    if (reasonCode === 404){
+    if (reasonCode === 404) {
         return ErrorReasonEnum.NotFound;
     }
 
@@ -36,7 +39,8 @@ export class ErrorResponse implements IErrorResponseRaw {
 
     constructor(
         public error: string,
-        public reasonCode: number
+        public reasonCode: number,
+        public internalError?: any
     ) {
         this.reason = mapReason(reasonCode);
     }
@@ -49,8 +53,8 @@ export class FormErrorResponse implements IFormErrorResponseRaw {
     constructor(
         public error: string,
         public reasonCode: number,
-        public isInvalid: boolean,
-        public formValidation: IFormValidationResult
+        public formValidation: IFormValidationResult,
+        public internalError?: any
     ) {
         this.reason = mapReason(reasonCode);
     }
@@ -140,7 +144,7 @@ export class ResponseEdit<T extends IItem> {
     }
 }
 
-export class ResponseForm {
+export class ResponseFormInsert {
 
     public type: string;
     public formType: string;
@@ -150,7 +154,29 @@ export class ResponseForm {
         private options?: {
             type?: string,
             formType?: string,
-            fields?: BaseField<any>[]
+            fields?: BaseField<any>[],
+        }) {
+        if (options) Object.assign(this, options);
+    }
+}
+
+export class ResponseFormEdit<T extends IItem>  {
+
+    public type: string;
+    public formType: string;
+    public fields: BaseField<any>[];
+    public timeCreated: Date;
+    public fromCache: boolean;
+    public item: T;
+
+    constructor(
+        private options?: {
+            type?: string,
+            formType?: string,
+            fields?: BaseField<any>[],
+            timeCreated: Date;
+            fromCache: boolean;
+            item: T;
         }) {
         if (options) Object.assign(this, options);
     }

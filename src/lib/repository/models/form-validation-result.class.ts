@@ -4,7 +4,8 @@ import { IFormValidationResult } from '../interfaces/iform-validation-result.int
 export class FormValidationResult implements IFormValidationResult {
     constructor(
         public message: string,
-        public validationResult: IColumnValidation[]
+        public isInvalid: boolean,
+        public validationResult: IColumnValidation[],
     )
     { }
 }

@@ -179,22 +179,13 @@ export class DynamicFormComponent implements OnInit, OnChanges {
 
             // handle invalid field errors
             errorResponse.formValidation.validationResult.forEach(validationResult => {
-                this.questions.forEach(question => {
-                    // js is case sensitive and returned column names from server don't match those used in js
-                    // loop trough the questions and compare their lowercase versions
-                    if (question.key.toLocaleLowerCase() === validationResult.columnName.toLocaleLowerCase()
-                        ||
-                        (question.keyAlias && question.keyAlias.toLocaleLowerCase() === validationResult.columnName.toLocaleLowerCase())) {
 
-                        // field error
-                        this.getFormFieldErrorMessage(validationResult).subscribe(error => {
-                            this.form.controls[question.key].setErrors({ 'field_error': error });
-                        });
+                this.getFormFieldErrorMessage(validationResult).subscribe(error => {
+                    this.form.controls[validationResult.columnName].setErrors({ 'field_error': error });
+                });
 
-                        // form error
-                        this.getFormErrorMessage(validationResult, question.key + 'TODO_GetFormErrorMessage').subscribe(error => this.formErrorLines.push(error))
-                    }
-                })
+                // form error
+                this.getFormErrorMessage(validationResult, validationResult.columnName + 'TODO_GetFormErrorMessage').subscribe(error => this.formErrorLines.push(error))
             });
             this.submissionError = this.formErrorLines.join(', ');
         }

@@ -1,18 +1,18 @@
 import { TypeResolver } from '../models/type-resolver.class';
 import { TypeResolverService } from './type-resolver.service';
 import { IItem } from '../interfaces/iitem.interface';
-import { BaseField } from '../models/base-field.class';
-import { IFormField } from '../interfaces/iform-field';
+import { BaseField, FormFieldOptions, DropdownFieldOption } from '../models/form-fields';
+import { IFormField, IDropdownFieldOption } from '../interfaces/iform-fields';
 
 export class MapService {
     constructor(
         private typeResolverService: TypeResolverService
-    ) { 
+    ) {
     }
 
-    private isEntityField(fieldValue: any): boolean{
-        if (fieldValue instanceof Object){
-            if (fieldValue["type"]){
+    private isEntityField(fieldValue: any): boolean {
+        if (fieldValue instanceof Object) {
+            if (fieldValue["type"]) {
                 return true;
             }
         }
@@ -41,11 +41,11 @@ export class MapService {
 
             var fieldValue = item[fieldName];
 
-            if (this.isEntityField(fieldValue)){
+            if (this.isEntityField(fieldValue)) {
                 // field value is a nested entity type - recursively get object & properties
                 itemTyped[propertyName] = this.mapFields(fieldValue);
             }
-            else{
+            else {
                 itemTyped[propertyName] = fieldValue;
             }
         });
@@ -53,12 +53,12 @@ export class MapService {
         return itemTyped;
     }
 
-    mapItem<TItem extends IItem>(item: IItem): TItem{
+    mapItem<TItem extends IItem>(item: IItem): TItem {
         return this.mapFields(item);
     }
 
-    mapItems<TItem extends IItem>(items: IItem[]): TItem[]{
-        if (!items){
+    mapItems<TItem extends IItem>(items: IItem[]): TItem[] {
+        if (!items) {
             return null;
         }
 
@@ -71,12 +71,12 @@ export class MapService {
         return typedItems;
     }
 
-    mapFormFields(formFields: IFormField<any>[]): BaseField<any>[]{
-         if (!formFields){
+    mapFormFields(formFields: IFormField<any>[]): BaseField<any>[] {
+        if (!formFields) {
             return null;
         }
 
-         var fields: BaseField<any>[] = [];
+        var fields: BaseField<any>[] = [];
 
         formFields.forEach(field => {
             fields.push(this.mapFormField(field));
@@ -85,22 +85,40 @@ export class MapService {
         return fields;
     }
 
-    mapFormField(formField: IFormField<any>): BaseField<any>{
+    mapFormField(formField: IFormField<any>): BaseField<any> {
         return new BaseField<any>({
             key: formField.key,
             controlType: formField.controlType,
             defaultValue: formField.defaultValue,
-            dropdownOptions: formField.dropdownOptions,
-            falseOptionLabel: formField.falseOptionLabel,
-            keyAlias: formField.keyAlias,
-            maxAutosizeRows: formField.maxAutosizeRows,
-            maxLength: formField.maxLength,
-            minAutosizeRows: formField.minAutosizeRows,
-            minLength: formField.minLength,
             required: formField.required,
-            trueOptionLabel: formField.trueOptionLabel,
             value: formField.value,
-            width: formField.width
+            options: new FormFieldOptions({
+                falseOptionLabel: formField.options.falseOptionLabel,
+                trueOptionLabel: formField.options.trueOptionLabel,
+                listOptions: this.mapListOptions(formField.options.listOptions),
+                maxAutosizeRows: formField.options.maxAutosizeRows,
+                maxLength: formField.options.maxLength,
+                minAutosizeRows: formField.options.minAutosizeRows,
+                minLength: formField.options.minLength,
+                width: formField.options.width
+            })
         });
+    }
+
+    private mapListOptions(listOptions: IDropdownFieldOption[]): DropdownFieldOption[]{
+        if (!listOptions){
+            return [];
+        }
+
+        var mappedOptions: DropdownFieldOption[] = [];
+
+        if (!Array.isArray){
+            throw Error(`Cannot map list options because the object is not an array!`);
+        }
+        listOptions.forEach(option => {
+            mappedOptions.push(new DropdownFieldOption(option.value, option.name));
+        });
+
+        return mappedOptions;
     }
 }

@@ -56,8 +56,15 @@ export class DynamicFormQuestionComponent implements OnInit {
       }
       else {
         // set default value of checkbox for insert forms
-        this.form.controls[this.question.key].setValue(this.question.defaultValue);
-        this.checkBoxIsChecked = this.question.defaultValue;
+        var defaultValue: boolean;
+        if (this.question.defaultValue) {
+          defaultValue = true;
+        }
+        else {
+          defaultValue = false;
+        }
+        this.form.controls[this.question.key].setValue(defaultValue);
+        this.checkBoxIsChecked = defaultValue;
       }
     }
     // set default value for radio checkbox
@@ -70,9 +77,16 @@ export class DynamicFormQuestionComponent implements OnInit {
       }
       else {
         // set default value for insert forms
-        this.form.controls[this.question.key].setValue(this.question.defaultValue);
-        this.radioCheckboxTrueChecked = this.question.value;
-        this.radioCheckboxFalseChecked = !this.question.defaultValue;
+        var defaultValue: boolean;
+        if (this.question.defaultValue) {
+          defaultValue = true;
+        }
+        else {
+          defaultValue = false;
+        }
+        this.form.controls[this.question.key].setValue(defaultValue);
+        this.radioCheckboxTrueChecked = defaultValue;
+        this.radioCheckboxFalseChecked = !defaultValue;
       }
     }
 
@@ -97,7 +111,7 @@ export class DynamicFormQuestionComponent implements OnInit {
   }
 
   private showLengthHint(): boolean {
-    if (this.question.maxLength > 0) {
+    if (this.question.options.maxLength > 0) {
       return true;
     }
     return false;
@@ -110,10 +124,10 @@ export class DynamicFormQuestionComponent implements OnInit {
   }
 
   private getWidthStyle(): string {
-    if (!this.question.width) {
+    if (!this.question.options.width) {
       return null;
     }
-    return `${this.question.width}px`;
+    return `${this.question.options.width}px`;
   }
 
   // field types
@@ -132,7 +146,7 @@ export class DynamicFormQuestionComponent implements OnInit {
   private isRadioBooleanField(): boolean {
     return this.question.controlTypeEnum == ControlTypeEnum.RadioBoolean;
   }
-  
+
   private isTextField(): boolean {
     return this.question.controlTypeEnum == ControlTypeEnum.Text;
   }

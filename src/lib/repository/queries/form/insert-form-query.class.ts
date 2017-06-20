@@ -13,7 +13,7 @@ import * as Options from '../../models/options';
 
 // responses
 import {
-    ResponseForm
+    ResponseFormInsert
 } from '../../models/responses';
 
 // rxjs
@@ -34,8 +34,8 @@ export class InsertFormQuery extends BaseFormQuery{
 
     // execution
 
-    get(): Observable<ResponseForm> {
-        return super.runFormQuery();
+    get(): Observable<ResponseFormInsert> {
+        return super.runInsertFormQuery();
     }
 
     // debug

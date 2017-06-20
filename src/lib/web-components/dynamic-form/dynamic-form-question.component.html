@@ -2,9 +2,9 @@
 <div *ngIf="question" layout="row" layout-margin [formGroup]="form">
   <!-- Question types -->
   <md-input-container *ngIf="isTextField()" flex hintLabel="{{questionHint}}">
-    <input mdInput value="{{question.value}}" [attr.maxLength]="question.maxLength > 0 ? question.maxLength : null" required="{{question.required}}"
+    <input mdInput value="{{question.value}}" [attr.maxLength]="question.options.maxLength > 0 ? question.options.maxLength : null" required="{{question.required}}"
       placeholder="{{questionLabel}}" [formControlName]="question.key" [id]="question.key" [type]="question.type" #elem>
-    <md-hint *ngIf="showLengthHint()" [ngClass]="{'tc-red-600': elem.value.length > question.maxLength}" align="end">{{elem.value.length}} / {{question.maxLength}}</md-hint>
+    <md-hint *ngIf="showLengthHint()" [ngClass]="{'tc-red-600': elem.value.length > question.options.maxLength}" align="end">{{elem.value.length}} / {{question.options.maxLength}}</md-hint>
     <md-error></md-error>
   </md-input-container>
 
@@ -18,8 +18,8 @@
   <div *ngIf="isRadioBooleanField()"  flex>
     <md-radio-group [formControlName]="question.key" [id]="question.key" required="{{question.required}}" (change)="handleRadioButtonChange($event)"
       #elem>
-      <md-radio-button [checked]="radioCheckboxTrueChecked" value="true" class="push-right">{{question.trueOptionLabel}}</md-radio-button>
-      <md-radio-button [checked]="radioCheckboxFalseChecked" value="false">{{question.falseOptionLabel}}</md-radio-button>
+      <md-radio-button [checked]="radioCheckboxTrueChecked" value="true" class="push-right">{{question.options.trueOptionLabel}}</md-radio-button>
+      <md-radio-button [checked]="radioCheckboxFalseChecked" value="false">{{question.options.falseOptionLabel}}</md-radio-button>
     </md-radio-group>
   </div>
 
@@ -33,11 +33,11 @@
   </div>
 
   <md-input-container *ngIf="isTextAreaField()"  flex hintLabel="{{questionHint}}">
-    <textarea mdTextareaAutosize mdInput mdAutosizeMinRows="{{question.minAutosizeRows}}" mdAutosizeMaxRows="{{question.maxAutosizeRows}}"
-      [attr.maxLength]="question.maxLength > 0 ? question.maxLength : null" value="{{question.value}}" required="{{question.required}}"
+    <textarea mdTextareaAutosize mdInput mdAutosizeMinRows="{{question.options.minAutosizeRows}}" mdAutosizeMaxRows="{{question.options.maxAutosizeRows}}"
+      [attr.maxLength]="question.options.maxLength > 0 ? question.options.maxLength : null" value="{{question.value}}" required="{{question.required}}"
       placeholder="{{questionLabel}}" [formControlName]="question.key" [id]="question.key" [type]="question.type" #elem>
     </textarea>
-    <md-hint *ngIf="showLengthHint()" [ngClass]="{'tc-red-600': elem.value.length > question.maxLength}" align="end">{{elem.value.length}} / {{question.maxLength}}</md-hint>
+    <md-hint *ngIf="showLengthHint()" [ngClass]="{'tc-red-600': elem.value.length > question.options.maxLength}" align="end">{{elem.value.length}} / {{question.options.maxLength}}</md-hint>
     <md-error></md-error>
   </md-input-container>
 
@@ -49,7 +49,7 @@
     <div>
       <md-select [style.width]="getWidthStyle()" [id]="question.key" [formControlName]="question.key" [required]="question.required"
         [placeholder]="questionLabel">
-        <md-option *ngFor="let option of question.dropdownOptions" [value]="option.value">{{option.name}}</md-option>
+        <md-option *ngFor="let option of question.options.listOptions" [value]="option.value">{{option.name}}</md-option>
       </md-select>
     </div>
   </div>

@@ -2,6 +2,7 @@ import { ResponseGetBase } from '../models/response-get-base.class';
 import { IItem } from './iitem.interface';
 import { IFormValidationResult } from './iform-validation-result.interface';
 import { ErrorReasonEnum } from '../models/error-reason.enum';
+import { BaseField } from '../models/form-fields';
 
 export interface IErrorResponseRaw{
     error: string;
@@ -9,7 +10,6 @@ export interface IErrorResponseRaw{
 }
 
 export interface IFormErrorResponseRaw extends IErrorResponseRaw{
-    isInvalid: boolean;
     formValidation: IFormValidationResult;
 }
 
@@ -28,7 +28,6 @@ export interface IResponseMultipleRaw {
     items: any
 }
 
-import { BaseField } from '../models/base-field.class';
 
 export interface IResponseSingleRaw {
     fromCache: boolean,
@@ -52,11 +51,22 @@ export interface IResponseEditRaw {
     item: any,
 }
 
-export interface IResponseFormRaw {
+export interface IResponseFormInsertRaw {
     type: string,
     formType: string,
-    fields: BaseField<any>[]
+    fields: BaseField<any>[],
 }
+
+export interface IResponseFormEditRaw {
+    type: string,
+    formType: string,
+    fields: BaseField<any>[],
+    timeCreated: Date,
+    fromCache: boolean,
+    item: any
+}
+
+
 
 
 
