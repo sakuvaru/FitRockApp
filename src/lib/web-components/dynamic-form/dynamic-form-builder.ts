@@ -6,6 +6,11 @@ export class DynamicFormInsertBuilder<TItem extends IItem>{
 
     private config: FormConfig<TItem> = new FormConfig<TItem>();
 
+    type(type: string): this{
+        this.config.type = type;
+        return this;
+    }
+
     submitTextKey(text: string): this {
         this.config.submitTextKey = text;
         return this;
@@ -49,6 +54,19 @@ export class DynamicFormInsertBuilder<TItem extends IItem>{
 export class DynamicFormEditBuilder<TItem extends IItem>{
 
     private config: FormConfig<TItem> = new FormConfig<TItem>();
+
+    getItem(): TItem{
+        return this.config.item;
+    }
+    setItem(item: TItem): this{
+        this.config.item = item;
+        return this;
+    }
+
+    type(type: string): this{
+        this.config.type = type;
+        return this;
+    }
 
     submitTextKey(text: string): this {
         this.config.submitTextKey = text;

@@ -40,7 +40,12 @@ export abstract class BaseTypeService<TItem extends IItem> implements IService<T
             .get()
             .map(form => {
                 var builder = new DynamicFormInsertBuilder<TItem>();
+
+                // set fields
                 builder.fields(form.fields);
+
+                // set type of form
+                builder.type(form.type);
 
                 // set default save function
                 builder.insertFunction((item) => this.create(item).set())
@@ -57,7 +62,13 @@ export abstract class BaseTypeService<TItem extends IItem> implements IService<T
             .get()
             .map(form => {
                 var builder = new DynamicFormEditBuilder<TItem>();
+                // set type of form
+                builder.type(form.type);
 
+                // set returned item
+                builder.setItem(form.item as TItem);
+
+                // set fields
                 builder.fields(form.fields);
 
                 // set default save function

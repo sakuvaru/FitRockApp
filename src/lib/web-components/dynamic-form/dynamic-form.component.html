@@ -1,7 +1,7 @@
 <div *ngIf="form">
   <form (ngSubmit)="onSubmit()" [formGroup]="form" autocomplete="off">
     <div *ngFor="let question of questions">
-      <df-question [question]="question" [form]="form" [isEditForm]="config.isEditForm()"></df-question>
+      <df-question [question]="question" [form]="form" [formConfig]="config"></df-question>
     </div>
     <div layout="row" layout-margin>
       <button md-raised-button color="accent" type="submit" [disabled]="!form.valid">{{submitText}}</button>

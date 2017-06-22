@@ -13,6 +13,8 @@ export class FormConfig<TItem extends IItem>{
     public insertCallback: (response: ResponseCreate<TItem>) => void;
     public updateCallback: (response: ResponseEdit<TItem>) => void;
     public errorCallback: (response: ErrorResponse | FormErrorResponse | any) => void;
+    public type: string;
+    public item: TItem;
 
     constructor(
         config?: {
@@ -24,7 +26,9 @@ export class FormConfig<TItem extends IItem>{
             editFunction?: (item: TItem) => Observable<ResponseEdit<TItem>>, // insert or edit function needs to be provided
             insertCallback?: (response: ResponseCreate<TItem>) => void,
             updateCallback?: (response: ResponseEdit<TItem>) => void,
-            errorCallback?: (response: ErrorResponse | FormErrorResponse | any) => void;
+            errorCallback?: (response: ErrorResponse | FormErrorResponse | any) => void,
+            type?: string,
+            item?: TItem
         }
     ) {
         Object.assign(this, config);

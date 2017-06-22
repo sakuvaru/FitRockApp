@@ -57,7 +57,7 @@ export class RepositoryClient {
     }
 
     editForm<TItem extends IItem>(type: string, itemId: number): EditFormQuery<TItem> {
-        return new EditFormQuery(this.authHttp, this.config, type, itemId);
+        return new EditFormQuery<TItem>(this.authHttp, this.config, type, itemId);
     }
 }
 

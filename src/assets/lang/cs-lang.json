@@ -1,6 +1,6 @@
 {
     "menu": {
-        "shared":{
+        "shared": {
             "back": "Zpět"
         },
         "main": "Hlavní menu",
@@ -54,6 +54,7 @@
             "required": "povinné"
         },
         "user": {
+            "email": "E-mail",
             "male": "Muž",
             "female": "Žena",
             "firstName": "Jméno",
@@ -62,20 +63,22 @@
             "address": "Adresa",
             "level": "Úroveň",
             "city": "Město",
-            "healthStatus": "Zdravotní stav",
+            "medicalCondition": "Zdravotní stav",
             "goal": "Cíl",
-            "privateNotes": "Soukromé poznámky",
-            "privateNotesHint": "Klient tyto poznámky neuvidí",
-            "publicNotes": "Poznámky pro klienta",
-            "publicNotesHint": "Klient tyto poznámky uvidí",
-            "isActiveHint": "Indikuje, zda s klientem aktivně pracuješ",
+            "trainerPrivateNotes": "Soukromé poznámky",
+            "trainerPrivateNotes.hint": "Klient tyto poznámky neuvidí",
+            "trainerPublicNotes": "Poznámky pro klienta",
+            "trainerPublicNotes.hint": "Klient tyto poznámky uvidí",
+            "isActive": "Aktivní",
+            "isActive.hint": "Indikuje, zda s klientem aktivně pracuješ",
+            "fitnessLevel": "Zkušenost",
             "beginner": "Začátečník",
             "intermediate": "Středně pokročilý",
             "advanced": "Pokročilý",
             "fitnessCompetitor": "Závodník fitness"
         }
     },
-    "webComponents":{
+    "webComponents": {
         "dataTable": {
             "noResultsText": "Nejsou zde žádná data",
             "noSearchResultsText": "Nic nenalezeno"

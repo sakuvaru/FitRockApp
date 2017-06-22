@@ -76,7 +76,6 @@ export class DynamicFormComponent implements OnInit, OnChanges {
             this.questions = changes.config.currentValue.fields;
             // subscribe to form changes
             this.form.valueChanges.subscribe(response => this.handleFormChange());
-
             changes.config.currentValue.submitText = changes.config.currentValue.submitText;
             // translate labels
             this.translateLabels();

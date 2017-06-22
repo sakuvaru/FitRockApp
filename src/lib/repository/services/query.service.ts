@@ -76,17 +76,21 @@ export class QueryService {
     }
 
     // error handling
-
     private handleError(response: Response | any): IErrorResponseRaw | IFormErrorResponseRaw {
-        // use a remote logging later on
-        var errorResponse: ErrorResponse;
+        // raise error
+        this.raiseError(response);
+
+        if (this.config.logErrorsToConsole) {
+            console.error(response);
+        }
 
         if (response instanceof Response) {
             // 404 error
             if (response.status === 404) {
-                errorResponse = new ErrorResponse(response.statusText, ErrorReasonEnum.NotFound, response);
+                // return error response
+                return new ErrorResponse(response.statusText, ErrorReasonEnum.NotFound, response);
             }
-            else {
+
                 // create either 'FormResponse' or generic 'ErrorResponse'
                 var iFormErrorResponse = response.json() as IFormErrorResponseRaw;
                 var iErrorResponse = response.json() as IErrorResponseRaw;
@@ -103,28 +107,17 @@ export class QueryService {
 
                     var formValidation = new FormValidationResult(iformValidation.message, iformValidation.isInvalid, columnValidations);
 
-                    errorResponse = new FormErrorResponse(iFormErrorResponse.error, iFormErrorResponse.reason, formValidation, response);
+                    // return form validation error
+                    return new FormErrorResponse(iFormErrorResponse.error, iFormErrorResponse.reason, formValidation, response);
                 }
-                else {
-                    errorResponse = new ErrorResponse(iErrorResponse.error, iErrorResponse.reason, response);
-                }
+                    return new ErrorResponse(iErrorResponse.error, iErrorResponse.reason, response);
             }
-        } else {
-            errorResponse = new ErrorResponse(this.genericErrorMessage, ErrorReasonEnum.RepositoryException, response);
-        }
 
-        // raise error
-        this.raiseError(errorResponse);
-
-        if (this.config.logErrorsToConsole) {
-            console.error(errorResponse);
-        }
-
-        return errorResponse;
+        // return ErrorResponse for unknown error
+        return new ErrorResponse(this.genericErrorMessage, ErrorReasonEnum.RepositoryException, response);
     }
 
     // response methods
-
     private getMultipleResponse<TItem extends IItem>(response: Response): ResponseMultiple<TItem> {
         var responseMultiple = (response.json() || {}) as IResponseMultipleRaw;
 

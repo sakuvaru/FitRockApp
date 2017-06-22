@@ -2,6 +2,8 @@ import { Component, Input, AfterViewInit, ChangeDetectorRef, OnInit } from '@ang
 import { FormGroup } from '@angular/forms';
 import { BaseField, ControlTypeEnum } from '../../repository';
 import { TranslateService } from '@ngx-translate/core';
+import { FormConfig } from './form-config.class';
+import { StringHelper } from '../../utilities';
 
 // NOTE: see https://angular.io/docs/ts/latest/cookbook/dynamic-form.html for more details
 
@@ -16,7 +18,7 @@ export class DynamicFormQuestionComponent implements OnInit {
 
   @Input() form: FormGroup;
 
-  @Input() isEditForm: boolean;
+  @Input() formConfig: FormConfig<any>;
 
   constructor(
     private translateService: TranslateService,
@@ -47,10 +49,42 @@ export class DynamicFormQuestionComponent implements OnInit {
   }
 
   private initValues(): void {
+    // translate labels for radio boolean
+    if (this.question.controlTypeEnum === ControlTypeEnum.RadioBoolean) {
+      if (this.question.options && this.question.options.trueOptionLabel) {
+        this.translateService.get(this.question.options.trueOptionLabel).subscribe(translatedText => {
+          if (translatedText) {
+            this.question.options.trueOptionLabel = translatedText
+          }
+        });
+      }
+      if (this.question.options && this.question.options.falseOptionLabel) {
+        this.translateService.get(this.question.options.falseOptionLabel).subscribe(translatedText => {
+          if (translatedText) {
+            this.question.options.falseOptionLabel = translatedText
+          }
+        });
+      }
+    }
+
+    // translate list options
+    if (this.question.controlTypeEnum === ControlTypeEnum.Dropdown) {
+      if (this.question.options && this.question.options.listOptions) {
+        this.question.options.listOptions.forEach(option => {
+          this.translateService.get(option.name).subscribe(translatedText => {
+            if (translatedText) {
+              var optionInList = this.question.options.listOptions.find(m => m.value === option.value);
+              optionInList.name = translatedText;
+            }
+          });
+        });
+      }
+    }
+
     // Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
     // set default checkbox value to false programatically (it will otherwise treat checkbox as undefined)
     if (this.question.controlTypeEnum === ControlTypeEnum.Boolean && !this.question.required) {
-      if (this.isEditForm) {
+      if (this.formConfig.isEditForm()) {
         this.form.controls[this.question.key].setValue(this.question.value);
         this.checkBoxIsChecked = this.question.value;
       }
@@ -69,7 +103,7 @@ export class DynamicFormQuestionComponent implements OnInit {
     }
     // set default value for radio checkbox
     if (this.question.controlTypeEnum === ControlTypeEnum.RadioBoolean) {
-      if (this.isEditForm) {
+      if (this.formConfig.isEditForm()) {
         // set checkbox status based on question value
         this.form.controls[this.question.key].setValue(this.question.value);
         this.radioCheckboxTrueChecked = this.question.value;
@@ -95,19 +129,37 @@ export class DynamicFormQuestionComponent implements OnInit {
   }
 
   private translateQuestionLabel(): void {
-    var labelKey = 'form.user' + this.question.key
-    if (this.question.key) {
-      // if 'labelKey' is set, translate it
-      this.translateService.get(labelKey).subscribe(key => this.questionLabel = key);
-    }
+    var translationKey = this.getQuestionLabelKey();
+    this.translateService.get(translationKey).subscribe(translatedText => {
+      if (translatedText) {
+        this.questionLabel = translatedText
+      }
+    });
   }
 
   private translateQuestionHint(): void {
-    var hintKey = 'form.user' + this.question.key + '.hint'
-    if (this.question.key) {
-      // if 'hintKey' is set, translate it
-      this.translateService.get(hintKey).subscribe(key => this.questionHint = key);
+    var translationKey = this.getQuestionHintKey();
+    this.translateService.get(translationKey).subscribe(translatedText => {
+      if (this.translatioSuccessful(translatedText)) {
+        this.questionHint = translatedText
+      }
+    });
+  }
+
+  private translatioSuccessful(translatedText: string): boolean {
+    if (!translatedText) {
+      return false;
     }
+
+    return !translatedText.startsWith('form.');
+  }
+
+  private getQuestionLabelKey(): string {
+    return 'form.' + StringHelper.firstCharToLowerCase(this.formConfig.type) + '.' + StringHelper.firstCharToLowerCase(this.question.key);
+  }
+
+  private getQuestionHintKey(): string {
+    return this.getQuestionLabelKey() + '.hint';
   }
 
   private showLengthHint(): boolean {

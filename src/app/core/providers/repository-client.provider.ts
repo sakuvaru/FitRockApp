@@ -24,7 +24,9 @@ export function RepositoryClientFactory(authHttp: AuthHttp) {
 
     return new RepositoryClient(
         authHttp,
-        new RepositoryConfig(apiUrl, typeResolvers)
+        new RepositoryConfig(apiUrl, typeResolvers, {
+            logErrorsToConsole: AppConfig.DevModeEnabled
+        })
     )
 };
 

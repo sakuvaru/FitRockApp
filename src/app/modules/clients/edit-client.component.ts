@@ -27,20 +27,19 @@ export class EditClientComponent extends BaseComponent implements OnInit {
         this.activatedRoute.params
             .switchMap((params: Params) => this.dependencies.userService.editForm(+params['id']))
             .subscribe(form => {
-                // update title
-                /*
+
+                var user = form.getItem();
+
                 this.setConfig({
-                    menuItems: new ClientMenuItems(response.item.id).menuItems,
+                    menuItems: new ClientMenuItems(user.id).menuItems,
                     menuTitle: {
                         key: 'module.clients.viewClientSubtitle',
-                        data: { 'fullName': this.client.getFullName() }
+                        data: { 'fullName': user.getFullName() }
                     },
                     componentTitle: {
                         'key': 'menu.clients.editClient'
                     }
                 });
-                */
-                console.log('ADD ITEM TO FORM RESPONSE!');
 
                 // get form
                 this.formConfig = form.build();

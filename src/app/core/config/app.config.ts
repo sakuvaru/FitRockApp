@@ -1,5 +1,8 @@
 
 export class AppConfig {
+    // dev
+    public static DevModeEnabled = true;
+
     // app
     public static AppName = 'Fit Rock';
     public static MainTitle = 'Menu';

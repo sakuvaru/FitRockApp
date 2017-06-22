@@ -27,8 +27,8 @@ import { UrlConfig } from './core/config/url.config';
 import { WebComponentsModule } from '../lib/web-components';
 
 // translations
-import { HttpLoaderFactory } from './core/providers/translate-loader.provider';
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { HttpLoaderFactory, CustomMissingTranslationHandler } from './core/providers/translate-loader.provider';
+import { TranslateModule, TranslateLoader, MissingTranslationHandler } from '@ngx-translate/core';
 
 // custom modules
 import { CoreModule } from './core';
@@ -83,6 +83,7 @@ import { FormModule } from './modules/_forms/_form.module';
 
     // translation
     TranslateModule.forRoot({
+      missingTranslationHandler: {provide: MissingTranslationHandler, useClass: CustomMissingTranslationHandler},
       loader: {
         provide: TranslateLoader,
         useFactory: HttpLoaderFactory,
