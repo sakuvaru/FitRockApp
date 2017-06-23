@@ -7,9 +7,9 @@ export class ClientOverviewMenuItems {
     constructor() {
         this.menuItems = [
             new MenuItem({ key: 'menu.shared.back' }, 'arrow_back', MenuItemType.trainer, ''),
-            new MenuItem({ key: 'menu.clients.allClients' }, 'people', MenuItemType.trainer, 'clients'),
-            new MenuItem({ key: 'menu.clients.activeClients' }, 'star', MenuItemType.trainer, 'clients/active'),
-            new MenuItem({ key: 'menu.clients.inactiveClients' }, 'not_interested', MenuItemType.trainer, 'clients/inactive')
+            new MenuItem({ key: 'module.clients.allClients' }, 'people', MenuItemType.trainer, 'clients'),
+            new MenuItem({ key: 'module.clients.activeClients' }, 'star', MenuItemType.trainer, 'clients/active'),
+            new MenuItem({ key: 'module.clients.inactiveClients' }, 'not_interested', MenuItemType.trainer, 'clients/inactive')
         ];
     }
 }
@@ -28,7 +28,7 @@ export class ClientMenuItems {
             new MenuItem({ key: 'Jídelníček' }, 'free_breakfast', MenuItemType.trainer, 'trainings'),
             new MenuItem({ key: 'Statistiky' }, 'show_chart', MenuItemType.trainer, 'stats'),
             new MenuItem({ key: 'Fotogalerie' }, 'camera', MenuItemType.trainer, 'clients/galllery/' + id),
-            new MenuItem({ key: 'Změna údajů' }, 'build', MenuItemType.trainer, 'clients/edit/' + id)
+            new MenuItem({ key: 'Změna údajů' }, 'edit', MenuItemType.trainer, 'clients/edit/' + id)
         ];
     }
 }

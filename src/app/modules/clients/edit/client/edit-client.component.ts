@@ -1,12 +1,12 @@
 // common
 import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { AppConfig, ComponentDependencyService, BaseComponent } from '../../core';
+import { AppConfig, ComponentDependencyService, BaseComponent } from '../../../../core';
 
 // required by component
-import { ClientMenuItems } from './menu.items';
-import { FormConfig } from '../../../lib/web-components';
-import { User } from '../../models';
+import { ClientMenuItems } from '../../menu.items';
+import { FormConfig } from '../../../../../lib/web-components';
+import { User } from '../../../../models';
 import 'rxjs/add/operator/switchMap';
 
 @Component({
@@ -37,7 +37,7 @@ export class EditClientComponent extends BaseComponent implements OnInit {
                         data: { 'fullName': user.getFullName() }
                     },
                     componentTitle: {
-                        'key': 'menu.clients.editClient'
+                        'key': 'module.clients.editClient'
                     }
                 });
 

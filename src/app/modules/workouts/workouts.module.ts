@@ -6,7 +6,10 @@ import { RouterModule } from '@angular/router';
 import { CoreModule } from '../../core';
 
 // components
-import { WorkoutsOverviewComponent } from './workouts-overview.component';
+import { WorkoutsOverviewComponent } from './list/workouts-overview.component';
+import { NewWorkoutComponent } from './new/new-workout.component';
+import { EditWorkoutComponent } from './edit/edit-workout.component';
+import { WorkoutPlanComponent } from './list/workout-plan.component';
 
 // router
 import { WorkoutsRouter } from './workouts.routing';
@@ -23,6 +26,9 @@ import { SharedModule} from '../shared/shared.module';
     ],
     declarations: [
         WorkoutsOverviewComponent,
+        NewWorkoutComponent,
+        EditWorkoutComponent,
+        WorkoutPlanComponent
     ]
 })
 export class WorkoutsModule { }

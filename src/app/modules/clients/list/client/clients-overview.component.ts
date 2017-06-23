@@ -1,17 +1,17 @@
 // common
 import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { AppConfig, ComponentDependencyService, BaseComponent, ComponentConfig } from '../../core';
+import { AppConfig, ComponentDependencyService, BaseComponent, ComponentConfig } from '../../../../core';
 
 // required by component
-import { ClientOverviewMenuItems } from './menu.items';
-import { DataTableConfig, AlignEnum } from '../../../lib/web-components';
-import { User } from '../../models';
+import { ClientOverviewMenuItems } from '../../menu.items';
+import { DataTableConfig, AlignEnum } from '../../../../../lib/web-components';
+import { User } from '../../../../models';
 
 @Component({
-  templateUrl: 'active-clients.component.html'
+  templateUrl: 'clients-overview.component.html'
 })
-export class ActiveClientsComponent extends BaseComponent {
+export class ClientsOverviewComponent extends BaseComponent {
 
   private config: DataTableConfig<User>;
 
@@ -20,9 +20,9 @@ export class ActiveClientsComponent extends BaseComponent {
     super(dependencies)
 
     this.setConfig({
-      menuTitle: { key: 'menu.clients.title' },
+      menuTitle: { key: 'menu.clients' },
       menuItems: new ClientOverviewMenuItems().menuItems,
-      componentTitle: { key: 'menu.clients.activeClients' },
+      componentTitle: { key: 'module.clients.allClients' },
     });
 
     this.config = this.dependencies.dataTableService.dataTable<User>()
@@ -35,7 +35,6 @@ export class ActiveClientsComponent extends BaseComponent {
           .pageSize(pageSize)
           .page(page)
           .WhereLikeMultiple(["FirstName", "LastName"], searchTerm)
-          .whereEquals('IsActive', true)
           .get()
       })
       .showPager(true)

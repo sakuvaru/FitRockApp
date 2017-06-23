@@ -6,11 +6,11 @@ import { RouterModule } from '@angular/router';
 import { CoreModule } from '../../core';
 
 // components
-import { ClientsOverviewComponent } from './clients-overview.component';
-import { NewClientComponent } from './new-client.component';
-import { EditClientComponent } from './edit-client.component';
-import { ActiveClientsComponent } from './active-clients.component';
-import { InActiveClientsComponent } from './inactive-clients.component';
+import { ClientsOverviewComponent } from './list/client/clients-overview.component';
+import { NewClientComponent } from './new/client/new-client.component';
+import { EditClientComponent } from './edit/client/edit-client.component';
+import { ActiveClientsComponent } from './list/client/active-clients.component';
+import { InActiveClientsComponent } from './list/client/inactive-clients.component';
 
 // router
 import { ClientsRouter } from './clients.routing';

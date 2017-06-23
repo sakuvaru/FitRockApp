@@ -1,12 +1,12 @@
 // common
 import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { AppConfig, ComponentDependencyService, BaseComponent, ComponentConfig } from '../../core';
+import { AppConfig, ComponentDependencyService, BaseComponent, ComponentConfig } from '../../../../core';
 
 // required by component
-import { ClientOverviewMenuItems } from './menu.items';
-import { DataTableConfig, AlignEnum } from '../../../lib/web-components';
-import { User } from '../../models';
+import { ClientOverviewMenuItems } from '../../menu.items';
+import { DataTableConfig, AlignEnum } from '../../../../../lib/web-components';
+import { User } from '../../../../models';
 
 @Component({
   templateUrl: 'inactive-clients.component.html'
@@ -20,9 +20,9 @@ export class InActiveClientsComponent extends BaseComponent {
     super(dependencies)
 
     this.setConfig({
-      menuTitle: { key: 'menu.clients.title' },
+      menuTitle: { key: 'menu.clients' },
       menuItems: new ClientOverviewMenuItems().menuItems,
-      componentTitle: { key: 'menu.clients.inactiveClients' },
+      componentTitle: { key: 'module.clients.inactiveClients' },
     });
 
     this.config = this.dependencies.dataTableService.dataTable<User>()

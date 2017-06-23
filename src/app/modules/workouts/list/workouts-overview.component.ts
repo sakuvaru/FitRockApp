@@ -1,12 +1,12 @@
 // common
 import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { AppConfig, ComponentDependencyService, BaseComponent, ComponentConfig } from '../../core';
+import { AppConfig, ComponentDependencyService, BaseComponent, ComponentConfig } from '../../../core';
 
 // required by component
-import { WorkoutsOverviewMenuItems } from './menu.items';
-import { DataTableConfig, AlignEnum } from '../../../lib/web-components';
-import { Workout } from '../../models';
+import { WorkoutsOverviewMenuItems } from '../menu.items';
+import { DataTableConfig, AlignEnum } from '../../../../lib/web-components';
+import { Workout } from '../../../models';
 
 @Component({
   templateUrl: 'workouts-overview.component.html'
@@ -20,9 +20,9 @@ export class WorkoutsOverviewComponent extends BaseComponent {
     super(dependencies)
 
     this.setConfig({
-      menuTitle: { key: 'menu.workouts.list' },
+      menuTitle: { key: 'menu.workouts' },
       menuItems: new WorkoutsOverviewMenuItems().menuItems,
-      componentTitle: { key: 'menu.workouts.overview' },
+      componentTitle: { key: 'module.workouts.overview' },
     });
 
     this.config = this.dependencies.dataTableService.dataTable<Workout>()

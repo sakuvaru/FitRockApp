@@ -10,7 +10,10 @@ import { UrlConfig } from '../../core';
 // components
 import { SimpleLayoutComponent } from '../../layouts/simple-layout.component';
 import { AdminLayoutComponent } from '../../layouts/admin-layout.component';
-import { WorkoutsOverviewComponent } from './workouts-overview.component';
+import { WorkoutsOverviewComponent } from './list/workouts-overview.component';
+import { NewWorkoutComponent } from './new/new-workout.component';
+import { EditWorkoutComponent } from './edit/edit-workout.component';
+import { WorkoutPlanComponent } from './list/workout-plan.component';
 
 const routes: Routes = [
     {
@@ -19,13 +22,13 @@ const routes: Routes = [
                 path: 'workouts', component: WorkoutsOverviewComponent
             },
             {
-                path: 'workouts/new', component: WorkoutsOverviewComponent
+                path: 'workouts/new', component: NewWorkoutComponent
             },
             {
-                path: 'workouts/edit/:id', component: WorkoutsOverviewComponent
+                path: 'workouts/edit/:id', component: EditWorkoutComponent
             },
              {
-                path: 'workouts/view/:id', component: WorkoutsOverviewComponent
+                path: 'workouts/view/:id', component: WorkoutPlanComponent
             },
         ]
     }

@@ -5,20 +5,8 @@
         },
         "main": "Hlavní menu",
         "dashboard": "Přehled",
-        "clients": {
-            "title": "Klienti",
-            "allClients": "Všichni",
-            "activeClients": "Aktivní",
-            "inactiveClients": "Neaktivní",
-            "editClient": "Změna údajů"
-        },
-        "workouts": {
-            "title": "Tréninkové plány",
-            "view": "Zobrazit plán",
-            "edit": "Editovat",
-            "list": "Tréninkové plány",
-            "overview": "Přehled"
-        },
+        "clients": "Klienti",
+        "workouts": "Tréninkové plány",
         "mealPlans": "Jídelníčky",
         "locations": "Místa",
         "forms": "Formulář"
@@ -34,10 +22,22 @@
     "module": {
         "clients": {
             "newClient": "Nový klient",
-            "viewClientSubtitle": "{{fullName}}"
+            "viewClientSubtitle": "{{fullName}}",
+		    "clients": "Klienti",
+            "allClients": "Všichni",
+            "activeClients": "Aktivní",
+            "inactiveClients": "Neaktivní",
+            "editClient": "Změna údajů"
         },
         "workouts":{
-            "workoutName": "Trénink"
+            "workoutName": "Trénink",
+			"editWorkout": "Změna tréninku",
+			"trainingPlans": "Tréninkové plány",
+            "view": "Zobrazit plán",
+            "edit": "Editovat",
+            "list": "Tréninkové plány",
+            "overview": "Přehled",
+			"myTrainingPlans": "Moje tréninkové plány"
         }
     },
     "form": {
@@ -86,7 +86,12 @@
             "intermediate": "Středně pokročilý",
             "advanced": "Pokročilý",
             "fitnessCompetitor": "Závodník fitness"
-        }
+        },
+		"workout":{
+			"workoutName": "Název tréninku",
+			"workoutCategoryId": "Kategorie",
+			"description": "Popis"
+		}
     },
     "webComponents": {
         "dataTable": {
