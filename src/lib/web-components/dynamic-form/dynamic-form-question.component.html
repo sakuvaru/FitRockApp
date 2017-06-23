@@ -3,14 +3,14 @@
   <!-- Question types -->
   <md-input-container *ngIf="isTextField()" flex hintLabel="{{questionHint}}">
     <input mdInput value="{{question.value}}" [attr.maxLength]="question.options.maxLength > 0 ? question.options.maxLength : null" required="{{question.required}}"
-      placeholder="{{questionLabel}}" [formControlName]="question.key" [id]="question.key" [type]="question.type" #elem>
+      placeholder="{{question.translatedLabel}}" [formControlName]="question.key" [id]="question.key" [type]="question.type" #elem>
     <md-hint *ngIf="showLengthHint()" [ngClass]="{'tc-red-600': elem.value.length > question.options.maxLength}" align="end">{{elem.value.length}} / {{question.options.maxLength}}</md-hint>
     <md-error></md-error>
   </md-input-container>
 
   <div *ngIf="isBooleanField()"  flex>
     <md-checkbox [checked]="checkBoxIsChecked" [formControlName]="question.key" [id]="question.key" required="{{question.required}}"
-      #elem>&nbsp;{{questionLabel}} <span class="md-caption">({{questionHint}})</span>
+      #elem>&nbsp;{{question.translatedLabel}} <span class="md-caption">({{questionHint}})</span>
     </md-checkbox>
     <span *ngIf="question.required && !elem.checked" class="tc-grey-500 md-caption"> ({{ 'form.shared.required' | translate }})</span>
   </div>
@@ -25,7 +25,7 @@
 
   <div *ngIf="isDateField()"  flex>
     <md-input-container>
-      <input mdInput [mdDatepicker]="datepicker" [formControlName]="question.key" [id]="question.key" [placeholder]="questionLabel"
+      <input mdInput [mdDatepicker]="datepicker" [formControlName]="question.key" [id]="question.key" [placeholder]="question.translatedLabel"
         [required]="question.required" [value]="question.value">
       <button mdSuffix [mdDatepickerToggle]="datepicker"></button>
     </md-input-container>
@@ -35,7 +35,7 @@
   <md-input-container *ngIf="isTextAreaField()"  flex hintLabel="{{questionHint}}">
     <textarea mdTextareaAutosize mdInput mdAutosizeMinRows="{{question.options.minAutosizeRows}}" mdAutosizeMaxRows="{{question.options.maxAutosizeRows}}"
       [attr.maxLength]="question.options.maxLength > 0 ? question.options.maxLength : null" value="{{question.value}}" required="{{question.required}}"
-      placeholder="{{questionLabel}}" [formControlName]="question.key" [id]="question.key" [type]="question.type" #elem>
+      placeholder="{{question.translatedLabel}}" [formControlName]="question.key" [id]="question.key" [type]="question.type" #elem>
     </textarea>
     <md-hint *ngIf="showLengthHint()" [ngClass]="{'tc-red-600': elem.value.length > question.options.maxLength}" align="end">{{elem.value.length}} / {{question.options.maxLength}}</md-hint>
     <md-error></md-error>
@@ -48,7 +48,7 @@
   <div *ngIf="isDropdownField()"  flex>
     <div>
       <md-select [style.width]="getWidthStyle()" [id]="question.key" [formControlName]="question.key" [required]="question.required"
-        [placeholder]="questionLabel">
+        [placeholder]="question.translatedLabel">
         <md-option *ngFor="let option of question.options.listOptions" [value]="option.value">{{option.name}}</md-option>
       </md-select>
     </div>

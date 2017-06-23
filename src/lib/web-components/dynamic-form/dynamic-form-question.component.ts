@@ -26,7 +26,7 @@ export class DynamicFormQuestionComponent implements OnInit {
   ) {
   }
 
-  private questionLabel: string;
+  public questionLabel: string;
 
   private questionHint: string;
 
@@ -132,7 +132,7 @@ export class DynamicFormQuestionComponent implements OnInit {
     var translationKey = this.getQuestionLabelKey();
     this.translateService.get(translationKey).subscribe(translatedText => {
       if (translatedText) {
-        this.questionLabel = translatedText
+        this.question.translatedLabel = translatedText
       }
     });
   }

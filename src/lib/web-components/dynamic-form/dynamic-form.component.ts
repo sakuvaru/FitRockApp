@@ -183,8 +183,11 @@ export class DynamicFormComponent implements OnInit, OnChanges {
                     this.form.controls[validationResult.columnName].setErrors({ 'field_error': error });
                 });
 
+                // get translated label of the form field
+                var formField = this.questions.find(m => m.key.toLowerCase() === validationResult.columnName.toLocaleLowerCase());
+
                 // form error
-                this.getFormErrorMessage(validationResult, validationResult.columnName + 'TODO_GetFormErrorMessage').subscribe(error => this.formErrorLines.push(error))
+                this.getFormErrorMessage(validationResult, formField.translatedLabel).subscribe(error => this.formErrorLines.push(error))
             });
             this.submissionError = this.formErrorLines.join(', ');
         }

@@ -9,6 +9,7 @@ export class BaseField<T> implements IFormField<T> {
     public controlType: string;
     public controlTypeEnum: ControlTypeEnum;
     public options: IFormFieldOptions;
+    public translatedLabel: string;
 
     constructor(constructorOptions: {
         value?: T,
