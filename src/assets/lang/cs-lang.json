@@ -12,7 +12,13 @@
             "inactiveClients": "Neaktivní",
             "editClient": "Změna údajů"
         },
-        "trainingPlans": "Tréninkové plány",
+        "workouts": {
+            "title": "Tréninkové plány",
+            "view": "Zobrazit plán",
+            "edit": "Editovat",
+            "list": "Tréninkové plány",
+            "overview": "Přehled"
+        },
         "mealPlans": "Jídelníčky",
         "locations": "Místa",
         "forms": "Formulář"
@@ -22,12 +28,16 @@
     },
     "shared": {
         "login": "Přihlášení",
-        "search": "Hledat"
+        "search": "Hledat",
+        "updated": "Poslední změna"
     },
     "module": {
         "clients": {
             "newClient": "Nový klient",
             "viewClientSubtitle": "{{fullName}}"
+        },
+        "workouts":{
+            "workoutName": "Trénink"
         }
     },
     "form": {

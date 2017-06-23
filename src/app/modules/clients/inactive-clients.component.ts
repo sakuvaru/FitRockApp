@@ -31,7 +31,7 @@ export class InActiveClientsComponent extends BaseComponent {
         { label: 'E-mail', value: (item) => { return item.email }, isSubtle: true, align: AlignEnum.Right },
       ])
       .loadResolver((searchTerm, page, pageSize) => {
-        return this.dependencies.userService.clients()
+        return this.dependencies.itemServices.userService.clients()
           .pageSize(pageSize)
           .page(page)
           .WhereLikeMultiple(["FirstName", "LastName"], searchTerm)

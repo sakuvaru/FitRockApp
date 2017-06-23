@@ -10,8 +10,7 @@ import { TdLoadingService } from '@covalent/core';
 import { RepositoryClient } from '../../../lib/repository';
 
 // Services
-import { UserService } from '../../services/user.service';
-import { LogService } from '../../services/log.service';
+import { UserService, ExerciseCategoryService, ExerciseService, LogService, WorkoutCategoryService, WorkoutExerciseService, WorkoutService } from '../../services';
 
 // Angular material
 import { MdSnackBar } from '@angular/material';
@@ -41,29 +40,44 @@ export class ComponentDependencyService {
     public snackbarService: MdSnackBar
     public translateService: TranslateService;
 
-    // web components
+    // web component services
     public dataTableService: DataTableService;
 
-    // services
-    public userService: UserService;
-    public logService: LogService;
+    // data/item services
+    public itemServices: ItemServices;
 
     constructor(private injector: Injector) {
         // use Angular's injector to get service instances
         this.router = injector.get(Router);
 
+        // general services
         this.authService = injector.get(AuthService);
         this.mediaService = injector.get(TdMediaService);
         this.sharedService = injector.get(SharedService);
         this.loadingService = injector.get(TdLoadingService);
         this.repositoryClient = injector.get(RepositoryClient);
         this.snackbarService = injector.get(MdSnackBar);
-
-        this.userService = injector.get(UserService);
-        this.logService = injector.get(LogService);
-
         this.translateService = injector.get(TranslateService);
-
         this.dataTableService = injector.get(DataTableService);
+
+        // item services
+        this.itemServices = new ItemServices();
+        this.itemServices.userService = injector.get(UserService);
+        this.itemServices.logService = injector.get(LogService);
+        this.itemServices.workoutService = injector.get(WorkoutService);
+        this.itemServices.workoutCategoryService = injector.get(WorkoutCategoryService);
+        this.itemServices.workoutExerciseService = injector.get(WorkoutExerciseService);
+        this.itemServices.exerciseService = injector.get(ExerciseService);
+        this.itemServices.exerciseCategoyService = injector.get(ExerciseCategoryService);
     }
+}
+
+export class ItemServices{
+    public userService: UserService;
+    public logService: LogService; 
+    public workoutService: WorkoutService;
+    public workoutCategoryService: WorkoutCategoryService;
+    public workoutExerciseService: WorkoutExerciseService;
+    public exerciseService: ExerciseService;
+    public exerciseCategoyService: ExerciseCategoryService;
 }

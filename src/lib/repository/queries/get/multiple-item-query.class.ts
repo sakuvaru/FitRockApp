@@ -28,6 +28,11 @@ export class MultipleItemQuery<TItem extends IItem> extends BaseItemQuery<TItem>
      */
     private readonly defaultAction = 'getAll';
 
+    /**
+     * Action used for getting items created by current user
+     */
+    private readonly createdByCurrentUserAction = 'getCreatedByCurrentUser';
+
     constructor(
         protected authHttp: AuthHttp,
         protected config: RepositoryConfig,
@@ -40,6 +45,11 @@ export class MultipleItemQuery<TItem extends IItem> extends BaseItemQuery<TItem>
     // custom action
     withCustomAction(action: string): this {
         this._action = action;
+        return this;
+    }
+
+    byCurrentUser(): this{
+        this._action = this.createdByCurrentUserAction;
         return this;
     }
 

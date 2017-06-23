@@ -5,7 +5,6 @@ import { AppConfig, ComponentDependencyService, BaseComponent } from '../../core
 
 // required by component
 import { Log } from '../../models';
-import { LogService } from '../../services';
 import { CurrentUser } from '../../../lib/auth';
 
 @Component({
@@ -19,20 +18,19 @@ export class DashboardComponent extends BaseComponent implements OnInit {
     private currentUser: CurrentUser;
 
     constructor(
-        private logService: LogService,
         protected dependencies: ComponentDependencyService) {
         super(dependencies)
     }
 
     ngOnInit(): void {
-        this.logService.items().limit(5).orderByDesc('id').get().subscribe(
+        this.dependencies.itemServices.logService.items().limit(5).orderByDesc('id').get().subscribe(
             response => {
                 console.log(response);
                 this.logs = response.items;
             }
         );
 
-        this.logService.item().byId(2).get().subscribe(
+        this.dependencies.itemServices.logService.item().byId(2).get().subscribe(
             response => {
                 console.log(response);
                 this.log = response.item;

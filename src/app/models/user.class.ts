@@ -19,32 +19,6 @@ export class User extends BaseItem {
     public trainer: User;
     public isActive: boolean;
 
-    constructor(
-        public fields?: {
-            id?: number,
-            codename?: string,
-            guid?: string,
-            created?: Date,
-            updated?: Date,
-            firstName?: string;
-            lastName?: string;
-            email?: string;
-            isClient?: boolean;
-            isAdmin?: boolean;
-            trainerUserId?: number;
-            birthDate?: Date,
-            isFemale?: boolean,
-            city?: string,
-            address?: string,
-            fitnessLevel?: string,
-            medicalCondition?: string,
-            goal?: string,
-            trainerPublicNotes?: string,
-            isActive?: boolean
-        }) { super()
-        if (fields) Object.assign(this, fields);
-    }
-
     getFullName(): string {
         return this.firstName + ' ' + this.lastName;
     }

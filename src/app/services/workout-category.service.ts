@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Log } from '../models/log.class';
+import { WorkoutCategory } from '../models';
 import { RepositoryClient } from '../../lib/repository';
 import { BaseTypeService } from '../core';
 
 @Injectable()
-export class LogService extends BaseTypeService<Log>{
+export class WorkoutCategoryService extends BaseTypeService<WorkoutCategory>{
 
     constructor(repositoryClient: RepositoryClient) { 
-        super (repositoryClient, "log")
+        super (repositoryClient, "WorkoutCategory")
     }
 }

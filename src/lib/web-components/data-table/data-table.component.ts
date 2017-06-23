@@ -53,6 +53,13 @@ export class DataTableComponent implements AfterViewInit, OnInit {
         //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
         this.translateService.get(this.config.noItemsTextKey).subscribe(text => this.noItemsText = text);
         this.translateService.get(this.config.searchNoItemsTextKey).subscribe(text => this.searchNoItemsText = text);
+
+        // translated all labels
+        this.config.fields.forEach(field => {
+            this.translateService.get(field.label).subscribe(text =>{
+                field.label = text;
+            });
+        });
     }
 
     ngAfterViewInit() {

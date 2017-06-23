@@ -16,10 +16,6 @@ export class UserService extends BaseTypeService<User>{
         super(repositoryClient, "user")
     }
 
-    createEmptyItem(): User {
-        return new User();
-    }
-
     clients(): MultipleItemQuery<User> {
         return this.items().withCustomAction('getclients');
     }

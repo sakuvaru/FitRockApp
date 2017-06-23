@@ -5,7 +5,7 @@ import { DataTableField } from './data-table-field.class';
 export class DataTableConfig<T> {
     public fields: DataTableField<any>[];
     public loadResolver: (searchTerm: string, page: number, pageSize: number) => Observable<ResponseMultiple<any>>;
-    public showHeader?: boolean = true;
+    public showHeader?: boolean = false;
     public showPager?: boolean = true;
     public showSearch?: boolean = true;
     public pagerSize?: number = 10;

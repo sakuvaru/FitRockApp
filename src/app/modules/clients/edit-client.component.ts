@@ -25,7 +25,7 @@ export class EditClientComponent extends BaseComponent implements OnInit {
 
     ngOnInit(): void {
         this.activatedRoute.params
-            .switchMap((params: Params) => this.dependencies.userService.editForm(+params['id']))
+            .switchMap((params: Params) => this.dependencies.itemServices.userService.editForm(+params['id']))
             .subscribe(form => {
 
                 var user = form.getItem();

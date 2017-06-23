@@ -24,9 +24,9 @@ export class NewClientComponent extends BaseComponent {
             menuItems: new ClientOverviewMenuItems().menuItems
         });
 
-        this.dependencies.userService.insertForm()
+        this.dependencies.itemServices.userService.insertForm()
             .subscribe(form => {
-                form.insertFunction((item) => this.dependencies.userService.createClient(item).set())
+                form.insertFunction((item) => this.dependencies.itemServices.userService.createClient(item).set())
                 form.callback((response) => {
                     // redirect to view client page
                     this.dependencies.router.navigate([this.getTrainerUrl('clients/edit'), response.item.id])

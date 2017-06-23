@@ -10,16 +10,20 @@ import { AppConfig } from '../../core/config/app.config';
 import { AuthHttp } from 'angular2-jwt';
 
 // models
-import { User } from '../../models/user.class';
-import { Log } from '../../models/log.class';
+import { User, Log, Workout, WorkoutCategory, Exercise, ExerciseCategory, WorkoutExercise } from '../../models';
 
 export function RepositoryClientFactory(authHttp: AuthHttp) {
 
     let apiUrl = AppConfig.RepositoryApiEndpoint;
 
     let typeResolvers: TypeResolver[] = [
-        new TypeResolver("user", () => new User()),
-        new TypeResolver("log", () => new Log()),
+        new TypeResolver("User", () => new User()),
+        new TypeResolver("Log", () => new Log()),
+        new TypeResolver("Workout", () => new Workout()),
+        new TypeResolver("WorkoutCategory", () => new WorkoutCategory()),
+        new TypeResolver("WorkoutExercise", () => new WorkoutExercise()),
+        new TypeResolver("Exercise", () => new Exercise()),
+        new TypeResolver("ExerciseCategory", () => new ExerciseCategory()),
     ];
 
     return new RepositoryClient(

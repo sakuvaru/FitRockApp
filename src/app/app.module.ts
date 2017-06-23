@@ -39,6 +39,7 @@ import { ServicesModule } from './services/services.module';
 import { DashboardModule } from './modules/dashboard/dashboard.module';
 import { LoginModule } from './modules/login/login.module';
 import { ClientsModule } from './modules/clients/clients.module';
+import { WorkoutsModule } from './modules/workouts/workouts.module';
 
 // test form module
 import { FormModule } from './modules/_forms/_form.module';
@@ -80,6 +81,7 @@ import { FormModule } from './modules/_forms/_form.module';
     ServicesModule,
     LoginModule,
     ClientsModule,
+    WorkoutsModule,
 
     // translation
     TranslateModule.forRoot({

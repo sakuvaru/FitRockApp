@@ -18,11 +18,11 @@ export class FormComponent extends BaseComponent {
         protected dependencies: ComponentDependencyService) {
         super(dependencies)
 
-        this.dependencies.logService.insertForm()
+        this.dependencies.itemServices.logService.insertForm()
             .subscribe(form => this.formInsertConfig = form.build()
             );
 
-        this.dependencies.logService.editForm(1)
+        this.dependencies.itemServices.logService.editForm(1)
             .subscribe(form => this.formEditConfig = form.build()
             );
     }
