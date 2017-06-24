@@ -37,7 +37,10 @@
             "edit": "Editovat",
             "list": "Tréninkové plány",
             "overview": "Přehled",
-			"myTrainingPlans": "Moje tréninkové plány"
+			"myTrainingPlans": "Moje tréninkové plány",
+			"workoutPlan": "Plán tréninku",
+			"reps": "Opakování",
+			"sets": "Série"
         }
     },
     "form": {

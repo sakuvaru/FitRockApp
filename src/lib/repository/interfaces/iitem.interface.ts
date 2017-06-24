@@ -1,3 +1,5 @@
+import { IPropertyInfo } from './iproperty-info.interface';
+
 export interface IItem {
     type: string;
     id: number;
@@ -5,6 +7,7 @@ export interface IItem {
     guid: string;
     created: Date;
     updated: Date;
-
+    itemProperties: IPropertyInfo[];
+    
     resolver?: ((fieldName: string) => string);
 }

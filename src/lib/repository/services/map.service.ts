@@ -3,8 +3,13 @@ import { TypeResolverService } from './type-resolver.service';
 import { IItem } from '../interfaces/iitem.interface';
 import { BaseField, FormFieldOptions, DropdownFieldOption } from '../models/form-fields';
 import { IFormField, IDropdownFieldOption } from '../interfaces/iform-fields';
+import { IPropertyInfo } from '../interfaces/iproperty-info.interface';
+import { PropertyInfo } from '../models/property-info.class';
 
 export class MapService {
+
+    private readonly itemPropertiesPropertyName: string = 'itemProperties';
+
     constructor(
         private typeResolverService: TypeResolverService
     ) {
@@ -12,11 +17,11 @@ export class MapService {
 
     private isEntityField(fieldValue: any): boolean {
         if (fieldValue instanceof Object) {
+            // if field contains property 'type' it is considered as 'Entity' field
             if (fieldValue["type"]) {
                 return true;
             }
         }
-
         return false;
     }
 
@@ -26,7 +31,18 @@ export class MapService {
         // create typed item
         var itemTyped = this.typeResolverService.createTypedObj(item.type, item);
 
+        // map item property infos
+        var itemProperties = this.mapListOfItemProperties(item.itemProperties);
+
+        // assign item properties
+        itemTyped.itemProperties = itemProperties;
+
         properties.forEach(fieldName => {
+            if (fieldName === this.itemPropertiesPropertyName){
+                // do not process item properties property
+                return;
+            }
+
             var propertyName;
 
             // resolve value into a different 'property'
@@ -43,10 +59,27 @@ export class MapService {
 
             if (this.isEntityField(fieldValue)) {
                 // field value is a nested entity type - recursively get object & properties
+                // map single object
                 itemTyped[propertyName] = this.mapFields(fieldValue);
             }
             else {
-                itemTyped[propertyName] = fieldValue;
+                if (Array.isArray(fieldValue)) {
+                    // map list of nested entity types
+                    var listItems = [];
+                    fieldValue.forEach(listItem => {
+                        if (this.isEntityField(listItem)) {
+                            listItems.push(this.mapFields(listItem));
+                        }
+                        else{
+                            // unknown field type
+                            listItems.push(listItem);
+                        }
+                    })
+                    itemTyped[propertyName] = listItems;
+                }
+                else {
+                    itemTyped[propertyName] = fieldValue;
+                }
             }
         });
 
@@ -105,14 +138,14 @@ export class MapService {
         });
     }
 
-    private mapListOptions(listOptions: IDropdownFieldOption[]): DropdownFieldOption[]{
-        if (!listOptions){
+    private mapListOptions(listOptions: IDropdownFieldOption[]): DropdownFieldOption[] {
+        if (!listOptions) {
             return [];
         }
 
         var mappedOptions: DropdownFieldOption[] = [];
 
-        if (!Array.isArray){
+        if (!Array.isArray(listOptions)) {
             throw Error(`Cannot map list options because the object is not an array!`);
         }
         listOptions.forEach(option => {
@@ -120,5 +153,22 @@ export class MapService {
         });
 
         return mappedOptions;
+    }
+
+    private mapListOfItemProperties(properties: IPropertyInfo[]): PropertyInfo[]{
+         if (!properties) {
+            return [];
+        }
+
+        var mappedProperties: PropertyInfo[] = [];
+
+        if (!Array.isArray(properties)) {
+            throw Error(`Cannot map property infos because the object is not an array!`);
+        }
+        properties.forEach(property => {
+            mappedProperties.push(new PropertyInfo(property.name, property.propertyType));
+        });
+
+        return mappedProperties;
     }
 }
