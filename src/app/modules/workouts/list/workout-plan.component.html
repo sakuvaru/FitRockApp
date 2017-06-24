@@ -6,10 +6,10 @@
     {{workout.description}}
   </md-card-content>
   <md-divider></md-divider>
-  <md-card-content *ngIf="workout.workoutExercises">
-    <td-expansion-panel *ngFor="let workoutExercise of workout.workoutExercises">
+  <md-card-content *ngIf="workout.workoutExercises"  [dragula]='"bag-one"' [dragulaModel]="workout.workoutExercises">
+    <td-expansion-panel *ngFor="let workoutExercise of workout.workoutExercises; let i = index">
       <ng-template td-expansion-panel-label>
-        {{workoutExercise.exercise.exerciseName}}
+        <span class="tc-red-700">{{i + 1}}.</span> {{workoutExercise.exercise.exerciseName}}
         <span class="md-caption tc-grey-700">({{workoutExercise.exercise.exerciseCategory.categoryName}})</span>
       </ng-template>
       <ng-template td-expansion-panel-sublabel>
@@ -21,50 +21,7 @@
     </td-expansion-panel>
   </md-card-content>
   <md-card-actions>
-    <button md-button color="accent" class="text-upper">Action</button>
-    <button md-button class="text-upper">Cancel</button>
+    <button md-button color="primary" class="text-upper">{{'module.workouts.addExercise' | translate }}</button>
+    <button md-button class="text-upper " color="warn">{{'module.workouts.deleteWorkout' | translate }}</button>
   </md-card-actions>
 </md-card>
-
-
-<td-expansion-panel disableRipple>
-  <ng-template td-expansion-panel-header>
-    <md-toolbar color="accent">
-      <span>Custom td-expansion-panel-header</span>
-    </md-toolbar>
-  </ng-template>
-  <td-expansion-summary>
-    <div class="md-padding">
-      <div flex layout-gt-xs="row" layout-align="start center">
-        <span flex="30" class="md-subhead">Owner</span>
-        <span flex="5" hide-xs><md-icon class="tc-grey-500">chevron_right</md-icon></span>
-        <span flex>John Jameson</span>
-      </div>
-      <div flex layout-gt-xs="row" layout-align="start center">
-        <span flex="30" class="md-subhead">API Key</span>
-        <span flex="5" hide-xs><md-icon class="tc-grey-500">chevron_right</md-icon></span>
-        <span flex>1141e8e8-8d24-4956-93c2</span>
-      </div>
-    </div>
-  </td-expansion-summary>
-  <md-list>
-    <h3 md-subheader>Metadata</h3>
-    <md-list-item>
-      <md-icon md-list-avatar>account_box</md-icon>
-      <h4 md-line>John Jameson</h4>
-      <p md-line>Owner</p>
-    </md-list-item>
-    <md-divider md-inset></md-divider>
-    <md-list-item>
-      <md-icon md-list-avatar>description</md-icon>
-      <h4 md-line>An item description</h4>
-      <p md-line>Description</p>
-    </md-list-item>
-    <md-divider md-inset></md-divider>
-    <md-list-item>
-      <md-icon md-list-avatar>vpn_key</md-icon>
-      <h4 md-line>1141e8e8-8d24-4956-93c2</h4>
-      <p md-line>API Key</p>
-    </md-list-item>
-  </md-list>
-</td-expansion-panel>

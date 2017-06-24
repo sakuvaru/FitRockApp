@@ -7,6 +7,7 @@ import { AppConfig, ComponentDependencyService, BaseComponent, ComponentConfig }
 import { WorkoutMenuItems } from '../menu.items';
 import { DataTableConfig, AlignEnum } from '../../../../lib/web-components';
 import { Workout, WorkoutExercise } from '../../../models';
+import { DragulaService } from 'ng2-dragula';
 
 @Component({
   templateUrl: 'workout-plan.component.html'
@@ -17,8 +18,14 @@ export class WorkoutPlanComponent extends BaseComponent implements OnInit {
 
   constructor(
     private activatedRoute: ActivatedRoute,
+    private dragulaService: DragulaService,
     protected dependencies: ComponentDependencyService) {
     super(dependencies)
+
+    // subscribe to drop events
+    dragulaService.drop.subscribe((value) => {
+      this.onDrop(this.workout.workoutExercises);
+    });
   }
 
   ngOnInit() {
@@ -30,7 +37,6 @@ export class WorkoutPlanComponent extends BaseComponent implements OnInit {
       .subscribe(response => {
 
         this.workout = response.item;
-        console.log(response.item);
 
         this.setConfig({
           menuItems: new WorkoutMenuItems(response.item.id).menuItems,
@@ -43,4 +49,29 @@ export class WorkoutPlanComponent extends BaseComponent implements OnInit {
         });
       });
   }
+
+  private onDrop(orderedWorkoutExercises: WorkoutExercise[]) {
+    this.dependencies.itemServices.workoutExerciseService.post('updateOrder')
+      .withJsonData(this.getExerciseOrderJson())
+      .set()
+      .subscribe();
+  }
+
+  private getExerciseOrderJson(): OrderItem[] {
+    var data: OrderItem[] = [];
+    if (this.workout.workoutExercises) {
+      for (var i = 0; i < this.workout.workoutExercises.length; i++) {
+        var workoutExercise = this.workout.workoutExercises[i];
+        data.push(new OrderItem(workoutExercise.id, i));
+      }
+    }
+    return data;
+  }
+}
+
+class OrderItem {
+  constructor(
+    public orderExerciseId: number,
+    public position: number
+  ) { }
 }

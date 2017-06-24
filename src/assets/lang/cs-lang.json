@@ -33,14 +33,16 @@
             "workoutName": "Trénink",
 			"editWorkout": "Změna tréninku",
 			"trainingPlans": "Tréninkové plány",
-            "view": "Zobrazit plán",
-            "edit": "Editovat",
+            "view": "Rozpis plánu",
+            "edit": "Základní údaje",
             "list": "Tréninkové plány",
             "overview": "Přehled",
 			"myTrainingPlans": "Moje tréninkové plány",
 			"workoutPlan": "Plán tréninku",
 			"reps": "Opakování",
-			"sets": "Série"
+			"sets": "Série",
+			"addExercise": "Přidat cvik",
+			"deleteWorkout": "Smazat trénink"
         }
     },
     "form": {

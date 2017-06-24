@@ -66,6 +66,10 @@ export interface IResponseFormEditRaw {
     item: any
 }
 
+export interface IResponsePostRaw{
+    result: any;
+}
+
 
 
 

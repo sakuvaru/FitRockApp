@@ -103,7 +103,7 @@ import { FormModule } from './modules/_forms/_form.module';
     RepositoryClientProvider
   ],
   exports: [
-    WebComponentsModule
+    WebComponentsModule,
   ],
   bootstrap: [AppComponent]
 })

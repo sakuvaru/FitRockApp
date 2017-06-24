@@ -2,7 +2,7 @@ import { IService } from './iservice.class';
 import { Observable } from 'rxjs/Observable';
 
 import {
-    RepositoryClient, IItem, SingleItemQueryInit, MultipleItemQuery, CreateItemQuery, EditItemQuery, DeleteItemQuery,
+    PostQuery, RepositoryClient, IItem, SingleItemQueryInit, MultipleItemQuery, CreateItemQuery, EditItemQuery, DeleteItemQuery,
     EditFormQuery, InsertFormQuery
 } from '../../../lib/repository';
 
@@ -29,6 +29,10 @@ export abstract class BaseTypeService<TItem extends IItem> implements IService<T
 
     edit(item: TItem): EditItemQuery<TItem> {
         return this.repositoryClient.edit<TItem>(this.type, item);
+    }
+
+    post<T extends any>(action: string): PostQuery<T> {
+        return this.repositoryClient.post<T>(this.type, action);
     }
 
     delete(itemId: number): DeleteItemQuery {

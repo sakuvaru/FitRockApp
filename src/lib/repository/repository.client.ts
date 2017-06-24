@@ -10,6 +10,7 @@ import { DeleteItemQuery } from './queries/manage/delete-item-query.class';
 import { ErrorResponse } from './models/responses';
 import { InsertFormQuery } from './queries/form/insert-form-query.class';
 import { EditFormQuery } from './queries/form/edit-form-query.class';
+import { PostQuery } from './queries/general/post-query.class';
 
 // rxjs
 import { Observable } from 'rxjs/Observable';
@@ -46,6 +47,10 @@ export class RepositoryClient {
 
     edit<TItem extends IItem>(type: string, item: TItem): EditItemQuery<TItem> {
         return new EditItemQuery(this.authHttp, this.config, type, item);
+    }
+
+     post<T extends any>(type: string, action: string): PostQuery<T> {
+        return new PostQuery(this.authHttp, this.config, type, action);
     }
 
     delete<TItem extends IItem>(type: string, itemId: number): DeleteItemQuery {

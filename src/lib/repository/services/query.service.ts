@@ -1,6 +1,6 @@
 import { Headers, RequestOptions } from '@angular/http';
-import { ResponseFormEdit, ResponseFormInsert, ResponseDelete, ResponseCreate, ResponseEdit, ResponseMultiple, ResponseSingle, ErrorResponse, FormErrorResponse } from '../models/responses';
-import { IResponseFormEditRaw, IResponseFormInsertRaw, IResponseCreateRaw, IResponseDeleteRaw, IResponseEditRaw, IResponseMultipleRaw, IResponseSingleRaw, IErrorResponseRaw, IFormErrorResponseRaw } from '../interfaces/iraw-responses';
+import { ResponsePost, ResponseFormEdit, ResponseFormInsert, ResponseDelete, ResponseCreate, ResponseEdit, ResponseMultiple, ResponseSingle, ErrorResponse, FormErrorResponse } from '../models/responses';
+import { IResponsePostRaw, IResponseFormEditRaw, IResponseFormInsertRaw, IResponseCreateRaw, IResponseDeleteRaw, IResponseEditRaw, IResponseMultipleRaw, IResponseSingleRaw, IErrorResponseRaw, IFormErrorResponseRaw } from '../interfaces/iraw-responses';
 import { IOption } from '../interfaces/ioption.interface';
 import { AuthHttp } from 'angular2-jwt';
 import { Response } from '@angular/http';
@@ -91,27 +91,27 @@ export class QueryService {
                 return new ErrorResponse(response.statusText, ErrorReasonEnum.NotFound, response);
             }
 
-                // create either 'FormResponse' or generic 'ErrorResponse'
-                var iFormErrorResponse = response.json() as IFormErrorResponseRaw;
-                var iErrorResponse = response.json() as IErrorResponseRaw;
+            // create either 'FormResponse' or generic 'ErrorResponse'
+            var iFormErrorResponse = response.json() as IFormErrorResponseRaw;
+            var iErrorResponse = response.json() as IErrorResponseRaw;
 
-                // form validation error because 'formValidation' property exists
-                if (iFormErrorResponse.formValidation) {
-                    var iformValidation = iFormErrorResponse.formValidation as IFormValidationResult;
-                    var icolumnValidations = iformValidation.validationResult as IColumnValidation[];
+            // form validation error because 'formValidation' property exists
+            if (iFormErrorResponse.formValidation) {
+                var iformValidation = iFormErrorResponse.formValidation as IFormValidationResult;
+                var icolumnValidations = iformValidation.validationResult as IColumnValidation[];
 
-                    var columnValidations: ColumnValidation[] = [];
-                    icolumnValidations.forEach(validation => {
-                        columnValidations.push(new ColumnValidation(validation.columnName, validation.result));
-                    });
+                var columnValidations: ColumnValidation[] = [];
+                icolumnValidations.forEach(validation => {
+                    columnValidations.push(new ColumnValidation(validation.columnName, validation.result));
+                });
 
-                    var formValidation = new FormValidationResult(iformValidation.message, iformValidation.isInvalid, columnValidations);
+                var formValidation = new FormValidationResult(iformValidation.message, iformValidation.isInvalid, columnValidations);
 
-                    // return form validation error
-                    return new FormErrorResponse(iFormErrorResponse.error, iFormErrorResponse.reason, formValidation, response);
-                }
-                    return new ErrorResponse(iErrorResponse.error, iErrorResponse.reason, response);
+                // return form validation error
+                return new FormErrorResponse(iFormErrorResponse.error, iFormErrorResponse.reason, formValidation, response);
             }
+            return new ErrorResponse(iErrorResponse.error, iErrorResponse.reason, response);
+        }
 
         // return ErrorResponse for unknown error
         return new ErrorResponse(this.genericErrorMessage, ErrorReasonEnum.RepositoryException, response);
@@ -168,6 +168,14 @@ export class QueryService {
 
         return new ResponseEdit<TItem>({
             item: item,
+        });
+    }
+
+     private getPostResponse<T extends any>(response: Response): ResponsePost<T> {
+        var responsePost = (response.json() || {}) as IResponsePostRaw;
+
+        return new ResponsePost<T>({
+            result: responsePost.result as T
         });
     }
 
@@ -258,6 +266,25 @@ export class QueryService {
     }
 
     protected edit<TItem extends IItem>(url: string, body: any): Observable<ResponseEdit<TItem>> {
+        // trigger request
+        this.startRequest();
+
+        var headers = new Headers({ 'Content-Type': 'application/json' });
+        var headerOptions = new RequestOptions({ headers: headers });
+
+        return this.authHttp.post(url, body, headerOptions)
+            .map(response => {
+                return this.getEditResponse(response)
+            })
+            .catch(response => {
+                return Observable.throw(this.handleError(response));
+            })
+            ._finally(() => {
+                this.finishRequest();
+            });
+    }
+
+    protected post<T extends any>(url: string, body: any): Observable<ResponsePost<T>> {
         // trigger request
         this.startRequest();
 
