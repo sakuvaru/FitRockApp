@@ -32,11 +32,15 @@ export class WorkoutPlanComponent extends BaseComponent implements OnInit {
     this.activatedRoute.params
       .switchMap((params: Params) => this.dependencies.itemServices.workoutService.item()
         .byId(+params['id'])
+        .disableCache(false)
         .includeMultiple(['WorkoutCategory', 'WorkoutExercises', 'WorkoutExercises.Exercise', 'WorkoutExercises.Exercise.ExerciseCategory'])
         .get())
       .subscribe(response => {
 
         this.workout = response.item;
+
+        // sort exercises
+        this.workout.workoutExercises.sort((n1,n2) => n1.order - n2.order);
 
         this.setConfig({
           menuItems: new WorkoutMenuItems(response.item.id).menuItems,
@@ -51,27 +55,8 @@ export class WorkoutPlanComponent extends BaseComponent implements OnInit {
   }
 
   private onDrop(orderedWorkoutExercises: WorkoutExercise[]) {
-    this.dependencies.itemServices.workoutExerciseService.post('updateOrder')
-      .withJsonData(this.getExerciseOrderJson())
+    this.dependencies.itemServices.workoutExerciseService.updateItemsOrder(this.workout.workoutExercises, this.workout.id)
       .set()
       .subscribe();
   }
-
-  private getExerciseOrderJson(): OrderItem[] {
-    var data: OrderItem[] = [];
-    if (this.workout.workoutExercises) {
-      for (var i = 0; i < this.workout.workoutExercises.length; i++) {
-        var workoutExercise = this.workout.workoutExercises[i];
-        data.push(new OrderItem(workoutExercise.id, i));
-      }
-    }
-    return data;
-  }
-}
-
-class OrderItem {
-  constructor(
-    public orderExerciseId: number,
-    public position: number
-  ) { }
 }

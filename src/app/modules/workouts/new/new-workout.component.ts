@@ -28,7 +28,7 @@ export class NewWorkoutComponent extends BaseComponent {
             .subscribe(form => {
                 form.insertFunction((item) => this.dependencies.itemServices.workoutService.create(item).set())
                 form.callback((response) => {
-                    this.dependencies.router.navigate([this.getTrainerUrl('workouts/edit'), response.item.id])
+                    this.dependencies.router.navigate([this.getTrainerUrl('workouts/view'), response.item.id])
                 })
 
                 this.formConfig = form.build();

@@ -38,6 +38,21 @@ export abstract class BaseItemQuery<TItem extends IItem> extends BaseQuery {
 
     // options
 
+    orderBy(field: string): this{
+        this._options.push(new Options.OrderBy(field));
+        return this;
+    }
+
+    orderByDescending(field: string): this{
+        this._options.push(new Options.OrderByDescending(field));
+        return this;
+    }
+
+    disableCache(disableCache: boolean): this{
+        this._options.push(new Options.DisableCache(disableCache));
+        return this;
+    }
+
     include(field: string): this {
         this._options.push(new Options.Include(field));
         return this;

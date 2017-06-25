@@ -1,5 +1,20 @@
 import { IOption } from '../interfaces/ioption.interface';
 
+export class DisableCache implements IOption {
+
+    constructor(
+        public disableCache: boolean
+    ) { }
+
+    public GetParam(): string {
+        return 'disableCache';
+    }
+
+    public GetParamValue(): string {
+        return processParamValue(this.disableCache);
+    }
+}
+
 export class Page implements IOption {
 
     constructor(

@@ -11,7 +11,7 @@ export class WorkoutExerciseService extends BaseTypeService<WorkoutExercise>{
         super(repositoryClient, "WorkoutExercise")
     }
 
-    orderWorkoutExercises(workoutExercises: WorkoutExercise[]): Observable<any> {
+    bulkUpdateDOTTTOTOTOTOTO(workoutExercises: WorkoutExercise[]): Observable<any> {
         if (!workoutExercises) {
             return null;
         }

@@ -11,6 +11,7 @@ import { ErrorResponse } from './models/responses';
 import { InsertFormQuery } from './queries/form/insert-form-query.class';
 import { EditFormQuery } from './queries/form/edit-form-query.class';
 import { PostQuery } from './queries/general/post-query.class';
+import { OrderItem, UpdateItemsRequest } from './models/update-items-request.class';
 
 // rxjs
 import { Observable } from 'rxjs/Observable';
@@ -49,7 +50,13 @@ export class RepositoryClient {
         return new EditItemQuery(this.authHttp, this.config, type, item);
     }
 
-     post<T extends any>(type: string, action: string): PostQuery<T> {
+    updateItemsOrder<TItem extends IItem>(type: string, orderedItems: TItem[], distinguishByValue: number): PostQuery<any> {
+        var action = 'updateItemsOrder';
+        var updateRequest = new UpdateItemsRequest(distinguishByValue, this.getItemsOrderJson(orderedItems));
+        return new PostQuery(this.authHttp, this.config, type, action).withJsonData(updateRequest);
+    }
+
+    post<T extends any>(type: string, action: string): PostQuery<T> {
         return new PostQuery(this.authHttp, this.config, type, action);
     }
 
@@ -63,6 +70,17 @@ export class RepositoryClient {
 
     editForm<TItem extends IItem>(type: string, itemId: number): EditFormQuery<TItem> {
         return new EditFormQuery<TItem>(this.authHttp, this.config, type, itemId);
+    }
+
+    private getItemsOrderJson<TItem extends IItem>(orderedItems: TItem[]): OrderItem[] {
+        var data: OrderItem[] = [];
+        if (orderedItems) {
+            for (var i = 0; i < orderedItems.length; i++) {
+                var orderItem = orderedItems[i];
+                data.push(new OrderItem(orderItem.id, i));
+            }
+        }
+        return data;
     }
 }
 

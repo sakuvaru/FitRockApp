@@ -61,7 +61,7 @@
     <md-card-actions *ngIf="config.showPager && !(config.hidePagerForSinglePage && totalPages == 1)">
       <button *ngIf="config.showPagerFirstLastButtons" [disabled]="!hasPreviousPage()" md-button (click)="onGoToPage(1)"><<</button>
       <button *ngIf="config.showPagerNextPreviousButtons" [disabled]="!hasPreviousPage()" md-button (click)="onGoToPreviousPage()"><</button>
-      <span tdMediaToggle="sm" [mediaStyles]="{display: 'none'}" *ngFor="let button of getPagerButtons()">
+      <span tdMediaToggle="sm" [mediaStyles]="{display: 'none'}" *ngFor="let button of pagerButtons">
       <button *ngIf="config.showPagerNumberButtons && !button.isActive" md-button (click)="onGoToPage(button.page)">{{button.page}}</button>
       <button *ngIf="config.showPagerNumberButtons && button.isActive" md-raised-button color="primary" (click)="onGoToPage(button.page)">{{button.page}}</button>
     </span>

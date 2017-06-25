@@ -17,3 +17,4 @@ export * from './queries/form/edit-form-query.class';
 export * from './queries/general/post-query.class';
 export * from './models/form-fields';
 export * from './models/control-type.enum';
+export * from './models/update-items-request.class';

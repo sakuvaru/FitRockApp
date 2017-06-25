@@ -9,4 +9,5 @@ export class WorkoutExercise extends BaseItem {
     public notes: string;
     public exercise: Exercise;
     public workout: Workout; 
+    public order: number;
 }

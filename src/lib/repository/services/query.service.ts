@@ -171,11 +171,13 @@ export class QueryService {
         });
     }
 
-     private getPostResponse<T extends any>(response: Response): ResponsePost<T> {
+    private getPostResponse<T extends any>(response: Response): ResponsePost<T> {
         var responsePost = (response.json() || {}) as IResponsePostRaw;
 
         return new ResponsePost<T>({
-            result: responsePost.result as T
+            data: responsePost.data as T,
+            action: responsePost.action,
+            message: responsePost.message
         });
     }
 

@@ -35,6 +35,10 @@ export abstract class BaseTypeService<TItem extends IItem> implements IService<T
         return this.repositoryClient.post<T>(this.type, action);
     }
 
+    updateItemsOrder(orderedItems: TItem[], distinguishByValue: number): PostQuery<any>{
+        return this.repositoryClient.updateItemsOrder(this.type, orderedItems, distinguishByValue);
+    }
+
     delete(itemId: number): DeleteItemQuery {
         return this.repositoryClient.delete(this.type, itemId);
     }

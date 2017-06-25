@@ -34,6 +34,7 @@ export class DataTableComponent implements AfterViewInit, OnInit {
     private totalPages: number;
     private currentPage: number = 1;
     private showPagesCount = 5; // has to be an odd number
+    private pagerButtons: PagerButton[];
 
     // search
     private searchTerm: string = null;
@@ -81,6 +82,11 @@ export class DataTableComponent implements AfterViewInit, OnInit {
             .subscribe(response => {
                 this.items = response.items;
                 this.totalPages = response.pages;
+
+                // get pager buttons
+                this.pagerButtons = this.getPagerButtons();
+                console.log('get pager buttons');
+                console.log(this.pagerButtons);
             });
     }
 

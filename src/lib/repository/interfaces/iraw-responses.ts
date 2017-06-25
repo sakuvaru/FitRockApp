@@ -4,12 +4,12 @@ import { IFormValidationResult } from './iform-validation-result.interface';
 import { ErrorReasonEnum } from '../models/error-reason.enum';
 import { BaseField } from '../models/form-fields';
 
-export interface IErrorResponseRaw{
+export interface IErrorResponseRaw {
     error: string;
     reason: ErrorReasonEnum;
 }
 
-export interface IFormErrorResponseRaw extends IErrorResponseRaw{
+export interface IFormErrorResponseRaw extends IErrorResponseRaw {
     formValidation: IFormValidationResult;
 }
 
@@ -66,8 +66,10 @@ export interface IResponseFormEditRaw {
     item: any
 }
 
-export interface IResponsePostRaw{
-    result: any;
+export interface IResponsePostRaw {
+    data: any;
+    action: string;
+    message: string;
 }
 
 

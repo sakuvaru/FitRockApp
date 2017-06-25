@@ -46,7 +46,7 @@ export class WorkoutsOverviewComponent extends BaseComponent {
       .showPager(true)
       .showSearch(true)
       .pagerSize(7)
-      .urlResolver((item) => this.getTrainerUrl('workouts/edit/') + item.id)
+      .urlResolver((item) => this.getTrainerUrl('workouts/view/') + item.id)
       .avatarUrlResolver((item) => 'https://semantic-ui.com/images/avatar/large/elliot.jpg')
       .build();
   }

@@ -183,13 +183,17 @@ export class ResponseFormEdit<T extends IItem>  {
 }
 
 export class ResponsePost<T extends any>{
-    public result: any;
+    public data: T;
+    public action: string;
+    public message: string;
 
     constructor(
-        private options?:{
-            result?: any
+        private options?: {
+            data?: T,
+            action?: string;
+            message?: string;
         }
-    ){}
+    ) { }
 }
 
 
