@@ -7,7 +7,7 @@ import { DataTableField } from './data-table-field.class';
 import { DataTableConfig } from './data-table.config';
 import { AlignEnum } from './align-enum';
 import { Observable } from 'rxjs/Observable';
-import { Guid } from '../../utilities';
+import { Guid } from '../../lib/utilities';
 import { TranslateService } from '@ngx-translate/core';
 import { TdMediaService } from '@covalent/core';
 
@@ -85,8 +85,6 @@ export class DataTableComponent implements AfterViewInit, OnInit {
 
                 // get pager buttons
                 this.pagerButtons = this.getPagerButtons();
-                console.log('get pager buttons');
-                console.log(this.pagerButtons);
             });
     }
 

@@ -13,7 +13,7 @@ import { AngularMaterialModule } from '../../../lib/material';
 import { AuthModule } from '../../../lib/auth';
 
 // web components
-import { WebComponentsModule } from '../../../lib/web-components';
+import { WebComponentsModule } from '../../../web-components';
 
 // translation
 import { TranslateModule } from '@ngx-translate/core';

@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs/Observable';
-import { ResponseMultiple } from '../../repository';
+import { ResponseMultiple } from '../../lib/repository';
 import { DataTableField } from './data-table-field.class';
 
 export class DataTableConfig<T> {

@@ -24,7 +24,7 @@ import { AppConfig } from './core/config/app.config';
 import { UrlConfig } from './core/config/url.config';
 
 // web components
-import { WebComponentsModule } from '../lib/web-components';
+import { WebComponentsModule } from '../web-components';
 
 // translations
 import { HttpLoaderFactory, CustomMissingTranslationHandler } from './core/providers/translate-loader.provider';

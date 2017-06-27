@@ -5,7 +5,7 @@ import { AppConfig, ComponentDependencyService, BaseComponent, ComponentConfig }
 
 // required by component
 import { WorkoutsOverviewMenuItems } from '../menu.items';
-import { DataTableConfig, AlignEnum } from '../../../../lib/web-components';
+import { DataTableConfig, AlignEnum } from '../../../../web-components/data-table';
 import { Workout } from '../../../models';
 
 @Component({
@@ -25,7 +25,7 @@ export class WorkoutsOverviewComponent extends BaseComponent {
       componentTitle: { key: 'module.workouts.overview' },
     });
 
-    this.config = this.dependencies.dataTableService.dataTable<Workout>()
+    this.config = this.dependencies.webComponentServices.dataTableService.dataTable<Workout>()
       .fields([
         { label: 'module.workouts.workoutName', value: (item) => { return item.workoutName }, flex: 40 },
         {

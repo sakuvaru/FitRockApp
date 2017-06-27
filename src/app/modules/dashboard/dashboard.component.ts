@@ -65,10 +65,10 @@ export class DashboardComponent extends BaseComponent implements OnInit {
 
         //this.logService.delete(1).subscribe( isSuccess => console.log(isSuccess));
 
-        this.currentUser = this.dependencies.authService.getCurrentUser();
+        this.currentUser = this.dependencies.coreServices.authService.getCurrentUser();
     }
 
     onLogout(): void {
-        this.dependencies.authService.logout();
+        this.dependencies.coreServices.authService.logout();
     }
 }

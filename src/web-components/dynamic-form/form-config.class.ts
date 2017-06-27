@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs/RX';
 import { FormGroup } from '@angular/forms';
-import { BaseField, IItem, ResponseCreate, ResponseEdit, FormErrorResponse, ErrorResponse  } from '../../repository';
+import { BaseField, IItem, ResponseCreate, ResponseEdit, FormErrorResponse, ErrorResponse  } from '../../lib/repository';
 
 export class FormConfig<TItem extends IItem>{
 

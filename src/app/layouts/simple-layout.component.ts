@@ -21,32 +21,32 @@ export class SimpleLayoutComponent extends BaseComponent implements OnDestroy {
     ) {
         super(dependencies)
         // don't forget to unsubscribe
-        this.componentConfigSubscription = dependencies.sharedService.componentConfigChanged$.subscribe(
+        this.componentConfigSubscription = dependencies.coreServices.sharedService.componentConfigChanged$.subscribe(
             componentConfig => {
                 this.componentConfig = componentConfig;
 
                 // resolve component's title using translation services
                 if (componentConfig.componentTitle) {
-                    this.dependencies.translateService.get(componentConfig.componentTitle.key, componentConfig.componentTitle.data)
+                    this.dependencies.coreServices.translateService.get(componentConfig.componentTitle.key, componentConfig.componentTitle.data)
                         .subscribe(text => this.componentTitle = text);
                 }
 
                 // resolve menu title using translation services
                 if (componentConfig.menuTitle) {
-                    this.dependencies.translateService.get(componentConfig.menuTitle.key, componentConfig.menuTitle.data)
+                    this.dependencies.coreServices.translateService.get(componentConfig.menuTitle.key, componentConfig.menuTitle.data)
                         .subscribe(text => this.menuTitle = text);
                 }
             });
 
         // set alias for media
-        this.media = dependencies.mediaService;
+        this.media = dependencies.tdServices.mediaService;
     }
 
     ngAfterViewInit(): void {
         // broadcast to all listener observables when loading the page
         // note required by 'Covalent' for its templates
         // source: https://teradata.github.io/covalent/#/layouts/manage-list
-        this.dependencies.mediaService.broadcast();
+        this.dependencies.tdServices.mediaService.broadcast();
     }
 
     ngOnDestroy() {

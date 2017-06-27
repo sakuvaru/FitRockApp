@@ -1,9 +1,9 @@
 import { Component, Input, AfterViewInit, ChangeDetectorRef, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { BaseField, ControlTypeEnum } from '../../repository';
+import { BaseField, ControlTypeEnum } from '../../lib/repository';
 import { TranslateService } from '@ngx-translate/core';
 import { FormConfig } from './form-config.class';
-import { StringHelper } from '../../utilities';
+import { StringHelper } from '../../lib/utilities';
 
 // NOTE: see https://angular.io/docs/ts/latest/cookbook/dynamic-form.html for more details
 

@@ -5,9 +5,10 @@ import { AppConfig, ComponentDependencyService, BaseComponent, ComponentConfig }
 
 // required by component
 import { WorkoutMenuItems } from '../menu.items';
-import { DataTableConfig, AlignEnum } from '../../../../lib/web-components';
+import { DataTableConfig, AlignEnum } from '../../../../web-components/data-table';
 import { Workout, WorkoutExercise } from '../../../models';
 import { DragulaService } from 'ng2-dragula';
+import { EditDialogComponent} from '../edit/edit-dialog.component';
 
 @Component({
   templateUrl: 'workout-plan.component.html'

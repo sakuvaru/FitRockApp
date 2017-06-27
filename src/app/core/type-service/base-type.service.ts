@@ -6,7 +6,7 @@ import {
     EditFormQuery, InsertFormQuery
 } from '../../../lib/repository';
 
-import { DynamicFormEditBuilder, DynamicFormInsertBuilder } from '../../../lib/web-components';
+import { DynamicFormEditBuilder, DynamicFormInsertBuilder } from '../../../web-components/dynamic-form';
 
 export abstract class BaseTypeService<TItem extends IItem> implements IService<TItem>{
 

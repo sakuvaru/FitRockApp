@@ -3,9 +3,11 @@ import { FormGroup } from '@angular/forms';
 import { FieldControlService } from './field-control.service';
 import { FormConfig } from './form-config.class';
 import { MdSnackBar } from '@angular/material';
-import { ResponseCreate, ResponseEdit, FormErrorResponse, ErrorResponse, ErrorReasonEnum, BaseField } from '../../repository';
+import {
+    ColumnValidation, FieldErrorEnum, ResponseCreate, ResponseEdit, FormErrorResponse,
+    ErrorResponse, ErrorReasonEnum, BaseField
+} from '../../lib/repository';
 import { TranslateService } from '@ngx-translate/core';
-import { ColumnValidation, FieldErrorEnum } from '../../repository';
 
 import { Observable } from 'rxjs/Rx';
 import 'rxjs/add/operator/catch';

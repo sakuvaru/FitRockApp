@@ -4,7 +4,7 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { AppConfig, ComponentDependencyService, BaseComponent } from '../../../core';
 
 // required by component
-import { FormConfig } from '../../../../lib/web-components';
+import { FormConfig } from '../../../../web-components/dynamic-form';
 import { WorkoutsOverviewMenuItems } from '../menu.items';
 import { Workout } from '../../../models';
 

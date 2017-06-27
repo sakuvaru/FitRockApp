@@ -1,7 +1,7 @@
 import { DataTableConfig } from './data-table.config';
 import { DataTableField } from './data-table-field.class';
 import { Observable } from 'rxjs/RX';
-import { ResponseMultiple } from '../../repository';
+import { ResponseMultiple } from '../../lib/repository';
 
 export class DataTableBuilder<T> {
 

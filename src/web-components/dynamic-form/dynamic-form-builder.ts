@@ -1,6 +1,6 @@
 import { FormConfig } from './form-config.class';
 import { Observable } from 'rxjs/RX';
-import { BaseField, IItem, ResponseCreate, ResponseEdit, FormErrorResponse, ErrorResponse } from '../../repository';
+import { BaseField, IItem, ResponseCreate, ResponseEdit, FormErrorResponse, ErrorResponse } from '../../lib/repository';
 
 export class DynamicFormInsertBuilder<TItem extends IItem>{
 

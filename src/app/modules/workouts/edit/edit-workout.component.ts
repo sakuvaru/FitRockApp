@@ -5,7 +5,7 @@ import { AppConfig, ComponentDependencyService, BaseComponent } from '../../../c
 
 // required by component
 import { WorkoutMenuItems } from '../menu.items';
-import { FormConfig } from '../../../../lib/web-components';
+import { FormConfig } from '../../../../web-components/dynamic-form';
 import { Workout } from '../../../models';
 import 'rxjs/add/operator/switchMap';
 

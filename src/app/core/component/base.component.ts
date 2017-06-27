@@ -33,8 +33,8 @@ export abstract class BaseComponent implements IComponent, OnInit {
     ngOnInit(): void {
         // authenticate user when logging-in (handles the params in URL and extracts token
         // more info: https://auth0.com/docs/quickstart/spa/angular2/02-custom-login
-        if (!this.dependencies.authService.isAuthenticated()) {
-            this.dependencies.authService.handleAuthentication();
+        if (!this.dependencies.coreServices.authService.isAuthenticated()) {
+            this.dependencies.coreServices.authService.handleAuthentication();
         }
 
         // init component config
@@ -42,13 +42,13 @@ export abstract class BaseComponent implements IComponent, OnInit {
 
         // set language version
         // this language will be used as a fallback when a translation isn't found in the current language
-        this.dependencies.translateService.setDefaultLang('cs');
+        this.dependencies.coreServices.translateService.setDefaultLang('cs');
 
         // the lang to use, if the lang isn't available, it will use the current loader to get them
-        this.dependencies.translateService.use(this.dependencies.translateService.getBrowserLang());
+        this.dependencies.coreServices.translateService.use(this.dependencies.coreServices.translateService.getBrowserLang());
 
         // initialize loading
-        this.dependencies.loadingService.create({
+        this.dependencies.tdServices.loadingService.create({
             name: this.fullscreenLoaderName,
             mode: LoadingMode.Indeterminate,
             type: LoadingType.Linear,
@@ -59,7 +59,7 @@ export abstract class BaseComponent implements IComponent, OnInit {
         this.resolveFullScreenLoader();
 
         // suscribe to errors in repository service and handle them
-        this.repositoryErrorSubscription = this.dependencies.repositoryClient.requestErrorChange$.subscribe(
+        this.repositoryErrorSubscription = this.dependencies.coreServices.repositoryClient.requestErrorChange$.subscribe(
             error => {
                 this.handleRepositoryError(error);
             });
@@ -95,7 +95,7 @@ export abstract class BaseComponent implements IComponent, OnInit {
     }
 
     private setConfigInternal(): void {
-        this.dependencies.sharedService.setComponentConfig(this.componentConfig);
+        this.dependencies.coreServices.sharedService.setComponentConfig(this.componentConfig);
     }
 
     // --------------------- Private methods -------------- // 
@@ -115,7 +115,7 @@ export abstract class BaseComponent implements IComponent, OnInit {
     }
 
     showSnackbar(message: string): void {
-        let snackBarRef = this.dependencies.snackbarService.open(message, null, { duration: this.snackbarDefaultDuration });
+        let snackBarRef = this.dependencies.mdServices.snackbarService.open(message, null, { duration: this.snackbarDefaultDuration });
     }
 
     showSavedSnackbar(): void {
@@ -127,11 +127,11 @@ export abstract class BaseComponent implements IComponent, OnInit {
     }
 
     resolveFullScreenLoader(): void {
-        this.dependencies.loadingService.resolve(this.fullscreenLoaderName);
+        this.dependencies.tdServices.loadingService.resolve(this.fullscreenLoaderName);
     }
 
     registerFullScreenLoader(): void {
-        this.dependencies.loadingService.register(this.fullscreenLoaderName);
+        this.dependencies.tdServices.loadingService.register(this.fullscreenLoaderName);
     }
 
     getClientUrl(action?: string): string {

@@ -3,10 +3,9 @@ import { Subject } from 'rxjs/Subject';
 import { Router } from '@angular/router';
 
 // Components's common services
-import { AuthService }  from '../../../lib/auth';
-import { TdMediaService } from '@covalent/core';
+import { AuthService } from '../../../lib/auth';
+import { TdMediaService, TdLoadingService, TdDialogService } from '@covalent/core';
 import { SharedService } from '../shared-service/shared.service';
-import { TdLoadingService } from '@covalent/core';
 import { RepositoryClient } from '../../../lib/repository';
 
 // Services
@@ -19,7 +18,7 @@ import { MdSnackBar } from '@angular/material';
 import { TranslateService } from '@ngx-translate/core';
 
 // Web component services
-import { DataTableService } from '../../../lib/web-components';
+import { DataTableService } from '../../../web-components/data-table';
 
 /// Use this class to define shared services that should be available for all conmponents
 /// This is so that each component does not have to define all common dependencies, but only the ones it needs
@@ -29,36 +28,36 @@ export class ComponentDependencyService {
     // url handling
     public router: Router;
 
-    // repository client
-    public repositoryClient: RepositoryClient;
-
-    // common services
-    public authService: AuthService;
-    public mediaService: TdMediaService;
-    public sharedService: SharedService;
-    public loadingService: TdLoadingService;
-    public snackbarService: MdSnackBar
-    public translateService: TranslateService;
-
-    // web component services
-    public dataTableService: DataTableService;
-
-    // data/item services
     public itemServices: ItemServices;
-
+    public coreServices: CoreServices;
+    public webComponentServices: WebComponentServices;
+    public mdServices: MdServices;
+    public tdServices: TdServices;
+    
     constructor(private injector: Injector) {
         // use Angular's injector to get service instances
         this.router = injector.get(Router);
 
-        // general services
-        this.authService = injector.get(AuthService);
-        this.mediaService = injector.get(TdMediaService);
-        this.sharedService = injector.get(SharedService);
-        this.loadingService = injector.get(TdLoadingService);
-        this.repositoryClient = injector.get(RepositoryClient);
-        this.snackbarService = injector.get(MdSnackBar);
-        this.translateService = injector.get(TranslateService);
-        this.dataTableService = injector.get(DataTableService);
+        // core services
+        this.coreServices = new CoreServices();
+        this.coreServices.authService = injector.get(AuthService);
+        this.coreServices.repositoryClient = injector.get(RepositoryClient);
+        this.coreServices.translateService = injector.get(TranslateService);
+        this.coreServices.sharedService = injector.get(SharedService);
+
+        //td services (teradata covalent)
+        this.tdServices = new TdServices();
+        this.tdServices.dialogService = injector.get(TdDialogService);
+        this.tdServices.loadingService = injector.get(TdLoadingService);
+        this.tdServices.mediaService = injector.get(TdMediaService);
+
+        // md services (material design)
+        this.mdServices = new MdServices();
+        this.mdServices.snackbarService = injector.get(MdSnackBar);
+
+        // web component services
+        this.webComponentServices = new WebComponentServices();
+        this.webComponentServices.dataTableService = injector.get(DataTableService);
 
         // item services
         this.itemServices = new ItemServices();
@@ -72,9 +71,30 @@ export class ComponentDependencyService {
     }
 }
 
-export class ItemServices{
+export class WebComponentServices {
+    public dataTableService: DataTableService;
+}
+
+export class CoreServices {
+    public repositoryClient: RepositoryClient;
+    public authService: AuthService;
+    public sharedService: SharedService;
+    public translateService: TranslateService;
+}
+
+export class MdServices {
+    public snackbarService: MdSnackBar
+}
+
+export class TdServices {
+    public dialogService: TdDialogService;
+    public mediaService: TdMediaService;
+    public loadingService: TdLoadingService;
+}
+
+export class ItemServices {
     public userService: UserService;
-    public logService: LogService; 
+    public logService: LogService;
     public workoutService: WorkoutService;
     public workoutCategoryService: WorkoutCategoryService;
     public workoutExerciseService: WorkoutExerciseService;

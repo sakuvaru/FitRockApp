@@ -5,7 +5,7 @@ import { AppConfig, ComponentDependencyService, BaseComponent, ComponentConfig }
 
 // required by component
 import { ClientOverviewMenuItems } from '../../menu.items';
-import { DataTableConfig, AlignEnum } from '../../../../../lib/web-components';
+import { DataTableConfig, AlignEnum } from '../../../../../web-components/data-table';
 import { User } from '../../../../models';
 
 @Component({
@@ -25,7 +25,7 @@ export class ClientsOverviewComponent extends BaseComponent {
       componentTitle: { key: 'module.clients.allClients' },
     });
 
-    this.config = this.dependencies.dataTableService.dataTable<User>()
+    this.config = this.dependencies.webComponentServices.dataTableService.dataTable<User>()
       .fields([
         { label: 'Klient', value: (item) => { return item.getFullName() }, flex: 40 },
         { label: 'E-mail', value: (item) => { return item.email }, isSubtle: true, align: AlignEnum.Right },

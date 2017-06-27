@@ -13,7 +13,7 @@ export class LogoutComponent extends BaseComponent {
         super(dependencies)
 
         // logout user
-        this.dependencies.authService.logout();
+        this.dependencies.coreServices.authService.logout();
 
         // redirect after logging-out
         this.dependencies.router.navigate([UrlConfig.getPublicUrl(UrlConfig.Logout)]);
