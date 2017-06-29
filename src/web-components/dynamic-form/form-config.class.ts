@@ -5,7 +5,7 @@ import { BaseField, IItem, ResponseCreate, ResponseEdit, FormErrorResponse, Erro
 export class FormConfig<TItem extends IItem>{
 
     public submitTextKey: string = 'form.shared.save'
-    public fields: BaseField<any>[];
+    public fields: BaseField<any>[] = [];
     public insertFunction: (item: TItem) => Observable<ResponseCreate<TItem>>;
     public editFunction: (item: TItem) => Observable<ResponseEdit<TItem>>;
     public showSnackBar: boolean = true;
@@ -15,6 +15,7 @@ export class FormConfig<TItem extends IItem>{
     public errorCallback: (response: ErrorResponse | FormErrorResponse | any) => void;
     public type: string;
     public item: TItem;
+    public showFields: string[] = null;
 
     constructor(
         config?: {
@@ -28,7 +29,8 @@ export class FormConfig<TItem extends IItem>{
             updateCallback?: (response: ResponseEdit<TItem>) => void,
             errorCallback?: (response: ErrorResponse | FormErrorResponse | any) => void,
             type?: string,
-            item?: TItem
+            item?: TItem,
+            showFields?: string[]
         }
     ) {
         Object.assign(this, config);

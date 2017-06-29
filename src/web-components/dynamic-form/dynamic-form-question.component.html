@@ -33,7 +33,7 @@
   </div>
 
   <md-input-container *ngIf="isTextAreaField()"  flex hintLabel="{{questionHint}}">
-    <textarea mdTextareaAutosize mdInput mdAutosizeMinRows="{{question.options.minAutosizeRows}}" mdAutosizeMaxRows="{{question.options.maxAutosizeRows}}"
+    <textarea MdTextareaAutosize mdInput mdAutosizeMinRows="question.options.minAutosizeRows" mdAutosizeMaxRows="question.options.maxAutosizeRows"
       [attr.maxLength]="question.options.maxLength > 0 ? question.options.maxLength : null" value="{{question.value}}" required="{{question.required}}"
       placeholder="{{question.translatedLabel}}" [formControlName]="question.key" [id]="question.key" [type]="question.type" #elem>
     </textarea>

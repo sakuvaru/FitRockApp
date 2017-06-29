@@ -72,6 +72,10 @@ export class RepositoryClient {
         return new EditFormQuery<TItem>(this.authHttp, this.config, type, itemId);
     }
 
+    mergeObservables(observables: Observable<any>[]): Observable<any>{
+        return this.queryService.mergeObservables(observables);
+    }
+
     private getItemsOrderJson<TItem extends IItem>(orderedItems: TItem[]): OrderItem[] {
         var data: OrderItem[] = [];
         if (orderedItems) {

@@ -6,7 +6,7 @@
     {{workout.description}}
   </md-card-content>
   <md-divider></md-divider>
-  <md-card-content *ngIf="workout.workoutExercises"  [dragula]='"bag-one"' [dragulaModel]="workout.workoutExercises">
+  <md-card-content *ngIf="workout.workoutExercises" [dragula]='"bag-one"' [dragulaModel]="workout.workoutExercises">
     <td-expansion-panel *ngFor="let workoutExercise of workout.workoutExercises; let i = index">
       <ng-template td-expansion-panel-label>
         <span class="tc-red-700">{{i + 1}}.</span> {{workoutExercise.exercise.exerciseName}}
@@ -16,7 +16,7 @@
         <span class="md-caption">{{workoutExercise.sets}} {{'module.workouts.sets' | translate }} / {{workoutExercise.reps}} {{'module.workouts.reps' | translate }}</span>
       </ng-template>
       <div class="md-padding">
-        <div class="md-caption">{{workoutExercise.exercise.description}}</div>
+        <dynamic-form [config]="exerciseForms[workoutExercise.id]"></dynamic-form>
       </div>
     </td-expansion-panel>
   </md-card-content>

@@ -6,7 +6,7 @@ export class DynamicFormInsertBuilder<TItem extends IItem>{
 
     private config: FormConfig<TItem> = new FormConfig<TItem>();
 
-    type(type: string): this{
+    type(type: string): this {
         this.config.type = type;
         return this;
     }
@@ -18,6 +18,11 @@ export class DynamicFormInsertBuilder<TItem extends IItem>{
 
     fields(fields: BaseField<any>[]): this {
         this.config.fields = fields;
+        return this;
+    }
+
+    showFields(fields: string[]): this {
+        this.config.showFields = fields;
         return this;
     }
 
@@ -55,15 +60,15 @@ export class DynamicFormEditBuilder<TItem extends IItem>{
 
     private config: FormConfig<TItem> = new FormConfig<TItem>();
 
-    getItem(): TItem{
+    getItem(): TItem {
         return this.config.item;
     }
-    setItem(item: TItem): this{
+    setItem(item: TItem): this {
         this.config.item = item;
         return this;
     }
 
-    type(type: string): this{
+    type(type: string): this {
         this.config.type = type;
         return this;
     }
@@ -75,6 +80,11 @@ export class DynamicFormEditBuilder<TItem extends IItem>{
 
     fields(fields: BaseField<any>[]): this {
         this.config.fields = fields;
+        return this;
+    }
+
+    showFields(fields: string[]): this {
+        this.config.showFields = fields;
         return this;
     }
 

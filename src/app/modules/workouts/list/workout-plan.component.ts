@@ -8,7 +8,9 @@ import { WorkoutMenuItems } from '../menu.items';
 import { DataTableConfig, AlignEnum } from '../../../../web-components/data-table';
 import { Workout, WorkoutExercise } from '../../../models';
 import { DragulaService } from 'ng2-dragula';
-import { EditDialogComponent} from '../edit/edit-dialog.component';
+import { EditDialogComponent } from '../edit/edit-dialog.component';
+import { FormConfig } from '../../../../web-components/dynamic-form';
+import { Observable } from 'rxjs/RX';
 
 @Component({
   templateUrl: 'workout-plan.component.html'
@@ -16,6 +18,12 @@ import { EditDialogComponent} from '../edit/edit-dialog.component';
 export class WorkoutPlanComponent extends BaseComponent implements OnInit {
 
   private workout: Workout;
+
+  /**
+  *access the form with 'id' of the exercise
+  * e.g. exerciseForms['9']
+  **/
+  private exerciseForms = {};
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -30,6 +38,39 @@ export class WorkoutPlanComponent extends BaseComponent implements OnInit {
   }
 
   ngOnInit() {
+    // init workout
+    this.initWorkout();
+  }
+
+  private initWorkoutExerciseForms(workoutExercises: WorkoutExercise[]): void {
+    if (!workoutExercises) {
+      return;
+    }
+
+    workoutExercises.forEach(exercise => {
+      this.dependencies.itemServices.workoutExerciseService.editForm(exercise.id).subscribe(m => {
+        this.exerciseForms[exercise.id] = m.build();
+      })
+    })
+  }
+
+  private getExerciseFormObservables(workoutExercises: WorkoutExercise[]): Observable<FormConfig<WorkoutExercise>>[] {
+    if (!workoutExercises) {
+      return;
+    }
+
+    var observables: Observable<FormConfig<WorkoutExercise>>[] = [];
+
+    workoutExercises.forEach(exercise => {
+      var observable = this.dependencies.itemServices.workoutExerciseService.editForm(exercise.id)
+        .map(form => this.exerciseForms[exercise.id] = form.build());
+      observables.push(observable);
+    })
+
+    return observables;
+  }
+
+  private initWorkout(): void {
     this.activatedRoute.params
       .switchMap((params: Params) => this.dependencies.itemServices.workoutService.item()
         .byId(+params['id'])
@@ -37,11 +78,6 @@ export class WorkoutPlanComponent extends BaseComponent implements OnInit {
         .includeMultiple(['WorkoutCategory', 'WorkoutExercises', 'WorkoutExercises.Exercise', 'WorkoutExercises.Exercise.ExerciseCategory'])
         .get())
       .subscribe(response => {
-
-        this.workout = response.item;
-
-        // sort exercises
-        this.workout.workoutExercises.sort((n1,n2) => n1.order - n2.order);
 
         this.setConfig({
           menuItems: new WorkoutMenuItems(response.item.id).menuItems,
@@ -52,7 +88,29 @@ export class WorkoutPlanComponent extends BaseComponent implements OnInit {
             'key': 'module.workouts.workoutPlan'
           }
         });
+
+        // note - assign both workout & exercise forms once they are loaded
+
+        // init edit workout exercise form from multiple observables
+        var exerciseFormObservables = this.getExerciseFormObservables(response.item.workoutExercises);
+        if (exerciseFormObservables && exerciseFormObservables.length > 0) {
+          this.dependencies.coreServices.repositoryClient.mergeObservables(exerciseFormObservables)
+            .subscribe(() => {
+              this.assignWorkout(response.item);
+            })
+        }
+        else {
+          this.assignWorkout(response.item);
+        }
       });
+  }
+
+  private assignWorkout(workout: Workout): void {
+    // assign workout after all forms are ready and loaded
+    this.workout = workout
+
+    // sort exercises
+    this.workout.workoutExercises.sort((n1, n2) => n1.order - n2.order);
   }
 
   private onDrop(orderedWorkoutExercises: WorkoutExercise[]) {

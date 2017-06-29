@@ -355,4 +355,31 @@ export class QueryService {
                 this.finishRequest();
             });
     }
+
+    /**
+     * Merges given observables into one
+     * @param observables Observables to merge
+     */
+    mergeObservables(observables: Observable<any>[]): Observable<any> {
+        if (!observables) {
+            throw Error(`Given Observables are not valid`);
+        }
+
+        if (!Array.isArray(observables)) {
+            throw Error(`Given observables are not in array`);
+        }
+
+        var mergedObservable: Observable<any>;
+
+        observables.forEach(observable => {
+            if (!mergedObservable) {
+                mergedObservable = observable;
+            }
+            else {
+                mergedObservable = mergedObservable.merge(observable);
+            }
+        })
+
+        return mergedObservable;
+    }
 }

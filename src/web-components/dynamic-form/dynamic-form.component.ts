@@ -25,7 +25,7 @@ export class DynamicFormComponent implements OnInit, OnChanges {
     private generalErrorMessagePrefix: string;
     private unknownErrorMessage: string;
 
-    private questions: BaseField<any>[];
+    private questions: BaseField<any>[] =[];
 
     private submitText: string;
     private snackbarText: string;
@@ -58,7 +58,10 @@ export class DynamicFormComponent implements OnInit, OnChanges {
         if (this.config) {
             // load fields
             this.form = this.fieldControlService.toFormGroup(this.config.fields);
-            this.questions = this.config.fields;
+
+            // assign questions from fields
+            this.assignQuestions(this.config.fields)
+            
             // subscribe to form changes
             this.form.valueChanges.subscribe(response => this.handleFormChange());
 
@@ -75,7 +78,10 @@ export class DynamicFormComponent implements OnInit, OnChanges {
         if (changes.config && changes.config.currentValue) {
             // load fields
             this.form = this.fieldControlService.toFormGroup(changes.config.currentValue.fields);
-            this.questions = changes.config.currentValue.fields;
+
+            // assign questions from fields
+            this.assignQuestions(changes.config.currentValue.fields)
+
             // subscribe to form changes
             this.form.valueChanges.subscribe(response => this.handleFormChange());
             changes.config.currentValue.submitText = changes.config.currentValue.submitText;
@@ -114,6 +120,47 @@ export class DynamicFormComponent implements OnInit, OnChanges {
         else {
             throw Error("No save function was provided to form");
         }
+    }
+
+    private assignQuestions(fields: BaseField<any>[]): void{
+        if (!fields){
+            return;
+        }
+
+        var tempQuestions: BaseField<any>[] = [];
+
+        fields.forEach(field => {
+            if (this.showField(field.key)){
+                tempQuestions.push(field);
+            }
+        });
+
+        this.questions = tempQuestions;
+        console.log(this.questions);
+    }
+
+    /**
+     * Determins whether the form field will be shown on form
+     * @param key Name of the field
+     */
+    private showField(key: string): boolean{
+        // if show fields are not defined, all fields are permitted
+        if (!this.config.showFields){
+            return true;
+        }
+
+        if (this.config.showFields.find(showField => {
+            if (!showField){
+                throw Error(`Field defined in 'showFields' cannot be empty`);
+            }
+            if (!key){
+                throw Error(`Field key cannot be empty`);
+            }
+            return showField.toLowerCase() === key.toLowerCase()
+        })){
+            return true;
+        }
+        return false;
     }
 
     private translateLabels(): void {

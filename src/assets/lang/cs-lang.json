@@ -96,6 +96,11 @@
 			"workoutName": "Název tréninku",
 			"workoutCategoryId": "Kategorie",
 			"description": "Popis"
+		},
+        "workoutExercise":{
+			"reps": "Opakování",
+			"sets": "Série",
+			"notes": "Poznámky"
 		}
     },
     "webComponents": {

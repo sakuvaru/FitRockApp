@@ -19,6 +19,7 @@ import { TranslateService } from '@ngx-translate/core';
 
 // Web component services
 import { DataTableService } from '../../../web-components/data-table';
+import { DynamicFormService } from '../../../web-components/dynamic-form';
 
 /// Use this class to define shared services that should be available for all conmponents
 /// This is so that each component does not have to define all common dependencies, but only the ones it needs
@@ -58,6 +59,7 @@ export class ComponentDependencyService {
         // web component services
         this.webComponentServices = new WebComponentServices();
         this.webComponentServices.dataTableService = injector.get(DataTableService);
+        this.webComponentServices.dynamicFormService = injector.get(DynamicFormService);
 
         // item services
         this.itemServices = new ItemServices();
@@ -73,6 +75,7 @@ export class ComponentDependencyService {
 
 export class WebComponentServices {
     public dataTableService: DataTableService;
+    public dynamicFormService: DynamicFormService;
 }
 
 export class CoreServices {
