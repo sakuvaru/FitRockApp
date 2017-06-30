@@ -38,20 +38,10 @@ export class WorkoutPlanComponent extends BaseComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.startLoader();
+
     // init workout
     this.initWorkout();
-  }
-
-  private initWorkoutExerciseForms(workoutExercises: WorkoutExercise[]): void {
-    if (!workoutExercises) {
-      return;
-    }
-
-    workoutExercises.forEach(exercise => {
-      this.dependencies.itemServices.workoutExerciseService.editForm(exercise.id).subscribe(m => {
-        this.exerciseForms[exercise.id] = m.build();
-      })
-    })
   }
 
   private getExerciseFormObservables(workoutExercises: WorkoutExercise[]): Observable<FormConfig<WorkoutExercise>>[] {
@@ -63,7 +53,9 @@ export class WorkoutPlanComponent extends BaseComponent implements OnInit {
 
     workoutExercises.forEach(exercise => {
       var observable = this.dependencies.itemServices.workoutExerciseService.editForm(exercise.id)
-        .map(form => this.exerciseForms[exercise.id] = form.build());
+        .map(form => {
+          return this.exerciseForms[exercise.id] = form.build()
+        });
       observables.push(observable);
     })
 
@@ -97,10 +89,12 @@ export class WorkoutPlanComponent extends BaseComponent implements OnInit {
           this.dependencies.coreServices.repositoryClient.mergeObservables(exerciseFormObservables)
             .subscribe(() => {
               this.assignWorkout(response.item);
+              this.stopLoader();
             })
         }
         else {
           this.assignWorkout(response.item);
+          this.startLoader();
         }
       });
   }

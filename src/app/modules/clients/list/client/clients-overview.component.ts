@@ -37,6 +37,8 @@ export class ClientsOverviewComponent extends BaseComponent {
           .WhereLikeMultiple(["FirstName", "LastName"], searchTerm)
           .get()
       })
+      .onBeforeLoad(() => this.startLoader())
+      .onAfterLoad(() => this.stopLoader())
       .showPager(true)
       .showSearch(true)
       .showHeader(false)

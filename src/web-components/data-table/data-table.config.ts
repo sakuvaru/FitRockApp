@@ -18,6 +18,8 @@ export class DataTableConfig<T> {
     public showPagerFirstLastButtons?: boolean = true;
     public showPagerNumberButtons?: boolean = true;
     public hidePagerForSinglePage?: boolean = true;
+    public onAfterLoad?: () => void;
+    public onBeforeLoad?: () => void;
 
     constructor(
         public options?: {
@@ -35,7 +37,9 @@ export class DataTableConfig<T> {
             showPagerNextPreviousButtons?: boolean,
             showPagerFirstLastButtons?: boolean,
             showPagerNumberButtons?: boolean,
-            hidePagerForSinglePage?: boolean;
+            hidePagerForSinglePage?: boolean,
+            onAfterLoad?: () => void,
+            onBeforeLoad?: () => void
         }) {
         if (options) Object.assign(this, options);
     }

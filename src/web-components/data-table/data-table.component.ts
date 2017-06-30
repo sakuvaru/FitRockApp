@@ -40,7 +40,6 @@ export class DataTableComponent implements AfterViewInit, OnInit {
     private searchTerm: string = null;
 
     // loader
-    private loaderEnabled: boolean = true;
     private loaderName: string = Guid.newGuid();
 
     constructor(
@@ -70,14 +69,14 @@ export class DataTableComponent implements AfterViewInit, OnInit {
 
     // load methods
     private filterItems(page: number): void {
-        // register loader on page change
-        if (!this.loaderEnabled) {
-            this.loaderEnabled = true;
-        }
-
+        if (this.config.onBeforeLoad){
+            this.config.onBeforeLoad();
+        }   
         this.config.loadResolver(this.searchTerm, page, this.config.pagerSize)
             .finally(() => {
-                this.loaderEnabled = false;
+                if (this.config.onAfterLoad){
+                    this.config.onAfterLoad();
+                }
             })
             .subscribe(response => {
                 this.items = response.items;

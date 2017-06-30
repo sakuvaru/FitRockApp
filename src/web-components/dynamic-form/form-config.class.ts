@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs/RX';
 import { FormGroup } from '@angular/forms';
-import { BaseField, IItem, ResponseCreate, ResponseEdit, FormErrorResponse, ErrorResponse  } from '../../lib/repository';
+import { BaseField, IItem, ResponseCreate, ResponseEdit, FormErrorResponse, ErrorResponse } from '../../lib/repository';
 
 export class FormConfig<TItem extends IItem>{
 
@@ -16,6 +16,8 @@ export class FormConfig<TItem extends IItem>{
     public type: string;
     public item: TItem;
     public showFields: string[] = null;
+    public onFormInit: () => void;
+    public onFormLoaded: () => void;
 
     constructor(
         config?: {
@@ -30,7 +32,9 @@ export class FormConfig<TItem extends IItem>{
             errorCallback?: (response: ErrorResponse | FormErrorResponse | any) => void,
             type?: string,
             item?: TItem,
-            showFields?: string[]
+            showFields?: string[],
+            onFormInit?: () => void,
+            onFormLoaded?: () => void,
         }
     ) {
         Object.assign(this, config);

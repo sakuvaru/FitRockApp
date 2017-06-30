@@ -38,6 +38,8 @@ export class ActiveClientsComponent extends BaseComponent {
           .whereEquals('IsActive', true)
           .get()
       })
+      .onBeforeLoad(() => this.startLoader())
+      .onAfterLoad(() => this.stopLoader())
       .showPager(true)
       .showSearch(true)
       .showHeader(false)

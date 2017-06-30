@@ -18,11 +18,14 @@ export class AdminLayoutComponent extends BaseComponent implements OnDestroy {
     private componentTitle: string;
     private menuTitle: string;
 
+    private loaderEnabled: boolean;
+
     /**
      * Part of url identifying 'client' or 'trainer' app type
      */
     private urlSegment: string;
 
+    private loaderSubscription: Subscription;
     private componentConfigSubscription: Subscription;
 
     constructor(
@@ -30,6 +33,13 @@ export class AdminLayoutComponent extends BaseComponent implements OnDestroy {
         private cdr: ChangeDetectorRef,
     ) {
         super(dependencies)
+        // register loader
+        this.loaderSubscription = this.dependencies.coreServices.sharedService.loaderChanged$.subscribe(
+            enabled => {
+                this.loaderEnabled = enabled;
+            }
+        )
+
         // don't forget to unsubscribe
         this.componentConfigSubscription = dependencies.coreServices.sharedService.componentConfigChanged$.subscribe(
             componentConfig => {
@@ -66,6 +76,8 @@ export class AdminLayoutComponent extends BaseComponent implements OnDestroy {
         // prevent memory leaks when component is destroyed
         // source: https://angular.io/docs/ts/latest/cookbook/component-communication.html#!#bidirectional-service
         this.componentConfigSubscription.unsubscribe();
+
+        this.loaderSubscription.unsubscribe();
     }
 
     private getMenuItemUrl(action: string, type: MenuItemType): string {

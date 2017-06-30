@@ -43,6 +43,8 @@ export class WorkoutsOverviewComponent extends BaseComponent {
           .whereLike('WorkoutName', searchTerm)
           .get()
       })
+      .onBeforeLoad(() => this.startLoader())
+      .onAfterLoad(() => this.stopLoader())
       .showPager(true)
       .showSearch(true)
       .pagerSize(7)

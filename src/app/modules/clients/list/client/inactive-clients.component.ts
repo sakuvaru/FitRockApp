@@ -38,6 +38,8 @@ export class InActiveClientsComponent extends BaseComponent {
           .whereEquals('IsActive', false)
           .get()
       })
+      .onBeforeLoad(() => this.startLoader())
+      .onAfterLoad(() => this.stopLoader())
       .showPager(true)
       .showSearch(true)
       .showHeader(false)

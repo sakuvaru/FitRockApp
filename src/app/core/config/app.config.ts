@@ -6,6 +6,7 @@ export class AppConfig {
     // app
     public static AppName = 'Fit Rock';
     public static MainTitle = 'Menu';
+    public static DefaultLanguage = 'cs';
 
     // web api config
     public static RepositoryApiEndpoint = 'http://localhost:61466/type';

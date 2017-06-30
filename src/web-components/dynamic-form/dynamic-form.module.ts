@@ -15,13 +15,17 @@ import { DynamicFormService } from './dynamic-form.service';
 import { DynamicFormQuestionComponent } from './dynamic-form-question.component';
 import { DynamicFormComponent } from './dynamic-form.component';
 
+// loader
+import { LoaderModule } from '../loader/loader.module';
+
 @NgModule({
     imports: [
         CommonModule,
         RouterModule, // router module needs to be exported along with the layouts so that router-outlet can be used
         SharedWebComponentModule,
         FormsModule,
-        ReactiveFormsModule // required by dynamic forms feature
+        ReactiveFormsModule, // required by dynamic forms feature
+        LoaderModule
     ],
     declarations: [
         DynamicFormQuestionComponent,

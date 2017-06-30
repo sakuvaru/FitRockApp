@@ -56,6 +56,10 @@ export class DynamicFormComponent implements OnInit, OnChanges {
     ngOnInit() {
         // try to initialize component if config is available during init
         if (this.config) {
+            if (this.config.onFormInit){
+                this.config.onFormInit();
+            }
+
             // load fields
             this.form = this.fieldControlService.toFormGroup(this.config.fields);
 
@@ -87,6 +91,10 @@ export class DynamicFormComponent implements OnInit, OnChanges {
             changes.config.currentValue.submitText = changes.config.currentValue.submitText;
             // translate labels
             this.translateLabels();
+
+            if (this.config.onFormLoaded){
+                this.config.onFormLoaded();
+            }
         }
     }
 
@@ -136,7 +144,6 @@ export class DynamicFormComponent implements OnInit, OnChanges {
         });
 
         this.questions = tempQuestions;
-        console.log(this.questions);
     }
 
     /**

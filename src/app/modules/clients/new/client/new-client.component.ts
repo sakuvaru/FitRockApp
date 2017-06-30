@@ -11,13 +11,17 @@ import { User } from '../../../../models';
 @Component({
     templateUrl: 'new-client.component.html'
 })
-export class NewClientComponent extends BaseComponent {
+export class NewClientComponent extends BaseComponent implements OnInit {
 
     private formConfig: FormConfig<User>;
 
     constructor(
         protected componentDependencyService: ComponentDependencyService) {
         super(componentDependencyService)
+    }
+
+    ngOnInit(): void {
+        this.startLoader();
 
         this.setConfig({
             componentTitle: { key: 'module.clients.newClient' },
@@ -26,6 +30,8 @@ export class NewClientComponent extends BaseComponent {
 
         this.dependencies.itemServices.userService.insertForm()
             .subscribe(form => {
+                form.onFormLoaded(() => this.stopLoader());
+
                 form.insertFunction((item) => this.dependencies.itemServices.userService.createClient(item).set())
                 form.callback((response) => {
                     // redirect to view client page

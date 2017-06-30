@@ -24,9 +24,14 @@ export class EditWorkoutComponent extends BaseComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        this.startLoader();
+
         this.activatedRoute.params
             .switchMap((params: Params) => this.dependencies.itemServices.workoutService.editForm(+params['id']))
             .subscribe(form => {
+
+                form.onFormLoaded(() => this.stopLoader());
+
                 var workout = form.getItem();
 
                 this.setConfig({

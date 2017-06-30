@@ -22,7 +22,6 @@ export abstract class BaseComponent implements IComponent, OnInit {
     private snackbarDefaultDuration = 2500;
 
     // subscriptions
-    private loaderSubscription: Subscription;
     private repositoryErrorSubscription: Subscription;
 
     constructor(protected dependencies: ComponentDependencyService) {
@@ -42,7 +41,7 @@ export abstract class BaseComponent implements IComponent, OnInit {
 
         // set language version
         // this language will be used as a fallback when a translation isn't found in the current language
-        this.dependencies.coreServices.translateService.setDefaultLang('cs');
+        this.dependencies.coreServices.translateService.setDefaultLang(AppConfig.DefaultLanguage);
 
         // the lang to use, if the lang isn't available, it will use the current loader to get them
         this.dependencies.coreServices.translateService.use(this.dependencies.coreServices.translateService.getBrowserLang());
@@ -63,6 +62,17 @@ export abstract class BaseComponent implements IComponent, OnInit {
             error => {
                 this.handleRepositoryError(error);
             });
+
+        // stop loader on component init if its still loading
+         this.dependencies.coreServices.sharedService.setLoader(false);
+    }
+
+    startLoader(): void {
+        this.dependencies.coreServices.sharedService.setLoader(true);
+    }
+
+    stopLoader(): void {
+        this.dependencies.coreServices.sharedService.setLoader(false);
     }
 
     // -------------------- Component config ------------------ //

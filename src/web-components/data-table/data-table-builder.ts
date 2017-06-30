@@ -37,6 +37,17 @@ export class DataTableBuilder<T> {
         return this;
     }
 
+    
+    onBeforeLoad(callback: () => void): this{
+        this.config.onBeforeLoad = callback;
+        return this;
+    }
+
+    onAfterLoad(callback: () => void): this{
+        this.config.onAfterLoad = callback;
+        return this;
+    }
+
     urlResolver(resolver: (item: T) => string): this {
         this.config.urlResolver = resolver;
         return this;
