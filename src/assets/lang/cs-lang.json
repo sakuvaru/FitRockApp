@@ -17,7 +17,8 @@
     "shared": {
         "login": "Přihlášení",
         "search": "Hledat",
-        "updated": "Poslední změna"
+        "updated": "Poslední změna",
+		"close": "Zavřít"
     },
     "module": {
         "clients": {
@@ -33,16 +34,21 @@
             "workoutName": "Trénink",
 			"editWorkout": "Změna tréninku",
 			"trainingPlans": "Tréninkové plány",
-            "view": "Rozpis plánu",
+            "editPlan": "Upravit šablonu",
+            "view": "Náhled",
             "edit": "Základní údaje",
             "list": "Tréninkové plány",
             "overview": "Přehled",
 			"myTrainingPlans": "Moje tréninkové plány",
-			"workoutPlan": "Plán tréninku",
+			"previewWorkout": "Náhled šablony",
 			"reps": "Opakování",
 			"sets": "Série",
 			"addExercise": "Přidat cvik",
-			"deleteWorkout": "Smazat trénink"
+			"deleteWorkout": "Smazat trénink",
+            "selectExercise": "Výběr cviků",
+			"addWorkoutExercise": "Přidat cvik",
+			"editWorkoutExercise": "Upravit cvik",
+			"newWorkout": "Nová šablona"
         }
     },
     "form": {

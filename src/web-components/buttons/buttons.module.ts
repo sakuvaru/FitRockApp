@@ -7,6 +7,7 @@ import { SharedWebComponentModule } from '../shared-web-components.module';
 
 // components
 import { FixedButtonComponent } from './fixed-button.component';
+import { CloseButtonComponent } from './close-button.component';
 
 @NgModule({
     imports: [
@@ -16,9 +17,11 @@ import { FixedButtonComponent } from './fixed-button.component';
     ],
     declarations: [
         FixedButtonComponent,
+        CloseButtonComponent
     ],
     exports: [
-        FixedButtonComponent
+        FixedButtonComponent,
+        CloseButtonComponent
     ]
 })
 export class ButtonsModule { }

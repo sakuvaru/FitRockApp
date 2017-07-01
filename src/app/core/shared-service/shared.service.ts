@@ -9,19 +9,24 @@ export class SharedService {
 
   // Observable string sources
   private componentConfigSource = new Subject<IComponentConfig>();
-  private loaderSource = new Subject<boolean>();
+  private topLoaderSource = new Subject<boolean>();
+  private componentLoaderSource = new Subject<boolean>();
 
   // Observable string streams
   componentConfigChanged$ = this.componentConfigSource.asObservable();
-  loaderChanged$ = this.loaderSource.asObservable();
+  componentloaderChanged$ = this.componentLoaderSource.asObservable();
+  topLoaderChanged$ = this.topLoaderSource.asObservable();
 
   // Service message commands
   setComponentConfig(config: IComponentConfig): void {
     this.componentConfigSource.next(config);
   }
 
-  // Service message commands
-  setLoader(loaderEnabled: boolean): void {
-    this.loaderSource.next(loaderEnabled);
+  setComponentLoader(enabled: boolean): void {
+    this.componentLoaderSource.next(enabled);
+  }
+
+  setTopLoader(enabled: boolean): void {
+    this.topLoaderSource.next(enabled);
   }
 }

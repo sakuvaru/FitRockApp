@@ -7,6 +7,7 @@ import { ComponentDependencyService } from './component-dependency.service';
 import { ErrorResponse, ErrorReasonEnum } from '../../../lib/repository';
 import { ComponentConfig, IComponentConfig, ResourceKey, MenuItem } from './component.config';
 import { Observable, Subscription, Subject } from 'rxjs/RX';
+import { UrlHandlingStrategy } from '@angular/router'
 
 @Component({
 })
@@ -14,9 +15,6 @@ export abstract class BaseComponent implements IComponent, OnInit {
 
     // component config
     protected componentConfig: IComponentConfig = new ComponentConfig();
-
-    // name of the full screen loader - can be anything
-    private fullscreenLoaderName = "fullscreen-loader";
 
     // snackbar config
     private snackbarDefaultDuration = 2500;
@@ -46,33 +44,40 @@ export abstract class BaseComponent implements IComponent, OnInit {
         // the lang to use, if the lang isn't available, it will use the current loader to get them
         this.dependencies.coreServices.translateService.use(this.dependencies.coreServices.translateService.getBrowserLang());
 
-        // initialize loading
-        this.dependencies.tdServices.loadingService.create({
-            name: this.fullscreenLoaderName,
-            mode: LoadingMode.Indeterminate,
-            type: LoadingType.Linear,
-            color: 'primary',
-        });
-
-        // stop all full screen loaders on init (if there are any)
-        this.resolveFullScreenLoader();
-
         // suscribe to errors in repository service and handle them
         this.repositoryErrorSubscription = this.dependencies.coreServices.repositoryClient.requestErrorChange$.subscribe(
             error => {
                 this.handleRepositoryError(error);
             });
 
-        // stop loader on component init if its still loading
-         this.dependencies.coreServices.sharedService.setLoader(false);
+        // stop loaders on component init 
+        this.dependencies.coreServices.sharedService.setComponentLoader(false);
+        this.dependencies.coreServices.sharedService.setTopLoader(false);
     }
 
     startLoader(): void {
-        this.dependencies.coreServices.sharedService.setLoader(true);
+        this.dependencies.coreServices.sharedService.setComponentLoader(true);
     }
 
     stopLoader(): void {
-        this.dependencies.coreServices.sharedService.setLoader(false);
+        this.dependencies.coreServices.sharedService.setComponentLoader(false);
+    }
+
+    startGlobalLoader(): void {
+        this.dependencies.coreServices.sharedService.setTopLoader(true);
+    }
+
+    stopGlobalLoader(): void {
+        this.dependencies.coreServices.sharedService.setTopLoader(false);
+    }
+
+    /**
+     * Uses redirect through redirect component to force refresh a component
+     * @param url Url to redirect
+     */
+    forceRefresh(url: string): void{
+        var redirectHandlerUrl = this.getPublicUrl(UrlConfig.Redirect);
+        this.dependencies.router.navigate([redirectHandlerUrl], { queryParams: { 'url': url },  queryParamsHandling: "merge" });
     }
 
     // -------------------- Component config ------------------ //
@@ -134,14 +139,6 @@ export abstract class BaseComponent implements IComponent, OnInit {
 
     redirectToErrorPage(): void {
         this.dependencies.router.navigate([UrlConfig.getPublicUrl(UrlConfig.Error)]);
-    }
-
-    resolveFullScreenLoader(): void {
-        this.dependencies.tdServices.loadingService.resolve(this.fullscreenLoaderName);
-    }
-
-    registerFullScreenLoader(): void {
-        this.dependencies.tdServices.loadingService.register(this.fullscreenLoaderName);
     }
 
     getClientUrl(action?: string): string {

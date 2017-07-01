@@ -60,18 +60,6 @@ export class SingleItemQueryInit<TItem extends IItem> {
         return new SingleItemQuery(this.authHttp, this.config, this.type, action)
     }
 
-    byCodename(codename: string): SingleItemQuery<TItem> {
-        var action = 'getbycodename/' + codename;
-
-        return new SingleItemQuery(this.authHttp, this.config, this.type, action)
-    }
-
-    byGuid(guid: string): SingleItemQuery<TItem> {
-        var action = 'getbyguid/' + guid;
-
-        return new SingleItemQuery(this.authHttp, this.config, this.type, action)
-    }
-
     withCustomAction(action: string): SingleItemQuery<TItem> {
         return new SingleItemQuery(this.authHttp, this.config, this.type, action)
     }

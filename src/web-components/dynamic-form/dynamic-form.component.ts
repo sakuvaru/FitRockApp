@@ -25,7 +25,7 @@ export class DynamicFormComponent implements OnInit, OnChanges {
     private generalErrorMessagePrefix: string;
     private unknownErrorMessage: string;
 
-    private questions: BaseField<any>[] =[];
+    private questions: BaseField<any>[] = [];
 
     private submitText: string;
     private snackbarText: string;
@@ -38,9 +38,6 @@ export class DynamicFormComponent implements OnInit, OnChanges {
     private submissionError: string;
 
     private formErrorLines: string[] = [];
-
-    // output events
-    @Output() onSubmitEvent = new EventEmitter<FormGroup>();
 
     // inputs
     @Input() config: FormConfig<any>;
@@ -56,7 +53,7 @@ export class DynamicFormComponent implements OnInit, OnChanges {
     ngOnInit() {
         // try to initialize component if config is available during init
         if (this.config) {
-            if (this.config.onFormInit){
+            if (this.config.onFormInit) {
                 this.config.onFormInit();
             }
 
@@ -65,7 +62,7 @@ export class DynamicFormComponent implements OnInit, OnChanges {
 
             // assign questions from fields
             this.assignQuestions(this.config.fields)
-            
+
             // subscribe to form changes
             this.form.valueChanges.subscribe(response => this.handleFormChange());
 
@@ -92,20 +89,28 @@ export class DynamicFormComponent implements OnInit, OnChanges {
             // translate labels
             this.translateLabels();
 
-            if (this.config.onFormLoaded){
+            if (this.config.onFormLoaded) {
                 this.config.onFormLoaded();
             }
         }
     }
 
     onSubmit() {
-        // emit event
-        this.onSubmitEvent.emit(this.form.value);
+        // before save
+        if (this.config.onBeforeSave) {
+            this.config.onBeforeSave();
+        }
 
         // save form
         if (this.config.isInsertForm()) {
             this.convertEmptyStringsToNull();
             this.config.insertFunction(this.form.value)
+                .finally(() => {
+                    // after save
+                    if (this.config.OnAfterSave) {
+                        this.config.OnAfterSave();
+                    }
+                })
                 .subscribe(response => {
                     this.response = response;
                     this.handleInsertAfter(response);
@@ -117,6 +122,12 @@ export class DynamicFormComponent implements OnInit, OnChanges {
         else if (this.config.isEditForm()) {
             this.convertEmptyStringsToNull();
             this.config.editFunction(this.form.value)
+                .finally(() => {
+                    // after save
+                    if (this.config.OnAfterSave) {
+                        this.config.OnAfterSave();
+                    }
+                })
                 .subscribe(response => {
                     this.response = response;
                     this.handleUpdateAfter(response);
@@ -130,15 +141,15 @@ export class DynamicFormComponent implements OnInit, OnChanges {
         }
     }
 
-    private assignQuestions(fields: BaseField<any>[]): void{
-        if (!fields){
+    private assignQuestions(fields: BaseField<any>[]): void {
+        if (!fields) {
             return;
         }
 
         var tempQuestions: BaseField<any>[] = [];
 
         fields.forEach(field => {
-            if (this.showField(field.key)){
+            if (this.showField(field.key)) {
                 tempQuestions.push(field);
             }
         });
@@ -150,21 +161,21 @@ export class DynamicFormComponent implements OnInit, OnChanges {
      * Determins whether the form field will be shown on form
      * @param key Name of the field
      */
-    private showField(key: string): boolean{
+    private showField(key: string): boolean {
         // if show fields are not defined, all fields are permitted
-        if (!this.config.showFields){
+        if (!this.config.showFields) {
             return true;
         }
 
         if (this.config.showFields.find(showField => {
-            if (!showField){
+            if (!showField) {
                 throw Error(`Field defined in 'showFields' cannot be empty`);
             }
-            if (!key){
+            if (!key) {
                 throw Error(`Field key cannot be empty`);
             }
             return showField.toLowerCase() === key.toLowerCase()
-        })){
+        })) {
             return true;
         }
         return false;
@@ -197,16 +208,16 @@ export class DynamicFormComponent implements OnInit, OnChanges {
     private handleUpdateAfter(response: ResponseEdit<any> | any): void {
         this.handleSnackBar();
 
-        if (this.config.updateCallback) {
-            this.config.updateCallback(response);
+        if (this.config.onUpdate) {
+            this.config.onUpdate(response);
         }
     }
 
     private handleInsertAfter(response: ResponseCreate<any> | any): void {
         this.handleSnackBar();
 
-        if (this.config.insertCallback) {
-            this.config.insertCallback(response);
+        if (this.config.onInsert) {
+            this.config.onInsert(response);
         }
     }
 
@@ -221,8 +232,8 @@ export class DynamicFormComponent implements OnInit, OnChanges {
     }
 
     private handleError(errorResponse: ErrorResponse | FormErrorResponse | any): void {
-        if (this.config.errorCallback) {
-            this.config.errorCallback(errorResponse);
+        if (this.config.onError) {
+            this.config.onError(errorResponse);
         }
 
         if (errorResponse instanceof FormErrorResponse) {

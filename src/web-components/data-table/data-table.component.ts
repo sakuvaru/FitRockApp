@@ -1,10 +1,9 @@
 // core
 import { Component, Input, Output, OnInit, EventEmitter, AfterViewInit } from '@angular/core';
-import { Router } from '@angular/router';
 
 // required by component
 import { DataTableField } from './data-table-field.class';
-import { DataTableConfig } from './data-table.config';
+import { DataTableConfig, SelectableConfig } from './data-table.config';
 import { AlignEnum } from './align-enum';
 import { Observable } from 'rxjs/Observable';
 import { Guid } from '../../lib/utilities';
@@ -27,8 +26,11 @@ export class DataTableComponent implements AfterViewInit, OnInit {
     // base config
     @Input() config: DataTableConfig<any>;
 
-    // events
-    @Output() onSearch = new EventEmitter<string>();
+    // selectable
+    private isSelectable: boolean = false;
+
+    // clickable
+    private isClickable: boolean = false;
 
     // pager
     private totalPages: number;
@@ -43,7 +45,6 @@ export class DataTableComponent implements AfterViewInit, OnInit {
     private loaderName: string = Guid.newGuid();
 
     constructor(
-        private router: Router,
         private translateService: TranslateService,
         private mediaService: TdMediaService
     ) {
@@ -56,10 +57,16 @@ export class DataTableComponent implements AfterViewInit, OnInit {
 
         // translated all labels
         this.config.fields.forEach(field => {
-            this.translateService.get(field.label).subscribe(text =>{
+            this.translateService.get(field.label).subscribe(text => {
                 field.label = text;
             });
         });
+
+        // init selectable
+        this.isSelectable = this.config.isSelectable();
+
+        // init clickable
+        this.isClickable = this.config.isClickable();
     }
 
     ngAfterViewInit() {
@@ -69,12 +76,12 @@ export class DataTableComponent implements AfterViewInit, OnInit {
 
     // load methods
     private filterItems(page: number): void {
-        if (this.config.onBeforeLoad){
+        if (this.config.onBeforeLoad) {
             this.config.onBeforeLoad();
-        }   
+        }
         this.config.loadResolver(this.searchTerm, page, this.config.pagerSize)
             .finally(() => {
-                if (this.config.onAfterLoad){
+                if (this.config.onAfterLoad) {
                     this.config.onAfterLoad();
                 }
             })
@@ -91,8 +98,6 @@ export class DataTableComponent implements AfterViewInit, OnInit {
     private handleSearch(searchTerm: string): void {
         // set search
         this.searchTerm = searchTerm;
-
-        this.onSearch.emit(searchTerm);
 
         // reset pager
         this.currentPage = 1;
@@ -116,9 +121,6 @@ export class DataTableComponent implements AfterViewInit, OnInit {
         return null;
     }
 
-    private isLinkItem(): boolean {
-        return this.config.urlResolver != null
-    }
 
     private getFieldValue(field: DataTableField<any>, item: any): string {
         return field.value(item);
@@ -130,13 +132,6 @@ export class DataTableComponent implements AfterViewInit, OnInit {
         }
 
         return false;
-    }
-
-    private getItemUrl(item: any): string {
-        if (!this.isLinkItem()) {
-            return null;
-        }
-        return this.config.urlResolver(item);
     }
 
     private getAvatarUrl(item: any): string {
@@ -156,9 +151,11 @@ export class DataTableComponent implements AfterViewInit, OnInit {
     }
 
     private onItemClick(item: any): void {
-        var url = this.getItemUrl(item);
+        if(!this.isClickable){
+            throw Error(`Cannot process item clicks because no callback is defined`);
+        }
 
-        this.router.navigate([url]);
+        this.config.onClick(item);
     }
 
     private onGoToPage(page: number): void {
@@ -221,6 +218,21 @@ export class DataTableComponent implements AfterViewInit, OnInit {
 
     private hasNextPage(): boolean {
         return this.currentPage < this.totalPages;
+    }
+
+    private handleCheckboxChange(data: any, item: any): void {
+        if (!this.config.isSelectable) {
+            throw Error(`Cannot handle checkbox change events when data table is not selectable`);
+        }
+
+        var checked = data.checked;
+
+        if (checked) {
+            this.config.selectableConfig.onSelect(item);
+        }
+        else {
+            this.config.selectableConfig.onDeselect(item);
+        }
     }
 }
 

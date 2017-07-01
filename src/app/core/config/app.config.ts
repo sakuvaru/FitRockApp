@@ -7,6 +7,7 @@ export class AppConfig {
     public static AppName = 'Fit Rock';
     public static MainTitle = 'Menu';
     public static DefaultLanguage = 'cs';
+    public static RedirectQueryString = 'url';
 
     // web api config
     public static RepositoryApiEndpoint = 'http://localhost:61466/type';
@@ -23,4 +24,7 @@ export class AppConfig {
     public static Auth0_AccessTokenStorageName = 'access_token';
     public static Auth0_IdTokenStorageName = 'id_token';
     public static Auth0_NoJwtError = true;
+
+    // design defaults
+    public static DefaultDialogWidth = '70%';
 }

@@ -17,10 +17,6 @@ export interface IComponent {
 
     redirectToErrorPage(): void;
 
-    resolveFullScreenLoader(): void;
-
-    registerFullScreenLoader(): void;
-
     showSnackbar(message: string): void;
 
     showSavedSnackbar(): void;

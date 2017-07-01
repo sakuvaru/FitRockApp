@@ -11,49 +11,38 @@ import { WorkoutExercise } from '../../../models';
 import { FormConfig } from '../../../../web-components/dynamic-form';
 
 @Component({
-  templateUrl: 'add-workout-exercise-dialog.component.html'
+  templateUrl: 'edit-workout-exercise-dialog.component.html'
 })
-export class AddWorkoutExerciseDialogComponent extends BaseComponent implements OnInit {
-
-  private config: DataTableConfig<Exercise>;
-  private workoutId: number;
-  private exercise: Exercise;
+export class EditWorkoutExerciseDialogComponent extends BaseComponent implements OnInit {
 
   private workoutExerciseForm: FormConfig<WorkoutExercise>;
 
-  /**
-   * Accessed by parent component
-   */
-  public newWorkoutExercise: WorkoutExercise;
+  // public because it is accessed by parent component
+  public workoutExercise: WorkoutExercise;
 
   constructor(
     protected dependencies: ComponentDependencyService,
     @Inject(MD_DIALOG_DATA) public data: any
   ) {
     super(dependencies)
-
-    this.workoutId = data.workoutId;
-    this.exercise = data.exercise;
+    this.workoutExercise = data;
   }
 
   ngOnInit() {
     this.startGlobalLoader();
 
-    this.dependencies.itemServices.workoutExerciseService.insertForm()
+    this.dependencies.itemServices.workoutExerciseService.editForm(this.workoutExercise.id)
       .subscribe(form => {
-        form.onFormLoaded(() => this.stopGlobalLoader());
-        // set exercise id & workout id for new WorkoutExercise item
-        form.withFieldValue('exerciseId', this.exercise.id);
-        form.withFieldValue('workoutId', this.workoutId);
+        form.onUpdate((response) => {
+          this.workoutExercise = response.item;
+          this.close();
+        });
         form.onBeforeSave(() => this.startGlobalLoader());
         form.onAfterSave(() => this.stopGlobalLoader());
 
-        form.onInsert((response => {
-          this.newWorkoutExercise = response.item;
-          this.close();
-        }))
-
         this.workoutExerciseForm = form.build();
+
+        this.stopGlobalLoader();
       });
   }
 

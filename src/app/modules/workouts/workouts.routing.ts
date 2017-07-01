@@ -14,8 +14,10 @@ import { WorkoutsOverviewComponent } from './list/workouts-overview.component';
 import { NewWorkoutComponent } from './new/new-workout.component';
 import { EditWorkoutComponent } from './edit/edit-workout.component';
 import { WorkoutPlanComponent } from './list/workout-plan.component';
-
-import { AddWorkoutExerciseDialogComponent} from './dialogs/add-workout-exercise-dialog.component';
+import { EditWorkoutPlanComponent } from './edit/edit-workout-plan.component';
+import { AddWorkoutExerciseDialogComponent } from './dialogs/add-workout-exercise-dialog.component';
+import { SelectWorkoutExerciseDialogComponent } from './dialogs/select-workout-exercise-dialog.component';
+import { EditWorkoutExerciseDialogComponent } from './dialogs/edit-workout-exercise-dialog.component';
 
 const routes: Routes = [
     {
@@ -29,12 +31,21 @@ const routes: Routes = [
             {
                 path: 'workouts/edit/:id', component: EditWorkoutComponent
             },
-             {
+            {
                 path: 'workouts/view/:id', component: WorkoutPlanComponent
             },
-               {
+            {
+                path: 'workouts/edit-plan/:id', component: EditWorkoutPlanComponent
+            },
+            {
                 path: 'workouts/dialogs/add-workout-exercise', component: AddWorkoutExerciseDialogComponent
             },
+            {
+                path: 'workouts/dialogs/select-workout-exercise', component: SelectWorkoutExerciseDialogComponent
+            },
+            {
+                path: 'workouts/dialogs/edit-workout-exercise', component: EditWorkoutExerciseDialogComponent
+            }
         ]
     }
 ];

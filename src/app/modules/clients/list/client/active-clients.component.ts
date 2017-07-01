@@ -11,14 +11,16 @@ import { User } from '../../../../models';
 @Component({
   templateUrl: 'active-clients.component.html'
 })
-export class ActiveClientsComponent extends BaseComponent {
+export class ActiveClientsComponent extends BaseComponent implements OnInit{
 
   private config: DataTableConfig<User>;
 
   constructor(
     protected dependencies: ComponentDependencyService) {
     super(dependencies)
+    }
 
+  ngOnInit(): void {
     this.setConfig({
       menuTitle: { key: 'menu.clients' },
       menuItems: new ClientOverviewMenuItems().menuItems,
@@ -44,7 +46,7 @@ export class ActiveClientsComponent extends BaseComponent {
       .showSearch(true)
       .showHeader(false)
       .pagerSize(7)
-      .urlResolver((item) => this.getTrainerUrl('clients/edit/') + item.id)
+      .onClick((item) => this.dependencies.router.navigate([this.getTrainerUrl('clients/edit/') + item.id]))
       .avatarUrlResolver((item) => 'https://semantic-ui.com/images/avatar/large/elliot.jpg')
       .build();
   }

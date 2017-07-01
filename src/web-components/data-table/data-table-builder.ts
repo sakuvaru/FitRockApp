@@ -1,4 +1,4 @@
-import { DataTableConfig } from './data-table.config';
+import { DataTableConfig, SelectableConfig } from './data-table.config';
 import { DataTableField } from './data-table-field.class';
 import { Observable } from 'rxjs/RX';
 import { ResponseMultiple } from '../../lib/repository';
@@ -37,6 +37,10 @@ export class DataTableBuilder<T> {
         return this;
     }
 
+    selectableConfig(config: SelectableConfig<T>): this {
+        this.config.selectableConfig = config;
+        return this;
+    }
     
     onBeforeLoad(callback: () => void): this{
         this.config.onBeforeLoad = callback;
@@ -48,8 +52,8 @@ export class DataTableBuilder<T> {
         return this;
     }
 
-    urlResolver(resolver: (item: T) => string): this {
-        this.config.urlResolver = resolver;
+    onClick(callback: (item: T) => void): this {
+        this.config.onClick = callback;
         return this;
     }
 

@@ -1,8 +1,9 @@
+<!--<loader [enabled]="topLoaderEnabled"></loader>
 <td-layout-nav toolbarTitle="{{componentConfig.appName}}" logo="home" [navigationRoute]="getTrainerUrl()">
   <td-layout-manage-list #manageList [opened]="media.registerQuery('gt-sm') | async" [mode]="(media.registerQuery('gt-sm') | async) ? 'side' :  'over'"
     [sidenavWidth]="(media.registerQuery('gt-xs') | async) ? '257px' : '100%'">
     <md-toolbar td-sidenav-content>
-      <span>{{menuTitle}}</span>
+      {menuTitle}}
     </md-toolbar>
     <md-nav-list *ngIf="componentConfig.menuItems" td-sidenav-content (click)="!media.query('gt-sm') && manageList.close()">
       <a *ngFor="let item of componentConfig.menuItems" md-list-item [routerLink]="getMenuItemUrl(item.action, item.type)">
@@ -20,11 +21,45 @@
         </button>
       </md-menu>
     </div>
-    <loader [enabled]="loaderEnabled"></loader>
+    <loader [enabled]="componentLoaderEnabled"></loader>
     <router-outlet></router-outlet>
     <td-layout-footer-inner>
-      <!-- optional footer -->
+   optional footer 
     </td-layout-footer-inner>
+  </td-layout-manage-list>
+  <td-layout-footer>
+    <footer [appName]="componentConfig.appName"></footer>
+  </td-layout-footer>
+</td-layout-nav>-->
+
+<loader [enabled]="topLoaderEnabled"></loader>
+<td-layout-nav sidenavTitle="title" logo="logo" icon="icon" color="primary">
+  <div td-toolbar-content [routerLink]="getTrainerUrl()">
+    {{componentConfig.appName}}
+  </div>
+  <td-layout-manage-list #manageList [opened]="media.registerQuery('gt-sm') | async" [mode]="(media.registerQuery('gt-sm') | async) ? 'side' :  'over'"
+     [sidenavWidth]="(media.registerQuery('gt-xs') | async) ? '257px' : '100%'">
+    <md-toolbar td-sidenav-content class="example-fill-remaining-space">
+      {{menuTitle}}
+    </md-toolbar>
+    <md-nav-list *ngIf="componentConfig.menuItems" td-sidenav-content td-sidenav-content (click)="!media.query('gt-sm') && manageList.close()">
+      <a *ngFor="let item of componentConfig.menuItems" md-list-item [routerLink]="getMenuItemUrl(item.action, item.type)">
+        <md-icon [color]="getMenuItemColor(item.action, item.type)">{{item.icon}}</md-icon>{{ item.label.key | translate}}
+      </a>
+    </md-nav-list>
+    <div td-toolbar-content layout="row" layout-align="start center" flex>
+      <span>{{componentTitle}}</span>
+      <span flex></span>
+      <button md-icon-button [mdMenuTriggerFor]="toolbarMenu"><md-icon>settings</md-icon></button>
+      <md-menu #toolbarMenu="mdMenu">
+        <button md-menu-item [routerLink]="getPublicUrl('logout')">
+          <md-icon>exit_to_app</md-icon>
+           Odhlásit
+        </button>
+      </md-menu>
+    </div>
+    <loader [enabled]="componentLoaderEnabled"></loader>
+    <router-outlet></router-outlet>
   </td-layout-manage-list>
   <td-layout-footer>
     <footer [appName]="componentConfig.appName"></footer>

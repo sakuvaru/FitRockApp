@@ -1,5 +1,5 @@
 // common
-import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
+import { Component, Input, Output, OnInit, EventEmitter, AfterContentInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { AppConfig, ComponentDependencyService, BaseComponent, ComponentConfig } from '../../../../core';
 
@@ -11,14 +11,22 @@ import { User } from '../../../../models';
 @Component({
   templateUrl: 'clients-overview.component.html'
 })
-export class ClientsOverviewComponent extends BaseComponent {
+export class ClientsOverviewComponent extends BaseComponent implements OnInit, AfterContentInit {
 
   private config: DataTableConfig<User>;
 
   constructor(
     protected dependencies: ComponentDependencyService) {
     super(dependencies)
+  }
 
+  ngAfterContentInit() {
+    //Called after ngOnInit when the component's or directive's content has been initialized.
+    //Add 'implements AfterContentInit' to the class.
+
+  }
+
+  ngOnInit(): void {
     this.setConfig({
       menuTitle: { key: 'menu.clients' },
       menuItems: new ClientOverviewMenuItems().menuItems,
@@ -38,12 +46,15 @@ export class ClientsOverviewComponent extends BaseComponent {
           .get()
       })
       .onBeforeLoad(() => this.startLoader())
-      .onAfterLoad(() => this.stopLoader())
+      .onAfterLoad(() => {
+
+        this.stopLoader();
+      })
       .showPager(true)
       .showSearch(true)
       .showHeader(false)
       .pagerSize(7)
-      .urlResolver((item) => this.getTrainerUrl('clients/edit/') + item.id)
+      .onClick((item) => this.dependencies.router.navigate([this.getTrainerUrl('clients/edit/') + item.id]))
       .avatarUrlResolver((item) => 'https://semantic-ui.com/images/avatar/large/elliot.jpg')
       .build();
   }

@@ -13,13 +13,9 @@ export class FixedButtonComponent {
     // https://github.com/Teradata/covalent-nightly/blob/master/common/styles/_button.scss
     @Input() position: string;
 
-    // options: accent, primary, warn
-    @Input() color: string;
-
     private default_position = 'mat-fab-bottom-right';
-    private default_color = 'accent';
     private default_icon = 'add';
-
+    
     constructor() {
     }
 
@@ -29,14 +25,6 @@ export class FixedButtonComponent {
         }
 
         return this.default_position;
-    }
-
-    private getColor(): string{
-        if (this.color){
-            return this.color;
-        }
-
-        return this.default_color;
     }
 
     private getIcon(): string{

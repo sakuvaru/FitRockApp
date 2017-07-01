@@ -36,23 +36,46 @@ class BaseDynamicFormBuilder<TItem extends IItem>{
         return this;
     }
 
-    callback(callback: (response: ResponseCreate<TItem>) => void): this {
-        this.config.insertCallback = callback;
+    onError(callback: (response: ErrorResponse | FormErrorResponse | any) => void): this {
+        this.config.onError = callback;
         return this;
     }
 
-    errorCallback(callback: (response: ErrorResponse | FormErrorResponse | any) => void): this {
-        this.config.errorCallback = callback;
-        return this;
-    }
-
-    onFormInit(callback: () => void): this{
+    onFormInit(callback: () => void): this {
         this.config.onFormInit = callback;
         return this;
     }
 
-     onFormLoaded(callback: () => void): this{
+    onFormLoaded(callback: () => void): this {
         this.config.onFormLoaded = callback;
+        return this;
+    }
+
+    onBeforeSave(callback: () => void): this {
+        this.config.onBeforeSave = callback;
+        return this;
+    }
+
+    onAfterSave(callback: () => void): this {
+        this.config.OnAfterSave = callback;
+        return this;
+    }
+
+    /**
+     * Use to manually set value of certain field in form.
+     * Call after all fields were initiliazed
+     * @param fieldName Name of field
+     * @param value Value
+     */
+    withFieldValue(fieldName: string, value: any): this {
+        // find field
+        var field = this.config.fields.find(m => m.key.toLowerCase() === fieldName.toLowerCase());
+
+        if (!field) {
+            throw Error(`Cannot set value for field '${fieldName}' because it does not exist in form`);
+        }
+
+        field.value = value;
         return this;
     }
 
@@ -65,6 +88,11 @@ class BaseDynamicFormBuilder<TItem extends IItem>{
 export class DynamicFormInsertBuilder<TItem extends IItem> extends BaseDynamicFormBuilder<TItem>{
     insertFunction(insertFunction: (item: TItem) => Observable<ResponseCreate<TItem>>): this {
         this.config.insertFunction = insertFunction;
+        return this;
+    }
+
+    onInsert(callback: (response: ResponseCreate<TItem>) => void): this {
+        this.config.onInsert = callback;
         return this;
     }
 }
@@ -81,6 +109,11 @@ export class DynamicFormEditBuilder<TItem extends IItem> extends BaseDynamicForm
 
     editFunction(editFunction: (item: TItem) => Observable<ResponseEdit<TItem>>): this {
         this.config.editFunction = editFunction;
+        return this;
+    }
+
+    onUpdate(callback: (response: ResponseEdit<TItem>) => void): this {
+        this.config.onUpdate = callback;
         return this;
     }
 

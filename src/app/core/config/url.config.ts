@@ -10,6 +10,7 @@ export class UrlConfig {
     public static Unauthorized = 'unauthorized';
     public static Logout = 'logout';
     public static NotFound = 'notfound';
+    public static Redirect = 'redirect';
     public static RedirectAfterLogout = UrlConfig.Login;
     public static Default = 'login';
 

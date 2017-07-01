@@ -8,6 +8,7 @@ import { CoreModule } from '../../core';
 import { NotFoundComponent } from './not-found.component';
 import { UnauthorizedComponent } from './unauthorized.component';
 import { ErrorComponent } from './error.component';
+import { RedirectComponent } from './redirect.component';
 
 // router
 import { SharedRouter } from './shared.routing';
@@ -22,12 +23,14 @@ import { SharedRouter } from './shared.routing';
         NotFoundComponent,
         UnauthorizedComponent,
         ErrorComponent,
+        RedirectComponent
     ],
     // Shared components need to be exported so that other modules can use them, as 
     // otherwise they can be used only within the same module
     exports: [
         NotFoundComponent,
         UnauthorizedComponent,
+        RedirectComponent
     ],
 })
 export class SharedModule { }

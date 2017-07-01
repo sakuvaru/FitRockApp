@@ -37,7 +37,7 @@ export class LoginFormComponent extends BaseComponent {
     }
 
     private processFailedLogonRedirect() {
-        var result = this.activatedRoute.queryParams['result'];
+        var result = this.activatedRoute.snapshot.queryParams['result'];
 
         // auth service will redirect back to logon page with query param 'result=error' and radnom fragment (hash) if login fails
         if (result === 'error') {
@@ -49,30 +49,30 @@ export class LoginFormComponent extends BaseComponent {
         }
 
         // hide loader now
-        this.resolveFullScreenLoader();
+        this.stopGlobalLoader();
     }
 
     // event emitters
     onLogin() {
-        this.registerFullScreenLoader();
+        this.startGlobalLoader();
         this.onLoginEvent.emit();
         var success = this.dependencies.coreServices.authService.authenticate(this.username, this.password);
     }
 
     onLogout() {
-        this.registerFullScreenLoader();
+        this.startGlobalLoader();
         this.onLogoutEvent.emit();
         this.dependencies.coreServices.authService.logout();
     }
 
     loginWithGoogle() {
-        this.registerFullScreenLoader();
+        this.startGlobalLoader();
         this.onLoginEvent.emit();
         this.dependencies.coreServices.authService.loginWithGoogle();
     }
 
     loginWithFacebook() {
-        this.registerFullScreenLoader();
+        this.startGlobalLoader();
         this.onLoginEvent.emit();
         this.dependencies.coreServices.authService.loginWithFacebook();
     }

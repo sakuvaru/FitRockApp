@@ -12,6 +12,7 @@ import { AdminLayoutComponent } from '../../layouts/admin-layout.component';
 import { NotFoundComponent } from './not-found.component';
 import { UnauthorizedComponent } from './unauthorized.component';
 import { ErrorComponent } from './error.component';
+import { RedirectComponent } from './redirect.component';
 
 export const routes: Routes = [
     {
@@ -19,6 +20,7 @@ export const routes: Routes = [
             { path: UrlConfig.NotFound, component: NotFoundComponent },
             { path: UrlConfig.Unauthorized, component: UnauthorizedComponent },
             { path: UrlConfig.Error, component: ErrorComponent },
+            { path: UrlConfig.Redirect, component: RedirectComponent },
         ]
     }
 ];

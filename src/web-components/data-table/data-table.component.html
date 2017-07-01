@@ -1,70 +1,69 @@
-
-  <md-card tdmediatoggle="gt-xs" class="push">
-    <td-search-box (searchDebounce)="handleSearch($event)" class="push-left push-right" placeholder="hledat" [alwaysVisible]="true"></td-search-box>
-    <md-divider></md-divider>
-    <md-list *ngIf="config.showHeader" role="list" class="bgc-indigo-200">
-      <md-list-item disableRipple="true">
-        <span *ngFor="let field of config.fields" flex="field.flex" class="{{getTextAlignClass(field)}}">
+<md-card tdmediatoggle="gt-xs" class="push">
+  <td-search-box (searchDebounce)="handleSearch($event)" class="push-left push-right" placeholder="hledat" [alwaysVisible]="true"></td-search-box>
+  <md-divider></md-divider>
+  <md-list *ngIf="config.showHeader" role="list" class="bgc-indigo-200">
+    <md-list-item disableRipple="true">
+      <span *ngFor="let field of config.fields" flex="field.flex" class="{{getTextAlignClass(field)}}">
           {{field.label}}
         </span>
+    </md-list-item>
+  </md-list>
+
+  <!-- Nav list with link -->
+  <md-nav-list *ngIf="isClickable" role="list" class="pad-top-none">
+    <div *ngFor="let item of items; let i=index">
+      <md-divider *ngIf="!isFirstItem(i) || config.showHeader"></md-divider>
+      <md-list-item (click)="onItemClick(item)">
+        <img *ngIf="config.avatarUrlResolver" md-list-avatar src="{{getAvatarUrl()}}" alt="" class="push-right">
+        <md-icon *ngIf="config.iconResolver" md-list-icon>{{getIcon()}}</md-icon>
+
+        <span *ngFor="let field of config.fields" flex="field.flex" [class.tc-grey-500]="field.isSubtle" [class.md-caption]="field.isSubtle"
+          class="{{getTextAlignClass(field)}}">
+            {{getFieldValue(field, item)}}
+        </span>
       </md-list-item>
-    </md-list>
-
-    <!-- Nav list with link -->
-    <md-nav-list *ngIf="config.urlResolver" role="list" class="pad-top-none">
-      <div *ngFor="let item of items; let i=index">
-        <md-divider *ngIf="!isFirstItem(i) || config.showHeader"></md-divider>
-        <md-list-item (click)="onItemClick(item)">
-          <img *ngIf="config.avatarUrlResolver" md-list-avatar src="{{getAvatarUrl()}}" alt="" class="push-right">
-          <md-icon *ngIf="config.iconResolver" md-list-icon>{{getIcon()}}</md-icon>
-
-          <span *ngFor="let field of config.fields" flex="field.flex" [class.tc-grey-500]="field.isSubtle" [class.md-caption]="field.isSubtle"
-            class="{{getTextAlignClass(field)}}">
-            {{getFieldValue(field, item)}}
-        </span>
-        </md-list-item>
-      </div>
-      <div *ngIf="items != null && items.length == 0" layout="row" layout-align="center">
-        <div *ngIf="items != null && items.length == 0 && searchTerm" layout="row" layout-align="center">
-          <h3>{{searchNoItemsText}}</h3>
-        </div>
-        <div *ngIf="items != null && items.length == 0 && !searchTerm" layout="row" layout-align="center">
-          <h3>{{noItemsText}}</h3>
-        </div>
-      </div>
-    </md-nav-list>
-
-    <!-- Nav list without link -->
-    <md-list *ngIf="!config.urlResolver" role="list" class="pad-top-none">
-      <div *ngFor="let item of items; let i=index">
-        <md-divider *ngIf="!isFirstItem(i) || config.showHeader"></md-divider>
-        <md-list-item>
-            <md-checkbox class="push-right"></md-checkbox>
-          <img *ngIf="config.avatarUrlResolver" md-list-avatar src="{{getAvatarUrl()}}" alt="" class="push-right">
-          <md-icon *ngIf="config.iconResolver" md-list-icon>{{getIcon()}}</md-icon>
-
-          <span *ngFor="let field of config.fields" flex="field.flex" [class.tc-grey-500]="field.isSubtle" [class.md-caption]="field.isSubtle"
-            class="{{getTextAlignClass(field)}}">
-            {{getFieldValue(field, item)}}
-        </span>
-        </md-list-item>
-      </div>
+    </div>
+    <div *ngIf="items != null && items.length == 0" layout="row" layout-align="center">
       <div *ngIf="items != null && items.length == 0 && searchTerm" layout="row" layout-align="center">
         <h3>{{searchNoItemsText}}</h3>
       </div>
       <div *ngIf="items != null && items.length == 0 && !searchTerm" layout="row" layout-align="center">
         <h3>{{noItemsText}}</h3>
       </div>
-    </md-list>
-    <md-divider *ngIf="config.showPager && !(config.hidePagerForSinglePage && totalPages == 1)"></md-divider>
-    <md-card-actions *ngIf="config.showPager && !(config.hidePagerForSinglePage && totalPages == 1)">
-      <button *ngIf="config.showPagerFirstLastButtons" [disabled]="!hasPreviousPage()" md-button (click)="onGoToPage(1)"><<</button>
-      <button *ngIf="config.showPagerNextPreviousButtons" [disabled]="!hasPreviousPage()" md-button (click)="onGoToPreviousPage()"><</button>
-      <span tdMediaToggle="sm" [mediaStyles]="{display: 'none'}" *ngFor="let button of pagerButtons">
+    </div>
+  </md-nav-list>
+
+  <!-- Nav list without link -->
+  <md-list *ngIf="!isClickable" role="list" class="pad-top-none">
+    <div *ngFor="let item of items; let i=index">
+      <md-divider *ngIf="!isFirstItem(i) || config.showHeader"></md-divider>
+      <md-list-item>
+        <md-checkbox *ngIf="isSelectable" class="push-right" (change)="handleCheckboxChange($event, item)"></md-checkbox>
+        <img *ngIf="config.avatarUrlResolver" md-list-avatar src="{{getAvatarUrl()}}" alt="" class="push-right">
+        <md-icon *ngIf="config.iconResolver" md-list-icon>{{getIcon()}}</md-icon>
+
+        <span *ngFor="let field of config.fields" flex="field.flex" [class.tc-grey-500]="field.isSubtle" [class.md-caption]="field.isSubtle"
+          class="{{getTextAlignClass(field)}}">
+            {{getFieldValue(field, item)}}
+        </span>
+      </md-list-item>
+    </div>
+    <div *ngIf="items != null && items.length == 0 && searchTerm" layout="row" layout-align="center">
+      <h3>{{searchNoItemsText}}</h3>
+    </div>
+    <div *ngIf="items != null && items.length == 0 && !searchTerm" layout="row" layout-align="center">
+      <h3>{{noItemsText}}</h3>
+    </div>
+  </md-list>
+  <md-divider *ngIf="config.showPager && !(config.hidePagerForSinglePage && totalPages == 1)"></md-divider>
+  <md-card-actions *ngIf="config.showPager && !(config.hidePagerForSinglePage && totalPages == 1)">
+    <button *ngIf="config.showPagerFirstLastButtons" [disabled]="!hasPreviousPage()" md-button (click)="onGoToPage(1)"><<</button>
+    <button *ngIf="config.showPagerNextPreviousButtons" [disabled]="!hasPreviousPage()" md-button (click)="onGoToPreviousPage()"><</button>
+    <span tdMediaToggle="sm" [mediaStyles]="{display: 'none'}" *ngFor="let button of pagerButtons">
       <button *ngIf="config.showPagerNumberButtons && !button.isActive" md-button (click)="onGoToPage(button.page)">{{button.page}}</button>
       <button *ngIf="config.showPagerNumberButtons && button.isActive" md-raised-button color="primary" (click)="onGoToPage(button.page)">{{button.page}}</button>
     </span>
-      <button *ngIf="config.showPagerNextPreviousButtons" [disabled]="!hasNextPage()" md-button (click)="onGoToNextPage()">></button>
-      <button *ngIf="config.showPagerFirstLastButtons" [disabled]="!hasNextPage()" md-button (click)="onGoToPage(totalPages)">>></button>
-    </md-card-actions>
-  </md-card>
+    <button *ngIf="config.showPagerNextPreviousButtons" [disabled]="!hasNextPage()" md-button (click)="onGoToNextPage()">></button>
+    <button *ngIf="config.showPagerFirstLastButtons" [disabled]="!hasNextPage()" md-button (click)="onGoToPage(totalPages)">>></button>
+  </md-card-actions>
+</md-card>

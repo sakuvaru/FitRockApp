@@ -4,22 +4,26 @@ import { DataTableField } from './data-table-field.class';
 
 export class DataTableConfig<T> {
     public fields: DataTableField<any>[];
+
+    public showHeader: boolean = false;
+    public showPager: boolean = true;
+    public showSearch: boolean = true;
+    public pagerSize: number = 10;
+    public searchNoItemsTextKey: string = 'webComponents.dataTable.noSearchResultsText'
+    public noItemsTextKey: string = 'webComponents.dataTable.noResultsText';
+    public showPagerNextPreviousButtons: boolean = true;
+    public showPagerFirstLastButtons: boolean = true;
+    public showPagerNumberButtons: boolean = true;
+    public hidePagerForSinglePage: boolean = true;
+
     public loadResolver: (searchTerm: string, page: number, pageSize: number) => Observable<ResponseMultiple<any>>;
-    public showHeader?: boolean = false;
-    public showPager?: boolean = true;
-    public showSearch?: boolean = true;
-    public pagerSize?: number = 10;
-    public urlResolver?: (item: T) => string;
-    public iconResolver?: (item: T) => string;
-    public avatarUrlResolver?: (item: T) => string;
-    public searchNoItemsTextKey?: string = 'webComponents.dataTable.noSearchResultsText'
-    public noItemsTextKey?: string = 'webComponents.dataTable.noResultsText';
-    public showPagerNextPreviousButtons?: boolean = true;
-    public showPagerFirstLastButtons?: boolean = true;
-    public showPagerNumberButtons?: boolean = true;
-    public hidePagerForSinglePage?: boolean = true;
-    public onAfterLoad?: () => void;
-    public onBeforeLoad?: () => void;
+    public onClick: (item: T) => void;
+    public iconResolver: (item: T) => string;
+    public avatarUrlResolver: (item: T) => string;
+    public onAfterLoad: () => void;
+    public onBeforeLoad: () => void;
+
+    public selectableConfig: SelectableConfig<T>;
 
     constructor(
         public options?: {
@@ -29,7 +33,6 @@ export class DataTableConfig<T> {
             showPager?: boolean,
             showSearch?: boolean,
             pagerSize?: number,
-            urlResolver?: (item: T) => string,
             iconResolver?: (item: T) => string,
             avatarUrlResolver?: (item: T) => string,
             searchNoItemsText?: string,
@@ -39,8 +42,35 @@ export class DataTableConfig<T> {
             showPagerNumberButtons?: boolean,
             hidePagerForSinglePage?: boolean,
             onAfterLoad?: () => void,
-            onBeforeLoad?: () => void
+            onBeforeLoad?: () => void,
+            onClick?: (item: T) => void,
+            selectableConfig?: SelectableConfig<T>
         }) {
         if (options) Object.assign(this, options);
+    }
+
+    isSelectable(): boolean {
+        return !(!this.selectableConfig);
+    }
+
+    isClickable(): boolean {
+        return !(!this.onClick);
+    }
+}
+
+export class SelectableConfig<T>{
+
+    public buttonTextKey: string;
+    public onSelect: (selectedItem: T) => void;
+    public onDeselect: (unselectedItem: T) => void;
+
+    constructor(
+        options: {
+            buttonTextKey: string,
+            onSelect: (selectedItem: T) => void,
+            onDeselect: (selectedItem: T) => void
+        }
+    ) {
+        Object.assign(this, options);
     }
 }

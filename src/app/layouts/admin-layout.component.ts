@@ -18,14 +18,17 @@ export class AdminLayoutComponent extends BaseComponent implements OnDestroy {
     private componentTitle: string;
     private menuTitle: string;
 
-    private loaderEnabled: boolean;
+    private componentLoaderEnabled: boolean;
+    private topLoaderEnabled: boolean;
 
     /**
      * Part of url identifying 'client' or 'trainer' app type
      */
     private urlSegment: string;
 
-    private loaderSubscription: Subscription;
+    // subscriptions - unsubscribe in OnDestroy
+    private componentLoaderSubscription: Subscription;
+    private topLoaderSubscription: Subscription;
     private componentConfigSubscription: Subscription;
 
     constructor(
@@ -33,15 +36,23 @@ export class AdminLayoutComponent extends BaseComponent implements OnDestroy {
         private cdr: ChangeDetectorRef,
     ) {
         super(dependencies)
-        // register loader
-        this.loaderSubscription = this.dependencies.coreServices.sharedService.loaderChanged$.subscribe(
+
+        // !!! --- don't forget to unsubscribe to subscriptions --- !!!
+
+        // register loaders
+        this.componentLoaderSubscription = this.dependencies.coreServices.sharedService.componentloaderChanged$.subscribe(
             enabled => {
-                this.loaderEnabled = enabled;
+                this.componentLoaderEnabled = enabled;
+                this.cdr.detectChanges();
+            }
+        )
+        this.topLoaderSubscription = this.dependencies.coreServices.sharedService.topLoaderChanged$.subscribe(
+            enabled => {
+                this.topLoaderEnabled = enabled;
                 this.cdr.detectChanges();
             }
         )
 
-        // don't forget to unsubscribe
         this.componentConfigSubscription = dependencies.coreServices.sharedService.componentConfigChanged$.subscribe(
             componentConfig => {
                 this.componentConfig = componentConfig;
@@ -49,13 +60,17 @@ export class AdminLayoutComponent extends BaseComponent implements OnDestroy {
                 // resolve component's title using translation services
                 if (componentConfig.componentTitle) {
                     this.dependencies.coreServices.translateService.get(componentConfig.componentTitle.key, componentConfig.componentTitle.data)
-                        .subscribe(text => this.componentTitle = text);
+                        .subscribe(text => {
+                            this.componentTitle = text;
+                        });
                 }
 
                 // resolve menu title using translation services
                 if (componentConfig.menuTitle) {
                     this.dependencies.coreServices.translateService.get(componentConfig.menuTitle.key, componentConfig.menuTitle.data)
-                        .subscribe(text => this.menuTitle = text);
+                        .subscribe(text => {
+                            this.menuTitle = text;
+                        });
                 }
             });
 
@@ -70,6 +85,7 @@ export class AdminLayoutComponent extends BaseComponent implements OnDestroy {
         // source: https://teradata.github.io/covalent/#/layouts/manage-list
         // + broadcast change detection issue, see - https://github.com/Teradata/covalent/issues/425
         // + fixed with ChangeDetectorRef => https://stackoverflow.com/questions/34364880/expression-has-changed-after-it-was-checked
+        // mentioned in official doc now -> https://teradata.github.io/covalent/#/layouts/manage-list
         this.cdr.detectChanges();
     }
 
@@ -78,7 +94,8 @@ export class AdminLayoutComponent extends BaseComponent implements OnDestroy {
         // source: https://angular.io/docs/ts/latest/cookbook/component-communication.html#!#bidirectional-service
         this.componentConfigSubscription.unsubscribe();
 
-        this.loaderSubscription.unsubscribe();
+        this.topLoaderSubscription.unsubscribe();
+        this.componentLoaderSubscription.unsubscribe();
     }
 
     private getMenuItemUrl(action: string, type: MenuItemType): string {
@@ -105,7 +122,7 @@ export class AdminLayoutComponent extends BaseComponent implements OnDestroy {
 
         var url = this.getMenuItemUrl(action, type);
         var currentUrl = this.dependencies.router.url;
-        
+
         if (currentUrl === url) {
             return activeColor;
         }
