@@ -15,6 +15,8 @@ import { NewWorkoutComponent } from './new/new-workout.component';
 import { EditWorkoutComponent } from './edit/edit-workout.component';
 import { WorkoutPlanComponent } from './list/workout-plan.component';
 
+import { AddWorkoutExerciseDialogComponent} from './dialogs/add-workout-exercise-dialog.component';
+
 const routes: Routes = [
     {
         path: UrlConfig.TrainerMasterPath, component: AdminLayoutComponent, canActivate: [AuthGuardService], children: [
@@ -29,6 +31,9 @@ const routes: Routes = [
             },
              {
                 path: 'workouts/view/:id', component: WorkoutPlanComponent
+            },
+               {
+                path: 'workouts/dialogs/add-workout-exercise', component: AddWorkoutExerciseDialogComponent
             },
         ]
     }

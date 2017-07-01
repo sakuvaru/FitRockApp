@@ -37,6 +37,7 @@ export class AdminLayoutComponent extends BaseComponent implements OnDestroy {
         this.loaderSubscription = this.dependencies.coreServices.sharedService.loaderChanged$.subscribe(
             enabled => {
                 this.loaderEnabled = enabled;
+                this.cdr.detectChanges();
             }
         )
 

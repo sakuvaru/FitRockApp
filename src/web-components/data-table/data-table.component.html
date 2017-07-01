@@ -39,6 +39,7 @@
       <div *ngFor="let item of items; let i=index">
         <md-divider *ngIf="!isFirstItem(i) || config.showHeader"></md-divider>
         <md-list-item>
+            <md-checkbox class="push-right"></md-checkbox>
           <img *ngIf="config.avatarUrlResolver" md-list-avatar src="{{getAvatarUrl()}}" alt="" class="push-right">
           <md-icon *ngIf="config.iconResolver" md-list-icon>{{getIcon()}}</md-icon>
 

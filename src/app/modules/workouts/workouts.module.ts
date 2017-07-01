@@ -11,7 +11,7 @@ import { NewWorkoutComponent } from './new/new-workout.component';
 import { EditWorkoutComponent } from './edit/edit-workout.component';
 import { WorkoutPlanComponent } from './list/workout-plan.component';
 
-import { EditDialogComponent} from './edit/edit-dialog.component';
+import { AddWorkoutExerciseDialogComponent} from './dialogs/add-workout-exercise-dialog.component';
 
 // router
 import { WorkoutsRouter } from './workouts.routing';
@@ -31,7 +31,7 @@ import { SharedModule} from '../shared/shared.module';
         NewWorkoutComponent,
         EditWorkoutComponent,
         WorkoutPlanComponent,
-        EditDialogComponent
+        AddWorkoutExerciseDialogComponent
     ]
 })
 export class WorkoutsModule { }

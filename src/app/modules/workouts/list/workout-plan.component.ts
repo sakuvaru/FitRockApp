@@ -8,9 +8,10 @@ import { WorkoutMenuItems } from '../menu.items';
 import { DataTableConfig, AlignEnum } from '../../../../web-components/data-table';
 import { Workout, WorkoutExercise } from '../../../models';
 import { DragulaService } from 'ng2-dragula';
-import { EditDialogComponent } from '../edit/edit-dialog.component';
 import { FormConfig } from '../../../../web-components/dynamic-form';
 import { Observable } from 'rxjs/RX';
+import { AddWorkoutExerciseDialogComponent } from '../dialogs/add-workout-exercise-dialog.component';
+import { WorkoutsOverviewComponent } from './workouts-overview.component';
 
 @Component({
   templateUrl: 'workout-plan.component.html'
@@ -111,5 +112,11 @@ export class WorkoutPlanComponent extends BaseComponent implements OnInit {
     this.dependencies.itemServices.workoutExerciseService.updateItemsOrder(this.workout.workoutExercises, this.workout.id)
       .set()
       .subscribe();
+  }
+
+  private addWorkoutExercise(): void{
+    this.dependencies.tdServices.dialogService.open(AddWorkoutExerciseDialogComponent, {
+      width: '70%',
+    });
   }
 }
