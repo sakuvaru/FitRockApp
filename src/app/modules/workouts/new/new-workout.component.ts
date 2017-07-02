@@ -20,7 +20,7 @@ export class NewWorkoutComponent extends BaseComponent {
         super(componentDependencyService)
 
         this.setConfig({
-            componentTitle: { key: 'module.workout.newWorkout' },
+            componentTitle: { key: 'module.workouts.newWorkout' },
             menuItems: new WorkoutsOverviewMenuItems().menuItems
         });
 

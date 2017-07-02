@@ -5,10 +5,11 @@
     </div>
     <div layout="row" layout-margin>
       <div flex>
-        <button md-raised-button color="accent" (click)="onSubmit()" [disabled]="!form.valid">{{submitText}}</button>
+        <button *ngIf="isInsertForm" md-raised-button color="accent" (click)="insertButtonSubject.next()" [disabled]="!form.valid">{{submitText}}</button>
+        <button *ngIf="isEditForm" md-raised-button color="accent" (click)="editButtonSubject.next()" [disabled]="!form.valid">{{submitText}}</button>
       </div>
       <div *ngIf="isDeleteForm" flex class="text-right">
-        <button md-raised-button color="warn" (click)="handleDelete()">{{deleteText}}</button>
+        <button md-raised-button color="warn" (click)="deleteButtonSubject.next()">{{deleteText}}</button>
       </div>
     </div>
     <td-message *ngIf="submissionError" [label]="submissionError" color="red" icon="error"></td-message>

@@ -15,8 +15,7 @@ import { IFormValidationResult } from '../interfaces/iform-validation-result.int
 import { ErrorReasonEnum } from '../models/error-reason.enum';
 
 // rxjs
-import { Observable } from 'rxjs/RX';
-import { Subject } from 'rxjs/Subject';
+import { Observable, Subject } from 'rxjs/Rx';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 
@@ -286,7 +285,7 @@ export class QueryService {
             })
             ._finally(() => {
                 this.finishRequest();
-            });
+            })
     }
 
     protected post<T extends any>(url: string, body: any): Observable<ResponsePost<T>> {

@@ -42,7 +42,6 @@ export class WorkoutPlanComponent extends BaseComponent implements OnInit {
         .includeMultiple(['WorkoutCategory', 'WorkoutExercises', 'WorkoutExercises.Exercise', 'WorkoutExercises.Exercise.ExerciseCategory'])
         .get())
       .subscribe(response => {
-
         this.setConfig({
           menuItems: new WorkoutMenuItems(response.item.id).menuItems,
           menuTitle: {

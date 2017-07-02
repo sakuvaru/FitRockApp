@@ -1,5 +1,5 @@
 // common
-import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
+import { Component, Input, Output, OnInit, EventEmitter, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { AppConfig, ComponentDependencyService, BaseComponent, ComponentConfig } from '../../../core';
 
@@ -7,9 +7,9 @@ import { AppConfig, ComponentDependencyService, BaseComponent, ComponentConfig }
 import { WorkoutMenuItems } from '../menu.items';
 import { DataTableConfig, AlignEnum } from '../../../../web-components/data-table';
 import { Workout, WorkoutExercise, Exercise } from '../../../models';
-import { DragulaService } from 'ng2-dragula';
+import { DragulaService, dragula } from 'ng2-dragula';
 import { FormConfig } from '../../../../web-components/dynamic-form';
-import { Observable } from 'rxjs/RX';
+import { Observable } from 'rxjs/Rx';
 import { SelectWorkoutExerciseDialogComponent } from '../dialogs/select-workout-exercise-dialog.component';
 import { EditWorkoutExerciseDialogComponent } from '../dialogs/edit-workout-exercise-dialog.component';
 import { AddWorkoutExerciseDialogComponent } from '../dialogs/add-workout-exercise-dialog.component';
@@ -24,6 +24,8 @@ export class EditWorkoutPlanComponent extends BaseComponent implements OnInit {
 
   private sortedWorkoutExercises: WorkoutExercise[];
 
+  private dropSubscription: any;
+
   /**
   *access the form with 'id' of the exercise
   * e.g. exerciseForms['9']
@@ -35,11 +37,6 @@ export class EditWorkoutPlanComponent extends BaseComponent implements OnInit {
     private dragulaService: DragulaService,
     protected dependencies: ComponentDependencyService) {
     super(dependencies)
-
-    // subscribe to drop events
-    dragulaService.drop.subscribe((value) => {
-      this.onDrop(this.workout.workoutExercises);
-    });
   }
 
   ngOnInit() {
@@ -47,6 +44,16 @@ export class EditWorkoutPlanComponent extends BaseComponent implements OnInit {
 
     // init workout
     this.initWorkout();
+
+    // init dragula events
+    // subscribe to drop events
+    this.dropSubscription = this.dragulaService.dropModel.subscribe((value) => {
+      this.onDrop(this.workout.workoutExercises);
+    });
+  }
+
+  ngOnDestroy() {
+    this.dropSubscription.unsubscribe();
   }
 
   private initWorkout(): void {
@@ -91,7 +98,7 @@ export class EditWorkoutPlanComponent extends BaseComponent implements OnInit {
       // update || remove workout exercise from local variables
       if (dialog.componentInstance.workoutExerciseWasDeleted) {
         // remove exercise
-        this.sortedWorkoutExercises = _.reject(this.sortedWorkoutExercises, function(item) { return item.id === dialog.componentInstance.idOfDeletedWorkoutExercise; });
+        this.sortedWorkoutExercises = _.reject(this.sortedWorkoutExercises, function (item) { return item.id === dialog.componentInstance.idOfDeletedWorkoutExercise; });
       }
       else {
         // update exercice with updated data
@@ -109,6 +116,7 @@ export class EditWorkoutPlanComponent extends BaseComponent implements OnInit {
   }
 
   private onDrop(orderedWorkoutExercises: WorkoutExercise[]) {
+    console.log('drop');
     this.startGlobalLoader();
     this.dependencies.itemServices.workoutExerciseService.updateItemsOrder(this.workout.workoutExercises, this.workout.id)
       .set()

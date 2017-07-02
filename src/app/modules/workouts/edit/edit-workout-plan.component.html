@@ -31,7 +31,7 @@
   </md-card-content>
   <md-divider></md-divider>
   <md-card-content *ngIf="sortedWorkoutExercises">
-    <md-list [dragula]='"bag-one"' [dragulaModel]="sortedWorkoutExercises">
+    <md-list [dragula]='"dragula-bag"' [dragulaModel]="sortedWorkoutExercises">
       <md-list-item style="background:whitesmoke" class="w-cursor-move push" *ngFor="let workoutExercise of sortedWorkoutExercises; let i = index">
         <p md-line>
           <span class="tc-red-700">{{i + 1}}.</span> &nbsp;{{workoutExercise.exercise.exerciseName}}

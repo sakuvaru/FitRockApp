@@ -9,7 +9,7 @@ import {
 } from '../../lib/repository';
 import { TranslateService } from '@ngx-translate/core';
 
-import { Observable } from 'rxjs/Rx';
+import { Observable, Subject } from 'rxjs/Rx';
 import 'rxjs/add/operator/catch';
 
 // NOTE: see https://angular.io/docs/ts/latest/cookbook/dynamic-form.html for more details
@@ -20,6 +20,16 @@ import 'rxjs/add/operator/catch';
     providers: [FieldControlService]
 })
 export class DynamicFormComponent implements OnInit, OnChanges {
+
+    /**
+     * Why use subject for on click events? 
+     * => Because we want to cancel requests if new request comes before the old one returns value (can happen
+     * when clicking submit very fast)
+     * More info: https://github.com/angular/angular/issues/5876 -> response from 'robwormald commented on Dec 30, 2015'
+     */
+    private insertButtonSubject = new Subject();
+    private editButtonSubject = new Subject();
+    private deleteButtonSubject = new Subject();
 
     private insufficientLicenseError: string;
     private generalErrorMessagePrefix: string;
@@ -42,6 +52,8 @@ export class DynamicFormComponent implements OnInit, OnChanges {
     private formErrorLines: string[] = [];
 
     private isDeleteForm: boolean = false;
+    private isEditForm: boolean = false;
+    private isInsertForm: boolean = false;
 
     // inputs
     @Input() config: FormConfig<any>;
@@ -55,11 +67,18 @@ export class DynamicFormComponent implements OnInit, OnChanges {
     }
 
     ngOnInit() {
+        this.initDynamicForm();
+    }
+
+    initDynamicForm(): void {
         // try to initialize component if config is available during init
         if (this.config) {
             if (this.config.onFormInit) {
                 this.config.onFormInit();
             }
+
+            // subscribe to button events
+            this.initButtonClicks();
 
             // load fields
             this.form = this.fieldControlService.toFormGroup(this.config.fields);
@@ -73,8 +92,15 @@ export class DynamicFormComponent implements OnInit, OnChanges {
             // translate labels
             this.translateLabels();
 
-            // is delete form?
+            // form type
             this.isDeleteForm = this.config.isDeleteForm();
+            this.isEditForm = this.config.isEditForm();
+            this.isInsertForm = this.config.isInsertForm();
+
+            // after init
+            if (this.config.onFormLoaded){
+                this.config.onFormLoaded();
+            }
         }
 
         this.cdr.detectChanges();
@@ -84,91 +110,89 @@ export class DynamicFormComponent implements OnInit, OnChanges {
         // re-initalize form when questions changes because dynamic form may recieve config with questions 
         // after the initilization of component 
         if (changes.config && changes.config.currentValue) {
-            // load fields
-            this.form = this.fieldControlService.toFormGroup(changes.config.currentValue.fields);
-
-            // assign questions from fields
-            this.assignQuestions(changes.config.currentValue.fields)
-
-            // subscribe to form changes
-            this.form.valueChanges.subscribe(response => this.handleFormChange());
-            changes.config.currentValue.submitText = changes.config.currentValue.submitText;
-
-            // translate labels
-            this.translateLabels();
-
-            // is delete form?
-            this.isDeleteForm = changes.config.currentValue.isDeleteForm();
-
-            if (this.config.onFormLoaded) {
-                this.config.onFormLoaded();
-            }
+            this.config = changes.config.currentValue;
+            this.initDynamicForm();
         }
     }
 
-    onSubmit() {
-        // before save
-        if (this.config.onBeforeSave) {
-            this.config.onBeforeSave();
-        }
-
-        // save form
+    initButtonClicks() {
         if (this.config.isInsertForm()) {
-            this.convertEmptyStringsToNull();
-            this.config.insertFunction(this.form.value)
-                .finally(() => {
-                    // after save
-                    if (this.config.OnAfterSave) {
-                        this.config.OnAfterSave();
+            this.insertButtonSubject
+                .switchMap(response => {
+                    // before save
+                    if (this.config.onBeforeSave) {
+                        this.config.onBeforeSave();
                     }
+
+                    this.convertEmptyStringsToNull();
+
+                    return this.config.insertFunction(this.form.value)
                 })
                 .subscribe(response => {
                     this.response = response;
                     this.handleInsertAfter(response);
+
+                    // after save
+                    if (this.config.OnAfterSave) {
+                        this.config.OnAfterSave();
+                    }
                 },
                 (err) => {
                     this.handleError(err);
                 });
         }
         else if (this.config.isEditForm()) {
-            this.convertEmptyStringsToNull();
-            this.config.editFunction(this.form.value)
-                .finally(() => {
-                    // after save
-                    if (this.config.OnAfterSave) {
-                        this.config.OnAfterSave();
+            this.editButtonSubject
+                .switchMap(response => {
+                    // before save
+                    if (this.config.onBeforeSave) {
+                        this.config.onBeforeSave();
                     }
+
+                    this.convertEmptyStringsToNull();
+
+                    return this.config.editFunction(this.form.value)
                 })
                 .subscribe(response => {
                     this.response = response;
                     this.handleUpdateAfter(response);
+
+                    // after save
+                    if (this.config.OnAfterSave) {
+                        this.config.OnAfterSave();
+                    }
                 },
                 (err) => {
                     this.handleError(err);
                 });
         }
         else {
-            throw Error("No save function was provided to form");
-        }
-    }
-
-    private handleDelete(): void {
-        if (!this.config.deleteFunction) {
-            throw Error(`Cannot handle form delete because no delete function was defined`);
+            throw Error('Form does not support given save option');
         }
 
-        if (this.config.onBeforeDelete) {
-            this.config.onBeforeDelete(this.form.value);
-        }
+        if (this.config.isDeleteForm()) {
+            if (!this.config.deleteFunction) {
+                throw Error(`Cannot init delete function because it wasn't supplied`);
+            }
 
-        this.config.deleteFunction(this.form.value)
-            .subscribe(response => {
-                this.response = response;
-                this.handleDeleteAfter(response);
-            },
-            (err) => {
-                this.handleError(err);
-            });
+            this.deleteButtonSubject
+                .switchMap(response => {
+                    // before delete
+                    if (this.config.onBeforeDelete) {
+                        this.config.onBeforeDelete(this.form.value);
+                    }
+                    this.convertEmptyStringsToNull();
+
+                    return this.config.deleteFunction(this.form.value)
+                })
+                .subscribe(response => {
+                    this.response = response;
+                    this.handleDeleteAfter(response);
+                },
+                (err) => {
+                    this.handleError(err);
+                });
+        }
     }
 
     private assignQuestions(fields: BaseField<any>[]): void {
@@ -293,14 +317,26 @@ export class DynamicFormComponent implements OnInit, OnChanges {
             errorResponse.formValidation.validationResult.forEach(validationResult => {
 
                 this.getFormFieldErrorMessage(validationResult).subscribe(error => {
-                    this.form.controls[validationResult.columnName].setErrors({ 'field_error': error });
+                    var fieldWithError = this.form.controls[validationResult.columnName];
+
+                    if (!fieldWithError) {
+                        // field can be undefined if its not present in form - e.g. codename might throw error, but is
+                        // typically not in the form
+                        this.formErrorLines.push(error);
+                    }
+                    else {
+                        // set field error
+                        this.form.controls[validationResult.columnName].setErrors({ 'field_error': error });
+
+                        // get translated label of the form field
+                        var formField = this.questions.find(m => m.key.toLowerCase() === validationResult.columnName.toLocaleLowerCase());
+
+                        // form error
+                        this.getFormErrorMessage(validationResult, formField.translatedLabel).subscribe(error => this.formErrorLines.push(error))
+                    }
                 });
 
-                // get translated label of the form field
-                var formField = this.questions.find(m => m.key.toLowerCase() === validationResult.columnName.toLocaleLowerCase());
 
-                // form error
-                this.getFormErrorMessage(validationResult, formField.translatedLabel).subscribe(error => this.formErrorLines.push(error))
             });
             this.submissionError = this.formErrorLines.join(', ');
         }
@@ -341,16 +377,16 @@ export class DynamicFormComponent implements OnInit, OnChanges {
 
         if (columnValidation.errorType === FieldErrorEnum.NotUnique) {
             if (fieldLabel) {
-                return this.translateService.get('form.error.notEditableWithLabel', { label: fieldLabel });
+                return this.translateService.get('form.error.notUniqueWithLabel', { label: fieldLabel });
             }
-            return this.translateService.get('form.error.notEditable');
+            return this.translateService.get('form.error.notUnique');
         }
 
         if (columnValidation.errorType === FieldErrorEnum.NotEditable) {
             if (fieldLabel) {
-                return this.translateService.get('form.error.notUniqueWithLabel', { label: fieldLabel });
+                return this.translateService.get('form.error.notEditableWithLabel', { label: fieldLabel });
             }
-            return this.translateService.get('form.error.notUnique');
+            return this.translateService.get('form.error.notEditable');
         }
 
         if (columnValidation.errorType === FieldErrorEnum.Other) {
