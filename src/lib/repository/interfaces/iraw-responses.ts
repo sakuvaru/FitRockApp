@@ -43,8 +43,8 @@ export interface IResponseCreateRaw {
 }
 
 export interface IResponseDeleteRaw {
-
-    isSuccess: boolean,
+    action: string;
+    deletedItemId: number;
 }
 
 export interface IResponseEditRaw {

@@ -1,5 +1,6 @@
 import { IService } from './iservice.class';
 import { Observable } from 'rxjs/Observable';
+import { BaseTypeServiceConfig } from './base-type-service.config';
 
 import {
     PostQuery, RepositoryClient, IItem, SingleItemQueryInit, MultipleItemQuery, CreateItemQuery, EditItemQuery, DeleteItemQuery,
@@ -10,10 +11,14 @@ import { DynamicFormEditBuilder, DynamicFormInsertBuilder } from '../../../web-c
 
 export abstract class BaseTypeService<TItem extends IItem> implements IService<TItem>{
 
+    public type: string;
+
     constructor(
         protected repositoryClient: RepositoryClient,
-        public type: string
-    ) { }
+        public config: BaseTypeServiceConfig
+    ) {
+        this.type = config.type;
+    }
 
     items(): MultipleItemQuery<TItem> {
         return this.repositoryClient.items<TItem>(this.type)
@@ -35,11 +40,14 @@ export abstract class BaseTypeService<TItem extends IItem> implements IService<T
         return this.repositoryClient.post<T>(this.type, action);
     }
 
-    updateItemsOrder(orderedItems: TItem[], distinguishByValue: number): PostQuery<any>{
+    updateItemsOrder(orderedItems: TItem[], distinguishByValue: number): PostQuery<any> {
         return this.repositoryClient.updateItemsOrder(this.type, orderedItems, distinguishByValue);
     }
 
     delete(itemId: number): DeleteItemQuery {
+        if (!this.config.allowDelete) {
+            throw Error(`Delete is not allowed for type '${this.type}'`);
+        }
         return this.repositoryClient.delete(this.type, itemId);
     }
 
@@ -70,6 +78,7 @@ export abstract class BaseTypeService<TItem extends IItem> implements IService<T
             .get()
             .map(form => {
                 var builder = new DynamicFormEditBuilder<TItem>();
+
                 // set type of form
                 builder.type(form.type);
 
@@ -78,6 +87,11 @@ export abstract class BaseTypeService<TItem extends IItem> implements IService<T
 
                 // set fields
                 builder.fields(form.fields);
+
+                // set default delete function if its enabled
+                if (this.config.allowDelete) {
+                    builder.deleteFunction((item) => this.delete(item.Id).set());
+                }
 
                 // set default save function
                 builder.editFunction((item) => this.edit(item).set());

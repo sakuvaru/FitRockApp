@@ -72,7 +72,9 @@
             "save": "Uložit",
             "saved": "Uloženo",
             "insert": "Vytvořit",
-            "required": "povinné"
+            "required": "povinné",
+			"delete": "Smazat",
+			"deleted": "Smazáno"
         },
         "user": {
             "email": "E-mail",

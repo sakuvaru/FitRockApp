@@ -184,7 +184,10 @@ export class QueryService {
     private getDeleteResponse(response: Response): ResponseDelete {
         var responseDelete = (response.json() || {}) as IResponseDeleteRaw;
 
-        return new ResponseDelete();
+        return new ResponseDelete({
+            action: responseDelete.action,
+            deletedItemId: responseDelete.deletedItemId
+        });
     }
 
 
@@ -295,7 +298,7 @@ export class QueryService {
 
         return this.authHttp.post(url, body, headerOptions)
             .map(response => {
-                return this.getEditResponse(response)
+                return this.getPostResponse(response)
             })
             .catch(response => {
                 return Observable.throw(this.handleError(response));

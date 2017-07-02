@@ -1,6 +1,6 @@
 import { FormConfig } from './form-config.class';
 import { Observable } from 'rxjs/RX';
-import { BaseField, IItem, ResponseCreate, ResponseEdit, FormErrorResponse, ErrorResponse } from '../../lib/repository';
+import { BaseField, IItem, ResponseCreate, ResponseEdit, FormErrorResponse, ErrorResponse, ResponseDelete } from '../../lib/repository';
 
 class BaseDynamicFormBuilder<TItem extends IItem>{
 
@@ -11,8 +11,13 @@ class BaseDynamicFormBuilder<TItem extends IItem>{
         return this;
     }
 
-    submitTextKey(text: string): this {
-        this.config.submitTextKey = text;
+    deleteTextKey(key: string): this {
+        this.config.deleteTextKey = key;
+        return this;
+    }
+
+    submitTextKey(key: string): this {
+        this.config.submitTextKey = key;
         return this;
     }
 
@@ -86,13 +91,13 @@ class BaseDynamicFormBuilder<TItem extends IItem>{
 }
 
 export class DynamicFormInsertBuilder<TItem extends IItem> extends BaseDynamicFormBuilder<TItem>{
-    insertFunction(insertFunction: (item: TItem) => Observable<ResponseCreate<TItem>>): this {
-        this.config.insertFunction = insertFunction;
+    insertFunction(callback: (item: any) => Observable<ResponseCreate<TItem>>): this {
+        this.config.insertFunction = callback;
         return this;
     }
 
-    onInsert(callback: (response: ResponseCreate<TItem>) => void): this {
-        this.config.onInsert = callback;
+    onAfterInsert(callback: (response: ResponseCreate<TItem>) => void): this {
+        this.config.onAfterInsert = callback;
         return this;
     }
 }
@@ -107,13 +112,28 @@ export class DynamicFormEditBuilder<TItem extends IItem> extends BaseDynamicForm
         return this;
     }
 
-    editFunction(editFunction: (item: TItem) => Observable<ResponseEdit<TItem>>): this {
-        this.config.editFunction = editFunction;
+    editFunction(callback: (item: any) => Observable<ResponseEdit<TItem>>): this {
+        this.config.editFunction = callback;
         return this;
     }
 
-    onUpdate(callback: (response: ResponseEdit<TItem>) => void): this {
-        this.config.onUpdate = callback;
+    onAfterUpdate(callback: (response: ResponseEdit<TItem>) => void): this {
+        this.config.onAfterUpdate = callback;
+        return this;
+    }
+
+    deleteFunction(callback: (item: any) => Observable<ResponseDelete>): this {
+        this.config.deleteFunction = callback;
+        return this;
+    }
+
+     onBeforeDelete(callback: (item: any) => void): this {
+        this.config.onBeforeDelete = callback;
+        return this;
+    }
+
+    onAfterDelete(callback: (response: ResponseDelete) => void): this {
+        this.config.onAfterDelete = callback;
         return this;
     }
 

@@ -30,13 +30,13 @@ export class DashboardComponent extends BaseComponent implements OnInit {
             }
         );
 
-        this.dependencies.itemServices.logService.item().byId(2).get().subscribe(
+       /* this.dependencies.itemServices.logService.item().byId(2).get().subscribe(
             response => {
                 console.log(response);
                 this.log = response.item;
             }
         );
-
+        */
         /*
         // create sample log
         var newLog = new Log({

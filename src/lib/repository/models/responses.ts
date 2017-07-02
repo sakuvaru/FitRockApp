@@ -130,6 +130,18 @@ export class ResponseCreate<T extends IItem> {
 }
 
 export class ResponseDelete {
+
+    public action: string;
+    public deletedItemId: number;
+
+    constructor(
+        private options?: {
+            deletedItemId: number,
+            action: string
+        }
+    ) {
+        if (options) Object.assign(this, options);
+    }
 }
 
 export class ResponseEdit<T extends IItem> {

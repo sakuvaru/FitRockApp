@@ -7,6 +7,9 @@ import { BaseTypeService } from '../core';
 export class WorkoutService extends BaseTypeService<Workout>{
 
     constructor(repositoryClient: RepositoryClient) { 
-        super (repositoryClient, "Workout")
+        super (repositoryClient, {
+            type: 'Workout',
+            allowDelete: true
+        })
     }
 }

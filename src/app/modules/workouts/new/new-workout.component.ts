@@ -28,10 +28,8 @@ export class NewWorkoutComponent extends BaseComponent {
             .subscribe(form => {
                 form.onBeforeSave(() => this.startLoader());
                 form.onAfterSave(() => this.stopLoader());
-                form.insertFunction((item) => this.dependencies.itemServices.workoutService.create(item).set())
-                form.onInsert((response) => {
-                    this.dependencies.router.navigate([this.getTrainerUrl('workouts/edit-plan'), response.item.id])
-                })
+                form.insertFunction((item) => this.dependencies.itemServices.workoutService.create(item).set());
+                form.onAfterInsert((response) => this.navigate([this.getTrainerUrl('workouts/edit-plan'), response.item.id]));
 
                 this.formConfig = form.build();
             });

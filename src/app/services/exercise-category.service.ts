@@ -7,6 +7,9 @@ import { BaseTypeService } from '../core';
 export class ExerciseCategoryService extends BaseTypeService<ExerciseCategory>{
 
     constructor(repositoryClient: RepositoryClient) { 
-        super (repositoryClient, "ExerciseCategory")
+        super (repositoryClient, {
+            type: 'ExerciseCategory',
+            allowDelete: true
+        })
     }
 }

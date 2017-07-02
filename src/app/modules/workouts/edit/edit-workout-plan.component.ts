@@ -13,6 +13,7 @@ import { Observable } from 'rxjs/RX';
 import { SelectWorkoutExerciseDialogComponent } from '../dialogs/select-workout-exercise-dialog.component';
 import { EditWorkoutExerciseDialogComponent } from '../dialogs/edit-workout-exercise-dialog.component';
 import { AddWorkoutExerciseDialogComponent } from '../dialogs/add-workout-exercise-dialog.component';
+import * as _ from 'underscore';
 
 @Component({
   templateUrl: 'edit-workout-plan.component.html'
@@ -87,23 +88,34 @@ export class EditWorkoutPlanComponent extends BaseComponent implements OnInit {
     });
 
     dialog.afterClosed().subscribe(m => {
-      // update exercice with updated data
-      var workoutExerciseToUpdate = this.sortedWorkoutExercises.filter(m => m.id === workoutExercise.id);
-
-      if (!workoutExerciseToUpdate && workoutExerciseToUpdate.length === 1) {
-        throw Error(`Cannot update workout with new values from saved form`);
+      // update || remove workout exercise from local variables
+      if (dialog.componentInstance.workoutExerciseWasDeleted) {
+        // remove exercise
+        this.sortedWorkoutExercises = _.reject(this.sortedWorkoutExercises, function(item) { return item.id === dialog.componentInstance.idOfDeletedWorkoutExercise; });
       }
+      else {
+        // update exercice with updated data
+        var workoutExerciseToUpdate = this.sortedWorkoutExercises.filter(m => m.id === workoutExercise.id);
 
-      // update data
-      workoutExerciseToUpdate[0].reps = dialog.componentInstance.workoutExercise.reps;
-      workoutExerciseToUpdate[0].sets = dialog.componentInstance.workoutExercise.sets;
+        if (!workoutExerciseToUpdate && workoutExerciseToUpdate.length === 1) {
+          throw Error(`Cannot update workout with new values from saved form`);
+        }
+
+        // update data
+        workoutExerciseToUpdate[0].reps = dialog.componentInstance.workoutExercise.reps;
+        workoutExerciseToUpdate[0].sets = dialog.componentInstance.workoutExercise.sets;
+      }
     })
   }
 
   private onDrop(orderedWorkoutExercises: WorkoutExercise[]) {
+    this.startGlobalLoader();
     this.dependencies.itemServices.workoutExerciseService.updateItemsOrder(this.workout.workoutExercises, this.workout.id)
       .set()
-      .subscribe();
+      .subscribe((response) => {
+        this.showSavedSnackbar();
+        this.stopGlobalLoader();
+      });
   }
 
   private openSelecExerciseDialog(): void {

@@ -7,6 +7,9 @@ import { BaseTypeService } from '../core';
 export class LogService extends BaseTypeService<Log>{
 
     constructor(repositoryClient: RepositoryClient) { 
-        super (repositoryClient, "log")
+        super (repositoryClient, {
+            type: 'Log',
+            allowDelete: true
+        })
     }
 }

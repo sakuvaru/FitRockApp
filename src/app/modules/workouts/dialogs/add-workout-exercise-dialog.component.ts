@@ -48,7 +48,7 @@ export class AddWorkoutExerciseDialogComponent extends BaseComponent implements 
         form.onBeforeSave(() => this.startGlobalLoader());
         form.onAfterSave(() => this.stopGlobalLoader());
 
-        form.onInsert((response => {
+        form.onAfterInsert((response => {
           this.newWorkoutExercise = response.item;
           this.close();
         }))

@@ -5,7 +5,7 @@ import { FormConfig } from './form-config.class';
 import { MdSnackBar } from '@angular/material';
 import {
     ColumnValidation, FieldErrorEnum, ResponseCreate, ResponseEdit, FormErrorResponse,
-    ErrorResponse, ErrorReasonEnum, BaseField
+    ErrorResponse, ErrorReasonEnum, BaseField, ResponseDelete
 } from '../../lib/repository';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -27,8 +27,10 @@ export class DynamicFormComponent implements OnInit, OnChanges {
 
     private questions: BaseField<any>[] = [];
 
+    private deleteText: string;
     private submitText: string;
     private snackbarText: string;
+    private deleteSnackbarText: string;
     private savedText: string;
 
     public response: any;
@@ -38,6 +40,8 @@ export class DynamicFormComponent implements OnInit, OnChanges {
     private submissionError: string;
 
     private formErrorLines: string[] = [];
+
+    private isDeleteForm: boolean = false;
 
     // inputs
     @Input() config: FormConfig<any>;
@@ -68,6 +72,9 @@ export class DynamicFormComponent implements OnInit, OnChanges {
 
             // translate labels
             this.translateLabels();
+
+            // is delete form?
+            this.isDeleteForm = this.config.isDeleteForm();
         }
 
         this.cdr.detectChanges();
@@ -86,8 +93,12 @@ export class DynamicFormComponent implements OnInit, OnChanges {
             // subscribe to form changes
             this.form.valueChanges.subscribe(response => this.handleFormChange());
             changes.config.currentValue.submitText = changes.config.currentValue.submitText;
+
             // translate labels
             this.translateLabels();
+
+            // is delete form?
+            this.isDeleteForm = changes.config.currentValue.isDeleteForm();
 
             if (this.config.onFormLoaded) {
                 this.config.onFormLoaded();
@@ -141,6 +152,25 @@ export class DynamicFormComponent implements OnInit, OnChanges {
         }
     }
 
+    private handleDelete(): void {
+        if (!this.config.deleteFunction) {
+            throw Error(`Cannot handle form delete because no delete function was defined`);
+        }
+
+        if (this.config.onBeforeDelete) {
+            this.config.onBeforeDelete(this.form.value);
+        }
+
+        this.config.deleteFunction(this.form.value)
+            .subscribe(response => {
+                this.response = response;
+                this.handleDeleteAfter(response);
+            },
+            (err) => {
+                this.handleError(err);
+            });
+    }
+
     private assignQuestions(fields: BaseField<any>[]): void {
         if (!fields) {
             return;
@@ -184,6 +214,8 @@ export class DynamicFormComponent implements OnInit, OnChanges {
     private translateLabels(): void {
         this.translateService.get(this.config.submitTextKey).subscribe(key => this.submitText = key);
         this.translateService.get(this.config.snackBarTextKey).subscribe(key => this.snackbarText = key);
+        this.translateService.get(this.config.deleteSnackBarTextKey).subscribe(key => this.deleteSnackbarText = key);
+        this.translateService.get(this.config.deleteTextKey).subscribe(key => this.deleteText = key);
 
         this.translateService.get('form.error.insufficientLicense').subscribe(key => this.insufficientLicenseError = key);
         this.translateService.get('form.error.saveFailedPrefix').subscribe(key => this.generalErrorMessagePrefix = key);
@@ -205,19 +237,33 @@ export class DynamicFormComponent implements OnInit, OnChanges {
         }
     }
 
-    private handleUpdateAfter(response: ResponseEdit<any> | any): void {
-        this.handleSnackBar();
-
-        if (this.config.onUpdate) {
-            this.config.onUpdate(response);
+    private handleDeleteSnackBar(): void {
+        if (this.config.showSnackBar) {
+            this.snackBarService.open(this.deleteSnackbarText, null, { duration: 2500 });
         }
     }
 
-    private handleInsertAfter(response: ResponseCreate<any> | any): void {
+    private handleDeleteAfter(response: ResponseDelete): void {
+        this.handleDeleteSnackBar();
+
+        if (this.config.onAfterDelete) {
+            this.config.onAfterDelete(response);
+        }
+    }
+
+    private handleUpdateAfter(response: ResponseEdit<any>): void {
         this.handleSnackBar();
 
-        if (this.config.onInsert) {
-            this.config.onInsert(response);
+        if (this.config.onAfterUpdate) {
+            this.config.onAfterUpdate(response);
+        }
+    }
+
+    private handleInsertAfter(response: ResponseCreate<any>): void {
+        this.handleSnackBar();
+
+        if (this.config.onAfterInsert) {
+            this.config.onAfterInsert(response);
         }
     }
 

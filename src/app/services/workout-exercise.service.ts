@@ -8,7 +8,10 @@ import { Observable } from 'rxjs/RX';
 export class WorkoutExerciseService extends BaseTypeService<WorkoutExercise>{
 
     constructor(repositoryClient: RepositoryClient) {
-        super(repositoryClient, "WorkoutExercise")
+        super (repositoryClient, {
+            type: 'WorkoutExercise',
+            allowDelete: true
+        })
     }
 
     addWorkoutExercise(exerciseId: number, workoutId: number): Observable<ResponseCreate<WorkoutExercise>>{

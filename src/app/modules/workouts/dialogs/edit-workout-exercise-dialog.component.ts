@@ -20,6 +20,9 @@ export class EditWorkoutExerciseDialogComponent extends BaseComponent implements
   // public because it is accessed by parent component
   public workoutExercise: WorkoutExercise;
 
+  public idOfDeletedWorkoutExercise: number;
+  public workoutExerciseWasDeleted: boolean = false;
+
   constructor(
     protected dependencies: ComponentDependencyService,
     @Inject(MD_DIALOG_DATA) public data: any
@@ -33,15 +36,21 @@ export class EditWorkoutExerciseDialogComponent extends BaseComponent implements
 
     this.dependencies.itemServices.workoutExerciseService.editForm(this.workoutExercise.id)
       .subscribe(form => {
-        form.onUpdate((response) => {
+        form.onAfterUpdate((response) => {
           this.workoutExercise = response.item;
           this.close();
         });
         form.onBeforeSave(() => this.startGlobalLoader());
         form.onAfterSave(() => this.stopGlobalLoader());
+        form.onBeforeDelete(() => this.startGlobalLoader());
+        form.onAfterDelete((response) => {
+          this.idOfDeletedWorkoutExercise = response.deletedItemId;
+          this.workoutExerciseWasDeleted = true;
+          this.stopGlobalLoader();
+          this.close();
+        });
 
         this.workoutExerciseForm = form.build();
-
         this.stopGlobalLoader();
       });
   }
@@ -49,5 +58,4 @@ export class EditWorkoutExerciseDialogComponent extends BaseComponent implements
   private close(): void {
     this.dependencies.tdServices.dialogService.closeAll();
   }
-
 }

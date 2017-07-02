@@ -35,9 +35,9 @@ export class NewClientComponent extends BaseComponent implements OnInit {
                 form.onFormLoaded(() => this.stopLoader());
 
                 form.insertFunction((item) => this.dependencies.itemServices.userService.createClient(item).set())
-                form.onInsert((response) => {
+                form.onAfterInsert((response) => {
                     // redirect to view client page
-                    this.dependencies.router.navigate([this.getTrainerUrl('clients/edit'), response.item.id])
+                    this.navigate([this.getTrainerUrl('clients/edit'), response.item.id])
                 })
 
                 this.formConfig = form.build();

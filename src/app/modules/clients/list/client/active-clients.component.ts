@@ -46,7 +46,7 @@ export class ActiveClientsComponent extends BaseComponent implements OnInit{
       .showSearch(true)
       .showHeader(false)
       .pagerSize(7)
-      .onClick((item) => this.dependencies.router.navigate([this.getTrainerUrl('clients/edit/') + item.id]))
+      .onClick((item) => this.navigate([this.getTrainerUrl('clients/edit/') + item.id]))
       .avatarUrlResolver((item) => 'https://semantic-ui.com/images/avatar/large/elliot.jpg')
       .build();
   }

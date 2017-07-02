@@ -7,7 +7,7 @@ import { ComponentDependencyService } from './component-dependency.service';
 import { ErrorResponse, ErrorReasonEnum } from '../../../lib/repository';
 import { ComponentConfig, IComponentConfig, ResourceKey, MenuItem } from './component.config';
 import { Observable, Subscription, Subject } from 'rxjs/RX';
-import { UrlHandlingStrategy } from '@angular/router'
+import { NavigationExtras } from '@angular/router'
 
 @Component({
 })
@@ -78,6 +78,10 @@ export abstract class BaseComponent implements IComponent, OnInit {
     forceRefresh(url: string): void{
         var redirectHandlerUrl = this.getPublicUrl(UrlConfig.Redirect);
         this.dependencies.router.navigate([redirectHandlerUrl], { queryParams: { 'url': url },  queryParamsHandling: "merge" });
+    }
+
+    navigate(commands: any[], extras?: NavigationExtras): void{
+        this.dependencies.router.navigate(commands, extras);
     }
 
     // -------------------- Component config ------------------ //

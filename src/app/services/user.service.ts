@@ -13,7 +13,10 @@ import { RepositoryClient, MultipleItemQuery, CreateItemQuery } from '../../lib/
 export class UserService extends BaseTypeService<User>{
 
     constructor(repositoryClient: RepositoryClient) {
-        super(repositoryClient, "user")
+        super (repositoryClient, {
+            type: 'User',
+            allowDelete: false
+        })
     }
 
     clients(): MultipleItemQuery<User> {

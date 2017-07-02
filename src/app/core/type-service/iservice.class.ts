@@ -9,7 +9,7 @@ import { DynamicFormEditBuilder, DynamicFormInsertBuilder } from '../../../web-c
 
 export interface IService<TItem extends IItem> {
 
-    type: string
+    type: string;
 
     items(): MultipleItemQuery<TItem>;
 
