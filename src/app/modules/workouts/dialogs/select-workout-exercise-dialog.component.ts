@@ -49,6 +49,7 @@ export class SelectWorkoutExerciseDialogComponent extends BaseComponent implemen
           .page(page)
           .whereLike('ExerciseName', searchTerm)
           .get()
+          .takeUntil(this.ngUnsubscribe)
       })
       .pagerSize(5)
       .onBeforeLoad(() => this.startGlobalLoader())

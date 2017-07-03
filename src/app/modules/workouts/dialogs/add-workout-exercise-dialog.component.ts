@@ -40,6 +40,7 @@ export class AddWorkoutExerciseDialogComponent extends BaseComponent implements 
     this.startGlobalLoader();
 
     this.dependencies.itemServices.workoutExerciseService.insertForm()
+      .takeUntil(this.ngUnsubscribe)
       .subscribe(form => {
         form.onFormLoaded(() => this.stopGlobalLoader());
         // set exercise id & workout id for new WorkoutExercise item
@@ -60,5 +61,4 @@ export class AddWorkoutExerciseDialogComponent extends BaseComponent implements 
   private close(): void {
     this.dependencies.tdServices.dialogService.closeAll();
   }
-
 }

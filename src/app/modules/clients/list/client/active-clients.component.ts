@@ -39,6 +39,7 @@ export class ActiveClientsComponent extends BaseComponent implements OnInit{
           .WhereLikeMultiple(["FirstName", "LastName"], searchTerm)
           .whereEquals('IsActive', true)
           .get()
+          .takeUntil(this.ngUnsubscribe)
       })
       .onBeforeLoad(() => this.startLoader())
       .onAfterLoad(() => this.stopLoader())

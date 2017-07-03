@@ -35,6 +35,7 @@ export class EditWorkoutExerciseDialogComponent extends BaseComponent implements
     this.startGlobalLoader();
 
     this.dependencies.itemServices.workoutExerciseService.editForm(this.workoutExercise.id)
+      .takeUntil(this.ngUnsubscribe)
       .subscribe(form => {
         form.onAfterUpdate((response) => {
           this.workoutExercise = response.item;

@@ -36,11 +36,13 @@ export class WorkoutPlanComponent extends BaseComponent implements OnInit {
 
   private initWorkout(): void {
     this.activatedRoute.params
+      .takeUntil(this.ngUnsubscribe)
       .switchMap((params: Params) => this.dependencies.itemServices.workoutService.item()
         .byId(+params['id'])
         .disableCache(false)
         .includeMultiple(['WorkoutCategory', 'WorkoutExercises', 'WorkoutExercises.Exercise', 'WorkoutExercises.Exercise.ExerciseCategory'])
         .get())
+        .takeUntil(this.ngUnsubscribe)
       .subscribe(response => {
         this.setConfig({
           menuItems: new WorkoutMenuItems(response.item.id).menuItems,

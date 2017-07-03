@@ -29,12 +29,13 @@ export class NewClientComponent extends BaseComponent implements OnInit {
         });
 
         this.dependencies.itemServices.userService.insertForm()
+            .takeUntil(this.ngUnsubscribe)
             .subscribe(form => {
                 form.onBeforeSave(() => this.startLoader());
                 form.onAfterSave(() => this.stopLoader());
                 form.onFormLoaded(() => this.stopLoader());
 
-                form.insertFunction((item) => this.dependencies.itemServices.userService.createClient(item).set())
+                form.insertFunction((item) => this.dependencies.itemServices.userService.createClient(item).set().takeUntil(this.ngUnsubscribe))
                 form.onAfterInsert((response) => {
                     // redirect to view client page
                     this.navigate([this.getTrainerUrl('clients/edit'), response.item.id])

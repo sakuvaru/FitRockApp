@@ -11,19 +11,13 @@ import { User } from '../../../../models';
 @Component({
   templateUrl: 'clients-overview.component.html'
 })
-export class ClientsOverviewComponent extends BaseComponent implements OnInit, AfterContentInit {
+export class ClientsOverviewComponent extends BaseComponent implements OnInit {
 
   private config: DataTableConfig<User>;
 
   constructor(
     protected dependencies: ComponentDependencyService) {
     super(dependencies)
-  }
-
-  ngAfterContentInit() {
-    //Called after ngOnInit when the component's or directive's content has been initialized.
-    //Add 'implements AfterContentInit' to the class.
-
   }
 
   ngOnInit(): void {
@@ -44,6 +38,7 @@ export class ClientsOverviewComponent extends BaseComponent implements OnInit, A
           .page(page)
           .WhereLikeMultiple(["FirstName", "LastName"], searchTerm)
           .get()
+          .takeUntil(this.ngUnsubscribe)
       })
       .onBeforeLoad(() => this.startLoader())
       .onAfterLoad(() => {

@@ -1,5 +1,5 @@
 // common
-import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
+import { Component, Input, Output, OnInit, EventEmitter, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { AppConfig, ComponentDependencyService, BaseComponent } from '../../../core';
 
@@ -27,7 +27,10 @@ export class EditWorkoutComponent extends BaseComponent implements OnInit {
         this.startLoader();
 
         this.activatedRoute.params
-            .switchMap((params: Params) => this.dependencies.itemServices.workoutService.editForm(+params['id']))
+            .takeUntil(this.ngUnsubscribe)
+            .switchMap((params: Params) => {
+                return this.dependencies.itemServices.workoutService.editForm(+params['id']).takeUntil(this.ngUnsubscribe);
+            })
             .subscribe(form => {
                 form.onFormLoaded(() => this.stopLoader());
                 form.onBeforeSave(() => this.startLoader());

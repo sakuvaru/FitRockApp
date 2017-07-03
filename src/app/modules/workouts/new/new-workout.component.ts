@@ -25,6 +25,7 @@ export class NewWorkoutComponent extends BaseComponent {
         });
 
         this.dependencies.itemServices.workoutService.insertForm()
+            .takeUntil(this.ngUnsubscribe)
             .subscribe(form => {
                 form.onBeforeSave(() => this.startLoader());
                 form.onAfterSave(() => this.stopLoader());

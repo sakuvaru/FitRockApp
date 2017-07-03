@@ -6,12 +6,23 @@ import { UrlConfig } from '../config/url.config';
 import { ComponentDependencyService } from './component-dependency.service';
 import { ErrorResponse, ErrorReasonEnum } from '../../../lib/repository';
 import { ComponentConfig, IComponentConfig, ResourceKey, MenuItem } from './component.config';
-import { Observable, Subscription, Subject } from 'rxjs/RX';
+import { Observable, Subscription, Subject } from 'rxjs/Rx';
 import { NavigationExtras } from '@angular/router'
 
 @Component({
 })
 export abstract class BaseComponent implements IComponent, OnInit {
+
+    /**
+     * Important - used to unsubsribe ALL subscriptions when component is destroyed. This ensures that requests are cancelled
+     * when navigating away from the component. 
+     * Solution should be official - taken from https://stackoverflow.com/questions/38008334/angular-rxjs-when-should-i-unsubscribe-from-subscription
+     * Usage: use 'takeUntl(this.ngUnsubscribe)' for all subscriptions.
+     * Example: this.myThingService.getThings()
+     *       .takeUntil(this.ngUnsubscribe)
+      *      .subscribe(things => console.log(things));
+     */
+    protected ngUnsubscribe: Subject<void> = new Subject<void>();
 
     // component config
     protected componentConfig: IComponentConfig = new ComponentConfig();
@@ -55,6 +66,14 @@ export abstract class BaseComponent implements IComponent, OnInit {
         this.dependencies.coreServices.sharedService.setTopLoader(false);
     }
 
+    ngOnDestroy() {
+        // ng unsubscribe as per recommendation
+        this.ngUnsubscribe.next();
+        this.ngUnsubscribe.complete();
+    }
+
+    // ------------------- Loader ---------------------------- //
+
     startLoader(): void {
         this.dependencies.coreServices.sharedService.setComponentLoader(true);
     }
@@ -75,12 +94,12 @@ export abstract class BaseComponent implements IComponent, OnInit {
      * Uses redirect through redirect component to force refresh a component
      * @param url Url to redirect
      */
-    forceRefresh(url: string): void{
+    forceRefresh(url: string): void {
         var redirectHandlerUrl = this.getPublicUrl(UrlConfig.Redirect);
-        this.dependencies.router.navigate([redirectHandlerUrl], { queryParams: { 'url': url },  queryParamsHandling: "merge" });
+        this.dependencies.router.navigate([redirectHandlerUrl], { queryParams: { 'url': url }, queryParamsHandling: "merge" });
     }
 
-    navigate(commands: any[], extras?: NavigationExtras): void{
+    navigate(commands: any[], extras?: NavigationExtras): void {
         this.dependencies.router.navigate(commands, extras);
     }
 

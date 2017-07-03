@@ -23,20 +23,22 @@ export class DashboardComponent extends BaseComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.dependencies.itemServices.logService.items().limit(5).orderByDesc('id').get().subscribe(
+        this.dependencies.itemServices.logService.items().limit(5).orderByDesc('id').get()
+            .takeUntil(this.ngUnsubscribe)
+            .subscribe(
             response => {
                 console.log(response);
                 this.logs = response.items;
             }
-        );
+            );
 
-       /* this.dependencies.itemServices.logService.item().byId(2).get().subscribe(
-            response => {
-                console.log(response);
-                this.log = response.item;
-            }
-        );
-        */
+        /* this.dependencies.itemServices.logService.item().byId(2).get().subscribe(
+             response => {
+                 console.log(response);
+                 this.log = response.item;
+             }
+         );
+         */
         /*
         // create sample log
         var newLog = new Log({

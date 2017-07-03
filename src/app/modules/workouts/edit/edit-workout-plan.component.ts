@@ -9,7 +9,7 @@ import { DataTableConfig, AlignEnum } from '../../../../web-components/data-tabl
 import { Workout, WorkoutExercise, Exercise } from '../../../models';
 import { DragulaService, dragula } from 'ng2-dragula';
 import { FormConfig } from '../../../../web-components/dynamic-form';
-import { Observable } from 'rxjs/Rx';
+import { Observable, Subject,Subscription } from 'rxjs/Rx';
 import { SelectWorkoutExerciseDialogComponent } from '../dialogs/select-workout-exercise-dialog.component';
 import { EditWorkoutExerciseDialogComponent } from '../dialogs/edit-workout-exercise-dialog.component';
 import { AddWorkoutExerciseDialogComponent } from '../dialogs/add-workout-exercise-dialog.component';
@@ -24,7 +24,7 @@ export class EditWorkoutPlanComponent extends BaseComponent implements OnInit {
 
   private sortedWorkoutExercises: WorkoutExercise[];
 
-  private dropSubscription: any;
+  private dropSubscription: Subscription;
 
   /**
   *access the form with 'id' of the exercise
@@ -45,14 +45,21 @@ export class EditWorkoutPlanComponent extends BaseComponent implements OnInit {
     // init workout
     this.initWorkout();
 
-    // init dragula events
     // subscribe to drop events
-    this.dropSubscription = this.dragulaService.dropModel.subscribe((value) => {
-      this.onDrop(this.workout.workoutExercises);
-    });
+    this.dropSubscription = this.dragulaService.drop
+      .debounceTime(500)
+      .switchMap(() => {
+        this.startGlobalLoader();
+         return this.dependencies.itemServices.workoutExerciseService.updateItemsOrder(this.workout.workoutExercises, this.workout.id).set();
+      })
+      .subscribe(() => {
+        this.stopGlobalLoader();
+        this.showSavedSnackbar();
+      });
   }
 
   ngOnDestroy() {
+    // unsubscribe to drop events
     this.dropSubscription.unsubscribe();
   }
 
@@ -116,14 +123,7 @@ export class EditWorkoutPlanComponent extends BaseComponent implements OnInit {
   }
 
   private onDrop(orderedWorkoutExercises: WorkoutExercise[]) {
-    console.log('drop');
-    this.startGlobalLoader();
-    this.dependencies.itemServices.workoutExerciseService.updateItemsOrder(this.workout.workoutExercises, this.workout.id)
-      .set()
-      .subscribe((response) => {
-        this.showSavedSnackbar();
-        this.stopGlobalLoader();
-      });
+   
   }
 
   private openSelecExerciseDialog(): void {
