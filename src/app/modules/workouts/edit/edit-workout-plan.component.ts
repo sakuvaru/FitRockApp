@@ -9,7 +9,7 @@ import { DataTableConfig, AlignEnum } from '../../../../web-components/data-tabl
 import { Workout, WorkoutExercise, Exercise } from '../../../models';
 import { DragulaService, dragula } from 'ng2-dragula';
 import { FormConfig } from '../../../../web-components/dynamic-form';
-import { Observable, Subject,Subscription } from 'rxjs/Rx';
+import { Observable, Subject, Subscription } from 'rxjs/Rx';
 import { SelectWorkoutExerciseDialogComponent } from '../dialogs/select-workout-exercise-dialog.component';
 import { EditWorkoutExerciseDialogComponent } from '../dialogs/edit-workout-exercise-dialog.component';
 import { AddWorkoutExerciseDialogComponent } from '../dialogs/add-workout-exercise-dialog.component';
@@ -50,7 +50,8 @@ export class EditWorkoutPlanComponent extends BaseComponent implements OnInit {
       .debounceTime(500)
       .switchMap(() => {
         this.startGlobalLoader();
-         return this.dependencies.itemServices.workoutExerciseService.updateItemsOrder(this.workout.workoutExercises, this.workout.id).set();
+        console.log(this.workout.workoutExercises);
+        return this.dependencies.itemServices.workoutExerciseService.updateItemsOrder(this.workout.workoutExercises, this.workout.id).set();
       })
       .subscribe(() => {
         this.stopGlobalLoader();
@@ -89,9 +90,7 @@ export class EditWorkoutPlanComponent extends BaseComponent implements OnInit {
   private assignWorkout(workout: Workout): void {
     // assign workout after all forms are ready and loaded + after ordering execises
     workout.workoutExercises.sort((n1, n2) => n1.order - n2.order);
-
     this.sortedWorkoutExercises = workout.workoutExercises = workout.workoutExercises.sort((n1, n2) => n1.order - n2.order);
-
     this.workout = workout;
   }
 
@@ -104,6 +103,20 @@ export class EditWorkoutPlanComponent extends BaseComponent implements OnInit {
     dialog.afterClosed().subscribe(m => {
       // update || remove workout exercise from local variables
       if (dialog.componentInstance.workoutExerciseWasDeleted) {
+        /*
+        // set order of all items with higher order to be -1
+        var subtract = false;
+       _.forEach(this.sortedWorkoutExercises, (sortedWorkoutExercise) => {
+         // workout exercises are already sorted by dragula & their index represents their order (the 'order' property does not!)
+         if (sortedWorkoutExercise.id === workoutExercise.id){
+           subtract = true;
+         }
+         if (subtract){
+           sortedWorkoutExercise.order--;
+         }
+       });
+       */
+
         // remove exercise
         this.sortedWorkoutExercises = _.reject(this.sortedWorkoutExercises, function (item) { return item.id === dialog.componentInstance.idOfDeletedWorkoutExercise; });
       }
@@ -123,7 +136,7 @@ export class EditWorkoutPlanComponent extends BaseComponent implements OnInit {
   }
 
   private onDrop(orderedWorkoutExercises: WorkoutExercise[]) {
-   
+
   }
 
   private openSelecExerciseDialog(): void {
