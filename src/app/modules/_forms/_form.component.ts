@@ -9,7 +9,7 @@ import { FormConfig } from '../../../web-components/dynamic-form';
 @Component({
     templateUrl: '_form.component.html'
 })
-export class FormComponent extends BaseComponent {
+export class FormComponent extends BaseComponent implements OnInit {
 
     private formEditConfig: FormConfig<any>;
     private formInsertConfig: FormConfig<any>;
@@ -17,13 +17,39 @@ export class FormComponent extends BaseComponent {
     constructor(
         protected dependencies: ComponentDependencyService) {
         super(dependencies)
+    }
+
+    ngOnInit() {
+        this.startLoader();
 
         this.dependencies.itemServices.logService.insertForm()
-            .subscribe(form => this.formInsertConfig = form.build()
-            );
+            .subscribe(form => {
+                form.onFormInit(() => this.stopLoader());
+                form.onBeforeSave(() => this.startGlobalLoader());
+                form.onAfterSave(() => this.stopGlobalLoader());
+                this.formInsertConfig = form.build();
+            });
 
         this.dependencies.itemServices.logService.editForm(1)
-            .subscribe(form => this.formEditConfig = form.build()
-            );
+            .subscribe(form => {
+                form.onFormInit(() => this.stopLoader());
+                form.onBeforeSave(() => this.startGlobalLoader());
+                form.onAfterSave(() => this.stopGlobalLoader());
+                form.onAfterDelete(() => this.navigate([this.getTrainerUrl('workouts')]));
+
+                var item = form.getItem();
+
+                this.setConfig({
+                    menuItems: null,
+                    menuTitle: {
+                        key: item.codename
+                    },
+                    componentTitle: {
+                        'key': 'module.sample.test'
+                    }
+                });
+
+                this.formInsertConfig = form.build();
+            });
     }
 }

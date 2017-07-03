@@ -31,9 +31,9 @@ export class EditClientComponent extends BaseComponent implements OnInit {
             .switchMap((params: Params) => this.dependencies.itemServices.userService.editForm(+params['id']))
             .takeUntil(this.ngUnsubscribe)
             .subscribe(form => {
-                form.onBeforeSave(() => this.startLoader());
-                form.onAfterSave(() => this.stopLoader());
                 form.onFormLoaded(() => this.stopLoader());
+                form.onBeforeSave(() => this.startGlobalLoader());
+                form.onAfterSave(() => this.stopGlobalLoader());
 
                 var user = form.getItem();
 

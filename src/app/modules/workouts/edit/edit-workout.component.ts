@@ -33,8 +33,8 @@ export class EditWorkoutComponent extends BaseComponent implements OnInit {
             })
             .subscribe(form => {
                 form.onFormLoaded(() => this.stopLoader());
-                form.onBeforeSave(() => this.startLoader());
-                form.onAfterSave(() => this.stopLoader());
+                form.onBeforeSave(() => this.startGlobalLoader());
+                form.onAfterSave(() => this.stopGlobalLoader());
                 form.onAfterDelete(() => this.navigate([this.getTrainerUrl('workouts')]));
                 var workout = form.getItem();
 
