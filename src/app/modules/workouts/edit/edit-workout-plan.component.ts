@@ -47,11 +47,10 @@ export class EditWorkoutPlanComponent extends BaseComponent implements OnInit {
 
     // subscribe to drop events
     this.dropSubscription = this.dragulaService.drop
+      .do(() => this.startGlobalLoader())
       .debounceTime(500)
       .switchMap(() => {
-        this.startGlobalLoader();
-        console.log(this.workout.workoutExercises);
-        return this.dependencies.itemServices.workoutExerciseService.updateItemsOrder(this.workout.workoutExercises, this.workout.id).set();
+        return this.dependencies.itemServices.workoutExerciseService.updateItemsOrder(this.sortedWorkoutExercises, this.workout.id).set();
       })
       .subscribe(() => {
         this.stopGlobalLoader();

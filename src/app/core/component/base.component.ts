@@ -139,6 +139,10 @@ export abstract class BaseComponent implements IComponent, OnInit {
     // --------------------- Private methods -------------- // 
 
     private handleRepositoryError(error: ErrorResponse) {
+        // stop all loaders
+        this.stopGlobalLoader();
+        this.stopLoader();
+
         // don't handle form errors, but do handle other errors
         if (error.reason == ErrorReasonEnum.LicenseLimitation) {
             console.log("YOU DONT HAVE LICENSE FOR THIS ACTION, TODO");

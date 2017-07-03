@@ -28,10 +28,10 @@ export class LoginFormComponent extends BaseComponent {
         super(dependencies)
         {
 
-        // subscribe to changes in fragment (hash) because AuthService will redirect back to this page
-        // with random fragment to ensure that the page can reload its data
-        this.activatedRoute.fragment.subscribe((fragment: string) => {
-            this.processFailedLogonRedirect()
+            // subscribe to changes in fragment (hash) because AuthService will redirect back to this page
+            // with random fragment to ensure that the page can reload its data
+            this.activatedRoute.fragment.subscribe((fragment: string) => {
+                this.processFailedLogonRedirect()
             });
         }
     }

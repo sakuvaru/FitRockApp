@@ -23,14 +23,20 @@ export class DashboardComponent extends BaseComponent implements OnInit {
     }
 
     ngOnInit(): void {
+
+        this.setConfig({
+            menuTitle: { key: 'menu.main'},
+            componentTitle: { key: 'menu.dashboard'}
+        });
+
         this.dependencies.itemServices.logService.items().limit(5).orderByDesc('id').get()
             .takeUntil(this.ngUnsubscribe)
             .subscribe(
             response => {
                 console.log(response);
                 this.logs = response.items;
-            }
-            );
+            });
+
 
         /* this.dependencies.itemServices.logService.item().byId(2).get().subscribe(
              response => {

@@ -11,22 +11,23 @@ import { AppConfig, ComponentDependencyService, BaseComponent } from '../../core
 @Component({
     template: 'redirect.component.html'
 })
-export class RedirectComponent implements OnInit {
+export class RedirectComponent extends BaseComponent implements OnInit {
 
     constructor(
-        private route: ActivatedRoute,
-        private router: Router) {
+        private activatedRoute: ActivatedRoute,
+        protected dependencies: ComponentDependencyService) {
+        super(dependencies)
     }
 
     ngOnInit() {
         // get redirect url from 'redirect' query string
-        var url = this.route.snapshot.queryParams[AppConfig.RedirectQueryString];
+        var url = this.activatedRoute.snapshot.queryParams[AppConfig.RedirectQueryString];
 
         if (!url) {
             throw Error(`Cannot redirect because '${AppConfig.RedirectQueryString}' query param is missing`);
         }
 
         // navigate to route
-        this.router.navigate([url]);
+        this.navigate([url]);
     }
 }

@@ -1,12 +1,17 @@
-import { Component, Input } from '@angular/core';
+// common
+import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
+import { ActivatedRoute, Params } from '@angular/router';
+import { AppConfig, ComponentDependencyService, BaseComponent } from '../../core';
 
 @Component({
   templateUrl: 'error.component.html'
 })
-export class ErrorComponent {
+export class ErrorComponent extends BaseComponent {
   private errorMessage: string;
 
-  constructor() {
-    this.errorMessage = "ASEF";
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    protected dependencies: ComponentDependencyService) {
+    super(dependencies)
   }
 }

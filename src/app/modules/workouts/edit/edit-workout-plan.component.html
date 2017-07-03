@@ -1,27 +1,3 @@
-<!--<md-card *ngIf="workout" class="push">
-  <md-card-title>{{workout.workoutName}}</md-card-title>
-  <md-card-subtitle>{{workout.workoutCategory.categoryName}}</md-card-subtitle>
-  <md-divider></md-divider>
-  <md-card-content *ngIf="workout.description">
-    {{workout.description}}
-  </md-card-content>
-  <md-divider></md-divider>
-  <md-card-content *ngIf="sortedWorkoutExercises" [dragula]='"bag-one"' [dragulaModel]="sortedWorkoutExercises">
-    <td-expansion-panel *ngFor="let workoutExercise of sortedWorkoutExercises; let i = index">
-      <ng-template td-expansion-panel-label>
-        <span class="tc-red-700">{{i + 1}}.</span> {{workoutExercise.exercise.exerciseName}}
-        <span class="md-caption tc-grey-700">({{workoutExercise.exercise.exerciseCategory.categoryName}})</span>
-      </ng-template>
-      <ng-template td-expansion-panel-sublabel>
-        <span class="md-caption">{{workoutExercise.sets}} {{'module.workouts.sets' | translate }} / {{workoutExercise.reps}} {{'module.workouts.reps' | translate }}</span>
-      </ng-template>
-    </td-expansion-panel>
-  </md-card-content>
-  <md-card-actions>
-    <button md-button color="primary" class="text-upper" (click)="addWorkoutExercise()">{{'module.workouts.addExercise' | translate }}</button>
-    <button md-button class="text-upper " color="warn">{{'module.workouts.deleteWorkout' | translate }}</button>
-  </md-card-actions>
-</md-card>-->
 
 <md-card *ngIf="workout" class="push">
   <md-card-title>{{workout.workoutName}}</md-card-title>
@@ -35,6 +11,7 @@
       <md-list-item style="background:whitesmoke" class="w-cursor-move push" *ngFor="let workoutExercise of sortedWorkoutExercises; let i = index">
         <p md-line>
           <span class="tc-red-700">{{i + 1}}.</span> &nbsp;{{workoutExercise.exercise.exerciseName}}
+          <span class="md-caption tc-grey-700">({{workoutExercise.exercise.exerciseCategory.categoryName}})</span>
           <button md-icon-button (click)=openWorkoutExerciseDialog(workoutExercise)><md-icon>edit</md-icon></button>
         </p>
         <p md-line>

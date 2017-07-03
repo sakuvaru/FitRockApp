@@ -1,5 +1,5 @@
 // common
-import { Component, Input, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Component, Input, OnDestroy, ChangeDetectorRef, OnInit } from '@angular/core';
 import { TdMediaService } from '@covalent/core';
 import {
     ComponentDependencyService, BaseComponent,
@@ -7,12 +7,12 @@ import {
 } from '../core';
 
 // required by component
-import { Subscription } from 'rxjs/RX';
+import { Subscription } from 'rxjs/Rx';
 
 @Component({
     templateUrl: 'admin-layout.component.html'
 })
-export class AdminLayoutComponent extends BaseComponent implements OnDestroy {
+export class AdminLayoutComponent extends BaseComponent implements OnDestroy, OnInit {
     private media: TdMediaService;
 
     private componentTitle: string;
@@ -26,7 +26,7 @@ export class AdminLayoutComponent extends BaseComponent implements OnDestroy {
      */
     private urlSegment: string;
 
-    // subscriptions - unsubscribe in OnDestroy
+    // subscriptions - unsubscribe 
     private componentLoaderSubscription: Subscription;
     private topLoaderSubscription: Subscription;
     private componentConfigSubscription: Subscription;
@@ -37,23 +37,31 @@ export class AdminLayoutComponent extends BaseComponent implements OnDestroy {
     ) {
         super(dependencies)
 
-        // !!! --- don't forget to unsubscribe to subscriptions --- !!!
+        // set alias for media
+        this.media = this.dependencies.tdServices.mediaService;
+    }
 
+    ngOnInit() {
         // register loaders
-        this.componentLoaderSubscription = this.dependencies.coreServices.sharedService.componentloaderChanged$.subscribe(
+        this.componentLoaderSubscription = this.dependencies.coreServices.sharedService.componentloaderChanged$
+            .takeUntil(this.ngUnsubscribe)
+            .subscribe(
             enabled => {
                 this.componentLoaderEnabled = enabled;
                 this.cdr.detectChanges();
-            }
-        )
-        this.topLoaderSubscription = this.dependencies.coreServices.sharedService.topLoaderChanged$.subscribe(
+            });
+
+        this.topLoaderSubscription = this.dependencies.coreServices.sharedService.topLoaderChanged$
+            .takeUntil(this.ngUnsubscribe)
+            .subscribe(
             enabled => {
                 this.topLoaderEnabled = enabled;
                 this.cdr.detectChanges();
-            }
-        )
+            });
 
-        this.componentConfigSubscription = dependencies.coreServices.sharedService.componentConfigChanged$.subscribe(
+        this.componentConfigSubscription = this.dependencies.coreServices.sharedService.componentConfigChanged$
+            .takeUntil(this.ngUnsubscribe)
+            .subscribe(
             componentConfig => {
                 this.componentConfig = componentConfig;
 
@@ -68,14 +76,13 @@ export class AdminLayoutComponent extends BaseComponent implements OnDestroy {
                 // resolve menu title using translation services
                 if (componentConfig.menuTitle) {
                     this.dependencies.coreServices.translateService.get(componentConfig.menuTitle.key, componentConfig.menuTitle.data)
+                        .takeUntil(this.ngUnsubscribe)
                         .subscribe(text => {
                             this.menuTitle = text;
                         });
                 }
             });
 
-        // set alias for media
-        this.media = dependencies.tdServices.mediaService;
     }
 
     ngAfterViewInit(): void {
@@ -92,10 +99,19 @@ export class AdminLayoutComponent extends BaseComponent implements OnDestroy {
     ngOnDestroy() {
         // prevent memory leaks when component is destroyed
         // source: https://angular.io/docs/ts/latest/cookbook/component-communication.html#!#bidirectional-service
-        this.componentConfigSubscription.unsubscribe();
 
-        this.topLoaderSubscription.unsubscribe();
-        this.componentLoaderSubscription.unsubscribe();
+        // in some cases subscription is not yet initialized (e.g. when navigating from constructor), check for null
+        if (this.componentConfigSubscription != null) {
+            this.componentConfigSubscription.unsubscribe();
+        }
+
+        if (this.topLoaderSubscription != null) {
+            this.topLoaderSubscription.unsubscribe();
+        }
+
+        if (this.componentLoaderSubscription != null) {
+            this.componentLoaderSubscription.unsubscribe();
+        }
     }
 
     private getMenuItemUrl(action: string, type: MenuItemType): string {
