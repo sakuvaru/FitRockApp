@@ -1,5 +1,5 @@
 // common
-import { Component, Input, Output, OnInit, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, Input, Output, OnInit, EventEmitter, OnDestroy, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { AppConfig, ComponentDependencyService, BaseComponent, ComponentConfig } from '../../../core';
 
@@ -110,10 +110,6 @@ export class EditWorkoutPlanComponent extends BaseComponent implements OnInit {
     })
   }
 
-  private onDrop(orderedWorkoutExercises: WorkoutExercise[]) {
-
-  }
-
   private openSelecExerciseDialog(): void {
     var dialog = this.dependencies.tdServices.dialogService.open(SelectWorkoutExerciseDialogComponent, {
       width: AppConfig.DefaultDialogWidth,
@@ -121,8 +117,10 @@ export class EditWorkoutPlanComponent extends BaseComponent implements OnInit {
     });
 
     dialog.afterClosed().subscribe(m => {
-      // open new add workout dialog 
-      this.openAddWorkoutDialog(dialog.componentInstance.selectedExercise);
+      // open new add workout dialog if some exercise was selected
+      if (dialog.componentInstance.selectedExercise) {
+        this.openAddWorkoutDialog(dialog.componentInstance.selectedExercise);
+      }
     })
   }
 

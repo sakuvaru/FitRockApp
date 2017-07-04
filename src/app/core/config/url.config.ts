@@ -9,10 +9,18 @@ export class UrlConfig {
     public static Error = 'error';
     public static Unauthorized = 'unauthorized';
     public static Logout = 'logout';
-    public static NotFound = 'notfound';
+    public static NotFound = '404';
     public static Redirect = 'redirect';
     public static RedirectAfterLogout = UrlConfig.Login;
     public static Default = 'login';
+
+    public static get404Url(){
+        return '/' + UrlConfig.NotFound;
+    }
+
+    public static getErrorUrl(logGuid: string){
+        return UrlConfig.getPublicUrl(UrlConfig.Error + '?g=' + logGuid)
+    }
 
     public static getPublicUrl(action: string) {
         return UrlConfig.PublicMasterPath + '/' + action;

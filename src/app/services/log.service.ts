@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Log } from '../models/log.class';
-import { RepositoryClient } from '../../lib/repository';
+import { RepositoryClient, ResponseCreate } from '../../lib/repository';
 import { BaseTypeService } from '../core';
+import { Observable } from 'rxjs/Rx';
 
 @Injectable()
 export class LogService extends BaseTypeService<Log>{
@@ -11,5 +12,15 @@ export class LogService extends BaseTypeService<Log>{
             type: 'Log',
             allowDelete: true
         })
+    }
+
+    logError(errorMessage: string, url: string, user: string, stacktrace: string): Observable<ResponseCreate<Log>>{
+        var log = new Log();
+        log.errorMessage = errorMessage;
+        log.url = url;
+        log.user = user;
+        log.stacktrace = stacktrace;
+
+        return this.create(log).set();
     }
 }

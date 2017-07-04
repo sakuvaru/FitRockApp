@@ -4,6 +4,7 @@ export * from './type-service/base-type.service'; // has to be first (otherwise 
 // other exports
 export * from './module/core.module';
 export * from './shared-service/shared.service';
+export * from './error-handler/global-error.handler';
 export * from './component/base.component';
 export * from './component/component-dependency.service';
 export * from './config/app.config';

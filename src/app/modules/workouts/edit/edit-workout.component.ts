@@ -10,7 +10,8 @@ import { Workout } from '../../../models';
 import 'rxjs/add/operator/switchMap';
 
 @Component({
-    templateUrl: 'edit-workout.component.html'
+   // templateUrl: 'edit-workout.component.html'
+   template: `<button (click)="handleClick()">click me</button>`
 })
 export class EditWorkoutComponent extends BaseComponent implements OnInit {
 
@@ -21,6 +22,10 @@ export class EditWorkoutComponent extends BaseComponent implements OnInit {
         protected componentDependencyService: ComponentDependencyService,
     ) {
         super(componentDependencyService)
+    }
+
+    private handleClick(): void{
+        throw Error(`Boom!`);
     }
 
     ngOnInit(): void {

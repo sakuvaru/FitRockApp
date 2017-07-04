@@ -1,6 +1,6 @@
 // default/angular modules
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, ErrorHandler } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule, Http } from '@angular/http';
 import { RouterModule } from '@angular/router';
@@ -9,6 +9,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // material angular
 // Info: https://material.angular.io/guide/getting-started
 import 'hammerjs';
+
+// 404
+import { NotFoundComponent } from './modules/shared/not-found.component';
+
+// global error handler
+import { GlobalErrorHandler } from './core/';
+import { ErrorComponent } from './modules/shared/error.component';
 
 // authentication
 import { AuthModule } from '../lib/auth';
@@ -46,7 +53,9 @@ import { FormModule } from './modules/_forms/_form.module';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    ErrorComponent,
+    NotFoundComponent
   ],
   imports: [
     // angular modules
@@ -56,7 +65,7 @@ import { FormModule } from './modules/_forms/_form.module';
     BrowserAnimationsModule,
     ReactiveFormsModule,
 
-    // Core module
+    // core module
     CoreModule,
 
     // route config
@@ -65,9 +74,13 @@ import { FormModule } from './modules/_forms/_form.module';
         path: '',
         redirectTo: UrlConfig.PublicMasterPath + '/' + UrlConfig.Default, pathMatch: 'full'
       },
+       {
+        path: 'app/error',
+        component: ErrorComponent
+      },
       {
         path: '**',
-        redirectTo: UrlConfig.PublicMasterPath + '/' + UrlConfig.NotFound
+        component: NotFoundComponent
       }
     ]),
 
@@ -100,7 +113,11 @@ import { FormModule } from './modules/_forms/_form.module';
     WebComponentsModule
   ],
   providers: [
-    RepositoryClientProvider
+    RepositoryClientProvider,
+     {
+      provide: ErrorHandler, 
+      useClass: GlobalErrorHandler
+    }
   ],
   exports: [
     WebComponentsModule,

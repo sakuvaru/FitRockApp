@@ -20,15 +20,13 @@ import { SharedRouter } from './shared.routing';
         CoreModule
     ],
     declarations: [
-        NotFoundComponent,
         UnauthorizedComponent,
-        ErrorComponent,
         RedirectComponent
     ],
     // Shared components need to be exported so that other modules can use them, as 
     // otherwise they can be used only within the same module
     exports: [
-        NotFoundComponent,
+       // NotFoundComponent,
         UnauthorizedComponent,
         RedirectComponent
     ],

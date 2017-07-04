@@ -5,6 +5,7 @@ import { AppConfig } from '../config/app.config';
 import { UrlConfig } from '../config/url.config';
 import { ComponentDependencyService } from './component-dependency.service';
 import { ErrorResponse, ErrorReasonEnum } from '../../../lib/repository';
+import { Log } from '../../models/'
 import { ComponentConfig, IComponentConfig, ResourceKey, MenuItem } from './component.config';
 import { Observable, Subscription, Subject } from 'rxjs/Rx';
 import { NavigationExtras } from '@angular/router'
@@ -61,6 +62,16 @@ export abstract class BaseComponent implements IComponent, OnInit {
                 this.handleRepositoryError(error);
             });
 
+        // subscribe to global error handler
+        this.dependencies.coreServices.sharedService.errorChanged$.subscribe((log) => {
+            console.log('hi smurfs, some error happened');
+            console.log(log);
+            // redirect to error page
+            //window.location.href = 'http://localhost:4200/app/error';
+            // this.navigateToErrorPage(log.guid);
+            //this.dependencies.router.navigate(['app/trainer'])
+        })
+
         // stop loaders on component init 
         this.dependencies.coreServices.sharedService.setComponentLoader(false);
         this.dependencies.coreServices.sharedService.setTopLoader(false);
@@ -68,6 +79,7 @@ export abstract class BaseComponent implements IComponent, OnInit {
 
     ngOnDestroy() {
         // ng unsubscribe as per recommendation
+        // see comments on top
         this.ngUnsubscribe.next();
         this.ngUnsubscribe.complete();
     }
@@ -101,6 +113,14 @@ export abstract class BaseComponent implements IComponent, OnInit {
 
     navigate(commands: any[], extras?: NavigationExtras): void {
         this.dependencies.router.navigate(commands, extras);
+    }
+
+    navigateToErrorPage(logGuid: string): void {
+        this.dependencies.router.navigate([UrlConfig.getErrorUrl(logGuid)]);
+    }
+
+    navigateTo404(): void {
+        this.dependencies.router.navigate([UrlConfig.get404Url()]);
     }
 
     // -------------------- Component config ------------------ //

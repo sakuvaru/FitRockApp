@@ -16,8 +16,10 @@ import { RedirectComponent } from './redirect.component';
 
 export const routes: Routes = [
     {
+        path: UrlConfig.NotFound, component: NotFoundComponent
+    },
+    {
         path: UrlConfig.PublicMasterPath, component: SimpleLayoutComponent, children: [
-            { path: UrlConfig.NotFound, component: NotFoundComponent },
             { path: UrlConfig.Unauthorized, component: UnauthorizedComponent },
             { path: UrlConfig.Error, component: ErrorComponent },
             { path: UrlConfig.Redirect, component: RedirectComponent },
