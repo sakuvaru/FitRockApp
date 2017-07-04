@@ -5,11 +5,9 @@ import { AppConfig, ComponentDependencyService, BaseComponent, ComponentConfig }
 
 // required by component
 import { WorkoutMenuItems } from '../menu.items';
-import { DataTableConfig, AlignEnum } from '../../../../web-components/data-table';
 import { Workout, WorkoutExercise, Exercise } from '../../../models';
-import { DragulaService, dragula } from 'ng2-dragula';
-import { FormConfig } from '../../../../web-components/dynamic-form';
-import { Observable, Subject, Subscription } from 'rxjs/Rx';
+import { DragulaService } from 'ng2-dragula';
+import { Subscription } from 'rxjs/Rx';
 import { SelectWorkoutExerciseDialogComponent } from '../dialogs/select-workout-exercise-dialog.component';
 import { EditWorkoutExerciseDialogComponent } from '../dialogs/edit-workout-exercise-dialog.component';
 import { AddWorkoutExerciseDialogComponent } from '../dialogs/add-workout-exercise-dialog.component';
@@ -21,16 +19,8 @@ import * as _ from 'underscore';
 export class EditWorkoutPlanComponent extends BaseComponent implements OnInit {
 
   private workout: Workout;
-
   private sortedWorkoutExercises: WorkoutExercise[];
-
   private dropSubscription: Subscription;
-
-  /**
-  *access the form with 'id' of the exercise
-  * e.g. exerciseForms['9']
-  **/
-  private exerciseForms = {};
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -102,20 +92,6 @@ export class EditWorkoutPlanComponent extends BaseComponent implements OnInit {
     dialog.afterClosed().subscribe(m => {
       // update || remove workout exercise from local variables
       if (dialog.componentInstance.workoutExerciseWasDeleted) {
-        /*
-        // set order of all items with higher order to be -1
-        var subtract = false;
-       _.forEach(this.sortedWorkoutExercises, (sortedWorkoutExercise) => {
-         // workout exercises are already sorted by dragula & their index represents their order (the 'order' property does not!)
-         if (sortedWorkoutExercise.id === workoutExercise.id){
-           subtract = true;
-         }
-         if (subtract){
-           sortedWorkoutExercise.order--;
-         }
-       });
-       */
-
         // remove exercise
         this.sortedWorkoutExercises = _.reject(this.sortedWorkoutExercises, function (item) { return item.id === dialog.componentInstance.idOfDeletedWorkoutExercise; });
       }
