@@ -1,3 +1,4 @@
+
 <md-card tdmediatoggle="gt-xs" class="push">
   <td-search-box (searchDebounce)="handleSearch($event)" class="push-left push-right" placeholder="hledat" [alwaysVisible]="true"></td-search-box>
   <md-divider></md-divider>
@@ -17,7 +18,7 @@
         <img *ngIf="config.avatarUrlResolver" md-list-avatar src="{{getAvatarUrl()}}" alt="" class="push-right">
         <md-icon *ngIf="config.iconResolver" md-list-icon>{{getIcon()}}</md-icon>
 
-        <span *ngFor="let field of config.fields" flex="field.flex" [class.tc-grey-500]="field.isSubtle" [class.md-caption]="field.isSubtle"
+        <span wResponsive [enabled]="field.hideOnSmallScreens" *ngFor="let field of config.fields" flex="field.flex" [class.tc-grey-500]="field.isSubtle" [class.md-caption]="field.isSubtle"
           class="{{getTextAlignClass(field)}}">
             {{getFieldValue(field, item)}}
         </span>
@@ -42,7 +43,7 @@
         <img *ngIf="config.avatarUrlResolver" md-list-avatar src="{{getAvatarUrl()}}" alt="" class="push-right">
         <md-icon *ngIf="config.iconResolver" md-list-icon>{{getIcon()}}</md-icon>
 
-        <span *ngFor="let field of config.fields" flex="field.flex" [class.tc-grey-500]="field.isSubtle" [class.md-caption]="field.isSubtle"
+        <span wResponsive [enabled]="field.hideOnSmallScreens" *ngFor="let field of config.fields" flex="field.flex" [class.tc-grey-500]="field.isSubtle" [class.md-caption]="field.isSubtle"
           class="{{getTextAlignClass(field)}}">
             {{getFieldValue(field, item)}}
         </span>
@@ -57,13 +58,14 @@
   </md-list>
   <md-divider *ngIf="config.showPager && !(config.hidePagerForSinglePage && totalPages == 1)"></md-divider>
   <md-card-actions *ngIf="config.showPager && !(config.hidePagerForSinglePage && totalPages == 1)">
-    <button *ngIf="config.showPagerFirstLastButtons" [disabled]="!hasPreviousPage()" md-button (click)="onGoToPage(1)"><<</button>
+    <button wResponsive *ngIf="config.showPagerFirstLastButtons" [disabled]="!hasPreviousPage()" md-button (click)="onGoToPage(1)"><<</button>
     <button *ngIf="config.showPagerNextPreviousButtons" [disabled]="!hasPreviousPage()" md-button (click)="onGoToPreviousPage()"><</button>
-    <span tdMediaToggle="sm" [mediaStyles]="{display: 'none'}" *ngFor="let button of pagerButtons">
+    <span wResponsive *ngFor="let button of pagerButtons">
       <button *ngIf="config.showPagerNumberButtons && !button.isActive" md-button (click)="onGoToPage(button.page)">{{button.page}}</button>
       <button *ngIf="config.showPagerNumberButtons && button.isActive" md-raised-button color="primary" (click)="onGoToPage(button.page)">{{button.page}}</button>
     </span>
     <button *ngIf="config.showPagerNextPreviousButtons" [disabled]="!hasNextPage()" md-button (click)="onGoToNextPage()">></button>
-    <button *ngIf="config.showPagerFirstLastButtons" [disabled]="!hasNextPage()" md-button (click)="onGoToPage(totalPages)">>></button>
+    <button  wResponsive *ngIf="config.showPagerFirstLastButtons" [disabled]="!hasNextPage()" md-button (click)="onGoToPage(totalPages)">>></button>
   </md-card-actions>
 </md-card>
+

@@ -13,6 +13,7 @@
           <span class="tc-red-700">{{i + 1}}.</span> &nbsp;{{workoutExercise.exercise.exerciseName}}
           <span class="md-caption tc-grey-700">({{workoutExercise.exercise.exerciseCategory.categoryName}})</span>
           <button md-icon-button (click)=openWorkoutExerciseDialog(workoutExercise)><md-icon>edit</md-icon></button>
+          <delete-button color="none" (confirm)=deleteWorkoutExercise(workoutExercise)></delete-button>
         </p>
         <p md-line>
           <span class="md-caption">

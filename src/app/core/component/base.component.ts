@@ -1,18 +1,15 @@
-import { Component, Input, OnInit, OnChanges, SimpleChange } from '@angular/core';
-import { TdLoadingService, LoadingMode, LoadingType } from '@covalent/core';
-import { IComponent } from './icomponent.interface';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { AppConfig } from '../config/app.config';
 import { UrlConfig } from '../config/url.config';
 import { ComponentDependencyService } from './component-dependency.service';
 import { ErrorResponse, ErrorReasonEnum } from '../../../lib/repository';
-import { Log } from '../../models/'
 import { ComponentConfig, IComponentConfig, ResourceKey, MenuItem } from './component.config';
-import { Observable, Subscription, Subject } from 'rxjs/Rx';
+import { Observable, Subject } from 'rxjs/Rx';
 import { NavigationExtras } from '@angular/router'
 
 @Component({
 })
-export abstract class BaseComponent implements IComponent, OnInit {
+export abstract class BaseComponent implements OnInit, OnDestroy {
 
     /**
      * Important - used to unsubsribe ALL subscriptions when component is destroyed. This ensures that requests are cancelled
@@ -31,23 +28,19 @@ export abstract class BaseComponent implements IComponent, OnInit {
     // snackbar config
     private snackbarDefaultDuration = 2500;
 
-    // subscriptions
-    private repositoryErrorSubscription: Subscription;
+    // translations
+    private snackbarSavedText: string;
 
     constructor(protected dependencies: ComponentDependencyService) {
-    }
+        // stop loaders on component init 
+        this.dependencies.coreServices.sharedService.setComponentLoader(false);
+        this.dependencies.coreServices.sharedService.setTopLoader(false);
 
-    // ----------------------- Events --------------------- // 
-
-    ngOnInit(): void {
         // authenticate user when logging-in (handles the params in URL and extracts token
         // more info: https://auth0.com/docs/quickstart/spa/angular2/02-custom-login
         if (!this.dependencies.coreServices.authService.isAuthenticated()) {
             this.dependencies.coreServices.authService.handleAuthentication();
         }
-
-        // init component config
-        this.setConfig();
 
         // set language version
         // this language will be used as a fallback when a translation isn't found in the current language
@@ -56,27 +49,31 @@ export abstract class BaseComponent implements IComponent, OnInit {
         // the lang to use, if the lang isn't available, it will use the current loader to get them
         this.dependencies.coreServices.translateService.use(this.dependencies.coreServices.translateService.getBrowserLang());
 
+        // translate snackbar
+        this.dependencies.coreServices.translateService.get('shared.saved').subscribe(text => this.snackbarSavedText = text);
+
         // suscribe to errors in repository service and handle them
-        this.repositoryErrorSubscription = this.dependencies.coreServices.repositoryClient.requestErrorChange$.subscribe(
+        this.dependencies.coreServices.repositoryClient.requestErrorChange$
+            .takeUntil(this.ngUnsubscribe)
+            .subscribe(
             error => {
                 this.handleRepositoryError(error);
             });
-
-        // subscribe to global error handler
-        this.dependencies.coreServices.sharedService.errorChanged$.subscribe((log) => {
-            console.log('hi smurfs, some error happened');
-            console.log(log);
-            // redirect to error page
-            //window.location.href = 'http://localhost:4200/app/error';
-            // this.navigateToErrorPage(log.guid);
-            //this.dependencies.router.navigate(['app/trainer'])
-        })
-
-        // stop loaders on component init 
-        this.dependencies.coreServices.sharedService.setComponentLoader(false);
-        this.dependencies.coreServices.sharedService.setTopLoader(false);
     }
 
+    // ----------------------- Lifecycle Events --------------------- // 
+
+    /**
+     * If a child component implements its own ngOnDestory, it needs to call 'super.ngOnDestroy' as otherwise
+     * this method will not be called
+     */
+    ngOnInit() {
+    }
+
+    /**
+     * If a child component implements its own ngOnDestory, it needs to call 'super.ngOnDestroy' as otherwise
+     * this method will not be called
+     */
     ngOnDestroy() {
         // ng unsubscribe as per recommendation
         // see comments on top
@@ -107,7 +104,7 @@ export abstract class BaseComponent implements IComponent, OnInit {
      * @param url Url to redirect
      */
     forceRefresh(url: string): void {
-        var redirectHandlerUrl = this.getPublicUrl(UrlConfig.Redirect);
+        var redirectHandlerUrl = this.getAppUrl(UrlConfig.Redirect);
         this.dependencies.router.navigate([redirectHandlerUrl], { queryParams: { 'url': url }, queryParamsHandling: "merge" });
     }
 
@@ -115,12 +112,8 @@ export abstract class BaseComponent implements IComponent, OnInit {
         this.dependencies.router.navigate(commands, extras);
     }
 
-    navigateToErrorPage(logGuid: string): void {
-        this.dependencies.router.navigate([UrlConfig.getErrorUrl(logGuid)]);
-    }
-
     navigateTo404(): void {
-        this.dependencies.router.navigate([UrlConfig.get404Url()]);
+        this.dependencies.router.navigate([UrlConfig.getItem404()]);
     }
 
     // -------------------- Component config ------------------ //
@@ -143,57 +136,45 @@ export abstract class BaseComponent implements IComponent, OnInit {
             menuItems?: MenuItem[],
             appName?: string,
             menuTitle?: ResourceKey
-        }
-    ): void {
+        }): void {
         if (options) {
             Object.assign(this.componentConfig, options);
         }
         this.componentConfig.setDefaultValues();
-        this.setConfigInternal();
-    }
-
-    private setConfigInternal(): void {
         this.dependencies.coreServices.sharedService.setComponentConfig(this.componentConfig);
     }
 
     // --------------------- Private methods -------------- // 
 
     private handleRepositoryError(error: ErrorResponse) {
-        // stop all loaders
-        this.stopGlobalLoader();
-        this.stopLoader();
-
-        // don't handle form errors, but do handle other errors
+        // handle license error
         if (error.reason == ErrorReasonEnum.LicenseLimitation) {
             console.log("YOU DONT HAVE LICENSE FOR THIS ACTION, TODO");
         }
     }
 
-    // --------------- Public methods ------------------- //
-
-    showErrorPage(errorResponse: ErrorResponse) {
-        // redirect to error page
-        this.dependencies.router.navigate([UrlConfig.getPublicUrl(UrlConfig.Error)], { queryParams: { result: errorResponse.error } });
-    }
+    // --------------- Snackbar ------------------- //
 
     showSnackbar(message: string): void {
         let snackBarRef = this.dependencies.mdServices.snackbarService.open(message, null, { duration: this.snackbarDefaultDuration });
     }
 
     showSavedSnackbar(): void {
-        this.showSnackbar("Uloženo");
+        this.showSnackbar(this.snackbarSavedText);
     }
 
-    redirectToErrorPage(): void {
-        this.dependencies.router.navigate([UrlConfig.getPublicUrl(UrlConfig.Error)]);
-    }
+    // --------------- Urls ------------------- //
 
     getClientUrl(action?: string): string {
         return '/' + UrlConfig.getClientUrl(action);
     }
 
-    getPublicUrl(action?: string): string {
-        return '/' + UrlConfig.getPublicUrl(action);
+    getAppUrl(action?: string): string {
+        return '/' + UrlConfig.getAppUrl(action);
+    }
+
+    getAuthUrl(action?: string): string {
+        return '/' + UrlConfig.getAuthUrl(action);
     }
 
     getTrainerUrl(action?: string): string {

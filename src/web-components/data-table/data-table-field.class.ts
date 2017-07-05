@@ -9,4 +9,5 @@ export class DataTableField<T> {
     public flex?: number;
     public isSubtle?: boolean;
     public align?: AlignEnum;
+    public hideOnSmallScreens?: boolean = false;
 }   

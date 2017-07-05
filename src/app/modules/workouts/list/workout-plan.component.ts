@@ -28,6 +28,8 @@ export class WorkoutPlanComponent extends BaseComponent implements OnInit {
   }
 
   ngOnInit() {
+    super.ngOnInit();
+
     this.startLoader();
 
     // init workout

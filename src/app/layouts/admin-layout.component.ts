@@ -123,8 +123,8 @@ export class AdminLayoutComponent extends BaseComponent implements OnDestroy, On
         else if (type === MenuItemType.trainer) {
             url = this.getTrainerUrl(action);
         }
-        else if (type === MenuItemType.public) {
-            url = this.getPublicUrl(action);
+        else if (type === MenuItemType.auth) {
+            url = this.getAuthUrl(action);
         }
         else {
             throw Error(`Cannot get menu item url of '${type}' type`);

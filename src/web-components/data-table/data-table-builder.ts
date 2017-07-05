@@ -17,6 +17,11 @@ export class DataTableBuilder<T> {
         return this;
     }
 
+    wrapInCard(wrap: boolean): this{
+        this.config.wrapInCard = wrap;
+        return this;
+    }
+
     showHeader(show: boolean): this {
         this.config.showHeader = show;
         return this;

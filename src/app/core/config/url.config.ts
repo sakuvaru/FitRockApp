@@ -1,54 +1,69 @@
 
 export class UrlConfig {
+    public static AppUrl = 'app';
 
-    public static PublicMasterPath = 'public';
-    public static TrainerMasterPath = 'app/trainer';
-    public static ClientMasterPath = 'app/client';
+    public static TrainerMasterPath = UrlConfig.AppUrl + '/trainer';
+    public static ClientMasterPath = UrlConfig.AppUrl + '/client';
+    public static AuthMasterPath = UrlConfig.AppUrl + '/auth';
 
     public static Login = 'login';
-    public static Error = 'error';
+    public static AppError = 'error';
     public static Unauthorized = 'unauthorized';
     public static Logout = 'logout';
-    public static NotFound = '404';
+    public static Item404 = '404';
+    public static Global404 = '404';
     public static Redirect = 'redirect';
     public static RedirectAfterLogout = UrlConfig.Login;
     public static Default = 'login';
 
-    public static get404Url(){
-        return '/' + UrlConfig.NotFound;
+    public static AppErrorLogGuidQueryString = 'q';
+
+    public static getUnAuthorizedUrl(): string {
+        return UrlConfig.getAuthUrl(UrlConfig.Unauthorized);
     }
 
-    public static getErrorUrl(logGuid: string){
-        return UrlConfig.getPublicUrl(UrlConfig.Error + '?g=' + logGuid)
+    public static getGlobal404(): string {
+        return '/' + UrlConfig.Global404;
     }
 
-    public static getPublicUrl(action: string) {
-        return UrlConfig.PublicMasterPath + '/' + action;
+    public static getLoginUrl(): string {
+        return UrlConfig.getAuthUrl(UrlConfig.Login);
+    }
+
+    public static getLogoutUrl(): string {
+        return UrlConfig.getAuthUrl(UrlConfig.Logout);
+    }
+
+    public static getItem404(): string {
+        return UrlConfig.getAppUrl(UrlConfig.Item404);
+    }
+
+    public static getAppErrorUrl(): string {
+        return UrlConfig.getAppUrl(UrlConfig.AppError);
+    }
+
+    public static getAppUrl(action: string): string {
+        return UrlConfig.AppUrl + '/' + action;
     }
 
     public static getTrainerUrl(action?: string): string {
-        if (action){
+        if (action) {
             return UrlConfig.TrainerMasterPath + '/' + action;
         }
         return UrlConfig.TrainerMasterPath;
     }
 
     public static getClientUrl(action?: string): string {
-        if (action){
+        if (action) {
             return UrlConfig.ClientMasterPath + '/' + action;
         }
         return UrlConfig.ClientMasterPath;
     }
 
-    /*
-       public static PublicPath = 'public';
-   
-       public static DefaultPath = 'login';
-       public static NotFoundPath = 'notfound';
-       public static UnauthorizedPath = 'unauthorized';
-       public static LoginPath = 'login';
-       public static LogoutPath = 'logout';
-       public static RedirectAfterLogoutPath = 'login';
-       public static ErrorPath = 'error';
-   */
+    public static getAuthUrl(action?: string): string {
+        if (action) {
+            return UrlConfig.AuthMasterPath + '/' + action;
+        }
+        return UrlConfig.AuthMasterPath;
+    }
 }

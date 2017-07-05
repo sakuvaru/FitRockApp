@@ -32,6 +32,8 @@ export class EditWorkoutExerciseDialogComponent extends BaseComponent implements
   }
 
   ngOnInit() {
+    super.ngOnInit();
+    
     this.startGlobalLoader();
 
     this.dependencies.itemServices.workoutExerciseService.editForm(this.workoutExercise.id)

@@ -23,6 +23,7 @@ export class DashboardComponent extends BaseComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        super.ngOnInit();
 
         this.setConfig({
             menuTitle: { key: 'menu.main'},

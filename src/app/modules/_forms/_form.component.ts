@@ -20,6 +20,8 @@ export class FormComponent extends BaseComponent implements OnInit {
     }
 
     ngOnInit() {
+        super.ngOnInit();
+        
         this.startLoader();
 
         this.dependencies.itemServices.logService.insertForm()

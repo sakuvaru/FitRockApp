@@ -1,10 +1,9 @@
 // common
-import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
+import { Component, Input, Output, OnInit, EventEmitter, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { AppConfig, ComponentDependencyService, BaseComponent } from '../../core';
 
 // required by component
-
 @Component({
     selector: 'login-form',
     templateUrl: 'login-form.component.html'
@@ -26,14 +25,18 @@ export class LoginFormComponent extends BaseComponent {
         private activatedRoute: ActivatedRoute,
         protected dependencies: ComponentDependencyService) {
         super(dependencies)
-        {
+    }
 
-            // subscribe to changes in fragment (hash) because AuthService will redirect back to this page
-            // with random fragment to ensure that the page can reload its data
-            this.activatedRoute.fragment.subscribe((fragment: string) => {
+    ngOnInit() {
+        super.ngOnInit();
+
+        // subscribe to changes in fragment (hash) because AuthService will redirect back to this page
+        // with random fragment to ensure that the page can reload its data
+        this.activatedRoute.fragment
+            .takeUntil(this.ngUnsubscribe)
+            .subscribe((fragment: string) => {
                 this.processFailedLogonRedirect()
             });
-        }
     }
 
     private processFailedLogonRedirect() {

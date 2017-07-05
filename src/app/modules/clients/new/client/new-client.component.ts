@@ -21,6 +21,8 @@ export class NewClientComponent extends BaseComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        super.ngOnInit();
+        
         this.startLoader();
 
         this.setConfig({

@@ -18,6 +18,9 @@ import { WebComponentsModule } from '../../../web-components';
 // translation
 import { TranslateModule } from '@ngx-translate/core';
 
+// directives
+import { DirectivesModule } from '../../../directives';
+
 // Drag & drop
 // https://github.com/valor-software/ng2-dragula
 import { DragulaModule } from 'ng2-dragula';
@@ -30,7 +33,8 @@ import { DragulaModule } from 'ng2-dragula';
         AngularMaterialModule,
         WebComponentsModule,
         TranslateModule,
-        DragulaModule
+        DragulaModule,
+        DirectivesModule
     ],
     declarations: [
     ],
@@ -45,7 +49,8 @@ import { DragulaModule } from 'ng2-dragula';
         AngularMaterialModule,
         WebComponentsModule,
         TranslateModule,
-        DragulaModule
+        DragulaModule,
+        DirectivesModule
     ]
 })
 export class CoreModule { }

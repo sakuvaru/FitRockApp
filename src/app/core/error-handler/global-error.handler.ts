@@ -14,11 +14,11 @@ export class GlobalErrorHandler implements ErrorHandler {
     constructor(private injector: Injector) { }
 
     handleError(error) {
+        console.log('Log error');
         var logService = this.injector.get(LogService);
         var sharedService = this.injector.get(SharedService);
         var authService = this.injector.get(AuthService);
         var location = this.injector.get(LocationStrategy);
-        var router = this.injector.get(Router);
 
         var message = error.message ? error.message : error.toString();
         var url = location instanceof PathLocationStrategy ? location.path() : '';
@@ -37,11 +37,24 @@ export class GlobalErrorHandler implements ErrorHandler {
                 .subscribe((response) => {
                     // notify shared service about the error
                     sharedService.setError(response.item);
+
+                    this.navigateToErrorPage(response.item.guid);
+
                 },
                 (error) => {
-                    console.log('We cannot even log error, this is really bad!');
+                    this.navigateToErrorPage();
                 });
         });
-        throw error;
+
+        // don't rethrow error (it will cause this handler to be called twice) - log as console error instead
+        console.error(error);
+    }
+    
+      private  navigateToErrorPage(logGuid?: string): void {
+        var router = this.injector.get(Router);
+        var param = {};
+        param[UrlConfig.AppErrorLogGuidQueryString] = logGuid;
+
+        router.navigate([UrlConfig.getAppErrorUrl()], { queryParams: param });
     }
 }

@@ -19,7 +19,7 @@
       <span flex></span>
       <button md-icon-button [mdMenuTriggerFor]="toolbarMenu"><md-icon>settings</md-icon></button>
       <md-menu #toolbarMenu="mdMenu">
-        <button md-menu-item [routerLink]="getPublicUrl('logout')">
+        <button md-menu-item [routerLink]="getAuthUrl('logout')">
           <md-icon>exit_to_app</md-icon>
            Odhlásit
         </button>

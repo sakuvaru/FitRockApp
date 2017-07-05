@@ -9,19 +9,26 @@ import { SimpleLayoutComponent } from '../../layouts/simple-layout.component';
 import { AdminLayoutComponent } from '../../layouts/admin-layout.component';
 
 // components
-import { NotFoundComponent } from './not-found.component';
+import { Global404Component } from './404.component';
+import { Item404Component } from './item-404.component';
 import { UnauthorizedComponent } from './unauthorized.component';
-import { ErrorComponent } from './error.component';
+import { AppErrorComponent } from './app-error.component';
 import { RedirectComponent } from './redirect.component';
+
 
 export const routes: Routes = [
     {
-        path: UrlConfig.NotFound, component: NotFoundComponent
+        path: UrlConfig.Global404, component: Global404Component
     },
     {
-        path: UrlConfig.PublicMasterPath, component: SimpleLayoutComponent, children: [
+        path: UrlConfig.AuthMasterPath, component: SimpleLayoutComponent, children: [
             { path: UrlConfig.Unauthorized, component: UnauthorizedComponent },
-            { path: UrlConfig.Error, component: ErrorComponent },
+        ]
+    },
+    {
+        path: UrlConfig.AppUrl, component: SimpleLayoutComponent, children: [
+            { path: UrlConfig.Item404, component: Item404Component },
+            { path: UrlConfig.AppError, component: AppErrorComponent },
             { path: UrlConfig.Redirect, component: RedirectComponent },
         ]
     }

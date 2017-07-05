@@ -16,7 +16,7 @@ import * as _ from 'underscore';
 @Component({
   templateUrl: 'edit-workout-plan.component.html'
 })
-export class EditWorkoutPlanComponent extends BaseComponent implements OnInit {
+export class EditWorkoutPlanComponent extends BaseComponent implements OnInit, OnDestroy {
 
   private workout: Workout;
   private sortedWorkoutExercises: WorkoutExercise[];
@@ -30,6 +30,8 @@ export class EditWorkoutPlanComponent extends BaseComponent implements OnInit {
   }
 
   ngOnInit() {
+    super.ngOnInit();
+  
     this.startLoader();
 
     // init workout
@@ -49,6 +51,8 @@ export class EditWorkoutPlanComponent extends BaseComponent implements OnInit {
   }
 
   ngOnDestroy() {
+    super.ngOnDestroy();
+
     // unsubscribe to drop events
     this.dropSubscription.unsubscribe();
   }
@@ -83,6 +87,25 @@ export class EditWorkoutPlanComponent extends BaseComponent implements OnInit {
     this.workout = workout;
   }
 
+  private deleteWorkoutExercise(workoutExercise: WorkoutExercise): void{
+    this.startGlobalLoader();
+    this.dependencies.itemServices.workoutExerciseService.delete(workoutExercise.id)
+      .set()
+      .do(() => this.startGlobalLoader())
+      .subscribe(response => {
+         // remove workout exercise from local variable
+         this.sortedWorkoutExercises = _.reject(this.sortedWorkoutExercises, function (item) { return item.id === response.deletedItemId; });
+
+         this.showSavedSnackbar();
+
+         this.stopGlobalLoader();
+      },
+      (error) => {
+        console.log(error);
+        this.stopGlobalLoader();
+      });
+  }
+
   private openWorkoutExerciseDialog(workoutExercise: WorkoutExercise): void {
     var dialog = this.dependencies.tdServices.dialogService.open(EditWorkoutExerciseDialogComponent, {
       width: AppConfig.DefaultDialogWidth,
@@ -90,7 +113,7 @@ export class EditWorkoutPlanComponent extends BaseComponent implements OnInit {
     });
 
     dialog.afterClosed().subscribe(m => {
-      // update || remove workout exercise from local variables
+      // update || remove workout exercise from local variable
       if (dialog.componentInstance.workoutExerciseWasDeleted) {
         // remove exercise
         this.sortedWorkoutExercises = _.reject(this.sortedWorkoutExercises, function (item) { return item.id === dialog.componentInstance.idOfDeletedWorkoutExercise; });

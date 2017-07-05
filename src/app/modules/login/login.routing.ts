@@ -14,7 +14,7 @@ import { LogoutComponent } from './logout.component';
 
 const routes: Routes = [
   {
-    path: UrlConfig.PublicMasterPath, component: SimpleLayoutComponent, children: [
+    path: UrlConfig.AuthMasterPath, component: SimpleLayoutComponent, children: [
       { path: UrlConfig.Login, component: LoginPageComponent },
       { path: UrlConfig.Logout, component: LogoutComponent },
     ]

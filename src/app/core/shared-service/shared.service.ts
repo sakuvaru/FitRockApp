@@ -33,7 +33,10 @@ export class SharedService {
     this.topLoaderSource.next(enabled);
   }
 
-  setError(log: Log): void{
+  setError(log: Log): void {
     this.errorSource.next(log);
+    // stop loaders on error
+    this.componentLoaderSource.next(false);
+    this.topLoaderSource.next(false);
   }
 }

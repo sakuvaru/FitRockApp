@@ -21,6 +21,8 @@ export class NewWorkoutComponent extends BaseComponent implements OnInit {
     }
     
     ngOnInit() {
+        super.ngOnInit();
+        
         this.startLoader();
 
           this.setConfig({

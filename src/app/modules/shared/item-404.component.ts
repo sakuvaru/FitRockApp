@@ -4,10 +4,9 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { AppConfig, ComponentDependencyService, BaseComponent } from '../../core';
 
 @Component({
-  selector: 'not-found',
-  templateUrl: 'not-found.component.html'
+  templateUrl: 'item-404.component.html'
 })
-export class NotFoundComponent extends BaseComponent {
+export class Item404Component extends BaseComponent {
   constructor(
     private activatedRoute: ActivatedRoute,
     protected dependencies: ComponentDependencyService) {

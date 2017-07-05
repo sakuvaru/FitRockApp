@@ -9,7 +9,7 @@
         <button *ngIf="isEditForm" md-raised-button color="accent" (click)="editButtonSubject.next()" [disabled]="!form.valid">{{submitText}}</button>
       </div>
       <div *ngIf="isDeleteForm" flex class="text-right">
-        <button md-raised-button color="warn" (click)="deleteButtonSubject.next()">{{deleteText}}</button>
+        <delete-button (confirm)="deleteButtonSubject.next()"></delete-button>
       </div>
     </div>
     <td-message *ngIf="submissionError" [label]="submissionError" color="red" icon="error"></td-message>

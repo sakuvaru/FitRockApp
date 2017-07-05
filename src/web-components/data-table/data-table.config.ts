@@ -5,6 +5,7 @@ import { DataTableField } from './data-table-field.class';
 export class DataTableConfig<T> {
     public fields: DataTableField<any>[];
 
+    public wrapInCard: boolean = true;
     public showHeader: boolean = false;
     public showPager: boolean = true;
     public showSearch: boolean = true;
@@ -27,6 +28,7 @@ export class DataTableConfig<T> {
 
     constructor(
         public options?: {
+            wrapInCard?: boolean,
             fields: DataTableField<any>[];
             loadResolver?: (searchTerm: string, page: number, pageSize: number) => Observable<ResponseMultiple<any>>,
             showHeader?: boolean,

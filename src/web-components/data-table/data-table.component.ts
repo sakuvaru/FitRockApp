@@ -5,7 +5,7 @@ import { Component, Input, Output, OnInit, EventEmitter, AfterViewInit } from '@
 import { DataTableField } from './data-table-field.class';
 import { DataTableConfig, SelectableConfig } from './data-table.config';
 import { AlignEnum } from './align-enum';
-import { Observable } from 'rxjs/Observable';
+import { Observable, Subscription } from 'rxjs/Rx';
 import { Guid } from '../../lib/utilities';
 import { TranslateService } from '@ngx-translate/core';
 import { TdMediaService } from '@covalent/core';
@@ -46,7 +46,7 @@ export class DataTableComponent implements AfterViewInit, OnInit {
 
     constructor(
         private translateService: TranslateService,
-        private mediaService: TdMediaService
+        private mediaService: TdMediaService,
     ) {
     }
 

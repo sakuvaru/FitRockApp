@@ -11,11 +11,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import 'hammerjs';
 
 // 404
-import { NotFoundComponent } from './modules/shared/not-found.component';
+import { Global404Component } from './modules/shared/404.component';
 
 // global error handler
 import { GlobalErrorHandler } from './core/';
-import { ErrorComponent } from './modules/shared/error.component';
 
 // authentication
 import { AuthModule } from '../lib/auth';
@@ -54,8 +53,7 @@ import { FormModule } from './modules/_forms/_form.module';
 @NgModule({
   declarations: [
     AppComponent,
-    ErrorComponent,
-    NotFoundComponent
+    Global404Component
   ],
   imports: [
     // angular modules
@@ -72,15 +70,11 @@ import { FormModule } from './modules/_forms/_form.module';
     RouterModule.forRoot([
       {
         path: '',
-        redirectTo: UrlConfig.PublicMasterPath + '/' + UrlConfig.Default, pathMatch: 'full'
-      },
-       {
-        path: 'app/error',
-        component: ErrorComponent
+        redirectTo: UrlConfig.AuthMasterPath + '/' + UrlConfig.Login, pathMatch: 'full'
       },
       {
         path: '**',
-        component: NotFoundComponent
+        component: Global404Component
       }
     ]),
 

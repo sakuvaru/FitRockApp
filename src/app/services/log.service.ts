@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Log } from '../models/log.class';
-import { RepositoryClient, ResponseCreate } from '../../lib/repository';
+import { RepositoryClient, ResponseCreate, ResponseMultiple } from '../../lib/repository';
 import { BaseTypeService } from '../core';
 import { Observable } from 'rxjs/Rx';
 
@@ -21,6 +21,10 @@ export class LogService extends BaseTypeService<Log>{
         log.user = user;
         log.stacktrace = stacktrace;
 
-        return this.create(log).set();
+        return super.create(log).set();
+    }
+
+    getLogByGuid(guid: string): Observable<ResponseMultiple<Log>>{
+        return super.items().withCustomAction('GetLogByGuid/' + guid).get();
     }
 }

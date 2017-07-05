@@ -5,9 +5,9 @@ import { CommonModule } from '@angular/common';
 import { CoreModule } from '../../core';
 
 // components
-import { NotFoundComponent } from './not-found.component';
+import { Item404Component } from './item-404.component';
 import { UnauthorizedComponent } from './unauthorized.component';
-import { ErrorComponent } from './error.component';
+import { AppErrorComponent } from './app-error.component';
 import { RedirectComponent } from './redirect.component';
 
 // router
@@ -17,18 +17,21 @@ import { SharedRouter } from './shared.routing';
     imports: [
         CommonModule,
         SharedRouter,
-        CoreModule
+        CoreModule,
     ],
     declarations: [
         UnauthorizedComponent,
-        RedirectComponent
+        RedirectComponent,
+        Item404Component,
+        AppErrorComponent
     ],
     // Shared components need to be exported so that other modules can use them, as 
     // otherwise they can be used only within the same module
     exports: [
-       // NotFoundComponent,
         UnauthorizedComponent,
-        RedirectComponent
+        RedirectComponent,
+        Item404Component,
+        AppErrorComponent
     ],
 })
 export class SharedModule { }

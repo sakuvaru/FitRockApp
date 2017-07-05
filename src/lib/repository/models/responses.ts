@@ -92,6 +92,17 @@ export class ResponseMultiple<T extends IItem> extends ResponseGetBase {
         super()
         if (options) Object.assign(this, options);
     }
+
+    isEmpty(): boolean{
+        return !this.items || this.items.length <= 0;
+    }
+
+    firstItem(): T{
+        if (this.isEmpty()){
+            return null;
+        }
+        return this.items[0];
+    }
 }
 
 export class ResponseSingle<T extends IItem> extends ResponseGetBase {
@@ -113,6 +124,10 @@ export class ResponseSingle<T extends IItem> extends ResponseGetBase {
         }) {
         super()
         if (options) Object.assign(this, options);
+    }
+
+     isEmpty(): boolean{
+        return !this.item;
     }
 }
 

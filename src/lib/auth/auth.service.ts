@@ -47,7 +47,7 @@ export class AuthService {
         console.error(response.description);
 
         // redirect back to logon page & add a random hash (hash needs to be added to URL for lifecycle check)
-        this.router.navigate([UrlConfig.getPublicUrl(UrlConfig.Login)], { queryParams: { result: "error" }, fragment: Guid.newGuid() })
+        this.router.navigate([UrlConfig.getLoginUrl()], { queryParams: { result: "error" }, fragment: Guid.newGuid() })
 
         return false;
     }

@@ -10,12 +10,16 @@ import { AngularMaterialModule } from '../lib/material'
 // translation
 import { TranslateModule } from '@ngx-translate/core';
 
+// directives
+import { DirectivesModule } from '../directives';
+
 @NgModule({
     imports: [
         CommonModule,
         CovalentModule,
         AngularMaterialModule,
-        TranslateModule
+        TranslateModule,
+        DirectivesModule
     ],
     declarations: [
     ],
@@ -25,7 +29,8 @@ import { TranslateModule } from '@ngx-translate/core';
         CommonModule,
         CovalentModule,
         AngularMaterialModule,
-        TranslateModule
+        TranslateModule,
+        DirectivesModule
     ]
 })
 export class SharedWebComponentModule { }

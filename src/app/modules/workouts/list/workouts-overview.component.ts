@@ -11,13 +11,17 @@ import { Workout } from '../../../models';
 @Component({
   templateUrl: 'workouts-overview.component.html'
 })
-export class WorkoutsOverviewComponent extends BaseComponent {
+export class WorkoutsOverviewComponent extends BaseComponent implements OnInit {
 
   private config: DataTableConfig<Workout>;
 
   constructor(
     protected dependencies: ComponentDependencyService) {
     super(dependencies)
+  }
+  
+  ngOnInit() {
+    super.ngOnInit();
 
     this.setConfig({
       menuTitle: { key: 'menu.workouts' },
@@ -32,7 +36,7 @@ export class WorkoutsOverviewComponent extends BaseComponent {
           label: 'shared.updated', value: (item) => {
             var date = new Date(item.updated);
             return date.toLocaleDateString();
-          }, isSubtle: true, align: AlignEnum.Right
+          }, isSubtle: true, align: AlignEnum.Right, hideOnSmallScreens: true
         },
       ])
       .loadResolver((searchTerm, page, pageSize) => {
@@ -49,7 +53,6 @@ export class WorkoutsOverviewComponent extends BaseComponent {
       .showSearch(true)
       .pagerSize(7)
       .onClick((item) => this.navigate([this.getTrainerUrl('workouts/edit-plan/') + item.id]))
-      .avatarUrlResolver((item) => 'https://semantic-ui.com/images/avatar/large/elliot.jpg')
       .build();
   }
 }

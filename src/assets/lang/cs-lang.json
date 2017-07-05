@@ -18,7 +18,8 @@
         "login": "Přihlášení",
         "search": "Hledat",
         "updated": "Poslední změna",
-		"close": "Zavřít"
+		"close": "Zavřít",
+		"saved": "Uloženo"
     },
     "module": {
         "clients": {
@@ -49,7 +50,14 @@
 			"addWorkoutExercise": "Přidat cvik",
 			"editWorkoutExercise": "Upravit cvik",
 			"newWorkout": "Nová šablona"
-        }
+        },
+		"shared":{
+			"errors": {
+			   "errorPageTitle": "Nastala neočekáváná chyba",
+			   "criticalErrorText": "Vypadá, že jde o zcela neznámou chybu, kterou nelze zpracovat. Prosím kontaktujte naši podporu s detaily o problému.",
+			   "loggedErrorText": "Chyba byla zpracována. Pro zjištění více informací nás kontaktujte a uvěďte identifikační číslo '<em>{{guid}}</em>'"
+			}
+		}
     },
     "form": {
         "error": {
@@ -115,6 +123,14 @@
         "dataTable": {
             "noResultsText": "Nejsou zde žádná data",
             "noSearchResultsText": "Nic nenalezeno"
-        }
+        },
+		"buttons":{
+			"deleteButton":{
+			"message": "Opravdu smazat objekt?",
+			"title": "Potvrzení",
+			"confirm": "Smazat",
+			"cancel" : "Zrušit"
+			}			
+		}
     }
 }

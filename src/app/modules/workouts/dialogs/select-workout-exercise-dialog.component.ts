@@ -27,6 +27,8 @@ export class SelectWorkoutExerciseDialogComponent extends BaseComponent implemen
   }
 
   ngOnInit() {
+    super.ngOnInit();
+
     this.config = this.dependencies.webComponentServices.dataTableService.dataTable<Exercise>()
       .fields([
         {

@@ -1,0 +1,21 @@
+<h2>{{ 'module.shared.errors.errorPageTitle' | translate }}</h2>
+
+<div *ngIf="isCriticalError">
+    {{ 'module.shared.errors.criticalErrorText' | translate }}
+</div>
+
+<div *ngIf="!isCriticalError" [innerHTML]="'module.shared.errors.loggedErrorText' | translate:translateParams">
+</div>
+
+<div *ngIf="showDebugDetails && log" class="push">
+    <md-card>
+        <md-card-title>Error message</md-card-title>
+        <md-card-content>
+            {{log.errorMessage }}
+        </md-card-content>
+        <md-card-subtitle>Stacktrace</md-card-subtitle>
+        <md-card-content>
+            {{log.stacktrace}}
+        </md-card-content>
+    </md-card>
+</div>

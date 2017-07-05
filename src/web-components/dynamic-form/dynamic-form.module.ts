@@ -18,6 +18,9 @@ import { DynamicFormComponent } from './dynamic-form.component';
 // loader
 import { LoaderModule } from '../loader/loader.module';
 
+// buttons
+import { ButtonsModule} from '../buttons/buttons.module';
+
 @NgModule({
     imports: [
         CommonModule,
@@ -25,7 +28,8 @@ import { LoaderModule } from '../loader/loader.module';
         SharedWebComponentModule,
         FormsModule,
         ReactiveFormsModule, // required by dynamic forms feature
-        LoaderModule
+        LoaderModule,
+        ButtonsModule
     ],
     declarations: [
         DynamicFormQuestionComponent,

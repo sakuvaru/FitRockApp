@@ -13,7 +13,7 @@ export class AuthGuardService implements CanActivate {
         if (this.authService.isAuthenticated()) {
             return true;
         } else {
-            this.router.navigate([UrlConfig.getPublicUrl(UrlConfig.Unauthorized)]);
+            this.router.navigate([UrlConfig.getUnAuthorizedUrl()]);
             return false;
         }
     }

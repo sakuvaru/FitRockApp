@@ -4,11 +4,9 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { AppConfig, ComponentDependencyService, BaseComponent } from '../../core';
 
 @Component({
-  templateUrl: 'error.component.html'
+  templateUrl: '404.component.html'
 })
-export class ErrorComponent extends BaseComponent {
-  private errorMessage: string;
-
+export class Global404Component extends BaseComponent {
   constructor(
     private activatedRoute: ActivatedRoute,
     protected dependencies: ComponentDependencyService) {

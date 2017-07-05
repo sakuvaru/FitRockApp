@@ -21,6 +21,8 @@ export class ActiveClientsComponent extends BaseComponent implements OnInit{
     }
 
   ngOnInit(): void {
+    super.ngOnInit();
+    
     this.setConfig({
       menuTitle: { key: 'menu.clients' },
       menuItems: new ClientOverviewMenuItems().menuItems,
