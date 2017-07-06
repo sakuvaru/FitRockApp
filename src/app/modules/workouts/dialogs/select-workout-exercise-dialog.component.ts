@@ -13,10 +13,14 @@ import { MD_DIALOG_DATA } from '@angular/material';
 })
 export class SelectWorkoutExerciseDialogComponent extends BaseComponent implements OnInit {
 
+  private selectable: boolean = true;
   private config: DataTableConfig<Exercise>;
   private workoutId: number;
 
   public selectedExercise: Exercise;
+
+  private chipAllSelected: boolean = true;
+  private chipMyExercisesSelected: boolean = false;
 
   constructor(
     protected dependencies: ComponentDependencyService,
@@ -41,7 +45,8 @@ export class SelectWorkoutExerciseDialogComponent extends BaseComponent implemen
           value: (item) => { return item.exerciseCategory.categoryName },
           flex: 40,
           isSubtle: true,
-          align: AlignEnum.Right
+          align: AlignEnum.Right,
+          hideOnSmallScreens: true
         },
       ])
       .loadResolver((searchTerm, page, pageSize) => {
@@ -54,8 +59,8 @@ export class SelectWorkoutExerciseDialogComponent extends BaseComponent implemen
           .takeUntil(this.ngUnsubscribe)
       })
       .pagerSize(5)
-      .onBeforeLoad(() => this.startGlobalLoader())
-      .onAfterLoad(() => this.stopGlobalLoader())
+      .onBeforeLoad(() => super.startGlobalLoader())
+      .onAfterLoad(() => super.stopGlobalLoader())
       .showPager(true)
       .showSearch(true)
       .onClick((item: Exercise) => {
@@ -64,6 +69,17 @@ export class SelectWorkoutExerciseDialogComponent extends BaseComponent implemen
         this.close();
       })
       .build();
+  }
+
+
+  private handleSelectAll(): void {
+    this.chipAllSelected = !this.chipAllSelected;
+    this.chipMyExercisesSelected = !this.chipMyExercisesSelected;
+  }
+
+  private handleSelectMyExercises(): void {
+    this.chipAllSelected = !this.chipAllSelected;
+    this.chipMyExercisesSelected = !this.chipMyExercisesSelected;
   }
 
   private close(): void {

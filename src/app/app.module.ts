@@ -10,6 +10,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // Info: https://material.angular.io/guide/getting-started
 import 'hammerjs';
 
+// entry point to application (redirection from Auth0)
+import { EntryPointComponent } from './entry-point.component';
+
 // 404
 import { Global404Component } from './modules/shared/404.component';
 
@@ -46,6 +49,7 @@ import { DashboardModule } from './modules/dashboard/dashboard.module';
 import { LoginModule } from './modules/login/login.module';
 import { ClientsModule } from './modules/clients/clients.module';
 import { WorkoutsModule } from './modules/workouts/workouts.module';
+import { ExercisesModule } from './modules/exercises/exercises.module';
 
 // test form module
 import { FormModule } from './modules/_forms/_form.module';
@@ -53,7 +57,8 @@ import { FormModule } from './modules/_forms/_form.module';
 @NgModule({
   declarations: [
     AppComponent,
-    Global404Component
+    Global404Component,
+    EntryPointComponent
   ],
   imports: [
     // angular modules
@@ -70,11 +75,15 @@ import { FormModule } from './modules/_forms/_form.module';
     RouterModule.forRoot([
       {
         path: '',
-        redirectTo: UrlConfig.AuthMasterPath + '/' + UrlConfig.Login, pathMatch: 'full'
+        redirectTo: UrlConfig.AppUrl, pathMatch: 'full'
+      },
+       {
+        path: UrlConfig.EntryPoint,
+        component: EntryPointComponent
       },
       {
         path: '**',
-        component: Global404Component
+        redirectTo: UrlConfig.Global404
       }
     ]),
 
@@ -89,6 +98,7 @@ import { FormModule } from './modules/_forms/_form.module';
     LoginModule,
     ClientsModule,
     WorkoutsModule,
+    ExercisesModule,
 
     // translation
     TranslateModule.forRoot({

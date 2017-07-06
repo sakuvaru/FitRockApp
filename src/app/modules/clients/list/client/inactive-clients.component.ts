@@ -32,7 +32,7 @@ export class InActiveClientsComponent extends BaseComponent implements OnInit{
     this.config = this.dependencies.webComponentServices.dataTableService.dataTable<User>()
       .fields([
         { label: 'Klient', value: (item) => { return item.getFullName() }, flex: 40 },
-        { label: 'E-mail', value: (item) => { return item.email }, isSubtle: true, align: AlignEnum.Right },
+        { label: 'E-mail', value: (item) => { return item.email }, isSubtle: true, align: AlignEnum.Right, hideOnSmallScreens: true  },
       ])
       .loadResolver((searchTerm, page, pageSize) => {
         return this.dependencies.itemServices.userService.clients()
@@ -43,13 +43,13 @@ export class InActiveClientsComponent extends BaseComponent implements OnInit{
           .get()
           .takeUntil(this.ngUnsubscribe)
       })
-      .onBeforeLoad(() => this.startLoader())
-      .onAfterLoad(() => this.stopLoader())
+      .onBeforeLoad(() => super.startLoader())
+      .onAfterLoad(() => super.stopLoader())
       .showPager(true)
       .showSearch(true)
       .showHeader(false)
       .pagerSize(7)
-      .onClick((item) => this.navigate([this.getTrainerUrl('clients/edit/') + item.id]))
+      .onClick((item) => super.navigate([super.getTrainerUrl('clients/edit/') + item.id]))
       .avatarUrlResolver((item) => 'https://semantic-ui.com/images/avatar/large/elliot.jpg')
       .build();
   }

@@ -4,27 +4,23 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { AppConfig, ComponentDependencyService, BaseComponent } from '../../../core';
 
 // required by component
-import { WorkoutMenuItems } from '../menu.items';
+import { ExerciseMenuItems } from '../menu.items';
 import { FormConfig } from '../../../../web-components/dynamic-form';
-import { Workout } from '../../../models';
+import { Exercise } from '../../../models';
 import 'rxjs/add/operator/switchMap';
 
 @Component({
-   templateUrl: 'edit-workout.component.html'
+   templateUrl: 'edit-exercise.component.html'
 })
-export class EditWorkoutComponent extends BaseComponent implements OnInit {
+export class EditExerciseComponent extends BaseComponent implements OnInit {
 
-    private formConfig: FormConfig<Workout>;
+    private formConfig: FormConfig<Exercise>;
 
     constructor(
         private activatedRoute: ActivatedRoute,
         protected componentDependencyService: ComponentDependencyService,
     ) {
         super(componentDependencyService)
-    }
-
-    handleClick(): void{
-        throw Error('BOOM!');
     }
 
     ngOnInit(): void {
@@ -35,23 +31,23 @@ export class EditWorkoutComponent extends BaseComponent implements OnInit {
         this.activatedRoute.params
             .takeUntil(this.ngUnsubscribe)
             .switchMap((params: Params) => {
-                return this.dependencies.itemServices.workoutService.editForm(+params['id']).takeUntil(this.ngUnsubscribe);
+                return this.dependencies.itemServices.exerciseService.editForm(+params['id'])
+                    .takeUntil(this.ngUnsubscribe);
             })
             .subscribe(form => {
                 form.onFormLoaded(() => super.stopLoader());
                 form.onBeforeSave(() => super.startGlobalLoader());
                 form.onAfterSave(() => super.stopGlobalLoader());
                 form.onError(() => super.stopGlobalLoader());
-                form.onAfterDelete(() => super.navigate([super.getTrainerUrl('workouts')]));
-                var workout = form.getItem();
+                var item = form.getItem();
 
                 this.setConfig({
-                    menuItems: new WorkoutMenuItems(workout.id).menuItems,
+                    menuItems: new ExerciseMenuItems(item.id).menuItems,
                     menuTitle: {
-                        key: workout.workoutName
+                        key: item.exerciseName
                     },
                     componentTitle: {
-                        'key': 'module.workouts.editWorkout'
+                        'key': 'module.exercises.edit'
                     }
                 });
 

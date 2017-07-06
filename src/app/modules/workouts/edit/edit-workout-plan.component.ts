@@ -31,7 +31,7 @@ export class EditWorkoutPlanComponent extends BaseComponent implements OnInit, O
 
   ngOnInit() {
     super.ngOnInit();
-  
+
     this.startLoader();
 
     // init workout
@@ -45,8 +45,8 @@ export class EditWorkoutPlanComponent extends BaseComponent implements OnInit, O
         return this.dependencies.itemServices.workoutExerciseService.updateItemsOrder(this.sortedWorkoutExercises, this.workout.id).set();
       })
       .subscribe(() => {
-        this.stopGlobalLoader();
-        this.showSavedSnackbar();
+        super.stopGlobalLoader();
+        super.showSavedSnackbar();
       });
   }
 
@@ -87,18 +87,18 @@ export class EditWorkoutPlanComponent extends BaseComponent implements OnInit, O
     this.workout = workout;
   }
 
-  private deleteWorkoutExercise(workoutExercise: WorkoutExercise): void{
+  private deleteWorkoutExercise(workoutExercise: WorkoutExercise): void {
     this.startGlobalLoader();
     this.dependencies.itemServices.workoutExerciseService.delete(workoutExercise.id)
       .set()
       .do(() => this.startGlobalLoader())
       .subscribe(response => {
-         // remove workout exercise from local variable
-         this.sortedWorkoutExercises = _.reject(this.sortedWorkoutExercises, function (item) { return item.id === response.deletedItemId; });
+        // remove workout exercise from local variable
+        this.sortedWorkoutExercises = _.reject(this.sortedWorkoutExercises, function (item) { return item.id === response.deletedItemId; });
 
-         this.showSavedSnackbar();
+        this.showSavedSnackbar();
 
-         this.stopGlobalLoader();
+        this.stopGlobalLoader();
       },
       (error) => {
         console.log(error);
@@ -160,12 +160,14 @@ export class EditWorkoutPlanComponent extends BaseComponent implements OnInit, O
     dialog.afterClosed().subscribe(m => {
       // add newly added workout exercise to list of current exercises
       // but first load whole object with category
-      this.dependencies.itemServices.workoutExerciseService.item().byId(dialog.componentInstance.newWorkoutExercise.id)
-        .includeMultiple(['Exercise', 'Exercise.ExerciseCategory'])
-        .get()
-        .subscribe(response => {
-          this.sortedWorkoutExercises.push(response.item);
-        })
+      if (dialog.componentInstance.newWorkoutExercise) {
+        this.dependencies.itemServices.workoutExerciseService.item().byId(dialog.componentInstance.newWorkoutExercise.id)
+          .includeMultiple(['Exercise', 'Exercise.ExerciseCategory'])
+          .get()
+          .subscribe(response => {
+            this.sortedWorkoutExercises.push(response.item);
+          })
+      }
     })
   }
 }

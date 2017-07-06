@@ -2,4 +2,9 @@
     {{'module.workouts.selectExercise' | translate}}
 </h2>
 
+<md-chip-list>
+    <md-chip class="w-cursor-pointer" [selected]="chipAllSelected" (click)="handleSelectAll()">{{'module.workouts.allExercises' | translate}}</md-chip>
+    <md-chip class="w-cursor-pointer" [selected]="chipMyExercisesSelected"  (click)="handleSelectMyExercises()">{{'module.workouts.myExercises' | translate}}</md-chip>
+</md-chip-list>
+
 <data-table [config]="config"></data-table>

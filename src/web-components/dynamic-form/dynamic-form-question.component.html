@@ -1,21 +1,21 @@
-
 <div *ngIf="question" layout="row" layout-margin [formGroup]="form">
   <!-- Question types -->
   <md-input-container *ngIf="isTextField()" flex hintLabel="{{questionHint}}">
-    <input mdInput value="{{question.value}}" [attr.maxLength]="question.options.maxLength > 0 ? question.options.maxLength : null" required="{{question.required}}"
-      placeholder="{{question.translatedLabel}}" [formControlName]="question.key" [id]="question.key" [type]="question.type" #elem>
+    <input mdInput value="{{question.value}}" [attr.maxLength]="question.options.maxLength > 0 ? question.options.maxLength : null"
+      required="{{question.required}}" placeholder="{{question.translatedLabel}}" [formControlName]="question.key" [id]="question.key"
+      [type]="question.type" #elem>
     <md-hint *ngIf="showLengthHint()" [ngClass]="{'tc-red-600': elem.value.length > question.options.maxLength}" align="end">{{elem.value.length}} / {{question.options.maxLength}}</md-hint>
     <md-error></md-error>
   </md-input-container>
 
-  <div *ngIf="isBooleanField()"  flex>
+  <div *ngIf="isBooleanField()" flex>
     <md-checkbox [checked]="checkBoxIsChecked" [formControlName]="question.key" [id]="question.key" required="{{question.required}}"
       #elem>&nbsp;{{question.translatedLabel}} <span class="md-caption">({{questionHint}})</span>
     </md-checkbox>
     <span *ngIf="question.required && !elem.checked" class="tc-grey-500 md-caption"> ({{ 'form.shared.required' | translate }})</span>
   </div>
 
-  <div *ngIf="isRadioBooleanField()"  flex>
+  <div *ngIf="isRadioBooleanField()" flex>
     <md-radio-group [formControlName]="question.key" [id]="question.key" required="{{question.required}}" (change)="handleRadioButtonChange($event)"
       #elem>
       <md-radio-button [checked]="radioCheckboxTrueChecked" value="true" class="push-right">{{question.options.trueOptionLabel}}</md-radio-button>
@@ -23,7 +23,7 @@
     </md-radio-group>
   </div>
 
-  <div *ngIf="isDateField()"  flex>
+  <div *ngIf="isDateField()" flex>
     <md-input-container>
       <input mdInput [mdDatepicker]="datepicker" [formControlName]="question.key" [id]="question.key" [placeholder]="question.translatedLabel"
         [required]="question.required" [value]="question.value">
@@ -32,20 +32,21 @@
     <md-datepicker startView="year" [startAt]="datePickerStartDate" #datepicker></md-datepicker>
   </div>
 
-  <md-input-container *ngIf="isTextAreaField()"  flex hintLabel="{{questionHint}}">
+  <md-input-container *ngIf="isTextAreaField()" flex hintLabel="{{questionHint}}">
     <textarea MdTextareaAutosize mdInput mdAutosizeMinRows="question.options.minAutosizeRows" mdAutosizeMaxRows="question.options.maxAutosizeRows"
       [attr.maxLength]="question.options.maxLength > 0 ? question.options.maxLength : null" value="{{question.value}}" required="{{question.required}}"
-      placeholder="{{question.translatedLabel}}" [formControlName]="question.key" [id]="question.key" [type]="question.type" #elem>
+      placeholder="{{question.translatedLabel}}" [formControlName]="question.key" [id]="question.key" [type]="question.type"
+      #elem>
     </textarea>
     <md-hint *ngIf="showLengthHint()" [ngClass]="{'tc-red-600': elem.value.length > question.options.maxLength}" align="end">{{elem.value.length}} / {{question.options.maxLength}}</md-hint>
     <md-error></md-error>
   </md-input-container>
 
-  <div *ngIf="isHiddenField()" >
+  <div *ngIf="isHiddenField()">
     <input type="hidden" value="{{question.value}}">
   </div>
 
-  <div *ngIf="isDropdownField()"  flex>
+  <div *ngIf="isDropdownField()" flex>
     <div>
       <md-select [style.width]="getWidthStyle()" [id]="question.key" [formControlName]="question.key" [required]="question.required"
         [placeholder]="question.translatedLabel">
@@ -53,4 +54,10 @@
       </md-select>
     </div>
   </div>
+
+  <div *ngIf="isNumberField()">
+    number
+    <input type="hidden" value="{{question.value}}">
+  </div>
+
 </div>

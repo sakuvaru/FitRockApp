@@ -10,7 +10,6 @@ import { ButtonsModule } from './buttons/buttons.module';
 import { DataTableModule } from './data-table/data-table.module';
 import { DynamicFormModule } from './dynamic-form/dynamic-form.module';
 import { LoaderModule } from './loader/loader.module';
-import { PagerModule } from './pager/pager.module';
 
 @NgModule({
     imports: [
@@ -23,7 +22,6 @@ import { PagerModule } from './pager/pager.module';
         DataTableModule,
         ButtonsModule,
         LoaderModule,
-        PagerModule
     ]
 })
 export class WebComponentsModule { }

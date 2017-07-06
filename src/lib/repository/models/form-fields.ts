@@ -33,23 +33,26 @@ export class BaseField<T> implements IFormField<T> {
         else if (controlType === 'Dropdown') {
             this.controlTypeEnum = ControlTypeEnum.Dropdown;
         }
-        if (controlType === 'Date') {
+        else if (controlType === 'Date') {
             this.controlTypeEnum = ControlTypeEnum.Date;
         }
         else if (controlType === 'Boolean') {
             this.controlTypeEnum = ControlTypeEnum.Boolean;
         }
-        if (controlType === 'RadioBoolean') {
+        else if (controlType === 'RadioBoolean') {
             this.controlTypeEnum = ControlTypeEnum.RadioBoolean;
         }
         else if (controlType === 'Text') {
             this.controlTypeEnum = ControlTypeEnum.Text;
         }
-        if (controlType === 'TextArea') {
+        else if (controlType === 'TextArea') {
             this.controlTypeEnum = ControlTypeEnum.TextArea;
         }
         else if (controlType === 'Hidden') {
             this.controlTypeEnum = ControlTypeEnum.Hidden;
+        }
+        else if (controlType === 'Number') {
+            this.controlTypeEnum = ControlTypeEnum.Number;
         }
     }
 }

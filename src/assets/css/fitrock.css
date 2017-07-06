@@ -10,3 +10,7 @@
 .w-cursor-move{
     cursor: move;
 }
+
+.w-cursor-pointer{
+    cursor: pointer;
+}

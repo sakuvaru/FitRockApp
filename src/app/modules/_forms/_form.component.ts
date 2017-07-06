@@ -29,6 +29,7 @@ export class FormComponent extends BaseComponent implements OnInit {
                 form.onFormInit(() => this.stopLoader());
                 form.onBeforeSave(() => this.startGlobalLoader());
                 form.onAfterSave(() => this.stopGlobalLoader());
+                form.onError(() => super.stopGlobalLoader());
                 this.formInsertConfig = form.build();
             });
 
@@ -38,6 +39,7 @@ export class FormComponent extends BaseComponent implements OnInit {
                 form.onBeforeSave(() => this.startGlobalLoader());
                 form.onAfterSave(() => this.stopGlobalLoader());
                 form.onAfterDelete(() => this.navigate([this.getTrainerUrl('workouts')]));
+                form.onError(() => super.stopGlobalLoader());
 
                 var item = form.getItem();
 

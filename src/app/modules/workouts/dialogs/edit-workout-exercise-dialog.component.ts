@@ -34,7 +34,7 @@ export class EditWorkoutExerciseDialogComponent extends BaseComponent implements
   ngOnInit() {
     super.ngOnInit();
     
-    this.startGlobalLoader();
+    super.startGlobalLoader();
 
     this.dependencies.itemServices.workoutExerciseService.editForm(this.workoutExercise.id)
       .takeUntil(this.ngUnsubscribe)
@@ -43,9 +43,10 @@ export class EditWorkoutExerciseDialogComponent extends BaseComponent implements
           this.workoutExercise = response.item;
           this.close();
         });
-        form.onBeforeSave(() => this.startGlobalLoader());
-        form.onAfterSave(() => this.stopGlobalLoader());
-        form.onBeforeDelete(() => this.startGlobalLoader());
+        form.onBeforeSave(() => super.startGlobalLoader());
+        form.onAfterSave(() => super.stopGlobalLoader());
+        form.onBeforeDelete(() => super.startGlobalLoader());
+        form.onError(() => super.stopGlobalLoader());
         form.onAfterDelete((response) => {
           this.idOfDeletedWorkoutExercise = response.deletedItemId;
           this.workoutExerciseWasDeleted = true;
@@ -54,7 +55,7 @@ export class EditWorkoutExerciseDialogComponent extends BaseComponent implements
         });
 
         this.workoutExerciseForm = form.build();
-        this.stopGlobalLoader();
+        super.stopGlobalLoader();
       });
   }
 

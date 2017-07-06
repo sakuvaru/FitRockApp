@@ -23,7 +23,7 @@ export class NewClientComponent extends BaseComponent implements OnInit {
     ngOnInit(): void {
         super.ngOnInit();
         
-        this.startLoader();
+        super.startLoader();
 
         this.setConfig({
             componentTitle: { key: 'module.clients.newClient' },
@@ -33,14 +33,15 @@ export class NewClientComponent extends BaseComponent implements OnInit {
         this.dependencies.itemServices.userService.insertForm()
             .takeUntil(this.ngUnsubscribe)
             .subscribe(form => {
-                form.onFormLoaded(() => this.stopLoader());
-                form.onBeforeSave(() => this.startGlobalLoader());
-                form.onAfterSave(() => this.stopGlobalLoader());
+                form.onFormLoaded(() => super.stopLoader());
+                form.onBeforeSave(() => super.startGlobalLoader());
+                form.onAfterSave(() => super.stopGlobalLoader());
+                form.onError(() => super.stopGlobalLoader());
 
                 form.insertFunction((item) => this.dependencies.itemServices.userService.createClient(item).set().takeUntil(this.ngUnsubscribe))
                 form.onAfterInsert((response) => {
                     // redirect to view client page
-                    this.navigate([this.getTrainerUrl('clients/edit'), response.item.id])
+                    super.navigate([super.getTrainerUrl('clients/edit'), response.item.id])
                 })
 
                 this.formConfig = form.build();

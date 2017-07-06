@@ -1,6 +1,12 @@
 
 export class UrlConfig {
+
     public static AppUrl = 'app';
+
+    /**
+    * Entry point to application after redirecting from Auth0
+    */
+    public static EntryPoint = UrlConfig.AppUrl + '/entry';
 
     public static TrainerMasterPath = UrlConfig.AppUrl + '/trainer';
     public static ClientMasterPath = UrlConfig.AppUrl + '/client';

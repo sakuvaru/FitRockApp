@@ -1,19 +1,16 @@
-import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
+import { Component, Input, Output, OnInit, EventEmitter, OnDestroy } from '@angular/core';
 import { AuthService } from '../lib/auth';
 import { ActivatedRoute, Params } from '@angular/router';
-import { AppConfig, ComponentDependencyService, BaseComponent } from './core';
+import { AppConfig, ComponentDependencyService, BaseComponent, UrlConfig } from './core';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent extends BaseComponent {
-  private appName = AppConfig.AppName;
-
+export class AppComponent extends BaseComponent implements OnInit, OnDestroy {
   constructor(
     protected dependencies: ComponentDependencyService,
-    private authService: AuthService
   ) {
     super(dependencies)
   }

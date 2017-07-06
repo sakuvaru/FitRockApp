@@ -1,4 +1,3 @@
-
 <md-card tdmediatoggle="gt-xs" class="push">
   <td-search-box (searchDebounce)="handleSearch($event)" class="push-left push-right" placeholder="hledat" [alwaysVisible]="true"></td-search-box>
   <md-divider></md-divider>
@@ -18,9 +17,9 @@
         <img *ngIf="config.avatarUrlResolver" md-list-avatar src="{{getAvatarUrl()}}" alt="" class="push-right">
         <md-icon *ngIf="config.iconResolver" md-list-icon>{{getIcon()}}</md-icon>
 
-        <span wResponsive [enabled]="field.hideOnSmallScreens" *ngFor="let field of config.fields" flex="field.flex" [class.tc-grey-500]="field.isSubtle" [class.md-caption]="field.isSubtle"
+        <span wResponsive [enabled]="field.hideOnSmallScreens" *ngFor="let field of config.fields" flex="field.flex"
           class="{{getTextAlignClass(field)}}">
-            {{getFieldValue(field, item)}}
+            <span  [class.md-caption]="field.isSubtle" [class.tc-grey-500]="field.isSubtle">{{getFieldValue(field, item)}}</span>
         </span>
       </md-list-item>
     </div>
@@ -43,9 +42,9 @@
         <img *ngIf="config.avatarUrlResolver" md-list-avatar src="{{getAvatarUrl()}}" alt="" class="push-right">
         <md-icon *ngIf="config.iconResolver" md-list-icon>{{getIcon()}}</md-icon>
 
-        <span wResponsive [enabled]="field.hideOnSmallScreens" *ngFor="let field of config.fields" flex="field.flex" [class.tc-grey-500]="field.isSubtle" [class.md-caption]="field.isSubtle"
+        <span wResponsive [enabled]="field.hideOnSmallScreens" *ngFor="let field of config.fields" flex="field.flex" 
           class="{{getTextAlignClass(field)}}">
-            {{getFieldValue(field, item)}}
+           <span  [class.md-caption]="field.isSubtle" [class.tc-grey-500]="field.isSubtle">{{getFieldValue(field, item)}}</span>
         </span>
       </md-list-item>
     </div>
@@ -65,7 +64,6 @@
       <button *ngIf="config.showPagerNumberButtons && button.isActive" md-raised-button color="primary" (click)="onGoToPage(button.page)">{{button.page}}</button>
     </span>
     <button *ngIf="config.showPagerNextPreviousButtons" [disabled]="!hasNextPage()" md-button (click)="onGoToNextPage()">></button>
-    <button  wResponsive *ngIf="config.showPagerFirstLastButtons" [disabled]="!hasNextPage()" md-button (click)="onGoToPage(totalPages)">>></button>
+    <button wResponsive *ngIf="config.showPagerFirstLastButtons" [disabled]="!hasNextPage()" md-button (click)="onGoToPage(totalPages)">>></button>
   </md-card-actions>
 </md-card>
-

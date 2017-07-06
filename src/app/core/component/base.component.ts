@@ -116,6 +116,11 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
         this.dependencies.router.navigate([UrlConfig.getItem404()]);
     }
 
+    
+    navigateToError(): void {
+        this.dependencies.router.navigate([UrlConfig.getAppErrorUrl()]);
+    }
+
     // -------------------- Component config ------------------ //
 
     updateMenuItems(menuItems: MenuItem[]): void {

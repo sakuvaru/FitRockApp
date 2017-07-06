@@ -6,5 +6,6 @@ export enum ControlTypeEnum {
     RadioBoolean = 4,
     Text = 5,
     TextArea = 6,
-    Hidden = 7
+    Hidden = 7,
+    Number = 8
 }

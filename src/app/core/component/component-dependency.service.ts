@@ -1,6 +1,7 @@
-import { Injectable, Injector } from '@angular/core';
+import { Injectable, Injector, } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs/Rx';
 
 // Components's common services
 import { AuthService } from '../../../lib/auth';
@@ -21,10 +22,18 @@ import { TranslateService } from '@ngx-translate/core';
 import { DataTableService } from '../../../web-components/data-table';
 import { DynamicFormService } from '../../../web-components/dynamic-form';
 
+// Models
+import { User } from '../../models/';
+
 /// Use this class to define shared services that should be available for all conmponents
 /// This is so that each component does not have to define all common dependencies, but only the ones it needs
 @Injectable()
 export class ComponentDependencyService {
+
+    /**
+     * Shortcut for getting full auth user object
+     */
+    public authUser: Observable<User>;
 
     // url handling
     public router: Router;
@@ -34,7 +43,7 @@ export class ComponentDependencyService {
     public webComponentServices: WebComponentServices;
     public mdServices: MdServices;
     public tdServices: TdServices;
-    
+
     constructor(private injector: Injector) {
         // use Angular's injector to get service instances
         this.router = injector.get(Router);
@@ -70,6 +79,13 @@ export class ComponentDependencyService {
         this.itemServices.workoutExerciseService = injector.get(WorkoutExerciseService);
         this.itemServices.exerciseService = injector.get(ExerciseService);
         this.itemServices.exerciseCategoyService = injector.get(ExerciseCategoryService);
+
+        // init observable for auth user
+        this.authUser = this.itemServices.userService
+            .getAuthUser()
+            .map((response) => {
+                return response.item
+            });
     }
 }
 

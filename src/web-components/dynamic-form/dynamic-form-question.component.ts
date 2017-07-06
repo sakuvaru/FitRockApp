@@ -210,4 +210,8 @@ export class DynamicFormQuestionComponent implements OnInit {
   private isHiddenField(): boolean {
     return this.question.controlTypeEnum == ControlTypeEnum.Hidden;
   }
+
+  private isNumberField(): boolean {
+    return this.question.controlTypeEnum == ControlTypeEnum.Number;
+  }
 }

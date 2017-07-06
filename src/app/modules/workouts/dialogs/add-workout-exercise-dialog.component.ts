@@ -39,17 +39,18 @@ export class AddWorkoutExerciseDialogComponent extends BaseComponent implements 
   ngOnInit() {
     super.ngOnInit();
     
-    this.startGlobalLoader();
+    super.startGlobalLoader();
 
     this.dependencies.itemServices.workoutExerciseService.insertForm()
       .takeUntil(this.ngUnsubscribe)
       .subscribe(form => {
-        form.onFormLoaded(() => this.stopGlobalLoader());
+        form.onFormLoaded(() => super.stopGlobalLoader());
         // set exercise id & workout id for new WorkoutExercise item
         form.withFieldValue('exerciseId', this.exercise.id);
         form.withFieldValue('workoutId', this.workoutId);
-        form.onBeforeSave(() => this.startGlobalLoader());
-        form.onAfterSave(() => this.stopGlobalLoader());
+        form.onBeforeSave(() => super.startGlobalLoader());
+        form.onAfterSave(() => super.stopGlobalLoader());
+        form.onError(() => super.stopGlobalLoader());
 
         form.onAfterInsert((response => {
           this.newWorkoutExercise = response.item;

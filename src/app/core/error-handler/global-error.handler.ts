@@ -1,6 +1,7 @@
 import { ErrorHandler, Injectable, Injector } from '@angular/core';
 import { LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { UrlConfig } from '../config/url.config';
+import { AppConfig } from '../config/app.config';
 import { Router } from '@angular/router';
 import { LogService } from '../../services/';
 import { SharedService } from '../shared-service/shared.service';
@@ -38,19 +39,24 @@ export class GlobalErrorHandler implements ErrorHandler {
                     // notify shared service about the error
                     sharedService.setError(response.item);
 
-                    this.navigateToErrorPage(response.item.guid);
+                    if (!AppConfig.DevModeEnabled) {
+                        this.navigateToErrorPage(response.item.guid);
+                    }
 
                 },
                 (error) => {
-                    this.navigateToErrorPage();
+                    if (!AppConfig.DevModeEnabled) {
+                        // redirect only if dev mode is disabled
+                        this.navigateToErrorPage();
+                    }
                 });
         });
 
         // don't rethrow error (it will cause this handler to be called twice) - log as console error instead
         console.error(error);
     }
-    
-      private  navigateToErrorPage(logGuid?: string): void {
+
+    private navigateToErrorPage(logGuid?: string): void {
         var router = this.injector.get(Router);
         var param = {};
         param[UrlConfig.AppErrorLogGuidQueryString] = logGuid;

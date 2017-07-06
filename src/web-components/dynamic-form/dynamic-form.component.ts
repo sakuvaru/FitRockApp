@@ -32,7 +32,7 @@ export class DynamicFormComponent implements OnInit, OnChanges {
     private deleteButtonSubject = new Subject();
 
     private insufficientLicenseError: string;
-    private generalErrorMessagePrefix: string;
+    private generalErrorMessage: string;
     private unknownErrorMessage: string;
 
     private questions: BaseField<any>[] = [];
@@ -242,7 +242,7 @@ export class DynamicFormComponent implements OnInit, OnChanges {
         this.translateService.get(this.config.deleteTextKey).subscribe(key => this.deleteText = key);
 
         this.translateService.get('form.error.insufficientLicense').subscribe(key => this.insufficientLicenseError = key);
-        this.translateService.get('form.error.saveFailedPrefix').subscribe(key => this.generalErrorMessagePrefix = key);
+        this.translateService.get('form.error.saveFailed').subscribe(key => this.generalErrorMessage = key);
         this.translateService.get('form.error.unknownFormErrorMessage').subscribe(key => this.unknownErrorMessage = key);
     }
 
@@ -335,8 +335,6 @@ export class DynamicFormComponent implements OnInit, OnChanges {
                         this.getFormErrorMessage(validationResult, formField.translatedLabel).subscribe(error => this.formErrorLines.push(error))
                     }
                 });
-
-
             });
             this.submissionError = this.formErrorLines.join(', ');
         }
@@ -347,7 +345,7 @@ export class DynamicFormComponent implements OnInit, OnChanges {
                 this.submissionError = this.insufficientLicenseError;
             }
             else {
-                this.submissionError = this.generalErrorMessagePrefix + errorResponse.error;
+                this.submissionError = this.generalErrorMessage;
             }
         }
         else {

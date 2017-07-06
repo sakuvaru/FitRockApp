@@ -30,7 +30,7 @@ export class WorkoutPlanComponent extends BaseComponent implements OnInit {
   ngOnInit() {
     super.ngOnInit();
 
-    this.startLoader();
+    super.startLoader();
 
     // init workout
     this.initWorkout();
@@ -57,7 +57,7 @@ export class WorkoutPlanComponent extends BaseComponent implements OnInit {
         });
 
         this.assignWorkout(response.item);
-        this.stopLoader();
+        super.stopLoader();
       });
   }
 

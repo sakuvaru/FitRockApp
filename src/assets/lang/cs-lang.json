@@ -7,6 +7,7 @@
         "dashboard": "Přehled",
         "clients": "Klienti",
         "workouts": "Tréninkové plány",
+		"exercises": "Cviky",
         "mealPlans": "Jídelníčky",
         "locations": "Místa",
         "forms": "Formulář"
@@ -49,8 +50,21 @@
             "selectExercise": "Výběr cviků",
 			"addWorkoutExercise": "Přidat cvik",
 			"editWorkoutExercise": "Upravit cvik",
-			"newWorkout": "Nová šablona"
+			"newWorkout": "Nová šablona",
+			"myExercises": "Moje cviky",
+			"allExercises": "Všechny cviky"
         },
+		"exercises":{
+			"exercise": "Cviky",
+			"exercises": "Cviky",
+			"overview": "Přehled",
+			"exerciseName": "Název cviku",
+			"view": "Náhled",
+            "edit": "Upravit",
+			"myExercises": "Moje cviky",
+			"allExercises": "Všechny cviky",
+			"preview": "Náhled cviku"
+		},
 		"shared":{
 			"errors": {
 			   "errorPageTitle": "Nastala neočekáváná chyba",
@@ -72,7 +86,7 @@
             "otherWithLabel": "Pole '{{label}} je chybně vyplněno",
             "other": "Pole je chybně vyplněno",
             "unknown": "Neznámá chyba",
-            "saveFailedPrefix": "Uložení se nezdařilo: ",
+            "saveFailed": "Uložení se nezdařilo",
             "unknownFormErrorMessage": "Uložení se nezdařilo s neznámou chybou. Zkontrolujte formulář s zkuste to znova.",
             "insufficientLicense": "Pro tuto akci nemáš dostatečnou licenci"
         },
@@ -117,6 +131,12 @@
 			"reps": "Opakování",
 			"sets": "Série",
 			"notes": "Poznámky"
+		},
+		"exercise":{
+			"exerciseName": "Cvik",
+			"description": "Popis / návod",
+			"videoUrl": "Odkaz na YouTube video",
+			"exerciseCategoryId": "Kategorie"
 		}
     },
     "webComponents": {

@@ -6,24 +6,28 @@ import { BaseTypeService } from '../core';
 // required by service
 import { User } from '../models';
 
-import { RepositoryClient, MultipleItemQuery, CreateItemQuery } from '../../lib/repository';
+import { RepositoryClient, MultipleItemQuery, CreateItemQuery, ResponseSingle } from '../../lib/repository';
 
 
 @Injectable()
 export class UserService extends BaseTypeService<User>{
 
     constructor(repositoryClient: RepositoryClient) {
-        super (repositoryClient, {
+        super(repositoryClient, {
             type: 'User',
             allowDelete: false
         })
     }
 
     clients(): MultipleItemQuery<User> {
-        return this.items().withCustomAction('getclients');
+        return this.items().withCustomAction('getClients');
     }
 
     createClient(item: User): CreateItemQuery<User> {
         return this.create(item).withCustomAction('createClient');
+    }
+
+    getAuthUser(): Observable<ResponseSingle<User>> {
+        return this.item().withCustomAction('getAuthUser').get();
     }
 }

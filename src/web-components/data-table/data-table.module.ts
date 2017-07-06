@@ -11,9 +11,6 @@ import { DataTableService } from './data-table-service';
 // components
 import { DataTableComponent } from './data-table.component';
 
-// pager
-import { PagerModule } from '../pager/pager.module';
-
 // loader
 import { LoaderModule } from '../loader/loader.module';
 
@@ -22,7 +19,6 @@ import { LoaderModule } from '../loader/loader.module';
         CommonModule,
         SharedWebComponentModule, 
         RouterModule, // router needs to be importes so that routerLink can be used within components,
-        PagerModule ,// module is using pager,
         LoaderModule, // module is usinig loader,
     ],
     declarations: [

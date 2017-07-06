@@ -7,7 +7,7 @@ import { AuthGuardService } from '../../../lib/auth';
 // config
 import { UrlConfig } from '../../core';
 
-// components
+// workouts
 import { SimpleLayoutComponent } from '../../layouts/simple-layout.component';
 import { AdminLayoutComponent } from '../../layouts/admin-layout.component';
 import { WorkoutsOverviewComponent } from './list/workouts-overview.component';
@@ -21,6 +21,7 @@ import { EditWorkoutExerciseDialogComponent } from './dialogs/edit-workout-exerc
 
 const routes: Routes = [
     {
+        // workouts
         path: UrlConfig.TrainerMasterPath, component: AdminLayoutComponent, canActivate: [AuthGuardService], children: [
             {
                 path: 'workouts', component: WorkoutsOverviewComponent
@@ -46,8 +47,8 @@ const routes: Routes = [
             {
                 path: 'workouts/dialogs/edit-workout-exercise', component: EditWorkoutExerciseDialogComponent
             }
-        ]
-    }
+        ],
+    },
 ];
 
 @NgModule({
