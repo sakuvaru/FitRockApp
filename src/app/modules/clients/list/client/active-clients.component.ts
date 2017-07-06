@@ -11,18 +11,18 @@ import { User } from '../../../../models';
 @Component({
   templateUrl: 'active-clients.component.html'
 })
-export class ActiveClientsComponent extends BaseComponent implements OnInit{
+export class ActiveClientsComponent extends BaseComponent implements OnInit {
 
   private config: DataTableConfig<User>;
 
   constructor(
     protected dependencies: ComponentDependencyService) {
     super(dependencies)
-    }
+  }
 
   ngOnInit(): void {
     super.ngOnInit();
-    
+
     this.setConfig({
       menuTitle: { key: 'menu.clients' },
       menuItems: new ClientOverviewMenuItems().menuItems,
@@ -34,12 +34,13 @@ export class ActiveClientsComponent extends BaseComponent implements OnInit{
         { label: 'Klient', value: (item) => { return item.getFullName() }, flex: 40 },
         { label: 'E-mail', value: (item) => { return item.email }, isSubtle: true, align: AlignEnum.Right, hideOnSmallScreens: true },
       ])
-      .loadResolver((searchTerm, page, pageSize) => {
+      .loadQuery(searchTerm => {
         return this.dependencies.itemServices.userService.clients()
-          .pageSize(pageSize)
-          .page(page)
           .WhereLikeMultiple(["FirstName", "LastName"], searchTerm)
           .whereEquals('IsActive', true)
+      })
+      .loadResolver(query => {
+        return query
           .get()
           .takeUntil(this.ngUnsubscribe)
       })

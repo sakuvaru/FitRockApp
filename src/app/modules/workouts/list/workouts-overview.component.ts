@@ -5,7 +5,7 @@ import { AppConfig, ComponentDependencyService, BaseComponent, ComponentConfig }
 
 // required by component
 import { WorkoutsOverviewMenuItems } from '../menu.items';
-import { DataTableConfig, AlignEnum } from '../../../../web-components/data-table';
+import { DataTableConfig, AlignEnum, Filter } from '../../../../web-components/data-table';
 import { Workout } from '../../../models';
 
 @Component({
@@ -19,7 +19,7 @@ export class WorkoutsOverviewComponent extends BaseComponent implements OnInit {
     protected dependencies: ComponentDependencyService) {
     super(dependencies)
   }
-  
+
   ngOnInit() {
     super.ngOnInit();
 
@@ -29,6 +29,20 @@ export class WorkoutsOverviewComponent extends BaseComponent implements OnInit {
       componentTitle: { key: 'module.workouts.overview' },
     });
 
+    this.dependencies.itemServices.workoutCategoryService.items()
+      .get()
+      .takeUntil(this.ngUnsubscribe)
+      .subscribe(response => {
+        var filters: Filter<Workout>[] = [];
+        response.items.forEach(category => {
+          filters.push({filterNameKey: category.codename, onFilter: (query) => query.whereEquals('WorkoutCategoryId', category.id)});
+        });
+
+        this.initDataTable(filters);
+      });
+  }
+
+  private initDataTable(filters: Filter<Workout>[]): void {
     this.config = this.dependencies.webComponentServices.dataTableService.dataTable<Workout>()
       .fields([
         { label: 'module.workouts.workoutName', value: (item) => { return item.workoutName }, flex: 40 },
@@ -38,20 +52,24 @@ export class WorkoutsOverviewComponent extends BaseComponent implements OnInit {
           }, isSubtle: true, align: AlignEnum.Right, hideOnSmallScreens: true
         },
       ])
-      .loadResolver((searchTerm, page, pageSize) => {
+      .loadQuery(searchTerm => {
         return this.dependencies.itemServices.workoutService.items()
           .include('WorkoutCategory')
           .byCurrentUser()
-          .pageSize(pageSize)
-          .page(page)
           .whereLike('WorkoutName', searchTerm)
-          .get()
       })
+      .loadResolver(query => {
+        return query
+          .get()
+          .takeUntil(this.ngUnsubscribe)
+      })
+      .filter({
+        filterNameKey: 'All',
+        onFilter: (query) => query
+      })
+      .filters(filters)
       .onBeforeLoad(() => super.startLoader())
       .onAfterLoad(() => super.stopLoader())
-      .showPager(true)
-      .showSearch(true)
-      .pagerSize(7)
       .onClick((item) => super.navigate([super.getTrainerUrl('workouts/edit-plan/') + item.id]))
       .build();
   }

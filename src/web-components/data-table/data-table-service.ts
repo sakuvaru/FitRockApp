@@ -1,8 +1,9 @@
 import { DataTableBuilder } from './data-table-builder';
+import { IItem } from '../../lib/repository';
 
 export class DataTableService{
 
-    dataTable<T>(){
-        return new DataTableBuilder<T>();
+    dataTable<TItem extends IItem>(){
+        return new DataTableBuilder<TItem>();
     }
 }

@@ -49,15 +49,18 @@ export class SelectWorkoutExerciseDialogComponent extends BaseComponent implemen
           hideOnSmallScreens: true
         },
       ])
-      .loadResolver((searchTerm, page, pageSize) => {
+      .loadQuery(searchTerm => {
         return this.dependencies.itemServices.exerciseService.items()
           .include('ExerciseCategory')
-          .pageSize(pageSize)
-          .page(page)
           .whereLike('ExerciseName', searchTerm)
+      })
+      .loadResolver(query => {
+        return query
           .get()
           .takeUntil(this.ngUnsubscribe)
       })
+      .filter({ filterNameKey: 'module.workouts.allExercises', onFilter: query => query })
+      .filter({ filterNameKey: 'module.workouts.myExercises', onFilter: query => query.byCurrentUser().whereEquals('IsGlobal', false) })
       .pagerSize(5)
       .onBeforeLoad(() => super.startGlobalLoader())
       .onAfterLoad(() => super.stopGlobalLoader())
@@ -69,17 +72,6 @@ export class SelectWorkoutExerciseDialogComponent extends BaseComponent implemen
         this.close();
       })
       .build();
-  }
-
-
-  private handleSelectAll(): void {
-    this.chipAllSelected = !this.chipAllSelected;
-    this.chipMyExercisesSelected = !this.chipMyExercisesSelected;
-  }
-
-  private handleSelectMyExercises(): void {
-    this.chipAllSelected = !this.chipAllSelected;
-    this.chipMyExercisesSelected = !this.chipMyExercisesSelected;
   }
 
   private close(): void {

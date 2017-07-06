@@ -14,3 +14,9 @@
 .w-cursor-pointer{
     cursor: pointer;
 }
+
+
+/* Overrides */
+.mat-chip{
+    margin-top: 5px!important;
+}

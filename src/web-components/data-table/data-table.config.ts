@@ -1,15 +1,15 @@
 import { Observable } from 'rxjs/Observable';
-import { ResponseMultiple } from '../../lib/repository';
+import { MultipleItemQuery, IItem, ResponseMultiple } from '../../lib/repository';
 import { DataTableField } from './data-table-field.class';
 
-export class DataTableConfig<T> {
-    public fields: DataTableField<any>[];
+export class DataTableConfig<TItem extends IItem> {
 
+    public fields: DataTableField<any>[];
     public wrapInCard: boolean = true;
     public showHeader: boolean = false;
     public showPager: boolean = true;
     public showSearch: boolean = true;
-    public pagerSize: number = 10;
+    public pagerSize: number = 6;
     public searchNoItemsTextKey: string = 'webComponents.dataTable.noSearchResultsText'
     public noItemsTextKey: string = 'webComponents.dataTable.noResultsText';
     public showPagerNextPreviousButtons: boolean = true;
@@ -17,26 +17,32 @@ export class DataTableConfig<T> {
     public showPagerNumberButtons: boolean = true;
     public hidePagerForSinglePage: boolean = true;
 
-    public loadResolver: (searchTerm: string, page: number, pageSize: number) => Observable<ResponseMultiple<any>>;
-    public onClick: (item: T) => void;
-    public iconResolver: (item: T) => string;
-    public avatarUrlResolver: (item: T) => string;
+    public loadResolver: (query: MultipleItemQuery<TItem>) => Observable<ResponseMultiple<TItem>>;
+    public loadQuery: (searchTerm: string) => MultipleItemQuery<TItem>;
+    public onClick: (item: TItem) => void;
+    public iconResolver: (item: TItem) => string;
+    public avatarUrlResolver: (item: TItem) => string;
     public onAfterLoad: () => void;
     public onBeforeLoad: () => void;
 
-    public selectableConfig: SelectableConfig<T>;
+    public filters: Filter<TItem>[] = [];
+    public selectableConfig: SelectableConfig<TItem>;
 
     constructor(
         public options?: {
-            wrapInCard?: boolean,
+            // required 
+            loadResolver: (query: MultipleItemQuery<TItem>) => Observable<ResponseMultiple<TItem>>;
+            loadQuery: (searchTerm: string) => MultipleItemQuery<TItem>;
             fields: DataTableField<any>[];
-            loadResolver?: (searchTerm: string, page: number, pageSize: number) => Observable<ResponseMultiple<any>>,
+
+            // optional 
+            wrapInCard?: boolean,
             showHeader?: boolean,
             showPager?: boolean,
             showSearch?: boolean,
             pagerSize?: number,
-            iconResolver?: (item: T) => string,
-            avatarUrlResolver?: (item: T) => string,
+            iconResolver?: (item: TItem) => string,
+            avatarUrlResolver?: (item: TItem) => string,
             searchNoItemsText?: string,
             noItemsText?: string,
             showPagerNextPreviousButtons?: boolean,
@@ -45,10 +51,11 @@ export class DataTableConfig<T> {
             hidePagerForSinglePage?: boolean,
             onAfterLoad?: () => void,
             onBeforeLoad?: () => void,
-            onClick?: (item: T) => void,
-            selectableConfig?: SelectableConfig<T>
+            onClick?: (item: TItem) => void,
+            filters: Filter<TItem>[],
+            selectableConfig?: SelectableConfig<TItem>
         }) {
-        if (options) Object.assign(this, options);
+        Object.assign(this, options);
     }
 
     isSelectable(): boolean {
@@ -60,19 +67,32 @@ export class DataTableConfig<T> {
     }
 }
 
-export class SelectableConfig<T>{
+export class SelectableConfig<TItem extends IItem>{
 
     public buttonTextKey: string;
-    public onSelect: (selectedItem: T) => void;
-    public onDeselect: (unselectedItem: T) => void;
+    public onSelect: (selectedItem: TItem) => void;
+    public onDeselect: (unselectedItem: TItem) => void;
 
     constructor(
         options: {
             buttonTextKey: string,
-            onSelect: (selectedItem: T) => void,
-            onDeselect: (selectedItem: T) => void
+            onSelect: (selectedItem: TItem) => void,
+            onDeselect: (selectedItem: TItem) => void
         }
     ) {
         Object.assign(this, options);
     }
+}
+
+export class Filter<TItem extends IItem>{
+
+    public filterNameKey: string;
+    public onFilter: (query: MultipleItemQuery<TItem>) => MultipleItemQuery<TItem>;
+
+    constructor(
+        options: {
+            filterNameKey: string,
+            onFilter: (query: MultipleItemQuery<TItem>) => MultipleItemQuery<TItem>
+        }
+    ) { }
 }

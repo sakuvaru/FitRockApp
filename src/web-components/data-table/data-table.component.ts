@@ -1,7 +1,8 @@
 // core
-import { Component, Input, Output, OnInit, EventEmitter, AfterViewInit } from '@angular/core';
+import { Component, Input, Output, OnInit, EventEmitter, AfterViewInit, OnChanges, SimpleChanges } from '@angular/core';
 
 // required by component
+import { MultipleItemQuery } from '../../lib/repository';
 import { DataTableField } from './data-table-field.class';
 import { DataTableConfig, SelectableConfig } from './data-table.config';
 import { AlignEnum } from './align-enum';
@@ -14,7 +15,10 @@ import { TdMediaService } from '@covalent/core';
     selector: 'data-table',
     templateUrl: 'data-table.component.html'
 })
-export class DataTableComponent implements AfterViewInit, OnInit {
+export class DataTableComponent implements OnInit, OnChanges {
+
+    // data table config
+    @Input() config: DataTableConfig<any>;
 
     // resolved data
     private items: any[];
@@ -23,8 +27,9 @@ export class DataTableComponent implements AfterViewInit, OnInit {
     private noItemsText: string;
     private searchNoItemsText: string;
 
-    // base config
-    @Input() config: DataTableConfig<any>;
+    // filters
+    private hasFilters: boolean = false;
+    private activeFilterIndex: number = 0;
 
     // selectable
     private isSelectable: boolean = false;
@@ -51,27 +56,45 @@ export class DataTableComponent implements AfterViewInit, OnInit {
     }
 
     ngOnInit() {
-        //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
-        this.translateService.get(this.config.noItemsTextKey).subscribe(text => this.noItemsText = text);
-        this.translateService.get(this.config.searchNoItemsTextKey).subscribe(text => this.searchNoItemsText = text);
-
-        // translated all labels
-        this.config.fields.forEach(field => {
-            this.translateService.get(field.label).subscribe(text => {
-                field.label = text;
-            });
-        });
-
-        // init selectable
-        this.isSelectable = this.config.isSelectable();
-
-        // init clickable
-        this.isClickable = this.config.isClickable();
+        this.initDataTable();
     }
 
-    ngAfterViewInit() {
-        //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
-        this.filterItems(1);
+    ngOnChanges(changes: SimpleChanges) {
+        if (changes.config.currentValue) {
+
+            // set config after changes
+            this.config = changes.config.currentValue;
+
+            // reinit data table
+            this.initDataTable();
+        }
+    }
+
+    private initDataTable(): void {
+        if (this.config) {
+            //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
+            this.translateService.get(this.config.noItemsTextKey).subscribe(text => this.noItemsText = text);
+            this.translateService.get(this.config.searchNoItemsTextKey).subscribe(text => this.searchNoItemsText = text);
+
+            // translated all labels
+            this.config.fields.forEach(field => {
+                this.translateService.get(field.label).subscribe(text => {
+                    field.label = text;
+                });
+            });
+
+            // init selectable
+            this.isSelectable = this.config.isSelectable();
+
+            // init clickable
+            this.isClickable = this.config.isClickable();
+
+            // has filters?
+            this.hasFilters = this.config.filters != null && this.config.filters.length > 0;
+
+            // load items
+            this.filterItems(1);
+        }
     }
 
     // load methods
@@ -79,7 +102,16 @@ export class DataTableComponent implements AfterViewInit, OnInit {
         if (this.config.onBeforeLoad) {
             this.config.onBeforeLoad();
         }
-        this.config.loadResolver(this.searchTerm, page, this.config.pagerSize)
+        var query = this.config.loadQuery(this.searchTerm);
+
+        // automatically apply page size + page options
+        query.page(page);
+        query.pageSize(this.config.pagerSize);
+
+        // apply filter to query (filters are optional)
+        query = this.getQueryWithFilters(query, this.activeFilterIndex);
+
+        this.config.loadResolver(query)
             .finally(() => {
                 if (this.config.onAfterLoad) {
                     this.config.onAfterLoad();
@@ -92,6 +124,26 @@ export class DataTableComponent implements AfterViewInit, OnInit {
                 // get pager buttons
                 this.pagerButtons = this.getPagerButtons();
             });
+    }
+
+    private applyFilter(filterIndex: number) {
+        // set active filter
+        this.activeFilterIndex = filterIndex;
+
+        // filter items
+        this.filterItems(1);
+    }
+
+    private getQueryWithFilters(query: MultipleItemQuery<any>, filterIndex?: number): MultipleItemQuery<any> {
+        if (this.hasFilters && filterIndex && filterIndex >= 0) {
+            var filter = this.config.filters[filterIndex];
+            if (!filter) {
+                throw Error(`Cannot apply filter with index '${filterIndex}'`)
+            }
+            query = filter.onFilter(query);
+        }
+
+        return query;
     }
 
     // event emitters
@@ -151,7 +203,7 @@ export class DataTableComponent implements AfterViewInit, OnInit {
     }
 
     private onItemClick(item: any): void {
-        if(!this.isClickable){
+        if (!this.isClickable) {
             throw Error(`Cannot process item clicks because no callback is defined`);
         }
 

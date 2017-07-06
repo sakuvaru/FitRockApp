@@ -19,7 +19,7 @@ export class AllExerciseListComponent extends BaseComponent implements OnInit {
     protected dependencies: ComponentDependencyService) {
     super(dependencies)
   }
-  
+
   ngOnInit() {
     super.ngOnInit();
 
@@ -38,14 +38,16 @@ export class AllExerciseListComponent extends BaseComponent implements OnInit {
           }, isSubtle: true, align: AlignEnum.Right, hideOnSmallScreens: true
         },
       ])
-      .loadResolver((searchTerm, page, pageSize) => {
+      .loadQuery(searchTerm => {
         return this.dependencies.itemServices.exerciseService.items()
           .include('ExerciseCategory')
           .whereEquals('IsGlobal', true)
-          .pageSize(pageSize)
-          .page(page)
           .whereLike('ExerciseName', searchTerm)
+      })
+      .loadResolver(query => {
+        return query
           .get()
+          .takeUntil(this.ngUnsubscribe)
       })
       .onBeforeLoad(() => super.startLoader())
       .onAfterLoad(() => super.stopLoader())

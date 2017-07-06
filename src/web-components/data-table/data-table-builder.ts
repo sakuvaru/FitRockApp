@@ -1,19 +1,36 @@
-import { DataTableConfig, SelectableConfig } from './data-table.config';
+import { DataTableConfig, SelectableConfig, Filter } from './data-table.config';
 import { DataTableField } from './data-table-field.class';
 import { Observable } from 'rxjs/RX';
-import { ResponseMultiple } from '../../lib/repository';
+import { ResponseMultiple, IItem, MultipleItemQuery } from '../../lib/repository';
 
-export class DataTableBuilder<T> {
+export class DataTableBuilder<TItem extends IItem> {
 
-    private config: DataTableConfig<T> = new DataTableConfig<T>();
+    private config: DataTableConfig<TItem> = new DataTableConfig<TItem>();
 
-    fields(fields: DataTableField<T>[]): this {
+    fields(fields: DataTableField<TItem>[]): this {
         this.config.fields = fields;
         return this;
     }
 
-    loadResolver(loadFunction: (searchTerm: string, page: number, pageSize: number) => Observable<ResponseMultiple<any>>): this {
+    loadQuery(loadQuery: (searchTerm: string) => MultipleItemQuery<TItem>): this {
+        this.config.loadQuery = loadQuery;
+        return this;
+    }
+
+    loadResolver(loadFunction: (query: MultipleItemQuery<TItem>) => Observable<ResponseMultiple<TItem>>): this {
         this.config.loadResolver = loadFunction;
+        return this;
+    }
+
+    filter(filter: Filter<TItem>): this{
+        this.config.filters.push(filter);
+        return this;
+    }
+
+    filters(filters: Filter<TItem>[]): this{
+        if (filters && filters.length > 0){
+            filters.forEach(filter => this.config.filters.push(filter));
+        }
         return this;
     }
 
@@ -42,7 +59,7 @@ export class DataTableBuilder<T> {
         return this;
     }
 
-    selectableConfig(config: SelectableConfig<T>): this {
+    selectableConfig(config: SelectableConfig<TItem>): this {
         this.config.selectableConfig = config;
         return this;
     }
@@ -57,17 +74,17 @@ export class DataTableBuilder<T> {
         return this;
     }
 
-    onClick(callback: (item: T) => void): this {
+    onClick(callback: (item: TItem) => void): this {
         this.config.onClick = callback;
         return this;
     }
 
-    iconResolver(iconResolver: (item: T) => string): this {
+    iconResolver(iconResolver: (item: TItem) => string): this {
         this.config.iconResolver = iconResolver;
         return this;
     }
 
-    avatarUrlResolver(avatarResolver: (item: T) => string): this {
+    avatarUrlResolver(avatarResolver: (item: TItem) => string): this {
         this.config.avatarUrlResolver = avatarResolver;
         return this;
     }
@@ -102,7 +119,7 @@ export class DataTableBuilder<T> {
         return this;
     }
 
-    build(): DataTableConfig<T>{
+    build(): DataTableConfig<TItem>{
         return this.config;
     }
 

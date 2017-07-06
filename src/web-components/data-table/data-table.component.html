@@ -1,4 +1,11 @@
-<md-card tdmediatoggle="gt-xs" class="push">
+<div *ngIf="hasFilters" class="push" flex="95"> <!-- Flex is used so that chips don't jump to second row because of overflow (happens if there are many chips & items in data table cause vertical scroller to appear) -->
+  <md-chip-list>
+    <md-chip *ngFor="let filter of config.filters; let i = index" class="w-cursor-pointer" [selected]="activeFilterIndex === i"
+      (click)="applyFilter(i)">{{filter.filterNameKey | translate}}</md-chip>
+  </md-chip-list>
+</div>
+
+<md-card *ngIf="config" class="push">
   <td-search-box (searchDebounce)="handleSearch($event)" class="push-left push-right" placeholder="hledat" [alwaysVisible]="true"></td-search-box>
   <md-divider></md-divider>
   <md-list *ngIf="config.showHeader" role="list" class="bgc-indigo-200">
@@ -17,8 +24,7 @@
         <img *ngIf="config.avatarUrlResolver" md-list-avatar src="{{getAvatarUrl()}}" alt="" class="push-right">
         <md-icon *ngIf="config.iconResolver" md-list-icon>{{getIcon()}}</md-icon>
 
-        <span wResponsive [enabled]="field.hideOnSmallScreens" *ngFor="let field of config.fields" flex="field.flex"
-          class="{{getTextAlignClass(field)}}">
+        <span wResponsive [enabled]="field.hideOnSmallScreens" *ngFor="let field of config.fields" flex="field.flex" class="{{getTextAlignClass(field)}}">
             <span  [class.md-caption]="field.isSubtle" [class.tc-grey-500]="field.isSubtle">{{getFieldValue(field, item)}}</span>
         </span>
       </md-list-item>
@@ -42,8 +48,7 @@
         <img *ngIf="config.avatarUrlResolver" md-list-avatar src="{{getAvatarUrl()}}" alt="" class="push-right">
         <md-icon *ngIf="config.iconResolver" md-list-icon>{{getIcon()}}</md-icon>
 
-        <span wResponsive [enabled]="field.hideOnSmallScreens" *ngFor="let field of config.fields" flex="field.flex" 
-          class="{{getTextAlignClass(field)}}">
+        <span wResponsive [enabled]="field.hideOnSmallScreens" *ngFor="let field of config.fields" flex="field.flex" class="{{getTextAlignClass(field)}}">
            <span  [class.md-caption]="field.isSubtle" [class.tc-grey-500]="field.isSubtle">{{getFieldValue(field, item)}}</span>
         </span>
       </md-list-item>
