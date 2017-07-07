@@ -19,7 +19,7 @@ import {
 // rxjs
 import { Observable } from 'rxjs/Rx';
 
-export class InsertFormQuery extends BaseFormQuery{
+export class InsertFormQuery<TItem> extends BaseFormQuery{
     
     private _defaultAction = 'getInsertForm';
 

@@ -29,7 +29,7 @@ export class WorkoutsOverviewComponent extends BaseComponent implements OnInit {
       componentTitle: { key: 'module.workouts.overview' },
     });
 
-    this.dependencies.itemServices.workoutCategoryService.items()
+    this.dependencies.itemServices.workoutCategoryService.getCategoriesWithWorkoutsCount()
       .get()
       .takeUntil(this.ngUnsubscribe)
       .subscribe(response => {

@@ -1,4 +1,3 @@
-import { IService } from './iservice.class';
 import { Observable } from 'rxjs/Observable';
 import { BaseTypeServiceConfig } from './base-type-service.config';
 
@@ -9,7 +8,7 @@ import {
 
 import { DynamicFormEditBuilder, DynamicFormInsertBuilder } from '../../../web-components/dynamic-form';
 
-export abstract class BaseTypeService<TItem extends IItem> implements IService<TItem>{
+export abstract class BaseTypeService<TItem extends IItem>{
 
     public type: string;
 
@@ -22,6 +21,10 @@ export abstract class BaseTypeService<TItem extends IItem> implements IService<T
 
     items(): MultipleItemQuery<TItem> {
         return this.repositoryClient.items<TItem>(this.type)
+    }
+
+    itemsWithCustomModel<TModel extends IItem>(): MultipleItemQuery<TModel> {
+        return this.repositoryClient.items<TModel>(this.type)
     }
 
     item(): SingleItemQueryInit<TItem> {

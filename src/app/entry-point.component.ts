@@ -15,10 +15,13 @@ export class EntryPointComponent extends BaseComponent{
   ) {
     super(dependencies)
 
-    super.startGlobalLoader();
+    if (!this.dependencies.coreServices.authService.isAuthenticated()){
+      this.navigate([UrlConfig.getLoginUrl()]);
+    }
 
     // get info about current user & redirect him based on that
     this.dependencies.authUser
+      .do(() => super.startGlobalLoader())
       .takeUntil(this.ngUnsubscribe)
       .subscribe(user => {
         super.stopGlobalLoader();

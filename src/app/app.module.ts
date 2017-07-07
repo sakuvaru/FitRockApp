@@ -75,7 +75,7 @@ import { FormModule } from './modules/_forms/_form.module';
     RouterModule.forRoot([
       {
         path: '',
-        redirectTo: UrlConfig.AppUrl, pathMatch: 'full'
+        redirectTo: UrlConfig.EntryPoint, pathMatch: 'full'
       },
        {
         path: UrlConfig.EntryPoint,

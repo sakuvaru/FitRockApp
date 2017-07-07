@@ -64,8 +64,8 @@ export class RepositoryClient {
         return new DeleteItemQuery(this.authHttp, this.config, type, itemId);
     }
 
-    insertForm(type: string): InsertFormQuery {
-        return new InsertFormQuery(this.authHttp, this.config, type);
+    insertForm<TItem extends IItem>(type: string): InsertFormQuery<TItem> {
+        return new InsertFormQuery<TItem>(this.authHttp, this.config, type);
     }
 
     editForm<TItem extends IItem>(type: string, itemId: number): EditFormQuery<TItem> {

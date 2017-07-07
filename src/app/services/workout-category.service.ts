@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { WorkoutCategory } from '../models';
-import { RepositoryClient } from '../../lib/repository';
+import { WorkoutCategory, WorkoutCategoryListWithWorkoutsCount } from '../models';
+import { RepositoryClient, MultipleItemQuery } from '../../lib/repository';
 import { BaseTypeService } from '../core';
 
 @Injectable()
@@ -11,5 +11,10 @@ export class WorkoutCategoryService extends BaseTypeService<WorkoutCategory>{
             type: 'WorkoutCategory',
             allowDelete: true
         })
+    }
+
+    getCategoriesWithWorkoutsCount(): MultipleItemQuery<WorkoutCategoryListWithWorkoutsCount>{
+        return this.itemsWithCustomModel<WorkoutCategoryListWithWorkoutsCount>()
+            .withCustomAction('GetCategoriesWithWorkoutsCount');
     }
 }
