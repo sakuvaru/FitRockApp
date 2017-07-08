@@ -13,8 +13,9 @@ export class WorkoutCategoryService extends BaseTypeService<WorkoutCategory>{
         })
     }
 
-    getCategoriesWithWorkoutsCount(): MultipleItemQuery<WorkoutCategoryListWithWorkoutsCount>{
+    getCategoriesWithWorkoutsCount(workoutName: string): MultipleItemQuery<WorkoutCategoryListWithWorkoutsCount>{
         return this.itemsWithCustomModel<WorkoutCategoryListWithWorkoutsCount>()
+            .withCustomOption('workoutName', workoutName)
             .withCustomAction('GetCategoriesWithWorkoutsCount');
     }
 }

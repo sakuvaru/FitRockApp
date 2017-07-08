@@ -1,5 +1,24 @@
 import { IOption } from '../interfaces/ioption.interface';
 
+export class CustomOption implements IOption{
+       constructor(
+        public optionName: string,
+        public optionValue: string | boolean | number
+    ) { 
+        if (!optionName){
+            throw Error(`Option name cannot be empty`);
+        }
+    }
+
+    public GetParam(): string {
+        return this.optionName;
+    }
+
+    public GetParamValue(): string {
+        return processParamValue(this.optionValue);
+    }
+}
+
 export class DisableCache implements IOption {
 
     constructor(
@@ -19,7 +38,11 @@ export class Page implements IOption {
 
     constructor(
         public page: number
-    ) { }
+    ) { 
+        if (!page){
+            throw Error(`Page cannot be empty`);
+        }
+    }
 
     public GetParam(): string {
         return 'page';
@@ -72,7 +95,11 @@ export class Limit implements IOption {
 
     constructor(
         public limit: number,
-    ) { }
+    ) { 
+        if (!limit){
+            throw Error(`Limit cannot be empty`);
+        }
+    }
 
     public GetParam(): string {
         return 'limit';
@@ -87,7 +114,11 @@ export class PageSize implements IOption {
 
     constructor(
         public pageSize: number,
-    ) { }
+    ) { 
+        if (!pageSize){
+            throw Error(`Page size cannot be empty`);
+        }
+    }
 
     public GetParam(): string {
         return 'pageSize';
@@ -139,7 +170,7 @@ export class OrderByDescending implements IOption {
 export class WhereEquals implements IOption {
     constructor(
         public field: string,
-        public value: any
+        public value: string | number | boolean
     ) {
         if (!field) {
             throw Error(`Field cannot be null in 'WhereEquals' otion`);

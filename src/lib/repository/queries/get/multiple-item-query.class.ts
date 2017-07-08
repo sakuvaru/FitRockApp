@@ -42,6 +42,11 @@ export class MultipleItemQuery<TItem extends IItem> extends BaseItemQuery<TItem>
         this._action = this.defaultAction;
     }
 
+    withCustomOption(optionName: string, value: string | boolean | number): this{
+        this._options.push(new Options.CustomOption(optionName, value));
+        return this;
+    }
+
     // custom action
     withCustomAction(action: string): this {
         this._action = action;

@@ -4,7 +4,7 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { AppConfig, ComponentDependencyService, BaseComponent, ComponentConfig } from '../../../core';
 
 // required by component
-import { DataTableConfig, AlignEnum } from '../../../../web-components/data-table';
+import { DataTableConfig, AlignEnum, Filter } from '../../../../web-components/data-table';
 import { Exercise } from '../../../models';
 import { MD_DIALOG_DATA } from '@angular/material';
 
@@ -59,8 +59,8 @@ export class SelectWorkoutExerciseDialogComponent extends BaseComponent implemen
           .get()
           .takeUntil(this.ngUnsubscribe)
       })
-      .filter({ filterNameKey: 'module.workouts.allExercises', onFilter: query => query })
-      .filter({ filterNameKey: 'module.workouts.myExercises', onFilter: query => query.byCurrentUser().whereEquals('IsGlobal', false) })
+      .filter(new Filter({ filterNameKey: 'module.workouts.allExercises', onFilter: query => query }))
+      .filter(new Filter({ filterNameKey: 'module.workouts.myExercises', onFilter: query => query.byCurrentUser().whereEquals('IsGlobal', false) }))
       .pagerSize(5)
       .onBeforeLoad(() => super.startGlobalLoader())
       .onAfterLoad(() => super.stopGlobalLoader())

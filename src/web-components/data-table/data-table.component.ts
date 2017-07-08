@@ -4,12 +4,13 @@ import { Component, Input, Output, OnInit, EventEmitter, AfterViewInit, OnChange
 // required by component
 import { MultipleItemQuery } from '../../lib/repository';
 import { DataTableField } from './data-table-field.class';
-import { DataTableConfig, SelectableConfig } from './data-table.config';
+import { DataTableConfig, SelectableConfig, Filter } from './data-table.config';
 import { AlignEnum } from './align-enum';
 import { Observable, Subscription } from 'rxjs/Rx';
 import { Guid } from '../../lib/utilities';
 import { TranslateService } from '@ngx-translate/core';
 import { TdMediaService } from '@covalent/core';
+import * as _ from 'underscore';
 
 @Component({
     selector: 'data-table',
@@ -29,7 +30,8 @@ export class DataTableComponent implements OnInit, OnChanges {
 
     // filters
     private hasFilters: boolean = false;
-    private activeFilterIndex: number = 0;
+    private activeFilterGuid: string;
+    private filters: Filter<any>[] = [];
 
     // selectable
     private isSelectable: boolean = false;
@@ -89,9 +91,6 @@ export class DataTableComponent implements OnInit, OnChanges {
             // init clickable
             this.isClickable = this.config.isClickable();
 
-            // has filters?
-            this.hasFilters = this.config.filters != null && this.config.filters.length > 0;
-
             // load items
             this.filterItems(1);
         }
@@ -102,47 +101,145 @@ export class DataTableComponent implements OnInit, OnChanges {
         if (this.config.onBeforeLoad) {
             this.config.onBeforeLoad();
         }
-        var query = this.config.loadQuery(this.searchTerm);
 
-        // automatically apply page size + page options
-        query.page(page);
-        query.pageSize(this.config.pagerSize);
+        if (this.config.dynamicFilters) {
+            this.config.dynamicFilters(this.searchTerm)
+                .flatMap((dynamicFilters) => {
+                    // reset filters so that they are not added multiple times across requests
+                    this.filters = [];
 
-        // apply filter to query (filters are optional)
-        query = this.getQueryWithFilters(query, this.activeFilterIndex);
+                    // add static filters first
+                    if (this.config.staticFilters && this.config.staticFilters.length > 0) {
+                        this.config.staticFilters.forEach(staticFilter => this.filters.push(staticFilter));
+                    }
 
-        this.config.loadResolver(query)
-            .finally(() => {
-                if (this.config.onAfterLoad) {
-                    this.config.onAfterLoad();
-                }
-            })
-            .subscribe(response => {
-                this.items = response.items;
-                this.totalPages = response.pages;
+                    // add dynamic filters
+                    if (dynamicFilters && dynamicFilters.length > 0) {
+                        dynamicFilters.forEach(dynamicFilter => this.filters.push(dynamicFilter));
+                    }
 
-                // get pager buttons
-                this.pagerButtons = this.getPagerButtons();
-            });
+                    // add all filter
+                    if (this.config.showAllFilter) {
+                        // get sum count of all filter's count
+                        var sumCount = _.reduce(this.filters, (memo, filter) => memo + filter.count, 0);
+                        var allFilter = new Filter({ onFilter: () => query, count: sumCount, filterNameKey: 'All' });
+
+                        // add all filter at the beginning of filters array
+                        this.filters = [allFilter, ...this.filters];
+                    }
+
+                    // set filters flag
+                    if (this.filters && this.filters.length > 0) {
+                        this.hasFilters = true;
+                    }
+                    else {
+                        this.hasFilters = false;
+                    }
+
+                    // prepare item query
+                    var query = this.config.loadQuery(this.searchTerm);
+
+                    // automatically apply page size + page options
+                    query.page(page);
+                    query.pageSize(this.config.pagerSize);
+
+                    // apply filter to query (filters are optional)
+                    query = this.getQueryWithFilters(query);
+
+                    return this.config.loadResolver(query);
+                })
+                .finally(() => {
+                    if (this.config.onAfterLoad) {
+                        this.config.onAfterLoad();
+                    }
+                })
+                .subscribe(response => {
+                    this.items = response.items;
+                    this.totalPages = response.pages;
+
+                    // get pager buttons
+                    this.pagerButtons = this.getPagerButtons();
+                });
+        }
+        else {
+            var query = this.config.loadQuery(this.searchTerm);
+
+            // add static filters
+            this.filters = [];
+
+            // add static filters first
+            if (this.config.staticFilters && this.config.staticFilters.length > 0) {
+                this.config.staticFilters.forEach(staticFilter => this.filters.push(staticFilter));
+            }
+
+            // add all filter
+            if (this.config.showAllFilter) {
+                // get sum count of all filter's count
+                var sumCount = _.reduce(this.filters, (memo, filter) => memo + filter.count, 0);
+                var allFilter = new Filter({ onFilter: () => query, count: sumCount, filterNameKey: 'All' });
+
+                // add all filter at the beginning of filters array
+                this.filters = [allFilter, ...this.filters];
+            }
+
+            // set filters flag
+            if (this.filters && this.filters.length > 0) {
+                this.hasFilters = true;
+            }
+            else {
+                this.hasFilters = false;
+            }
+
+            // automatically apply page size + page options
+            query.page(page);
+            query.pageSize(this.config.pagerSize);
+
+            // apply filter to query (filters are optional)
+            query = this.getQueryWithFilters(query);
+
+            this.config.loadResolver(query)
+                .finally(() => {
+                    if (this.config.onAfterLoad) {
+                        this.config.onAfterLoad();
+                    }
+                })
+                .subscribe(response => {
+                    this.items = response.items;
+                    this.totalPages = response.pages;
+
+                    // get pager buttons
+                    this.pagerButtons = this.getPagerButtons();
+                });
+        }
     }
 
-    private applyFilter(filterIndex: number) {
+    private applyFilter(filterGuid: string) {
         // set active filter
-        this.activeFilterIndex = filterIndex;
+        this.activeFilterGuid = filterGuid;
 
         // filter items
         this.filterItems(1);
     }
 
-    private getQueryWithFilters(query: MultipleItemQuery<any>, filterIndex?: number): MultipleItemQuery<any> {
-        if (this.hasFilters && filterIndex && filterIndex >= 0) {
-            var filter = this.config.filters[filterIndex];
-            if (!filter) {
-                throw Error(`Cannot apply filter with index '${filterIndex}'`)
-            }
-            query = filter.onFilter(query);
-        }
+    private getFilterByGuid(guid: string): Filter<any> {
+        return this.filters.find(m => m.guid === guid);
+    }
 
+    private getQueryWithFilters(query: MultipleItemQuery<any>): MultipleItemQuery<any> {
+        if (this.hasFilters) {
+            var filter = this.getFilterByGuid(this.activeFilterGuid);
+
+            // if not filter is found, use the first one
+            if (!filter) {
+                filter = this.filters[0];
+                this.activeFilterGuid = filter.guid;
+            }
+
+            if (filter) {
+                query = filter.onFilter(query);
+            }
+            // do not throw exception is filter is not found - if item's result contain 0 items, there could be 0 filters
+        }
         return query;
     }
 
@@ -172,7 +269,6 @@ export class DataTableComponent implements OnInit, OnChanges {
 
         return null;
     }
-
 
     private getFieldValue(field: DataTableField<any>, item: any): string {
         return field.value(item);

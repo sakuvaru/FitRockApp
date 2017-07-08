@@ -1,6 +1,7 @@
 import { Observable } from 'rxjs/Observable';
 import { MultipleItemQuery, IItem, ResponseMultiple } from '../../lib/repository';
 import { DataTableField } from './data-table-field.class';
+import { Guid } from '../../lib/utilities';
 
 export class DataTableConfig<TItem extends IItem> {
 
@@ -16,6 +17,7 @@ export class DataTableConfig<TItem extends IItem> {
     public showPagerFirstLastButtons: boolean = true;
     public showPagerNumberButtons: boolean = true;
     public hidePagerForSinglePage: boolean = true;
+    public showAllFilter: boolean = false;
 
     public loadResolver: (query: MultipleItemQuery<TItem>) => Observable<ResponseMultiple<TItem>>;
     public loadQuery: (searchTerm: string) => MultipleItemQuery<TItem>;
@@ -25,8 +27,9 @@ export class DataTableConfig<TItem extends IItem> {
     public onAfterLoad: () => void;
     public onBeforeLoad: () => void;
 
-    public filters: Filter<TItem>[] = [];
+    public staticFilters: Filter<TItem>[] = [];
     public selectableConfig: SelectableConfig<TItem>;
+    public dynamicFilters: <TFilter extends Filter<IItem>>(searchTerm: string) => Observable<Filter<IItem>[]>;
 
     constructor(
         public options?: {
@@ -52,8 +55,10 @@ export class DataTableConfig<TItem extends IItem> {
             onAfterLoad?: () => void,
             onBeforeLoad?: () => void,
             onClick?: (item: TItem) => void,
-            filters: Filter<TItem>[],
-            selectableConfig?: SelectableConfig<TItem>
+            staticFilters: Filter<TItem>[],
+            selectableConfig?: SelectableConfig<TItem>,
+            showAllFilter: boolean,
+            dynamicFilters?: <TFilter extends Filter<IItem>>(searchTerm: string) => Observable<Filter<IItem>[]>
         }) {
         Object.assign(this, options);
     }
@@ -88,11 +93,18 @@ export class Filter<TItem extends IItem>{
 
     public filterNameKey: string;
     public onFilter: (query: MultipleItemQuery<TItem>) => MultipleItemQuery<TItem>;
+    public count?: number;
+    public guid: string;
 
     constructor(
         options: {
             filterNameKey: string,
-            onFilter: (query: MultipleItemQuery<TItem>) => MultipleItemQuery<TItem>
+            onFilter: (query: MultipleItemQuery<TItem>) => MultipleItemQuery<TItem>,
+            count?: number
         }
-    ) { }
+    ) { 
+        Object.assign(this, options);
+        // use filterNameKey as guid
+        this.guid = this.filterNameKey;
+    }
 }

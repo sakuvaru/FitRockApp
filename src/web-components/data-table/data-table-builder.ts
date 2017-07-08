@@ -22,19 +22,29 @@ export class DataTableBuilder<TItem extends IItem> {
         return this;
     }
 
-    filter(filter: Filter<TItem>): this{
-        this.config.filters.push(filter);
+    filter(filter: Filter<TItem>): this {
+        this.config.staticFilters.push(filter);
         return this;
     }
 
-    filters(filters: Filter<TItem>[]): this{
-        if (filters && filters.length > 0){
-            filters.forEach(filter => this.config.filters.push(filter));
+    filters(filters: Filter<TItem>[]): this {
+        if (filters && filters.length > 0) {
+            filters.forEach(filter => this.config.staticFilters.push(filter));
         }
         return this;
     }
 
-    wrapInCard(wrap: boolean): this{
+    showAllFilter(show: boolean): this{
+        this.config.showAllFilter = show;
+        return this;
+    }
+
+    dynamicFilters(filterLoader: <TFilter extends Filter<IItem>>(searchTerm: string) => Observable<Filter<IItem>[]>): this {
+        this.config.dynamicFilters = filterLoader;
+        return this;
+    }
+
+    wrapInCard(wrap: boolean): this {
         this.config.wrapInCard = wrap;
         return this;
     }
@@ -63,13 +73,13 @@ export class DataTableBuilder<TItem extends IItem> {
         this.config.selectableConfig = config;
         return this;
     }
-    
-    onBeforeLoad(callback: () => void): this{
+
+    onBeforeLoad(callback: () => void): this {
         this.config.onBeforeLoad = callback;
         return this;
     }
 
-    onAfterLoad(callback: () => void): this{
+    onAfterLoad(callback: () => void): this {
         this.config.onAfterLoad = callback;
         return this;
     }
@@ -119,7 +129,7 @@ export class DataTableBuilder<TItem extends IItem> {
         return this;
     }
 
-    build(): DataTableConfig<TItem>{
+    build(): DataTableConfig<TItem> {
         return this.config;
     }
 

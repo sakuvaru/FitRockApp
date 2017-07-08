@@ -1,7 +1,7 @@
 <div *ngIf="hasFilters" class="push" flex="95"> <!-- Flex is used so that chips don't jump to second row because of overflow (happens if there are many chips & items in data table cause vertical scroller to appear) -->
   <md-chip-list>
-    <md-chip *ngFor="let filter of config.filters; let i = index" class="w-cursor-pointer" [selected]="activeFilterIndex === i"
-      (click)="applyFilter(i)">{{filter.filterNameKey | translate}}</md-chip>
+    <md-chip *ngFor="let filter of filters" class="w-cursor-pointer" [selected]="activeFilterGuid === filter.guid"
+      (click)="applyFilter(filter.guid)">{{filter.filterNameKey | translate}} <span *ngIf="filter.count >= 0">({{ filter.count }})</span></md-chip>
   </md-chip-list>
 </div>
 
