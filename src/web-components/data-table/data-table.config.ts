@@ -8,15 +8,9 @@ export class DataTableConfig<TItem extends IItem> {
     public fields: DataTableField<any>[];
     public wrapInCard: boolean = true;
     public showHeader: boolean = false;
-    public showPager: boolean = true;
     public showSearch: boolean = true;
-    public pagerSize: number = 6;
     public searchNoItemsTextKey: string = 'webComponents.dataTable.noSearchResultsText'
     public noItemsTextKey: string = 'webComponents.dataTable.noResultsText';
-    public showPagerNextPreviousButtons: boolean = true;
-    public showPagerFirstLastButtons: boolean = true;
-    public showPagerNumberButtons: boolean = true;
-    public hidePagerForSinglePage: boolean = true;
     public showAllFilter: boolean = false;
 
     public loadResolver: (query: MultipleItemQuery<TItem>) => Observable<ResponseMultiple<TItem>>;
@@ -27,9 +21,11 @@ export class DataTableConfig<TItem extends IItem> {
     public onAfterLoad: () => void;
     public onBeforeLoad: () => void;
 
-    public staticFilters: Filter<TItem>[] = [];
-    public selectableConfig: SelectableConfig<TItem>;
     public dynamicFilters: <TFilter extends Filter<IItem>>(searchTerm: string) => Observable<Filter<IItem>[]>;
+    public staticFilters: Filter<TItem>[] = [];
+
+    public pagerConfig: PagerConfig = new PagerConfig();
+    public selectableConfig: SelectableConfig<TItem>;
 
     constructor(
         public options?: {
@@ -43,20 +39,16 @@ export class DataTableConfig<TItem extends IItem> {
             showHeader?: boolean,
             showPager?: boolean,
             showSearch?: boolean,
-            pagerSize?: number,
             iconResolver?: (item: TItem) => string,
             avatarUrlResolver?: (item: TItem) => string,
             searchNoItemsText?: string,
             noItemsText?: string,
-            showPagerNextPreviousButtons?: boolean,
-            showPagerFirstLastButtons?: boolean,
-            showPagerNumberButtons?: boolean,
-            hidePagerForSinglePage?: boolean,
             onAfterLoad?: () => void,
             onBeforeLoad?: () => void,
             onClick?: (item: TItem) => void,
             staticFilters: Filter<TItem>[],
             selectableConfig?: SelectableConfig<TItem>,
+            pagerConfig?: PagerConfig,
             showAllFilter: boolean,
             dynamicFilters?: <TFilter extends Filter<IItem>>(searchTerm: string) => Observable<Filter<IItem>[]>
         }) {
@@ -72,15 +64,22 @@ export class DataTableConfig<TItem extends IItem> {
     }
 }
 
+export class PagerConfig{
+    public showPager: boolean = true;
+    public pagerSize: number = 6;
+    public showPagerNextPreviousButtons: boolean = true;
+    public showPagerFirstLastButtons: boolean = true;
+    public showPagerNumberButtons: boolean = true;
+    public hidePagerForSinglePage: boolean = true;
+}
+
 export class SelectableConfig<TItem extends IItem>{
 
-    public buttonTextKey: string;
     public onSelect: (selectedItem: TItem) => void;
     public onDeselect: (unselectedItem: TItem) => void;
 
     constructor(
         options: {
-            buttonTextKey: string,
             onSelect: (selectedItem: TItem) => void,
             onDeselect: (selectedItem: TItem) => void
         }

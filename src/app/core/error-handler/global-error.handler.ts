@@ -15,7 +15,7 @@ export class GlobalErrorHandler implements ErrorHandler {
     constructor(private injector: Injector) { }
 
     handleError(error) {
-        console.log('Log error');
+        console.log('Error handler');
         var logService = this.injector.get(LogService);
         var sharedService = this.injector.get(SharedService);
         var authService = this.injector.get(AuthService);
@@ -24,6 +24,7 @@ export class GlobalErrorHandler implements ErrorHandler {
         var message = error.message ? error.message : error.toString();
         var url = location instanceof PathLocationStrategy ? location.path() : '';
         var userName = authService.isAuthenticated() ? authService.getCurrentUser().email : '';
+
 
         // get the stack trace, lets grab the last 10 stacks only
         StackTrace.fromError(error).then(stackframes => {
@@ -39,21 +40,27 @@ export class GlobalErrorHandler implements ErrorHandler {
                     // notify shared service about the error
                     sharedService.setError(response.item);
 
-                    if (!AppConfig.DevModeEnabled) {
+                    if (AppConfig.DevModeEnabled) {
                         this.navigateToErrorPage(response.item.guid);
                     }
-
                 },
                 (error) => {
-                    if (!AppConfig.DevModeEnabled) {
+                    // notify shared service about the error
+                    sharedService.setError(new Log().errorMessage = error);
+
+                    if (AppConfig.DevModeEnabled) {
                         // redirect only if dev mode is disabled
                         this.navigateToErrorPage();
                     }
                 });
         });
 
-        // don't rethrow error (it will cause this handler to be called twice) - log as console error instead
-        console.error(error);
+        throw error;
+        //console.error(error);
+    }
+
+    private redirectToErrorPage(): void {
+        window.location.href = UrlConfig.getAppErrorUrl();
     }
 
     private navigateToErrorPage(logGuid?: string): void {

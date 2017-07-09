@@ -1,0 +1,46 @@
+<!-- Nav list with link -->
+<md-nav-list *ngIf="isClickable" role="list" class="pad-top-none">
+    <data-table-layout-header [config]="config"></data-table-layout-header>
+    <div *ngFor="let item of items; let i=index">
+        <md-divider *ngIf="i !== 0"></md-divider>
+        <md-list-item (click)="onItemClick(item)">
+            <md-checkbox *ngIf="isSelectable" class="push-right" (change)="handleCheckboxChange($event, item)"></md-checkbox>
+            <img *ngIf="config.avatarUrlResolver" md-list-avatar src="{{getAvatarUrl()}}" alt="" class="push-right">
+            <md-icon *ngIf="config.iconResolver" md-list-icon>{{getIcon()}}</md-icon>
+            <span wResponsive [enabled]="field.hideOnSmallScreens" *ngFor="let field of config.fields" flex="field.flex" class="{{getTextAlignClass(field)}}">
+            <span  [class.md-caption]="field.isSubtle" [class.tc-grey-500]="field.isSubtle">{{getFieldValue(field, item)}}</span>
+            </span>
+        </md-list-item>
+    </div>
+    <div *ngIf="items != null && items.length == 0" layout="row" layout-align="center">
+        <div *ngIf="items != null && items.length == 0 && searchTerm" layout="row" layout-align="center">
+            <h3>{{config.searchNoItemsTextKey | translate}}</h3>
+        </div>
+        <div *ngIf="items != null && items.length == 0 && !searchTerm" layout="row" layout-align="center">
+            <h3>{{config.noItemsTextKey | translate}}</h3>
+        </div>
+    </div>
+</md-nav-list>
+
+<!-- Nav list without link -->
+<md-list *ngIf="!isClickable" role="list" class="pad-top-none">
+    <data-table-layout-header [config]="config"></data-table-layout-header>
+    <div *ngFor="let item of items; let i=index">
+        <md-divider *ngIf="i !== 0"></md-divider>
+        <md-list-item>
+            <md-checkbox *ngIf="isSelectable" class="push-right" (change)="handleCheckboxChange($event, item)"></md-checkbox>
+            <img *ngIf="config.avatarUrlResolver" md-list-avatar src="{{getAvatarUrl()}}" alt="" class="push-right">
+            <md-icon *ngIf="config.iconResolver" md-list-icon>{{getIcon()}}</md-icon>
+
+            <span wResponsive [enabled]="field.hideOnSmallScreens" *ngFor="let field of config.fields" flex="field.flex" class="{{getTextAlignClass(field)}}">
+           <span  [class.md-caption]="field.isSubtle" [class.tc-grey-500]="field.isSubtle">{{getFieldValue(field, item)}}</span>
+            </span>
+        </md-list-item>
+    </div>
+    <div *ngIf="items != null && items.length == 0 && searchTerm" layout="row" layout-align="center">
+        <h3>{{config.searchNoItemsTextKey | translate}}</h3>
+    </div>
+    <div *ngIf="items != null && items.length == 0 && !searchTerm" layout="row" layout-align="center">
+        <h3>{{config.noItemsTextKey | translate}}</h3>
+    </div>
+</md-list>

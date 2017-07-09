@@ -38,5 +38,6 @@ export class SharedService {
     // stop loaders on error
     this.componentLoaderSource.next(false);
     this.topLoaderSource.next(false);
+    console.log('stop loader');
   }
 }

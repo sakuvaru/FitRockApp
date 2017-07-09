@@ -66,6 +66,7 @@ export class SelectWorkoutExerciseDialogComponent extends BaseComponent implemen
       .onAfterLoad(() => super.stopGlobalLoader())
       .showPager(true)
       .showSearch(true)
+      .wrapInCard(false)
       .onClick((item: Exercise) => {
         // assign selected exercise
         this.selectedExercise = item;

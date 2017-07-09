@@ -1,0 +1,3 @@
+  <md-chip-list>
+    <md-chip *ngFor="let filter of filters" class="w-cursor-pointer" [selected]="activeFilterGuid === filter.guid" (click)="activateFilter.emit(filter.guid)">{{filter.filterNameKey | translate}} <span *ngIf="filter.count >= 0">({{ filter.count }})</span></md-chip>
+  </md-chip-list>

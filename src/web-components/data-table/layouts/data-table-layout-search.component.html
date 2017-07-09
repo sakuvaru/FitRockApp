@@ -1,0 +1,7 @@
+<!--<td-search-box (searchDebounce)="search.emit($event)" class="push-left push-right" placeholder="{{'shared.search' | translate}}" [alwaysVisible]="true"></td-search-box>
+
+-->
+<md-input-container [ngClass]="config.wrapInCard ? 'text-sm' : ''" flex>
+  <input mdInput placeholder="{{'shared.search' | translate}}" [formControl]="searchControl" />
+  <span mdPrefix><md-icon>search</md-icon></span>
+</md-input-container>

@@ -45,12 +45,10 @@ export class ClientsOverviewComponent extends BaseComponent implements OnInit {
       })
       .onBeforeLoad(() => super.startLoader())
       .onAfterLoad(() => {
-
         super.stopLoader();
       })
       .showPager(true)
       .showSearch(true)
-      .showHeader(false)
       .pagerSize(7)
       .onClick((item) => super.navigate([super.getTrainerUrl('clients/edit/') + item.id]))
       .avatarUrlResolver((item) => 'https://semantic-ui.com/images/avatar/large/elliot.jpg')

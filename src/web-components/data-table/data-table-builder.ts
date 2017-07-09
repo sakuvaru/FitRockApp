@@ -1,4 +1,4 @@
-import { DataTableConfig, SelectableConfig, Filter } from './data-table.config';
+import { DataTableConfig, SelectableConfig, Filter, PagerConfig } from './data-table.config';
 import { DataTableField } from './data-table-field.class';
 import { Observable } from 'rxjs/RX';
 import { ResponseMultiple, IItem, MultipleItemQuery } from '../../lib/repository';
@@ -54,8 +54,15 @@ export class DataTableBuilder<TItem extends IItem> {
         return this;
     }
 
+    pagerConfig(config: PagerConfig): this{
+        if (config){
+            this.config.pagerConfig = config;
+        }
+        return this;
+    }
+
     showPager(show: boolean): this {
-        this.config.showPager = show;
+        this.config.pagerConfig.showPager = show;
         return this;
     }
 
@@ -65,7 +72,7 @@ export class DataTableBuilder<TItem extends IItem> {
     }
 
     pagerSize(size: number): this {
-        this.config.pagerSize = size;
+        this.config.pagerConfig.pagerSize = size;
         return this;
     }
 
@@ -110,22 +117,22 @@ export class DataTableBuilder<TItem extends IItem> {
     }
 
     showPagerNextPreviousButtons(show: boolean): this {
-        this.config.showPagerNextPreviousButtons = show;
+        this.config.pagerConfig.showPagerNextPreviousButtons = show;
         return this;
     }
 
     showPagerFirstLastButtons(show: boolean): this {
-        this.config.showPagerFirstLastButtons = show;
+        this.config.pagerConfig.showPagerFirstLastButtons = show;
         return this;
     }
 
     showPagerNumberButtons(show: boolean): this {
-        this.config.showPagerNumberButtons = show;
+        this.config.pagerConfig.showPagerNumberButtons = show;
         return this;
     }
 
     hidePagerForSinglePage(hide: boolean): this {
-        this.config.hidePagerForSinglePage = hide;
+        this.config.pagerConfig.hidePagerForSinglePage = hide;
         return this;
     }
 
