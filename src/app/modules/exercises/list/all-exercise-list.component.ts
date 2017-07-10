@@ -41,7 +41,6 @@ export class AllExerciseListComponent extends BaseComponent implements OnInit {
       .loadQuery(searchTerm => {
         return this.dependencies.itemServices.exerciseService.items()
           .include('ExerciseCategory')
-          .whereEquals('IsGlobal', true)
           .whereLike('ExerciseName', searchTerm)
       })
       .loadResolver(query => {

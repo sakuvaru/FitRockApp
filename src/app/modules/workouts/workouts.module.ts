@@ -15,6 +15,7 @@ import { EditWorkoutPlanComponent } from './edit/edit-workout-plan.component';
 import { AddWorkoutExerciseDialogComponent} from './dialogs/add-workout-exercise-dialog.component';
 import { SelectWorkoutExerciseDialogComponent} from './dialogs/select-workout-exercise-dialog.component';
 import { EditWorkoutExerciseDialogComponent } from './dialogs/edit-workout-exercise-dialog.component';
+import { AddCustomExerciseDialogComponent } from './dialogs/add-custom-exercise-dialog.component';
 
 // router
 import { WorkoutsRouter } from './workouts.routing';
@@ -29,6 +30,9 @@ import { SharedModule} from '../shared/shared.module';
         WorkoutsRouter,
         SharedModule
     ],
+    entryComponents:[
+        AddCustomExerciseDialogComponent // has to be added here because its created by another dialog
+    ],
     declarations: [
         WorkoutsOverviewComponent,
         NewWorkoutComponent,
@@ -37,7 +41,8 @@ import { SharedModule} from '../shared/shared.module';
         AddWorkoutExerciseDialogComponent,
         EditWorkoutPlanComponent,
         SelectWorkoutExerciseDialogComponent,
-        EditWorkoutExerciseDialogComponent
+        EditWorkoutExerciseDialogComponent,
+        AddCustomExerciseDialogComponent
     ]
 })
 export class WorkoutsModule { }

@@ -37,6 +37,7 @@ export class EditClientComponent extends BaseComponent implements OnInit {
                 form.onBeforeSave(() => super.startGlobalLoader());
                 form.onAfterSave(() => super.stopGlobalLoader());
                 form.onError(() => super.stopGlobalLoader());
+                form.onAfterDelete(() => super.navigate([this.getTrainerUrl('clients')]));
 
                 var user = form.getItem();
 

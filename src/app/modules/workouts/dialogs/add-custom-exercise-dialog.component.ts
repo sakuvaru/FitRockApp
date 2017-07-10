@@ -7,33 +7,26 @@ import { AppConfig, ComponentDependencyService, BaseComponent, ComponentConfig }
 import { DataTableConfig, AlignEnum } from '../../../../web-components/data-table';
 import { Exercise } from '../../../models';
 import { MD_DIALOG_DATA } from '@angular/material';
-import { WorkoutExercise } from '../../../models';
 import { FormConfig } from '../../../../web-components/dynamic-form';
 
 @Component({
-  templateUrl: 'add-workout-exercise-dialog.component.html'
+  templateUrl: 'add-custom-exercise-dialog.component.html'
 })
-export class AddWorkoutExerciseDialogComponent extends BaseComponent implements OnInit {
+export class AddCustomExerciseDialogComponent extends BaseComponent implements OnInit {
 
-  private config: DataTableConfig<WorkoutExercise>;
-  private workoutId: number;
-  private exercise: Exercise;
+  private config: DataTableConfig<Exercise>;
 
-  private workoutExerciseForm: FormConfig<WorkoutExercise>;
+  private workoutExerciseForm: FormConfig<Exercise>;
 
   /**
    * Accessed by parent component
    */
-  public newWorkoutExercise: WorkoutExercise;
+  public newExercise: Exercise;
 
   constructor(
     protected dependencies: ComponentDependencyService,
-    @Inject(MD_DIALOG_DATA) public data: any
   ) {
     super(dependencies)
-
-    this.workoutId = data.workoutId;
-    this.exercise = data.exercise;
   }
 
   ngOnInit() {
@@ -41,19 +34,16 @@ export class AddWorkoutExerciseDialogComponent extends BaseComponent implements 
     
     super.startGlobalLoader();
 
-    this.dependencies.itemServices.workoutExerciseService.insertForm()
+    this.dependencies.itemServices.exerciseService.insertForm()
       .takeUntil(this.ngUnsubscribe)
       .subscribe(form => {
         form.onFormLoaded(() => super.stopGlobalLoader());
-        // set exercise id & workout id for new WorkoutExercise item
-        form.withFieldValue('exerciseId', this.exercise.id);
-        form.withFieldValue('workoutId', this.workoutId);
         form.onBeforeSave(() => super.startGlobalLoader());
         form.onAfterSave(() => super.stopGlobalLoader());
         form.onError(() => super.stopGlobalLoader());
 
         form.onAfterInsert((response => {
-          this.newWorkoutExercise = response.item;
+          this.newExercise = response.item;
           this.close();
         }))
 

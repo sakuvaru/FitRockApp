@@ -13,10 +13,10 @@ export class ExerciseCategoryService extends BaseTypeService<ExerciseCategory>{
         })
     }
 
-    getCategoriesWithExercisesCount(exerciseName: string, isGlobal: boolean): MultipleItemQuery<ExerciseCategoryListWithExercisesCount>{
+    getCategoriesWithExercisesCount(exerciseName: string, takeAllExercises: boolean): MultipleItemQuery<ExerciseCategoryListWithExercisesCount>{
         return this.itemsWithCustomModel<ExerciseCategoryListWithExercisesCount>()
             .withCustomOption('exerciseName', exerciseName)
-            .withCustomOption('isGlobal', isGlobal)
+            .withCustomOption('takeAllExercises', takeAllExercises)
             .withCustomAction('GetCategoriesWithExercisesCount');
     }
 }

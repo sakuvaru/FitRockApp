@@ -11,6 +11,7 @@ import { Subscription } from 'rxjs/Rx';
 import { SelectWorkoutExerciseDialogComponent } from '../dialogs/select-workout-exercise-dialog.component';
 import { EditWorkoutExerciseDialogComponent } from '../dialogs/edit-workout-exercise-dialog.component';
 import { AddWorkoutExerciseDialogComponent } from '../dialogs/add-workout-exercise-dialog.component';
+import { AddCustomExerciseDialogComponent } from '../dialogs/add-custom-exercise-dialog.component';
 import * as _ from 'underscore';
 
 @Component({
@@ -101,7 +102,6 @@ export class EditWorkoutPlanComponent extends BaseComponent implements OnInit, O
         this.stopGlobalLoader();
       },
       (error) => {
-        console.log(error);
         this.stopGlobalLoader();
       });
   }
@@ -134,20 +134,40 @@ export class EditWorkoutPlanComponent extends BaseComponent implements OnInit, O
   }
 
   private openSelecExerciseDialog(): void {
+    var data: any = {};
+    data.workoutId = this.workout.id;
+
     var dialog = this.dependencies.tdServices.dialogService.open(SelectWorkoutExerciseDialogComponent, {
       width: AppConfig.DefaultDialogWidth,
-      data: this.workout.id
+      data: data
     });
 
     dialog.afterClosed().subscribe(m => {
       // open new add workout dialog if some exercise was selected
       if (dialog.componentInstance.selectedExercise) {
-        this.openAddWorkoutDialog(dialog.componentInstance.selectedExercise);
+        this.openAddWorkoutExerciseDialog(dialog.componentInstance.selectedExercise);
+      }
+      // or open new custom exercise dialog
+      else if (dialog.componentInstance.openAddCustomExerciseDialog) {
+        this.openAddCustomExerciseDialog();
       }
     })
   }
 
-  private openAddWorkoutDialog(exercise: Exercise): void {
+  private openAddCustomExerciseDialog(): void {
+    var dialog = this.dependencies.tdServices.dialogService.open(AddCustomExerciseDialogComponent, {
+      width: AppConfig.DefaultDialogWidth
+    });
+
+    dialog.afterClosed().subscribe(m => {
+      // open add workout exercise dialog if new custom exercise was created 
+      if (dialog.componentInstance.newExercise) {
+        this.openAddWorkoutExerciseDialog(dialog.componentInstance.newExercise);
+      }
+    })
+  }
+
+  private openAddWorkoutExerciseDialog(exercise: Exercise): void {
     var data: any = {};
     data.workoutId = this.workout.id;
     data.exercise = exercise;

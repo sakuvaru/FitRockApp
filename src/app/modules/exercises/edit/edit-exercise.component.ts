@@ -39,6 +39,7 @@ export class EditExerciseComponent extends BaseComponent implements OnInit {
                 form.onBeforeSave(() => super.startGlobalLoader());
                 form.onAfterSave(() => super.stopGlobalLoader());
                 form.onError(() => super.stopGlobalLoader());
+                form.onAfterDelete(() => super.navigate([this.getTrainerUrl('exercises')]));
                 var item = form.getItem();
 
                 this.setConfig({

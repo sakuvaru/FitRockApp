@@ -40,7 +40,7 @@ export class GlobalErrorHandler implements ErrorHandler {
                     // notify shared service about the error
                     sharedService.setError(response.item);
 
-                    if (AppConfig.DevModeEnabled) {
+                    if (!AppConfig.DevModeEnabled) {
                         this.navigateToErrorPage(response.item.guid);
                     }
                 },
@@ -48,7 +48,7 @@ export class GlobalErrorHandler implements ErrorHandler {
                     // notify shared service about the error
                     sharedService.setError(new Log().errorMessage = error);
 
-                    if (AppConfig.DevModeEnabled) {
+                    if (!AppConfig.DevModeEnabled) {
                         // redirect only if dev mode is disabled
                         this.navigateToErrorPage();
                     }

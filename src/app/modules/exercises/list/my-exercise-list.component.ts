@@ -42,7 +42,6 @@ export class MyExerciseListComponent extends BaseComponent implements OnInit {
         return this.dependencies.itemServices.exerciseService.items()
           .include('ExerciseCategory')
           .byCurrentUser()
-          .whereEquals('IsGlobal', false)
           .whereLike('ExerciseName', searchTerm)
       })
       .loadResolver(query => {

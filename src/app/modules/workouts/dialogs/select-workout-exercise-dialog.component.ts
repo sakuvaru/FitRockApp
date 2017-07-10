@@ -15,19 +15,15 @@ export class SelectWorkoutExerciseDialogComponent extends BaseComponent implemen
 
   private selectable: boolean = true;
   private config: DataTableConfig<Exercise>;
-  private workoutId: number;
 
   public selectedExercise: Exercise;
-
-  private chipAllSelected: boolean = true;
-  private chipMyExercisesSelected: boolean = false;
+  public openAddCustomExerciseDialog: boolean = false;
 
   constructor(
     protected dependencies: ComponentDependencyService,
     @Inject(MD_DIALOG_DATA) public data: any
   ) {
     super(dependencies)
-    this.workoutId = data;
   }
 
   ngOnInit() {
@@ -73,6 +69,11 @@ export class SelectWorkoutExerciseDialogComponent extends BaseComponent implemen
         this.close();
       })
       .build();
+  }
+
+  private addCustomExercise(): void {
+    this.openAddCustomExerciseDialog = true;
+    this.close();
   }
 
   private close(): void {

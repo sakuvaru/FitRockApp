@@ -52,7 +52,8 @@
 			"editWorkoutExercise": "Upravit cvik",
 			"newWorkout": "Nová šablona",
 			"myExercises": "Moje cviky",
-			"allExercises": "Všechny cviky"
+			"allExercises": "Všechny cviky",
+            "addCustomExercise": "Vytvořit vlastní cvik"
         },
 		"exercises":{
 			"exercise": "Cviky",
@@ -63,7 +64,8 @@
             "edit": "Upravit",
 			"myExercises": "Moje cviky",
 			"allExercises": "Všechny cviky",
-			"preview": "Náhled cviku"
+			"preview": "Náhled cviku",
+            "new": "Nový cvik"
 		},
 		"shared":{
 			"errors": {

@@ -38,7 +38,9 @@ export class NewExerciseComponent extends BaseComponent implements OnInit {
                 form.onAfterSave(() => this.stopGlobalLoader());
                 form.insertFunction((item) => this.dependencies.itemServices.exerciseService.create(item).set());
                 form.onAfterInsert((response) => this.navigate([this.getTrainerUrl('exercises/edit'), response.item.id]));
-                form.onError(() => super.stopGlobalLoader());
+                form.onError(() => {
+                    super.stopGlobalLoader();
+                });
 
                 this.formConfig = form.build();
             });
