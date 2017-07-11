@@ -1,10 +1,7 @@
 // common
 import { Component, Input, OnDestroy, ChangeDetectorRef, OnInit } from '@angular/core';
 import { TdMediaService } from '@covalent/core';
-import {
-    ComponentDependencyService, BaseComponent,
-    IComponentConfig, MenuItemType
-} from '../core';
+import { ComponentDependencyService, BaseComponent, MenuItemType } from '../core';
 
 // required by component
 import { Subscription } from 'rxjs/Rx';
@@ -13,13 +10,16 @@ import { Subscription } from 'rxjs/Rx';
     templateUrl: 'admin-layout.component.html'
 })
 export class AdminLayoutComponent extends BaseComponent implements OnDestroy, OnInit {
+    private year: number = new Date().getFullYear();
     private media: TdMediaService;
 
     private componentTitle: string;
     private menuTitle: string;
-
     private componentLoaderEnabled: boolean;
     private topLoaderEnabled: boolean;
+
+    private displayUsername: string;
+    private email: string;
 
     /**
      * Part of url identifying 'client' or 'trainer' app type
@@ -42,6 +42,14 @@ export class AdminLayoutComponent extends BaseComponent implements OnDestroy, On
     }
 
     ngOnInit() {
+        super.ngOnInit();
+
+        // init user texts
+        this.dependencies.authUser.subscribe(user => {
+            this.displayUsername = user.firstName + ' ' + user.lastName;
+            this.email = user.email;
+        })
+
         // register loaders
         this.componentLoaderSubscription = this.dependencies.coreServices.sharedService.componentloaderChanged$
             .takeUntil(this.ngUnsubscribe)
@@ -97,6 +105,7 @@ export class AdminLayoutComponent extends BaseComponent implements OnDestroy, On
     }
 
     ngOnDestroy() {
+        super.ngOnDestroy();
         // prevent memory leaks when component is destroyed
         // source: https://angular.io/docs/ts/latest/cookbook/component-communication.html#!#bidirectional-service
 

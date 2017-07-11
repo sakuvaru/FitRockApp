@@ -1,7 +1,7 @@
 // common
 import { Component, Input, OnDestroy, ChangeDetectorRef, OnInit } from '@angular/core';
 import { TdMediaService } from '@covalent/core';
-import { IComponentConfig, ComponentDependencyService, BaseComponent } from '../core';
+import { ComponentDependencyService, BaseComponent } from '../core';
 
 // required by component
 import { Subscription } from 'rxjs/Rx';
@@ -32,6 +32,8 @@ export class SimpleLayoutComponent extends BaseComponent implements OnDestroy, O
     }
 
     ngOnInit() {
+        super.ngOnInit();
+
         // don't forget to unsubscribe
         this.topLoaderSubscription = this.dependencies.coreServices.sharedService.topLoaderChanged$
             .takeUntil(this.ngUnsubscribe)
@@ -75,6 +77,7 @@ export class SimpleLayoutComponent extends BaseComponent implements OnDestroy, O
     }
 
     ngOnDestroy() {
+        super.ngOnDestroy();
         // prevent memory leak when component destroyed
         // source: https://angular.io/docs/ts/latest/cookbook/component-communication.html#!#bidirectional-service
 

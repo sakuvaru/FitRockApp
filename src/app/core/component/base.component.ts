@@ -3,7 +3,9 @@ import { AppConfig } from '../config/app.config';
 import { UrlConfig } from '../config/url.config';
 import { ComponentDependencyService } from './component-dependency.service';
 import { ErrorResponse, ErrorReasonEnum } from '../../../lib/repository';
-import { ComponentConfig, IComponentConfig, ResourceKey, MenuItem } from './component.config';
+import { ComponentConfig } from './component.config';
+import { AdminMenu } from './admin-menu';
+import { MenuItem, ResourceKey } from '../models/core.models';
 import { Observable, Subject } from 'rxjs/Rx';
 import { NavigationExtras } from '@angular/router'
 
@@ -22,14 +24,17 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
      */
     protected ngUnsubscribe: Subject<void> = new Subject<void>();
 
-    // component config
-    protected componentConfig: IComponentConfig = new ComponentConfig();
-
     // snackbar config
     private snackbarDefaultDuration = 2500;
 
     // translations
     private snackbarSavedText: string;
+
+    // component config
+    protected componentConfig: ComponentConfig = new ComponentConfig();
+
+    // admin menu
+    protected adminMenu: AdminMenu = new AdminMenu();
 
     constructor(protected dependencies: ComponentDependencyService) {
         // stop loaders on component init 
@@ -64,7 +69,7 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
     // ----------------------- Lifecycle Events --------------------- // 
 
     /**
-     * If a child component implements its own ngOnDestory, it needs to call 'super.ngOnDestroy' as otherwise
+     * If a child component implements its own ngOnDestory, it needs to call 'super.ngOnInit' as otherwise
      * this method will not be called
      */
     ngOnInit() {
@@ -116,7 +121,7 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
         this.dependencies.router.navigate([UrlConfig.getItem404()]);
     }
 
-    
+
     navigateToError(): void {
         this.dependencies.router.navigate([UrlConfig.getAppErrorUrl()]);
     }

@@ -1,34 +1,52 @@
-
-<loader [enabled]="topLoaderEnabled"></loader>
-<td-layout-nav sidenavTitle="title" logo="logo" icon="icon" color="primary">
-  <div td-toolbar-content [routerLink]="getTrainerUrl()">
-    {{componentConfig.appName}}
-  </div>
-  <td-layout-manage-list #manageList [opened]="media.registerQuery('gt-sm') | async" [mode]="(media.registerQuery('gt-sm') | async) ? 'side' :  'over'"
-     [sidenavWidth]="(media.registerQuery('gt-xs') | async) ? '257px' : '100%'">
-    <md-toolbar td-sidenav-content class="example-fill-remaining-space">
-      {{menuTitle}}
-    </md-toolbar>
-    <md-nav-list *ngIf="componentConfig.menuItems" td-sidenav-content td-sidenav-content (click)="!media.query('gt-sm') && manageList.close()">
-      <a *ngFor="let item of componentConfig.menuItems" md-list-item [routerLink]="getMenuItemUrl(item.action, item.type)">
-        <md-icon [color]="getMenuItemColor(item.action, item.type)">{{item.icon}}</md-icon>{{ item.label.key | translate}}
-      </a>
+<td-layout #layout>
+  <td-navigation-drawer #sidenav flex [sidenavTitle]="componentConfig.appName" logo="assets:teradata" [name]="displayUsername" [email]="email">
+    <md-nav-list>
+      <a *ngFor="let item of adminMenu.mainMenu" md-list-item (click)="layout.close()" [routerLink]="getMenuItemUrl(item.action, item.type)">
+        <md-icon>{{item.icon}}</md-icon>{{item.label.key | translate}}</a>
     </md-nav-list>
-    <div td-toolbar-content layout="row" layout-align="start center" flex>
-      <span>{{componentTitle}}</span>
-      <span flex></span>
-      <button md-icon-button [mdMenuTriggerFor]="toolbarMenu"><md-icon>settings</md-icon></button>
-      <md-menu #toolbarMenu="mdMenu">
-        <button md-menu-item [routerLink]="getAuthUrl('logout')">
+    <div td-navigation-drawer-menu>
+      <md-nav-list>
+        <a *ngFor="let item of adminMenu.userMenu" md-list-item (click)="layout.close()" [routerLink]="getMenuItemUrl(item.action, item.type)">
+          <md-icon>{{item.icon}}</md-icon>{{item.label.key | translate}}</a>
+      </md-nav-list>
+    </div>
+  </td-navigation-drawer>
+  <div td-sidenav-content class="td-layout-footer pad">
+    &copy; {{year}} {{componentConfig.appName}}
+  </div>
+
+  <loader [enabled]="topLoaderEnabled"></loader>
+
+  <td-layout-nav sidenavTitle="title" logo="logo" icon="icon" color="primary">
+    <div td-toolbar-content>
+      {{componentConfig.appName}}
+    </div>
+    <td-layout-manage-list #manageList [opened]="media.registerQuery('gt-sm') | async" [mode]="(media.registerQuery('gt-sm') | async) ? 'side' :  'over'"
+      [sidenavWidth]="(media.registerQuery('gt-xs') | async) ? '257px' : '100%'">
+      <md-toolbar td-sidenav-content class="example-fill-remaining-space">
+        {{menuTitle}}
+      </md-toolbar>
+      <md-nav-list *ngIf="componentConfig.menuItems" td-sidenav-content td-sidenav-content (click)="!media.query('gt-sm') && manageList.close()">
+        <a *ngFor="let item of componentConfig.menuItems" md-list-item [routerLink]="getMenuItemUrl(item.action, item.type)">
+          <md-icon [color]="getMenuItemColor(item.action, item.type)">{{item.icon}}</md-icon>{{ item.label.key | translate}}
+        </a>
+      </md-nav-list>
+      <div td-toolbar-content layout="row" layout-align="start center" flex>
+        <span>{{componentTitle}}</span>
+        <span flex></span>
+        <button md-icon-button [mdMenuTriggerFor]="toolbarMenu"><md-icon>settings</md-icon></button>
+        <md-menu #toolbarMenu="mdMenu">
+          <button md-menu-item [routerLink]="getAuthUrl('logout')">
           <md-icon>exit_to_app</md-icon>
            Odhlásit
         </button>
-      </md-menu>
-    </div>
-    <loader [enabled]="componentLoaderEnabled"></loader>
-    <router-outlet></router-outlet>
-  </td-layout-manage-list>
-  <td-layout-footer>
-    <footer [appName]="componentConfig.appName"></footer>
-  </td-layout-footer>
-</td-layout-nav>
+        </md-menu>
+      </div>
+      <loader [enabled]="componentLoaderEnabled"></loader>
+      <router-outlet></router-outlet>
+    </td-layout-manage-list>
+    <td-layout-footer>
+      <footer [appName]="componentConfig.appName"></footer>
+    </td-layout-footer>
+  </td-layout-nav>
+</td-layout>
