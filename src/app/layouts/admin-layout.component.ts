@@ -90,7 +90,6 @@ export class AdminLayoutComponent extends BaseComponent implements OnDestroy, On
                         });
                 }
             });
-
     }
 
     ngAfterViewInit(): void {
@@ -143,7 +142,7 @@ export class AdminLayoutComponent extends BaseComponent implements OnDestroy, On
     }
 
     private getMenuItemColor(action: string, type: MenuItemType): string {
-        var activeColor = 'primary';
+        var activeColor = 'accent';
 
         var url = this.getMenuItemUrl(action, type);
         var currentUrl = this.dependencies.router.url;

@@ -1,12 +1,12 @@
-<td-layout #layout>
-  <td-navigation-drawer #sidenav flex [sidenavTitle]="componentConfig.appName" logo="assets:teradata" [name]="displayUsername" [email]="email">
+<td-layout>
+  <td-navigation-drawer flex [sidenavTitle]="componentConfig.appName" logo="assets:teradata" [name]="displayUsername" [email]="email">
     <md-nav-list>
-      <a *ngFor="let item of adminMenu.mainMenu" md-list-item (click)="layout.close()" [routerLink]="getMenuItemUrl(item.action, item.type)">
+      <a *ngFor="let item of adminMenu.mainMenu" md-list-item [routerLink]="getMenuItemUrl(item.action, item.type)">
         <md-icon>{{item.icon}}</md-icon>{{item.label.key | translate}}</a>
     </md-nav-list>
     <div td-navigation-drawer-menu>
       <md-nav-list>
-        <a *ngFor="let item of adminMenu.userMenu" md-list-item (click)="layout.close()" [routerLink]="getMenuItemUrl(item.action, item.type)">
+        <a *ngFor="let item of adminMenu.userMenu" md-list-item [routerLink]="getMenuItemUrl(item.action, item.type)">
           <md-icon>{{item.icon}}</md-icon>{{item.label.key | translate}}</a>
       </md-nav-list>
     </div>
@@ -17,36 +17,47 @@
 
   <loader [enabled]="topLoaderEnabled"></loader>
 
-  <td-layout-nav sidenavTitle="title" logo="logo" icon="icon" color="primary">
-    <div td-toolbar-content>
+  <td-layout-nav color="accent">
+     <div td-toolbar-content layout="row" layout-align="start center" flex>
+       <button md-icon-button td-menu-button tdLayoutToggle>
+        <md-icon>menu</md-icon>
+      </button>
       {{componentConfig.appName}}
+      <span flex></span>
+      <a md-icon-button mdTooltip="Docs" href="https://teradata.github.io/covalent/" target="_blank"><md-icon>chrome_reader_mode</md-icon></a>
     </div>
-    <td-layout-manage-list #manageList [opened]="media.registerQuery('gt-sm') | async" [mode]="(media.registerQuery('gt-sm') | async) ? 'side' :  'over'"
-      [sidenavWidth]="(media.registerQuery('gt-xs') | async) ? '257px' : '100%'">
-      <md-toolbar td-sidenav-content class="example-fill-remaining-space">
+     <td-layout-manage-list #manageList
+            [opened]="media.registerQuery('gt-sm') | async"
+            [mode]="(media.registerQuery('gt-sm') | async) ? 'side' :  'over'"
+            [sidenavWidth]="(media.registerQuery('gt-xs') | async) ? '257px' : '100%'">
+      <md-toolbar td-sidenav-content>
         {{menuTitle}}
       </md-toolbar>
-      <md-nav-list *ngIf="componentConfig.menuItems" td-sidenav-content td-sidenav-content (click)="!media.query('gt-sm') && manageList.close()">
-        <a *ngFor="let item of componentConfig.menuItems" md-list-item [routerLink]="getMenuItemUrl(item.action, item.type)">
+      <md-nav-list td-sidenav-content [tdLayoutManageListClose]="!media.query('gt-sm')">
+        <ng-template let-item let-last="last" ngFor [ngForOf]="componentConfig.menuItems">
+          <a md-list-item [routerLink]="getMenuItemUrl(item.action, item.type)">
           <md-icon [color]="getMenuItemColor(item.action, item.type)">{{item.icon}}</md-icon>{{ item.label.key | translate}}
         </a>
+        </ng-template>
       </md-nav-list>
-      <div td-toolbar-content layout="row" layout-align="start center" flex>
-        <span>{{componentTitle}}</span>
-        <span flex></span>
-        <button md-icon-button [mdMenuTriggerFor]="toolbarMenu"><md-icon>settings</md-icon></button>
-        <md-menu #toolbarMenu="mdMenu">
-          <button md-menu-item [routerLink]="getAuthUrl('logout')">
-          <md-icon>exit_to_app</md-icon>
-           Odhlásit
-        </button>
-        </md-menu>
-      </div>
+
+      <md-toolbar>
+        <div layout="row" layout-align="start center" flex>
+            <button md-icon-button tdLayoutManageListOpen [hideWhenOpened]="true" tdMediaToggle="gt-sm" [mediaStyles]="{display: 'none'}">
+            <md-icon>arrow_back</md-icon>
+          </button>
+           <span>{{componentTitle}}</span>
+          <span flex></span>
+          <button md-icon-button [routerLink]="getAuthUrl('logout')"><md-icon>exit_to_app</md-icon></button>
+        </div>
+      </md-toolbar>  
       <loader [enabled]="componentLoaderEnabled"></loader>
       <router-outlet></router-outlet>
     </td-layout-manage-list>
     <td-layout-footer>
+       <div layout="row" layout-align="start center" class="md-caption">
       <footer [appName]="componentConfig.appName"></footer>
+      </div>
     </td-layout-footer>
   </td-layout-nav>
 </td-layout>

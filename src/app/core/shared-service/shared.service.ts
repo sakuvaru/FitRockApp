@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
-import { IComponentConfig } from '../component/component.config';
+import { ComponentConfig } from '../component/component.config';
 import { Log } from '../../models/';
 
 /// Shared data app
@@ -9,7 +9,7 @@ import { Log } from '../../models/';
 export class SharedService {
 
   // Observable string sources
-  private componentConfigSource = new Subject<IComponentConfig>();
+  private componentConfigSource = new Subject<ComponentConfig>();
   private topLoaderSource = new Subject<boolean>();
   private componentLoaderSource = new Subject<boolean>();
   private errorSource = new Subject<Log>();
@@ -21,7 +21,7 @@ export class SharedService {
   errorChanged$ = this.errorSource.asObservable();
 
   // Service message commands
-  setComponentConfig(config: IComponentConfig): void {
+  setComponentConfig(config: ComponentConfig): void {
     this.componentConfigSource.next(config);
   }
 

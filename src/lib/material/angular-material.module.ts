@@ -17,7 +17,8 @@ import {
     MdIconModule, MdInputModule, MdLineModule, MdListModule, MdMenuModule, MdOptionModule, MdProgressBarModule,
     MdProgressSpinnerModule, MdRadioModule, MdRippleModule, MdSelectionModule, MdSelectModule, MdSidenavModule,
     MdSliderModule, MdSlideToggleModule, MdTabsModule, MdToolbarModule, MdTooltipModule, NativeDateModule, ObserveContentModule,
-    OverlayModule, PlatformModule, PortalModule, RtlModule, ScrollDispatchModule, StyleModule
+    OverlayModule, PlatformModule, PortalModule, ScrollDispatchModule, StyleModule, MdTableModule,
+    MdExpansionModule, MdPaginatorModule, MdSortModule
 } from '@angular/material';
 
 
@@ -29,7 +30,8 @@ import {
         MdIconModule, MdInputModule, MdLineModule, MdListModule, MdMenuModule, MdOptionModule, MdProgressBarModule,
         MdProgressSpinnerModule, MdRadioModule, MdRippleModule, MdSelectionModule, MdSelectModule, MdSidenavModule,
         MdSliderModule, MdSlideToggleModule, MdTabsModule, MdToolbarModule, MdTooltipModule, NativeDateModule, ObserveContentModule,
-        OverlayModule, PlatformModule, PortalModule, RtlModule, ScrollDispatchModule, StyleModule
+        OverlayModule, PlatformModule, PortalModule, ScrollDispatchModule, StyleModule, MdTableModule,
+        MdExpansionModule, MdPaginatorModule, MdSortModule
     ],
     declarations: [
     ],
@@ -42,7 +44,8 @@ import {
         MdIconModule, MdInputModule, MdLineModule, MdListModule, MdMenuModule, MdOptionModule, MdProgressBarModule,
         MdProgressSpinnerModule, MdRadioModule, MdRippleModule, MdSelectionModule, MdSelectModule, MdSidenavModule,
         MdSliderModule, MdSlideToggleModule, MdTabsModule, MdToolbarModule, MdTooltipModule, NativeDateModule, ObserveContentModule,
-        OverlayModule, PlatformModule, PortalModule, RtlModule, ScrollDispatchModule, StyleModule
+        OverlayModule, PlatformModule, PortalModule, ScrollDispatchModule, StyleModule, MdTableModule,
+        MdExpansionModule, MdPaginatorModule, MdSortModule
     ]
 })
 export class AngularMaterialModule { }
