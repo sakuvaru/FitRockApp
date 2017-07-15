@@ -8,6 +8,7 @@ import { WorkoutMenuItems } from '../menu.items';
 import { Workout, WorkoutExercise, Exercise } from '../../../models';
 import { DragulaService } from 'ng2-dragula';
 import { Subscription } from 'rxjs/Rx';
+import { CacheKeyType } from '../../../../lib/repository';
 import { SelectWorkoutExerciseDialogComponent } from '../dialogs/select-workout-exercise-dialog.component';
 import { EditWorkoutExerciseDialogComponent } from '../dialogs/edit-workout-exercise-dialog.component';
 import { AddWorkoutExerciseDialogComponent } from '../dialogs/add-workout-exercise-dialog.component';

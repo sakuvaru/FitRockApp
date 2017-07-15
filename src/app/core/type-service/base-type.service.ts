@@ -3,7 +3,7 @@ import { BaseTypeServiceConfig } from './base-type-service.config';
 
 import {
     PostQuery, RepositoryClient, IItem, SingleItemQueryInit, MultipleItemQuery, CreateItemQuery, EditItemQuery, DeleteItemQuery,
-    EditFormQuery, InsertFormQuery
+    EditFormQuery, InsertFormQuery, TouchKeyQuery, CacheKeyType
 } from '../../../lib/repository';
 
 import { DynamicFormEditBuilder, DynamicFormInsertBuilder } from '../../../web-components/dynamic-form';
@@ -41,6 +41,10 @@ export abstract class BaseTypeService<TItem extends IItem>{
 
     post<T extends any>(action: string): PostQuery<T> {
         return this.repositoryClient.post<T>(this.type, action);
+    }
+
+    touchKey<T extends any>(cackeKeyType: CacheKeyType, itemId?: number): TouchKeyQuery {
+        return this.repositoryClient.touchKey(this.type, cackeKeyType, itemId);
     }
 
     updateItemsOrder(orderedItems: TItem[], distinguishByValue: number): PostQuery<any> {

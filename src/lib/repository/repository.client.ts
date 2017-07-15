@@ -8,9 +8,11 @@ import { CreateItemQuery } from './queries/manage/create-item-query.class';
 import { EditItemQuery } from './queries/manage/edit-item-query.class';
 import { DeleteItemQuery } from './queries/manage/delete-item-query.class';
 import { ErrorResponse } from './models/responses';
+import { CacheKeyType } from './models/cache-key-type';
 import { InsertFormQuery } from './queries/form/insert-form-query.class';
 import { EditFormQuery } from './queries/form/edit-form-query.class';
 import { PostQuery } from './queries/general/post-query.class';
+import { TouchKeyQuery } from './queries/general/touch-key-query.class';
 import { OrderItem, UpdateItemsRequest } from './models/update-items-request.class';
 
 // rxjs
@@ -58,6 +60,10 @@ export class RepositoryClient {
 
     post<T extends any>(type: string, action: string): PostQuery<T> {
         return new PostQuery(this.authHttp, this.config, type, action);
+    }
+
+    touchKey(type: string, cacheKeyType: CacheKeyType, itemId?: number): TouchKeyQuery {
+        return new TouchKeyQuery(this.authHttp, this.config, type, cacheKeyType, itemId);
     }
 
     delete<TItem extends IItem>(type: string, itemId: number): DeleteItemQuery {

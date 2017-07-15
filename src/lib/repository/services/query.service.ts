@@ -189,7 +189,6 @@ export class QueryService {
         });
     }
 
-
     private getFormEditResponse<TItem extends IItem>(response: Response): ResponseFormEdit<TItem> {
         var responseForm = (response.json() || {}) as IResponseFormEditRaw;
 
@@ -294,6 +293,30 @@ export class QueryService {
 
         var headers = new Headers({ 'Content-Type': 'application/json' });
         var headerOptions = new RequestOptions({ headers: headers });
+
+        return this.authHttp.post(url, body, headerOptions)
+            .map(response => {
+                return this.getPostResponse(response)
+            })
+            .catch(response => {
+                return Observable.throw(this.handleError(response));
+            })
+            ._finally(() => {
+                this.finishRequest();
+            });
+    }
+
+     protected touchKey<T extends any>(url: string, cacheKeyType: string, itemId?: number): Observable<ResponsePost<T>> {
+        // trigger request
+        this.startRequest();
+
+        var headers = new Headers({ 'Content-Type': 'application/json' });
+        var headerOptions = new RequestOptions({ headers: headers });
+
+        var body = {
+            'cacheKeyType': cacheKeyType,
+            'itemId': itemId
+        };
 
         return this.authHttp.post(url, body, headerOptions)
             .map(response => {
