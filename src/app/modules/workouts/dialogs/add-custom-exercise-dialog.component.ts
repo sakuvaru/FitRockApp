@@ -14,8 +14,6 @@ import { FormConfig } from '../../../../web-components/dynamic-form';
 })
 export class AddCustomExerciseDialogComponent extends BaseComponent implements OnInit {
 
-  private config: DataTableConfig<Exercise>;
-
   private workoutExerciseForm: FormConfig<Exercise>;
 
   /**
