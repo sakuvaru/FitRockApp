@@ -6,7 +6,6 @@ export class ExercisesOverviewMenuItem {
 
     constructor() {
         this.menuItems = [
-            new MenuItem({ key: 'menu.shared.back' }, 'arrow_back', MenuItemType.trainer, ''),
             new MenuItem({ key: 'module.exercises.myExercises' }, 'rowing', MenuItemType.trainer, 'exercises'),
             new MenuItem({ key: 'module.exercises.allExercises' }, 'list', MenuItemType.trainer, 'exercises/all'),
         ];
