@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ExerciseCategory, ExerciseCategoryListWithExercisesCount } from '../models';
-import { RepositoryClient, MultipleItemQuery } from '../../lib/repository';
+import { RepositoryClient, MultipleItemQueryCustom } from '../../lib/repository';
 import { BaseTypeService } from '../core';
 
 @Injectable()
@@ -13,8 +13,8 @@ export class ExerciseCategoryService extends BaseTypeService<ExerciseCategory>{
         })
     }
 
-    getCategoriesWithExercisesCount(exerciseName: string, takeAllExercises: boolean): MultipleItemQuery<ExerciseCategoryListWithExercisesCount>{
-        return this.itemsWithCustomModel<ExerciseCategoryListWithExercisesCount>()
+    getCategoriesWithExercisesCount(exerciseName: string, takeAllExercises: boolean): MultipleItemQueryCustom<ExerciseCategoryListWithExercisesCount>{
+        return this.customItems<ExerciseCategoryListWithExercisesCount>()
             .withCustomOption('exerciseName', exerciseName)
             .withCustomOption('takeAllExercises', takeAllExercises)
             .withCustomAction('GetCategoriesWithExercisesCount');

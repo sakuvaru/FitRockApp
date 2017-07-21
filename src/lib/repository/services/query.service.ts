@@ -117,6 +117,23 @@ export class QueryService {
     }
 
     // response methods
+    private getMultipleResponseCustom<TModel>(response: Response): ResponseMultiple<TModel> {
+        var responseMultiple = (response.json() || {}) as IResponseMultipleRaw;
+
+        return new ResponseMultiple<TModel>({
+            fromCache: responseMultiple.fromCache,
+            action: responseMultiple.action,
+            limit: responseMultiple.limit,
+            itemsPerPage: responseMultiple.itemsPerPage,
+            page: responseMultiple.page,
+            pages: responseMultiple.pages,
+            timeCreated: responseMultiple.timeCreated,
+            totalItems: responseMultiple.totalItems,
+            type: responseMultiple.type,
+            items: responseMultiple.items
+        });
+    }
+
     private getMultipleResponse<TItem extends IItem>(response: Response): ResponseMultiple<TItem> {
         var responseMultiple = (response.json() || {}) as IResponseMultipleRaw;
 
@@ -133,6 +150,18 @@ export class QueryService {
             totalItems: responseMultiple.totalItems,
             type: responseMultiple.type,
             items: items
+        });
+    }
+
+    private getSingleResponseCustom<TModel>(response: Response): ResponseSingle<TModel> {
+        var responseSingle = (response.json() || {}) as IResponseSingleRaw;
+
+        return new ResponseSingle<TModel>({
+            fromCache: responseSingle.fromCache,
+            action: responseSingle.action,
+            timeCreated: responseSingle.timeCreated,
+            type: responseSingle.type,
+            item: responseSingle.item
         });
     }
 
@@ -217,7 +246,23 @@ export class QueryService {
         });
     }
 
-    protected getMultiple<TItem extends IItem>(url: string, options?: IOption[]): Observable<ResponseMultiple<TItem>> {
+    protected getMultipleCustom<TModel>(url: string): Observable<ResponseMultiple<TModel>> {
+        // trigger request
+        this.startRequest();
+
+        return this.authHttp.get(url)
+            .map(response => {
+                return this.getMultipleResponseCustom(response)
+            })
+            .catch(response => {
+                return Observable.throw(this.handleError(response));
+            })
+            ._finally(() => {
+                this.finishRequest();
+            });
+    }
+
+    protected getMultiple<TItem extends IItem>(url: string): Observable<ResponseMultiple<TItem>> {
         // trigger request
         this.startRequest();
 
@@ -233,13 +278,29 @@ export class QueryService {
             });
     }
 
-    protected getSingle<TItem extends IItem>(url: string, options?: IOption[]): Observable<ResponseSingle<TItem>> {
+    protected getSingle<TItem extends IItem>(url: string): Observable<ResponseSingle<TItem>> {
         // trigger request
         this.startRequest();
 
         return this.authHttp.get(url)
             .map(response => {
                 return this.getSingleResponse(response)
+            })
+            .catch(response => {
+                return Observable.throw(this.handleError(response));
+            })
+            ._finally(() => {
+                this.finishRequest();
+            });
+    }
+
+    protected getSingleCustom<TModel>(url: string): Observable<ResponseSingle<TModel>> {
+        // trigger request
+        this.startRequest();
+
+        return this.authHttp.get(url)
+            .map(response => {
+                return this.getSingleResponseCustom(response)
             })
             .catch(response => {
                 return Observable.throw(this.handleError(response));
@@ -306,7 +367,7 @@ export class QueryService {
             });
     }
 
-     protected touchKey<T extends any>(url: string, cacheKeyType: string, itemId?: number): Observable<ResponsePost<T>> {
+    protected touchKey<T extends any>(url: string, cacheKeyType: string, itemId?: number): Observable<ResponsePost<T>> {
         // trigger request
         this.startRequest();
 

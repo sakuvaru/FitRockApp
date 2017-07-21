@@ -3,7 +3,7 @@ import { BaseTypeServiceConfig } from './base-type-service.config';
 
 import {
     PostQuery, RepositoryClient, IItem, SingleItemQueryInit, MultipleItemQuery, CreateItemQuery, EditItemQuery, DeleteItemQuery,
-    EditFormQuery, InsertFormQuery, TouchKeyQuery, CacheKeyType
+    EditFormQuery, InsertFormQuery, TouchKeyQuery, CacheKeyType, SingleItemQueryInitCustom, MultipleItemQueryCustom
 } from '../../../lib/repository';
 
 import { DynamicFormEditBuilder, DynamicFormInsertBuilder } from '../../../web-components/dynamic-form';
@@ -23,12 +23,16 @@ export abstract class BaseTypeService<TItem extends IItem>{
         return this.repositoryClient.items<TItem>(this.type)
     }
 
-    itemsWithCustomModel<TModel extends IItem>(): MultipleItemQuery<TModel> {
-        return this.repositoryClient.items<TModel>(this.type)
+    customItems<TModel extends IItem>(): MultipleItemQueryCustom<TModel> {
+        return this.repositoryClient.customItems<TModel>(this.type)
     }
 
     item(): SingleItemQueryInit<TItem> {
         return this.repositoryClient.item(this.type);
+    }
+
+    customItem(): SingleItemQueryInitCustom<TItem> {
+        return this.repositoryClient.customItem(this.type);
     }
 
     create(item: TItem): CreateItemQuery<TItem> {

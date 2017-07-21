@@ -3,7 +3,9 @@ import { IItem } from './interfaces/iitem.interface';
 import { AuthHttp } from 'angular2-jwt';
 import { RepositoryConfig } from './repository.config';
 import { SingleItemQueryInit } from './queries/get/single-item-query.class';
+import { SingleItemQueryInitCustom } from './queries/get/single-item-query-custom.class';
 import { MultipleItemQuery } from './queries/get/multiple-item-query.class';
+import { MultipleItemQueryCustom } from './queries/get/multiple-item-query-custom.class';
 import { CreateItemQuery } from './queries/manage/create-item-query.class';
 import { EditItemQuery } from './queries/manage/edit-item-query.class';
 import { DeleteItemQuery } from './queries/manage/delete-item-query.class';
@@ -40,8 +42,16 @@ export class RepositoryClient {
         return new MultipleItemQuery<TItem>(this.authHttp, this.config, type);
     }
 
+    customItems<TItem extends IItem>(type: string): MultipleItemQueryCustom<TItem> {
+        return new MultipleItemQueryCustom<TItem>(this.authHttp, this.config, type);
+    }
+
     item<TItem extends IItem>(type: string): SingleItemQueryInit<TItem> {
         return new SingleItemQueryInit<TItem>(this.authHttp, this.config, type);
+    }
+
+    customItem<TItem extends IItem>(type: string): SingleItemQueryInitCustom<TItem> {
+        return new SingleItemQueryInitCustom<TItem>(this.authHttp, this.config, type);
     }
 
     create<TItem extends IItem>(type: string, item: TItem): CreateItemQuery<TItem> {
@@ -78,7 +88,7 @@ export class RepositoryClient {
         return new EditFormQuery<TItem>(this.authHttp, this.config, type, itemId);
     }
 
-    mergeObservables(observables: Observable<any>[]): Observable<any>{
+    mergeObservables(observables: Observable<any>[]): Observable<any> {
         return this.queryService.mergeObservables(observables);
     }
 

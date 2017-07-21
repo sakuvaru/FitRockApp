@@ -13,15 +13,12 @@ import { IOption } from '../../interfaces/ioption.interface';
 import * as Options from '../../models/options';
 
 // responses
-import {
-    ResponseDelete, ResponseCreate, ErrorResponse, FormErrorResponse,
-    ResponseEdit, ResponseMultiple, ResponseSingle
-} from '../../models/responses';
+import { ResponseMultiple, ResponseSingle } from '../../models/responses';
 
 // rxjs
 import { Observable } from 'rxjs/Rx';
 
-export abstract class BaseItemQuery<TItem extends IItem> extends BaseQuery {
+export abstract class BaseItemQuery extends BaseQuery {
 
     abstract get(): any;
 
@@ -38,17 +35,17 @@ export abstract class BaseItemQuery<TItem extends IItem> extends BaseQuery {
 
     // options
 
-    orderBy(field: string): this{
+    orderBy(field: string): this {
         this._options.push(new Options.OrderBy(field));
         return this;
     }
 
-    orderByDescending(field: string): this{
+    orderByDescending(field: string): this {
         this._options.push(new Options.OrderByDescending(field));
         return this;
     }
 
-    disableCache(disableCache: boolean): this{
+    disableCache(disableCache: boolean): this {
         this._options.push(new Options.DisableCache(disableCache));
         return this;
     }
@@ -82,19 +79,7 @@ export abstract class BaseItemQuery<TItem extends IItem> extends BaseQuery {
         return this.getUrl(this.type, this._action, this._options);
     }
 
-    protected runSingleItemQuery(): Observable<ResponseSingle<TItem>> {
-        var url = this.getSingleItemQueryUrl();
-
-        return super.getSingle<TItem>(url);
-    }
-
     protected getMultipleItemsQueryUrl(): string {
         return this.getUrl(this.type, this._action, this._options);
-    }
-
-    protected runMultipleItemQuery(): Observable<ResponseMultiple<TItem>> {
-        var url = this.getMultipleItemsQueryUrl();
-
-        return super.getMultiple(url);
     }
 }

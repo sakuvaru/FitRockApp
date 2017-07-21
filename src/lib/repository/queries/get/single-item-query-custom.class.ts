@@ -6,7 +6,6 @@ import { AuthHttp } from 'angular2-jwt';
 
 // models
 import { BaseSingleItemQuery } from './base-single-item-query.class';
-import { IItem } from '../../interfaces/iitem.interface';
 
 // responses
 import { ResponseSingle } from '../../models/responses';
@@ -14,7 +13,7 @@ import { ResponseSingle } from '../../models/responses';
 // rxjs
 import { Observable } from 'rxjs/Rx';
 
-export class SingleItemQuery<TItem extends IItem> extends BaseSingleItemQuery {
+export class SingleItemQueryCustom<TModel> extends BaseSingleItemQuery {
 
     constructor(
         protected authHttp: AuthHttp,
@@ -28,9 +27,9 @@ export class SingleItemQuery<TItem extends IItem> extends BaseSingleItemQuery {
 
     // execution
 
-    get(): Observable<ResponseSingle<TItem>> {
+    get(): Observable<ResponseSingle<TModel>> {
         var url = super.getSingleItemQueryUrl();
-        return super.getSingle(url);
+        return super.getSingleCustom(url);
     }
 
     // debug
@@ -40,7 +39,7 @@ export class SingleItemQuery<TItem extends IItem> extends BaseSingleItemQuery {
     }
 }
 
-export class SingleItemQueryInit<TItem extends IItem> {
+export class SingleItemQueryInitCustom<TModel> {
     constructor(
         protected authHttp: AuthHttp,
         protected config: RepositoryConfig,
@@ -48,14 +47,14 @@ export class SingleItemQueryInit<TItem extends IItem> {
     ) {
     }
 
-    byId(id: number): SingleItemQuery<TItem> {
+    byId(id: number): SingleItemQueryCustom<TModel> {
         var action = 'getbyid/' + id;
 
-        return new SingleItemQuery(this.authHttp, this.config, this.type, action)
+        return new SingleItemQueryCustom(this.authHttp, this.config, this.type, action)
     }
 
-    withCustomAction(action: string): SingleItemQuery<TItem> {
-        return new SingleItemQuery(this.authHttp, this.config, this.type, action)
+    withCustomAction(action: string): SingleItemQueryCustom<TModel> {
+        return new SingleItemQueryCustom(this.authHttp, this.config, this.type, action)
     }
 }
 

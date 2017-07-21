@@ -60,13 +60,7 @@ export class FormErrorResponse implements IFormErrorResponseRaw {
     }
 }
 
-export class ResponseMultiple<T extends IItem> extends ResponseGetBase {
-
-    // base properties
-    public fromCache: boolean;
-    public timeCreated: Date;
-    public type: string;
-    public action: string;
+export class ResponseMultiple<T> extends ResponseGetBase {
 
     public itemsPerPage: number;
     public page: number;
@@ -105,12 +99,8 @@ export class ResponseMultiple<T extends IItem> extends ResponseGetBase {
     }
 }
 
-export class ResponseSingle<T extends IItem> extends ResponseGetBase {
-
-    public fromCache: boolean;
-    public timeCreated: Date;
-    public type: string;
-    public action: string;
+export class ResponseSingle<T> extends ResponseGetBase {
+   
     public item: T;
 
     constructor(

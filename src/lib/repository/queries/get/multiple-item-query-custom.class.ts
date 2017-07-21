@@ -14,7 +14,7 @@ import { ResponseMultiple } from '../../models/responses';
 // rxjs
 import { Observable } from 'rxjs/Rx';
 
-export class MultipleItemQuery<TItem extends IItem> extends BaseMultipleItemQuery {
+export class MultipleItemQueryCustom<TModel> extends BaseMultipleItemQuery {
 
     /**
      * Default action that will be called on server if none custom is specified
@@ -33,12 +33,13 @@ export class MultipleItemQuery<TItem extends IItem> extends BaseMultipleItemQuer
 
     // execution
 
-    get(): Observable<ResponseMultiple<TItem>> {
+    get(): Observable<ResponseMultiple<TModel>> {
         var url = this.getMultipleItemsQueryUrl();
-        return super.getMultiple(url);
+        return super.getMultipleCustom(url);
     }
 
     // debug
+
     toString(): string {
         return super.getMultipleItemsQueryUrl();
     }
