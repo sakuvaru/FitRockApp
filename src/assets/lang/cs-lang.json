@@ -24,13 +24,20 @@
     },
     "module": {
         "clients": {
+			"submenu":{
+				"workout": "Trénink"
+			},
             "newClient": "Nový klient",
             "viewClientSubtitle": "{{fullName}}",
 		    "clients": "Klienti",
             "allClients": "Všichni",
             "activeClients": "Aktivní",
             "inactiveClients": "Neaktivní",
-            "editClient": "Změna údajů"
+            "editClient": "Změna údajů",
+			"newWorkout": "Nový trénink",
+			"copy": "Zkopírovat",
+			"copyWorkoutLabel": "Tréninková šáblona",
+			"newWorkoutFromTemplate": "Zkopírovat trénink ze šablony"
         },
         "workouts":{
             "workoutName": "Trénink",

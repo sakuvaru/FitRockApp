@@ -23,8 +23,8 @@ export class ClientMenuItems {
             new MenuItem({ key: 'Profil' }, 'person', MenuItemType.trainer, 'profile'),
             new MenuItem({ key: 'Zprávy' }, 'mail', MenuItemType.trainer, 'messages'),
             new MenuItem({ key: 'Schůzky' }, 'schedule', MenuItemType.trainer, 'appointments'),
-            new MenuItem({ key: 'Trénink' }, 'fitness_center', MenuItemType.trainer, 'trainings'),
-            new MenuItem({ key: 'Jídelníček' }, 'free_breakfast', MenuItemType.trainer, 'trainings'),
+            new MenuItem({ key: 'module.clients.submenu.workout' }, 'fitness_center', MenuItemType.trainer, 'clients/edit/' + id + '/workout'),
+            new MenuItem({ key: 'Jídelníček' }, 'free_breakfast', MenuItemType.trainer, 'clients/edit/' + id + '/mealplan'),
             new MenuItem({ key: 'Statistiky' }, 'show_chart', MenuItemType.trainer, 'stats'),
             new MenuItem({ key: 'Fotogalerie' }, 'camera', MenuItemType.trainer, 'clients/galllery/' + id),
             new MenuItem({ key: 'Změna údajů' }, 'edit', MenuItemType.trainer, 'clients/edit/' + id)
