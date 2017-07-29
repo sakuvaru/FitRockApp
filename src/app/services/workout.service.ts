@@ -24,7 +24,7 @@ export class WorkoutService extends BaseTypeService<Workout>{
 
     clientHasAssignedWorkout(clientId: number): Observable<boolean> {
         return super.items()
-            //.whereEquals('ClientId', clientId)
+            .whereEquals('ClientId', clientId)
             .limit(1)
             .get()
             .map(response => !response.isEmpty());
