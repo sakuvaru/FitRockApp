@@ -32,4 +32,15 @@ export class ClientMenuItems {
     }
 }
 
+export class ClientEditWorkoutMenuItems {
+
+    menuItems: MenuItem[];
+
+    constructor(clientId: number) {
+        this.menuItems = [
+            new MenuItem({ key: 'menu.shared.back' }, 'arrow_back', MenuItemType.trainer, 'clients/edit/' + clientId + '/workout'),
+        ];
+    }
+}
+
 

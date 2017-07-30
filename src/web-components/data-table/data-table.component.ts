@@ -1,4 +1,4 @@
-import { Component, Input, Output, OnInit , OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, Output, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { MultipleItemQuery } from '../../lib/repository';
 import { DataTableConfig, Filter } from './data-table.config';
 import { Observable } from 'rxjs/Rx';
@@ -15,6 +15,9 @@ export class DataTableComponent implements OnInit, OnChanges {
     // data table config
     @Input() config: DataTableConfig<any>;
 
+    // hash of current data table config
+    private configHash: number;
+
     // resolved data
     private items: any[];
 
@@ -27,8 +30,13 @@ export class DataTableComponent implements OnInit, OnChanges {
     private totalPages: number;
     private currentPage: number = 1;
 
+    // local storage suffixes
+    private localStorageActiveFilter: string = 'data_table_active_filter';
+    private localStoragePage: string = 'data_table_page';
+    private localStorageSearchedData: string = 'data_table_searchedData';
+
     // search
-    private searchTerm: string = null;
+    private searchTerm: string;
 
     constructor(
         private translateService: TranslateService,
@@ -60,13 +68,24 @@ export class DataTableComponent implements OnInit, OnChanges {
                 });
             });
 
+            // init hash
+            this.configHash = this.config.getHash();
+
+            // init last filters state
+            if (this.config.saveLastFilter) {
+                this.initLastFilterState(this.configHash);
+            }
+
             // load items
-            this.filterItems(1);
+            this.filterItems(this.currentPage);
         }
     }
 
     // load methods
     private filterItems(page: number): void {
+        // save page to local storage
+        this.savePageToLocalStorage(this.configHash, page);
+
         if (this.config.onBeforeLoad) {
             this.config.onBeforeLoad();
         }
@@ -182,6 +201,10 @@ export class DataTableComponent implements OnInit, OnChanges {
         // set active filter
         this.activeFilterGuid = filterGuid;
 
+        // save filter to local storage
+        this.saveFilterToLocalStorage(this.configHash, filterGuid);
+        this.savePageToLocalStorage(this.configHash, 1);
+
         // filter items
         this.filterItems(1);
     }
@@ -213,7 +236,54 @@ export class DataTableComponent implements OnInit, OnChanges {
         // set search
         this.searchTerm = searchTerm;
 
+        // save search term to local storage
+        this.saveSearchedDataToLocalStorage(this.configHash, searchTerm);
+
         // search items
         this.filterItems(1);
+    }
+
+    // local storage & last state
+    private saveCurrentFilters(hash: number): void {
+        this.saveFilterToLocalStorage(hash, this.activeFilterGuid);
+        this.savePageToLocalStorage(hash, this.currentPage);
+        this.saveSearchedDataToLocalStorage(hash, this.searchTerm);
+    }
+
+    private initLastFilterState(hash: number): void {
+        this.activeFilterGuid = this.getFilterFromLocalStorage(hash);
+        this.currentPage = this.getPageFromLocalStorage(hash);
+        this.searchTerm = this.getSearchedDataFromLocalStorage(hash);
+    }
+
+    private getFilterFromLocalStorage(hash: number): string {
+        return localStorage.getItem(this.localStorageActiveFilter + '_' + hash);
+    }
+
+    private getPageFromLocalStorage(hash: number): number {
+        var page = +localStorage.getItem(this.localStoragePage + '_' + hash);
+
+        if (!page) {
+            // use first page if none is was set
+            return 1;
+        }
+
+        return page;
+    }
+
+    private getSearchedDataFromLocalStorage(hash: number): string {
+        return localStorage.getItem(this.localStorageSearchedData + '_' + hash);
+    }
+
+    private saveFilterToLocalStorage(hash: number, filterGuid: string) {
+        localStorage.setItem(this.localStorageActiveFilter + '_' + hash, filterGuid);
+    }
+
+    private savePageToLocalStorage(hash: number, page: number) {
+        localStorage.setItem(this.localStoragePage + '_' + hash, page.toString());
+    }
+
+    private saveSearchedDataToLocalStorage(hash: number, search: string) {
+        localStorage.setItem(this.localStorageSearchedData + '_' + hash, search);
     }
 }

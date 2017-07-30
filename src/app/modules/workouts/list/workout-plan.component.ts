@@ -44,7 +44,7 @@ export class WorkoutPlanComponent extends BaseComponent implements OnInit {
         .disableCache(false)
         .includeMultiple(['WorkoutCategory', 'WorkoutExercises', 'WorkoutExercises.Exercise', 'WorkoutExercises.Exercise.ExerciseCategory'])
         .get())
-        .takeUntil(this.ngUnsubscribe)
+      .takeUntil(this.ngUnsubscribe)
       .subscribe(response => {
         this.setConfig({
           menuItems: new WorkoutMenuItems(response.item.id).menuItems,
@@ -58,7 +58,8 @@ export class WorkoutPlanComponent extends BaseComponent implements OnInit {
 
         this.assignWorkout(response.item);
         super.stopLoader();
-      });
+      },
+      error => super.handleError(error));
   }
 
   private assignWorkout(workout: Workout): void {

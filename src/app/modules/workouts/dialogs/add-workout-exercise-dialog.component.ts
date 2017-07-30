@@ -58,7 +58,8 @@ export class AddWorkoutExerciseDialogComponent extends BaseComponent implements 
         }))
 
         this.workoutExerciseForm = form.build();
-      });
+      },
+      error => super.handleError(error));
   }
 
   private close(): void {

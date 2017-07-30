@@ -13,6 +13,7 @@ export class DeleteButtonComponent implements OnInit {
     private messageText: string;
     private cancelText: string;
     private confirmText: string;
+    private tooltipText: string;
 
     constructor(
         private dialogService: TdDialogService,
@@ -21,7 +22,7 @@ export class DeleteButtonComponent implements OnInit {
     ) {
     }
 
-    @Input() color: 'none' | 'warn' | 'accent' | 'primary' = 'warn';
+    @Input() color: 'none' | 'warn' | 'accent' | 'primary' = 'none';
 
     @Output() confirm = new EventEmitter();
 
@@ -30,9 +31,12 @@ export class DeleteButtonComponent implements OnInit {
         this.translateService.get('webComponents.buttons.deleteButton.title').subscribe(text => this.titleText = text);
         this.translateService.get('webComponents.buttons.deleteButton.cancel').subscribe(text => this.cancelText = text);
         this.translateService.get('webComponents.buttons.deleteButton.confirm').subscribe(text => this.confirmText = text);
+        this.translateService.get('webComponents.buttons.deleteButton.tooltip').subscribe(text => this.tooltipText = text);
     }
 
-    private handleClick(): void {
+    private handleClick(event: any): void {
+        event.stopPropagation(); // prevents issues if the clicked linked is within another link
+
         this.dialogService.openConfirm({
             message: this.messageText,
             disableClose: false, // defaults to false

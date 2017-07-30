@@ -27,12 +27,12 @@ export class QueryService {
     private mapService: MapService;
 
     // Observable string sources
-    private processingRequestSource = new Subject<boolean>();
-    private requestErrorSource = new Subject<ErrorResponse>();
+    public processingRequestSource = new Subject<boolean>();
+    public requestErrorSource = new Subject<ErrorResponse>();
 
     // Observable string streams
-    requestStateChanged$ = this.processingRequestSource.asObservable();
-    requestErrorChange$ = this.requestErrorSource.asObservable();
+    public requestStateChanged$ = this.processingRequestSource.asObservable();
+    public requestErrorChange$ = this.requestErrorSource.asObservable();
 
     constructor(
         protected authHttp: AuthHttp,

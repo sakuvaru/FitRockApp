@@ -13,7 +13,7 @@ import { RepositoryClient } from '../../../lib/repository';
 import { UserService, ExerciseCategoryService, ExerciseService, LogService, WorkoutCategoryService, WorkoutExerciseService, WorkoutService } from '../../services';
 
 // Angular material
-import { MdSnackBar } from '@angular/material';
+import { MdSnackBar, MdDialog } from '@angular/material';
 
 // Translation service
 import { TranslateService } from '@ngx-translate/core';
@@ -64,6 +64,7 @@ export class ComponentDependencyService {
         // md services (material design)
         this.mdServices = new MdServices();
         this.mdServices.snackbarService = injector.get(MdSnackBar);
+        this.mdServices.dialogService = injector.get(MdDialog);
 
         // web component services
         this.webComponentServices = new WebComponentServices();
@@ -102,7 +103,8 @@ export class CoreServices {
 }
 
 export class MdServices {
-    public snackbarService: MdSnackBar
+    public snackbarService: MdSnackBar;
+    public dialogService: MdDialog;
 }
 
 export class TdServices {

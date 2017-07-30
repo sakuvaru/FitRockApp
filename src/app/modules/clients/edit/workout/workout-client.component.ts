@@ -8,6 +8,8 @@ import { ClientMenuItems } from '../../menu.items';
 import { FormConfig } from '../../../../../web-components/dynamic-form';
 import { User, Workout } from '../../../../models';
 import 'rxjs/add/operator/switchMap';
+import { Observable } from 'rxjs/Rx';
+import * as _ from 'underscore';
 
 @Component({
     templateUrl: 'workout-client.component.html'
@@ -17,6 +19,9 @@ export class WorkoutClientComponent extends BaseComponent implements OnInit {
     private clientId: number;
     private workoutExists: boolean = true;
     private workoutTemplates: Workout[] = [];
+    private existingWorkouts: Workout[];
+    private observables: Observable<any>[] = [];
+    private observablesCompleted: number = 0;
 
     constructor(
         private activatedRoute: ActivatedRoute,
@@ -29,72 +34,128 @@ export class WorkoutClientComponent extends BaseComponent implements OnInit {
         super.ngOnInit();
         super.startLoader();
 
-        // client id
-        this.activatedRoute.params
-            .takeUntil(this.ngUnsubscribe)
-            .subscribe((params: Params) => this.clientId = +params['id']);
+        var joinedObservable = this.getJoinedObservable();
 
-        // load user
-        this.activatedRoute.params
+        joinedObservable
+            .takeUntil(this.ngUnsubscribe)
+            .subscribe(
+            () => {
+                this.observablesCompleted++;
+                if (this.observablesCompleted === this.observables.length) {
+                    super.stopLoader();
+                    this.observablesCompleted = 0;
+                }
+            }
+            ,
+            error => super.handleError(error));
+
+    }
+
+    private getJoinedObservable(): Observable<any> {
+        var obsClientId = this.activatedRoute.params
+            .takeUntil(this.ngUnsubscribe)
+            .map(params => this.clientId = +params['id']);
+
+
+        var obsClient = this.activatedRoute.params
             .takeUntil(this.ngUnsubscribe)
             .switchMap((params: Params) => this.dependencies.itemServices.userService.editForm(+params['id']))
-            .subscribe(form => {
-                var user = form.getItem();
+            .map(form => {
+                var client = form.getItem();
 
                 this.setConfig({
-                    menuItems: new ClientMenuItems(user.id).menuItems,
+                    menuItems: new ClientMenuItems(client.id).menuItems,
                     menuTitle: {
                         key: 'module.clients.viewClientSubtitle',
-                        data: { 'fullName': user.getFullName() }
+                        data: { 'fullName': client.getFullName() }
                     },
                     componentTitle: {
                         'key': 'module.clients.submenu.workout'
                     }
                 });
-
-
             });
 
-        // simultaneosly try to check if workout is assigned for given user
-        this.activatedRoute.params
+        var obsExistingExercises = this.existingWorkoutsObservable();
+
+        var varWorkoutTemplates = this.activatedRoute.params
             .takeUntil(this.ngUnsubscribe)
-            .switchMap((params: Params) => this.dependencies.itemServices.workoutService.clientHasAssignedWorkout(+params['id']))
-            .subscribe(workoutExists => {
-                this.workoutExists = workoutExists;
-                this.initNewWorkout();
-            });
-        super.stopLoader();
-    }
-
-    private initNewWorkout(): void {
-        this.dependencies.itemServices.workoutService.items()
-            .byCurrentUser()
-            .whereNullOrEmpty('ClientId')
-            .orderByAsc("WorkoutName")
-            .get()
-            .subscribe(response => {
+            .switchMap((params: Params) => this.dependencies.itemServices.workoutService.items()
+                .byCurrentUser()
+                .whereNullOrEmpty('ClientId')
+                .orderByAsc("WorkoutName")
+                .get())
+            .map(response => {
                 if (!response.isEmpty()) {
                     this.workoutTemplates = response.items;
                 }
-            })
+            });
+
+        this.observables.push(obsClientId);
+        this.observables.push(obsClient);
+        this.observables.push(obsExistingExercises);
+        this.observables.push(varWorkoutTemplates);
+
+        return this.dependencies.coreServices.repositoryClient.mergeObservables(this.observables);
     }
 
-    private initExistingWorkout(): void {
-
+    private existingWorkoutsObservable(): Observable<any> {
+        return this.activatedRoute.params
+            .takeUntil(this.ngUnsubscribe)
+            .switchMap((params: Params) => this.dependencies.itemServices.workoutService.items()
+                .byCurrentUser()
+                .whereEquals('ClientId', +params['id'])
+                .orderByAsc("WorkoutName")
+                .get())
+            .map(response => {
+                if (!response.isEmpty()) {
+                    this.existingWorkouts = response.items;
+                }
+            });
     }
 
     private newWorkoutFromTemplate(data: any): void {
         var selected = data.selected;
 
         if (!selected) {
-            console.log('no workout selected');
+            super.translate('module.clients.workoutNotSelected').subscribe(text => {
+                super.showErrorDialog(text)
+            });
         }
 
         var selectedWorkout = selected.value as Workout;
-        console.log(selectedWorkout);
+
+        super.startLoader();
+
         // copy data from selected workout to a new workout with assigned client
         this.dependencies.itemServices.workoutService.copyFromWorkout(selectedWorkout.id, this.clientId)
             .set()
-            .subscribe(response => console.log(response));
+            .subscribe(response => {
+                var obsExistingExercises = this.existingWorkoutsObservable();
+                obsExistingExercises.subscribe((response) => {
+                    super.stopLoader();
+                },
+                    error => super.handleError(error)
+                )
+            },
+            error => super.handleError(error)
+            );
+    }
+
+    private deleteWorkout(workout: Workout): void {
+        this.startGlobalLoader();
+        this.dependencies.itemServices.workoutService.delete(workout.id)
+            .set()
+            .do(() => this.startGlobalLoader())
+            .subscribe(response => {
+                // remove workout  from local variable
+                this.existingWorkouts = _.reject(this.existingWorkouts, function (item) { return item.id === response.deletedItemId; });
+
+                this.showSavedSnackbar();
+                this.stopGlobalLoader();
+            },
+            (error) => {
+                super.handleError(error);
+                this.stopGlobalLoader();
+            });
     }
 }

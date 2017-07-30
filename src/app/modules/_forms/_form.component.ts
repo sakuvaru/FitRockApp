@@ -21,7 +21,7 @@ export class FormComponent extends BaseComponent implements OnInit {
 
     ngOnInit() {
         super.ngOnInit();
-        
+
         this.startLoader();
 
         this.dependencies.itemServices.logService.insertForm()
@@ -31,7 +31,8 @@ export class FormComponent extends BaseComponent implements OnInit {
                 form.onAfterSave(() => this.stopGlobalLoader());
                 form.onError(() => super.stopGlobalLoader());
                 this.formInsertConfig = form.build();
-            });
+            },
+            error => super.handleError(error));
 
         this.dependencies.itemServices.logService.editForm(1)
             .subscribe(form => {
@@ -54,6 +55,7 @@ export class FormComponent extends BaseComponent implements OnInit {
                 });
 
                 this.formInsertConfig = form.build();
-            });
+            },
+            error => super.handleError(error));
     }
 }

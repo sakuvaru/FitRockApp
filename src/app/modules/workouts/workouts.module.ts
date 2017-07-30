@@ -6,7 +6,8 @@ import { RouterModule } from '@angular/router';
 import { CoreModule } from '../../core';
 
 // components
-import { WorkoutsOverviewComponent } from './list/workouts-overview.component';
+import { AllWorkoutsComponent } from './list/all-workouts.component';
+import { WorkoutTemplatesComponent } from './list/workout-templates.component';
 import { NewWorkoutComponent } from './new/new-workout.component';
 import { EditWorkoutComponent } from './edit/edit-workout.component';
 import { WorkoutPlanComponent } from './list/workout-plan.component';
@@ -34,7 +35,8 @@ import { SharedModule} from '../shared/shared.module';
         AddCustomExerciseDialogComponent // has to be added here because its created by another dialog
     ],
     declarations: [
-        WorkoutsOverviewComponent,
+        AllWorkoutsComponent,
+        WorkoutTemplatesComponent,
         NewWorkoutComponent,
         EditWorkoutComponent,
         WorkoutPlanComponent,

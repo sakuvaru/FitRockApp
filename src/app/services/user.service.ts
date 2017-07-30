@@ -15,7 +15,7 @@ export class UserService extends BaseTypeService<User>{
     constructor(repositoryClient: RepositoryClient) {
         super(repositoryClient, {
             type: 'User',
-            allowDelete: false
+            allowDelete: true
         })
     }
 

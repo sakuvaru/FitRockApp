@@ -13,14 +13,16 @@
         "forms": "Formulář"
     },
     "errors": {
-        "invalidLicense": "Pro tuto akci nemáš dostatečnou licenci"
+        "invalidLicense": "Pro tuto akci nemáš dostatečnou licenci",
+		"dialogErrorTitle": "Chyba",
+		"dialogDefaultError": "Nastala neočekávána chyba, zkus akci opakovat nebo se nám ozvi pokud chyba přetrvává"	
     },
     "shared": {
         "login": "Přihlášení",
         "search": "Hledat",
         "updated": "Poslední změna",
 		"close": "Zavřít",
-		"saved": "Uloženo"		
+		"saved": "Uloženo"
     },
     "module": {
         "clients": {
@@ -35,11 +37,17 @@
             "inactiveClients": "Neaktivní",
             "editClient": "Změna údajů",
 			"newWorkout": "Nový trénink",
+			"editWorkout": "Upravit trénink",
 			"copy": "Zkopírovat",
 			"copyWorkoutLabel": "Tréninková šáblona",
-			"newWorkoutFromTemplate": "Zkopírovat trénink ze šablony"
+			"newWorkoutFromTemplate": "Zkopírovat trénink ze šablony",
+			"workoutNotSelected": "Prosím vyber trénink"
         },
         "workouts":{
+			"submenu": {
+				"allWorkouts": "Všechny tréninky",
+				"workoutTemplates": "Šablony"
+			},
             "workoutName": "Trénink",
 			"editWorkout": "Změna tréninku",
 			"trainingPlans": "Tréninkové plány",
@@ -48,7 +56,6 @@
             "edit": "Základní údaje",
             "list": "Tréninkové plány",
             "overview": "Přehled",
-			"myTrainingPlans": "Moje tréninkové plány",
 			"previewWorkout": "Náhled šablony",
 			"reps": "Opakování",
 			"sets": "Série",
@@ -158,7 +165,8 @@
 			"message": "Opravdu smazat objekt?",
 			"title": "Potvrzení",
 			"confirm": "Smazat",
-			"cancel" : "Zrušit"
+			"cancel" : "Zrušit",
+			"tooltip" : "Smazat"
 			}			
 		}
     }

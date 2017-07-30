@@ -25,17 +25,11 @@ export class RepositoryClient {
 
     private queryService: QueryService;
 
-    // Observables
-    public requestStateChanged$: Observable<boolean>;
-    public requestErrorChange$: Observable<ErrorResponse>;
-
     constructor(
         protected authHttp: AuthHttp,
         protected config: RepositoryConfig
     ) {
         this.queryService = new QueryService(this.authHttp, this.config);
-        this.requestErrorChange$ = this.queryService.requestErrorChange$;
-        this.requestStateChanged$ = this.queryService.requestStateChanged$;
     }
 
     items<TItem extends IItem>(type: string): MultipleItemQuery<TItem> {

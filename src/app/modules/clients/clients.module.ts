@@ -15,6 +15,7 @@ import { EditClientComponent } from './edit/client/edit-client.component';
 import { ActiveClientsComponent } from './list/client/active-clients.component';
 import { InActiveClientsComponent } from './list/client/inactive-clients.component';
 import { WorkoutClientComponent } from './edit/workout/workout-client.component';
+import { WorkoutClientEditComponent } from './edit/workout/workout-client-edit.component';
 
 // router
 import { ClientsRouter } from './clients.routing';
@@ -38,7 +39,8 @@ import { SharedModule} from '../shared/shared.module';
         EditClientComponent,
         ActiveClientsComponent,
         InActiveClientsComponent,
-        WorkoutClientComponent
+        WorkoutClientComponent,
+        WorkoutClientEditComponent
     ]
 })
 export class ClientsModule { }
