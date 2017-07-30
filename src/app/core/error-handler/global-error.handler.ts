@@ -25,17 +25,39 @@ export class GlobalErrorHandler implements ErrorHandler {
         var url = location instanceof PathLocationStrategy ? location.path() : '';
         var userName = authService.isAuthenticated() ? authService.getCurrentUser().email : '';
 
+        try {
+            // get the stack trace, lets grab the last 
+            StackTrace.fromError(error).then(stackframes => {
+                const stackString = stackframes
+                    .splice(0, 50)
+                    .map(function (sf) {
+                        return sf.toString();
+                    }).join('\n');
 
-        // get the stack trace, lets grab the last 10 stacks only
-        StackTrace.fromError(error).then(stackframes => {
-            const stackString = stackframes
-                .splice(0, 20)
-                .map(function (sf) {
-                    return sf.toString();
-                }).join('\n');
+                // log on the server
+                logService.logError(message, url, userName, stackString)
+                    .subscribe((response) => {
+                        // notify shared service about the error
+                        sharedService.setError(response.item);
 
-            // log on the server
-            logService.logError(message, url, userName, stackString)
+                        if (!AppConfig.DevModeEnabled) {
+                            this.navigateToErrorPage(response.item.guid);
+                        }
+                    },
+                    (error) => {
+                        // notify shared service about the error
+                        sharedService.setError(new Log().errorMessage = error);
+
+                        if (!AppConfig.DevModeEnabled) {
+                            // redirect only if dev mode is disabled
+                            this.navigateToErrorPage();
+                        }
+                    });
+            });
+        }
+        catch (error) {
+            // parsing error failed, log raw error message
+            logService.logError(message, url, userName, error)
                 .subscribe((response) => {
                     // notify shared service about the error
                     sharedService.setError(response.item);
@@ -53,7 +75,7 @@ export class GlobalErrorHandler implements ErrorHandler {
                         this.navigateToErrorPage();
                     }
                 });
-        });
+        }
 
         throw error;
         //console.error(error);

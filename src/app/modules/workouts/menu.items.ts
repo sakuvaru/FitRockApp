@@ -6,7 +6,8 @@ export class WorkoutsOverviewMenuItems {
 
     constructor() {
         this.menuItems = [
-            new MenuItem({ key: 'module.workouts.myTrainingPlans' }, 'fitness_center', MenuItemType.trainer, 'workouts'),
+            new MenuItem({ key: 'module.workouts.submenu.workoutTemplates' }, 'fitness_center', MenuItemType.trainer, 'workouts'),
+            new MenuItem({ key: 'module.workouts.submenu.allWorkouts' }, 'fitness_center', MenuItemType.trainer, 'workouts/all'),
         ];
     }
 }

@@ -2,7 +2,7 @@ import { TypeResolver } from './models/type-resolver.class';
 
 export class RepositoryConfig {
 
-    public logErrorsToConsole: boolean = true;
+    public logErrorsToConsole: boolean = false;
 
     constructor(
         public apiUrl: string,

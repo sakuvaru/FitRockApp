@@ -65,6 +65,11 @@ export abstract class BaseItemQuery extends BaseQuery {
         return this;
     }
 
+     whereNullOrEmpty(field: string): this {
+        this._options.push(new Options.WhereNullOrEmpty(field));
+        return this;
+    }
+
     whereLike(field: string, value: string | number | boolean): this {
         this._options.push(new Options.WhereLike(field, value));
         return this;

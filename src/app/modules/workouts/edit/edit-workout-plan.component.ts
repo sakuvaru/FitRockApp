@@ -103,6 +103,7 @@ export class EditWorkoutPlanComponent extends BaseComponent implements OnInit, O
         this.stopGlobalLoader();
       },
       (error) => {
+        super.handleError(error);
         this.stopGlobalLoader();
       });
   }

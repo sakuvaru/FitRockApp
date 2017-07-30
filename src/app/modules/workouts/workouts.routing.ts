@@ -7,10 +7,13 @@ import { AuthGuardService } from '../../../lib/auth';
 // config
 import { UrlConfig } from '../../core';
 
-// workouts
+// shared templates
 import { SimpleLayoutComponent } from '../../layouts/simple-layout.component';
 import { AdminLayoutComponent } from '../../layouts/admin-layout.component';
-import { WorkoutsOverviewComponent } from './list/workouts-overview.component';
+
+// workouts
+import { AllWorkoutsComponent } from './list/all-workouts.component';
+import { WorkoutTemplatesComponent } from './list/workout-templates.component';
 import { NewWorkoutComponent } from './new/new-workout.component';
 import { EditWorkoutComponent } from './edit/edit-workout.component';
 import { WorkoutPlanComponent } from './list/workout-plan.component';
@@ -24,7 +27,10 @@ const routes: Routes = [
         // workouts
         path: UrlConfig.TrainerMasterPath, component: AdminLayoutComponent, canActivate: [AuthGuardService], children: [
             {
-                path: 'workouts', component: WorkoutsOverviewComponent
+                path: 'workouts', component: WorkoutTemplatesComponent
+            },
+            {
+                path: 'workouts/all', component: AllWorkoutsComponent
             },
             {
                 path: 'workouts/new', component: NewWorkoutComponent

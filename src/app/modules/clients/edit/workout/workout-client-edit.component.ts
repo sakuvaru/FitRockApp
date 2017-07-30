@@ -1,20 +1,21 @@
 // common
-import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
+import { Component, Input, Output, OnInit, EventEmitter, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { AppConfig, ComponentDependencyService, BaseComponent } from '../../../../core';
 
 // required by component
-import { ClientMenuItems } from '../../menu.items';
+import { ClientEditWorkoutMenuItems } from '../../menu.items';
 import { FormConfig } from '../../../../../web-components/dynamic-form';
-import { User } from '../../../../models';
+import { Workout } from '../../../../models';
 import 'rxjs/add/operator/switchMap';
 
 @Component({
-    templateUrl: 'edit-client.component.html'
+    templateUrl: 'workout-client-edit.component.html'
 })
-export class EditClientComponent extends BaseComponent implements OnInit {
+export class WorkoutClientEditComponent extends BaseComponent implements OnInit {
 
-    private formConfig: FormConfig<User>;
+    private formConfig: FormConfig<Workout>;
+    private clientId: number;
 
     constructor(
         private activatedRoute: ActivatedRoute,
@@ -30,30 +31,32 @@ export class EditClientComponent extends BaseComponent implements OnInit {
 
         this.activatedRoute.params
             .takeUntil(this.ngUnsubscribe)
-            .switchMap((params: Params) => this.dependencies.itemServices.userService.editForm(+params['id']))
+            .switchMap((params: Params) => {
+                this.clientId = +params['id'];
+                return this.dependencies.itemServices.workoutService.editForm(+params['workoutId']).takeUntil(this.ngUnsubscribe);
+            })
             .subscribe(form => {
                 form.onFormLoaded(() => super.stopLoader());
                 form.onBeforeSave(() => super.startGlobalLoader());
                 form.onAfterSave(() => super.stopGlobalLoader());
                 form.onError(() => super.stopGlobalLoader());
-                form.onAfterDelete(() => super.navigate([this.getTrainerUrl('clients')]));
-
-                var user = form.getItem();
+                form.onAfterDelete(() => super.navigate([super.getTrainerUrl('clients/edit/' + this.clientId + '/workout')]));
+                var workout = form.getItem();
 
                 this.setConfig({
-                    menuItems: new ClientMenuItems(user.id).menuItems,
+                    menuItems: new ClientEditWorkoutMenuItems(this.clientId).menuItems,
                     menuTitle: {
-                        key: 'module.clients.viewClientSubtitle',
-                        data: { 'fullName': user.getFullName() }
+                        key: 'module.clients.editWorkout'
                     },
                     componentTitle: {
-                        'key': 'module.clients.editClient'
+                        key: workout.workoutName
                     }
                 });
 
                 // get form
                 this.formConfig = form.build();
-            },
+            }
+            ,
             error => super.handleError(error));
     }
 }

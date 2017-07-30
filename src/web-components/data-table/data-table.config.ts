@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs/Observable';
 import { MultipleItemQuery, IItem, ResponseMultiple } from '../../lib/repository';
 import { DataTableField } from './data-table-field.class';
-import { Guid } from '../../lib/utilities';
+import { Guid, StringHelper } from '../../lib/utilities';
 
 export class DataTableConfig<TItem extends IItem> {
 
@@ -12,6 +12,7 @@ export class DataTableConfig<TItem extends IItem> {
     public searchNoItemsTextKey: string = 'webComponents.dataTable.noSearchResultsText'
     public noItemsTextKey: string = 'webComponents.dataTable.noResultsText';
     public showAllFilter: boolean = false;
+    public saveLastFilter: boolean = true;
 
     public loadResolver: (query: MultipleItemQuery<TItem>) => Observable<ResponseMultiple<TItem>>;
     public loadQuery: (searchTerm: string) => MultipleItemQuery<TItem>;
@@ -50,6 +51,7 @@ export class DataTableConfig<TItem extends IItem> {
             selectableConfig?: SelectableConfig<TItem>,
             pagerConfig?: PagerConfig,
             showAllFilter: boolean,
+            saveLastFilter: boolean,
             dynamicFilters?: <TFilter extends Filter<IItem>>(searchTerm: string) => Observable<Filter<IItem>[]>
         }) {
         Object.assign(this, options);
@@ -61,6 +63,18 @@ export class DataTableConfig<TItem extends IItem> {
 
     isClickable(): boolean {
         return !(!this.onClick);
+    }
+
+    getHash(): number{
+        var allProperties = Object.getOwnPropertyNames(this);
+        var fullText = '';
+        allProperties.forEach(property => {
+            var propertyValue = this[property];
+            if (propertyValue){
+                fullText +=  property + '=' + propertyValue;
+            }
+        })
+        return StringHelper.getHash(fullText);
     }
 }
 

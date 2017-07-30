@@ -125,6 +125,7 @@ export class DataTableLayoutHeader {
 })
 export class DataTableLayoutSearch implements OnInit {
     @Input() config: DataTableConfig<any>;
+    @Input() searchTerm: string;
 
     @Output() search = new EventEmitter<string>();
 

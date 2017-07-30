@@ -19,13 +19,13 @@ export class NewWorkoutComponent extends BaseComponent implements OnInit {
         protected componentDependencyService: ComponentDependencyService) {
         super(componentDependencyService)
     }
-    
+
     ngOnInit() {
         super.ngOnInit();
-        
+
         this.startLoader();
 
-          this.setConfig({
+        this.setConfig({
             componentTitle: { key: 'module.workouts.newWorkout' },
             menuItems: new WorkoutsOverviewMenuItems().menuItems
         });
@@ -41,6 +41,7 @@ export class NewWorkoutComponent extends BaseComponent implements OnInit {
                 form.onError(() => super.stopGlobalLoader());
 
                 this.formConfig = form.build();
-            });
+            },
+            error => super.handleError(error));
     }
 }

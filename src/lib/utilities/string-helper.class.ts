@@ -21,4 +21,20 @@ export class StringHelper {
         }
         return text.charAt(0).toUpperCase() + text.slice(1);
     }
+
+
+    /**
+     * Gets hash from given string
+     * @param text text to hash
+     */
+    static getHash(text: string): number {
+        var hash = 0, i, chr;
+        if (!text) return hash;
+        for (i = 0; i < text.length; i++) {
+            chr = text.charCodeAt(i);
+            hash = ((hash << 5) - hash) + chr;
+            hash |= 0; // Convert to 32bit integer
+        }
+        return hash;
+    }
 }

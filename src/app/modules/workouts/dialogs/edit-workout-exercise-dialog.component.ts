@@ -56,7 +56,8 @@ export class EditWorkoutExerciseDialogComponent extends BaseComponent implements
 
         this.workoutExerciseForm = form.build();
         super.stopGlobalLoader();
-      });
+      },
+      error => super.handleError(error));
   }
 
   private close(): void {

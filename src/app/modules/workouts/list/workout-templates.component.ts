@@ -9,9 +9,9 @@ import { DataTableConfig, AlignEnum, Filter } from '../../../../web-components/d
 import { Workout, WorkoutCategoryListWithWorkoutsCount } from '../../../models';
 
 @Component({
-  templateUrl: 'workouts-overview.component.html'
+  templateUrl: 'workout-templates.component.html'
 })
-export class WorkoutsOverviewComponent extends BaseComponent implements OnInit {
+export class WorkoutTemplatesComponent extends BaseComponent implements OnInit {
 
   private config: DataTableConfig<Workout>;
 
@@ -26,22 +26,8 @@ export class WorkoutsOverviewComponent extends BaseComponent implements OnInit {
     this.setConfig({
       menuTitle: { key: 'menu.workouts' },
       menuItems: new WorkoutsOverviewMenuItems().menuItems,
-      componentTitle: { key: 'module.workouts.overview' },
+      componentTitle: { key: 'module.workouts.submenu.workoutTemplates' },
     });
-
-    /*
-    this.dependencies.itemServices.workoutCategoryService.getCategoriesWithWorkoutsCount()
-      .get()
-      .takeUntil(this.ngUnsubscribe)
-      .subscribe(response => {
-        var filters: Filter<Workout>[] = [];
-        response.items.forEach(category => {
-          filters.push({filterNameKey: category.codename, onFilter: (query) => query.whereEquals('WorkoutCategoryId', category.id)});
-        });
-
-        this.initDataTable(filters);
-      });
-      */
 
     this.initDataTable();
   }
@@ -61,6 +47,7 @@ export class WorkoutsOverviewComponent extends BaseComponent implements OnInit {
           .include('WorkoutCategory')
           .byCurrentUser()
           .whereLike('WorkoutName', searchTerm)
+          .whereNullOrEmpty('ClientId')
       })
       .loadResolver(query => {
         return query
@@ -68,7 +55,7 @@ export class WorkoutsOverviewComponent extends BaseComponent implements OnInit {
           .takeUntil(this.ngUnsubscribe)
       })
       .dynamicFilters((searchTerm) => {
-        return this.dependencies.itemServices.workoutCategoryService.getCategoriesWithWorkoutsCount(searchTerm)
+        return this.dependencies.itemServices.workoutCategoryService.getCategoriesWithWorkoutTemplatesCount(searchTerm)
           .get()
           .map(response => {
             var filters: Filter<WorkoutCategoryListWithWorkoutsCount>[] = [];

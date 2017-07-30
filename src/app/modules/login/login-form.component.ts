@@ -36,7 +36,9 @@ export class LoginFormComponent extends BaseComponent {
             .takeUntil(this.ngUnsubscribe)
             .subscribe((fragment: string) => {
                 this.processFailedLogonRedirect()
-            });
+            }
+            ,
+            error => super.handleError(error));
     }
 
     private processFailedLogonRedirect() {

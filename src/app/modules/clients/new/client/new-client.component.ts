@@ -22,7 +22,7 @@ export class NewClientComponent extends BaseComponent implements OnInit {
 
     ngOnInit(): void {
         super.ngOnInit();
-        
+
         super.startLoader();
 
         this.setConfig({
@@ -45,6 +45,8 @@ export class NewClientComponent extends BaseComponent implements OnInit {
                 })
 
                 this.formConfig = form.build();
-            });
+            }
+            ,
+            error => super.handleError(error));
     }
 }

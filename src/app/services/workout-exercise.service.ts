@@ -8,14 +8,14 @@ import { Observable } from 'rxjs/RX';
 export class WorkoutExerciseService extends BaseTypeService<WorkoutExercise>{
 
     constructor(repositoryClient: RepositoryClient) {
-        super (repositoryClient, {
+        super(repositoryClient, {
             type: 'WorkoutExercise',
             allowDelete: true
         })
     }
 
-    addWorkoutExercise(exerciseId: number, workoutId: number): Observable<ResponseCreate<WorkoutExercise>>{
-        if (!exerciseId || !workoutId){
+    addWorkoutExercise(exerciseId: number, workoutId: number): Observable<ResponseCreate<WorkoutExercise>> {
+        if (!exerciseId || !workoutId) {
             throw Error(`Invalid parameters for 'addWorkoutExercise' method`);
         }
 
@@ -25,13 +25,5 @@ export class WorkoutExerciseService extends BaseTypeService<WorkoutExercise>{
         workoutExercise.exerciseId = exerciseId;
 
         return this.create(workoutExercise).set();
-    }
-
-    removeWorkoutExercise(exerciseId: number, workoutId: number): Observable<ResponsePost<any>>{
-        if (!exerciseId || !workoutId){
-            throw Error(`Invalid parameters for 'addWorkoutExercise' method`);
-        }
-        
-        return this.post('RemoveWorkoutExercise').withJsonData({'exerciseId': exerciseId, 'workoutId': workoutId}).set();
     }
 }

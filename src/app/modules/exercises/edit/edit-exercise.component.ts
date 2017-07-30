@@ -10,7 +10,7 @@ import { Exercise } from '../../../models';
 import 'rxjs/add/operator/switchMap';
 
 @Component({
-   templateUrl: 'edit-exercise.component.html'
+    templateUrl: 'edit-exercise.component.html'
 })
 export class EditExerciseComponent extends BaseComponent implements OnInit {
 
@@ -54,6 +54,8 @@ export class EditExerciseComponent extends BaseComponent implements OnInit {
 
                 // get form
                 this.formConfig = form.build();
-            });
+            }
+            ,
+            error => super.handleError(error));
     }
 }

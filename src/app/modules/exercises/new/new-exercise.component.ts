@@ -43,6 +43,7 @@ export class NewExerciseComponent extends BaseComponent implements OnInit {
                 });
 
                 this.formConfig = form.build();
-            });
+            },
+            error => super.handleError(error));
     }
 }

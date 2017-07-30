@@ -29,7 +29,7 @@ export class AddCustomExerciseDialogComponent extends BaseComponent implements O
 
   ngOnInit() {
     super.ngOnInit();
-    
+
     super.startGlobalLoader();
 
     this.dependencies.itemServices.exerciseService.insertForm()
@@ -46,7 +46,8 @@ export class AddCustomExerciseDialogComponent extends BaseComponent implements O
         }))
 
         this.workoutExerciseForm = form.build();
-      });
+      },
+      error => super.handleError(error));
   }
 
   private close(): void {

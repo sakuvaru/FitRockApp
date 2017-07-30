@@ -29,6 +29,11 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
 
     // translations
     private snackbarSavedText: string;
+    private dialogErrorTitle: string;
+    private dialogDefaultError: string;
+    private dialogCloseButton: string;
+    private dialogDynamicTranslationMessage: string;
+    private dialogDynamicTranslationTitle: string;
 
     // component config
     protected componentConfig: ComponentConfig = new ComponentConfig();
@@ -54,16 +59,8 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
         // the lang to use, if the lang isn't available, it will use the current loader to get them
         this.dependencies.coreServices.translateService.use(this.dependencies.coreServices.translateService.getBrowserLang());
 
-        // translate snackbar
+        // translations
         this.dependencies.coreServices.translateService.get('shared.saved').subscribe(text => this.snackbarSavedText = text);
-
-        // suscribe to errors in repository service and handle them
-        this.dependencies.coreServices.repositoryClient.requestErrorChange$
-            .takeUntil(this.ngUnsubscribe)
-            .subscribe(
-            error => {
-                this.handleRepositoryError(error);
-            });
     }
 
     // ----------------------- Lifecycle Events --------------------- // 
@@ -154,13 +151,37 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
         this.dependencies.coreServices.sharedService.setComponentConfig(this.componentConfig);
     }
 
-    // --------------------- Private methods -------------- // 
+    // --------------------- Error handlers -------------- // 
 
-    private handleRepositoryError(error: ErrorResponse) {
-        // handle license error
-        if (error.reason == ErrorReasonEnum.LicenseLimitation) {
-            console.log("YOU DONT HAVE LICENSE FOR THIS ACTION, TODO");
+    protected handleError(error: any): void {
+        if (AppConfig.DevModeEnabled) {
+            // log errors to console in dev mode
+            console.error(error);
         }
+
+        if (error instanceof ErrorResponse) {
+            // handle license error
+            if (error.reason == ErrorReasonEnum.LicenseLimitation) {
+                this.showErrorDialog('errors.invalidLicense');
+            }
+        }
+        else {
+            // handle unknown error
+            this.showErrorDialog();
+        }
+
+        // stop all loaders
+        this.stopGlobalLoader();
+        this.stopLoader();
+    }
+
+    /**
+     * Error that could not be handled in any other way
+     * @param error Error
+     */
+    protected handleFatalError(error: any): void {
+        console.error('Fatal error:');
+        console.error(error);
     }
 
     // --------------- Snackbar ------------------- //
@@ -189,5 +210,50 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
 
     getTrainerUrl(action?: string): string {
         return '/' + UrlConfig.getTrainerUrl(action);
+    }
+
+    // --------------- Dialogs ------------------- //
+
+    showErrorDialog(key?: string): void {
+        var useKey = !key ? 'errors.dialogDefaultError' : key;
+        var titleKey = 'errors.dialogErrorTitle';
+
+        this.showDialog(useKey, titleKey);
+    }
+
+    showDialog(messageKey: string, titleKey?: string): void {
+        // reset current translations
+        this.dialogDynamicTranslationMessage = null;
+        this.dialogDynamicTranslationTitle = null;
+
+        var observables: Observable<any>[] = [];
+
+        observables.push(this.translate(messageKey).map(text => this.dialogDynamicTranslationMessage = text));
+
+        if (titleKey) {
+            observables.push(this.translate(titleKey).map(text => this.dialogDynamicTranslationTitle = text));
+        }
+
+        if (!this.dialogCloseButton) {
+            observables.push(this.translate('shared.close').map(text => this.dialogCloseButton = text));
+        }
+
+        var mergedObservable = this.dependencies.coreServices.repositoryClient.mergeObservables(observables);
+
+        mergedObservable.subscribe(
+            () => Function(),
+            (error) => this.handleFatalError(error),
+            () => {
+                this.dependencies.tdServices.dialogService.openAlert({
+                    message: this.dialogDynamicTranslationMessage,
+                    title: this.dialogDynamicTranslationTitle,
+                    closeButton: this.dialogCloseButton
+                });
+            })
+    }
+
+    // --------------- Translation helper ---------- //
+    translate(key: string, data?: any): Observable<string> {
+        return this.dependencies.coreServices.translateService.get(key, data);
     }
 }

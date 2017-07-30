@@ -186,6 +186,24 @@ export class WhereEquals implements IOption {
     }
 }
 
+export class WhereNullOrEmpty implements IOption {
+    constructor(
+        public field: string,
+    ) {
+        if (!field) {
+            throw Error(`Field cannot be null in 'WhereEquals' otion`);
+        }
+    }
+
+    public GetParam(): string {
+        return 'whereequals.' + this.field.trim();
+    }
+
+    public GetParamValue(): string {
+        return '';
+    }
+}
+
 export class WhereLike implements IOption {
     constructor(
         public field: string,
