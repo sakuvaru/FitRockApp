@@ -5,8 +5,9 @@ import { AppConfig, ComponentDependencyService, BaseComponent, ComponentConfig }
 
 // required by component
 import { ClientOverviewMenuItems } from '../../menu.items';
-import { DataTableConfig, AlignEnum } from '../../../../../web-components/data-table';
-import { User } from '../../../../models';
+import { DataTableConfig, AlignEnum, Filter } from '../../../../../web-components/data-table';
+import { User, UserFilterWithCount } from '../../../../models';
+import { MultipleItemQuery } from '../../../../../lib/repository';
 
 @Component({
   templateUrl: 'clients-overview.component.html'
@@ -47,6 +48,9 @@ export class ClientsOverviewComponent extends BaseComponent implements OnInit {
       .onAfterLoad(() => {
         super.stopLoader();
       })
+      .showAllFilter(true)
+      .filter(new Filter({ filterNameKey: 'module.clients.activeClients', onFilter: query => query.whereEquals('IsActive', true) }))
+      .filter(new Filter({ filterNameKey: 'module.clients.inactiveClients', onFilter: query => query.whereEquals('IsActive', false) }))
       .showPager(true)
       .showSearch(true)
       .pagerSize(7)

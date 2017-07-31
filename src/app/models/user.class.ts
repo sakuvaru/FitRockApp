@@ -23,3 +23,8 @@ export class User extends BaseItem {
         return this.firstName + ' ' + this.lastName;
     }
 }
+
+export class UserFilterWithCount {
+    public filter: string;
+    public userCount: number;
+}

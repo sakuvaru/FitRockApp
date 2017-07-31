@@ -14,8 +14,6 @@ import { AdminLayoutComponent } from '../../layouts/admin-layout.component';
 import { ClientsOverviewComponent } from './list/client/clients-overview.component';
 import { NewClientComponent } from './new/client/new-client.component';
 import { EditClientComponent } from './edit/client/edit-client.component';
-import { ActiveClientsComponent } from './list/client/active-clients.component';
-import { InActiveClientsComponent } from './list/client/inactive-clients.component';
 import { WorkoutClientComponent } from './edit/workout/workout-client.component';
 import { WorkoutClientEditComponent } from './edit/workout/workout-client-edit.component';
 
@@ -30,12 +28,6 @@ const routes: Routes = [
             },
             {
                 path: 'clients/edit/:id', component: EditClientComponent
-            },
-            {
-                path: 'clients/active', component: ActiveClientsComponent
-            },
-            {
-                path: 'clients/inactive', component: InActiveClientsComponent
             },
             {
                 path: 'clients/edit/:id/workout', component: WorkoutClientComponent

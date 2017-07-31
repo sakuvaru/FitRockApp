@@ -36,16 +36,16 @@ export class RepositoryClient {
         return new MultipleItemQuery<TItem>(this.authHttp, this.config, type);
     }
 
-    customItems<TItem extends IItem>(type: string): MultipleItemQueryCustom<TItem> {
-        return new MultipleItemQueryCustom<TItem>(this.authHttp, this.config, type);
+    customItems<TAny>(type: string): MultipleItemQueryCustom<TAny> {
+        return new MultipleItemQueryCustom<TAny>(this.authHttp, this.config, type);
     }
 
     item<TItem extends IItem>(type: string): SingleItemQueryInit<TItem> {
         return new SingleItemQueryInit<TItem>(this.authHttp, this.config, type);
     }
 
-    customItem<TItem extends IItem>(type: string): SingleItemQueryInitCustom<TItem> {
-        return new SingleItemQueryInitCustom<TItem>(this.authHttp, this.config, type);
+    customItem<TAny>(type: string): SingleItemQueryInitCustom<TAny> {
+        return new SingleItemQueryInitCustom<TAny>(this.authHttp, this.config, type);
     }
 
     create<TItem extends IItem>(type: string, item: TItem): CreateItemQuery<TItem> {

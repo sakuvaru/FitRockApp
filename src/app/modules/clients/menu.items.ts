@@ -7,8 +7,6 @@ export class ClientOverviewMenuItems {
     constructor() {
         this.menuItems = [
             new MenuItem({ key: 'module.clients.allClients' }, 'people', MenuItemType.trainer, 'clients'),
-            new MenuItem({ key: 'module.clients.activeClients' }, 'star', MenuItemType.trainer, 'clients/active'),
-            new MenuItem({ key: 'module.clients.inactiveClients' }, 'not_interested', MenuItemType.trainer, 'clients/inactive')
         ];
     }
 }

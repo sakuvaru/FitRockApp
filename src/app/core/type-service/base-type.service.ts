@@ -23,16 +23,16 @@ export abstract class BaseTypeService<TItem extends IItem>{
         return this.repositoryClient.items<TItem>(this.type)
     }
 
-    customItems<TModel extends IItem>(): MultipleItemQueryCustom<TModel> {
-        return this.repositoryClient.customItems<TModel>(this.type)
+    customItems<TAny>(): MultipleItemQueryCustom<TAny> {
+        return this.repositoryClient.customItems<TAny>(this.type)
     }
 
     item(): SingleItemQueryInit<TItem> {
-        return this.repositoryClient.item(this.type);
+        return this.repositoryClient.item<TItem>(this.type);
     }
 
-    customItem(): SingleItemQueryInitCustom<TItem> {
-        return this.repositoryClient.customItem(this.type);
+    customItem<TAny>(): SingleItemQueryInitCustom<TAny> {
+        return this.repositoryClient.customItem<TAny>(this.type);
     }
 
     create(item: TItem): CreateItemQuery<TItem> {

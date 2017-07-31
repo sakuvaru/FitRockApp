@@ -4,9 +4,9 @@ import { Observable } from 'rxjs/Observable';
 import { BaseTypeService } from '../core';
 
 // required by service
-import { User } from '../models';
+import { User, UserFilterWithCount } from '../models';
 
-import { RepositoryClient, MultipleItemQuery, CreateItemQuery, ResponseSingle } from '../../lib/repository';
+import { RepositoryClient, MultipleItemQuery, CreateItemQuery, ResponseSingle, MultipleItemQueryCustom } from '../../lib/repository';
 
 
 @Injectable()
@@ -29,5 +29,12 @@ export class UserService extends BaseTypeService<User>{
 
     getAuthUser(): Observable<ResponseSingle<User>> {
         return this.item().withCustomAction('getAuthUser').get();
+    }
+
+     GetUserFiltersCount(firstName: string, lastName: string): MultipleItemQueryCustom<UserFilterWithCount> {
+        return this.customItems<UserFilterWithCount>()
+            .withCustomOption('firstName', firstName)
+            .withCustomOption('lastName', lastName)
+            .withCustomAction('GetUserFiltersCount');
     }
 }
