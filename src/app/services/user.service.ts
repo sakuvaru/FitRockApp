@@ -23,6 +23,10 @@ export class UserService extends BaseTypeService<User>{
         return this.items().withCustomAction('getClients');
     }
 
+    clientsCount(): MultipleItemQuery<User> {
+        return this.items().withCustomAction('getClients');
+    }
+
     createClient(item: User): CreateItemQuery<User> {
         return this.create(item).withCustomAction('createClient');
     }
@@ -30,11 +34,5 @@ export class UserService extends BaseTypeService<User>{
     getAuthUser(): Observable<ResponseSingle<User>> {
         return this.item().withCustomAction('getAuthUser').get();
     }
-
-     GetUserFiltersCount(firstName: string, lastName: string): MultipleItemQueryCustom<UserFilterWithCount> {
-        return this.customItems<UserFilterWithCount>()
-            .withCustomOption('firstName', firstName)
-            .withCustomOption('lastName', lastName)
-            .withCustomAction('GetUserFiltersCount');
-    }
+    
 }

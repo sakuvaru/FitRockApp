@@ -15,6 +15,7 @@ export * from './queries/manage/create-item-query.class';
 export * from './queries/manage/edit-item-query.class';
 export * from './queries/manage/delete-item-query.class';
 export * from './queries/form/insert-form-query.class';
+export * from './queries/count/item-count-query.class';
 export * from './queries/form/edit-form-query.class';
 export * from './queries/general/touch-key-query.class';
 export * from './queries/general/post-query.class';

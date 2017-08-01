@@ -8,7 +8,7 @@ import {
     ErrorResponse, ErrorReasonEnum, BaseField, ResponseDelete
 } from '../../lib/repository';
 import { TranslateService } from '@ngx-translate/core';
-
+import { BaseWebComponent } from '../base-web-component.class';
 import { Observable, Subject } from 'rxjs/Rx';
 import 'rxjs/add/operator/catch';
 
@@ -19,7 +19,7 @@ import 'rxjs/add/operator/catch';
     templateUrl: './dynamic-form.component.html',
     providers: [FieldControlService]
 })
-export class DynamicFormComponent implements OnInit, OnChanges {
+export class DynamicFormComponent extends BaseWebComponent implements OnInit, OnChanges {
 
     /**
      * Why use subject for on click events? 
@@ -63,7 +63,7 @@ export class DynamicFormComponent implements OnInit, OnChanges {
         private snackBarService: MdSnackBar,
         private translateService: TranslateService,
         private cdr: ChangeDetectorRef
-    ) {
+    ) { super()
     }
 
     ngOnInit() {
@@ -128,6 +128,7 @@ export class DynamicFormComponent implements OnInit, OnChanges {
 
                     return this.config.insertFunction(this.form.value)
                 })
+                .takeUntil(this.ngUnsubscribe)
                 .subscribe(response => {
                     this.response = response;
                     this.handleInsertAfter(response);
@@ -153,6 +154,7 @@ export class DynamicFormComponent implements OnInit, OnChanges {
 
                     return this.config.editFunction(this.form.value)
                 })
+                .takeUntil(this.ngUnsubscribe)
                 .subscribe(response => {
                     this.response = response;
                     this.handleUpdateAfter(response);
@@ -185,6 +187,7 @@ export class DynamicFormComponent implements OnInit, OnChanges {
 
                     return this.config.deleteFunction(this.form.value)
                 })
+                .takeUntil(this.ngUnsubscribe)
                 .subscribe(response => {
                     this.response = response;
                     this.handleDeleteAfter(response);

@@ -1,11 +1,12 @@
 // common
 import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
+import { BaseWebComponent } from '../base-web-component.class';
 
 @Component({
     selector: 'fixed-button',
     templateUrl: 'fixed-button.component.html'
 })
-export class FixedButtonComponent {
+export class FixedButtonComponent extends BaseWebComponent{
     @Input() url: string;
     @Input() icon: string;
 
@@ -17,6 +18,7 @@ export class FixedButtonComponent {
     private default_icon = 'add';
     
     constructor() {
+        super()
     }
 
     private getPositionClass(): string {

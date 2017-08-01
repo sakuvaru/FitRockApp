@@ -2,12 +2,13 @@
 import { Component, Input, Output, EventEmitter, ViewContainerRef, OnInit } from '@angular/core';
 import { TdDialogService } from '@covalent/core';
 import { TranslateService } from '@ngx-translate/core';
+import { BaseWebComponent } from '../base-web-component.class';
 
 @Component({
     selector: 'delete-button',
     templateUrl: 'delete-button.component.html'
 })
-export class DeleteButtonComponent implements OnInit {
+export class DeleteButtonComponent extends BaseWebComponent implements OnInit {
 
     private titleText: string;
     private messageText: string;
@@ -19,7 +20,7 @@ export class DeleteButtonComponent implements OnInit {
         private dialogService: TdDialogService,
         private viewContainerRef: ViewContainerRef,
         private translateService: TranslateService
-    ) {
+    ) { super()
     }
 
     @Input() color: 'none' | 'warn' | 'accent' | 'primary' = 'none';

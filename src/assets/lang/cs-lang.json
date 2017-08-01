@@ -84,8 +84,8 @@
 		"shared":{
 			"errors": {
 			   "errorPageTitle": "Nastala neočekáváná chyba",
-			   "criticalErrorText": "Vypadá, že jde o zcela neznámou chybu, kterou nelze zpracovat. Prosím kontaktujte naši podporu s detaily o problému.",
-			   "loggedErrorText": "Chyba byla zpracována. Pro zjištění více informací nás kontaktujte a uvěďte identifikační číslo '<em>{{guid}}</em>'"
+			   "criticalErrorText": "Vypadá, že jde o zcela neznámou chybu, kterou nelze zpracovat :-(",
+			   "loggedErrorText": "Chyba zalogována pod názvem '<em>{{guid}}</em>'"
 			}
 		}
     },
@@ -158,7 +158,8 @@
     "webComponents": {
         "dataTable": {
             "noResultsText": "Nejsou zde žádná data",
-            "noSearchResultsText": "Nic nenalezeno"
+            "noSearchResultsText": "Nic nenalezeno",
+			"allFilterText" : "Vše"
         },
 		"buttons":{
 			"deleteButton":{

@@ -28,6 +28,15 @@ export interface IResponseMultipleRaw {
     items: any
 }
 
+export interface IResponseCountRaw {
+
+    count: number;
+    fromCache: boolean,
+    timeCreated: Date,
+    type: string,
+    action: string,
+
+}
 
 export interface IResponseSingleRaw {
     fromCache: boolean,

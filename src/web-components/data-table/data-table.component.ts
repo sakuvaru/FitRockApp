@@ -4,13 +4,14 @@ import { DataTableConfig, Filter } from './data-table.config';
 import { Observable } from 'rxjs/Rx';
 import { TranslateService } from '@ngx-translate/core';
 import { TdMediaService } from '@covalent/core';
+import { BaseWebComponent } from '../base-web-component.class';
 import * as _ from 'underscore';
 
 @Component({
     selector: 'data-table',
     templateUrl: 'data-table.component.html'
 })
-export class DataTableComponent implements OnInit, OnChanges {
+export class DataTableComponent extends BaseWebComponent implements OnInit, OnChanges {
 
     // data table config
     @Input() config: DataTableConfig<any>;
@@ -35,6 +36,9 @@ export class DataTableComponent implements OnInit, OnChanges {
     private localStoragePage: string = 'data_table_page';
     private localStorageSearchedData: string = 'data_table_searchedData';
 
+    // keys
+    private allFilterKey: string = 'webComponents.dataTable.allFilterText';
+
     // search
     private searchTerm: string;
 
@@ -42,6 +46,7 @@ export class DataTableComponent implements OnInit, OnChanges {
         private translateService: TranslateService,
         private mediaService: TdMediaService,
     ) {
+        super()
     }
 
     ngOnInit() {
@@ -110,7 +115,11 @@ export class DataTableComponent implements OnInit, OnChanges {
                     if (this.config.showAllFilter) {
                         // get sum count of all filter's count
                         var sumCount = _.reduce(this.filters, (memo, filter) => memo + filter.count, 0);
-                        var allFilter = new Filter({ onFilter: () => query, count: sumCount, filterNameKey: 'All' });
+                        var allFilter = new Filter({
+                            onFilter: () => query,
+                            count: sumCount,
+                            filterNameKey: this.allFilterKey
+                        });
 
                         // add all filter at the beginning of filters array
                         this.filters = [allFilter, ...this.filters];
@@ -141,6 +150,7 @@ export class DataTableComponent implements OnInit, OnChanges {
                         this.config.onAfterLoad();
                     }
                 })
+                .takeUntil(this.ngUnsubscribe)
                 .subscribe(response => {
                     this.currentPage = page;
                     this.items = response.items;
@@ -148,21 +158,22 @@ export class DataTableComponent implements OnInit, OnChanges {
                 });
         }
         else {
-            var query = this.config.loadQuery(this.searchTerm);
+            var query = this.config.loadQuery(this.searchTerm);  
 
-            // add static filters
+            // prepare static filters
             this.filters = [];
 
-            // add static filters first
+            // add static filters 
             if (this.config.staticFilters && this.config.staticFilters.length > 0) {
                 this.config.staticFilters.forEach(staticFilter => this.filters.push(staticFilter));
             }
 
             // add all filter
             if (this.config.showAllFilter) {
-                // get sum count of all filter's count
-                var sumCount = _.reduce(this.filters, (memo, filter) => memo + filter.count, 0);
-                var allFilter = new Filter({ onFilter: () => query, count: sumCount, filterNameKey: 'All' });
+                var allFilter = new Filter({
+                    onFilter: (query) => query,
+                    filterNameKey: this.allFilterKey,
+                });
 
                 // add all filter at the beginning of filters array
                 this.filters = [allFilter, ...this.filters];
@@ -184,6 +195,7 @@ export class DataTableComponent implements OnInit, OnChanges {
             query = this.getQueryWithFilters(query);
 
             this.config.loadResolver(query)
+                .takeUntil(this.ngUnsubscribe)
                 .finally(() => {
                     if (this.config.onAfterLoad) {
                         this.config.onAfterLoad();
@@ -208,6 +220,54 @@ export class DataTableComponent implements OnInit, OnChanges {
         // filter items
         this.filterItems(1);
     }
+
+     /*Temp filters
+    private calculateStaticFilters(): void {
+        if (this.filters) {
+            var resolvedFilters = 0;
+            var allFilters = this.config.showAllFilter ? this.filters.length - 1 : this.filters;
+            var tempFilters: FilterTemp[] = [];
+
+            // resolve static filter's count
+            this.filters.forEach(filter => {
+                if (filter.countQuery && filter.onFilter) {
+                    // filter has defined a query to get the data
+                    filter.onFilter(this.config.loadQuery(this.searchTerm)).toCountQuery()
+                        .get()
+                        .takeUntil(this.ngUnsubscribe)
+                        .subscribe(result => {
+                            resolvedFilters++;
+                            tempFilters.push(new FilterTemp(result.count, filter.filterNameKey));
+
+                            // set count for all filters all at once
+                            if (resolvedFilters === allFilters) {
+                                this.updateFiltersFromTemp(tempFilters);
+                            }
+                        });
+                }
+            });
+        }
+    }
+
+    private updateFiltersFromTemp(tempFilters: FilterTemp[]): void{
+        var sumCount = 0;
+
+        tempFilters.forEach(tempFilter => {
+            var filter = this.filters.find(m => m.filterNameKey === tempFilter.filterKey);
+            if (!filter){
+                throw Error(`Filter '${tempFilter.filterKey}' was not found`);
+            }
+            sumCount += tempFilter.count;
+            filter.count = tempFilter.count;
+        });
+
+        // set all filter
+        if (this.config.showAllFilter){
+            var allFilter = this.filters.find(m => m.filterNameKey === this.allFilterKey);
+            allFilter.count = sumCount;
+        }
+    }
+    */
 
     private getFilterByGuid(guid: string): Filter<any> {
         return this.filters.find(m => m.guid === guid);
@@ -286,4 +346,13 @@ export class DataTableComponent implements OnInit, OnChanges {
     private saveSearchedDataToLocalStorage(hash: number, search: string) {
         localStorage.setItem(this.localStorageSearchedData + '_' + hash, search);
     }
+
 }
+
+class FilterTemp{
+    constructor(
+        public count: number,
+        public filterKey: string
+    ){}
+}
+

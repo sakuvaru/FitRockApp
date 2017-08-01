@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs/Observable';
-import { MultipleItemQuery, IItem, ResponseMultiple } from '../../lib/repository';
+import { MultipleItemQuery, IItem, ResponseMultiple, ItemCountQuery } from '../../lib/repository';
 import { DataTableField } from './data-table-field.class';
 import { Guid, StringHelper } from '../../lib/utilities';
 
@@ -105,15 +105,18 @@ export class SelectableConfig<TItem extends IItem>{
 export class Filter<TItem extends IItem>{
 
     public filterNameKey: string;
-    public onFilter: (query: MultipleItemQuery<TItem>) => MultipleItemQuery<TItem>;
     public count?: number;
     public guid: string;
+
+    public onFilter: (query: MultipleItemQuery<TItem>) => MultipleItemQuery<TItem>;
+    public countQuery?: (query: MultipleItemQuery<TItem>) => ItemCountQuery;
 
     constructor(
         options: {
             filterNameKey: string,
             onFilter: (query: MultipleItemQuery<TItem>) => MultipleItemQuery<TItem>,
-            count?: number
+            count?: number,
+            countQuery?: (query: MultipleItemQuery<TItem>) => ItemCountQuery
         }
     ) { 
         Object.assign(this, options);

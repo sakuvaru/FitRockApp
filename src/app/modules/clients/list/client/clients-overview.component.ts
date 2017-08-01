@@ -49,8 +49,16 @@ export class ClientsOverviewComponent extends BaseComponent implements OnInit {
         super.stopLoader();
       })
       .showAllFilter(true)
-      .filter(new Filter({ filterNameKey: 'module.clients.activeClients', onFilter: query => query.whereEquals('IsActive', true) }))
-      .filter(new Filter({ filterNameKey: 'module.clients.inactiveClients', onFilter: query => query.whereEquals('IsActive', false) }))
+      .filter(new Filter({
+        filterNameKey: 'module.clients.activeClients',
+        onFilter: query => query.whereEquals('IsActive', true),
+        countQuery: (query) => query.toCountQuery().withCustomAction('GetClientsCount')
+      }))
+      .filter(new Filter({
+        filterNameKey: 'module.clients.inactiveClients',
+        onFilter: query => query.whereEquals('IsActive', false),
+        countQuery: (query) => query.toCountQuery().withCustomAction('GetClientsCount')
+      }))
       .showPager(true)
       .showSearch(true)
       .pagerSize(7)

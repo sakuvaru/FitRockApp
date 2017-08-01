@@ -87,20 +87,38 @@ export class ResponseMultiple<T> extends ResponseGetBase {
         if (options) Object.assign(this, options);
     }
 
-    isEmpty(): boolean{
+    isEmpty(): boolean {
         return !this.items || this.items.length <= 0;
     }
 
-    firstItem(): T{
-        if (this.isEmpty()){
+    firstItem(): T {
+        if (this.isEmpty()) {
             return null;
         }
         return this.items[0];
     }
 }
 
+
+export class ResponseCount {
+
+    public count: number;
+
+    constructor(
+        private options?: {
+            fromCache?: boolean,
+            timeCreated?: Date,
+            type?: string,
+            action?: string,
+
+            count?: number
+        }) {
+        if (options) Object.assign(this, options);
+    }
+}
+
 export class ResponseSingle<T> extends ResponseGetBase {
-   
+
     public item: T;
 
     constructor(
@@ -116,7 +134,7 @@ export class ResponseSingle<T> extends ResponseGetBase {
         if (options) Object.assign(this, options);
     }
 
-     isEmpty(): boolean{
+    isEmpty(): boolean {
         return !this.item;
     }
 }

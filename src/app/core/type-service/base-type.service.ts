@@ -2,7 +2,7 @@ import { Observable } from 'rxjs/Observable';
 import { BaseTypeServiceConfig } from './base-type-service.config';
 
 import {
-    PostQuery, RepositoryClient, IItem, SingleItemQueryInit, MultipleItemQuery, CreateItemQuery, EditItemQuery, DeleteItemQuery,
+    ItemCountQuery, PostQuery, RepositoryClient, IItem, SingleItemQueryInit, MultipleItemQuery, CreateItemQuery, EditItemQuery, DeleteItemQuery,
     EditFormQuery, InsertFormQuery, TouchKeyQuery, CacheKeyType, SingleItemQueryInitCustom, MultipleItemQueryCustom
 } from '../../../lib/repository';
 
@@ -35,6 +35,10 @@ export abstract class BaseTypeService<TItem extends IItem>{
         return this.repositoryClient.customItem<TAny>(this.type);
     }
 
+    count(): ItemCountQuery {
+        return this.repositoryClient.count(this.type);
+    }
+
     create(item: TItem): CreateItemQuery<TItem> {
         return this.repositoryClient.create<TItem>(this.type, item);
     }
@@ -43,11 +47,11 @@ export abstract class BaseTypeService<TItem extends IItem>{
         return this.repositoryClient.edit<TItem>(this.type, item);
     }
 
-    post<T extends any>(action: string): PostQuery<T> {
-        return this.repositoryClient.post<T>(this.type, action);
+    post<TAny extends any>(action: string): PostQuery<TAny> {
+        return this.repositoryClient.post<TAny>(this.type, action);
     }
 
-    touchKey<T extends any>(cackeKeyType: CacheKeyType, itemId?: number): TouchKeyQuery {
+    touchKey<TAny extends any>(cackeKeyType: CacheKeyType, itemId?: number): TouchKeyQuery {
         return this.repositoryClient.touchKey(this.type, cackeKeyType, itemId);
     }
 

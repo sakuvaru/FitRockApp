@@ -7,6 +7,7 @@ import { AuthHttp } from 'angular2-jwt';
 // models
 import { BaseMultipleItemQuery } from './base-multiple-item-query.class';
 import { IItem } from '../../interfaces/iitem.interface';
+import { ItemCountQuery } from '../count/item-count-query.class';
 
 // responses
 import { ResponseMultiple } from '../../models/responses';
@@ -21,7 +22,6 @@ export class MultipleItemQuery<TItem extends IItem> extends BaseMultipleItemQuer
      */
     private readonly defaultAction = 'getAll';
 
-
     constructor(
         protected authHttp: AuthHttp,
         protected config: RepositoryConfig,
@@ -32,7 +32,6 @@ export class MultipleItemQuery<TItem extends IItem> extends BaseMultipleItemQuer
     }
 
     // execution
-
     get(): Observable<ResponseMultiple<TItem>> {
         var url = this.getMultipleItemsQueryUrl();
         return super.getMultiple(url);

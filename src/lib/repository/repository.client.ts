@@ -9,6 +9,7 @@ import { MultipleItemQueryCustom } from './queries/get/multiple-item-query-custo
 import { CreateItemQuery } from './queries/manage/create-item-query.class';
 import { EditItemQuery } from './queries/manage/edit-item-query.class';
 import { DeleteItemQuery } from './queries/manage/delete-item-query.class';
+import { ItemCountQuery } from './queries/count/item-count-query.class';
 import { ErrorResponse } from './models/responses';
 import { CacheKeyType } from './models/cache-key-type';
 import { InsertFormQuery } from './queries/form/insert-form-query.class';
@@ -54,6 +55,10 @@ export class RepositoryClient {
 
     edit<TItem extends IItem>(type: string, item: TItem): EditItemQuery<TItem> {
         return new EditItemQuery(this.authHttp, this.config, type, item);
+    }
+
+    count<TItem extends IItem>(type: string): ItemCountQuery {
+        return new ItemCountQuery(this.authHttp, this.config, type);
     }
 
     updateItemsOrder<TItem extends IItem>(type: string, orderedItems: TItem[], distinguishByValue: number): PostQuery<any> {

@@ -1,6 +1,6 @@
 import { Headers, RequestOptions } from '@angular/http';
-import { ResponsePost, ResponseFormEdit, ResponseFormInsert, ResponseDelete, ResponseCreate, ResponseEdit, ResponseMultiple, ResponseSingle, ErrorResponse, FormErrorResponse } from '../models/responses';
-import { IResponsePostRaw, IResponseFormEditRaw, IResponseFormInsertRaw, IResponseCreateRaw, IResponseDeleteRaw, IResponseEditRaw, IResponseMultipleRaw, IResponseSingleRaw, IErrorResponseRaw, IFormErrorResponseRaw } from '../interfaces/iraw-responses';
+import { ResponseCount, ResponsePost, ResponseFormEdit, ResponseFormInsert, ResponseDelete, ResponseCreate, ResponseEdit, ResponseMultiple, ResponseSingle, ErrorResponse, FormErrorResponse } from '../models/responses';
+import { IResponseCountRaw, IResponsePostRaw, IResponseFormEditRaw, IResponseFormInsertRaw, IResponseCreateRaw, IResponseDeleteRaw, IResponseEditRaw, IResponseMultipleRaw, IResponseSingleRaw, IErrorResponseRaw, IFormErrorResponseRaw } from '../interfaces/iraw-responses';
 import { IOption } from '../interfaces/ioption.interface';
 import { AuthHttp } from 'angular2-jwt';
 import { Response } from '@angular/http';
@@ -165,6 +165,18 @@ export class QueryService {
         });
     }
 
+    private getCountResponse<TItem extends IItem>(response: Response): ResponseCount {
+        var responseCount = (response.json() || {}) as IResponseCountRaw;
+
+        return new ResponseCount({
+            fromCache: responseCount.fromCache,
+            action: responseCount.action,
+            timeCreated: responseCount.timeCreated,
+            type: responseCount.type,
+            count: responseCount.count
+        });
+    }
+
     private getSingleResponse<TItem extends IItem>(response: Response): ResponseSingle<TItem> {
         var responseSingle = (response.json() || {}) as IResponseSingleRaw;
 
@@ -269,6 +281,22 @@ export class QueryService {
         return this.authHttp.get(url)
             .map(response => {
                 return this.getMultipleResponse(response)
+            })
+            .catch(response => {
+                return Observable.throw(this.handleError(response));
+            })
+            ._finally(() => {
+                this.finishRequest();
+            });
+    }
+
+     protected getCount<TItem extends IItem>(url: string): Observable<ResponseCount> {
+        // trigger request
+        this.startRequest();
+
+        return this.authHttp.get(url)
+            .map(response => {
+                return this.getCountResponse(response)
             })
             .catch(response => {
                 return Observable.throw(this.handleError(response));
