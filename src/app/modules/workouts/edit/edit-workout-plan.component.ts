@@ -122,9 +122,9 @@ export class EditWorkoutPlanComponent extends BaseComponent implements OnInit, O
       }
       else {
         // update exercice with updated data
-        var workoutExerciseToUpdate = this.sortedWorkoutExercises.filter(m => m.id === workoutExercise.id);
+        var workoutExerciseToUpdate: WorkoutExercise[]  = this.sortedWorkoutExercises.filter(m => m.id === workoutExercise.id);
 
-        if (!workoutExerciseToUpdate && workoutExerciseToUpdate.length === 1) {
+        if (!workoutExerciseToUpdate) {
           throw Error(`Cannot update workout with new values from saved form`);
         }
 

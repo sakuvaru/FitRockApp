@@ -65,7 +65,7 @@ export class MapService {
             else {
                 if (Array.isArray(fieldValue)) {
                     // map list of nested entity types
-                    var listItems = [];
+                    var listItems: any[] = [];
                     fieldValue.forEach(listItem => {
                         if (this.isEntityField(listItem)) {
                             listItems.push(this.mapFields(listItem));
@@ -92,7 +92,7 @@ export class MapService {
 
     mapItems<TItem extends IItem>(items: IItem[]): TItem[] {
         if (!items) {
-            return null;
+            throw Error(`Cannot map items`);
         }
 
         var typedItems: TItem[] = [];
@@ -106,7 +106,7 @@ export class MapService {
 
     mapFormFields(formFields: IFormField<any>[]): BaseField<any>[] {
         if (!formFields) {
-            return null;
+            throw Error(`Cannot map form fields`);
         }
 
         var fields: BaseField<any>[] = [];

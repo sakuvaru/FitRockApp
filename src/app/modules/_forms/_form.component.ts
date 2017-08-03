@@ -45,7 +45,6 @@ export class FormComponent extends BaseComponent implements OnInit {
                 var item = form.getItem();
 
                 this.setConfig({
-                    menuItems: null,
                     menuTitle: {
                         key: item.codename
                     },

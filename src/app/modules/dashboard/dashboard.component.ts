@@ -15,7 +15,7 @@ export class DashboardComponent extends BaseComponent implements OnInit {
 
     private logs: Log[];
     private log: Log;
-    private currentUser: CurrentUser;
+    private currentUser: CurrentUser | null;
 
     constructor(
         protected dependencies: ComponentDependencyService) {

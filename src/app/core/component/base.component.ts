@@ -187,7 +187,7 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
     // --------------- Snackbar ------------------- //
 
     showSnackbar(message: string): void {
-        let snackBarRef = this.dependencies.mdServices.snackbarService.open(message, null, { duration: this.snackbarDefaultDuration });
+        let snackBarRef = this.dependencies.mdServices.snackbarService.open(message, undefined, { duration: this.snackbarDefaultDuration });
     }
 
     showSavedSnackbar(): void {
@@ -200,7 +200,7 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
         return '/' + UrlConfig.getClientUrl(action);
     }
 
-    getAppUrl(action?: string): string {
+    getAppUrl(action: string): string {
         return '/' + UrlConfig.getAppUrl(action);
     }
 
@@ -223,8 +223,8 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
 
     showDialog(messageKey: string, titleKey?: string): void {
         // reset current translations
-        this.dialogDynamicTranslationMessage = null;
-        this.dialogDynamicTranslationTitle = null;
+        this.dialogDynamicTranslationMessage;
+        this.dialogDynamicTranslationTitle;
 
         var observables: Observable<any>[] = [];
 

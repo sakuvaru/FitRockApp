@@ -74,6 +74,9 @@ export class DynamicFormQuestionComponent implements OnInit {
           this.translateService.get(option.name).subscribe(translatedText => {
             if (translatedText) {
               var optionInList = this.question.options.listOptions.find(m => m.value === option.value);
+              if (!optionInList){
+                throw Error(`Option '${option.value}' was not found in list`)
+              }
               optionInList.name = translatedText;
             }
           });
@@ -175,7 +178,7 @@ export class DynamicFormQuestionComponent implements OnInit {
     this.showRequiredLabels = false;
   }
 
-  private getWidthStyle(): string {
+  private getWidthStyle(): string | null{
     if (!this.question.options.width) {
       return null;
     }

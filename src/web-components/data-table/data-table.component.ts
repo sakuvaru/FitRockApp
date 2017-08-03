@@ -24,7 +24,7 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
 
     // filters
     private hasFilters: boolean = false;
-    private activeFilterGuid: string;
+    private activeFilterGuid: string | null;
     private filters: Filter<any>[] = [];
 
     // pager
@@ -40,7 +40,7 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
     private allFilterKey: string = 'webComponents.dataTable.allFilterText';
 
     // search
-    private searchTerm: string;
+    private searchTerm: string = '';
 
     constructor(
         private translateService: TranslateService,
@@ -114,7 +114,7 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
                     // add all filter
                     if (this.config.showAllFilter) {
                         // get sum count of all filter's count
-                        var sumCount = _.reduce(this.filters, (memo, filter) => memo + filter.count, 0);
+                        var sumCount = _.reduce(this.filters, (memo, filter) => filter.count != null ? memo + filter.count : memo, 0);
                         var allFilter = new Filter({
                             onFilter: () => query,
                             count: sumCount,
@@ -158,7 +158,7 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
                 });
         }
         else {
-            var query = this.config.loadQuery(this.searchTerm);  
+            var query = this.config.loadQuery(this.searchTerm);
 
             // prepare static filters
             this.filters = [];
@@ -221,60 +221,66 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
         this.filterItems(1);
     }
 
-     /*Temp filters
-    private calculateStaticFilters(): void {
-        if (this.filters) {
-            var resolvedFilters = 0;
-            var allFilters = this.config.showAllFilter ? this.filters.length - 1 : this.filters;
-            var tempFilters: FilterTemp[] = [];
+    /*Temp filters
+   private calculateStaticFilters(): void {
+       if (this.filters) {
+           var resolvedFilters = 0;
+           var allFilters = this.config.showAllFilter ? this.filters.length - 1 : this.filters;
+           var tempFilters: FilterTemp[] = [];
 
-            // resolve static filter's count
-            this.filters.forEach(filter => {
-                if (filter.countQuery && filter.onFilter) {
-                    // filter has defined a query to get the data
-                    filter.onFilter(this.config.loadQuery(this.searchTerm)).toCountQuery()
-                        .get()
-                        .takeUntil(this.ngUnsubscribe)
-                        .subscribe(result => {
-                            resolvedFilters++;
-                            tempFilters.push(new FilterTemp(result.count, filter.filterNameKey));
+           // resolve static filter's count
+           this.filters.forEach(filter => {
+               if (filter.countQuery && filter.onFilter) {
+                   // filter has defined a query to get the data
+                   filter.onFilter(this.config.loadQuery(this.searchTerm)).toCountQuery()
+                       .get()
+                       .takeUntil(this.ngUnsubscribe)
+                       .subscribe(result => {
+                           resolvedFilters++;
+                           tempFilters.push(new FilterTemp(result.count, filter.filterNameKey));
 
-                            // set count for all filters all at once
-                            if (resolvedFilters === allFilters) {
-                                this.updateFiltersFromTemp(tempFilters);
-                            }
-                        });
-                }
-            });
+                           // set count for all filters all at once
+                           if (resolvedFilters === allFilters) {
+                               this.updateFiltersFromTemp(tempFilters);
+                           }
+                       });
+               }
+           });
+       }
+   }
+
+   private updateFiltersFromTemp(tempFilters: FilterTemp[]): void{
+       var sumCount = 0;
+
+       tempFilters.forEach(tempFilter => {
+           var filter = this.filters.find(m => m.filterNameKey === tempFilter.filterKey);
+           if (!filter){
+               throw Error(`Filter '${tempFilter.filterKey}' was not found`);
+           }
+           sumCount += tempFilter.count;
+           filter.count = tempFilter.count;
+       });
+
+       // set all filter
+       if (this.config.showAllFilter){
+           var allFilter = this.filters.find(m => m.filterNameKey === this.allFilterKey);
+           allFilter.count = sumCount;
+       }
+   }
+   */
+
+    private getFilterByGuid(guid: string): Filter<any>{
+        var filter = this.filters.find(m => m.guid === guid);
+
+        if (filter == null){
+            throw Error(`Filter with guid '${guid}' was not found`);
         }
-    }
 
-    private updateFiltersFromTemp(tempFilters: FilterTemp[]): void{
-        var sumCount = 0;
-
-        tempFilters.forEach(tempFilter => {
-            var filter = this.filters.find(m => m.filterNameKey === tempFilter.filterKey);
-            if (!filter){
-                throw Error(`Filter '${tempFilter.filterKey}' was not found`);
-            }
-            sumCount += tempFilter.count;
-            filter.count = tempFilter.count;
-        });
-
-        // set all filter
-        if (this.config.showAllFilter){
-            var allFilter = this.filters.find(m => m.filterNameKey === this.allFilterKey);
-            allFilter.count = sumCount;
-        }
-    }
-    */
-
-    private getFilterByGuid(guid: string): Filter<any> {
-        return this.filters.find(m => m.guid === guid);
+        return filter;
     }
 
     private getQueryWithFilters(query: MultipleItemQuery<any>): MultipleItemQuery<any> {
-        if (this.hasFilters) {
+        if (this.hasFilters && this.activeFilterGuid) {
             var filter = this.getFilterByGuid(this.activeFilterGuid);
 
             // if not filter is found, use the first one
@@ -305,33 +311,45 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
 
     // local storage & last state
     private saveCurrentFilters(hash: number): void {
-        this.saveFilterToLocalStorage(hash, this.activeFilterGuid);
+        this.saveFilterToLocalStorage(hash, this.activeFilterGuid || '');
         this.savePageToLocalStorage(hash, this.currentPage);
         this.saveSearchedDataToLocalStorage(hash, this.searchTerm);
     }
 
     private initLastFilterState(hash: number): void {
-        this.activeFilterGuid = this.getFilterFromLocalStorage(hash);
-        this.currentPage = this.getPageFromLocalStorage(hash);
-        this.searchTerm = this.getSearchedDataFromLocalStorage(hash);
+        var filterFormStorage = this.getFilterFromLocalStorage(hash);
+        var pageFromStorage = this.getPageFromLocalStorage(hash);
+        var searchTermFromStorage = this.getSearchedDataFromLocalStorage(hash);
+
+        if (filterFormStorage){
+            this.activeFilterGuid = filterFormStorage;
+        }
+
+        if (pageFromStorage){
+            this.currentPage = pageFromStorage;
+        }
+
+        if (searchTermFromStorage){
+            this.searchTerm = searchTermFromStorage;
+        }
     }
 
-    private getFilterFromLocalStorage(hash: number): string {
+    private getFilterFromLocalStorage(hash: number): string | null{
         return localStorage.getItem(this.localStorageActiveFilter + '_' + hash);
     }
 
-    private getPageFromLocalStorage(hash: number): number {
-        var page = +localStorage.getItem(this.localStoragePage + '_' + hash);
+    private getPageFromLocalStorage(hash: number): number | null {
+        var page = localStorage.getItem(this.localStoragePage + '_' + hash);
 
         if (!page) {
             // use first page if none is was set
             return 1;
         }
 
-        return page;
+        return +page;
     }
 
-    private getSearchedDataFromLocalStorage(hash: number): string {
+    private getSearchedDataFromLocalStorage(hash: number): string | null{
         return localStorage.getItem(this.localStorageSearchedData + '_' + hash);
     }
 
@@ -349,10 +367,10 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
 
 }
 
-class FilterTemp{
+class FilterTemp {
     constructor(
         public count: number,
         public filterKey: string
-    ){}
+    ) { }
 }
 

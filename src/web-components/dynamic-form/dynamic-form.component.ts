@@ -219,23 +219,13 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
      * @param key Name of the field
      */
     private showField(key: string): boolean {
-        // if show fields are not defined, all fields are permitted
-        if (!this.config.showFields) {
-            return true;
-        }
 
-        if (this.config.showFields.find(showField => {
-            if (!showField) {
-                throw Error(`Field defined in 'showFields' cannot be empty`);
-            }
-            if (!key) {
-                throw Error(`Field key cannot be empty`);
-            }
-            return showField.toLowerCase() === key.toLowerCase()
-        })) {
-            return true;
+        var fieldInHiddenFields = this.config.hiddenFields.find(m => m === key);
+
+        if (fieldInHiddenFields){
+            return false;
         }
-        return false;
+        return true;
     }
 
     private translateLabels(): void {
@@ -251,7 +241,7 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
 
     private handleFormChange(): void {
         // remove error message when any input in form changes
-        this.submissionError = null;
+        this.submissionError = '';
         this.formErrorLines = [];
 
         // detect changes manually when changing values used in template!
@@ -260,13 +250,13 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
 
     private handleSnackBar(): void {
         if (this.config.showSnackBar) {
-            this.snackBarService.open(this.snackbarText, null, { duration: 2500 });
+            this.snackBarService.open(this.snackbarText, '', { duration: 2500 });
         }
     }
 
     private handleDeleteSnackBar(): void {
         if (this.config.showSnackBar) {
-            this.snackBarService.open(this.deleteSnackbarText, null, { duration: 2500 });
+            this.snackBarService.open(this.deleteSnackbarText, '', { duration: 2500 });
         }
     }
 
@@ -334,8 +324,13 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
                         // get translated label of the form field
                         var formField = this.questions.find(m => m.key.toLowerCase() === validationResult.columnName.toLocaleLowerCase());
 
-                        // form error
-                        this.getFormErrorMessage(validationResult, formField.translatedLabel).subscribe(error => this.formErrorLines.push(error))
+                        if (formField){
+                            // form error
+                            this.getFormErrorMessage(validationResult, formField.translatedLabel).subscribe(error => this.formErrorLines.push(error))
+                        }
+                        else{
+                            console.warn(`Form field '${validationResult.columnName}' could not be found in form and therefore error message could not be displayed`);
+                        }
                     }
                 });
             });

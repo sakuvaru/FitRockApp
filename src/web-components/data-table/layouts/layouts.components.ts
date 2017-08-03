@@ -104,7 +104,7 @@ export class DataTableLayoutPager implements OnInit, OnChanges {
 export class DataTableLayoutHeader {
     @Input() config: DataTableConfig<any>;
 
-    private getTextAlignClass(field: DataTableField<any>): string {
+    private getTextAlignClass(field: DataTableField<any>): string | null{
         if (field.align === AlignEnum.Center) {
             return 'text-center';
         }
@@ -180,7 +180,7 @@ export class DataTableLayoutItems implements OnInit, OnChanges {
         return field.value(item);
     }
 
-    private getAvatarUrl(item: any): string {
+    private getAvatarUrl(item: any): string | null{
         if (!this.config.avatarUrlResolver) {
             return null;
         }
@@ -188,7 +188,7 @@ export class DataTableLayoutItems implements OnInit, OnChanges {
         return this.config.avatarUrlResolver(item);
     }
 
-    private getIcon(item: any): string {
+    private getIcon(item: any): string | null{
         if (!this.config.iconResolver) {
             return null;
         }
@@ -219,7 +219,7 @@ export class DataTableLayoutItems implements OnInit, OnChanges {
         }
     }
 
-    private getTextAlignClass(field: DataTableField<any>): string {
+    private getTextAlignClass(field: DataTableField<any>): string | null{
         if (field.align === AlignEnum.Center) {
             return 'text-center';
         }

@@ -91,7 +91,7 @@ export class ResponseMultiple<T> extends ResponseGetBase {
         return !this.items || this.items.length <= 0;
     }
 
-    firstItem(): T {
+    firstItem(): T | null{
         if (this.isEmpty()) {
             return null;
         }

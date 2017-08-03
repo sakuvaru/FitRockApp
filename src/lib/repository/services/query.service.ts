@@ -87,7 +87,7 @@ export class QueryService {
             // 404 error
             if (response.status === 404) {
                 // return error response
-                return new ErrorResponse(response.statusText, ErrorReasonEnum.NotFound, response);
+                return new ErrorResponse(response.statusText || '', ErrorReasonEnum.NotFound, response);
             }
 
             // create either 'FormResponse' or generic 'ErrorResponse'
@@ -483,7 +483,7 @@ export class QueryService {
             throw Error(`Given observables are not in array`);
         }
 
-        var mergedObservable: Observable<any>;
+        var mergedObservable: Observable<any> | null = null;
 
         observables.forEach(observable => {
             if (!mergedObservable) {
@@ -493,6 +493,10 @@ export class QueryService {
                 mergedObservable = mergedObservable.merge(observable);
             }
         })
+
+        if (mergedObservable == null){
+            throw Error(`Merging observables failed - there is no merged observable in disposal`);
+        }
 
         return mergedObservable;
     }

@@ -9,7 +9,7 @@ export class TokenService {
 
     constructor() { }
 
-    getAccessToken(): string {
+    getAccessToken(): string | null{
         return localStorage.getItem(this.accessTokenName);
     }
 
@@ -22,7 +22,7 @@ export class TokenService {
     }
 
     
-    getIdToken(): string {
+    getIdToken(): string | null{
         return localStorage.getItem(this.idTokenName);
     }
 

@@ -141,7 +141,7 @@ export class AdminLayoutComponent extends BaseComponent implements OnDestroy, On
         return url;
     }
 
-    private getMenuItemColor(action: string, type: MenuItemType): string {
+    private getMenuItemColor(action: string, type: MenuItemType): string | null{
         var activeColor = 'accent';
 
         var url = this.getMenuItemUrl(action, type);

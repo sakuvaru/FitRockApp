@@ -16,7 +16,7 @@ export class FormConfig<TItem extends IItem>{
     public deleteSnackBarTextKey: string = 'form.shared.deleted';
     public type: string;
     public item: any;
-    public showFields: string[] = null;
+    public hiddenFields: string[] = [];
 
     public onFormInit: () => void;
     public onFormLoaded: () => void;
@@ -39,7 +39,7 @@ export class FormConfig<TItem extends IItem>{
             deleteFunction?: (item: any) => Observable<ResponseDelete>,
             type?: string,
             item?: TItem,
-            showFields?: string[],
+            hiddenFields?: string[],
             onFormInit?: () => void,
             onFormLoaded?: () => void,
             onAfterInsert?: (response: ResponseCreate<TItem>) => void,

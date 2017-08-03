@@ -13,7 +13,7 @@ export class AppErrorComponent extends BaseComponent implements OnInit {
 
   private isCriticalError: boolean = false;
   private showDebugDetails: boolean = false;
-  private log: Log;
+  private log: Log | null;
   private translateParams: any;
 
   constructor(
@@ -25,7 +25,7 @@ export class AppErrorComponent extends BaseComponent implements OnInit {
   ngOnInit() {
     super.ngOnInit();
 
-    this.showDebugDetails = this.dependencies.coreServices.authService.getCurrentUser().isAuthenticated;
+    this.showDebugDetails = this.dependencies.coreServices.authService.isAuthenticated();
 
     // get the guid of error from url
     var logGuid = this.activatedRoute.snapshot.queryParams[UrlConfig.AppErrorLogGuidQueryString];
@@ -42,7 +42,7 @@ export class AppErrorComponent extends BaseComponent implements OnInit {
           }
           else {
             this.log = response.firstItem();
-            this.translateParams = { 'guid': this.log.guid };
+            this.translateParams = { 'guid': this.log ? this.log.guid : '' };
           }
           super.stopGlobalLoader();
         },

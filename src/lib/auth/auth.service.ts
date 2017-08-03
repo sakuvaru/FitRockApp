@@ -52,12 +52,18 @@ export class AuthService {
         return false;
     }
 
-    public getCurrentUser(): CurrentUser {
+    public getCurrentUser(): CurrentUser | null{
         if (!this.isAuthenticated()) {
             return new CurrentUser(false)
         }
 
-        var decodedToken = this.jwtHelper.decodeToken(this.tokenService.getIdToken());
+        var idToken = this.tokenService.getIdToken();
+        if (!idToken){
+            console.warn('IdToken could not be retrieved from local storage')
+            return null;
+        }
+
+        var decodedToken = this.jwtHelper.decodeToken(idToken);
 
         return new CurrentUser(true, decodedToken["email"], decodedToken["nickname"]);
     }
@@ -70,8 +76,9 @@ export class AuthService {
         }, errorResponse => {
             if (errorResponse) {
                 this.handleAuthenticationError(errorResponse as Auth0ErrorResponse);
-                return false;
+                return errorResponse;
             }
+            return errorResponse;
         });
 
         return true;

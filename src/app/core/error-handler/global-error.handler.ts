@@ -23,7 +23,14 @@ export class GlobalErrorHandler implements ErrorHandler {
 
         var message = error.message ? error.message : error.toString();
         var url = location instanceof PathLocationStrategy ? location.path() : '';
-        var userName = authService.isAuthenticated() ? authService.getCurrentUser().email : '';
+
+        var userName: string = '';
+        if (authService.isAuthenticated()){
+            var currentUser = authService.getCurrentUser();
+            if (currentUser && currentUser.email){
+                userName = currentUser.email
+            }
+        }
 
         try {
             // get the stack trace, lets grab the last 
