@@ -163,12 +163,15 @@
         },
 		"buttons":{
 			"deleteButton":{
-			"message": "Opravdu smazat objekt?",
-			"title": "Potvrzení",
-			"confirm": "Smazat",
-			"cancel" : "Zrušit",
-			"tooltip" : "Smazat"
-			}			
+				"message": "Opravdu smazat objekt?",
+				"title": "Potvrzení",
+				"confirm": "Smazat",
+				"cancel" : "Zrušit",
+				"tooltip" : "Smazat"
+			},
+			"editButton":{
+				"tooltip": "Upravit"
+			}
 		}
     }
 }
