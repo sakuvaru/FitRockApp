@@ -1,18 +1,19 @@
 // common
 import { Component, Input, Output, OnInit, EventEmitter, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { AppConfig, ComponentDependencyService, BaseComponent } from '../../../core';
+import { AppConfig, ComponentDependencyService, BaseComponent } from '../../../../core';
 
 // required by component
-import { WorkoutMenuItems } from '../menu.items';
-import { Workout } from '../../../models';
+import { ClientEditWorkoutMenuItems } from '../../menu.items';
+import { Workout } from '../../../../models';
 import 'rxjs/add/operator/switchMap';
 
 @Component({
-    templateUrl: 'edit-workout.component.html'
+    templateUrl: 'edit-client-workout.component.html'
 })
-export class EditWorkoutComponent extends BaseComponent implements OnInit {
+export class EditClientWorkoutComponent extends BaseComponent implements OnInit {
 
+    private clientId: number;
     private workoutId: number;
 
     constructor(
@@ -28,18 +29,19 @@ export class EditWorkoutComponent extends BaseComponent implements OnInit {
         this.activatedRoute.params
             .takeUntil(this.ngUnsubscribe)
             .subscribe(params => {
-                this.workoutId = +params['id'];
+                this.workoutId = +params['workoutId'];
+                this.clientId = +params['id'];
             });
     }
 
     private handleLoadWorkout(workout: Workout): void {
         this.setConfig({
-            menuItems: new WorkoutMenuItems(workout.id).menuItems,
+            menuItems: new ClientEditWorkoutMenuItems(this.clientId, this.workoutId).menuItems,
             menuTitle: {
-                key: workout.workoutName
+                key: 'module.clients.editWorkout'
             },
             componentTitle: {
-                'key': 'module.workouts.editWorkout'
+                key: workout.workoutName
             }
         });
     }

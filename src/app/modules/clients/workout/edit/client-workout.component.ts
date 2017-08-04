@@ -6,15 +6,16 @@ import { AppConfig, ComponentDependencyService, BaseComponent } from '../../../.
 // required by component
 import { ClientMenuItems } from '../../menu.items';
 import { FormConfig } from '../../../../../web-components/dynamic-form';
-import { User, Workout } from '../../../../models';
+import { User, Workout, WorkoutExercise } from '../../../../models';
 import 'rxjs/add/operator/switchMap';
 import { Observable } from 'rxjs/Rx';
 import * as _ from 'underscore';
+import {DataSource} from '@angular/cdk';
 
 @Component({
-    templateUrl: 'workout-client.component.html'
+    templateUrl: 'client-workout.component.html'
 })
-export class WorkoutClientComponent extends BaseComponent implements OnInit {
+export class ClientWorkoutComponent extends BaseComponent implements OnInit {
 
     private clientId: number;
     private workoutExists: boolean = true;
@@ -55,7 +56,6 @@ export class WorkoutClientComponent extends BaseComponent implements OnInit {
         var obsClientId = this.activatedRoute.params
             .takeUntil(this.ngUnsubscribe)
             .map(params => this.clientId = +params['id']);
-
 
         var obsClient = this.activatedRoute.params
             .takeUntil(this.ngUnsubscribe)
@@ -103,6 +103,7 @@ export class WorkoutClientComponent extends BaseComponent implements OnInit {
             .takeUntil(this.ngUnsubscribe)
             .switchMap((params: Params) => this.dependencies.itemServices.workoutService.items()
                 .byCurrentUser()
+                .includeMultiple(['WorkoutExercises', 'WorkoutExercises.Exercise'])
                 .whereEquals('ClientId', +params['id'])
                 .orderByAsc("WorkoutName")
                 .get())
@@ -159,3 +160,4 @@ export class WorkoutClientComponent extends BaseComponent implements OnInit {
             });
     }
 }
+

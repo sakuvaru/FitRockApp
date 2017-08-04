@@ -14,8 +14,9 @@ import { AdminLayoutComponent } from '../../layouts/admin-layout.component';
 import { ClientsOverviewComponent } from './client/list/clients-overview.component';
 import { NewClientComponent } from './client/new/new-client.component';
 import { EditClientComponent } from './client/edit/edit-client.component';
-import { WorkoutClientComponent } from './workout/edit/workout-client.component';
-import { WorkoutClientEditComponent } from './workout/edit/workout-client-edit.component';
+import { EditClientWorkoutComponent } from './workout/edit/edit-client-workout.component';
+import { ClientWorkoutComponent } from './workout/edit/client-workout.component';
+import { EditClientWorkoutPlanComponent } from './workout/edit/edit-client-workout-plan.component';
 
 const routes: Routes = [
     {
@@ -30,10 +31,13 @@ const routes: Routes = [
                 path: 'clients/edit/:id', component: EditClientComponent
             },
             {
-                path: 'clients/edit/:id/workout', component: WorkoutClientComponent
+                path: 'clients/edit/:id/workout', component: ClientWorkoutComponent
             },
             {
-                path: 'clients/edit/:id/workout/:workoutId', component: WorkoutClientEditComponent
+                path: 'clients/edit/:id/workout/:workoutId', component: EditClientWorkoutComponent
+            },
+            {
+                path: 'clients/edit/:id/workout/:workoutId/workout-plan', component: EditClientWorkoutPlanComponent
             }
         ]
     }

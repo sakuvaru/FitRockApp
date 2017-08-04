@@ -1,0 +1,44 @@
+<md-card class="push">
+    <md-card-content>
+        <button md-raised-button color="primary" (click)="asef()">{{'module.clients.newWorkout' | translate}}</button>
+    </md-card-content>
+    <md-divider></md-divider>
+    <md-card-content class="push-top">
+        <p>{{'module.clients.newWorkoutFromTemplate' | translate }}:
+            <md-select #copyFromWorkout style="width: 260px" placeholder="{{'module.clients.copyWorkoutLabel' | translate}}" [(ngModel)]="selectedValue"
+                name="food">
+                <md-option *ngFor="let workout of workoutTemplates" [value]="workout">
+                    {{ workout.workoutName }}
+                </md-option>
+            </md-select>
+        </p>
+        <button md-raised-button color="primary" (click)="newWorkoutFromTemplate(copyFromWorkout)">{{'module.clients.copy' | translate}}</button>
+    </md-card-content>
+</md-card>
+
+<md-list *ngIf="existingWorkouts">
+    <ng-container *ngFor="let workout of existingWorkouts">
+        <td-expansion-panel class="push" [disableRipple]="false">
+            <ng-template td-expansion-panel-header>
+                <md-list-item class="w-cursor-pointer" style="background:whitesmoke">
+                    <span>{{workout.workoutName}}</span>
+                    <span flex></span>
+                    <edit-button [routerLink]="[workout.id + '/workout-plan']"></edit-button>
+                    <delete-button (confirm)="deleteWorkout(workout)"></delete-button>
+                </md-list-item>
+            </ng-template>
+
+            <md-list class="push-left">
+                <md-list-item *ngFor="let workoutExercise of workout.workoutExercises; let i = index">
+                    <span class="md-body-1"><strong>{{i + 1}}.</strong> {{ workoutExercise.exercise.exerciseName }}</span>
+                    <span flex></span>
+                    <span class="md-caption">
+                        {{'module.workouts.sets' | translate }}: <strong>{{workoutExercise.sets}}</strong> / {{'module.workouts.reps' | translate }}: <strong>{{workoutExercise.reps}}</strong>
+                    </span>
+                </md-list-item>
+            </md-list>
+
+        </td-expansion-panel>
+    </ng-container>
+</md-list>
+

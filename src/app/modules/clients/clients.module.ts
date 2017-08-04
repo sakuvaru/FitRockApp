@@ -12,14 +12,16 @@ import {CdkTableModule} from '@angular/cdk';
 import { ClientsOverviewComponent } from './client/list/clients-overview.component';
 import { NewClientComponent } from './client/new/new-client.component';
 import { EditClientComponent } from './client/edit/edit-client.component';
-import { WorkoutClientComponent } from './workout/edit/workout-client.component';
-import { WorkoutClientEditComponent } from './workout/edit/workout-client-edit.component';
+import { EditClientWorkoutComponent } from './workout/edit/edit-client-workout.component';
+import { ClientWorkoutComponent } from './workout/edit/client-workout.component';
+import { EditClientWorkoutPlanComponent } from './workout/edit/edit-client-workout-plan.component';
 
 // router
 import { ClientsRouter } from './clients.routing';
 
 // modules
 import { SharedModule} from '../shared/shared.module';
+import { WorkoutsModule} from '../workouts/workouts.module';
 
 @NgModule({
     imports: [
@@ -29,14 +31,16 @@ import { SharedModule} from '../shared/shared.module';
         SharedModule,
         FormsModule,
         ReactiveFormsModule,
-        CdkTableModule
+        CdkTableModule,
+        WorkoutsModule
     ],
     declarations: [
         ClientsOverviewComponent,
         NewClientComponent,
         EditClientComponent,
-        WorkoutClientComponent,
-        WorkoutClientEditComponent
+        EditClientWorkoutComponent,
+        ClientWorkoutComponent,
+        EditClientWorkoutPlanComponent
     ]
 })
 export class ClientsModule { }

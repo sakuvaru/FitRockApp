@@ -34,9 +34,11 @@ export class ClientEditWorkoutMenuItems {
 
     menuItems: MenuItem[];
 
-    constructor(clientId: number) {
+    constructor(clientId: number, workoutId: number) {
         this.menuItems = [
             new MenuItem({ key: 'menu.shared.back' }, 'arrow_back', MenuItemType.trainer, 'clients/edit/' + clientId + '/workout'),
+            new MenuItem({ key: 'module.clients.submenu.editWorkoutPlan' }, 'list', MenuItemType.trainer, 'clients/edit/' + clientId + '/workout/' + workoutId + '/workout-plan'),
+            new MenuItem({ key: 'module.clients.submenu.editWorkout' }, 'edit', MenuItemType.trainer, 'clients/edit/' + clientId + '/workout/' + workoutId),
         ];
     }
 }

@@ -27,7 +27,9 @@
     "module": {
         "clients": {
 			"submenu":{
-				"workout": "Trénink"
+				"workout": "Trénink",
+				"editWorkoutPlan": "Upravit plán",
+				"editWorkout": "Základní údaje"
 			},
             "newClient": "Nový klient",
             "viewClientSubtitle": "{{fullName}}",
