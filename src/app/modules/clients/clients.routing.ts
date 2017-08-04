@@ -11,11 +11,11 @@ import { UrlConfig } from '../../core';
 import { SimpleLayoutComponent } from '../../layouts/simple-layout.component';
 import { AdminLayoutComponent } from '../../layouts/admin-layout.component';
 
-import { ClientsOverviewComponent } from './list/client/clients-overview.component';
-import { NewClientComponent } from './new/client/new-client.component';
-import { EditClientComponent } from './edit/client/edit-client.component';
-import { WorkoutClientComponent } from './edit/workout/workout-client.component';
-import { WorkoutClientEditComponent } from './edit/workout/workout-client-edit.component';
+import { ClientsOverviewComponent } from './client/list/clients-overview.component';
+import { NewClientComponent } from './client/new/new-client.component';
+import { EditClientComponent } from './client/edit/edit-client.component';
+import { WorkoutClientComponent } from './workout/edit/workout-client.component';
+import { WorkoutClientEditComponent } from './workout/edit/workout-client-edit.component';
 
 const routes: Routes = [
     {
