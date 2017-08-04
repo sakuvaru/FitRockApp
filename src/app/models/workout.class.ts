@@ -10,5 +10,6 @@ export class Workout extends BaseItem {
     public workoutCategoryId: number;
     public workoutCategory: WorkoutCategory;
     public client: User;
+    public order: number;
     public workoutExercises: WorkoutExercise[];
 }

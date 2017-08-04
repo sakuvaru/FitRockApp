@@ -27,6 +27,10 @@ export class EditWorkoutPlanExportComponent extends BaseComponent implements OnI
 
   private workout: Workout;
   private sortedWorkoutExercises: WorkoutExercise[];
+
+  /**
+  * Drop subscription for dragula - Unsubscribe on destroy!
+  */
   private dropSubscription: Subscription;
 
   constructor(
@@ -57,8 +61,9 @@ export class EditWorkoutPlanExportComponent extends BaseComponent implements OnI
   ngOnDestroy() {
     super.ngOnDestroy();
 
-    // unsubscribe to drop events
+    // unsubscribe from dragula drop events
     this.dropSubscription.unsubscribe();
+    this.dragulaService.destroy('dragula-bag');
   }
 
   ngOnChanges(changes: SimpleChanges) {

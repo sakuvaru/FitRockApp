@@ -1,5 +1,5 @@
 // common
-import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
+import { Component, Input, Output, OnInit, EventEmitter, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { AppConfig, ComponentDependencyService, BaseComponent } from '../../../../core';
 
@@ -7,15 +7,17 @@ import { AppConfig, ComponentDependencyService, BaseComponent } from '../../../.
 import { ClientMenuItems } from '../../menu.items';
 import { FormConfig } from '../../../../../web-components/dynamic-form';
 import { User, Workout, WorkoutExercise } from '../../../../models';
+import { DragulaService } from 'ng2-dragula';
 import 'rxjs/add/operator/switchMap';
-import { Observable } from 'rxjs/Rx';
+import { Observable, Subscription } from 'rxjs/Rx';
 import * as _ from 'underscore';
-import {DataSource} from '@angular/cdk';
+import { StringHelper } from '../../../../../lib/utilities';
+import { DataSource } from '@angular/cdk';
 
 @Component({
     templateUrl: 'client-workout.component.html'
 })
-export class ClientWorkoutComponent extends BaseComponent implements OnInit {
+export class ClientWorkoutComponent extends BaseComponent implements OnInit, OnDestroy {
 
     private clientId: number;
     private workoutExists: boolean = true;
@@ -24,8 +26,16 @@ export class ClientWorkoutComponent extends BaseComponent implements OnInit {
     private observables: Observable<any>[] = [];
     private observablesCompleted: number = 0;
 
+    private readonly dragulaBag: string = 'dragula-bag';
+
+    /**
+     * Drop subscription for dragula - Unsubscribe on destroy!
+     */
+    private dropSubscription: Subscription;
+
     constructor(
         private activatedRoute: ActivatedRoute,
+        private dragulaService: DragulaService,
         protected componentDependencyService: ComponentDependencyService,
     ) {
         super(componentDependencyService)
@@ -34,6 +44,26 @@ export class ClientWorkoutComponent extends BaseComponent implements OnInit {
     ngOnInit(): void {
         super.ngOnInit();
         super.startLoader();
+
+        // set handle for dragula
+        this.dragulaService.setOptions(this.dragulaBag, {
+            moves: function (el: any, container: any, handle: any): any {
+                return StringHelper.contains(handle.className, 'dragula-move-handle');
+            }
+        });
+
+
+        // subscribe to drop events
+        this.dropSubscription = this.dragulaService.drop
+            .debounceTime(500)
+            .takeUntil(this.ngUnsubscribe)
+            .switchMap(() => {
+                return this.dependencies.itemServices.workoutService.updateItemsOrder(this.existingWorkouts, this.clientId).set();
+            })
+            .subscribe(() => {
+                super.stopGlobalLoader();
+                super.showSavedSnackbar();
+            });
 
         var joinedObservable = this.getJoinedObservable();
 
@@ -50,6 +80,14 @@ export class ClientWorkoutComponent extends BaseComponent implements OnInit {
             ,
             error => super.handleError(error));
 
+    }
+
+    ngOnDestroy() {
+        super.ngOnDestroy();
+
+        // unsubscribe from dragula drop events
+        this.dropSubscription.unsubscribe();
+        this.dragulaService.destroy(this.dragulaBag);
     }
 
     private getJoinedObservable(): Observable<any> {
@@ -105,7 +143,7 @@ export class ClientWorkoutComponent extends BaseComponent implements OnInit {
                 .byCurrentUser()
                 .includeMultiple(['WorkoutExercises', 'WorkoutExercises.Exercise'])
                 .whereEquals('ClientId', +params['id'])
-                .orderByAsc("WorkoutName")
+                .orderByAsc("Order")
                 .get())
             .map(response => {
                 if (!response.isEmpty()) {

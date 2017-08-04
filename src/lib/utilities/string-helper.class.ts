@@ -37,4 +37,16 @@ export class StringHelper {
         }
         return hash;
     }
+
+    /**
+     * Returns true if text contains the other one
+     * @param text text to hash
+     */
+    static contains(text: string, contains: string): boolean{
+        if (!text || !contains){
+            return false;
+        }
+        return text.indexOf(contains) !== -1;
+    }
+
 }

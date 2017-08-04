@@ -32,34 +32,3 @@
     <button md-button color="primary" class="text-upper" (click)="openSelecExerciseDialog()">{{'module.workouts.addExercise' | translate }}</button>
   </md-card-actions>
 </md-card>
-
-<!--
-<md-card *ngIf="workout" class="push">
-  <md-card-title>{{workout.workoutName}}</md-card-title>
-  <md-card-subtitle>{{workout.workoutCategory.categoryName}}</md-card-subtitle>
-  <md-card-content *ngIf="workout.description">
-    {{workout.description}}
-  </md-card-content>
-  <md-divider></md-divider>
-  <md-card-content *ngIf="sortedWorkoutExercises">
-    <md-list [dragula]='"dragula-bag"' [dragulaModel]="sortedWorkoutExercises">
-      <md-list-item style="background:whitesmoke" class="w-cursor-move push" *ngFor="let workoutExercise of sortedWorkoutExercises; let i = index">
-        <p md-line>
-          <span class="tc-red-700">{{i + 1}}.</span> &nbsp;{{workoutExercise.exercise.exerciseName}}
-          <span class="md-caption tc-grey-700">({{workoutExercise.exercise.exerciseCategory.categoryName}})</span>
-          <edit-button color="none" (click)=openWorkoutExerciseDialog(workoutExercise)></edit-button>
-          <delete-button color="none" (confirm)=deleteWorkoutExercise(workoutExercise)></delete-button>
-        </p>
-        <p md-line>
-          <span class="md-caption">
-            {{'module.workouts.sets' | translate }}: <strong>{{workoutExercise.sets}}</strong> / {{'module.workouts.reps' | translate }}: <strong>{{workoutExercise.reps}}</strong>
-          </span>
-        </p>
-      </md-list-item>
-    </md-list>
-  </md-card-content>
-  <md-card-actions>
-    <button md-button color="primary" class="text-upper" (click)="openSelecExerciseDialog()">{{'module.workouts.addExercise' | translate }}</button>
-  </md-card-actions>
-</md-card>
--->
