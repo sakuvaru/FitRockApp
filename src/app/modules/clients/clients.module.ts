@@ -15,6 +15,7 @@ import { EditClientComponent } from './client/edit/edit-client.component';
 import { EditClientWorkoutComponent } from './workout/edit/edit-client-workout.component';
 import { ClientWorkoutComponent } from './workout/edit/client-workout.component';
 import { EditClientWorkoutPlanComponent } from './workout/edit/edit-client-workout-plan.component';
+import { NewClientWorkoutComponent } from './workout/new/new-client-workout.component';
 
 // router
 import { ClientsRouter } from './clients.routing';
@@ -40,7 +41,8 @@ import { WorkoutsModule} from '../workouts/workouts.module';
         EditClientComponent,
         EditClientWorkoutComponent,
         ClientWorkoutComponent,
-        EditClientWorkoutPlanComponent
+        EditClientWorkoutPlanComponent,
+        NewClientWorkoutComponent
     ]
 })
 export class ClientsModule { }

@@ -29,7 +29,8 @@
 			"submenu":{
 				"workout": "Trénink",
 				"editWorkoutPlan": "Upravit plán",
-				"editWorkout": "Základní údaje"
+				"editWorkout": "Základní údaje",
+				"newWorkout": "Nový trénink"
 			},
             "newClient": "Nový klient",
             "viewClientSubtitle": "{{fullName}}",

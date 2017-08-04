@@ -17,6 +17,7 @@ import { EditClientComponent } from './client/edit/edit-client.component';
 import { EditClientWorkoutComponent } from './workout/edit/edit-client-workout.component';
 import { ClientWorkoutComponent } from './workout/edit/client-workout.component';
 import { EditClientWorkoutPlanComponent } from './workout/edit/edit-client-workout-plan.component';
+import { NewClientWorkoutComponent } from './workout/new/new-client-workout.component';
 
 const routes: Routes = [
     {
@@ -38,7 +39,10 @@ const routes: Routes = [
             },
             {
                 path: 'clients/edit/:id/workout/:workoutId/workout-plan', component: EditClientWorkoutPlanComponent
-            }
+            },
+            {
+                path: 'clients/edit/:id/new-workout', component: NewClientWorkoutComponent
+            },
         ]
     }
 ];

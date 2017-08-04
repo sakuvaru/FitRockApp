@@ -1,12 +1,11 @@
 <md-card class="push">
     <md-card-content>
-        <button md-raised-button color="primary" (click)="asef()">{{'module.clients.newWorkout' | translate}}</button>
+        <button md-raised-button color="primary" [routerLink]="[getTrainerUrl('clients/edit/' + clientId + '/new-workout')]">{{'module.clients.newWorkout' | translate}}</button>
     </md-card-content>
     <md-divider></md-divider>
     <md-card-content class="push-top">
         <p>{{'module.clients.newWorkoutFromTemplate' | translate }}:
-            <md-select #copyFromWorkout style="width: 260px" placeholder="{{'module.clients.copyWorkoutLabel' | translate}}" [(ngModel)]="selectedValue"
-                name="food">
+            <md-select #copyFromWorkout style="width: 260px" placeholder="{{'module.clients.copyWorkoutLabel' | translate}}" [(ngModel)]="selectedValue">
                 <md-option *ngFor="let workout of workoutTemplates" [value]="workout">
                     {{ workout.workoutName }}
                 </md-option>
@@ -42,3 +41,4 @@
     </ng-container>
 </md-list>
 
+ 
