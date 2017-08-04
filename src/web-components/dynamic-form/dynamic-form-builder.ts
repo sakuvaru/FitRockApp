@@ -26,8 +26,10 @@ class BaseDynamicFormBuilder<TItem extends IItem>{
         return this;
     }
 
-    showFields(fields: string[]): this {
-        this.config.showFields = fields;
+    hiddenFields(fields: string[]): this {
+        if (fields){
+            this.config.hiddenFields = fields;
+        }
         return this;
     }
 
