@@ -66,11 +66,13 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
 
     private initDataTable(): void {
         if (this.config) {
-            // translated all labels
+            // translate all labels (which have 'labelKey' set)
             this.config.fields.forEach(field => {
-                this.translateService.get(field.label).subscribe(text => {
-                    field.label = text;
+                if (field.labelKey){
+                     this.translateService.get(field.labelKey).subscribe(text => {
+                    field.labelKey = text;
                 });
+                }
             });
 
             // init hash
@@ -269,13 +271,8 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
    }
    */
 
-    private getFilterByGuid(guid: string): Filter<any>{
+    private getFilterByGuid(guid: string): Filter<any> | undefined{
         var filter = this.filters.find(m => m.guid === guid);
-
-        if (filter == null){
-            throw Error(`Filter with guid '${guid}' was not found`);
-        }
-
         return filter;
     }
 
