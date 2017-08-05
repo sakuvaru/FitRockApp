@@ -13,18 +13,32 @@
       <ng-container *ngFor="let workoutExercise of sortedWorkoutExercises; let i = index">
         <td-expansion-panel class="push-left push-right push-bottom" [disableRipple]="false">
           <ng-template td-expansion-panel-header>
-            <md-list-item class="w-cursor-move" style="background:whitesmoke">
-              <span class="tc-red-700">{{i + 1}}.</span> &nbsp;
-              <span>{{workoutExercise.exercise.exerciseName}}</span>
-              <span class="md-caption push-left">
-                {{'module.workouts.sets' | translate }}: <strong>{{workoutExercise.sets}}</strong> | {{'module.workouts.reps' | translate }}: <strong>{{workoutExercise.reps}}</strong>
+            <md-list-item style="background:whitesmoke">
+              <span class="dragula-move-handle w-cursor-move md-headline tc-blue-600">
+                +&nbsp;
               </span>
+              <span class="dragula-move-handle w-cursor-move tc-red-700">{{i + 1}}. &nbsp;</span>
+              <span>{{workoutExercise.exercise.exerciseName}}</span>
               <span flex></span>
               <edit-button color="none" (click)=openWorkoutExerciseDialog(workoutExercise)></edit-button>
               <delete-button color="none" (confirm)=deleteWorkoutExercise(workoutExercise)></delete-button>
             </md-list-item>
           </ng-template>
-        </td-expansion-panel>
+
+          <div class="md-caption push">
+            <span>
+                {{'module.workouts.sets' | translate }}: <strong>{{workoutExercise.sets}}</strong> | {{'module.workouts.reps' | translate }}: <strong>{{workoutExercise.reps}}</strong>
+            </span> 
+
+              <p *ngIf="workoutExercise.notes">
+                {{ workoutExercise.notes }}
+            </p>
+            <p *ngIf="!workoutExercise.notes">
+              <em>{{'module.workouts.exerciseHasNoNotes' | translate}}</em>
+            </p>
+          </div>
+
+          </td-expansion-panel>
       </ng-container>
     </md-list>
   </md-card-content>

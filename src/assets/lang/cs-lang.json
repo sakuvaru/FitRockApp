@@ -70,7 +70,8 @@
 			"newWorkout": "Nová šablona",
 			"myExercises": "Moje cviky",
 			"allExercises": "Všechny cviky",
-            "addCustomExercise": "Vytvořit vlastní cvik"
+            "addCustomExercise": "Vytvořit vlastní cvik",
+			"exerciseHasNoNotes": "Cvik nemá žádné poznámky"
         },
 		"exercises":{
 			"exercise": "Cviky",

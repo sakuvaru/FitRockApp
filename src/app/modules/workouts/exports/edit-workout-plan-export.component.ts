@@ -9,6 +9,7 @@ import { Workout, WorkoutExercise, Exercise } from '../../../models';
 import { DragulaService } from 'ng2-dragula';
 import { Subscription } from 'rxjs/Rx';
 import { CacheKeyType } from '../../../../lib/repository';
+import { StringHelper } from '../../../../lib/utilities';
 import { SelectWorkoutExerciseDialogComponent } from '../dialogs/select-workout-exercise-dialog.component';
 import { EditWorkoutExerciseDialogComponent } from '../dialogs/edit-workout-exercise-dialog.component';
 import { AddWorkoutExerciseDialogComponent } from '../dialogs/add-workout-exercise-dialog.component';
@@ -29,9 +30,11 @@ export class EditWorkoutPlanExportComponent extends BaseComponent implements OnI
   private sortedWorkoutExercises: WorkoutExercise[];
 
   /**
-  * Drop subscription for dragula - Unsubscribe on destroy!
+  * Drop subscription for dragula - Unsubscribe on OnDestroy + destroy dragula itself!
   */
   private dropSubscription: Subscription;
+
+  private dragulaBag: string = 'dragula-bag';
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -44,6 +47,13 @@ export class EditWorkoutPlanExportComponent extends BaseComponent implements OnI
     super.ngOnInit();
 
     this.startLoader();
+
+    // set handle for dragula
+    this.dragulaService.setOptions(this.dragulaBag, {
+      moves: function (el: any, container: any, handle: any): any {
+        return StringHelper.contains(handle.className, 'dragula-move-handle');
+      }
+    });
 
     // subscribe to drop events
     this.dropSubscription = this.dragulaService.drop
@@ -63,7 +73,7 @@ export class EditWorkoutPlanExportComponent extends BaseComponent implements OnI
 
     // unsubscribe from dragula drop events
     this.dropSubscription.unsubscribe();
-    this.dragulaService.destroy('dragula-bag');
+    this.dragulaService.destroy(this.dragulaBag);
   }
 
   ngOnChanges(changes: SimpleChanges) {
