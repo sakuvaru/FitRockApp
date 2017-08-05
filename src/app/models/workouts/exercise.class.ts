@@ -1,4 +1,4 @@
-import { BaseItem } from '../../lib/repository';
+import { BaseItem } from '../../../lib/repository';
 import { ExerciseCategory } from './exercise-category.class';
 
 export class Exercise extends BaseItem {

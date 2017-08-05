@@ -1,7 +1,7 @@
-import { BaseItem } from '../../lib/repository';
+import { BaseItem } from '../../../lib/repository';
 import { WorkoutCategory } from './workout-category.class';
 import { WorkoutExercise } from './workout-exercise.class';
-import { User } from './user.class';
+import { User } from '../user.class';
 
 export class Workout extends BaseItem {
 

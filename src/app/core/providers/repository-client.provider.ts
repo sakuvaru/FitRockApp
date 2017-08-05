@@ -10,7 +10,8 @@ import { AppConfig } from '../../core/config/app.config';
 import { AuthHttp } from 'angular2-jwt';
 
 // models
-import { User, Log, Workout, WorkoutCategory, Exercise, ExerciseCategory, WorkoutExercise } from '../../models';
+import { User, Log, Workout, WorkoutCategory, Exercise, ExerciseCategory, WorkoutExercise,
+    Diet, DietCategory, DietFood, Food, FoodCategory, FoodUnit } from '../../models';
 
 export function RepositoryClientFactory(authHttp: AuthHttp) {
 
@@ -24,6 +25,12 @@ export function RepositoryClientFactory(authHttp: AuthHttp) {
         new TypeResolver("WorkoutExercise", () => new WorkoutExercise()),
         new TypeResolver("Exercise", () => new Exercise()),
         new TypeResolver("ExerciseCategory", () => new ExerciseCategory()),
+        new TypeResolver("Diet", () => new Diet()),
+        new TypeResolver("DietCategory", () => new DietCategory()),
+        new TypeResolver("DietFood", () => new DietFood()),
+        new TypeResolver("Food", () => new Food()),
+        new TypeResolver("FoodCategory", () => new FoodCategory()),
+        new TypeResolver("FoodUnit", () => new FoodUnit()),
     ];
 
     return new RepositoryClient(

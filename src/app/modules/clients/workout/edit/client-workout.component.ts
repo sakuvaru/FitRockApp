@@ -197,5 +197,9 @@ export class ClientWorkoutComponent extends BaseComponent implements OnInit, OnD
                 this.stopGlobalLoader();
             });
     }
+
+    private goToEditWorkout(workout: Workout): void{
+        super.navigate([this.getTrainerUrl('clients/edit/' + this.clientId + '/workout/' + workout.id + '/workout-plan')]);
+    }
 }
 

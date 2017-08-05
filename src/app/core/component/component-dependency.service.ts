@@ -10,7 +10,9 @@ import { SharedService } from '../shared-service/shared.service';
 import { RepositoryClient } from '../../../lib/repository';
 
 // Services
-import { UserService, ExerciseCategoryService, ExerciseService, LogService, WorkoutCategoryService, WorkoutExerciseService, WorkoutService } from '../../services';
+import { UserService, ExerciseCategoryService, ExerciseService, LogService, WorkoutCategoryService,
+     WorkoutExerciseService, WorkoutService, DietCategoryService, DietFoodService, DietService,
+    FoodCategoryService, FoodService, FoodUnitService } from '../../services';
 
 // Angular material
 import { MdSnackBar, MdDialog } from '@angular/material';
@@ -75,11 +77,21 @@ export class ComponentDependencyService {
         this.itemServices = new ItemServices();
         this.itemServices.userService = injector.get(UserService);
         this.itemServices.logService = injector.get(LogService);
+
+        // workout services
         this.itemServices.workoutService = injector.get(WorkoutService);
         this.itemServices.workoutCategoryService = injector.get(WorkoutCategoryService);
         this.itemServices.workoutExerciseService = injector.get(WorkoutExerciseService);
         this.itemServices.exerciseService = injector.get(ExerciseService);
         this.itemServices.exerciseCategoyService = injector.get(ExerciseCategoryService);
+
+        // diet services
+        this.itemServices.dietService = injector.get(DietService);
+        this.itemServices.dietCategoryService = injector.get(DietCategoryService);
+        this.itemServices.dietFoodService = injector.get(DietFoodService);
+        this.itemServices.foodCategoryService = injector.get(FoodCategoryService);
+        this.itemServices.foodService = injector.get(FoodService);
+        this.itemServices.foodUnitService = injector.get(FoodUnitService);
 
         // init observable for auth user
         this.authUser = this.itemServices.userService
@@ -116,9 +128,19 @@ export class TdServices {
 export class ItemServices {
     public userService: UserService;
     public logService: LogService;
+
+    // workout
     public workoutService: WorkoutService;
     public workoutCategoryService: WorkoutCategoryService;
     public workoutExerciseService: WorkoutExerciseService;
     public exerciseService: ExerciseService;
     public exerciseCategoyService: ExerciseCategoryService;
+
+    // diets
+    public dietService: DietService;
+    public dietFoodService: DietFoodService;
+    public dietCategoryService: DietCategoryService;
+    public foodService: FoodService;
+    public foodUnitService: FoodUnitService;
+    public foodCategoryService: FoodCategoryService;
 }

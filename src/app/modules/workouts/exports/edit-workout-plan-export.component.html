@@ -20,8 +20,8 @@
               <span class="dragula-move-handle w-cursor-move tc-red-700">{{i + 1}}. &nbsp;</span>
               <span>{{workoutExercise.exercise.exerciseName}}</span>
               <span flex></span>
-              <edit-button color="none" (click)=openWorkoutExerciseDialog(workoutExercise)></edit-button>
-              <delete-button color="none" (confirm)=deleteWorkoutExercise(workoutExercise)></delete-button>
+              <edit-button color="none" (editAction)="openWorkoutExerciseDialog(workoutExercise)"></edit-button>
+              <delete-button color="none" (confirm)="deleteWorkoutExercise(workoutExercise)"></delete-button>
             </md-list-item>
           </ng-template>
 

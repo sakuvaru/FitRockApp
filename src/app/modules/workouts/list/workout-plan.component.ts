@@ -15,12 +15,6 @@ export class WorkoutPlanComponent extends BaseComponent implements OnInit {
   private workout: Workout;
   private sortedWorkoutExercises: WorkoutExercise[];
 
-  /**
-  *access the form with 'id' of the exercise
-  * e.g. exerciseForms['9']
-  **/
-  private exerciseForms = {};
-
   constructor(
     private activatedRoute: ActivatedRoute,
     protected dependencies: ComponentDependencyService) {

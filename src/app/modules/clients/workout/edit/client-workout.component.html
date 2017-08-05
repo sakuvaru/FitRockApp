@@ -26,7 +26,7 @@
                     <span class="dragula-move-handle w-cursor-move tc-red-700">{{i + 1}}. &nbsp;</span>
                     <span>{{workout.workoutName}}</span>
                     <span flex></span>
-                    <edit-button [routerLink]="[workout.id + '/workout-plan']"></edit-button>
+                    <edit-button (editAction)="goToEditWorkout(workout)"></edit-button>
                     <delete-button (confirm)="deleteWorkout(workout)"></delete-button>
                 </md-list-item>
             </ng-template>

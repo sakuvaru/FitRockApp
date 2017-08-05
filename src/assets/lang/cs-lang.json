@@ -8,7 +8,7 @@
         "clients": "Klienti",
         "workouts": "Tréninkové plány",
 		"exercises": "Cviky",
-        "mealPlans": "Jídelníčky",
+        "diets": "Jídelníčky",
         "locations": "Místa",
         "forms": "Formulář"
     },
@@ -85,6 +85,27 @@
 			"preview": "Náhled cviku",
             "new": "Nový cvik"
 		},
+		"diets":{
+			"submenu":{
+				"dietTemplates": "Šablony",
+				"allDiets": "Všechny jídelníčky",
+				"view": "Zobrazit",
+				"editPlan": "Upravit šablonu",
+				"edit": "Upravit základní údaje"
+			},
+			"newDietTemplate": "Nový jídelníček",
+			"editDiet": "Upravit jídelníček",
+			"editTemplate": "Upravit šablonu",
+			"previewDiet": "Přehled plánu",
+			"foodUnit": "Množství",
+			"addCustomFood": "Přidat vlastní jídlo",
+			"addDietFood": "Přidat jídlo",
+			"editDietFood": "Upravit záznam",
+			"allFoods": "Všechna jídla",
+			"myFoods": "Moje jídla",
+			"dietFoodHasNoNotes": "Nejsou zde žádné poznámky",
+			"eatTime": "Čas"
+		},
 		"shared":{
 			"errors": {
 			   "errorPageTitle": "Nastala neočekáváná chyba",
@@ -157,6 +178,17 @@
 			"description": "Popis / návod",
 			"videoUrl": "Odkaz na YouTube video",
 			"exerciseCategoryId": "Kategorie"
+		},
+		"diet": {
+			"dietName": "Název",
+			"dietCategoryId": "Kategorie",
+			"description": "Popis"
+		},
+		"dietFood":{
+			"unitValue": "Množství",
+			"notes": "Poznámky",
+			"eatTime": "Čas",
+			"eatTime.hint": "Např. 'po probuzení', '9:00', 'po tréninku' apod."
 		}
     },
     "webComponents": {

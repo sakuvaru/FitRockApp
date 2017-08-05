@@ -5,20 +5,20 @@ import { AppConfig, ComponentDependencyService, BaseComponent } from '../../../c
 
 // required by component
 import { FormConfig } from '../../../../web-components/dynamic-form';
-import { Workout } from '../../../models';
+import { Diet } from '../../../models';
 import 'rxjs/add/operator/switchMap';
 
 @Component({
-    templateUrl: 'edit-workout-export.component.html',
-    selector: 'edit-workout-export'
+    templateUrl: 'edit-diet-export.component.html',
+    selector: 'edit-diet-export'
 })
-export class EditWorkoutExportComponent extends BaseComponent implements OnInit, OnChanges {
+export class EditDietExportComponent extends BaseComponent implements OnInit, OnChanges {
 
-    @Output() loadWorkout = new EventEmitter();
+    @Output() loadDiet = new EventEmitter();
 
-    @Input() workoutId: number;
+    @Input() dietId: number;
 
-    private formConfig: FormConfig<Workout>;
+    private formConfig: FormConfig<Diet>;
 
     constructor(
         private activatedRoute: ActivatedRoute,
@@ -28,38 +28,34 @@ export class EditWorkoutExportComponent extends BaseComponent implements OnInit,
     }
 
     ngOnChanges(changes: SimpleChanges) {
-        var workoutId = changes.workoutId.currentValue;
-        if (workoutId) {
-            this.initForm(workoutId);
+        var dietId = changes.dietId.currentValue;
+        if (dietId) {
+            this.initForm(dietId);
         }
-    }
-
-    handleClick(): void {
-        throw Error('BOOM!');
     }
 
     ngOnInit(): void {
         super.ngOnInit();
     }
 
-    private initForm(workoutId: number): void {
+    private initForm(dietId: number): void {
         super.startLoader();
 
-        this.dependencies.itemServices.workoutService.editForm(workoutId)
+        this.dependencies.itemServices.dietService.editForm(dietId)
             .takeUntil(this.ngUnsubscribe)
             .subscribe(form => {
                 form.onFormLoaded(() => super.stopLoader());
                 form.onBeforeSave(() => super.startGlobalLoader());
                 form.onAfterSave(() => super.stopGlobalLoader());
                 form.onError(() => super.stopGlobalLoader());
-                form.onAfterDelete(() => super.navigate([super.getTrainerUrl('workouts')]));
+                form.onAfterDelete(() => super.navigate([super.getTrainerUrl('diets')]));
                 var workout = form.getItem();
 
                 // get form
                 this.formConfig = form.build();
 
                 // set loaded workout
-                this.loadWorkout.next(workout);
+                this.loadDiet.next(workout);
             },
             error => super.handleError(error));
     }

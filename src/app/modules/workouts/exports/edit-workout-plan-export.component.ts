@@ -4,7 +4,6 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { AppConfig, ComponentDependencyService, BaseComponent, ComponentConfig } from '../../../core';
 
 // required by component
-import { WorkoutMenuItems } from '../menu.items';
 import { Workout, WorkoutExercise, Exercise } from '../../../models';
 import { DragulaService } from 'ng2-dragula';
 import { Subscription } from 'rxjs/Rx';
@@ -133,6 +132,9 @@ export class EditWorkoutPlanExportComponent extends BaseComponent implements OnI
       if (dialog.componentInstance.workoutExerciseWasDeleted) {
         // remove exercise
         this.sortedWorkoutExercises = _.reject(this.sortedWorkoutExercises, function (item) { return item.id === dialog.componentInstance.idOfDeletedWorkoutExercise; });
+
+        // recalculate local order
+        this.recalculateOrder();
       }
       else {
         // update exercice with updated data
@@ -205,5 +207,15 @@ export class EditWorkoutPlanExportComponent extends BaseComponent implements OnI
           })
       }
     })
+  }
+
+  private recalculateOrder(): void {
+    if (this.sortedWorkoutExercises) {
+      var order = 0;
+      this.sortedWorkoutExercises.forEach(workoutExercise => {
+        workoutExercise.order = order;
+        order++;
+      })
+    }
   }
 }

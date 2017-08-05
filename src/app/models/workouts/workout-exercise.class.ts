@@ -1,4 +1,4 @@
-import { BaseItem } from '../../lib/repository';
+import { BaseItem } from '../../../lib/repository';
 import { Exercise } from './exercise.class';
 import { Workout } from './workout.class';
 

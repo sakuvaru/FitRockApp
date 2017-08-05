@@ -1,0 +1,23 @@
+<md-card *ngIf="diet" class="push">
+  <md-card-title>{{diet.dietName}}</md-card-title>
+  <md-card-subtitle>{{diet.dietCategory.categoryName}}</md-card-subtitle>
+  <md-divider></md-divider>
+  <md-card-content *ngIf="diet.description">
+    {{diet.description}}
+  </md-card-content>
+  <md-divider></md-divider>
+  <md-card-content *ngIf="sortedDietFoods">
+    <td-expansion-panel *ngFor="let dietFood of sortedDietFoods; let i = index">
+      <ng-template td-expansion-panel-label>
+        <span class="tc-red-700">{{i + 1}}.</span> {{dietFood.food.foodName}}
+        <span class="md-caption tc-grey-700">({{dietFood.food.foodCategory.categoryName}})</span>
+      </ng-template>
+      <ng-template td-expansion-panel-sublabel>
+        <span class="md-caption"> {{dietFood.unitValue}} {{dietFood.food.foodUnit.unitCode | translate}} </span>
+      </ng-template>
+      <div class="md-padding md-caption">
+        {{dietFood.notes}}
+      </div>
+    </td-expansion-panel>
+  </md-card-content>
+</md-card>
