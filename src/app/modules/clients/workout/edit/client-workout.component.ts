@@ -54,6 +54,7 @@ export class ClientWorkoutComponent extends BaseComponent implements OnInit, OnD
 
         // subscribe to drop events
         this.dropSubscription = this.dragulaService.drop
+            .do(() => super.startGlobalLoader())
             .debounceTime(500)
             .takeUntil(this.ngUnsubscribe)
             .switchMap(() => {
