@@ -21,9 +21,14 @@ export class EditButtonComponent extends BaseWebComponent implements OnInit {
 
     @Input() color: 'none' | 'warn' | 'accent' | 'primary' = 'none';
 
-    @Output() confirm = new EventEmitter();
+    @Output() editAction = new EventEmitter();
 
     ngOnInit() {
         this.translateService.get('webComponents.buttons.editButton.tooltip').subscribe(text => this.tooltipText = text);
+    }
+
+    private handleClick(event: any): void {
+        event.stopPropagation(); // prevents issues if the clicked linked is within another link
+        this.editAction.emit();
     }
 }
