@@ -1,7 +1,9 @@
-<h2>
-    {{'module.workouts.selectExercise' | translate}}
-</h2>
+<md-dialog-content>
+    <h2>
+        {{'module.workouts.selectExercise' | translate}}
+    </h2>
 
-<data-table [config]="config"></data-table>
+    <data-table [config]="config"></data-table>
 
-<button md-raised-button color="accent" (click)="addCustomExercise()">{{'module.workouts.addCustomExercise' | translate }}</button>
+    <button md-raised-button color="accent" (click)="addCustomExercise()">{{'module.workouts.addCustomExercise' | translate }}</button>
+</md-dialog-content>

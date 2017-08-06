@@ -1,5 +1,7 @@
-<h2 *ngIf="food">{{'module.diets.addDietFood' | translate }} - {{ food.foodName }}</h2>
+<md-dialog-content>
+    <h2 *ngIf="food">{{'module.diets.addDietFood' | translate }} - {{ food.foodName }}</h2>
 
-<div class="md-padding">
-    <dynamic-form [config]="dietFoodForm"></dynamic-form>
-</div>
+    <div class="md-padding">
+        <dynamic-form [config]="dietFoodForm"></dynamic-form>
+    </div>
+</md-dialog-content>

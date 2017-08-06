@@ -1,7 +1,9 @@
-<h2>
-    {{'module.diets.selectFood' | translate}}
-</h2>
+<md-dialog-content>
+    <h2>
+        {{'module.diets.selectFood' | translate}}
+    </h2>
 
-<data-table [config]="config"></data-table>
+    <data-table [config]="config"></data-table>
 
-<button md-raised-button color="accent" (click)="addCustomFood()">{{'module.diets.addCustomFood' | translate }}</button>
+    <button md-raised-button color="accent" (click)="addCustomFood()">{{'module.diets.addCustomFood' | translate }}</button>
+</md-dialog-content>
