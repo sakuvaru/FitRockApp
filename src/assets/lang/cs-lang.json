@@ -1,93 +1,93 @@
 {
-    "menu": {
-        "shared": {
-            "back": "Zpět"
-        },
-        "main": "Hlavní menu",
-        "dashboard": "Přehled",
-        "clients": "Klienti",
-        "workouts": "Tréninkové plány",
+	"menu": {
+		"shared": {
+			"back": "Zpět"
+		},
+		"main": "Hlavní menu",
+		"dashboard": "Přehled",
+		"clients": "Klienti",
+		"workouts": "Tréninkové plány",
 		"exercises": "Cviky",
-        "diets": "Jídelníčky",
+		"diets": "Jídelníčky",
 		"foods": "Potraviny",
-        "locations": "Místa",
-        "forms": "Formulář"
-    },
-    "errors": {
-        "invalidLicense": "Pro tuto akci nemáš dostatečnou licenci",
+		"locations": "Místa",
+		"forms": "Formulář"
+	},
+	"errors": {
+		"invalidLicense": "Pro tuto akci nemáš dostatečnou licenci",
 		"dialogErrorTitle": "Chyba",
-		"dialogDefaultError": "Nastala neočekávána chyba, zkus akci opakovat nebo se nám ozvi pokud chyba přetrvává"	
-    },
-    "shared": {
-        "login": "Přihlášení",
-        "search": "Hledat",
-        "updated": "Poslední změna",
+		"dialogDefaultError": "Nastala neočekávána chyba, zkus akci opakovat nebo se nám ozvi pokud chyba přetrvává"
+	},
+	"shared": {
+		"login": "Přihlášení",
+		"search": "Hledat",
+		"updated": "Poslední změna",
 		"close": "Zavřít",
 		"saved": "Uloženo"
-    },
-    "module": {
-        "clients": {
-			"submenu":{
+	},
+	"module": {
+		"clients": {
+			"submenu": {
 				"workout": "Trénink",
 				"editWorkoutPlan": "Upravit plán",
 				"editWorkout": "Základní údaje",
 				"newWorkout": "Nový trénink"
 			},
-            "newClient": "Nový klient",
-            "viewClientSubtitle": "{{fullName}}",
-		    "clients": "Klienti",
-            "allClients": "Všichni",
-            "activeClients": "Aktivní",
-            "inactiveClients": "Neaktivní",
-            "editClient": "Změna údajů",
+			"newClient": "Nový klient",
+			"viewClientSubtitle": "{{fullName}}",
+			"clients": "Klienti",
+			"allClients": "Všichni",
+			"activeClients": "Aktivní",
+			"inactiveClients": "Neaktivní",
+			"editClient": "Změna údajů",
 			"newWorkout": "Nový trénink",
 			"editWorkout": "Upravit trénink",
 			"copy": "Zkopírovat",
 			"copyWorkoutLabel": "Tréninková šáblona",
 			"newWorkoutFromTemplate": "Zkopírovat trénink ze šablony",
 			"workoutNotSelected": "Prosím vyber trénink"
-        },
-        "workouts":{
+		},
+		"workouts": {
 			"submenu": {
 				"allWorkouts": "Všechny tréninky",
 				"workoutTemplates": "Šablony"
 			},
-            "workoutName": "Trénink",
+			"workoutName": "Trénink",
 			"editWorkout": "Změna tréninku",
 			"trainingPlans": "Tréninkové plány",
-            "editPlan": "Upravit šablonu",
-            "view": "Náhled",
-            "edit": "Základní údaje",
-            "list": "Tréninkové plány",
-            "overview": "Přehled",
+			"editPlan": "Upravit šablonu",
+			"view": "Náhled",
+			"edit": "Základní údaje",
+			"list": "Tréninkové plány",
+			"overview": "Přehled",
 			"previewWorkout": "Náhled šablony",
 			"reps": "Opakování",
 			"sets": "Série",
 			"addExercise": "Přidat cvik",
 			"deleteWorkout": "Smazat trénink",
-            "selectExercise": "Výběr cviků",
+			"selectExercise": "Výběr cviků",
 			"addWorkoutExercise": "Přidat cvik",
 			"editWorkoutExercise": "Upravit cvik",
 			"newWorkout": "Nová šablona",
 			"myExercises": "Moje cviky",
 			"allExercises": "Všechny cviky",
-            "addCustomExercise": "Vytvořit vlastní cvik",
+			"addCustomExercise": "Vytvořit vlastní cvik",
 			"exerciseHasNoNotes": "Cvik nemá žádné poznámky"
-        },
-		"exercises":{
+		},
+		"exercises": {
 			"exercise": "Cviky",
 			"exercises": "Cviky",
 			"overview": "Přehled",
 			"exerciseName": "Název cviku",
 			"view": "Náhled",
-            "edit": "Upravit",
+			"edit": "Upravit",
 			"myExercises": "Moje cviky",
 			"allExercises": "Všechny cviky",
 			"preview": "Náhled cviku",
-            "new": "Nový cvik"
+			"new": "Nový cvik"
 		},
-		"diets":{
-			"submenu":{
+		"diets": {
+			"submenu": {
 				"dietTemplates": "Šablony",
 				"allDiets": "Všechny jídelníčky",
 				"view": "Zobrazit",
@@ -108,8 +108,8 @@
 			"eatTime": "Čas",
 			"selectFood": "Vybrat jídlo"
 		},
-		"foods":{
-			"submenu":{
+		"foods": {
+			"submenu": {
 				"myFoods": "Moje potraviny",
 				"allFoods": "Všechny potraviny",
 				"edit": "Upravit záznam",
@@ -118,74 +118,102 @@
 			},
 			"new": "Nový záznam"
 		},
-		"shared":{
+		"foodUnits": {
+			"mg": "mg",
+			"unit": "ks",
+			"teaspoon": "čajová lžička",
+			"pound": "libra",
+			"kg": "kg",
+			"grams": "g",
+			"ml": "ml",
+			"l": "l",
+			"dl": "dl",
+			"pint": "pinta",
+			"cup": "hrnek",
+			"oz": "unce",
+			"tablespoon": "lžíce",
+			"gallon": "galon"
+		},
+		"foodCategories": {
+			"fruits": "Ovoce",
+			"dairy": "Mléčné výrobky",
+			"water": "Voda",
+			"sugaryfoods": "sladkosti",
+			"meat": "Maso",
+			"grainsbeanslegumes": "Fazole a luštěniny",
+			"vegetables": "Zelenina"
+		},
+		"shared": {
 			"errors": {
-			   "errorPageTitle": "Nastala neočekáváná chyba",
-			   "criticalErrorText": "Vypadá, že jde o zcela neznámou chybu, kterou nelze zpracovat :-(",
-			   "loggedErrorText": "Chyba zalogována pod názvem '<em>{{guid}}</em>'"
+				"errorPageTitle": "Nastala neočekáváná chyba",
+				"criticalErrorText": "Vypadá, že jde o zcela neznámou chybu, kterou nelze zpracovat :-(",
+				"loggedErrorText": "Chyba zalogována pod názvem '<em>{{guid}}</em>'"
 			}
 		}
-    },
-    "form": {
-        "error": {
-            "invalidCodenameWithLabel": "Pole '{{label}}' může obsahovat pouze písmena a číslice (bez mezer a speciálních znaků)",
-            "invalidCodename": "Pole může obsahovat pouze písmena a číslice (bez mezer a speciálních znaků)",
-            "invalidEmailWithLabel": "Pole '{{label}}' neobsahuje validní e-mail",
-            "invalidEmail": "Zadaný e-mail není validní",
-            "notUniqueWithLabel": "Hodnota pro '{{label}}' je již zabraná, zkus něco jiného",
-            "notUnique": "Tato hodnota je již zabraná, zkus něco jiného",
-            "notEditableWithLabel": "Pole '{{label}}' nelze editovat",
-            "notEditable": "Pole nelze editovat",
-            "otherWithLabel": "Pole '{{label}} je chybně vyplněno",
-            "other": "Pole je chybně vyplněno",
-            "unknown": "Neznámá chyba",
-            "saveFailed": "Uložení se nezdařilo",
-            "unknownFormErrorMessage": "Uložení se nezdařilo s neznámou chybou. Zkontrolujte formulář s zkuste to znova.",
-            "insufficientLicense": "Pro tuto akci nemáš dostatečnou licenci"
-        },
-        "shared": {
-            "save": "Uložit",
-            "saved": "Uloženo",
-            "insert": "Vytvořit",
-            "required": "povinné",
+	},
+	"form": {
+		"error": {
+			"invalidCodenameWithLabel": "Pole '{{label}}' může obsahovat pouze písmena a číslice (bez mezer a speciálních znaků)",
+			"invalidCodename": "Pole může obsahovat pouze písmena a číslice (bez mezer a speciálních znaků)",
+			"invalidEmailWithLabel": "Pole '{{label}}' neobsahuje validní e-mail",
+			"invalidEmail": "Zadaný e-mail není validní",
+			"notUniqueWithLabel": "Hodnota pro '{{label}}' je již zabraná, zkus něco jiného",
+			"notUnique": "Tato hodnota je již zabraná, zkus něco jiného",
+			"notEditableWithLabel": "Pole '{{label}}' nelze editovat",
+			"notEditable": "Pole nelze editovat",
+			"otherWithLabel": "Pole '{{label}} je chybně vyplněno",
+			"other": "Pole je chybně vyplněno",
+			"unknown": "Neznámá chyba",
+			"saveFailed": "Uložení se nezdařilo",
+			"unknownFormErrorMessage": "Uložení se nezdařilo s neznámou chybou. Zkontrolujte formulář s zkuste to znova.",
+			"insufficientLicense": "Pro tuto akci nemáš dostatečnou licenci",
+			"valueIsNotANumber": "Pole musí obsahovat číslo",
+			"invalidMaxNumberValue": "Maximální povolená hodnota je '{{number}}'",
+			"invalidMinNumberValue": "Minimiální povolená hodnota je '{{number}}'"
+		},
+		"shared": {
+			"save": "Uložit",
+			"saved": "Uloženo",
+			"insert": "Vytvořit",
+			"required": "povinné",
 			"delete": "Smazat",
 			"deleted": "Smazáno"
-        },
-        "user": {
-            "email": "E-mail",
-            "male": "Muž",
-            "female": "Žena",
-            "firstName": "Jméno",
-            "lastName": "Příjmení",
-            "birthDate": "Datum narození",
-            "address": "Adresa",
-            "level": "Úroveň",
-            "city": "Město",
-            "medicalCondition": "Zdravotní stav",
-            "goal": "Cíl",
-            "trainerPrivateNotes": "Soukromé poznámky",
-            "trainerPrivateNotes.hint": "Klient tyto poznámky neuvidí",
-            "trainerPublicNotes": "Poznámky pro klienta",
-            "trainerPublicNotes.hint": "Klient tyto poznámky uvidí",
-            "isActive": "Aktivní",
-            "isActive.hint": "Indikuje, zda s klientem aktivně pracuješ",
-            "fitnessLevel": "Zkušenost",
-            "beginner": "Začátečník",
-            "intermediate": "Středně pokročilý",
-            "advanced": "Pokročilý",
-            "fitnessCompetitor": "Závodník fitness"
-        },
-		"workout":{
+		},
+		"user": {
+			"email": "E-mail",
+			"male": "Muž",
+			"female": "Žena",
+			"firstName": "Jméno",
+			"lastName": "Příjmení",
+			"birthDate": "Datum narození",
+			"address": "Adresa",
+			"level": "Úroveň",
+			"city": "Město",
+			"medicalCondition": "Zdravotní stav",
+			"goal": "Cíl",
+			"trainerPrivateNotes": "Soukromé poznámky",
+			"trainerPrivateNotes.hint": "Klient tyto poznámky neuvidí",
+			"trainerPublicNotes": "Poznámky pro klienta",
+			"trainerPublicNotes.hint": "Klient tyto poznámky uvidí",
+			"isActive": "Aktivní",
+			"isActive.hint": "Indikuje, zda s klientem aktivně pracuješ",
+			"fitnessLevel": "Zkušenost",
+			"beginner": "Začátečník",
+			"intermediate": "Středně pokročilý",
+			"advanced": "Pokročilý",
+			"fitnessCompetitor": "Závodník fitness"
+		},
+		"workout": {
 			"workoutName": "Název tréninku",
 			"workoutCategoryId": "Kategorie",
 			"description": "Popis"
 		},
-        "workoutExercise":{
+		"workoutExercise": {
 			"reps": "Opakování",
 			"sets": "Série",
 			"notes": "Poznámky"
 		},
-		"exercise":{
+		"exercise": {
 			"exerciseName": "Cvik",
 			"description": "Popis / návod",
 			"videoUrl": "Odkaz na YouTube video",
@@ -196,7 +224,7 @@
 			"dietCategoryId": "Kategorie",
 			"description": "Popis"
 		},
-		"dietFood":{
+		"dietFood": {
 			"unitValue": "Množství",
 			"notes": "Poznámky",
 			"eatTime": "Čas",
@@ -212,24 +240,24 @@
 			"carbs": "Sacharidy",
 			"proteins": "Proteiny"
 		}
-    },
-    "webComponents": {
-        "dataTable": {
-            "noResultsText": "Nejsou zde žádná data",
-            "noSearchResultsText": "Nic nenalezeno",
-			"allFilterText" : "Vše"
-        },
-		"buttons":{
-			"deleteButton":{
+	},
+	"webComponents": {
+		"dataTable": {
+			"noResultsText": "Nejsou zde žádná data",
+			"noSearchResultsText": "Nic nenalezeno",
+			"allFilterText": "Vše"
+		},
+		"buttons": {
+			"deleteButton": {
 				"message": "Opravdu smazat objekt?",
 				"title": "Potvrzení",
 				"confirm": "Smazat",
-				"cancel" : "Zrušit",
-				"tooltip" : "Smazat"
+				"cancel": "Zrušit",
+				"tooltip": "Smazat"
 			},
-			"editButton":{
+			"editButton": {
 				"tooltip": "Upravit"
 			}
 		}
-    }
+	}
 }
