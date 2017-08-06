@@ -176,6 +176,13 @@ export class DataTableLayoutItems implements OnInit, OnChanges {
         this.isClickable = this.config.isClickable();
     }
 
+    private translateValue(field: DataTableField<any>): boolean{
+        if (field.translateValue){
+            return field.translateValue;
+        }
+        return false;
+    }
+
     private getFieldValue(field: DataTableField<any>, item: any): string {
         return field.value(item);
     }

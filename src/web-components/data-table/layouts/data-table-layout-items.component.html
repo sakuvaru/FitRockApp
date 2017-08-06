@@ -8,7 +8,14 @@
             <img *ngIf="config.avatarUrlResolver" md-list-avatar src="{{getAvatarUrl()}}" alt="" class="push-right">
             <md-icon *ngIf="config.iconResolver" md-list-icon>{{getIcon()}}</md-icon>
             <span wResponsive [enabled]="field.hideOnSmallScreens" *ngFor="let field of config.fields" flex="field.flex" class="{{getTextAlignClass(field)}}">
-            <span  [class.md-caption]="field.isSubtle" [class.tc-grey-500]="field.isSubtle">{{getFieldValue(field, item)}}</span>
+                <span [class.md-caption]="field.isSubtle" [class.tc-grey-500]="field.isSubtle">
+                    <ng-container *ngIf="!translateValue(field)">
+                        {{getFieldValue(field, item)}}
+                    </ng-container>
+                    <ng-container *ngIf="translateValue(field)">
+                        {{getFieldValue(field, item) | translate}}
+                    </ng-container>
+                </span>
             </span>
         </md-list-item>
     </div>
@@ -31,9 +38,15 @@
             <md-checkbox *ngIf="isSelectable" class="push-right" (change)="handleCheckboxChange($event, item)"></md-checkbox>
             <img *ngIf="config.avatarUrlResolver" md-list-avatar src="{{getAvatarUrl()}}" alt="" class="push-right">
             <md-icon *ngIf="config.iconResolver" md-list-icon>{{getIcon()}}</md-icon>
-
             <span wResponsive [enabled]="field.hideOnSmallScreens" *ngFor="let field of config.fields" flex="field.flex" class="{{getTextAlignClass(field)}}">
-           <span  [class.md-caption]="field.isSubtle" [class.tc-grey-500]="field.isSubtle">{{getFieldValue(field, item)}}</span>
+                <span [class.md-caption]="field.isSubtle" [class.tc-grey-500]="field.isSubtle">
+                    <ng-container *ngIf="!translateValue(field)">
+                        {{getFieldValue(field, item)}}
+                    </ng-container>
+                    <ng-container *ngIf="translateValue(field)">
+                        {{getFieldValue(field, item) | translate}}
+                    </ng-container>
+                </span>
             </span>
         </md-list-item>
     </div>

@@ -36,7 +36,8 @@ export class SelectDietFoodDialogComponent extends BaseComponent implements OnIn
           flex: 60
         },
         {
-          value: (item) => { return item.foodCategory.categoryName },
+          value: (item) => { return 'module.foodCategories.' + item.foodCategory.codename },
+          translateValue: true,
           flex: 40,
           isSubtle: true,
           align: AlignEnum.Right,
