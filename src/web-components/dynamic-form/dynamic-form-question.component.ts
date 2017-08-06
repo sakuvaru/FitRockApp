@@ -195,15 +195,18 @@ export class DynamicFormQuestionComponent implements OnInit {
       }
       else {
         // field is number, but check its min & max values
-        if (value > this.maximumNumberValue) {
+        var maxValue = this.getMaxNumberValue();
+        var minValue = this.getMinNumberValue();
+
+        if (value > maxValue && value > 0) {
           isValid = false;
           errorMessageKey = 'form.error.invalidMaxNumberValue';
-          translationData.number = this.getMaxNumberValue();
+          translationData.number = maxValue;
         }
-        if (value > this.miniumNumberValue) {
+        if (value < minValue && value < 0) {
           isValid = false;
           errorMessageKey = 'form.error.invalidMinNumberValue';
-          translationData.number = this.getMinNumberValue();
+          translationData.number = minValue;
         }
       }
     }
