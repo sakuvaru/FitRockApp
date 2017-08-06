@@ -124,6 +124,7 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
                         this.config.onBeforeSave();
                     }
 
+                    // do not allow nulls to be send
                     this.convertEmptyStringsToNull();
 
                     return this.config.insertFunction(this.form.value)
@@ -150,6 +151,7 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
                         this.config.onBeforeSave();
                     }
 
+                    // do not allow nulls to be send
                     this.convertEmptyStringsToNull();
 
                     return this.config.editFunction(this.form.value)
@@ -337,7 +339,6 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
             this.submissionError = this.formErrorLines.join(', ');
         }
         else if (errorResponse instanceof ErrorResponse) {
-            console.error(errorResponse);
             // handle license errors differently
             if (errorResponse.reason === ErrorReasonEnum.LicenseLimitation) {
                 this.submissionError = this.insufficientLicenseError;
@@ -347,7 +348,6 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
             }
         }
         else {
-            console.error(errorResponse);
             this.submissionError = this.unknownErrorMessage;
         }
     }

@@ -65,14 +65,16 @@ export class DropdownFieldOption implements IDropdownFieldOption {
 }
 
 export class FormFieldOptions implements IFormFieldOptions {
-    public width: number;
-    public maxLength: number;
-    public minLength: number;
-    public maxAutosizeRows: number;
-    public minAutosizeRows: number;
-    public listOptions: IDropdownFieldOption[];
-    public trueOptionLabel: string;
-    public falseOptionLabel: string;
+    public width?: number;
+    public maxLength?: number;
+    public minLength?: number;
+    public maxAutosizeRows?: number;
+    public minAutosizeRows?: number;
+    public listOptions?: IDropdownFieldOption[];
+    public trueOptionLabel?: string;
+    public falseOptionLabel?: string;
+    public maxNumberValue?: number;
+    public minNumberValue?: number;
 
     constructor(options: {
         maxLength?: number,
@@ -83,6 +85,8 @@ export class FormFieldOptions implements IFormFieldOptions {
         listOptions?: DropdownFieldOption[],
         trueOptionLabel?: string,
         falseOptionLabel?: string,
+        maxNumberValue?: number,
+        minNumberValue?: number
     }) {
         Object.assign(this, options);
     }

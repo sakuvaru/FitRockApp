@@ -16,12 +16,14 @@ export interface IDropdownFieldOption {
 }
 
 export interface IFormFieldOptions {
-    width: number;
-    maxLength: number;
-    minLength: number;
-    maxAutosizeRows: number;
-    minAutosizeRows: number;
-    listOptions: IDropdownFieldOption[];
-    trueOptionLabel: string;
-    falseOptionLabel: string;
+    width?: number;
+    maxLength?: number;
+    minLength?: number;
+    maxAutosizeRows?: number;
+    minAutosizeRows?: number;
+    listOptions?: IDropdownFieldOption[];
+    trueOptionLabel?: string;
+    falseOptionLabel?: string;
+    minNumberValue?: number;
+    maxNumberValue?: number;
 }

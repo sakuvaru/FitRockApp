@@ -1,5 +1,5 @@
 import { Component, Input, AfterViewInit, ChangeDetectorRef, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, AbstractControl } from '@angular/forms';
 import { BaseField, ControlTypeEnum } from '../../lib/repository';
 import { TranslateService } from '@ngx-translate/core';
 import { FormConfig } from './form-config.class';
@@ -27,32 +27,29 @@ export class DynamicFormQuestionComponent implements OnInit {
   }
 
   public questionLabel: string;
-
   private questionHint: string;
-
   private showRequiredLabels: boolean = true;
 
-  private datePickerStartDate = new Date(1980, 0, 1);
-
   private checkBoxIsChecked: boolean = false;
-
   private radioCheckboxTrueChecked: boolean;
   private radioCheckboxFalseChecked: boolean;
 
-  // properties
-    private get isValid(): boolean { 
-    // check if field is valid per angular form rules
-    var formValid = this.form.controls[this.question.key].valid; 
+  private customError: string = '';
 
-    // check custom validation
-    if (this.isNumberField()){
-      if (!NumberHelper.isNumber(this.getQuestionValue())){
-        return false;
-      }
-    }
+  // setup
+  private readonly datePickerStartDate = new Date(1980, 0, 1);
 
-    return formValid;
-  }
+  /**
+   * Maximum value for numbers (assuming the number is represented by Int32)
+   * https://msdn.microsoft.com/en-us/library/system.int32.maxvalue(v=vs.110).aspx
+   */
+  private readonly maximumNumberValue = 2147483647;
+
+  /**
+   * Minimum value for numbers (assuming the number is represented by Int32)
+   * https://msdn.microsoft.com/en-us/library/system.int32.minvalue(v=vs.110).aspx
+   */
+  private readonly miniumNumberValue = -2147483648;
 
   ngOnInit() {
     // translation
@@ -64,6 +61,9 @@ export class DynamicFormQuestionComponent implements OnInit {
   }
 
   private initValues(): void {
+    // subscribe to value changes
+    this.subscribeToChanges();
+
     // translate labels for radio boolean
     if (this.question.controlTypeEnum === ControlTypeEnum.RadioBoolean) {
       if (this.question.options && this.question.options.trueOptionLabel) {
@@ -87,9 +87,9 @@ export class DynamicFormQuestionComponent implements OnInit {
       if (this.question.options && this.question.options.listOptions) {
         this.question.options.listOptions.forEach(option => {
           this.translateService.get(option.name).subscribe(translatedText => {
-            if (translatedText) {
+            if (translatedText && this.question.options.listOptions) {
               var optionInList = this.question.options.listOptions.find(m => m.value === option.value);
-              if (!optionInList){
+              if (!optionInList) {
                 throw Error(`Option '${option.value}' was not found in list`)
               }
               optionInList.name = translatedText;
@@ -146,6 +146,71 @@ export class DynamicFormQuestionComponent implements OnInit {
     this.cdr.detectChanges();
   }
 
+  /**
+   * Use this method to check value changes & to determin whether the value is valid or not
+   */
+  private subscribeToChanges(): void {
+    var control = this.getQuestionControl();
+    control.valueChanges
+      .subscribe(newValue => {
+        // check if the field's value is valid
+        var valueValidation = this.getCustomValidationResult(newValue);
+
+        if (!valueValidation.isValid){
+          this.translateService.get(valueValidation.errorMessageKey, valueValidation.translationData)
+            .subscribe(translatedErrorMessage => {
+              // set custom error so that it can be displayed in the html template
+              this.customError = translatedErrorMessage;
+              control.setErrors({
+                'customError': translatedErrorMessage
+              });
+            })
+        }
+        else{
+          // remove custom error
+          this.customError = '';
+         }
+      })
+  }
+
+  private getCustomValidationResult(value: any): ValueValidationResult {
+    var isValid = true;
+    var errorMessageKey: string = 'form.error.unknown';
+    var translationData: any = {};
+
+    // set label
+    translationData.label = this.question.translatedLabel;
+
+    // check custom validation
+    if (this.isNumberField()) {
+      if (!NumberHelper.isNumber(this.getQuestionValue())) {
+        // if min value = 0 && number is 0, its all good
+        if (this.getMinNumberValue() == 0 && value === 0){
+          isValid = true;
+        }
+        else{
+           isValid = false;
+           errorMessageKey = 'form.error.valueIsNotANumber'
+        }
+      }
+      else {
+        // field is number, but check its min & max values
+        if (value > this.maximumNumberValue) {
+          isValid = false;
+          errorMessageKey = 'form.error.invalidMaxNumberValue';
+          translationData.number = this.getMaxNumberValue();
+        }
+        if (value > this.miniumNumberValue) {
+          isValid = false;
+          errorMessageKey = 'form.error.invalidMinNumberValue';
+          translationData.number = this.getMinNumberValue();
+        }
+      }
+    }
+
+    return new ValueValidationResult(isValid, errorMessageKey, translationData);
+  }
+
   private translateQuestionLabel(): void {
     var translationKey = this.getQuestionLabelKey();
     this.translateService.get(translationKey).subscribe(translatedText => {
@@ -181,25 +246,60 @@ export class DynamicFormQuestionComponent implements OnInit {
   }
 
   private showLengthHint(): boolean {
+    if (!this.question.options.maxLength) {
+      return false;
+    }
     if (this.question.options.maxLength > 0) {
       return true;
     }
     return false;
   }
 
+  private getMaxNumberValue(): number {
+    var definedNumber = this.question.options.maxNumberValue;
+    if (definedNumber === 0) {
+      return 0;
+    }
+    if (definedNumber) {
+      if (definedNumber > this.maximumNumberValue) {
+        return this.maximumNumberValue;
+      }
+      return definedNumber;
+    }
+    return this.maximumNumberValue;
+  }
+
+  private getMinNumberValue(): number {
+    var definedNumber = this.question.options.minNumberValue;
+    if (definedNumber === 0) {
+      return 0;
+    }
+    if (definedNumber) {
+      if (definedNumber > this.miniumNumberValue) {
+        return this.miniumNumberValue;
+      }
+      return definedNumber;
+    }
+    return this.miniumNumberValue;
+  }
+
   private handleRadioButtonChange(): void {
     this.showRequiredLabels = false;
   }
 
-  private getWidthStyle(): string | null{
+  private getWidthStyle(): string | null {
     if (!this.question.options.width) {
       return null;
     }
     return `${this.question.options.width}px`;
   }
 
-  private getQuestionValue(): any{
-    return this.form.controls[this.question.key].value; 
+  private getQuestionControl(): AbstractControl {
+    return this.form.controls[this.question.key];
+  }
+
+  private getQuestionValue(): any {
+    return this.getQuestionControl().value;
   }
 
   // field types
@@ -234,4 +334,13 @@ export class DynamicFormQuestionComponent implements OnInit {
   private isNumberField(): boolean {
     return this.question.controlTypeEnum == ControlTypeEnum.Number;
   }
+
+}
+
+class ValueValidationResult {
+  constructor(
+    public isValid: boolean,
+    public errorMessageKey: string,
+    public translationData: any
+  ) { }
 }

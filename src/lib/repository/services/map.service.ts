@@ -133,12 +133,14 @@ export class MapService {
                 maxLength: formField.options.maxLength,
                 minAutosizeRows: formField.options.minAutosizeRows,
                 minLength: formField.options.minLength,
-                width: formField.options.width
+                width: formField.options.width,
+                maxNumberValue: formField.options.maxNumberValue,
+                minNumberValue: formField.options.minNumberValue
             })
         });
     }
 
-    private mapListOptions(listOptions: IDropdownFieldOption[]): DropdownFieldOption[] {
+    private mapListOptions(listOptions: IDropdownFieldOption[] | undefined): DropdownFieldOption[]{
         if (!listOptions) {
             return [];
         }
