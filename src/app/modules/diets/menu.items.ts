@@ -6,8 +6,8 @@ export class DietsOverviewMenuItems {
 
     constructor() {
         this.menuItems = [
-            new MenuItem({ key: 'module.diets.submenu.dietTemplates' }, 'free_breakfast', MenuItemType.trainer, 'diets'),
-            new MenuItem({ key: 'module.diets.submenu.allDiets' }, 'free_breakfast', MenuItemType.trainer, 'diets/all'),
+            new MenuItem({ key: 'module.diets.submenu.dietTemplates' }, 'restaurant', MenuItemType.trainer, 'diets'),
+            new MenuItem({ key: 'module.diets.submenu.allDiets' }, 'restaurant', MenuItemType.trainer, 'diets/all'),
         ];
     }
 }

@@ -8,6 +8,7 @@ import { BaseWebComponent } from '../base-web-component.class';
 })
 export class LoaderComponent extends BaseWebComponent{
     @Input() enabled: boolean;
+    @Input() color: 'primary' | 'accent' = 'primary'
 
     constructor(
     ) { super()

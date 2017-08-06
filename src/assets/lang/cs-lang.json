@@ -9,6 +9,7 @@
         "workouts": "Tréninkové plány",
 		"exercises": "Cviky",
         "diets": "Jídelníčky",
+		"foods": "Potraviny",
         "locations": "Místa",
         "forms": "Formulář"
     },
@@ -104,7 +105,18 @@
 			"allFoods": "Všechna jídla",
 			"myFoods": "Moje jídla",
 			"dietFoodHasNoNotes": "Nejsou zde žádné poznámky",
-			"eatTime": "Čas"
+			"eatTime": "Čas",
+			"selectFood": "Vybrat jídlo"
+		},
+		"foods":{
+			"submenu":{
+				"myFoods": "Moje potraviny",
+				"allFoods": "Všechny potraviny",
+				"edit": "Upravit záznam",
+				"preview": "Náhled",
+				"overview": "Přehled"
+			},
+			"new": "Nový záznam"
 		},
 		"shared":{
 			"errors": {
@@ -189,6 +201,12 @@
 			"notes": "Poznámky",
 			"eatTime": "Čas",
 			"eatTime.hint": "Např. 'po probuzení', '9:00', 'po tréninku' apod."
+		},
+		"food": {
+			"foodName": "Název jídla",
+			"foodUnitId": "Jednotka měření",
+			"foodCategoryId": "Kategorie",
+			"description": "Bližší popis"
 		}
     },
     "webComponents": {

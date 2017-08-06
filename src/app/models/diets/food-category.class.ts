@@ -5,5 +5,5 @@ export class FoodCategory extends BaseItem {
 }
 
 export class FoodCategoryWithFoodsCountDto extends FoodCategory{
-    public foodCount: number;
+    public foodsCount: number;
 }

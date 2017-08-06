@@ -52,6 +52,7 @@ import { ClientsModule } from './modules/clients/clients.module';
 import { WorkoutsModule } from './modules/workouts/workouts.module';
 import { ExercisesModule } from './modules/exercises/exercises.module';
 import { DietsModule } from './modules/diets/diets.module';
+import { FoodsModule } from './modules/foods/foods.module';
 
 // test form module
 import { FormModule } from './modules/_forms/_form.module';
@@ -103,6 +104,7 @@ import { FormModule } from './modules/_forms/_form.module';
     WorkoutsModule,
     ExercisesModule,
     DietsModule,
+    FoodsModule,
 
     // translation
     TranslateModule.forRoot({
