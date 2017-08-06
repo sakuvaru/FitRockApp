@@ -55,9 +55,12 @@
     </div>
   </div>
 
-  <div *ngIf="isNumberField()">
-    number
-    <input type="hidden" value="{{question.value}}">
-  </div>
-
+   <md-input-container *ngIf="isNumberField()" flex hintLabel="{{questionHint}}">
+       <input mdInput value="{{question.value}}" [attr.maxLength]="question.options.maxLength > 0 ? question.options.maxLength : null"
+      required="{{question.required}}" placeholder="{{question.translatedLabel}}" [formControlName]="question.key" [id]="question.key"
+      type="number" min="0" #elem>
+    <md-hint *ngIf="showLengthHint()" [ngClass]="{'tc-red-600': elem.value.length > question.options.maxLength}" align="end">{{elem.value.length}} / {{question.options.maxLength}}</md-hint>
+    <md-error></md-error>
+  </md-input-container>
+  
 </div>

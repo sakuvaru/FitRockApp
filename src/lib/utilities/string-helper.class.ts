@@ -22,7 +22,6 @@ export class StringHelper {
         return text.charAt(0).toUpperCase() + text.slice(1);
     }
 
-
     /**
      * Gets hash from given string
      * @param text text to hash

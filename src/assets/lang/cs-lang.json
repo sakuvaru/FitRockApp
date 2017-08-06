@@ -206,7 +206,11 @@
 			"foodName": "Název jídla",
 			"foodUnitId": "Jednotka měření",
 			"foodCategoryId": "Kategorie",
-			"description": "Bližší popis"
+			"description": "Bližší popis",
+			"kcal": "Kcal",
+			"fats": "Tuky",
+			"carbs": "Sacharidy",
+			"proteins": "Proteiny"
 		}
     },
     "webComponents": {

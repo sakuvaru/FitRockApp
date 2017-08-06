@@ -3,7 +3,7 @@ import { FormGroup } from '@angular/forms';
 import { BaseField, ControlTypeEnum } from '../../lib/repository';
 import { TranslateService } from '@ngx-translate/core';
 import { FormConfig } from './form-config.class';
-import { StringHelper } from '../../lib/utilities';
+import { StringHelper, NumberHelper } from '../../lib/utilities';
 
 // NOTE: see https://angular.io/docs/ts/latest/cookbook/dynamic-form.html for more details
 
@@ -38,6 +38,21 @@ export class DynamicFormQuestionComponent implements OnInit {
 
   private radioCheckboxTrueChecked: boolean;
   private radioCheckboxFalseChecked: boolean;
+
+  // properties
+    private get isValid(): boolean { 
+    // check if field is valid per angular form rules
+    var formValid = this.form.controls[this.question.key].valid; 
+
+    // check custom validation
+    if (this.isNumberField()){
+      if (!NumberHelper.isNumber(this.getQuestionValue())){
+        return false;
+      }
+    }
+
+    return formValid;
+  }
 
   ngOnInit() {
     // translation
@@ -172,8 +187,6 @@ export class DynamicFormQuestionComponent implements OnInit {
     return false;
   }
 
-  private get isValid() { return this.form.controls[this.question.key].valid; }
-
   private handleRadioButtonChange(): void {
     this.showRequiredLabels = false;
   }
@@ -183,6 +196,10 @@ export class DynamicFormQuestionComponent implements OnInit {
       return null;
     }
     return `${this.question.options.width}px`;
+  }
+
+  private getQuestionValue(): any{
+    return this.form.controls[this.question.key].value; 
   }
 
   // field types
