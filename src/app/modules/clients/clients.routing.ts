@@ -7,21 +7,31 @@ import { AuthGuardService } from '../../../lib/auth';
 // config
 import { UrlConfig } from '../../core';
 
-// components
+// layouts
 import { SimpleLayoutComponent } from '../../layouts/simple-layout.component';
 import { AdminLayoutComponent } from '../../layouts/admin-layout.component';
 
+// user components
 import { ClientsOverviewComponent } from './client/list/clients-overview.component';
 import { NewClientComponent } from './client/new/new-client.component';
 import { EditClientComponent } from './client/edit/edit-client.component';
+
+// workout components
 import { EditClientWorkoutComponent } from './workout/edit/edit-client-workout.component';
 import { ClientWorkoutComponent } from './workout/edit/client-workout.component';
 import { EditClientWorkoutPlanComponent } from './workout/edit/edit-client-workout-plan.component';
 import { NewClientWorkoutComponent } from './workout/new/new-client-workout.component';
 
+// diet components
+import { EditClientDietComponent } from './diet/edit/edit-client-diet.component';
+import { ClientDietComponent } from './diet/edit/client-diet.component';
+import { EditClientDietPlanComponent } from './diet/edit/edit-client-diet-plan.component';
+import { NewClientDietComponent } from './diet/new/new-client-diet.component';
+
 const routes: Routes = [
     {
         path: UrlConfig.TrainerMasterPath, component: AdminLayoutComponent, canActivate: [AuthGuardService], children: [
+            // user
             {
                 path: 'clients', component: ClientsOverviewComponent
             },
@@ -31,6 +41,7 @@ const routes: Routes = [
             {
                 path: 'clients/edit/:id', component: EditClientComponent
             },
+            // workout
             {
                 path: 'clients/edit/:id/workout', component: ClientWorkoutComponent
             },
@@ -42,6 +53,19 @@ const routes: Routes = [
             },
             {
                 path: 'clients/edit/:id/new-workout', component: NewClientWorkoutComponent
+            },
+            // diet
+             {
+                path: 'clients/edit/:id/diet', component: ClientDietComponent
+            },
+            {
+                path: 'clients/edit/:id/diet/:dietId', component: EditClientDietComponent
+            },
+            {
+                path: 'clients/edit/:id/diet/:dietId/diet-plan', component: EditClientDietPlanComponent
+            },
+            {
+                path: 'clients/edit/:id/new-diet', component: NewClientDietComponent
             },
         ]
     }

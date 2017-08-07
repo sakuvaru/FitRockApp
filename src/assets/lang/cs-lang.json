@@ -29,9 +29,25 @@
 		"clients": {
 			"submenu": {
 				"workout": "Trénink",
-				"editWorkoutPlan": "Upravit plán",
 				"editWorkout": "Základní údaje",
-				"newWorkout": "Nový trénink"
+				"newWorkout": "Nový trénink",
+				"diet": "Jídelníček"
+			},
+			"workout": {
+				"copyWorkoutLabel": "Tréninková šáblona",
+				"newWorkoutFromTemplate": "Zkopírovat trénink ze šablony",
+				"workoutNotSelected": "Vyber trénink",
+				"newWorkout": "Nový trénink",
+				"editWorkout": "Upravit trénink",
+				"editPlan": "Upravit plán"
+			},
+			"diet": {
+				"newDietFormTemplate": "Nový jídelnníček ze šablony",
+				"newDiet": "Nový jídelníček",
+				"copyDietLabel": "Výběr jídelníčku",
+				"editPlan": "Upravit jídelníček",
+				"editDiet": "Základní údaje",
+				"dietNotSelected": "Vyber jídelníček"
 			},
 			"newClient": "Nový klient",
 			"viewClientSubtitle": "{{fullName}}",
@@ -40,12 +56,7 @@
 			"activeClients": "Aktivní",
 			"inactiveClients": "Neaktivní",
 			"editClient": "Změna údajů",
-			"newWorkout": "Nový trénink",
-			"editWorkout": "Upravit trénink",
-			"copy": "Zkopírovat",
-			"copyWorkoutLabel": "Tréninková šáblona",
-			"newWorkoutFromTemplate": "Zkopírovat trénink ze šablony",
-			"workoutNotSelected": "Prosím vyber trénink"
+			"copy": "Zkopírovat"
 		},
 		"workouts": {
 			"submenu": {

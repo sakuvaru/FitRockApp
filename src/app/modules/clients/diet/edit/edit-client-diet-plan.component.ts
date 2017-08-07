@@ -4,17 +4,17 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { AppConfig, ComponentDependencyService, BaseComponent, ComponentConfig } from '../../../../core';
 
 // required by component
-import { ClientEditWorkoutMenuItems } from '../../menu.items';
-import { Workout } from '../../../../models';
+import { ClientEditDietMenuItems } from '../../menu.items';
+import { Diet } from '../../../../models';
 
 @Component({
-  templateUrl: 'edit-client-workout-plan.component.html'
+  templateUrl: 'edit-client-diet-plan.component.html'
 })
-export class EditClientWorkoutPlanComponent extends BaseComponent implements OnInit {
+export class EditClientDietPlanComponent extends BaseComponent implements OnInit {
 
   private clientId: number;
-  private workoutId: number;
-  private workout: Workout;
+  private dietId: number;
+  private diet: Diet;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -29,18 +29,18 @@ export class EditClientWorkoutPlanComponent extends BaseComponent implements OnI
       .takeUntil(this.ngUnsubscribe)
       .subscribe(params => {
         this.clientId = +params['id'];
-        this.workoutId = +params['workoutId'];
+        this.dietId = +params['dietId'];
       });
   }
 
-  private handleLoadWorkout(workout: Workout): void {
+  private handleLoadDiet(diet: Diet): void {
     this.setConfig({
-      menuItems: new ClientEditWorkoutMenuItems(this.clientId, this.workoutId).menuItems,
+      menuItems: new ClientEditDietMenuItems(this.clientId, this.dietId).menuItems,
       menuTitle: {
-        key: workout.workoutName
+        key: diet.dietName
       },
       componentTitle: {
-        'key': 'module.clients.workout.editPlan'
+        'key': 'module.clients.diet.editPlan'
       }
     });
   }

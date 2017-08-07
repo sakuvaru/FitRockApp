@@ -1,0 +1,56 @@
+<md-card class="push">
+    <md-card-content>
+        <button md-raised-button color="primary" [routerLink]="[getTrainerUrl('clients/edit/' + clientId + '/new-diet')]">{{'module.clients.diet.newDiet' | translate}}</button>
+    </md-card-content>
+    <md-divider></md-divider>
+    <md-card-content class="push-top">
+        <p>{{'module.clients.diet.newDietFormTemplate' | translate }}:
+            <md-select #copyFromDiet style="width: 260px" placeholder="{{'module.clients.diet.copyDietLabel' | translate}}" [(ngModel)]="selectedValue">
+                <md-option *ngFor="let diet of dietTemplates" [value]="diet">
+                    {{ diet.dietName }}
+                </md-option>
+            </md-select>
+        </p>
+        <button md-raised-button color="primary" (click)="newDietFromTemplate(copyFromDiet)">{{'module.clients.copy' | translate}}</button>
+    </md-card-content>
+</md-card>
+
+<md-list *ngIf="existingDiets" [dragula]='"dragula-bag"' [dragulaModel]="existingDiets">
+    <ng-container *ngFor="let diet of existingDiets; let i = index">
+        <td-expansion-panel class="push" [disableRipple]="false">
+            <ng-template td-expansion-panel-header>
+                <md-list-item class="w-cursor-pointer" style="background:whitesmoke">
+                    <span class="dragula-move-handle w-cursor-move md-headline tc-blue-600">
+                        +&nbsp;
+                    </span>
+                    <span class="dragula-move-handle w-cursor-move tc-red-700">{{i + 1}}. &nbsp;</span>
+                    <span>{{diet.dietName}}</span>
+                    <span flex></span>
+                    <edit-button (editAction)="goToEditDiet(diet)"></edit-button>
+                    <delete-button (confirm)="deleteDiet(diet)"></delete-button>
+                </md-list-item>
+            </ng-template>
+
+            <md-list class="push-left">
+                <md-list-item *ngFor="let dietFood of diet.dietFoods; let i = index">
+                    <span class="md-body-1"><strong>{{i + 1}}.</strong> {{ dietFood.food.foodName }}</span>
+                    <span flex></span>
+                    <div class="md-caption push">
+                        <p>
+                            {{'module.diets.foodUnit' | translate }}: <strong>{{dietFood.unitValue}} {{dietFood.food.foodUnit.unitCode | translate}}</strong>
+                            <br /> {{'module.diets.eatTime' | translate }}: <strong>{{dietFood.eatTime}}</strong>
+                        </p>
+
+                        <p *ngIf="dietFood.notes">
+                            {{ dietFood.notes }}
+                        </p>
+                        <p *ngIf="!dietFood.notes">
+                            <em>{{'module.diets.dietFoodHasNoNotes' | translate}}</em>
+                        </p>
+                    </div>
+                </md-list-item>
+            </md-list>
+
+        </td-expansion-panel>
+    </ng-container>
+</md-list>

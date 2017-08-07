@@ -6,7 +6,7 @@ import { AppConfig, ComponentDependencyService, BaseComponent } from '../../../.
 // required by component
 import { ClientMenuItems } from '../../menu.items';
 import { FormConfig } from '../../../../../web-components/dynamic-form';
-import { User, Workout, WorkoutExercise } from '../../../../models';
+import { User, Diet, DietFood } from '../../../../models';
 import { DragulaService } from 'ng2-dragula';
 import 'rxjs/add/operator/switchMap';
 import { Observable, Subscription } from 'rxjs/Rx';
@@ -15,14 +15,14 @@ import { StringHelper } from '../../../../../lib/utilities';
 import { DataSource } from '@angular/cdk';
 
 @Component({
-    templateUrl: 'client-workout.component.html'
+    templateUrl: 'client-diet.component.html'
 })
-export class ClientWorkoutComponent extends BaseComponent implements OnInit, OnDestroy {
+export class ClientDietComponent extends BaseComponent implements OnInit, OnDestroy {
 
     private clientId: number;
     private workoutExists: boolean = true;
-    private workoutTemplates: Workout[] = [];
-    private existingWorkouts: Workout[];
+    private dietTemplates: Diet[] = [];
+    private existingDiets: Diet[];
     private observables: Observable<any>[] = [];
     private observablesCompleted: number = 0;
 
@@ -58,7 +58,7 @@ export class ClientWorkoutComponent extends BaseComponent implements OnInit, OnD
             .debounceTime(500)
             .takeUntil(this.ngUnsubscribe)
             .switchMap(() => {
-                return this.dependencies.itemServices.workoutService.updateItemsOrder(this.existingWorkouts, this.clientId).set();
+                return this.dependencies.itemServices.dietService.updateItemsOrder(this.existingDiets, this.clientId).set();
             })
             .subscribe(() => {
                 super.stopGlobalLoader();
@@ -108,69 +108,70 @@ export class ClientWorkoutComponent extends BaseComponent implements OnInit, OnD
                         data: { 'fullName': client.getFullName() }
                     },
                     componentTitle: {
-                        'key': 'module.clients.submenu.workout'
+                        'key': 'module.clients.submenu.diet'
                     }
                 });
             });
 
-        var obsExistingExercises = this.existingWorkoutsObservable();
+        var obsExistingDiets = this.existingDietsObservable();
 
-        var varWorkoutTemplates = this.activatedRoute.params
+        var obsDietTemplates = this.activatedRoute.params
             .takeUntil(this.ngUnsubscribe)
-            .switchMap((params: Params) => this.dependencies.itemServices.workoutService.items()
+            .switchMap((params: Params) => this.dependencies.itemServices.dietService.items()
                 .byCurrentUser()
                 .whereNullOrEmpty('ClientId')
-                .orderByAsc("WorkoutName")
+                .orderByAsc("DietName")
                 .get())
             .map(response => {
                 if (!response.isEmpty()) {
-                    this.workoutTemplates = response.items;
+                    this.dietTemplates = response.items;
                 }
             });
 
         this.observables.push(obsClientId);
         this.observables.push(obsClient);
-        this.observables.push(obsExistingExercises);
-        this.observables.push(varWorkoutTemplates);
+        var obsExistingDiets = this.existingDietsObservable();
+        this.observables.push(obsExistingDiets);
+        this.observables.push(obsDietTemplates);
 
         return this.dependencies.coreServices.repositoryClient.mergeObservables(this.observables);
     }
 
-    private existingWorkoutsObservable(): Observable<any> {
+    private existingDietsObservable(): Observable<any> {
         return this.activatedRoute.params
             .takeUntil(this.ngUnsubscribe)
-            .switchMap((params: Params) => this.dependencies.itemServices.workoutService.items()
+            .switchMap((params: Params) => this.dependencies.itemServices.dietService.items()
                 .byCurrentUser()
-                .includeMultiple(['WorkoutExercises', 'WorkoutExercises.Exercise'])
+                .includeMultiple(['DietFoods', 'DietFoods.Food', 'DietFoods.Food.FoodUnit'])
                 .whereEquals('ClientId', +params['id'])
                 .orderByAsc("Order")
                 .get())
             .map(response => {
                 if (!response.isEmpty()) {
-                    this.existingWorkouts = response.items;
+                    this.existingDiets = response.items;
                 }
             });
     }
 
-    private newWorkoutFromTemplate(data: any): void {
+    private newDietFromTemplate(data: any): void {
         var selected = data.selected;
 
         if (!selected) {
-            super.translate('module.clients.workout.workoutNotSelected').subscribe(text => {
+            super.translate('module.clients.diet.dietNotSelected').subscribe(text => {
                 super.showErrorDialog(text)
             });
         }
 
-        var selectedWorkout = selected.value as Workout;
+        var selectedDiet = selected.value as Diet;
 
         super.startLoader();
 
-        // copy data from selected workout to a new workout with assigned client
-        this.dependencies.itemServices.workoutService.copyFromWorkout(selectedWorkout.id, this.clientId)
+        // copy data from selected diet to a new diet with assigned client
+        this.dependencies.itemServices.dietService.copyFromDiet(selectedDiet.id, this.clientId)
             .set()
             .subscribe(response => {
-                var obsExistingExercises = this.existingWorkoutsObservable();
-                obsExistingExercises.subscribe((response) => {
+                var obsExistingDiets = this.existingDietsObservable();
+                obsExistingDiets.subscribe((response) => {
                     super.stopLoader();
                 },
                     error => super.handleError(error)
@@ -180,14 +181,14 @@ export class ClientWorkoutComponent extends BaseComponent implements OnInit, OnD
             );
     }
 
-    private deleteWorkout(workout: Workout): void {
+    private deleteDiet(diet: Diet): void {
         this.startGlobalLoader();
-        this.dependencies.itemServices.workoutService.delete(workout.id)
+        this.dependencies.itemServices.dietService.delete(diet.id)
             .set()
             .do(() => this.startGlobalLoader())
             .subscribe(response => {
-                // remove workout  from local variable
-                this.existingWorkouts = _.reject(this.existingWorkouts, function (item) { return item.id === response.deletedItemId; });
+                // remove diet from local variable
+                this.existingDiets = _.reject(this.existingDiets, function (item) { return item.id === response.deletedItemId; });
 
                 this.showSavedSnackbar();
                 this.stopGlobalLoader();
@@ -198,8 +199,8 @@ export class ClientWorkoutComponent extends BaseComponent implements OnInit, OnD
             });
     }
 
-    private goToEditWorkout(workout: Workout): void{
-        super.navigate([this.getTrainerUrl('clients/edit/' + this.clientId + '/workout/' + workout.id + '/workout-plan')]);
+    private goToEditDiet(diet: Diet): void{
+        super.navigate([this.getTrainerUrl('clients/edit/' + this.clientId + '/diet/' + diet.id + '/diet-plan')]);
     }
 }
 

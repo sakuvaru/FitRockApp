@@ -6,14 +6,14 @@ import { AppConfig, ComponentDependencyService, BaseComponent } from '../../../.
 // required by component
 import { FormConfig } from '../../../../../web-components/dynamic-form';
 import { ClientMenuItems } from '../../menu.items';
-import { Workout } from '../../../../models';
+import { Diet } from '../../../../models';
 
 @Component({
-    templateUrl: 'new-client-workout.component.html'
+    templateUrl: 'new-client-diet.component.html'
 })
-export class NewClientWorkoutComponent extends BaseComponent implements OnInit {
+export class NewClientDietComponent extends BaseComponent implements OnInit {
 
-    private formConfig: FormConfig<Workout>;
+    private formConfig: FormConfig<Diet>;
     private clientId: number;
 
     constructor(
@@ -34,7 +34,7 @@ export class NewClientWorkoutComponent extends BaseComponent implements OnInit {
             .takeUntil(this.ngUnsubscribe)
             .switchMap(params => {
                 this.clientId = +params['id'];
-                return this.dependencies.itemServices.workoutService.insertForm()
+                return this.dependencies.itemServices.dietService.insertForm()
                     .takeUntil(this.ngUnsubscribe)
             })
             .subscribe(form => {
@@ -44,14 +44,14 @@ export class NewClientWorkoutComponent extends BaseComponent implements OnInit {
                 form.onFormInit(() => super.stopLoader())
                 form.onBeforeSave(() => super.startGlobalLoader());
                 form.onAfterSave(() => super.stopGlobalLoader());
-                form.insertFunction((item) => this.dependencies.itemServices.workoutService.create(item).set());
-                form.onAfterInsert((response) => super.navigate([super.getTrainerUrl('clients/edit/' + this.clientId + '/workout/' + response.item.id + '/workout-plan')]));
+                form.insertFunction((item) => this.dependencies.itemServices.dietService.create(item).set());
+                form.onAfterInsert((response) => super.navigate([super.getTrainerUrl('clients/edit/' + this.clientId + '/diet/' + response.item.id + '/diet-plan')]));
                 form.onError(() => super.stopGlobalLoader());
 
                 this.formConfig = form.build();
 
                 this.setConfig({
-                    componentTitle: { key: 'module.clients.workout.newWorkout' },
+                    componentTitle: { key: 'module.clients.diet.newDiet' },
                     menuItems: new ClientMenuItems(this.clientId).menuItems
                 });
             },
