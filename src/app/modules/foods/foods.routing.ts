@@ -26,7 +26,7 @@ const routes: Routes = [
                 path: 'foods', component: MyFoodsListComponent
             },
             {
-                path: 'foods/all', component: EditFoodCompoent
+                path: 'foods/all', component: AllFoodsListComponent
             },
             {
                 path: 'foods/new', component: NewFoodComponent
