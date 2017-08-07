@@ -48,4 +48,28 @@ export class StringHelper {
         return text.indexOf(contains) !== -1;
     }
 
+     /**
+     * Shortens given text
+     * @param text text to shorten
+     * @param chars number of characters to keep
+     * @param addDots dots to be added if the text is shortened
+     */
+    static shorten(text: string, chars: number, addDots?: boolean): string | null{
+        if (!text || !chars){
+            return null;
+        }
+
+        if (text.length <= chars){
+            return text;
+        }
+
+        var shortenedText = text.substr(0, chars);
+
+        if (addDots){
+            shortenedText += '...';
+        }
+
+        return shortenedText;
+    }
+
 }

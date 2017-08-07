@@ -5,6 +5,7 @@ import { ComponentDependencyService, BaseComponent, MenuItemType } from '../core
 
 // required by component
 import { Subscription } from 'rxjs/Rx';
+import { StringHelper } from '../../lib/utilities';
 
 @Component({
     templateUrl: 'admin-layout.component.html'
@@ -25,6 +26,9 @@ export class AdminLayoutComponent extends BaseComponent implements OnDestroy, On
      * Part of url identifying 'client' or 'trainer' app type
      */
     private urlSegment: string;
+
+
+    private readonly titleCharsLength: number = 22;
 
     // subscriptions - unsubscribe 
     private componentLoaderSubscription: Subscription;
@@ -156,5 +160,9 @@ export class AdminLayoutComponent extends BaseComponent implements OnDestroy, On
         }
 
         return null;
+    }
+
+    private shortenTitle(text: string): string | null{
+        return StringHelper.shorten(text, this.titleCharsLength, true)
     }
 }

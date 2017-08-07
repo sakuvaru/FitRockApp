@@ -31,7 +31,7 @@
             [mode]="(media.registerQuery('gt-sm') | async) ? 'side' :  'over'"
             [sidenavWidth]="(media.registerQuery('gt-xs') | async) ? '257px' : '100%'">
       <md-toolbar td-sidenav-content>
-        {{menuTitle}}
+        {{shortenTitle(menuTitle)}}
       </md-toolbar>
       <md-nav-list td-sidenav-content [tdLayoutManageListClose]="!media.query('gt-sm')">
         <ng-template let-item let-last="last" ngFor [ngForOf]="componentConfig.menuItems">
@@ -46,7 +46,7 @@
             <button md-icon-button tdLayoutManageListOpen [hideWhenOpened]="true" tdMediaToggle="gt-sm" [mediaStyles]="{display: 'none'}">
             <md-icon>arrow_back</md-icon>
           </button>
-           <span>{{componentTitle}}</span>
+           <span>{{shortenTitle(componentTitle)}}</span>
           <span flex></span>
           <button md-icon-button [routerLink]="getAuthUrl('logout')"><md-icon>exit_to_app</md-icon></button>
         </div>
