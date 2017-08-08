@@ -3,17 +3,17 @@ import { CommonModule } from '@angular/common';
 import { FormGroup } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
-import { ResponsiveDirective } from './responsive.directive';
+import { HideOnMobileDirective } from './hide-on-mobile.directive';
 
 @NgModule({
     imports: [
         CommonModule,
     ],
     declarations: [
-        ResponsiveDirective
+        HideOnMobileDirective
     ],
     exports: [
-        ResponsiveDirective
+        HideOnMobileDirective
     ],
 })
 export class DirectivesModule { }

@@ -1,10 +1,10 @@
 <div *ngIf="pagerConfig && pagerConfig.showPager && !(pagerConfig.hidePagerForSinglePage && totalPages == 1)">
-    <button wResponsive *ngIf="pagerConfig.showPagerFirstLastButtons" [disabled]="!hasPreviousPage()" md-button (click)="onGoToPage(1)"><<</button>
+    <button hideOnMobile *ngIf="pagerConfig.showPagerFirstLastButtons" [disabled]="!hasPreviousPage()" md-button (click)="onGoToPage(1)"><<</button>
     <button *ngIf="pagerConfig.showPagerNextPreviousButtons" [disabled]="!hasPreviousPage()" md-button (click)="onGoToPreviousPage()"><</button>
-     <span wResponsive *ngFor="let button of pagerButtons">
+     <span hideOnMobile *ngFor="let button of pagerButtons">
       <button *ngIf="pagerConfig.showPagerNumberButtons && !button.isActive" md-button (click)="onGoToPage(button.page)">{{button.page}}</button>
       <button *ngIf="pagerConfig.showPagerNumberButtons && button.isActive" md-raised-button color="primary" (click)="onGoToPage(button.page)">{{button.page}}</button>
     </span>
     <button *ngIf="pagerConfig.showPagerNextPreviousButtons" [disabled]="!hasNextPage()" md-button (click)="onGoToNextPage()">></button>
-    <button wResponsive *ngIf="pagerConfig.showPagerFirstLastButtons" [disabled]="!hasNextPage()" md-button (click)="onGoToPage(totalPages)">>></button>
+    <button hideOnMobile *ngIf="pagerConfig.showPagerFirstLastButtons" [disabled]="!hasNextPage()" md-button (click)="onGoToPage(totalPages)">>></button>
 </div>

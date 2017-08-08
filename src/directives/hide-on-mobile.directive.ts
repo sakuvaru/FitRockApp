@@ -2,8 +2,8 @@ import { Directive, ElementRef, Input, OnInit, OnDestroy, NgZone, AfterViewInit 
 import { TdMediaService } from '@covalent/core';
 import { Subscription } from 'rxjs/Rx';
 
-@Directive({ selector: '[wResponsive]' })
-export class ResponsiveDirective implements OnInit, OnDestroy, AfterViewInit {
+@Directive({ selector: '[hideOnMobile]' })
+export class HideOnMobileDirective implements OnInit, OnDestroy, AfterViewInit {
 
     /**
      * For query options, see 
