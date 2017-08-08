@@ -38,10 +38,10 @@ export class EditClientDietComponent extends BaseComponent implements OnInit {
         this.setConfig({
             menuItems: new ClientEditDietMenuItems(this.clientId, this.dietId).menuItems,
             menuTitle: {
-                key: 'module.clients.diet.editDiet'
+                key: diet.dietName 
             },
             componentTitle: {
-                key: diet.dietName
+                key: 'module.clients.diet.editDiet'
             }
         });
     }
