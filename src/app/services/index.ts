@@ -15,3 +15,7 @@ export * from './diets/diet-category.service';
 export * from './diets/food.service';
 export * from './diets/food-category.service';
 export * from './diets/food-unit.service';
+
+// progress
+export * from './progress/progress-item.service';
+export * from './progress/progress-item-type.service';

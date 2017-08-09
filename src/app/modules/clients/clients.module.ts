@@ -25,6 +25,9 @@ import { ClientDietComponent } from './diet/edit/client-diet.component';
 import { EditClientDietPlanComponent } from './diet/edit/edit-client-diet-plan.component';
 import { NewClientDietComponent } from './diet/new/new-client-diet.component';
 
+// progress components
+import { EditClientProgressComponent } from './progress/edit/edit-client-progress.component';
+
 // router
 import { ClientsRouter } from './clients.routing';
 
@@ -59,7 +62,9 @@ import { DietsModule} from '../diets/diets.module';
         EditClientDietComponent,
         ClientDietComponent,
         EditClientDietPlanComponent,
-        NewClientDietComponent
+        NewClientDietComponent,
+        // progress
+        EditClientProgressComponent
     ]
 })
 export class ClientsModule { }

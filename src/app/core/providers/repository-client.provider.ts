@@ -11,7 +11,7 @@ import { AuthHttp } from 'angular2-jwt';
 
 // models
 import { User, Log, Workout, WorkoutCategory, Exercise, ExerciseCategory, WorkoutExercise,
-    Diet, DietCategory, DietFood, Food, FoodCategory, FoodUnit } from '../../models';
+    Diet, DietCategory, DietFood, Food, FoodCategory, FoodUnit, ProgressItem, ProgressItemType } from '../../models';
 
 export function RepositoryClientFactory(authHttp: AuthHttp) {
 
@@ -31,6 +31,8 @@ export function RepositoryClientFactory(authHttp: AuthHttp) {
         new TypeResolver("Food", () => new Food()),
         new TypeResolver("FoodCategory", () => new FoodCategory()),
         new TypeResolver("FoodUnit", () => new FoodUnit()),
+        new TypeResolver("ProgressItem", () => new ProgressItem()),
+        new TypeResolver("ProgressItemType", () => new ProgressItemType()),
     ];
 
     return new RepositoryClient(

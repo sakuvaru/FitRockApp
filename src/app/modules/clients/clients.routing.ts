@@ -28,6 +28,9 @@ import { ClientDietComponent } from './diet/edit/client-diet.component';
 import { EditClientDietPlanComponent } from './diet/edit/edit-client-diet-plan.component';
 import { NewClientDietComponent } from './diet/new/new-client-diet.component';
 
+// progress components
+import { EditClientProgressComponent } from './progress/edit/edit-client-progress.component';
+
 const routes: Routes = [
     {
         path: UrlConfig.TrainerMasterPath, component: AdminLayoutComponent, canActivate: [AuthGuardService], children: [
@@ -55,7 +58,7 @@ const routes: Routes = [
                 path: 'clients/edit/:id/new-workout', component: NewClientWorkoutComponent
             },
             // diet
-             {
+            {
                 path: 'clients/edit/:id/diet', component: ClientDietComponent
             },
             {
@@ -66,6 +69,10 @@ const routes: Routes = [
             },
             {
                 path: 'clients/edit/:id/new-diet', component: NewClientDietComponent
+            },
+            // progress
+            {
+                path: 'clients/edit/:id/progress', component: EditClientProgressComponent
             },
         ]
     }

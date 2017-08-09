@@ -15,3 +15,7 @@ export * from './diets/diet-food.class';
 export * from './diets/food.class';
 export * from './diets/food-category.class';
 export * from './diets/food-unit.class';
+
+// progress
+export * from './progress/progress-item.class';
+export * from './progress/progress-item-type.class';

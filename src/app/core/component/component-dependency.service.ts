@@ -12,7 +12,7 @@ import { RepositoryClient } from '../../../lib/repository';
 // Services
 import { UserService, ExerciseCategoryService, ExerciseService, LogService, WorkoutCategoryService,
      WorkoutExerciseService, WorkoutService, DietCategoryService, DietFoodService, DietService,
-    FoodCategoryService, FoodService, FoodUnitService } from '../../services';
+    FoodCategoryService, FoodService, FoodUnitService, ProgressItemService, ProgressItemTypeService} from '../../services';
 
 // Angular material
 import { MdSnackBar, MdDialog } from '@angular/material';
@@ -93,6 +93,10 @@ export class ComponentDependencyService {
         this.itemServices.foodService = injector.get(FoodService);
         this.itemServices.foodUnitService = injector.get(FoodUnitService);
 
+        // progress services
+        this.itemServices.progressItemService = injector.get(ProgressItemService);
+        this.itemServices.progressItemTypeService = injector.get(ProgressItemTypeService);
+
         // init observable for auth user
         this.authUser = this.itemServices.userService
             .getAuthUser()
@@ -143,4 +147,8 @@ export class ItemServices {
     public foodService: FoodService;
     public foodUnitService: FoodUnitService;
     public foodCategoryService: FoodCategoryService;
+
+    // progress
+    public progressItemService: ProgressItemService;
+    public progressItemTypeService: ProgressItemTypeService;
 }
