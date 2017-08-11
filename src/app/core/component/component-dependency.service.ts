@@ -20,6 +20,9 @@ import { MdSnackBar, MdDialog } from '@angular/material';
 // Translation service
 import { TranslateService } from '@ngx-translate/core';
 
+// moment js
+import * as moment from 'moment';
+
 // Web component services
 import { DataTableService } from '../../../web-components/data-table';
 import { DynamicFormService } from '../../../web-components/dynamic-form';
@@ -56,6 +59,8 @@ export class ComponentDependencyService {
         this.coreServices.repositoryClient = injector.get(RepositoryClient);
         this.coreServices.translateService = injector.get(TranslateService);
         this.coreServices.sharedService = injector.get(SharedService);
+        this.coreServices.moment = moment;
+        this.coreServices.momentLanguage = moment;
 
         //td services (teradata covalent)
         this.tdServices = new TdServices();
@@ -116,6 +121,8 @@ export class CoreServices {
     public authService: AuthService;
     public sharedService: SharedService;
     public translateService: TranslateService;
+    public moment: (inp?: moment.MomentInput, format?: moment.MomentFormatSpecification, strict?: boolean) => moment.Moment;
+    public momentLanguage: (inp?: moment.MomentInput, format?: moment.MomentFormatSpecification, language?: string, strict?: boolean) => moment.Moment;
 }
 
 export class MdServices {

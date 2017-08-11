@@ -69,16 +69,15 @@ export class ClientWorkoutComponent extends BaseComponent implements OnInit, OnD
 
         joinedObservable
             .takeUntil(this.ngUnsubscribe)
-            .subscribe(
-            () => {
+            .subscribe(() => {
                 this.observablesCompleted++;
                 if (this.observablesCompleted === this.observables.length) {
                     super.stopLoader();
                     this.observablesCompleted = 0;
                 }
-            }
-            ,
-            error => super.handleError(error));
+            },
+            error => super.handleError(error)
+            );
 
     }
 
@@ -198,7 +197,7 @@ export class ClientWorkoutComponent extends BaseComponent implements OnInit, OnD
             });
     }
 
-    private goToEditWorkout(workout: Workout): void{
+    private goToEditWorkout(workout: Workout): void {
         super.navigate([this.getTrainerUrl('clients/edit/' + this.clientId + '/workout/' + workout.id + '/workout-plan')]);
     }
 }

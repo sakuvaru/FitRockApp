@@ -151,7 +151,7 @@ export class MapService {
             throw Error(`Cannot map list options because the object is not an array!`);
         }
         listOptions.forEach(option => {
-            mappedOptions.push(new DropdownFieldOption(option.value, option.name));
+            mappedOptions.push(new DropdownFieldOption(option.value, option.name, option.extraDataJson));
         });
 
         return mappedOptions;

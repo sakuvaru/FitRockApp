@@ -33,21 +33,9 @@
 
             <md-list class="push-left">
                 <md-list-item *ngFor="let dietFood of diet.dietFoods; let i = index">
-                    <span class="md-body-1"><strong>{{i + 1}}.</strong> {{ dietFood.food.foodName }}</span>
-                    <span flex></span>
-                    <div class="md-caption push">
-                        <p>
-                            {{'module.diets.foodUnit' | translate }}: <strong>{{dietFood.unitValue}} {{dietFood.food.foodUnit.unitCode | translate}}</strong>
-                            <br /> {{'module.diets.eatTime' | translate }}: <strong>{{dietFood.eatTime}}</strong>
-                        </p>
-
-                        <p *ngIf="dietFood.notes">
-                            {{ dietFood.notes }}
-                        </p>
-                        <p *ngIf="!dietFood.notes">
-                            <em>{{'module.diets.dietFoodHasNoNotes' | translate}}</em>
-                        </p>
-                    </div>
+                    <span  class="md-caption">
+                        {{dietFood.eatTime}}: {{ dietFood.food.foodName }} ({{dietFood.unitValue}} {{dietFood.food.foodUnit.unitCode | translate}})
+                    </span>
                 </md-list-item>
             </md-list>
 

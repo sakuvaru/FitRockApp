@@ -3,7 +3,7 @@ import { IOption } from '../interfaces/ioption.interface';
 export class CustomOption implements IOption{
        constructor(
         public optionName: string,
-        public optionValue: string | boolean | number
+        public optionValue: string | boolean | number | Date
     ) { 
         if (!optionName){
             throw Error(`Option name cannot be empty`);
@@ -246,7 +246,7 @@ export class WhereLikeMultiple implements IOption {
  * Gets proper 'string' value of string, number or boolean value
  * @param value Value to be processed
  */
-function processParamValue(value: string | number | boolean): string {
+function processParamValue(value: string | number | boolean | Date): string {
     if (!value) {
         if (typeof (value) === 'boolean') {
             return 'false';

@@ -33,10 +33,9 @@
 
             <md-list class="push-left">
                 <md-list-item *ngFor="let workoutExercise of workout.workoutExercises; let i = index">
-                    <span class="md-body-1"><strong>{{i + 1}}.</strong> {{ workoutExercise.exercise.exerciseName }}</span>
-                    <span flex></span>
-                    <span class="md-caption">
-                        {{'module.workouts.sets' | translate }}: <strong>{{workoutExercise.sets}}</strong> / {{'module.workouts.reps' | translate }}: <strong>{{workoutExercise.reps}}</strong>
+                    <span class="md-caption"><strong>{{i + 1}}.</strong> 
+                        {{ workoutExercise.exercise.exerciseName }} 
+                        (<span mdTooltip="{{'module.workouts.sets' | translate}}">{{workoutExercise.sets}}</span> / <span mdTooltip="{{'module.workouts.reps' | translate}}">{{workoutExercise.reps}}</span>)
                     </span>
                 </md-list-item>
             </md-list>

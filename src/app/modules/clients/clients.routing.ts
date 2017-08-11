@@ -30,6 +30,8 @@ import { NewClientDietComponent } from './diet/new/new-client-diet.component';
 
 // progress components
 import { EditClientProgressComponent } from './progress/edit/edit-client-progress.component';
+import { NewClientProgressItemTypeComponent } from './progress/new/new-client-progress-item-type.component';
+import { EditProgressItemDialog } from './progress/dialogs/edit-progress-item-dialog.component';
 
 const routes: Routes = [
     {
@@ -73,6 +75,12 @@ const routes: Routes = [
             // progress
             {
                 path: 'clients/edit/:id/progress', component: EditClientProgressComponent
+            },
+            {
+                path: 'clients/edit/:id/new-progress-type', component: NewClientProgressItemTypeComponent
+            },
+            {
+                path: 'clients/edit/edit-progress-item-dialog', component: EditProgressItemDialog
             },
         ]
     }

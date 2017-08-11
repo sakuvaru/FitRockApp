@@ -31,7 +31,8 @@
 				"workout": "Trénink",
 				"editWorkout": "Základní údaje",
 				"newWorkout": "Nový trénink",
-				"diet": "Jídelníček"
+				"diet": "Jídelníček",
+				"progress": "Sledované hodnoty"
 			},
 			"workout": {
 				"copyWorkoutLabel": "Tréninková šáblona",
@@ -48,6 +49,12 @@
 				"editPlan": "Upravit jídelníček",
 				"editDiet": "Základní údaje",
 				"dietNotSelected": "Vyber jídelníček"
+			},
+			"progress":{
+				"newProgressItem": "Nová sledovaná hodnota",
+				"newProgressItemType": "Nový typ",
+				"newProgressItemRecord": "Nový záznam měření",
+				"editProgressItem": "Upravit záznam"
 			},
 			"newClient": "Nový klient",
 			"viewClientSubtitle": "{{fullName}}",
@@ -154,6 +161,17 @@
 			"grainsbeanslegumes": "Fazole a luštěniny",
 			"vegetables": "Zelenina"
 		},
+		"progressItemTypes":{
+			"globalTypes":{
+				"Weight": "Váha",
+				 "WaistCircumference" : "Obvod pasu",
+				"LegsCircumference": "Obvod stehen",
+				"ArmsCircumference": "Obvod paží",
+				"ChestCircumference": "Obvod hrudníku",
+				"BodyFat": "Procento tělesného tuku",
+				"LeanMuscleMass": "Čistá svalová hmota"
+			}
+		},
 		"shared": {
 			"errors": {
 				"errorPageTitle": "Nastala neočekáváná chyba",
@@ -250,6 +268,18 @@
 			"fats": "Tuky",
 			"carbs": "Sacharidy",
 			"proteins": "Proteiny"
+		},
+		"progressItem":{
+			"progressItemTypeId": "Typ",
+			"valueWithUnit": "Hodnota měření - {{unit}}",
+			"value": "Hodnota měření",
+			"measurementDate": "Datum měření"
+		},
+		"progressItemType": {
+			"typeName": "Název typu",
+			"typeName.hint": "'Obvod hrudníku', 'Počet shybů v tréninku' a cokoliv, co bys rád sledoval v čase",
+			"unit": "Jednotka",
+			"unit.hint": "Například 'cm', 'kg' ..."
 		}
 	},
 	"webComponents": {
