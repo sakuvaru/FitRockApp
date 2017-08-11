@@ -1,7 +1,7 @@
 <div *ngIf="question" layout="row" layout-margin [formGroup]="form">
   <!-- Question types -->
   <md-input-container *ngIf="isTextField()" flex hintLabel="{{questionHint}}">
-    <input mdInput value="{{question.value}}" [attr.maxLength]="question.options.maxLength > 0 ? question.options.maxLength : null"
+    <input mdInput [attr.maxLength]="question.options.maxLength > 0 ? question.options.maxLength : null"
       required="{{question.required}}" placeholder="{{question.translatedLabel}}" [formControlName]="question.key" [id]="question.key"
       [type]="question.type" #elem>
     <md-hint *ngIf="showLengthHint()" [ngClass]="{'tc-red-600': elem.value.length > question.options.maxLength}" align="end">{{elem.value.length}} / {{question.options.maxLength}}</md-hint>
@@ -26,7 +26,7 @@
   <div *ngIf="isDateField()" flex>
     <md-input-container>
       <input mdInput [mdDatepicker]="datepicker" [formControlName]="question.key" [id]="question.key" [placeholder]="question.translatedLabel"
-        [required]="question.required" [value]="question.value">
+        [required]="question.required">
       <button mdSuffix [mdDatepickerToggle]="datepicker"></button>
       <md-error>{{customError}}</md-error>
     </md-input-container>
@@ -36,7 +36,7 @@
 
   <md-input-container *ngIf="isTextAreaField()" flex hintLabel="{{questionHint}}">
     <textarea MdTextareaAutosize mdInput mdAutosizeMinRows="question.options.minAutosizeRows" mdAutosizeMaxRows="question.options.maxAutosizeRows"
-      [attr.maxLength]="question.options.maxLength > 0 ? question.options.maxLength : null" value="{{question.value}}" required="{{question.required}}"
+      [attr.maxLength]="question.options.maxLength > 0 ? question.options.maxLength : null" required="{{question.required}}"
       placeholder="{{question.translatedLabel}}" [formControlName]="question.key" [id]="question.key" [type]="question.type"
       #elem>
     </textarea>
@@ -45,7 +45,7 @@
   </md-input-container>
 
   <div *ngIf="isHiddenField()">
-    <input type="hidden" value="{{question.value}}">
+    <input type="hidden" [formControlName]="question.key">
   </div>
 
   <div *ngIf="isDropdownField()" flex>
@@ -58,7 +58,7 @@
   </div>
 
   <md-input-container *ngIf="isNumberField()" flex hintLabel="{{questionHint}}">
-    <input mdInput value="{{question.value}}" [attr.maxLength]="question.options.maxLength > 0 ? question.options.maxLength : null"
+    <input mdInput [attr.maxLength]="question.options.maxLength > 0 ? question.options.maxLength : null"
       required="{{question.required}}" placeholder="{{question.translatedLabel}}" [formControlName]="question.key" [id]="question.key"
       type="number" [attr.min]="getMinNumberValue()" [attr.max]="getMaxNumberValue()" #elem>
     <md-hint *ngIf="showLengthHint()" [ngClass]="{'tc-red-600': elem.value.length > question.options.maxLength}" align="end">{{elem.value.length}} / {{question.options.maxLength}}</md-hint>

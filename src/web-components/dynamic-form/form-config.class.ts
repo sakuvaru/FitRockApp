@@ -111,6 +111,11 @@ export class FormConfig<TItem extends IItem>{
      */
     public onBeforeDelete: (item: any) => void;
 
+     /**
+     * Called when a value in a field changes
+     */
+    public onFieldValueChange: (config: FormConfig<TItem>, changedField: BaseField<any>, newValue: any) => void;
+
     constructor(
         config?: {
             submitTextKey?: string,
@@ -131,7 +136,8 @@ export class FormConfig<TItem extends IItem>{
             onBeforeSave?: () => void,
             OnAfterSave?: () => void,
             onBeforeDelete?: (item: any) => void
-            onAfterDelete?: (response: ResponseDelete) => void
+            onAfterDelete?: (response: ResponseDelete) => void,
+            onFieldValueChange?: (config: FormConfig<TItem>, changedField: BaseField<any>, newValue: any) => void;
         }
     ) {
         Object.assign(this, config);

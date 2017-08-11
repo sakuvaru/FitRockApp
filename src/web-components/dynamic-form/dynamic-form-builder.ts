@@ -11,11 +11,17 @@ class BaseDynamicFormBuilder<TItem extends IItem>{
         return this;
     }
 
+    /** 
+    * Key of delete text button
+    */
     deleteTextKey(key: string): this {
         this.config.deleteTextKey = key;
         return this;
     }
 
+   /**
+   * Key of submit text button
+   */
     submitTextKey(key: string): this {
         this.config.submitTextKey = key;
         return this;
@@ -27,7 +33,7 @@ class BaseDynamicFormBuilder<TItem extends IItem>{
     }
 
     hiddenFields(fields: string[]): this {
-        if (fields){
+        if (fields) {
             this.config.hiddenFields = fields;
         }
         return this;
@@ -65,6 +71,14 @@ class BaseDynamicFormBuilder<TItem extends IItem>{
 
     onAfterSave(callback: () => void): this {
         this.config.OnAfterSave = callback;
+        return this;
+    }
+
+    /**
+    * Called when a value in a field changes
+    */
+    onFieldValueChange(callback: (config: FormConfig<TItem>, changedField: BaseField<any>, newValue: any) => void): this {
+        this.config.onFieldValueChange = callback;
         return this;
     }
 
@@ -129,7 +143,7 @@ export class DynamicFormEditBuilder<TItem extends IItem> extends BaseDynamicForm
         return this;
     }
 
-     onBeforeDelete(callback: (item: any) => void): this {
+    onBeforeDelete(callback: (item: any) => void): this {
         this.config.onBeforeDelete = callback;
         return this;
     }

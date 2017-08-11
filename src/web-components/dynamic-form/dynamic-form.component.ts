@@ -1,4 +1,4 @@
-import { Component, Input, Output, OnInit, EventEmitter, OnChanges, SimpleChange, ChangeDetectorRef } from '@angular/core';
+import { Component, Input, Output, OnInit, EventEmitter, OnChanges, SimpleChanges, ChangeDetectorRef } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FieldControlService } from './field-control.service';
 import { FormConfig } from './form-config.class';
@@ -67,12 +67,14 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
     }
 
     ngOnInit() {
-        this.initDynamicForm();
+        this.initDynamicForm(this.config);
     }
 
-    initDynamicForm(): void {
+    initDynamicForm(config: FormConfig<any>): void {
         // try to initialize component if config is available during init
         if (this.config) {
+            this.config = config;
+
             if (this.config.onFormInit) {
                 this.config.onFormInit();
             }
@@ -87,7 +89,9 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
             this.assignQuestions(this.config.fields)
 
             // subscribe to form changes
-            this.form.valueChanges.subscribe(response => this.handleFormChange());
+            this.form.valueChanges
+                .takeUntil(this.ngUnsubscribe)
+                .subscribe(response => this.handleFormChange());
 
             // translate labels
             this.translateLabels();
@@ -106,12 +110,11 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
         this.cdr.detectChanges();
     }
 
-    ngOnChanges(changes: { [propKey: string]: SimpleChange }) {
+    ngOnChanges(changes: SimpleChanges ) {
         // re-initalize form when questions changes because dynamic form may recieve config with questions 
         // after the initilization of component 
         if (changes.config && changes.config.currentValue) {
-            this.config = changes.config.currentValue;
-            this.initDynamicForm();
+            this.initDynamicForm(changes.config.currentValue);
         }
     }
 

@@ -12,7 +12,7 @@ import { StringHelper, NumberHelper } from '../../lib/utilities';
   templateUrl: './dynamic-form-question.component.html'
 })
 
-export class DynamicFormQuestionComponent implements OnInit {
+export class DynamicFormQuestionComponent implements OnInit{
 
   @Input() question: BaseField<any>;
 
@@ -53,16 +53,29 @@ export class DynamicFormQuestionComponent implements OnInit {
 
   ngOnInit() {
     // translation
-    this.translateQuestionHint();
-    this.translateQuestionLabel();
+    this.reloadTranslations();
 
     // init values
     this.initValues();
   }
 
+  reloadTranslations(): void{
+    this.translateQuestionHint();
+    this.translateQuestionLabel();
+  }
+
   private initValues(): void {
     // subscribe to value changes
     this.subscribeToChanges();
+
+    // this should be first -> set the 'value' of form control to 'defaultValue' in case of insert form
+    // this can be overriden by more specific control types needs (e.g the radio button)
+    if (this.formConfig.isInsertForm()){
+      // set value only if standard 'value' is not set (value could be set for e.g. hidden field)
+      if (!this.question.value){
+        this.form.controls[this.question.key].setValue(this.question.defaultValue);
+      }
+    }
 
     // translate labels for radio boolean
     if (this.question.controlTypeEnum === ControlTypeEnum.RadioBoolean) {
@@ -99,7 +112,6 @@ export class DynamicFormQuestionComponent implements OnInit {
       }
     }
 
-    // Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
     // set default checkbox value to false programatically (it will otherwise treat checkbox as undefined)
     if (this.question.controlTypeEnum === ControlTypeEnum.Boolean && !this.question.required) {
       if (this.formConfig.isEditForm()) {
@@ -146,6 +158,7 @@ export class DynamicFormQuestionComponent implements OnInit {
     this.cdr.detectChanges();
   }
 
+
   /**
    * Use this method to check value changes & to determin whether the value is valid or not
    */
@@ -153,10 +166,15 @@ export class DynamicFormQuestionComponent implements OnInit {
     var control = this.getQuestionControl();
     control.valueChanges
       .subscribe(newValue => {
+        // run field change callback if defined
+        if (this.formConfig.onFieldValueChange) {
+          this.formConfig.onFieldValueChange(this.formConfig, this.question, newValue);
+        }
+
         // check if the field's value is valid
         var valueValidation = this.getCustomValidationResult(newValue);
 
-        if (!valueValidation.isValid){
+        if (!valueValidation.isValid) {
           this.translateService.get(valueValidation.errorMessageKey, valueValidation.translationData)
             .subscribe(translatedErrorMessage => {
               // set custom error so that it can be displayed in the html template
@@ -166,10 +184,10 @@ export class DynamicFormQuestionComponent implements OnInit {
               });
             })
         }
-        else{
+        else {
           // remove custom error
           this.customError = '';
-         }
+        }
       })
   }
 
@@ -185,12 +203,12 @@ export class DynamicFormQuestionComponent implements OnInit {
     if (this.isNumberField()) {
       if (!NumberHelper.isNumber(this.getQuestionValue())) {
         // if min value = 0 && number is 0, its all good
-        if (this.getMinNumberValue() == 0 && value === 0){
+        if (this.getMinNumberValue() == 0 && value === 0) {
           isValid = true;
         }
-        else{
-           isValid = false;
-           errorMessageKey = 'form.error.valueIsNotANumber'
+        else {
+          isValid = false;
+          errorMessageKey = 'form.error.valueIsNotANumber'
         }
       }
       else {
@@ -216,7 +234,8 @@ export class DynamicFormQuestionComponent implements OnInit {
 
   private translateQuestionLabel(): void {
     var translationKey = this.getQuestionLabelKey();
-    this.translateService.get(translationKey).subscribe(translatedText => {
+    var extraTranslationData = this.question.options.extraTranslationData ? this.question.options.extraTranslationData : {};
+    this.translateService.get(translationKey, extraTranslationData).subscribe(translatedText => {
       if (translatedText) {
         this.question.translatedLabel = translatedText
       }
