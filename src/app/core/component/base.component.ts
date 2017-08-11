@@ -9,6 +9,9 @@ import { MenuItem, ResourceKey } from '../models/core.models';
 import { Observable, Subject } from 'rxjs/Rx';
 import { NavigationExtras } from '@angular/router'
 
+// moment js
+import * as moment from 'moment';
+
 @Component({
 })
 export abstract class BaseComponent implements OnInit, OnDestroy {
@@ -252,8 +255,15 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
             })
     }
 
-    // --------------- Translation helper ---------- //
+    // --------------- Useful aliases ---------- //
     translate(key: string, data?: any): Observable<string> {
         return this.dependencies.coreServices.translateService.get(key, data);
+    }
+
+    moment(inp?: moment.MomentInput, format?: moment.MomentFormatSpecification, strict?: boolean): moment.Moment{
+        return this.dependencies.coreServices.moment(inp, format, strict);
+    }
+    momentLanguage (inp?: moment.MomentInput, format?: moment.MomentFormatSpecification, language?: string, strict?: boolean): moment.Moment{
+        return this.dependencies.coreServices.momentLanguage(inp, format, language, strict);
     }
 }
