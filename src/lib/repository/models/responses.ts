@@ -75,6 +75,7 @@ export class ResponseMultiple<T> extends ResponseGetBase {
             timeCreated?: Date,
             type?: string,
             action?: string,
+            model?: string,
 
             itemsPerPage?: number,
             page?: number,
@@ -91,7 +92,7 @@ export class ResponseMultiple<T> extends ResponseGetBase {
         return !this.items || this.items.length <= 0;
     }
 
-    firstItem(): T | null{
+    firstItem(): T | null {
         if (this.isEmpty()) {
             return null;
         }
@@ -110,6 +111,7 @@ export class ResponseCount {
             timeCreated?: Date,
             type?: string,
             action?: string,
+            model?: string,
 
             count?: number
         }) {
@@ -127,6 +129,7 @@ export class ResponseSingle<T> extends ResponseGetBase {
             timeCreated?: Date,
             type?: string,
             action?: string,
+            model?: string,
 
             item?: T
         }) {
@@ -142,11 +145,13 @@ export class ResponseSingle<T> extends ResponseGetBase {
 export class ResponseCreate<T extends IItem> {
 
     public item: T;
+    public model: string;
 
     constructor(
         private options?: {
             item?: T;
             result?: number;
+            model?: string,
         }) {
         if (options) Object.assign(this, options);
     }
@@ -170,10 +175,12 @@ export class ResponseDelete {
 export class ResponseEdit<T extends IItem> {
 
     public item: T;
+    public model: string;
 
     constructor(
         private options?: {
             item?: T,
+            model?: string,
         }) {
         if (options) Object.assign(this, options);
     }
@@ -184,12 +191,15 @@ export class ResponseFormInsert {
     public type: string;
     public formType: string;
     public fields: BaseField<any>[];
+    public model: string;
 
     constructor(
         private options?: {
             type?: string,
             formType?: string,
             fields?: BaseField<any>[],
+            model?: string,
+
         }) {
         if (options) Object.assign(this, options);
     }
@@ -203,6 +213,7 @@ export class ResponseFormEdit<T extends IItem>  {
     public timeCreated: Date;
     public fromCache: boolean;
     public item: T;
+    public model: string;
 
     constructor(
         private options?: {
@@ -212,6 +223,7 @@ export class ResponseFormEdit<T extends IItem>  {
             timeCreated: Date;
             fromCache: boolean;
             item: T;
+            model?: string,
         }) {
         if (options) Object.assign(this, options);
     }
@@ -221,14 +233,18 @@ export class ResponsePost<T extends any>{
     public data: T;
     public action: string;
     public message: string;
+    public model: string;
 
     constructor(
         private options?: {
             data?: T,
             action?: string;
             message?: string;
+            model?: string,
         }
-    ) { }
+    ) {
+        if (options) Object.assign(this, options);
+    }
 }
 
 

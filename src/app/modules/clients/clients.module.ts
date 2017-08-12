@@ -30,6 +30,9 @@ import { EditClientProgressComponent } from './progress/edit/edit-client-progres
 import { NewClientProgressItemTypeComponent } from './progress/new/new-client-progress-item-type.component';
 import { EditProgressItemDialog } from './progress/dialogs/edit-progress-item-dialog.component';
 
+// stats components
+import { StatsMainComponent } from './stats/stats-main.component';
+
 // router
 import { ClientsRouter } from './clients.routing';
 
@@ -68,7 +71,9 @@ import { DietsModule} from '../diets/diets.module';
         // progress
         EditClientProgressComponent,
         NewClientProgressItemTypeComponent,
-        EditProgressItemDialog
+        EditProgressItemDialog,
+        // stats
+        StatsMainComponent
     ],
     exports:[
     ]

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ProgressItemType, ProgressItemTypeWithCountDto } from '../../models';
 import { RepositoryClient, MultipleItemQueryCustom } from '../../../lib/repository';
-import { BaseTypeService } from '../../core';
+import { BaseTypeService } from '../base/base-type.service';
 
 @Injectable()
 export class ProgressItemTypeService extends BaseTypeService<ProgressItemType>{

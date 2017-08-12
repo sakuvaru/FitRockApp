@@ -130,7 +130,8 @@ export class QueryService {
             timeCreated: responseMultiple.timeCreated,
             totalItems: responseMultiple.totalItems,
             type: responseMultiple.type,
-            items: responseMultiple.items
+            items: responseMultiple.items,
+            model: responseMultiple.model
         });
     }
 
@@ -149,7 +150,8 @@ export class QueryService {
             timeCreated: responseMultiple.timeCreated,
             totalItems: responseMultiple.totalItems,
             type: responseMultiple.type,
-            items: items
+            items: items,
+            model: responseMultiple.model
         });
     }
 
@@ -161,7 +163,8 @@ export class QueryService {
             action: responseSingle.action,
             timeCreated: responseSingle.timeCreated,
             type: responseSingle.type,
-            item: responseSingle.item
+            item: responseSingle.item,
+            model: responseSingle.model
         });
     }
 
@@ -173,7 +176,8 @@ export class QueryService {
             action: responseCount.action,
             timeCreated: responseCount.timeCreated,
             type: responseCount.type,
-            count: responseCount.count
+            count: responseCount.count,
+            model: responseCount.model
         });
     }
 
@@ -187,7 +191,8 @@ export class QueryService {
             action: responseSingle.action,
             timeCreated: responseSingle.timeCreated,
             type: responseSingle.type,
-            item: item
+            item: item,
+            model: responseSingle.model
         });
     }
 
@@ -198,6 +203,7 @@ export class QueryService {
 
         return new ResponseCreate<TItem>({
             item: item,
+            model: responseCreate.model
         });
     }
 
@@ -208,6 +214,7 @@ export class QueryService {
 
         return new ResponseEdit<TItem>({
             item: item,
+            model: responseEdit.model
         });
     }
 
@@ -217,7 +224,8 @@ export class QueryService {
         return new ResponsePost<T>({
             data: responsePost.data as T,
             action: responsePost.action,
-            message: responsePost.message
+            message: responsePost.message,
+            model: responsePost.model
         });
     }
 
@@ -226,7 +234,7 @@ export class QueryService {
 
         return new ResponseDelete({
             action: responseDelete.action,
-            deletedItemId: responseDelete.deletedItemId
+            deletedItemId: responseDelete.deletedItemId,
         });
     }
 
@@ -242,7 +250,8 @@ export class QueryService {
             type: responseForm.type,
             fromCache: responseForm.fromCache,
             timeCreated: responseForm.timeCreated,
-            item: item
+            item: item,
+            model: responseForm.model
         });
     }
 
@@ -254,7 +263,8 @@ export class QueryService {
         return new ResponseFormInsert({
             fields: formFields,
             formType: responseForm.formType,
-            type: responseForm.type
+            type: responseForm.type,
+            model: responseForm.model
         });
     }
 

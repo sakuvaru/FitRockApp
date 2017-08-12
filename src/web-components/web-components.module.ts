@@ -10,6 +10,7 @@ import { ButtonsModule } from './buttons/buttons.module';
 import { DataTableModule } from './data-table/data-table.module';
 import { DynamicFormModule } from './dynamic-form/dynamic-form.module';
 import { LoaderModule } from './loader/loader.module';
+import { GraphModule } from './graph/graph.module';
 
 @NgModule({
     imports: [
@@ -22,6 +23,7 @@ import { LoaderModule } from './loader/loader.module';
         DataTableModule,
         ButtonsModule,
         LoaderModule,
+        GraphModule
     ]
 })
 export class WebComponentsModule { }

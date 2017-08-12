@@ -76,7 +76,7 @@ export class EditClientProgressComponent extends BaseComponent implements OnInit
                         data: { 'fullName': this.client.getFullName() }
                     },
                     componentTitle: {
-                        'key': 'module.clients.submenu.workout'
+                        'key': 'module.clients.submenu.progress'
                     }
                 });
             });

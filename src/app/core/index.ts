@@ -1,5 +1,4 @@
 // ! order does matter! 
-export * from './type-service/base-type.service'; // has to be first (otherwise there is some cyclic error which webpack cannot resolve)
 
 // other exports
 export * from './module/core.module';

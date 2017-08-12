@@ -1,0 +1,33 @@
+<ng-container *ngIf="config && config.graph">
+      <ngx-charts-line-chart *ngIf="graph.type === 'LineChart'"
+      [view]="graph.view"
+      [scheme]="graph.scheme"
+      [results]="graph.results"
+      [gradient]="graph.gradient"
+      [xAxis]="graph.showXAxis"
+      [yAxis]="graph.showYAxis"
+      [legend]="graph.showLegend"
+      [showXAxisLabel]="graph.showXAxisLabel"
+      [showYAxisLabel]="graph.showYAxisLabel"
+      [xAxisLabel]="graph.xAxisLabel"
+      [yAxisLabel]="graph.yAxisLabel"
+      [autoScale]="graph.autoScale"
+      (select)="onSelect($event)">
+    </ngx-charts-line-chart>
+
+    <ngx-charts-bar-vertical *ngIf="graph.type === 'VerticalBarChart'"
+      [view]="graph.view"
+      [scheme]="graph.scheme"
+      [results]="graph.results"
+      [gradient]="graph.gradient"
+      [xAxis]="graph.showXAxis"
+      [yAxis]="graph.showYAxis"
+      [legend]="graph.showLegend"
+      [showXAxisLabel]="graph.showXAxisLabel"
+      [showYAxisLabel]="graph.showYAxisLabel"
+      [xAxisLabel]="graph.xAxisLabel"
+      [yAxisLabel]="graph.yAxisLabel"
+      (select)="onSelect($event)">
+    </ngx-charts-bar-vertical>
+</ng-container>
+

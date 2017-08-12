@@ -32,7 +32,8 @@
 				"editWorkout": "Základní údaje",
 				"newWorkout": "Nový trénink",
 				"diet": "Jídelníček",
-				"progress": "Sledované hodnoty"
+				"progress": "Sledované hodnoty",
+				"stats": "Statistiky"
 			},
 			"workout": {
 				"copyWorkoutLabel": "Tréninková šáblona",
@@ -43,7 +44,7 @@
 				"editPlan": "Upravit plán"
 			},
 			"diet": {
-				"newDietFormTemplate": "Nový jídelnníček ze šablony",
+				"newDietFormTemplate": "Nový jídelníček ze šablony",
 				"newDiet": "Nový jídelníček",
 				"copyDietLabel": "Výběr jídelníčku",
 				"editPlan": "Upravit jídelníček",
@@ -171,6 +172,9 @@
 				"BodyFat": "Procento tělesného tuku",
 				"LeanMuscleMass": "Čistá svalová hmota"
 			}
+		},
+		"progressItems":{
+			"xAxisDateLabel": "Datum"
 		},
 		"shared": {
 			"errors": {

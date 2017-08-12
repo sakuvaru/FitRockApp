@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ExerciseCategory, ExerciseCategoryListWithExercisesCount } from '../../models';
 import { RepositoryClient, MultipleItemQueryCustom } from '../../../lib/repository';
-import { BaseTypeService } from '../../core';
+import { BaseTypeService } from '../base/base-type.service';
 
 @Injectable()
 export class ExerciseCategoryService extends BaseTypeService<ExerciseCategory>{

@@ -14,7 +14,7 @@ import { Observable } from 'rxjs/Rx';
 export class PostQuery<T extends any> extends BaseQuery {
 
     private _action: string;
-    private _data: any;
+    private _data: any = {};
 
     constructor(
         protected authHttp: AuthHttp,
@@ -27,11 +27,24 @@ export class PostQuery<T extends any> extends BaseQuery {
     }
 
     /**
-     * Data to be send in JSON format
+     * Data to be send in JSON format.
+     * Should not be combined with 'withJsonOption' method as it will
+     * override the changes
      * @param data Json data to be send
      */
     withJsonData(data: any): this {
         this._data = data;
+        return this;
+    }
+
+    /**
+     * Sets field & value. Should not be combined with 'withJsonData' method
+     * as it could override its data
+     * @param field Name of the field in JSON body
+     * @param value Value of the field
+     */
+    withJsonOption(field: string, value: any): this{
+        this._data[field] = value;
         return this;
     }
 

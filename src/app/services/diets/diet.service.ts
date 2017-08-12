@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Diet } from '../../models';
 import { RepositoryClient, PostQuery } from '../../../lib/repository';
-import { BaseTypeService } from '../../core';
+import { BaseTypeService } from '../base/base-type.service';
 
 @Injectable()
 export class DietService extends BaseTypeService<Diet>{

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { WorkoutExercise, Exercise } from '../../models';
 import { RepositoryClient, EditItemQuery, ResponseCreate, ResponsePost } from '../../../lib/repository';
-import { BaseTypeService } from '../../core';
+import { BaseTypeService } from '../base/base-type.service';
 import { Observable } from 'rxjs/RX';
 
 @Injectable()

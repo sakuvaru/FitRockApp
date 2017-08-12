@@ -1,7 +1,7 @@
 // service common
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { BaseTypeService } from '../core';
+import { BaseTypeService } from './base/base-type.service';
 
 // required by service
 import { User, UserFilterWithCount } from '../models';

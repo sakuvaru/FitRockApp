@@ -3,4 +3,5 @@ export class ResponseGetBase {
     public timeCreated: Date;
     public type: string;
     public action: string;
+    public model: string;
 }

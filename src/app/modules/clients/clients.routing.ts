@@ -33,6 +33,9 @@ import { EditClientProgressComponent } from './progress/edit/edit-client-progres
 import { NewClientProgressItemTypeComponent } from './progress/new/new-client-progress-item-type.component';
 import { EditProgressItemDialog } from './progress/dialogs/edit-progress-item-dialog.component';
 
+// stats components
+import { StatsMainComponent } from './stats/stats-main.component';
+
 const routes: Routes = [
     {
         path: UrlConfig.TrainerMasterPath, component: AdminLayoutComponent, canActivate: [AuthGuardService], children: [
@@ -81,6 +84,10 @@ const routes: Routes = [
             },
             {
                 path: 'clients/edit/edit-progress-item-dialog', component: EditProgressItemDialog
+            },
+            // stats
+             {
+                 path: 'clients/edit/:id/stats', component: StatsMainComponent
             },
         ]
     }
