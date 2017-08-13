@@ -282,8 +282,11 @@
 		"progressItemType": {
 			"typeName": "Název typu",
 			"typeName.hint": "'Obvod hrudníku', 'Počet shybů v tréninku' a cokoliv, co bys rád sledoval v čase",
-			"unit": "Jednotka",
-			"unit.hint": "Například 'cm', 'kg' ..."
+			"progressItemUnitId": "Jednotka",
+			"progressItemUnitId.hint": "Například 'cm', 'kg' ..."
+		},
+		"progressItemUnit":{
+			
 		}
 	},
 	"webComponents": {

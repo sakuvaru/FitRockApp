@@ -10,8 +10,11 @@ import { AppConfig } from '../../core/config/app.config';
 import { AuthHttp } from 'angular2-jwt';
 
 // models
-import { User, Log, Workout, WorkoutCategory, Exercise, ExerciseCategory, WorkoutExercise,
-    Diet, DietCategory, DietFood, Food, FoodCategory, FoodUnit, ProgressItem, ProgressItemType } from '../../models';
+import {
+    User, Log, Workout, WorkoutCategory, Exercise, ExerciseCategory, WorkoutExercise,
+    Diet, DietCategory, DietFood, Food, FoodCategory, FoodUnit, ProgressItem, ProgressItemType,
+    ProgressItemUnit
+} from '../../models';
 
 export function RepositoryClientFactory(authHttp: AuthHttp) {
 
@@ -33,6 +36,7 @@ export function RepositoryClientFactory(authHttp: AuthHttp) {
         new TypeResolver("FoodUnit", () => new FoodUnit()),
         new TypeResolver("ProgressItem", () => new ProgressItem()),
         new TypeResolver("ProgressItemType", () => new ProgressItemType()),
+        new TypeResolver("ProgressItemUnit", () => new ProgressItemUnit()),
     ];
 
     return new RepositoryClient(
@@ -59,4 +63,4 @@ export var RepositoryClientProvider =
         RepositoryClient,
     ],
 })
-export class RepositoryClientProviderModule{ }
+export class RepositoryClientProviderModule { }

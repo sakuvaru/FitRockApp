@@ -5,7 +5,7 @@ export abstract class BaseGraph {
     abstract results: MultiSeries[] | SingleSeries[];
     abstract type: GraphTypeEnum;
 
-    public view: any[] = [700, 400];
+    public view: any[] | undefined = [700, 400];
     public legend: boolean = true;
 
     public scheme = {

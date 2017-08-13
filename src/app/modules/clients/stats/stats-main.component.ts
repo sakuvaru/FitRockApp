@@ -13,8 +13,7 @@ import { GraphConfig, MultiSeries, BaseGraph, SingleSeries, LineChart, VerticalB
 export class StatsMainComponent extends BaseComponent {
 
     private clientId: number;
-    private graphConfig: GraphConfig<BaseGraph>;
-    private graphConfig2: GraphConfig<LineChart>;
+    private graphConfig: GraphConfig<LineChart>;
 
     constructor(
         protected componentDependencyService: ComponentDependencyService,
@@ -51,22 +50,24 @@ export class StatsMainComponent extends BaseComponent {
                     yAxisLabel: 'smurfs'
                 })); */
 
-                this.dependencies.itemServices.progressItemService.getMultiSeriesStats(this.clientId, 4)
+                this.dependencies.itemServices.progressItemService.getMultiSeriesStats(this.clientId, 9)
                     .set()
                     .subscribe(response => {
                         var items = response.data.items;
                         if (items) {
 
-                            this.graphConfig2 = new GraphConfig(new LineChart({
+                            this.graphConfig = new GraphConfig(new LineChart({
                                 results: items,
                             }));
 
+                            this.graphConfig.graph.view = undefined;
+
                             // resolve x/y label translations
                             super.translate(response.data.xAxisLabel).subscribe(translation => {
-                                this.graphConfig2.graph.xAxisLabel = translation;
+                                this.graphConfig.graph.xAxisLabel = translation;
                             });
                             super.translate(response.data.yAxisLabel).subscribe(translation => {
-                                this.graphConfig2.graph.yAxisLabel = translation;
+                                this.graphConfig.graph.yAxisLabel = translation;
                             });
                         }
 

@@ -19,3 +19,4 @@ export * from './diets/food-unit.class';
 // progress
 export * from './progress/progress-item.class';
 export * from './progress/progress-item-type.class';
+export * from './progress/progress-item-unit.class';

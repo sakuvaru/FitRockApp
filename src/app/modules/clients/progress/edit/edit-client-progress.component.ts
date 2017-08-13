@@ -155,7 +155,7 @@ export class EditClientProgressComponent extends BaseComponent implements OnInit
                 this.dataTableConfig = this.dependencies.webComponentServices.dataTableService.dataTable<ProgressItem>()
                     .fields([
                         {
-                            value: (item) => { return item.value.toString() + ' ' + item.progressItemType.unit }, flex: 60
+                            value: (item) => { return item.value.toString() + ' ' + item.progressItemType.progressItemUnit.unitCode }, flex: 60
                         },
                         {
                             value: (item) => { return super.moment(item.measurementDate.toString()).format('LL') },
@@ -166,7 +166,7 @@ export class EditClientProgressComponent extends BaseComponent implements OnInit
                     ])
                     .loadQuery(searchTerm => {
                         return this.dependencies.itemServices.progressItemService.items()
-                            .includeMultiple(['ProgressItemType'])
+                            .includeMultiple(['ProgressItemType', 'ProgressItemType.ProgressItemUnit'])
                             .whereEquals('ClientId', clientId)
                             .orderByDescending('MeasurementDate')
                     })
