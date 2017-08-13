@@ -13,14 +13,13 @@ import { GraphTypeEnum } from './graph-type.enum';
     templateUrl: 'graph.component.html'
 })
 export class GraphComponent extends BaseWebComponent implements OnInit, OnChanges {
-    @Input() config: GraphConfig;
+    @Input() config: GraphConfig<BaseGraph>;
 
     // use alias to graph for convenience
     private graph: BaseGraph;
 
     constructor() {
         super()
-        //Object.assign(this, { single })
     }
 
     ngOnInit() {
@@ -35,7 +34,7 @@ export class GraphComponent extends BaseWebComponent implements OnInit, OnChange
         }
     }
 
-    private initGraph(config: GraphConfig): void {
+    private initGraph(config: GraphConfig<BaseGraph>): void {
         this.config = config;
         this.graph = this.config.graph;
     }
