@@ -4,40 +4,40 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { AppConfig, ComponentDependencyService, BaseComponent } from '../../../../core';
 
 // required by component
+import { ClientsBaseComponent } from '../../clients-base.component';
 import { FormConfig } from '../../../../../web-components/dynamic-form';
 import { ClientMenuItems } from '../../menu.items';
 import { Workout } from '../../../../models';
+import { Observable } from 'rxjs/Rx';
 
 @Component({
     templateUrl: 'new-client-workout.component.html'
 })
-export class NewClientWorkoutComponent extends BaseComponent implements OnInit {
+export class NewClientWorkoutComponent extends ClientsBaseComponent implements OnInit {
 
     private formConfig: FormConfig<Workout>;
-    private clientId: number;
 
     constructor(
+        protected activatedRoute: ActivatedRoute,
         protected componentDependencyService: ComponentDependencyService,
-        private activatedRoute: ActivatedRoute) {
-        super(componentDependencyService)
+    ) {
+        super(componentDependencyService, activatedRoute, { subscribeToClient: false })
     }
-
     ngOnInit() {
         super.ngOnInit();
-        this.initForm();
+
+        super.subscribeToObservable(this.getFormObservable());
+        super.initClientSubscriptions();
     }
 
-    private initForm(): void {
-        super.startLoader();
-
-        this.activatedRoute.params
+    private getFormObservable(): Observable<any> {
+        return this.clientIdChange
             .takeUntil(this.ngUnsubscribe)
             .switchMap(params => {
-                this.clientId = +params['id'];
                 return this.dependencies.itemServices.workoutService.insertForm()
                     .takeUntil(this.ngUnsubscribe)
             })
-            .subscribe(form => {
+            .map(form => {
                 // manually set client id
                 form.withFieldValue('ClientId', this.clientId);
 

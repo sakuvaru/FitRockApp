@@ -18,6 +18,8 @@ export class GraphComponent extends BaseWebComponent implements OnInit, OnChange
     // use alias to graph for convenience
     private graph: BaseGraph;
 
+    private wrapperStyle: any;
+
     constructor() {
         super()
     }
@@ -37,11 +39,16 @@ export class GraphComponent extends BaseWebComponent implements OnInit, OnChange
     private initGraph(config: GraphConfig<BaseGraph>): void {
         this.config = config;
         this.graph = this.config.graph;
+
+        this.initWrapperStyle();
     }
 
-    single: any[];
-    multi: any[];
-    view: any[] = [700, 400];
+    private initWrapperStyle(): void{
+        var style: any = {};
+        style.width = this.graph.width;
+        style.height = this.graph.height;
+        this.wrapperStyle = style;
+    }
 
     onSelect(event) {
         console.log(event);

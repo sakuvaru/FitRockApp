@@ -5,7 +5,15 @@ export abstract class BaseGraph {
     abstract results: MultiSeries[] | SingleSeries[];
     abstract type: GraphTypeEnum;
 
-    public view: any[] | undefined = [700, 400];
+    /**
+     * Leave undefined so that size of graph matches the parent
+     * Size of parent wrapper is defined below
+     */
+    public view: any[] | undefined = undefined; 
+
+    public width: any = "100%";
+    public height: any = "400px";
+
     public legend: boolean = true;
 
     public scheme = {

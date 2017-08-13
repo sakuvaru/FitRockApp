@@ -4,40 +4,41 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { AppConfig, ComponentDependencyService, BaseComponent } from '../../../../core';
 
 // required by component
+import { ClientsBaseComponent } from '../../clients-base.component';
 import { FormConfig } from '../../../../../web-components/dynamic-form';
 import { ClientMenuItems } from '../../menu.items';
 import { ProgressItemType } from '../../../../models';
+import { Observable } from 'rxjs/Rx';
 
 @Component({
     templateUrl: 'new-client-progress-item-type.component.html'
 })
-export class NewClientProgressItemTypeComponent extends BaseComponent implements OnInit {
+export class NewClientProgressItemTypeComponent extends ClientsBaseComponent implements OnInit {
 
     private formConfig: FormConfig<ProgressItemType>;
-    private clientId: number;
 
     constructor(
+        protected activatedRoute: ActivatedRoute,
         protected componentDependencyService: ComponentDependencyService,
-        private activatedRoute: ActivatedRoute) {
-        super(componentDependencyService)
+    ) {
+        super(componentDependencyService, activatedRoute)
     }
 
     ngOnInit() {
         super.ngOnInit();
-        this.initForm();
+
+        super.subscribeToObservable(this.getFormObservable());
+        super.initClientSubscriptions();
     }
 
-    private initForm(): void {
-        super.startLoader();
-
-        this.activatedRoute.params
+    private getFormObservable(): Observable<any> {
+        return this.clientChange
             .takeUntil(this.ngUnsubscribe)
-            .switchMap(params => {
-                this.clientId = +params['id'];
+            .switchMap(client => {
                 return this.dependencies.itemServices.progressItemTypeService.insertForm()
                     .takeUntil(this.ngUnsubscribe)
             })
-            .subscribe(form => {
+            .map(form => {
                 form.onFormInit(() => super.stopLoader())
                 form.onBeforeSave(() => super.startGlobalLoader());
                 form.onAfterSave(() => super.stopGlobalLoader());
@@ -46,6 +47,17 @@ export class NewClientProgressItemTypeComponent extends BaseComponent implements
                 form.onError(() => super.stopGlobalLoader());
 
                 this.formConfig = form.build();
+
+                this.setConfig({
+                    menuItems: new ClientMenuItems(this.client.id).menuItems,
+                    menuTitle: {
+                        key: 'module.clients.viewClientSubtitle',
+                        data: { 'fullName': this.client.getFullName() }
+                    },
+                    componentTitle: {
+                        'key': 'module.clients.progress.newProgressItemType'
+                    }
+                });
 
                 this.setConfig({
                     componentTitle: { key: 'module.clients.progress.newProgressItemType' },

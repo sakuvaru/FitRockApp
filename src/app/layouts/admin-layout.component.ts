@@ -1,7 +1,7 @@
 // common
 import { Component, Input, OnDestroy, ChangeDetectorRef, OnInit } from '@angular/core';
 import { TdMediaService } from '@covalent/core';
-import { ComponentDependencyService, BaseComponent, MenuItemType } from '../core';
+import { ComponentDependencyService, BaseComponent, MenuItemType, AppConfig } from '../core';
 
 // required by component
 import { Subscription } from 'rxjs/Rx';
@@ -13,6 +13,8 @@ import { StringHelper } from '../../lib/utilities';
 export class AdminLayoutComponent extends BaseComponent implements OnDestroy, OnInit {
     private year: number = new Date().getFullYear();
     private media: TdMediaService;
+
+    private hideAdminLayoutWhenComponentsLoaderIsEnabled = AppConfig.HideAdminLayoutWhenComponentsLoaderIsEnabled;
 
     private componentTitle: string;
     private menuTitle: string;

@@ -4,6 +4,7 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { AppConfig, ComponentDependencyService, BaseComponent, ComponentConfig } from '../../../../core';
 
 // required by component
+import { ClientsBaseComponent } from '../../clients-base.component';
 import { ClientOverviewMenuItems } from '../../menu.items';
 import { DataTableConfig, AlignEnum, Filter } from '../../../../../web-components/data-table';
 import { User, UserFilterWithCount } from '../../../../models';
@@ -12,18 +13,24 @@ import { MultipleItemQuery } from '../../../../../lib/repository';
 @Component({
   templateUrl: 'clients-overview.component.html'
 })
-export class ClientsOverviewComponent extends BaseComponent implements OnInit {
+export class ClientsOverviewComponent extends ClientsBaseComponent implements OnInit {
 
   private config: DataTableConfig<User>;
 
   constructor(
-    protected dependencies: ComponentDependencyService) {
-    super(dependencies)
+    protected activatedRoute: ActivatedRoute,
+    protected componentDependencyService: ComponentDependencyService,
+  ) {
+    super(componentDependencyService, activatedRoute)
   }
 
   ngOnInit(): void {
     super.ngOnInit();
+    this.initDataTable();
+    super.initClientSubscriptions();
+  }
 
+  private initDataTable(): void {
     this.setConfig({
       menuTitle: { key: 'menu.clients' },
       menuItems: new ClientOverviewMenuItems().menuItems,

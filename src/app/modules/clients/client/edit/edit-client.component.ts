@@ -4,34 +4,39 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { AppConfig, ComponentDependencyService, BaseComponent } from '../../../../core';
 
 // required by component
+import { ClientsBaseComponent } from '../../clients-base.component';
 import { ClientMenuItems } from '../../menu.items';
 import { FormConfig } from '../../../../../web-components/dynamic-form';
 import { User } from '../../../../models';
-import 'rxjs/add/operator/switchMap';
+import { Observable } from 'rxjs/Rx';
 
 @Component({
     templateUrl: 'edit-client.component.html'
 })
-export class EditClientComponent extends BaseComponent implements OnInit {
+export class EditClientComponent extends ClientsBaseComponent implements OnInit {
 
     private formConfig: FormConfig<User>;
 
     constructor(
-        private activatedRoute: ActivatedRoute,
-        protected componentDependencyService: ComponentDependencyService,
+        protected activatedRoute: ActivatedRoute,
+        protected componentDependencyService: ComponentDependencyService
     ) {
-        super(componentDependencyService)
+        super(componentDependencyService, activatedRoute, { subscribeToClient: false })
+
     }
 
     ngOnInit(): void {
         super.ngOnInit();
 
-        super.startLoader();
+        super.subscribeToObservable(this.getFormObservable());
+        super.initClientSubscriptions();
+    }
 
-        this.activatedRoute.params
+    private getFormObservable(): Observable<any> {
+        return this.clientIdChange
             .takeUntil(this.ngUnsubscribe)
-            .switchMap((params: Params) => this.dependencies.itemServices.userService.editForm(+params['id']))
-            .subscribe(form => {
+            .switchMap(clientId => this.dependencies.itemServices.userService.editForm(clientId))
+            .map(form => {
                 form.onFormLoaded(() => super.stopLoader());
                 form.onBeforeSave(() => super.startGlobalLoader());
                 form.onAfterSave(() => super.stopGlobalLoader());

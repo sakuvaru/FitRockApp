@@ -4,31 +4,36 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { AppConfig, ComponentDependencyService, BaseComponent, ComponentConfig } from '../../../../core';
 
 // required by component
+import { ClientsBaseComponent } from '../../clients-base.component';
 import { ClientEditDietMenuItems } from '../../menu.items';
 import { Diet } from '../../../../models';
 
 @Component({
   templateUrl: 'edit-client-diet-plan.component.html'
 })
-export class EditClientDietPlanComponent extends BaseComponent implements OnInit {
+export class EditClientDietPlanComponent extends ClientsBaseComponent implements OnInit {
 
-  private clientId: number;
   private dietId: number;
   private diet: Diet;
 
   constructor(
-    private activatedRoute: ActivatedRoute,
-    protected dependencies: ComponentDependencyService) {
-    super(dependencies)
+    protected activatedRoute: ActivatedRoute,
+    protected componentDependencyService: ComponentDependencyService,
+  ) {
+    super(componentDependencyService, activatedRoute)
   }
 
   ngOnInit() {
     super.ngOnInit();
 
+    this.initDietId();
+    super.initClientSubscriptions();
+  }
+
+  private initDietId(): void {
     this.activatedRoute.params
       .takeUntil(this.ngUnsubscribe)
       .subscribe(params => {
-        this.clientId = +params['id'];
         this.dietId = +params['dietId'];
       });
   }

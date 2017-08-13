@@ -4,6 +4,7 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { AppConfig, ComponentDependencyService, BaseComponent } from '../../../../core';
 
 // required by component
+import { ClientsBaseComponent } from '../../clients-base.component';
 import { ClientMenuItems } from '../../menu.items';
 import { FormConfig, DynamicFormComponent } from '../../../../../web-components/dynamic-form';
 import { DataTableConfig, AlignEnum, Filter } from '../../../../../web-components/data-table';
@@ -15,65 +16,38 @@ import { EditProgressItemDialog } from '../dialogs/edit-progress-item-dialog.com
 @Component({
     templateUrl: 'edit-client-progress.component.html'
 })
-export class EditClientProgressComponent extends BaseComponent implements OnInit {
+export class EditClientProgressComponent extends ClientsBaseComponent implements OnInit {
 
     private formConfig: FormConfig<ProgressItem>;
     private dataTableConfig: DataTableConfig<ProgressItem>;
-    private clientId: number;
-    private client: User;
-
-    private observables: Observable<any>[] = [];
-    private observablesCompleted: number = 0;
 
     @ViewChild(DynamicFormComponent) formComponent: DynamicFormComponent;
 
     constructor(
-        private activatedRoute: ActivatedRoute,
+        protected activatedRoute: ActivatedRoute,
         protected componentDependencyService: ComponentDependencyService,
     ) {
-        super(componentDependencyService)
+        super(componentDependencyService, activatedRoute)
     }
 
     ngOnInit(): void {
         super.ngOnInit();
 
-        this.initCompoment();
+        super.subscribeToObservables(this.getComponentObservables());
+        super.initClientSubscriptions();
     }
 
-    private initCompoment(): void {
-        super.startLoader();
+    private getComponentObservables(): Observable<any>[] {
+        var observables: Observable<any>[] = [];
 
-        var joinedObservable = this.getJoinedObservable();
-
-        joinedObservable
+        var obsClientMenu = this.clientChange
             .takeUntil(this.ngUnsubscribe)
-            .subscribe(() => {
-                this.observablesCompleted++;
-                if (this.observablesCompleted === this.observables.length) {
-                    super.stopLoader();
-                    this.observablesCompleted = 0;
-                }
-            },
-            error => super.handleError(error)
-            );
-    }
-
-    private getJoinedObservable(): Observable<any> {
-        var obsClientId = this.activatedRoute.params
-            .takeUntil(this.ngUnsubscribe)
-            .map(params => this.clientId = +params['id']);
-
-        var obsClient = this.activatedRoute.params
-            .takeUntil(this.ngUnsubscribe)
-            .switchMap((params: Params) => this.dependencies.itemServices.userService.editForm(+params['id']))
-            .map(form => {
-                this.client = form.getItem();
-
+            .map(client => {
                 this.setConfig({
-                    menuItems: new ClientMenuItems(this.client.id).menuItems,
+                    menuItems: new ClientMenuItems(client.id).menuItems,
                     menuTitle: {
                         key: 'module.clients.viewClientSubtitle',
-                        data: { 'fullName': this.client.getFullName() }
+                        data: { 'fullName': client.getFullName() }
                     },
                     componentTitle: {
                         'key': 'module.clients.submenu.progress'
@@ -84,19 +58,17 @@ export class EditClientProgressComponent extends BaseComponent implements OnInit
         var obsForm = this.getFormObservable();
         var obsDataTable = this.getDataTableObservable();
 
-        this.observables.push(obsClientId);
-        this.observables.push(obsClient);
-        this.observables.push(obsForm);
-        this.observables.push(obsDataTable);
+        observables.push(obsClientMenu);
+        observables.push(obsForm);
+        observables.push(obsDataTable);
 
-        return this.dependencies.coreServices.repositoryClient.mergeObservables(this.observables);
+        return observables;
     }
 
     private getFormObservable(): Observable<any> {
-        return this.activatedRoute.params
+        return this.clientIdChange
             .takeUntil(this.ngUnsubscribe)
-            .switchMap((params: Params) => {
-                this.clientId = +params['id'];
+            .switchMap(clientId => {
                 return this.dependencies.itemServices.progressItemService.insertForm()
             })
             .map(form => {
@@ -147,57 +119,60 @@ export class EditClientProgressComponent extends BaseComponent implements OnInit
             error => super.handleError(error));
     }
 
+    private initDataTable(clientId: number): void {
+        this.dataTableConfig = this.dependencies.webComponentServices.dataTableService.dataTable<ProgressItem>()
+            .fields([
+                {
+                    value: (item) => { return item.value.toString() + ' ' + item.progressItemType.progressItemUnit.unitCode }, flex: 60
+                },
+                {
+                    value: (item) => { return super.moment(item.measurementDate.toString()).format('LL') },
+                    isSubtle: true,
+                    hideOnSmallScreens: false,
+                    align: AlignEnum.Right
+                },
+            ])
+            .loadQuery(searchTerm => {
+                return this.dependencies.itemServices.progressItemService.items()
+                    .includeMultiple(['ProgressItemType', 'ProgressItemType.ProgressItemUnit'])
+                    .whereEquals('ClientId', clientId)
+                    .orderByDescending('MeasurementDate')
+            })
+            .loadResolver(query => {
+                return query
+                    .get()
+                    .takeUntil(this.ngUnsubscribe)
+            })
+            .dynamicFilters((searchTerm) => {
+                return this.dependencies.itemServices.progressItemTypeService.getProgressItemTypeWithCountDto(this.clientId, undefined)
+                    .get()
+                    .map(response => {
+                        var filters: Filter<ProgressItemTypeWithCountDto>[] = [];
+                        response.items.forEach(type => {
+                            filters.push(new Filter({
+                                filterNameKey: type.typeName,
+                                onFilter: (query) => query.whereEquals('ProgressItemTypeId', type.id),
+                                count: type.progressItemsCount
+                            }));
+                        });
+                        return filters;
+                    })
+                    .takeUntil(this.ngUnsubscribe)
+            })
+            .wrapInCard(true)
+            .showAllFilter(true)
+            .showSearch(false)
+            .onBeforeLoad(() => super.startGlobalLoader())
+            .onAfterLoad(() => super.stopGlobalLoader())
+            .onClick((item) => this.openEditProgressItemDialog(item))
+            .build();
+    }
+
     private getDataTableObservable(): Observable<any> {
-        return this.activatedRoute.params
+        return this.clientIdChange
             .takeUntil(this.ngUnsubscribe)
-            .map((params) => {
-                var clientId = +params['id'];
-                this.dataTableConfig = this.dependencies.webComponentServices.dataTableService.dataTable<ProgressItem>()
-                    .fields([
-                        {
-                            value: (item) => { return item.value.toString() + ' ' + item.progressItemType.progressItemUnit.unitCode }, flex: 60
-                        },
-                        {
-                            value: (item) => { return super.moment(item.measurementDate.toString()).format('LL') },
-                            isSubtle: true,
-                            hideOnSmallScreens: false,
-                            align: AlignEnum.Right
-                        },
-                    ])
-                    .loadQuery(searchTerm => {
-                        return this.dependencies.itemServices.progressItemService.items()
-                            .includeMultiple(['ProgressItemType', 'ProgressItemType.ProgressItemUnit'])
-                            .whereEquals('ClientId', clientId)
-                            .orderByDescending('MeasurementDate')
-                    })
-                    .loadResolver(query => {
-                        return query
-                            .get()
-                            .takeUntil(this.ngUnsubscribe)
-                    })
-                    .dynamicFilters((searchTerm) => {
-                        return this.dependencies.itemServices.progressItemTypeService.getProgressItemTypeWithCountDto(this.clientId, undefined)
-                            .get()
-                            .map(response => {
-                                var filters: Filter<ProgressItemTypeWithCountDto>[] = [];
-                                response.items.forEach(type => {
-                                    filters.push(new Filter({
-                                        filterNameKey: type.typeName,
-                                        onFilter: (query) => query.whereEquals('ProgressItemTypeId', type.id),
-                                        count: type.progressItemsCount
-                                    }));
-                                });
-                                return filters;
-                            })
-                            .takeUntil(this.ngUnsubscribe)
-                    })
-                    .wrapInCard(true)
-                    .showAllFilter(true)
-                    .showSearch(false)
-                    .onBeforeLoad(() => super.startLoader())
-                    .onAfterLoad(() => super.stopLoader())
-                    .onClick((item) => this.openEditProgressItemDialog(item))
-                    .build();
+            .map(clientId => {
+                this.initDataTable(clientId)
             })
     }
 
@@ -216,10 +191,7 @@ export class EditClientProgressComponent extends BaseComponent implements OnInit
     }
 
     private reloadDataTable(): void {
-        var dataTableObs = this.getDataTableObservable();
-        dataTableObs
-            .takeUntil(this.ngUnsubscribe)
-            .subscribe();
+        this.initDataTable(this.clientId);
     }
 
 }

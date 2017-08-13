@@ -255,15 +255,47 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
             })
     }
 
-    // --------------- Useful aliases ---------- //
+    // --------------- Useful aliases ------------------ //
     translate(key: string, data?: any): Observable<string> {
         return this.dependencies.coreServices.translateService.get(key, data);
     }
 
-    moment(inp?: moment.MomentInput, format?: moment.MomentFormatSpecification, strict?: boolean): moment.Moment{
+    moment(inp?: moment.MomentInput, format?: moment.MomentFormatSpecification, strict?: boolean): moment.Moment {
         return this.dependencies.coreServices.moment(inp, format, strict);
     }
-    momentLanguage (inp?: moment.MomentInput, format?: moment.MomentFormatSpecification, language?: string, strict?: boolean): moment.Moment{
+    momentLanguage(inp?: moment.MomentInput, format?: moment.MomentFormatSpecification, language?: string, strict?: boolean): moment.Moment {
         return this.dependencies.coreServices.momentLanguage(inp, format, language, strict);
+    }
+
+    // -------------- Observable subscriptions -------------- //
+    private completedObservablesCount: number = 0;
+
+    protected subscribeToObservables(observables: Observable<any>[]): void {
+        this.startLoader();
+
+        var mergedObservable = this.dependencies.coreServices.repositoryClient.mergeObservables(observables);
+        mergedObservable
+            .takeUntil(this.ngUnsubscribe)
+            .subscribe(() => {
+                this.completedObservablesCount++;
+                if (this.completedObservablesCount === observables.length) {
+                    this.stopLoader();
+                    this.completedObservablesCount = 0;
+                }
+            },
+            error => this.handleError(error)
+            );
+    }
+
+    protected subscribeToObservable(observable: Observable<any>): void {
+        this.startLoader();
+
+        observable
+            .takeUntil(this.ngUnsubscribe)
+            .subscribe(() => {
+                this.stopLoader();
+            },
+            error => this.handleError(error)
+            );
     }
 }

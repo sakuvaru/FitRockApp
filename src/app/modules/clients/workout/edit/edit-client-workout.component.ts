@@ -4,6 +4,7 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { AppConfig, ComponentDependencyService, BaseComponent } from '../../../../core';
 
 // required by component
+import { ClientsBaseComponent } from '../../clients-base.component';
 import { ClientEditWorkoutMenuItems } from '../../menu.items';
 import { Workout } from '../../../../models';
 import 'rxjs/add/operator/switchMap';
@@ -11,26 +12,29 @@ import 'rxjs/add/operator/switchMap';
 @Component({
     templateUrl: 'edit-client-workout.component.html'
 })
-export class EditClientWorkoutComponent extends BaseComponent implements OnInit {
+export class EditClientWorkoutComponent extends ClientsBaseComponent implements OnInit {
 
-    private clientId: number;
     private workoutId: number;
 
     constructor(
-        private activatedRoute: ActivatedRoute,
+        protected activatedRoute: ActivatedRoute,
         protected componentDependencyService: ComponentDependencyService,
     ) {
-        super(componentDependencyService)
+        super(componentDependencyService, activatedRoute)
     }
 
     ngOnInit() {
         super.ngOnInit();
 
+        this.initWorkoudId();
+        super.initClientSubscriptions();
+    }
+
+    private initWorkoudId(): void {
         this.activatedRoute.params
             .takeUntil(this.ngUnsubscribe)
             .subscribe(params => {
                 this.workoutId = +params['workoutId'];
-                this.clientId = +params['id'];
             });
     }
 

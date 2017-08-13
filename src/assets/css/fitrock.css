@@ -15,6 +15,9 @@
     cursor: pointer;
 }
 
+.w-hidden{
+    display: none;
+}
 
 /* Overrides */
 .mat-chip{

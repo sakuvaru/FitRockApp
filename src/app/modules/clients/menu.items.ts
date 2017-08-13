@@ -1,6 +1,6 @@
-import { MenuItem, MenuItemType } from '../../core';
+import { MenuItem, MenuItemType, IMenuItems } from '../../core';
 
-export class ClientOverviewMenuItems {
+export class ClientOverviewMenuItems implements IMenuItems{
 
     menuItems: MenuItem[];
 
@@ -11,7 +11,7 @@ export class ClientOverviewMenuItems {
     }
 }
 
-export class ClientMenuItems {
+export class ClientMenuItems implements IMenuItems{
 
     menuItems: MenuItem[];
 
@@ -31,7 +31,7 @@ export class ClientMenuItems {
     }
 }
 
-export class ClientEditWorkoutMenuItems {
+export class ClientEditWorkoutMenuItems implements IMenuItems{
 
     menuItems: MenuItem[];
 
@@ -44,7 +44,7 @@ export class ClientEditWorkoutMenuItems {
     }
 }
 
-export class ClientEditDietMenuItems {
+export class ClientEditDietMenuItems implements IMenuItems{
 
     menuItems: MenuItem[];
 

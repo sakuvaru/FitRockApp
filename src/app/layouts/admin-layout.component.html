@@ -52,7 +52,11 @@
         </div>
       </md-toolbar>  
       <loader [enabled]="componentLoaderEnabled"></loader>
-      <router-outlet></router-outlet>
+      
+      <div [ngClass]="{'w-hidden': componentLoaderEnabled && hideAdminLayoutWhenComponentsLoaderIsEnabled}">
+        <router-outlet></router-outlet>
+      </div>
+
     </td-layout-manage-list>
     <td-layout-footer>
        <div layout="row" layout-align="start center" class="md-caption">

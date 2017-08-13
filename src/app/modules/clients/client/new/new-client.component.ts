@@ -4,35 +4,42 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { AppConfig, ComponentDependencyService, BaseComponent } from '../../../../core';
 
 // required by component
+import { ClientsBaseComponent } from '../../clients-base.component';
 import { FormConfig } from '../../../../../web-components/dynamic-form';
 import { ClientOverviewMenuItems } from '../../menu.items';
 import { User } from '../../../../models';
+import { Observable } from 'rxjs/Rx';
 
 @Component({
     templateUrl: 'new-client.component.html'
 })
-export class NewClientComponent extends BaseComponent implements OnInit {
+export class NewClientComponent extends ClientsBaseComponent implements OnInit  {
 
     private formConfig: FormConfig<User>;
 
     constructor(
-        protected componentDependencyService: ComponentDependencyService) {
-        super(componentDependencyService)
+        protected activatedRoute: ActivatedRoute,
+        protected componentDependencyService: ComponentDependencyService,
+    ) {
+        super(componentDependencyService, activatedRoute)
     }
 
     ngOnInit(): void {
         super.ngOnInit();
 
-        super.startLoader();
-
-        this.setConfig({
+         this.setConfig({
             componentTitle: { key: 'module.clients.newClient' },
             menuItems: new ClientOverviewMenuItems().menuItems
         });
 
-        this.dependencies.itemServices.userService.insertForm()
+        super.subscribeToObservable(this.getFormObservable());
+        super.initClientSubscriptions();
+    }
+
+    private getFormObservable(): Observable<any>{
+        return this.dependencies.itemServices.userService.insertForm()
             .takeUntil(this.ngUnsubscribe)
-            .subscribe(form => {
+            .map(form => {
                 form.onFormLoaded(() => super.stopLoader());
                 form.onBeforeSave(() => super.startGlobalLoader());
                 form.onAfterSave(() => super.stopGlobalLoader());
@@ -45,8 +52,7 @@ export class NewClientComponent extends BaseComponent implements OnInit {
                 })
 
                 this.formConfig = form.build();
-            }
-            ,
+            },
             error => super.handleError(error));
     }
 }

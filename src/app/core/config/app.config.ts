@@ -26,6 +26,9 @@ export class AppConfig {
     public static Auth0_IdTokenStorageName = 'id_token';
     public static Auth0_NoJwtError = true;
 
+    // components settings
+    public static HideAdminLayoutWhenComponentsLoaderIsEnabled = true;
+
     // design defaults
     public static DefaultDialogWidth = '70%';
 }

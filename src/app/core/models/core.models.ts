@@ -1,3 +1,7 @@
+export interface IMenuItems{
+    menuItems: MenuItem[];
+}
+
 export class ResourceKey {
 
     public key: string;

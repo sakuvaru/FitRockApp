@@ -4,63 +4,69 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { AppConfig, ComponentDependencyService, BaseComponent } from '../../../core';
 
 // required by component
+import { ClientsBaseComponent } from '../clients-base.component';
 import { ClientMenuItems } from '../menu.items';
 import { GraphConfig, MultiSeries, BaseGraph, SingleSeries, LineChart, VerticalBarChart } from '../../../../web-components/graph';
+import { Observable } from 'rxjs/Rx';
 
 @Component({
     templateUrl: 'stats-main.component.html'
 })
-export class StatsMainComponent extends BaseComponent {
+export class StatsMainComponent extends ClientsBaseComponent implements OnInit {
 
-    private clientId: number;
     private graphConfig: GraphConfig<LineChart>;
 
     constructor(
         protected componentDependencyService: ComponentDependencyService,
-        private activatedRoute: ActivatedRoute) {
-        super(componentDependencyService)
+        protected activatedRoute: ActivatedRoute) {
+        super(componentDependencyService, activatedRoute)
     }
 
     ngOnInit() {
         super.ngOnInit();
-        this.initStats();
+
+        super.subscribeToObservables(this.getComponentObservables());
+        super.initClientSubscriptions();
     }
 
-    private initStats(): void {
-        this.activatedRoute.params
-            .takeUntil(this.ngUnsubscribe)
-            .switchMap(params => this.dependencies.itemServices.userService.item().byId(+params['id']).get())
-            .map(response => {
-                this.clientId = response.item.id;
+    private getComponentObservables(): Observable<any>[] {
+        var observables: Observable<any>[] = [];
+        observables.push(this.getClientMenuObservable());
+        observables.push(this.getStatsObservable(9));
 
+        return observables;
+    }
+
+    private getClientMenuObservable(): Observable<any> {
+        return this.clientChange
+            .takeUntil(this.ngUnsubscribe)
+            .map(client => {
                 this.setConfig({
-                    menuItems: new ClientMenuItems(this.clientId).menuItems,
+                    menuItems: new ClientMenuItems(client.id).menuItems,
                     menuTitle: {
                         key: 'module.clients.viewClientSubtitle',
-                        data: { 'fullName': response.item.getFullName() }
+                        data: { 'fullName': client.getFullName() }
                     },
                     componentTitle: {
                         'key': 'module.clients.submenu.stats'
                     }
                 });
+            });
+    }
 
-                /*this.graphConfig = new GraphConfig(new LineChart({
-                    results: multi,
-                    xAxisLabel: 'Hello',
-                    yAxisLabel: 'smurfs'
-                })); */
-
-                this.dependencies.itemServices.progressItemService.getMultiSeriesStats(this.clientId, 9)
+    private getStatsObservable(progressTypeId: number): Observable<any> {
+        return this.clientIdChange
+            .takeUntil(this.ngUnsubscribe)
+            .switchMap(clientId => {
+                return this.dependencies.itemServices.progressItemService.getMultiSeriesStats(clientId, progressTypeId)
                     .set()
-                    .subscribe(response => {
+                    .map(response => {
                         var items = response.data.items;
                         if (items) {
 
                             this.graphConfig = new GraphConfig(new LineChart({
                                 results: items,
                             }));
-
-                            this.graphConfig.graph.view = undefined;
 
                             // resolve x/y label translations
                             super.translate(response.data.xAxisLabel).subscribe(translation => {
@@ -70,22 +76,8 @@ export class StatsMainComponent extends BaseComponent {
                                 this.graphConfig.graph.yAxisLabel = translation;
                             });
                         }
-
                     })
-
-
-            }).subscribe();
+            });
     }
 }
 
-var single: SingleSeries[] = [
-    new SingleSeries('Germany', 8940000),
-    new SingleSeries('USA', 2310000),
-    new SingleSeries('CZE', 110000),
-]
-
-var multi: MultiSeries[] = [
-    new MultiSeries('Germany', [new SingleSeries('2010', 73), new SingleSeries('2011', 75), new SingleSeries('2012', 85)]),
-    new MultiSeries('USA', [new SingleSeries('2010', 150), new SingleSeries('2011', 125), new SingleSeries('2012', 135)]),
-    new MultiSeries('CZE', [new SingleSeries('2010', 4), new SingleSeries('2011', 10), new SingleSeries('2012', 60)])
-]
