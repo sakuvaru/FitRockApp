@@ -42,6 +42,11 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
     // search
     private searchTerm: string = '';
 
+    /**
+     * Indicates if the load of items is the initial load
+     */
+    private isInitialLoad: boolean = true;
+
     constructor(
         private translateService: TranslateService,
         private mediaService: TdMediaService,
@@ -94,7 +99,7 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
         this.savePageToLocalStorage(this.configHash, page);
 
         if (this.config.onBeforeLoad) {
-            this.config.onBeforeLoad();
+            this.config.onBeforeLoad(this.isInitialLoad);
         }
 
         if (this.config.dynamicFilters) {
@@ -149,8 +154,10 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
                 })
                 .finally(() => {
                     if (this.config.onAfterLoad) {
-                        this.config.onAfterLoad();
+                        this.config.onAfterLoad(this.isInitialLoad);
                     }
+                    // set initial load flag
+                    this.isInitialLoad = false;
                 })
                 .takeUntil(this.ngUnsubscribe)
                 .subscribe(response => {
@@ -200,8 +207,10 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
                 .takeUntil(this.ngUnsubscribe)
                 .finally(() => {
                     if (this.config.onAfterLoad) {
-                        this.config.onAfterLoad();
+                        this.config.onAfterLoad(this.isInitialLoad);
                     }
+                    // update initial load flag
+                    this.isInitialLoad = false;
                 })
                 .subscribe(response => {
                     this.currentPage = page;

@@ -32,7 +32,8 @@ export class MyFoodsListComponent extends BaseComponent implements OnInit {
     this.config = this.dependencies.webComponentServices.dataTableService.dataTable<Food>()
       .fields([
         { value: (item) => { return item.foodName }, flex: 40 },
-        { value: (item) => {
+        {
+          value: (item) => {
             return item.foodCategory.categoryName;
           }, isSubtle: true, align: AlignEnum.Right, hideOnSmallScreens: true
         },
@@ -65,8 +66,8 @@ export class MyFoodsListComponent extends BaseComponent implements OnInit {
           .takeUntil(this.ngUnsubscribe)
       })
       .showAllFilter(true)
-      .onBeforeLoad(() => super.startLoader())
-      .onAfterLoad(() => super.stopLoader())
+      .onBeforeLoad(isInitialLoad => isInitialLoad ? super.startLoader() : super.startGlobalLoader())
+      .onAfterLoad(isInitialLoad => isInitialLoad ? super.stopLoader() : super.stopGlobalLoader())
       .showPager(true)
       .showSearch(true)
       .pagerSize(7)

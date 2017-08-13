@@ -162,8 +162,16 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
             .wrapInCard(true)
             .showAllFilter(true)
             .showSearch(false)
-            .onBeforeLoad(() => super.startGlobalLoader())
-            .onAfterLoad(() => super.stopGlobalLoader())
+            .onBeforeLoad(isInitialLoad => {
+                if (!isInitialLoad) {
+                    super.startGlobalLoader()
+                }
+            })
+            .onAfterLoad(isInitialLoad => {
+                if (!isInitialLoad) {
+                    super.stopGlobalLoader()
+                }
+            })
             .onClick((item) => this.openEditProgressItemDialog(item))
             .build();
     }

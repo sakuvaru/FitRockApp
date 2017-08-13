@@ -36,14 +36,16 @@ export class AllDietsComponent extends BaseComponent implements OnInit {
     this.config = this.dependencies.webComponentServices.dataTableService.dataTable<Diet>()
       .fields([
         { value: (item) => { return item.dietName }, flex: 40 },
-        { value: (item) => {
+        {
+          value: (item) => {
             if (item.client) {
               return item.client.getFullName();
             }
             return '';
           }, isSubtle: true, align: AlignEnum.Left, hideOnSmallScreens: true
         },
-        { value: (item) => {
+        {
+          value: (item) => {
             return item.dietCategory.categoryName;
           }, isSubtle: true, align: AlignEnum.Right, hideOnSmallScreens: true
         },
@@ -76,8 +78,8 @@ export class AllDietsComponent extends BaseComponent implements OnInit {
           .takeUntil(this.ngUnsubscribe)
       })
       .showAllFilter(true)
-      .onBeforeLoad(() => super.startLoader())
-      .onAfterLoad(() => super.stopLoader())
+      .onBeforeLoad(isInitialLoad => isInitialLoad ? super.startLoader() : super.startGlobalLoader()) 
+      .onAfterLoad(isInitialLoad => isInitialLoad ? super.stopLoader() : super.stopGlobalLoader()) 
       .onClick((item) => super.navigate([super.getTrainerUrl('diets/edit-plan/') + item.id]))
       .build();
   }

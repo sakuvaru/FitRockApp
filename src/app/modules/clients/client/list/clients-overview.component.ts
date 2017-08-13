@@ -51,10 +51,8 @@ export class ClientsOverviewComponent extends ClientsBaseComponent implements On
           .get()
           .takeUntil(this.ngUnsubscribe)
       })
-      .onBeforeLoad(() => super.startLoader())
-      .onAfterLoad(() => {
-        super.stopLoader();
-      })
+      .onBeforeLoad(isInitialLoad => isInitialLoad ? super.startLoader() : super.startGlobalLoader()) 
+      .onAfterLoad(isInitialLoad => isInitialLoad ? super.stopLoader() : super.stopGlobalLoader()) 
       .showAllFilter(true)
       .filter(new Filter({
         filterNameKey: 'module.clients.activeClients',

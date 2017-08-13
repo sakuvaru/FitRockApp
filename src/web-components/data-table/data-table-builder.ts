@@ -81,12 +81,12 @@ export class DataTableBuilder<TItem extends IItem> {
         return this;
     }
 
-    onBeforeLoad(callback: () => void): this {
+    onBeforeLoad(callback: (isInitialLoad: boolean) => void): this {
         this.config.onBeforeLoad = callback;
         return this;
     }
 
-    onAfterLoad(callback: () => void): this {
+    onAfterLoad(callback: (isInitialLoad: boolean) => void): this {
         this.config.onAfterLoad = callback;
         return this;
     }

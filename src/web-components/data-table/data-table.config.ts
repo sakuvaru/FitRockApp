@@ -76,12 +76,17 @@ export class DataTableConfig<TItem extends IItem> {
     /**
      * Handler executed after items are loaded
      */
-    public onAfterLoad: () => void;
+    public onAfterLoad: (isInitialLaod: boolean) => void;
 
     /**
      * Handler executed before items are loaded
      */
-    public onBeforeLoad: () => void;
+    public onBeforeLoad: (isInitialLoad: boolean) => void;
+
+    /**
+     * Handler executed after initial load
+     */
+    public onAfterInitialLoad: () => void;
 
     /**
      * Set of dynamic filters (do not combine with static filters)
@@ -119,15 +124,15 @@ export class DataTableConfig<TItem extends IItem> {
             avatarUrlResolver?: (item: TItem) => string,
             searchNoItemsText?: string,
             noItemsText?: string,
-            onAfterLoad?: () => void,
-            onBeforeLoad?: () => void,
+            onAfterLoad?: (isInitialLoad) => void,
+            onBeforeLoad?: (isInitialLoad) => void,
             onClick?: (item: TItem) => void,
             staticFilters: Filter<TItem>[],
             selectableConfig?: SelectableConfig<TItem>,
             pagerConfig?: PagerConfig,
             showAllFilter: boolean,
             saveLastFilter: boolean,
-            dynamicFilters?: <TFilter extends Filter<IItem>>(searchTerm: string) => Observable<Filter<IItem>[]>
+            dynamicFilters?: <TFilter extends Filter<IItem>>(searchTerm: string) => Observable<Filter<IItem>[]>,
         }) {
         Object.assign(this, options);
     }
