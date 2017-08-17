@@ -1,6 +1,6 @@
 import { MenuItem, MenuItemType, IMenuItems } from '../../core';
 
-export class ClientOverviewMenuItems implements IMenuItems{
+export class ClientOverviewMenuItems implements IMenuItems {
 
     menuItems: MenuItem[];
 
@@ -11,7 +11,19 @@ export class ClientOverviewMenuItems implements IMenuItems{
     }
 }
 
-export class ClientMenuItems implements IMenuItems{
+export class NewClientMenuItems implements IMenuItems {
+
+    menuItems: MenuItem[];
+
+    constructor() {
+        this.menuItems = [
+            new MenuItem({ key: 'menu.shared.back' }, 'arrow_back', MenuItemType.trainer, 'clients'),
+            new MenuItem({ key: 'module.clients.submenu.newClient' }, 'create', MenuItemType.trainer, 'clients/new'),
+        ];
+    }
+}
+
+export class ClientMenuItems implements IMenuItems {
 
     menuItems: MenuItem[];
 
@@ -31,7 +43,7 @@ export class ClientMenuItems implements IMenuItems{
     }
 }
 
-export class ClientEditWorkoutMenuItems implements IMenuItems{
+export class ClientEditWorkoutMenuItems implements IMenuItems {
 
     menuItems: MenuItem[];
 
@@ -44,7 +56,19 @@ export class ClientEditWorkoutMenuItems implements IMenuItems{
     }
 }
 
-export class ClientEditDietMenuItems implements IMenuItems{
+export class NewClientWorkoutMenuItems implements IMenuItems {
+
+    menuItems: MenuItem[];
+
+    constructor(clientId: number) {
+        this.menuItems = [
+            new MenuItem({ key: 'menu.shared.back' }, 'arrow_back', MenuItemType.trainer, 'clients/edit/' + clientId + '/workout'),
+            new MenuItem({ key: 'module.clients.workout.newWorkout' }, 'create', MenuItemType.trainer, 'clients/edit/' + clientId + '/new-workout'),
+        ];
+    }
+}
+
+export class ClientEditDietMenuItems implements IMenuItems {
 
     menuItems: MenuItem[];
 
@@ -56,5 +80,30 @@ export class ClientEditDietMenuItems implements IMenuItems{
         ];
     }
 }
+
+export class NewClientDietMenuItems implements IMenuItems {
+
+    menuItems: MenuItem[];
+
+    constructor(clientId: number) {
+        this.menuItems = [
+            new MenuItem({ key: 'menu.shared.back' }, 'arrow_back', MenuItemType.trainer, 'clients/edit/' + clientId + '/diet'),
+            new MenuItem({ key: 'module.clients.diet.newDiet' }, 'create', MenuItemType.trainer, 'clients/edit/' + clientId + '/new-diet'),
+        ];
+    }
+}
+
+
+export class NewClientProgressItemTypeMenuItems implements IMenuItems {
+    
+        menuItems: MenuItem[];
+    
+        constructor(clientId: number) {
+            this.menuItems = [
+                new MenuItem({ key: 'menu.shared.back' }, 'arrow_back', MenuItemType.trainer, 'clients/edit/' + clientId + '/diet'),
+                new MenuItem({ key: 'module.clients.progress.newProgressItemType' }, 'create', MenuItemType.trainer, 'clients/edit/' + clientId + '/new-progress-type'),
+            ];
+        }
+    }
 
 

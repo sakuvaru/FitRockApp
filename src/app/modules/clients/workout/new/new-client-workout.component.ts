@@ -6,7 +6,7 @@ import { AppConfig, ComponentDependencyService, BaseComponent } from '../../../.
 // required by component
 import { ClientsBaseComponent } from '../../clients-base.component';
 import { FormConfig } from '../../../../../web-components/dynamic-form';
-import { ClientMenuItems } from '../../menu.items';
+import { NewClientWorkoutMenuItems } from '../../menu.items';
 import { Workout } from '../../../../models';
 import { Observable } from 'rxjs/Rx';
 
@@ -21,13 +21,33 @@ export class NewClientWorkoutComponent extends ClientsBaseComponent implements O
         protected activatedRoute: ActivatedRoute,
         protected componentDependencyService: ComponentDependencyService,
     ) {
-        super(componentDependencyService, activatedRoute, { subscribeToClient: false })
+        super(componentDependencyService, activatedRoute, { subscribeToClient: true })
     }
     ngOnInit() {
         super.ngOnInit();
 
-        super.subscribeToObservable(this.getFormObservable());
+        super.subscribeToObservables(this.getObservables());
         super.initClientSubscriptions();
+    }
+
+    private getObservables(): Observable<any>[]{
+        var observables: Observable<any>[] = [];
+        observables.push(this.getClientObservable());
+        observables.push(this.getFormObservable());
+        return observables;
+    }
+
+    private getClientObservable(): Observable<any> {
+        return this.clientChange.map(client => {
+           this.setConfig({
+                componentTitle: { key: 'module.clients.submenu.newClient' },
+                menuItems: new NewClientWorkoutMenuItems(client.id).menuItems,
+                menuTitle: {
+                    key: 'module.clients.viewClientSubtitle',
+                    data: { 'fullName': client.getFullName() }
+                }
+            });
+        });
     }
 
     private getFormObservable(): Observable<any> {
@@ -52,7 +72,7 @@ export class NewClientWorkoutComponent extends ClientsBaseComponent implements O
 
                 this.setConfig({
                     componentTitle: { key: 'module.clients.workout.newWorkout' },
-                    menuItems: new ClientMenuItems(this.clientId).menuItems
+                    menuItems: new NewClientWorkoutMenuItems(this.clientId).menuItems
                 });
             },
             error => super.handleError(error))

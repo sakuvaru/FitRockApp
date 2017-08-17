@@ -12,6 +12,18 @@ export class DietsOverviewMenuItems {
     }
 }
 
+export class NewDietMenuItems {
+    
+        menuItems: MenuItem[];
+    
+        constructor() {
+            this.menuItems = [
+                new MenuItem({ key: 'menu.shared.back' }, 'arrow_back', MenuItemType.trainer, 'diets'),
+                new MenuItem({ key: 'module.diets.submenu.new' }, 'create', MenuItemType.trainer, 'diets/new'),
+            ];
+        }
+    }
+
 export class DietMenuItems {
 
     menuItems: MenuItem[];

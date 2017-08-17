@@ -5,7 +5,7 @@ import { AppConfig, ComponentDependencyService, BaseComponent } from '../../../c
 
 // required by component
 import { FormConfig } from '../../../../web-components/dynamic-form';
-import { DietsOverviewMenuItems } from '../menu.items';
+import { NewDietMenuItems } from '../menu.items';
 import { Diet } from '../../../models';
 
 @Component({
@@ -26,8 +26,8 @@ export class NewDietTemplateComponent extends BaseComponent implements OnInit {
         this.startLoader();
 
         this.setConfig({
-            componentTitle: { key: 'module.diets.newDietTemplate' },
-            menuItems: new DietsOverviewMenuItems().menuItems
+            componentTitle: { key: 'module.diets.submenu.new' },
+            menuItems: new NewDietMenuItems().menuItems
         });
 
         this.dependencies.itemServices.dietService.insertForm()

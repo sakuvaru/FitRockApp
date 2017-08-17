@@ -12,6 +12,18 @@ export class WorkoutsOverviewMenuItems {
     }
 }
 
+export class NewWorkoutMenuItems {
+    
+        menuItems: MenuItem[];
+    
+        constructor() {
+            this.menuItems = [
+                new MenuItem({ key: 'menu.shared.back' }, 'arrow_back', MenuItemType.trainer, 'workouts'),
+                new MenuItem({ key: 'module.workouts.submenu.new' }, 'create', MenuItemType.trainer, 'workouts/new'),
+            ];
+        }
+    }
+
 export class WorkoutMenuItems {
 
     menuItems: MenuItem[];

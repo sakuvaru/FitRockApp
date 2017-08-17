@@ -6,7 +6,7 @@ import { AppConfig, ComponentDependencyService, BaseComponent } from '../../../.
 // required by component
 import { ClientsBaseComponent } from '../../clients-base.component';
 import { FormConfig } from '../../../../../web-components/dynamic-form';
-import { ClientMenuItems } from '../../menu.items';
+import { NewClientDietMenuItems } from '../../menu.items';
 import { Diet } from '../../../../models';
 import { Observable } from 'rxjs/Rx';
 
@@ -21,14 +21,34 @@ export class NewClientDietComponent extends ClientsBaseComponent implements OnIn
         protected activatedRoute: ActivatedRoute,
         protected componentDependencyService: ComponentDependencyService,
     ) {
-        super(componentDependencyService, activatedRoute, { subscribeToClient: false })
+        super(componentDependencyService, activatedRoute, { subscribeToClient: true })
     }
 
     ngOnInit() {
         super.ngOnInit();
 
-        super.subscribeToObservable(this.getFormObservable());
+        super.subscribeToObservables(this.getObservables());
         super.initClientSubscriptions();
+    }
+
+    private getObservables(): Observable<any>[]{
+        var observables: Observable<any>[] = [];
+        observables.push(this.getClientObservable());
+        observables.push(this.getFormObservable());
+        return observables;
+    }
+
+    private getClientObservable(): Observable<any> {
+        return this.clientChange.map(client => {
+           this.setConfig({
+                componentTitle: { key: 'module.clients.diet.newDiet' },
+                menuItems: new NewClientDietMenuItems(client.id).menuItems,
+                menuTitle: {
+                    key: 'module.clients.viewClientSubtitle',
+                    data: { 'fullName': client.getFullName() }
+                }
+            });
+        });
     }
 
     private getFormObservable(): Observable<any> {
@@ -50,11 +70,6 @@ export class NewClientDietComponent extends ClientsBaseComponent implements OnIn
                 form.onError(() => super.stopGlobalLoader());
 
                 this.formConfig = form.build();
-
-                this.setConfig({
-                    componentTitle: { key: 'module.clients.diet.newDiet' },
-                    menuItems: new ClientMenuItems(this.clientId).menuItems
-                });
             },
             error => super.handleError(error))
     }

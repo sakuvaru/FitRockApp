@@ -33,7 +33,8 @@
 				"newWorkout": "Nový trénink",
 				"diet": "Jídelníček",
 				"progress": "Sledované hodnoty",
-				"stats": "Statistiky"
+				"stats": "Statistiky",
+				"newClient": "Nový klient"
 			},
 			"workout": {
 				"copyWorkoutLabel": "Tréninková šáblona",
@@ -53,11 +54,10 @@
 			},
 			"progress":{
 				"newProgressItem": "Nová sledovaná hodnota",
-				"newProgressItemType": "Nový typ",
+				"newProgressItemType": "Nový typ měření",
 				"newProgressItemRecord": "Nový záznam měření",
 				"editProgressItem": "Upravit záznam"
 			},
-			"newClient": "Nový klient",
 			"viewClientSubtitle": "{{fullName}}",
 			"clients": "Klienti",
 			"allClients": "Všichni",
@@ -69,7 +69,8 @@
 		"workouts": {
 			"submenu": {
 				"allWorkouts": "Všechny tréninky",
-				"workoutTemplates": "Šablony"
+				"workoutTemplates": "Šablony",
+				"new": "Nová šablona tréninku"
 			},
 			"workoutName": "Trénink",
 			"editWorkout": "Změna tréninku",
@@ -87,7 +88,6 @@
 			"selectExercise": "Výběr cviků",
 			"addWorkoutExercise": "Přidat cvik",
 			"editWorkoutExercise": "Upravit cvik",
-			"newWorkout": "Nová šablona",
 			"myExercises": "Moje cviky",
 			"allExercises": "Všechny cviky",
 			"addCustomExercise": "Vytvořit vlastní cvik",
@@ -111,9 +111,9 @@
 				"allDiets": "Všechny jídelníčky",
 				"view": "Zobrazit",
 				"editPlan": "Upravit šablonu",
-				"edit": "Upravit základní údaje"
+				"edit": "Upravit základní údaje",
+				"new": "Nová šablona jídelníčku"
 			},
-			"newDietTemplate": "Nový jídelníček",
 			"editDiet": "Upravit jídelníček",
 			"editTemplate": "Upravit šablonu",
 			"previewDiet": "Přehled plánu",
@@ -133,9 +133,9 @@
 				"allFoods": "Všechny potraviny",
 				"edit": "Upravit záznam",
 				"preview": "Náhled",
-				"overview": "Přehled"
-			},
-			"new": "Nový záznam"
+				"overview": "Přehled",
+				"new": "Nové jídlo"
+			}
 		},
 		"foodUnits": {
 			"mg": "mg",
@@ -175,6 +175,15 @@
 		},
 		"progressItems":{
 			"xAxisDateLabel": "Datum"
+		},
+		"progressItemUnits":{
+			"cm": "centimetry",
+			"inches": "palce",
+			"kg": "kilogramy",
+			"minutes": "minuty",
+			"pounds": "libry",
+			"reps": "počet opakování",
+			"seconds": "sekundy"
 		},
 		"shared": {
 			"errors": {

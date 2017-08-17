@@ -5,7 +5,7 @@ import { AppConfig, ComponentDependencyService, BaseComponent } from '../../../c
 
 // required by component
 import { FormConfig } from '../../../../web-components/dynamic-form';
-import { ExercisesOverviewMenuItem } from '../menu.items';
+import { NewExerciseMenuItems } from '../menu.items';
 import { Exercise } from '../../../models';
 
 @Component({
@@ -27,7 +27,7 @@ export class NewExerciseComponent extends BaseComponent implements OnInit {
 
         this.setConfig({
             componentTitle: { key: 'module.exercises.new' },
-            menuItems: new ExercisesOverviewMenuItem().menuItems
+            menuItems: new NewExerciseMenuItems().menuItems
         });
 
         this.dependencies.itemServices.exerciseService.insertForm()

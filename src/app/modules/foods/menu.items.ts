@@ -12,6 +12,18 @@ export class FoodOverviewItems {
     }
 }
 
+export class NewFoodMenuItems {
+    
+        menuItems: MenuItem[];
+    
+        constructor() {
+            this.menuItems = [
+                new MenuItem({ key: 'menu.shared.back' }, 'arrow_back', MenuItemType.trainer, 'foods'),
+                new MenuItem({ key: 'module.foods.submenu.new' }, 'create', MenuItemType.trainer, 'foods/new'),
+            ];
+        }
+    }
+
 export class FoodMenuItems {
 
     menuItems: MenuItem[];

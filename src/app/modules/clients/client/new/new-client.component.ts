@@ -6,7 +6,7 @@ import { AppConfig, ComponentDependencyService, BaseComponent } from '../../../.
 // required by component
 import { ClientsBaseComponent } from '../../clients-base.component';
 import { FormConfig } from '../../../../../web-components/dynamic-form';
-import { ClientOverviewMenuItems } from '../../menu.items';
+import { NewClientMenuItems } from '../../menu.items';
 import { User } from '../../../../models';
 import { Observable } from 'rxjs/Rx';
 
@@ -28,8 +28,8 @@ export class NewClientComponent extends ClientsBaseComponent implements OnInit  
         super.ngOnInit();
 
          this.setConfig({
-            componentTitle: { key: 'module.clients.newClient' },
-            menuItems: new ClientOverviewMenuItems().menuItems
+            componentTitle: { key: 'module.clients.submenu.newClient' },
+            menuItems: new NewClientMenuItems().menuItems
         });
 
         super.subscribeToObservable(this.getFormObservable());
