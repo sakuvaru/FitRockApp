@@ -4,6 +4,7 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { AppConfig, ComponentDependencyService, BaseComponent } from '../../../../core';
 
 // required by component
+import { ProgressItemType } from '../../../../models';
 import { ClientsBaseComponent } from '../../clients-base.component';
 import { ClientMenuItems } from '../../menu.items';
 import { FormConfig, DynamicFormComponent } from '../../../../../web-components/dynamic-form';
@@ -20,6 +21,7 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
 
     private formConfig: FormConfig<ProgressItem>;
     private dataTableConfig: DataTableConfig<ProgressItem>;
+    private progressItemTypes: ProgressItemType[];
 
     @ViewChild(DynamicFormComponent) formComponent: DynamicFormComponent;
 
@@ -55,12 +57,11 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
                 });
             });
 
-        var obsForm = this.getFormObservable();
-        var obsDataTable = this.getDataTableObservable();
 
+        observables.push(this.getFormObservable());
+        observables.push(this.getDataTableObservable());
         observables.push(obsClientMenu);
-        observables.push(obsForm);
-        observables.push(obsDataTable);
+        observables.push(this.getProgressTypesObservable());
 
         return observables;
     }
@@ -117,6 +118,20 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
                 this.formConfig = form.build();
             },
             error => super.handleError(error));
+    }
+
+    private getProgressTypesObservable(): Observable<any> {
+        return this.clientIdChange
+            .takeUntil(this.ngUnsubscribe)
+            .switchMap(userId => {
+                return this.dependencies.itemServices.progressItemTypeService.items()
+                    .byCurrentUser()
+                    .get()
+                    .takeUntil(this.ngUnsubscribe)
+            })
+            .map((response) => {
+                this.progressItemTypes = response.items;
+            })
     }
 
     private initDataTable(clientId: number): void {

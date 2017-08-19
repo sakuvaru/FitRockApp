@@ -1,12 +1,34 @@
-<md-card class="push">
-    <md-card-content>
-          <button md-raised-button color="primary" [routerLink]="[getTrainerUrl('clients/edit/' + clientId + '/new-progress-type')]">{{'module.clients.progress.newProgressItemType' | translate}}</button>
-    </md-card-content>
-    <md-divider></md-divider>
-    <md-card-content class="push-top">
-        <h3>{{'module.clients.progress.newProgressItemRecord' | translate}}</h3>
-         <dynamic-form [config]="formConfig"></dynamic-form>
-    </md-card-content>
-</md-card>
+<div class="container" fxLayout fxLayout.sm="column" class="push">
+    <div fxFlex="50%">
+        <md-card>
+            <md-card-content class="push-top">
+                <h3>{{'module.clients.progress.newProgressItemRecord' | translate}}</h3>
+                <dynamic-form [config]="formConfig"></dynamic-form>
+            </md-card-content>
+        </md-card>
+    </div>
+    <div fxFlex="50%">
+        <md-card>
+            <md-card-content>
+                <button md-raised-button color="primary" >{{'module.clients.progress.assignProgressItemType' | translate}}</button>
+                <button md-raised-button color="primary" [routerLink]="[getTrainerUrl('clients/edit/' + clientId + '/new-progress-type')]">{{'module.clients.progress.newProgressItemType' | translate}}</button>
+            </md-card-content>
+        </md-card>
+
+        <div class="push">
+            <md-chip-list>
+                <md-chip *ngFor="let progressItemType of progressItemTypes">
+                    <ng-container *ngIf="progressItemType.isGlobal">
+                        {{'module.progressItemTypes.globalTypes.' + progressItemType.typeName | translate}}
+                    </ng-container>
+                    <ng-container *ngIf="!progressItemType.isGlobal">
+                        {{progressItemType.typeName}}
+                    </ng-container>
+                    <strong class="w-cursor-pointer">x</strong>
+                </md-chip>
+            </md-chip-list>
+        </div>
+    </div>
+</div>
 
 <data-table [config]="dataTableConfig"></data-table>

@@ -55,6 +55,7 @@
 			"progress":{
 				"newProgressItem": "Nová sledovaná hodnota",
 				"newProgressItemType": "Nový typ měření",
+				"assignProgressItemType": "Přiřadit typ měření",
 				"newProgressItemRecord": "Nový záznam měření",
 				"editProgressItem": "Upravit záznam"
 			},
