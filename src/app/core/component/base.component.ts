@@ -104,6 +104,11 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
         this.dependencies.coreServices.sharedService.setTopLoader(false);
     }
 
+    stopAllLoaders(): void {
+        this.stopGlobalLoader();
+        this.stopLoader();
+    }
+
     /**
      * Uses redirect through redirect component to force refresh a component
      * @param url Url to redirect
@@ -174,8 +179,7 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
         }
 
         // stop all loaders
-        this.stopGlobalLoader();
-        this.stopLoader();
+        this.stopAllLoaders();
     }
 
     /**
@@ -270,8 +274,29 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
     // -------------- Observable subscriptions -------------- //
     private completedObservablesCount: number = 0;
 
-    protected subscribeToObservables(observables: Observable<any>[]): void {
-        this.startLoader();
+    protected subscribeToObservables(observables: Observable<any>[], options?: {
+        globalLoader?: boolean,
+        componentLoader?: boolean
+    }): void {
+
+        var useGlobalLoader;
+        var useComponentLoader;
+
+        if (!options) {
+            useComponentLoader = true;
+            useGlobalLoader = false;
+        }
+        else {
+            useGlobalLoader = options.globalLoader;
+            useComponentLoader = options.componentLoader;
+        }
+
+        if (useComponentLoader) {
+            this.startLoader();
+        }
+        if (useGlobalLoader) {
+            this.startGlobalLoader();
+        }
 
         var mergedObservable = this.dependencies.coreServices.repositoryClient.mergeObservables(observables);
         mergedObservable
@@ -279,7 +304,7 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
             .subscribe(() => {
                 this.completedObservablesCount++;
                 if (this.completedObservablesCount === observables.length) {
-                    this.stopLoader();
+                    this.stopAllLoaders();
                     this.completedObservablesCount = 0;
                 }
             },
@@ -287,13 +312,34 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
             );
     }
 
-    protected subscribeToObservable(observable: Observable<any>): void {
-        this.startLoader();
+    protected subscribeToObservable(observable: Observable<any>, options?: {
+        globalLoader?: boolean,
+        componentLoader?: boolean
+    }): void {
+
+        var useGlobalLoader;
+        var useComponentLoader;
+
+        if (!options) {
+            useComponentLoader = true;
+            useGlobalLoader = false;
+        }
+        else {
+            useGlobalLoader = options.globalLoader;
+            useComponentLoader = options.componentLoader;
+        }
+
+        if (useComponentLoader) {
+            this.startLoader();
+        }
+        if (useGlobalLoader) {
+            this.startGlobalLoader();
+        }
 
         observable
             .takeUntil(this.ngUnsubscribe)
             .subscribe(() => {
-                this.stopLoader();
+                this.stopAllLoaders();
             },
             error => this.handleError(error)
             );
