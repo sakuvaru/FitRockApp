@@ -252,6 +252,9 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
 
                 // refresh form observables
                 super.subscribeToObservable(this.getFormObservable(this.clientId));
+
+                 // refresh data table
+                 this.reloadDataTable();
             });
     }
 
@@ -265,6 +268,9 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
 
                 // refresh form observables
                 super.subscribeToObservable(this.getFormObservable(this.clientId));
+
+                // refresh data table
+                this.reloadDataTable();
             });
     }
 

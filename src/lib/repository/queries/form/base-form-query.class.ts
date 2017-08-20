@@ -49,10 +49,9 @@ export abstract class BaseFormQuery extends BaseQuery {
         return this.getUrl(this.type, this._action, this._options);
     }
 
-    protected runEditFormQuery<TItem extends IItem>(): Observable<ResponseFormEdit<TItem>> {
+    protected runEditFormQuery<TItem extends IItem>(itemId: number, disableCache?: boolean): Observable<ResponseFormEdit<TItem>> {
         var url = this.getFormQueryUrl();
-
-        return super.getEditForm<TItem>(url, this._data);
+        return super.getEditForm<TItem>(url, itemId, disableCache, this._data);
     }
 
     protected runInsertFormQuery(): Observable<ResponseFormInsert> {

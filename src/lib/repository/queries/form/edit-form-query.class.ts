@@ -23,6 +23,7 @@ import { Observable } from 'rxjs/Rx';
 export class EditFormQuery<TItem extends IItem> extends BaseFormQuery{
 
     private _defaultAction = 'getEditForm';
+    private _disableCache: boolean = false;
 
     constructor(
         protected authHttp: AuthHttp,
@@ -31,13 +32,17 @@ export class EditFormQuery<TItem extends IItem> extends BaseFormQuery{
         protected itemId: number
     ) {
         super(authHttp, config, type)
-        this._action = this._defaultAction + '/' + itemId;
+        this._action = this._defaultAction;
     }
 
     // execution
+    disableCache(disable: boolean): this{
+        this._disableCache = disable;
+        return this;
+    }
 
     get(): Observable<ResponseFormEdit<TItem>> {
-        return super.runEditFormQuery<TItem>();
+        return super.runEditFormQuery<TItem>(this.itemId, this._disableCache);
     }
 
     // debug

@@ -448,16 +448,16 @@ export class QueryService {
             });
     }
 
-    protected getEditForm<TItem extends IItem>(url: string, data?: any): Observable<ResponseFormEdit<TItem>> {
+    protected getEditForm<TItem extends IItem>(url: string, itemId: number, disableCache?: boolean, data?: any): Observable<ResponseFormEdit<TItem>> {
         // trigger request
         this.startRequest();
 
-        // dat are used to send extra information to server
-        if (!data){
-            data = {};
-        }
+        var body: any = {};
+        body.id = itemId;
+        body.disableCache = disableCache;
+        body.data = data;
 
-        return this.authHttp.get(url)
+        return this.authHttp.post(url, body)
             .map(response => {
                 return this.getFormEditResponse<TItem>(response)
             })
@@ -473,12 +473,10 @@ export class QueryService {
         // trigger request
         this.startRequest();
 
-        // dat are used to send extra information to server
-        if (!data){
-            data = {};
-        }
+        var body: any = {};
+        body.data = data;
 
-        return this.authHttp.post(url, data)
+        return this.authHttp.post(url, body)
             .map(response => {
                 return this.getFormInsertResponse(response)
             })
