@@ -59,6 +59,9 @@ export class NewClientProgressItemTypeComponent extends ClientsBaseComponent imp
                     .takeUntil(this.ngUnsubscribe)
             })
             .map(form => {
+                // set client id manually
+                form.withFieldValue('clientId', this.clientId);
+
                 form.onFormInit(() => super.stopLoader())
                 form.onBeforeSave(() => super.startGlobalLoader());
                 form.onAfterSave(() => super.stopGlobalLoader());

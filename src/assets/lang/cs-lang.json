@@ -170,7 +170,7 @@
 				"overview": "Typy hodnot",
 				"new": "Vytvořit nový typ",
 				"edit": "Upravit typ",
-				"allTypes": "Všechny typy",
+				"globalTypes": "Globální typy",
 				"myTypes": "Moje typy"
 			},
 			"globalTypes":{

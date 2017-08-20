@@ -149,12 +149,19 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
         this.dataTableConfig = this.dependencies.webComponentServices.dataTableService.dataTable<ProgressItem>()
             .fields([
                 {
-                    value: (item) => { return item.value.toString() + ' ' + item.progressItemType.progressItemUnit.unitCode }, flex: 60
+                    value: (item) => { return item.value.toString() }, flex: 60
+                },
+                {
+                    translateValue: true,
+                    value: (item) => { return 'module.progressItemUnits.' + item.progressItemType.progressItemUnit.unitCode },
+                    isSubtle: true,
+                    hideOnSmallScreens: true,
+                    align: AlignEnum.Right
                 },
                 {
                     value: (item) => { return super.moment(item.measurementDate.toString()).format('LL') },
                     isSubtle: true,
-                    hideOnSmallScreens: false,
+                    hideOnSmallScreens: true,
                     align: AlignEnum.Right
                 },
             ])

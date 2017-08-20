@@ -5,6 +5,7 @@ import { User } from '../user.class';
 
 export class ProgressItemType extends BaseItem {
 
+    public translateValue: boolean;
     public typeName: string;
     public isGlobal: boolean;
     public progressItemUnitId: number;

@@ -33,7 +33,7 @@ export class MyTypesListComponent extends BaseComponent implements OnInit {
       .fields([
         {
           translateValue: true,
-          value: (item) => { return item.isGlobal ? 'module.progressItemTypes.globalTypes.' + item.typeName : item.typeName }, flex: 40
+          value: (item) => { return item.translateValue ? 'module.progressItemTypes.globalTypes.' + item.typeName : item.typeName }, flex: 40
         },
         {
           translateValue: true,
@@ -46,7 +46,6 @@ export class MyTypesListComponent extends BaseComponent implements OnInit {
         return this.dependencies.itemServices.progressItemTypeService.items()
           .byCurrentUser()
           .include('ProgressItemUnit')
-          .whereLike('TypeName', searchTerm)
       })
       .loadResolver(query => {
         return query
@@ -56,7 +55,7 @@ export class MyTypesListComponent extends BaseComponent implements OnInit {
       .onBeforeLoad(isInitialLoad => isInitialLoad ? super.startLoader() : super.startGlobalLoader())
       .onAfterLoad(isInitialLoad => isInitialLoad ? super.stopLoader() : super.stopGlobalLoader())
       .showPager(true)
-      .showSearch(true)
+      .showSearch(false)
       .pagerSize(7)
       .onClick((item) => super.navigate([super.getTrainerUrl('progress-item-types/edit/') + item.id]))
       .build();

@@ -9,9 +9,9 @@ import { DataTableConfig, AlignEnum, Filter } from '../../../../web-components/d
 import { ProgressItemType } from '../../../models';
 
 @Component({
-  templateUrl: 'all-types-list.component.html'
+  templateUrl: 'global-types-list.component.html'
 })
-export class AllTypesListComponent extends BaseComponent implements OnInit {
+export class GlobalTypesListComponent extends BaseComponent implements OnInit {
 
   private config: DataTableConfig<ProgressItemType>;
 
@@ -24,7 +24,7 @@ export class AllTypesListComponent extends BaseComponent implements OnInit {
     super.ngOnInit();
 
     this.setConfig({
-      componentTitle: { key: 'module.progressItemTypes.submenu.allTypes' },
+      componentTitle: { key: 'module.progressItemTypes.submenu.globalTypes' },
       menuItems: new ProgressItemTypesOverviewMenuItem().menuItems,
       menuTitle: { key: 'module.progressItemTypes.submenu.overview' },
     });
@@ -33,7 +33,7 @@ export class AllTypesListComponent extends BaseComponent implements OnInit {
       .fields([
         { 
           translateValue: true,
-          value: (item) => { return item.isGlobal ? 'module.progressItemTypes.globalTypes.' + item.typeName : item.typeName }, flex: 40 },
+          value: (item) => { return 'module.progressItemTypes.globalTypes.' + item.typeName }, flex: 40 },
         {
           translateValue: true,
           value: (item) => {
@@ -43,8 +43,8 @@ export class AllTypesListComponent extends BaseComponent implements OnInit {
       ])
       .loadQuery(searchTerm => {
         return this.dependencies.itemServices.progressItemTypeService.items()
+          .whereEquals('IsGlobal', true)
           .include('ProgressItemUnit')
-          .whereLike('TypeName', searchTerm)
       })
       .loadResolver(query => {
         return query
@@ -54,7 +54,7 @@ export class AllTypesListComponent extends BaseComponent implements OnInit {
       .onBeforeLoad(isInitialLoad => isInitialLoad ? super.startLoader() : super.startGlobalLoader())
       .onAfterLoad(isInitialLoad => isInitialLoad ? super.stopLoader() : super.stopGlobalLoader())
       .showPager(true)
-      .showSearch(true)
+      .showSearch(false)
       .pagerSize(7)
       .onClick((item) => super.navigate([super.getTrainerUrl('progress-item-types/edit/') + item.id]))
       .build();

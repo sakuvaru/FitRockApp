@@ -7,7 +7,7 @@ export class ProgressItemTypesOverviewMenuItem {
     constructor() {
         this.menuItems = [
             new MenuItem({ key: 'module.progressItemTypes.submenu.myTypes' }, 'timeline', MenuItemType.trainer, 'progress-item-types'),
-            new MenuItem({ key: 'module.progressItemTypes.submenu.allTypes' }, 'timeline', MenuItemType.trainer, 'progress-item-types/all'),
+            new MenuItem({ key: 'module.progressItemTypes.submenu.globalTypes' }, 'timeline', MenuItemType.trainer, 'progress-item-types/global'),
         ];
     }
 }
