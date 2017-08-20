@@ -6,7 +6,8 @@ import { Observable } from 'rxjs/Rx';
 // Components's common services
 import { AuthService } from '../../../lib/auth';
 import { TdMediaService, TdLoadingService, TdDialogService } from '@covalent/core';
-import { SharedService } from '../shared-service/shared.service';
+import { SharedService } from '../services/shared.service';
+import { AuthenticatedUserService } from '../services/authenticated-user.service';
 import { RepositoryClient } from '../../../lib/repository';
 
 // Services
@@ -36,9 +37,10 @@ import { User } from '../../models/';
 export class ComponentDependencyService {
 
     /**
-     * Shortcut for getting full auth user object
+     * Current authenticated user 
+     * Has to be initialized right after the user is authenticated 
      */
-    public authUser: Observable<User>;
+    public authenticatedUserService: AuthenticatedUserService;
 
     // url handling
     public router: Router;
@@ -52,6 +54,9 @@ export class ComponentDependencyService {
     constructor(private injector: Injector) {
         // use Angular's injector to get service instances
         this.router = injector.get(Router);
+
+        // authenticated user service (note: has to be initialized when logging in)
+        this.authenticatedUserService = new AuthenticatedUserService();
 
         // core services
         this.coreServices = new CoreServices();
@@ -101,13 +106,6 @@ export class ComponentDependencyService {
         // progress services
         this.itemServices.progressItemService = injector.get(ProgressItemService);
         this.itemServices.progressItemTypeService = injector.get(ProgressItemTypeService);
-
-        // init observable for auth user
-        this.authUser = this.itemServices.userService
-            .getAuthUser()
-            .map((response) => {
-                return response.item
-            });
     }
 }
 

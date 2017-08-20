@@ -51,10 +51,11 @@ export class AdminLayoutComponent extends BaseComponent implements OnDestroy, On
         super.ngOnInit();
 
         // init user texts
-        this.dependencies.authUser.subscribe(user => {
+        var user = this.dependencies.authenticatedUserService.getUser();
+        if (user){
             this.displayUsername = user.firstName + ' ' + user.lastName;
             this.email = user.email;
-        })
+        }
 
         // register loaders
         this.componentLoaderSubscription = this.dependencies.coreServices.sharedService.componentloaderChanged$

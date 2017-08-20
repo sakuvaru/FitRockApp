@@ -32,3 +32,13 @@ export enum MenuItemType {
     trainer,
     client
 }
+
+export class AuthenticatedUser{
+    constructor(
+        public id: number,
+        public email: string,
+        public firstName: string,
+        public lastName: string,
+        public trainerId: number
+    ){}
+}

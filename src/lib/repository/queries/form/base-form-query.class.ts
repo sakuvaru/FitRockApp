@@ -27,12 +27,22 @@ export abstract class BaseFormQuery extends BaseQuery {
     protected _options: IOption[] = [];
     protected _action: string;
 
+    /**
+    * Extra data send to server
+    */
+    protected _data: any = {};
+
     constructor(
         protected authHttp: AuthHttp,
         protected config: RepositoryConfig,
         protected type: string,
     ) {
         super(authHttp, config)
+    }
+
+    public withData(name: string, value: string | boolean | number): this{
+        this._data[name] = value;
+        return this;
     }
 
     protected getFormQueryUrl(): string {
@@ -42,12 +52,12 @@ export abstract class BaseFormQuery extends BaseQuery {
     protected runEditFormQuery<TItem extends IItem>(): Observable<ResponseFormEdit<TItem>> {
         var url = this.getFormQueryUrl();
 
-        return super.getEditForm<TItem>(url);
+        return super.getEditForm<TItem>(url, this._data);
     }
 
     protected runInsertFormQuery(): Observable<ResponseFormInsert> {
         var url = this.getFormQueryUrl();
 
-        return super.getInsertForm(url);
+        return super.getInsertForm(url, this._data);
     }
 }

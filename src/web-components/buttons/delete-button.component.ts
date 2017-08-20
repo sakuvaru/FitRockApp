@@ -25,6 +25,8 @@ export class DeleteButtonComponent extends BaseWebComponent implements OnInit {
 
     @Input() color: 'none' | 'warn' | 'accent' | 'primary' = 'none';
 
+    @Input() mode: 'button' | 'simple' = 'button';
+
     @Output() confirm = new EventEmitter();
 
     ngOnInit() {

@@ -13,6 +13,8 @@ import { ProgressItem, User, ProgressItemTypeWithCountDto } from '../../../../mo
 import 'rxjs/add/operator/switchMap';
 import { Observable } from 'rxjs/Rx';
 import { EditProgressItemDialog } from '../dialogs/edit-progress-item-dialog.component';
+import { SelectProgressTypeDialog } from '../dialogs/select-progress-type-dialog.component';
+import * as _ from 'underscore';
 
 @Component({
     templateUrl: 'edit-client-progress.component.html'
@@ -57,7 +59,6 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
                 });
             });
 
-
         observables.push(this.getFormObservable());
         observables.push(this.getDataTableObservable());
         observables.push(obsClientMenu);
@@ -70,7 +71,10 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
         return this.clientIdChange
             .takeUntil(this.ngUnsubscribe)
             .switchMap(clientId => {
-                return this.dependencies.itemServices.progressItemService.insertForm()
+                return this.dependencies.itemServices.progressItemService.insertForm({
+                    useCustomQuery: this.dependencies.itemServices.progressItemService.insertFormQuery()
+                    .withData('clientId', clientId)
+                });
             })
             .map(form => {
                 // set clientId manually
@@ -123,9 +127,10 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
     private getProgressTypesObservable(): Observable<any> {
         return this.clientIdChange
             .takeUntil(this.ngUnsubscribe)
-            .switchMap(userId => {
+            .switchMap(clientId => {
                 return this.dependencies.itemServices.progressItemTypeService.items()
                     .byCurrentUser()
+                    .whereEquals('ClientId', clientId)
                     .get()
                     .takeUntil(this.ngUnsubscribe)
             })
@@ -199,6 +204,10 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
             })
     }
 
+    private handleDeleteType(progressItemType: ProgressItemType): void {
+        super.subscribeToObservable(this.getDeleteProgressTypeObservable(progressItemType), { globalLoader: true });
+    }
+
     private openEditProgressItemDialog(progressItem: ProgressItem): void {
         var dialog = this.dependencies.tdServices.dialogService.open(EditProgressItemDialog, {
             width: AppConfig.DefaultDialogWidth,
@@ -211,6 +220,40 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
                 this.reloadDataTable();
             }
         })
+    }
+
+    private openSelectTypeDialog(): void {
+        var dialog = this.dependencies.tdServices.dialogService.open(SelectProgressTypeDialog, {
+            width: AppConfig.DefaultDialogWidth,
+        });
+
+        dialog.afterClosed().subscribe(m => {
+            if (dialog.componentInstance.selectedItem) {
+                // item was selected, add it
+                super.subscribeToObservable(this.getAddProgressTypeObservable(dialog.componentInstance.selectedItem), { globalLoader: true });
+            }
+        })
+    }
+
+    private getAddProgressTypeObservable(progressItemType: ProgressItemType): Observable<any> {
+        return this.dependencies.itemServices.progressItemTypeService.create(progressItemType)
+            .withOption('ClientId', this.clientId)
+            .set()
+            .takeUntil(this.ngUnsubscribe)
+            .map(response => {
+                // add created type to local list
+                this.progressItemTypes.push(response.item);
+            });
+    }
+
+    private getDeleteProgressTypeObservable(progressItemType: ProgressItemType): Observable<any> {
+        return this.dependencies.itemServices.progressItemTypeService.delete(progressItemType.id)
+            .set()
+            .takeUntil(this.ngUnsubscribe)
+            .map(respose => {
+                // remove type from local list
+                this.progressItemTypes = _.reject(this.progressItemTypes, function (item) { return item.id === respose.deletedItemId; });
+            });
     }
 
     private reloadDataTable(): void {

@@ -45,6 +45,12 @@ export class CreateItemQuery<TItem extends IItem> extends BaseQuery {
         return this;
     }
 
+    // option
+    withOption(fieldName: string, value: number | string | boolean): this{
+        this.item[fieldName] = value;
+        return this;
+    }
+
     // url
     protected getCreateUrl(): string{
         return this.getUrl(this.type, this._action);

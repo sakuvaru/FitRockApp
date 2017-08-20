@@ -36,33 +36,29 @@ export class PreviewExerciseComponent extends BaseComponent implements OnInit {
             .subscribe(response => {
                 this.exercise = response.item;
 
-                this.dependencies.authUser
-                    .takeUntil(this.ngUnsubscribe)
-                    .subscribe(user => {
-                        if (this.exercise.createdByUserId === user.id) {
-                            this.setConfig({
-                                menuItems: new ExerciseMenuItems(this.exercise.id).menuItems,
-                                menuTitle: {
-                                    key: this.exercise.exerciseName
-                                },
-                                componentTitle: {
-                                    'key': 'module.exercises.preview'
-                                }
-                            });
+                if (this.exercise.createdByUserId === this.dependencies.authenticatedUserService.getUserId()) {
+                    this.setConfig({
+                        menuItems: new ExerciseMenuItems(this.exercise.id).menuItems,
+                        menuTitle: {
+                            key: this.exercise.exerciseName
+                        },
+                        componentTitle: {
+                            'key': 'module.exercises.preview'
                         }
-                        else {
-                            this.setConfig({
-                                menuItems: new ExercisePreviewMenuItems(response.item.id).menuItems,
-                                menuTitle: {
-                                    key: response.item.exerciseName
-                                },
-                                componentTitle: {
-                                    'key': 'module.exercises.preview'
-                                }
-                            });
+                    });
+                }
+                else {
+                    this.setConfig({
+                        menuItems: new ExercisePreviewMenuItems(response.item.id).menuItems,
+                        menuTitle: {
+                            key: response.item.exerciseName
+                        },
+                        componentTitle: {
+                            'key': 'module.exercises.preview'
                         }
-                        super.stopLoader();
-                    })
-            });
+                    });
+                }
+                super.stopLoader();
+            })
     }
 }

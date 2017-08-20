@@ -4,7 +4,7 @@ import { UrlConfig } from '../config/url.config';
 import { AppConfig } from '../config/app.config';
 import { Router } from '@angular/router';
 import { LogService } from '../../services/';
-import { SharedService } from '../shared-service/shared.service';
+import { SharedService } from '../services/shared.service';
 import { AuthService } from '../../../lib/auth/';
 import { Log } from '../../models/';
 import * as StackTrace from 'stacktrace-js';

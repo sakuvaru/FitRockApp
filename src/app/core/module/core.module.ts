@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SharedService } from '../shared-service/shared.service';
+import { SharedService } from '../services/shared.service';
 import { ComponentDependencyService } from '../component/component-dependency.service';
 
 // Covalent modules for Angular  - include here so all components can reference them in templates

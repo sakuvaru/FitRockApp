@@ -58,7 +58,8 @@
 				"newProgressItemType": "Nový typ měření",
 				"assignProgressItemType": "Přiřadit typ měření",
 				"newProgressItemRecord": "Nový záznam měření",
-				"editProgressItem": "Upravit záznam"
+				"editProgressItem": "Upravit záznam",
+				"addProgressType": "Přidat typ"
 			},
 			"viewClientSubtitle": "{{fullName}}",
 			"clients": "Klienti",

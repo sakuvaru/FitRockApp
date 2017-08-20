@@ -40,33 +40,29 @@ export class PreviewFoodComponent extends BaseComponent implements OnInit {
             .subscribe(response => {
                 this.food = response.item;
 
-                this.dependencies.authUser
-                    .takeUntil(this.ngUnsubscribe)
-                    .subscribe(user => {
-                        if (this.food.createdByUserId === user.id) {
-                            this.setConfig({
-                                menuItems: new FoodMenuItems(this.food.id).menuItems,
-                                menuTitle: {
-                                    key: this.food.foodName
-                                },
-                                componentTitle: {
-                                    'key': 'module.foods.submenu.preview'
-                                }
-                            });
+                if (this.food.createdByUserId === this.dependencies.authenticatedUserService.getUserId()) {
+                    this.setConfig({
+                        menuItems: new FoodMenuItems(this.food.id).menuItems,
+                        menuTitle: {
+                            key: this.food.foodName
+                        },
+                        componentTitle: {
+                            'key': 'module.foods.submenu.preview'
                         }
-                        else {
-                            this.setConfig({
-                                menuItems: new FoodMenuItems(response.item.id).menuItems,
-                                menuTitle: {
-                                    key: response.item.foodName
-                                },
-                                componentTitle: {
-                                    'key': 'module.foods.submenu.preview'
-                                }
-                            });
+                    });
+                }
+                else {
+                    this.setConfig({
+                        menuItems: new FoodMenuItems(response.item.id).menuItems,
+                        menuTitle: {
+                            key: response.item.foodName
+                        },
+                        componentTitle: {
+                            'key': 'module.foods.submenu.preview'
                         }
-                        super.stopLoader();
-                    })
-            });
+                    });
+                }
+                super.stopLoader();
+            })
     }
 }

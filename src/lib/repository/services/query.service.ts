@@ -448,9 +448,14 @@ export class QueryService {
             });
     }
 
-    protected getEditForm<TItem extends IItem>(url: string): Observable<ResponseFormEdit<TItem>> {
+    protected getEditForm<TItem extends IItem>(url: string, data?: any): Observable<ResponseFormEdit<TItem>> {
         // trigger request
         this.startRequest();
+
+        // dat are used to send extra information to server
+        if (!data){
+            data = {};
+        }
 
         return this.authHttp.get(url)
             .map(response => {
@@ -464,11 +469,16 @@ export class QueryService {
             });
     }
 
-    protected getInsertForm(url: string): Observable<ResponseFormInsert> {
+    protected getInsertForm(url: string, data?: any): Observable<ResponseFormInsert> {
         // trigger request
         this.startRequest();
 
-        return this.authHttp.get(url)
+        // dat are used to send extra information to server
+        if (!data){
+            data = {};
+        }
+
+        return this.authHttp.post(url, data)
             .map(response => {
                 return this.getFormInsertResponse(response)
             })

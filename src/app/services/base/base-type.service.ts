@@ -66,8 +66,28 @@ export abstract class BaseTypeService<TItem extends IItem>{
         return this.repositoryClient.delete(this.type, itemId);
     }
 
-    insertForm(): Observable<DynamicFormInsertBuilder<TItem>> {
-        return this.repositoryClient.insertForm(this.type)
+    insertFormQuery(): InsertFormQuery<TItem>{
+        return this.repositoryClient.insertForm(this.type);
+    }
+    
+    editFormQuery(itemId: number): EditFormQuery<TItem>{
+        return this.repositoryClient.editForm(this.type, itemId);
+    }
+
+    insertForm(options?:{
+        useCustomQuery?: InsertFormQuery<TItem>
+    }): Observable<DynamicFormInsertBuilder<TItem>> {
+
+        var query;
+
+        if (options && options.useCustomQuery){
+            query = options.useCustomQuery;
+        }
+        else{
+            query = this.insertFormQuery();
+        }
+
+        return query
             .get()
             .map(form => {
                 var builder = new DynamicFormInsertBuilder<TItem>();
@@ -88,8 +108,20 @@ export abstract class BaseTypeService<TItem extends IItem>{
             })
     }
 
-    editForm(itemId: number): Observable<DynamicFormEditBuilder<TItem>> {
-        return this.repositoryClient.editForm(this.type, itemId)
+    editForm(itemId: number, options?:{
+        useCustomQuery: EditFormQuery<TItem>
+    }): Observable<DynamicFormEditBuilder<TItem>> {
+
+        var query;
+
+        if (options && options.useCustomQuery){
+            query = options.useCustomQuery;
+        }
+        else{
+            query = this.editFormQuery(itemId);
+        }
+
+        return query
             .get()
             .map(form => {
                 var builder = new DynamicFormEditBuilder<TItem>();

@@ -1,1 +1,3 @@
-  <a md-icon-button [color]="color" (click)="handleClick($event)" [mdTooltip]="tooltipText"><md-icon>delete</md-icon></a>
+  <a *ngIf="mode === 'button'" md-icon-button [color]="color" (click)="handleClick($event)" [mdTooltip]="tooltipText"><md-icon>delete</md-icon></a>
+
+  <a *ngIf="mode === 'simple'" (click)="handleClick($event)" [mdTooltip]="tooltipText" style="cursor: pointer">&#10006;</a>
