@@ -10,6 +10,7 @@
 		"exercises": "Cviky",
 		"diets": "Jídelníčky",
 		"foods": "Potraviny",
+		"progressItemTypes": "Sledované hodnoty",
 		"locations": "Místa",
 		"forms": "Formulář"
 	},
@@ -164,6 +165,13 @@
 			"vegetables": "Zelenina"
 		},
 		"progressItemTypes":{
+			"submenu":{
+				"overview": "Typy hodnot",
+				"new": "Vytvořit nový typ",
+				"edit": "Upravit typ",
+				"allTypes": "Všechny typy",
+				"myTypes": "Moje typy"
+			},
 			"globalTypes":{
 				"Weight": "Váha",
 				 "WaistCircumference" : "Obvod pasu",

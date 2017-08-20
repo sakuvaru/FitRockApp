@@ -4,7 +4,7 @@ import { User } from '../user.class';
 
 export class ProgressItemUnit extends BaseItem {
 
-    public unitCode: Date;
+    public unitCode: String;
 
     public types: ProgressItemType[];
 }

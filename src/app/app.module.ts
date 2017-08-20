@@ -53,6 +53,7 @@ import { WorkoutsModule } from './modules/workouts/workouts.module';
 import { ExercisesModule } from './modules/exercises/exercises.module';
 import { DietsModule } from './modules/diets/diets.module';
 import { FoodsModule } from './modules/foods/foods.module';
+import { ProgressItemTypesModule } from './modules/progress-item-types/progress-item-types.module';
 
 // test form module
 import { FormModule } from './modules/_forms/_form.module';
@@ -105,6 +106,7 @@ import { FormModule } from './modules/_forms/_form.module';
     ExercisesModule,
     DietsModule,
     FoodsModule,
+    ProgressItemTypesModule,
 
     // translation
     TranslateModule.forRoot({
