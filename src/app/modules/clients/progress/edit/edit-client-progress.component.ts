@@ -21,7 +21,7 @@ import * as _ from 'underscore';
 })
 export class EditClientProgressComponent extends ClientsBaseComponent implements OnInit {
 
-    private formConfig: FormConfig<ProgressItem>;
+    private formConfig: FormConfig<ProgressItem> | undefined;
     private dataTableConfig: DataTableConfig<ProgressItem>;
     private progressItemTypes: ProgressItemType[];
 
@@ -59,7 +59,7 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
                 });
             });
 
-        observables.push(this.getFormObservable());
+        observables.push(this.getInitFormObseravble());
         observables.push(this.getDataTableObservable());
         observables.push(obsClientMenu);
         observables.push(this.getProgressTypesObservable());
@@ -67,14 +67,18 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
         return observables;
     }
 
-    private getFormObservable(): Observable<any> {
+    private getInitFormObseravble(): Observable<any> {
         return this.clientIdChange
             .takeUntil(this.ngUnsubscribe)
             .switchMap(clientId => {
-                return this.dependencies.itemServices.progressItemService.insertForm({
-                    useCustomQuery: this.dependencies.itemServices.progressItemService.insertFormQuery()
-                    .withData('clientId', clientId)
-                });
+                return this.getFormObservable(clientId);
+            });
+    }
+
+    private getFormObservable(clientId: number): Observable<any> {
+        return this.dependencies.itemServices.progressItemService.insertForm({
+            useCustomQuery: this.dependencies.itemServices.progressItemService.insertFormQuery()
+                .withData('clientId', clientId)
             })
             .map(form => {
                 // set clientId manually
@@ -119,6 +123,8 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
                 });
 
                 // get form
+                // reload form
+                this.formConfig = undefined;
                 this.formConfig = form.build();
             },
             error => super.handleError(error));
@@ -243,6 +249,9 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
             .map(response => {
                 // add created type to local list
                 this.progressItemTypes.push(response.item);
+
+                // refresh form observables
+                super.subscribeToObservable(this.getFormObservable(this.clientId));
             });
     }
 
@@ -253,6 +262,9 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
             .map(respose => {
                 // remove type from local list
                 this.progressItemTypes = _.reject(this.progressItemTypes, function (item) { return item.id === respose.deletedItemId; });
+
+                // refresh form observables
+                super.subscribeToObservable(this.getFormObservable(this.clientId));
             });
     }
 

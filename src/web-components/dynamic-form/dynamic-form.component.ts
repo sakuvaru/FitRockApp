@@ -27,9 +27,9 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
      * when clicking submit very fast)
      * More info: https://github.com/angular/angular/issues/5876 -> response from 'robwormald commented on Dec 30, 2015'
      */
-    private insertButtonSubject = new Subject();
-    private editButtonSubject = new Subject();
-    private deleteButtonSubject = new Subject();
+    private insertButtonSubject: Subject<void>;
+    private editButtonSubject: Subject<void>;
+    private deleteButtonSubject: Subject<void>;
 
     private insufficientLicenseError: string;
     private generalErrorMessage: string;
@@ -73,6 +73,12 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
     initDynamicForm(config: FormConfig<any>): void {
         // try to initialize component if config is available during init
         if (this.config) {
+            // !! Important - unsubscribe from buttons. If dynamic form is reloaded within the same page, it may happen
+            // that clicking save will fire multiple times
+            this.insertButtonSubject = new Subject();
+            this.deleteButtonSubject = new Subject();
+            this.editButtonSubject = new Subject();
+
             this.config = config;
 
             if (this.config.onFormInit) {
