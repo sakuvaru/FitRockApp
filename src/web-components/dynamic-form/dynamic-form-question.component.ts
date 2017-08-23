@@ -37,7 +37,7 @@ export class DynamicFormQuestionComponent implements OnInit{
   private customError: string = '';
 
   // setup
-  private readonly datePickerStartDate = new Date(1980, 0, 1);
+  private datePickerStartDate: Date = new Date();
 
   /**
    * Maximum value for numbers (assuming the number is represented by Int32)
@@ -151,6 +151,15 @@ export class DynamicFormQuestionComponent implements OnInit{
         this.form.controls[this.question.key].setValue(defaultValue);
         this.radioCheckboxTrueChecked = defaultValue;
         this.radioCheckboxFalseChecked = !defaultValue;
+      }
+    }
+
+    // set date field starting date (if its set)
+    if (this.isDateField()){
+      var date = this.getQuestionValue();
+      if (date){
+        // date is set, use it as starting date
+        this.datePickerStartDate = new Date(date);
       }
     }
 

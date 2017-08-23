@@ -20,7 +20,7 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
      * Important - used to unsubsribe ALL subscriptions when component is destroyed. This ensures that requests are cancelled
      * when navigating away from the component. 
      * Solution should be official - taken from https://stackoverflow.com/questions/38008334/angular-rxjs-when-should-i-unsubscribe-from-subscription
-     * Usage: use 'takeUntl(this.ngUnsubscribe)' for all subscriptions.
+     * Usage: use 'takeUntil(this.ngUnsubscribe)' for all subscriptions.
      * Example: this.myThingService.getThings()
      *       .takeUntil(this.ngUnsubscribe)
       *      .subscribe(things => console.log(things));
@@ -28,7 +28,10 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
     protected ngUnsubscribe: Subject<void> = new Subject<void>();
 
     // snackbar config
-    private snackbarDefaultDuration = 2500;
+    private readonly snackbarDefaultDuration: number = 2500;
+
+    // locale config for moment js (https://momentjs.com/)
+    private readonly defaultMomentLocale: string = 'cs';
 
     // translations
     private snackbarSavedText: string;
@@ -265,10 +268,10 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
     }
 
     moment(inp?: moment.MomentInput, format?: moment.MomentFormatSpecification, strict?: boolean): moment.Moment {
-        return this.dependencies.coreServices.moment(inp, format, strict);
+        return this.dependencies.coreServices.moment(inp, format, strict).locale(this.defaultMomentLocale);
     }
     momentLanguage(inp?: moment.MomentInput, format?: moment.MomentFormatSpecification, language?: string, strict?: boolean): moment.Moment {
-        return this.dependencies.coreServices.momentLanguage(inp, format, language, strict);
+        return this.dependencies.coreServices.momentLanguage(inp, format, language, strict).locale(this.defaultMomentLocale);
     }
 
     // -------------- Observable subscriptions -------------- //

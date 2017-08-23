@@ -159,7 +159,7 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
                     align: AlignEnum.Right
                 },
                 {
-                    value: (item) => { return super.moment(item.measurementDate.toString()).format('LL') },
+                    value: (item) => { return super.moment(item.measurementDate).format('MMMM DD') },
                     isSubtle: true,
                     hideOnSmallScreens: true,
                     align: AlignEnum.Right
