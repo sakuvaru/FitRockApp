@@ -325,6 +325,9 @@
 			"editButton": {
 				"tooltip": "Upravit"
 			}
+		},
+		"graph": {
+			"legend": "Typ"
 		}
 	}
 }

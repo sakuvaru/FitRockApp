@@ -2,6 +2,7 @@ import { MultiSeries, SingleSeries } from './graph-models';
 import { GraphTypeEnum } from './graph-type.enum';
 
 export abstract class BaseGraph {
+
     abstract results: MultiSeries[] | SingleSeries[];
     abstract type: GraphTypeEnum;
 
@@ -11,13 +12,14 @@ export abstract class BaseGraph {
      */
     public view: any[] | undefined = undefined; 
 
-    public width: any = "100%";
-    public height: any = "400px";
+    public width: any = '100%';
+    public height: any = '400px';
 
     public legend: boolean = true;
+    public legentTitleKey: string = 'webComponents.graph.legend';
 
     public scheme = {
-        domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
+        domain: ['#f44336', '#A10A28', '#C7B42C', '#AAAAAA']
     };
 }
 

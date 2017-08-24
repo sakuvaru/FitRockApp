@@ -3,6 +3,7 @@ import { Component, Input, Output, OnInit, EventEmitter, OnChanges, SimpleChange
 import { BaseWebComponent } from '../base-web-component.class';
 
 // required
+import { TranslateService } from '@ngx-translate/core';
 import { MultiSeries, SingleSeries } from './graph-models';
 import { BaseGraph } from './graph-types';
 import { GraphConfig } from './graph.config';
@@ -17,12 +18,14 @@ export class GraphComponent extends BaseWebComponent implements OnInit, OnChange
 
     // use alias to graph for convenience
     private graph: BaseGraph;
+    private translatedLegendTitle: string;
 
     private wrapperStyle: any;
 
-    constructor() {
-        super()
-    }
+    constructor(
+        protected translateService: TranslateService
+    ) { super() }
+
 
     ngOnInit() {
         if (this.config) {
@@ -41,13 +44,19 @@ export class GraphComponent extends BaseWebComponent implements OnInit, OnChange
         this.graph = this.config.graph;
 
         this.initWrapperStyle();
+        this.initTranslations();
     }
 
-    private initWrapperStyle(): void{
+    private initWrapperStyle(): void {
         var style: any = {};
         style.width = this.graph.width;
         style.height = this.graph.height;
         this.wrapperStyle = style;
+    }
+
+    private initTranslations(): void{
+        // set translated title
+        this.translateService.get(this.graph.legentTitleKey).subscribe(translation => this.translatedLegendTitle = translation);
     }
 
     onSelect(event) {

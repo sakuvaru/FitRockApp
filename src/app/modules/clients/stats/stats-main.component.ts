@@ -43,9 +43,10 @@ export class StatsMainComponent extends ClientsBaseComponent implements OnInit {
     private getProgressTypesAndInitGraphObservable(): Observable<any> {
         return this.clientIdChange
             .takeUntil(this.ngUnsubscribe)
-            .switchMap(userId => {
+            .switchMap(clientId => {
                 return this.dependencies.itemServices.progressItemTypeService.items()
                     .byCurrentUser()
+                    .whereEquals('ClientId', clientId)
                     .get()
                     .takeUntil(this.ngUnsubscribe)
                     .flatMap((response) => {
@@ -54,7 +55,7 @@ export class StatsMainComponent extends ClientsBaseComponent implements OnInit {
                         // starting type -> first one in the list
                         if (this.progressItemTypes.length > 0) {
                             this.idOfActiveType = this.progressItemTypes[0].id;
-                            return this.getStatsObservable(userId, this.idOfActiveType);
+                            return this.getStatsObservable(clientId, this.idOfActiveType);
                         }
                         return Observable.empty;
                     })
