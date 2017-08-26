@@ -20,3 +20,6 @@ export * from './diets/food-unit.class';
 export * from './progress/progress-item.class';
 export * from './progress/progress-item-type.class';
 export * from './progress/progress-item-unit.class';
+
+// chat
+export * from './chat/chat-message.class';

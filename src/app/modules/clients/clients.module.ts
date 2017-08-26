@@ -34,6 +34,9 @@ import { SelectProgressTypeDialog } from './progress/dialogs/select-progress-typ
 // stats components
 import { StatsMainComponent } from './stats/stats-main.component';
 
+// chat components
+import { ClientChatComponent } from './chat/client-chat.component';
+
 // router
 import { ClientsRouter } from './clients.routing';
 
@@ -75,7 +78,9 @@ import { DietsModule} from '../diets/diets.module';
         EditProgressItemDialog,
         SelectProgressTypeDialog,
         // stats
-        StatsMainComponent
+        StatsMainComponent,
+        // chat
+        ClientChatComponent
     ],
     exports:[
     ]

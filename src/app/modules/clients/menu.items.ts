@@ -31,7 +31,7 @@ export class ClientMenuItems implements IMenuItems {
         this.menuItems = [
             new MenuItem({ key: 'menu.shared.back' }, 'arrow_back', MenuItemType.trainer, 'clients'),
             new MenuItem({ key: 'Profil' }, 'person', MenuItemType.trainer, 'profile'),
-            new MenuItem({ key: 'Zprávy' }, 'mail', MenuItemType.trainer, 'messages'),
+            new MenuItem({ key: 'module.clients.submenu.chat' }, 'mail', MenuItemType.trainer, 'clients/edit/' + id + '/chat'),
             new MenuItem({ key: 'Schůzky' }, 'schedule', MenuItemType.trainer, 'appointments'),
             new MenuItem({ key: 'module.clients.submenu.workout' }, 'fitness_center', MenuItemType.trainer, 'clients/edit/' + id + '/workout'),
             new MenuItem({ key: 'module.clients.submenu.diet' }, 'restaurant', MenuItemType.trainer, 'clients/edit/' + id + '/diet'),

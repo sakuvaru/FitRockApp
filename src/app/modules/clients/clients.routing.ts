@@ -37,6 +37,9 @@ import { SelectProgressTypeDialog } from './progress/dialogs/select-progress-typ
 // stats components
 import { StatsMainComponent } from './stats/stats-main.component';
 
+// chat components
+import { ClientChatComponent } from './chat/client-chat.component';
+
 const routes: Routes = [
     {
         path: UrlConfig.TrainerMasterPath, component: AdminLayoutComponent, canActivate: [AuthGuardService], children: [
@@ -90,8 +93,12 @@ const routes: Routes = [
                 path: 'clients/edit/select-progress-type-dialog', component: SelectProgressTypeDialog
             },
             // stats
-             {
+            {
                  path: 'clients/edit/:id/stats', component: StatsMainComponent
+            },
+            // chat
+            {
+                path: 'clients/edit/:id/chat', component: ClientChatComponent
             },
         ]
     }

@@ -20,3 +20,6 @@ export * from './diets/food-unit.service';
 export * from './progress/progress-item.service';
 export * from './progress/progress-item-type.service';
 export * from './progress/progress-item-unit.service';
+
+// chat
+export * from './chat/chat-message.service';

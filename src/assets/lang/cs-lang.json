@@ -35,7 +35,8 @@
 				"diet": "Jídelníček",
 				"progress": "Sledované hodnoty",
 				"stats": "Statistiky",
-				"newClient": "Nový klient"
+				"newClient": "Nový klient",
+				"chat": "Zprávy"
 			},
 			"workout": {
 				"copyWorkoutLabel": "Tréninková šáblona",
@@ -60,6 +61,10 @@
 				"newProgressItemRecord": "Nový záznam měření",
 				"editProgressItem": "Upravit záznam",
 				"addProgressType": "Přidat typ"
+			},
+			"chat": {
+				"submit": "Odeslat",
+				"snackbarSaved": "Odesláno"
 			},
 			"viewClientSubtitle": "{{fullName}}",
 			"clients": "Klienti",
@@ -306,6 +311,9 @@
 		},
 		"progressItemUnit":{
 			
+		},
+		"chatMessage":{
+			"message": "Zpráva"
 		}
 	},
 	"webComponents": {

@@ -13,7 +13,8 @@ import { RepositoryClient } from '../../../lib/repository';
 // Services
 import { UserService, ExerciseCategoryService, ExerciseService, LogService, WorkoutCategoryService,
      WorkoutExerciseService, WorkoutService, DietCategoryService, DietFoodService, DietService,
-    FoodCategoryService, FoodService, FoodUnitService, ProgressItemService, ProgressItemTypeService} from '../../services';
+    FoodCategoryService, FoodService, FoodUnitService, ProgressItemService, ProgressItemTypeService,
+   ChatMessageService } from '../../services';
 
 // Angular material
 import { MdSnackBar, MdDialog } from '@angular/material';
@@ -106,6 +107,9 @@ export class ComponentDependencyService {
         // progress services
         this.itemServices.progressItemService = injector.get(ProgressItemService);
         this.itemServices.progressItemTypeService = injector.get(ProgressItemTypeService);
+
+        // caht services
+        this.itemServices.chatMessageService = injector.get(ChatMessageService);
     }
 }
 
@@ -135,6 +139,7 @@ export class TdServices {
 }
 
 export class ItemServices {
+    // core
     public userService: UserService;
     public logService: LogService;
 
@@ -156,4 +161,7 @@ export class ItemServices {
     // progress
     public progressItemService: ProgressItemService;
     public progressItemTypeService: ProgressItemTypeService;
+
+    // chat
+    public chatMessageService: ChatMessageService;
 }
