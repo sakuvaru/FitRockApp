@@ -282,6 +282,10 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
     private handleUpdateAfter(response: ResponseEdit<any>): void {
         this.handleSnackBar();
 
+        if (this.config.clearFormAfterSave){
+            this.initDynamicForm(this.config);
+         }
+
         if (this.config.onAfterUpdate) {
             this.config.onAfterUpdate(response);
         }
@@ -289,6 +293,10 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
 
     private handleInsertAfter(response: ResponseCreate<any>): void {
         this.handleSnackBar();
+
+        if (this.config.clearFormAfterSave){
+           this.initDynamicForm(this.config);
+        }
 
         if (this.config.onAfterInsert) {
             this.config.onAfterInsert(response);

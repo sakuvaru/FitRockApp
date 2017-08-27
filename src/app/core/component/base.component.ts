@@ -275,7 +275,7 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
     }
 
     formatDate(date: Date): string{
-        return this.moment(date).format('MMMM DD v hh:mm');
+        return this.moment(date).format('MMMM DD - hh:mm');
     }
 
     // -------------- Observable subscriptions -------------- //

@@ -66,6 +66,11 @@ export class FormConfig<TItem extends IItem>{
     public hiddenFields: string[] = [];
 
     /**
+     * Indicates if field in form are cleared when the form is saved
+     */
+    public clearFormAfterSave: boolean;
+
+    /**
      * Callback when initializing the form
      */
     public onFormInit: () => void;

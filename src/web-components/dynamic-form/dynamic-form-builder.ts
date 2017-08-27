@@ -19,9 +19,9 @@ class BaseDynamicFormBuilder<TItem extends IItem>{
         return this;
     }
 
-   /**
-   * Key of submit text button
-   */
+    /**
+    * Key of submit text button
+    */
     submitTextKey(key: string): this {
         this.config.submitTextKey = key;
         return this;
@@ -36,6 +36,11 @@ class BaseDynamicFormBuilder<TItem extends IItem>{
         if (fields) {
             this.config.hiddenFields = fields;
         }
+        return this;
+    }
+
+    clearFormAfterSave(clear: boolean): this {
+        this.config.clearFormAfterSave = clear;
         return this;
     }
 
@@ -102,6 +107,9 @@ class BaseDynamicFormBuilder<TItem extends IItem>{
 
 
     build(): FormConfig<TItem> {
+        // default values for insert form
+        this.config.clearFormAfterSave = true;
+
         return this.config;
     }
 }
@@ -154,6 +162,9 @@ export class DynamicFormEditBuilder<TItem extends IItem> extends BaseDynamicForm
     }
 
     build(): FormConfig<TItem> {
+        // default values for edit form
+        this.config.clearFormAfterSave = false;
+
         return this.config;
     }
 }
