@@ -1,11 +1,12 @@
 <ng-container *ngIf="progressItemTypes">
     <div class="push">
         <md-chip-list>
-            <md-chip *ngFor="let progressItemType of progressItemTypes" [selected]="idOfActiveType === progressItemType.id" class="w-cursor-pointer" (click)="onSelectType(progressItemType)">
-                <ng-container *ngIf="progressItemType.isGlobal">
-                    {{'module.progressItemTypes.globalTypes.' + progressItemType.typeName | translate}}
+            <md-chip *ngFor="let progressItemType of progressItemTypes" [selected]="idOfActiveType === progressItemType.id" class="w-cursor-pointer"
+                (click)="onSelectType(progressItemType)">
+                <ng-container *ngIf="progressItemType.translateValue">
+                    {{'module.progressItemTypes.globalTypes.' + progressItemType.codename | translate}}
                 </ng-container>
-                <ng-container *ngIf="!progressItemType.isGlobal">
+                <ng-container *ngIf="!progressItemType.translateValue">
                     {{progressItemType.typeName}}
                 </ng-container>
             </md-chip>

@@ -141,7 +141,7 @@ class BaseDynamicFormBuilder<TItem extends IItem>{
      * @param fieldName Name of field
      * @param value Value
      */
-    withFieldValue(fieldName: string, value: any): this {
+    withFieldValue(fieldName: string, value: string | boolean | number): this {
         // find field
         var field = this.config.fields.find(m => m.key.toLowerCase() === fieldName.toLowerCase());
 
@@ -149,7 +149,16 @@ class BaseDynamicFormBuilder<TItem extends IItem>{
             throw Error(`Cannot set value for field '${fieldName}' because it does not exist in form`);
         }
 
-        field.value = value;
+        // boolean field needs to return 'string' with 'false' value otherwise the JSON .NET mapping
+        // does not map the object 
+        if (!value) {
+            if (typeof (value) === 'boolean') {
+                field.value = 'false';
+            }
+            field.value = '';
+        }
+
+        field.value = value.toString().trim();;
         return this;
     }
 

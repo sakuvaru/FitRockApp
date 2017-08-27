@@ -113,19 +113,25 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
 
                     // set new custom translation label
                     var translationData: any = {};
-                    translationData.unit = listOption.extraDataJson.unit;
-                    super.translate('form.progressItem.valueWithUnit', translationData).subscribe(translation => {
-                        var field = config.fields.find(m => m.key === 'Value');
-                        if (field) {
-                            field.translatedLabel = translation;
-                        }
+                    var unitCode = listOption.extraDataJson.unit;
+                    super.translate('module.progressItemUnits.' + unitCode).subscribe(unitTranslation => {
+                        var translationData: any = {};
+                        translationData.unit = unitTranslation;
+                        super.translate('form.progressItem.valueWithUnit', translationData).subscribe(translation => {
+                            var field = config.fields.find(m => m.key === 'Value');
+                            if (field) {
+                                field.translatedLabel = translation;
+                            }
+                        })
                     })
+                   
                 });
 
                 // get form
                 // reload form
                 this.formConfig = undefined;
                 this.formConfig = form.build();
+                this.formConfig.item
             },
             error => super.handleError(error));
     }
@@ -182,8 +188,16 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
                     .map(response => {
                         var filters: Filter<ProgressItemTypeWithCountDto>[] = [];
                         response.items.forEach(type => {
+                            var typeKey;
+                            if (type.translateValue){
+                                typeKey = 'module.progressItemTypes.globalTypes.' + type.codename;
+                            }
+                            else{
+                                typeKey = type.typeName;
+                            }
+
                             filters.push(new Filter({
-                                filterNameKey: type.typeName,
+                                filterNameKey: typeKey,
                                 onFilter: (query) => query.whereEquals('ProgressItemTypeId', type.id),
                                 count: type.progressItemsCount
                             }));
@@ -260,8 +274,8 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
                 // refresh form observables
                 super.subscribeToObservable(this.getFormObservable(this.clientId));
 
-                 // refresh data table
-                 this.reloadDataTable();
+                // refresh data table
+                this.reloadDataTable();
             });
     }
 

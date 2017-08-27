@@ -18,10 +18,10 @@
         <div class="push">
             <md-chip-list>
                 <md-chip *ngFor="let progressItemType of progressItemTypes">
-                    <ng-container *ngIf="progressItemType.isGlobal">
-                        {{'module.progressItemTypes.globalTypes.' + progressItemType.typeName | translate}}
+                    <ng-container *ngIf="progressItemType.translateValue">
+                        {{'module.progressItemTypes.globalTypes.' + progressItemType.codename | translate}}
                     </ng-container>
-                    <ng-container *ngIf="!progressItemType.isGlobal">
+                    <ng-container *ngIf="!progressItemType.translateValue">
                         {{progressItemType.typeName}}
                     </ng-container>
                     <delete-button mode="simple" (confirm)="handleDeleteType(progressItemType)"></delete-button>

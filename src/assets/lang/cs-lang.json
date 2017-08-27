@@ -188,7 +188,7 @@
 			},
 			"globalTypes":{
 				"Weight": "Váha",
-				 "WaistCircumference" : "Obvod pasu",
+				"WaistCircumference" : "Obvod pasu",
 				"LegsCircumference": "Obvod stehen",
 				"ArmsCircumference": "Obvod paží",
 				"ChestCircumference": "Obvod hrudníku",

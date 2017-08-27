@@ -60,7 +60,8 @@ export class NewClientProgressItemTypeComponent extends ClientsBaseComponent imp
             })
             .map(form => {
                 // set client id manually
-                form.withFieldValue('clientId', this.clientId);
+                form.withFieldValue('ClientId', this.clientId);
+                form.withFieldValue('TranslateValue', false);
 
                 form.onFormInit(() => super.stopLoader())
                 form.onBeforeSave(() => super.startGlobalLoader());
