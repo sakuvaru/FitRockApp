@@ -6,7 +6,7 @@ export class FoodOverviewItems {
 
     constructor() {
         this.menuItems = [
-            new MenuItem({ key: 'module.foods.submenu.myFoods' }, 'rowing', MenuItemType.trainer, 'foods'),
+            new MenuItem({ key: 'module.foods.submenu.myFoods' }, 'free_breakfast', MenuItemType.trainer, 'foods'),
             new MenuItem({ key: 'module.foods.submenu.allFoods' }, 'list', MenuItemType.trainer, 'foods/all'),
         ];
     }
