@@ -8,7 +8,9 @@ import { ClientsBaseComponent } from '../clients-base.component';
 import { ClientMenuItems } from '../menu.items';
 import { User, ChatMessage } from '../../../models';
 import { FormConfig } from '../../../../web-components/dynamic-form';
+import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs/Rx';
+import * as _ from 'underscore';
 
 @Component({
     templateUrl: 'client-chat.component.html'
@@ -17,6 +19,14 @@ export class ClientChatComponent extends ClientsBaseComponent implements OnInit 
 
     private formConfig: FormConfig<ChatMessage>;
     private chatMessages: ChatMessage[];
+
+    private chatMessagesPage: number = 1;
+    private chatMessagesPageSize: number = 5;
+    private chatMessagesSearch: string = '';
+    private allChatMessagesLoaded: boolean = false;
+
+    private readonly debounceTime = 300;
+    private searchControl = new FormControl();
 
     constructor(
         protected activatedRoute: ActivatedRoute,
@@ -29,8 +39,21 @@ export class ClientChatComponent extends ClientsBaseComponent implements OnInit 
     ngOnInit(): void {
         super.ngOnInit();
 
+        this.initSearch();
         super.subscribeToObservables(this.getComponentObservables());
         super.initClientSubscriptions();
+    }
+
+    private initSearch(): void {
+        this.searchControl.valueChanges
+            .debounceTime(this.debounceTime)
+            .subscribe(searchTerm => {
+                // reset page to 1 when searching
+                this.chatMessagesPage = 1;
+                this.chatMessagesSearch = searchTerm;
+                super.subscribeToObservable(this.getChatMessagesObservable(this.clientId, this.chatMessagesPage, true, this.chatMessagesSearch),
+                { globalLoader: true, componentLoader: false });
+            });
     }
 
     private getComponentObservables(): Observable<any>[] {
@@ -49,7 +72,7 @@ export class ClientChatComponent extends ClientsBaseComponent implements OnInit 
             })
             .map(form => {
                 // manually set recipient & sender
-                form.withFieldValue('SenderUserId',  this.dependencies.authenticatedUserService.getUserId());
+                form.withFieldValue('SenderUserId', this.dependencies.authenticatedUserService.getUserId());
                 form.withFieldValue('RecipientUserId', this.clientId)
 
                 form.snackBarTextKey('module.clients.chat.snackbarSaved');
@@ -60,9 +83,9 @@ export class ClientChatComponent extends ClientsBaseComponent implements OnInit 
                 form.insertFunction((item) => this.dependencies.itemServices.chatMessageService.create(item).set());
                 form.onAfterInsert((response) => {
                     // reload messages
-                    this.getChatMessagesObservable(this.clientId)
-                        .takeUntil(this.ngUnsubscribe)
-                        .subscribe();
+                    super.subscribeToObservable(this.getChatMessagesObservable(this.clientId, 1, true, this.chatMessagesSearch)
+                        .takeUntil(this.ngUnsubscribe), { globalLoader: true, componentLoader: false });
+
                 });
                 form.onError(() => super.stopGlobalLoader());
 
@@ -74,7 +97,7 @@ export class ClientChatComponent extends ClientsBaseComponent implements OnInit 
     private getInitChatMessagesObservable(): Observable<any> {
         return this.clientChange
             .takeUntil(this.ngUnsubscribe)
-            .switchMap(client => this.getChatMessagesObservable(client.id))
+            .switchMap(client => this.getChatMessagesObservable(client.id, this.chatMessagesPage, true, this.chatMessagesSearch))
             .map(response => {
                 this.setConfig({
                     menuItems: new ClientMenuItems(this.clientId).menuItems,
@@ -90,17 +113,35 @@ export class ClientChatComponent extends ClientsBaseComponent implements OnInit 
             error => super.handleError(error));
     }
 
-    private getChatMessagesObservable(clientId: number): Observable<any> {
+    private getChatMessagesObservable(clientId: number, page: number, replaceMessages: boolean, search: string): Observable<any> {
         return this.dependencies.itemServices.chatMessageService.getConversationMessages(clientId)
             .includeMultiple(['Sender', 'Recipient'])
             .orderByDesc('Created')
+            .page(page)
+            .pageSize(this.chatMessagesPageSize)
+            .whereLike('Message', search ? search : '')
             .get()
             .takeUntil(this.ngUnsubscribe)
             .map(response => {
+                this.chatMessagesPage = page + 1;
                 if (!response.isEmpty()) {
-                    this.chatMessages = response.items;
+                    this.allChatMessagesLoaded = false;
+                    if (replaceMessages) {
+                        this.chatMessages = response.items;
+                    }
+                    else {
+                        this.chatMessages = _.union(this.chatMessages, response.items);
+                    }
+                }
+                else{
+                    this.allChatMessagesLoaded = true;
                 }
             },
             error => super.handleError(error));
+    }
+
+    private loadMoreMessages(): void {
+        super.subscribeToObservable(this.getChatMessagesObservable(this.clientId, this.chatMessagesPage, false, this.chatMessagesSearch)
+            .takeUntil(this.ngUnsubscribe), { globalLoader: true, componentLoader: false });
     }
 }

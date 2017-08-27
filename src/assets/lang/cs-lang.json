@@ -24,7 +24,8 @@
 		"search": "Hledat",
 		"updated": "Poslední změna",
 		"close": "Zavřít",
-		"saved": "Uloženo"
+		"saved": "Uloženo",
+		"loadMore": "Další"
 	},
 	"module": {
 		"clients": {
@@ -64,7 +65,8 @@
 			},
 			"chat": {
 				"submit": "Odeslat",
-				"snackbarSaved": "Odesláno"
+				"snackbarSaved": "Odesláno",
+				"allMessagesLoaded": "Všechny zprávy načteny"
 			},
 			"viewClientSubtitle": "{{fullName}}",
 			"clients": "Klienti",

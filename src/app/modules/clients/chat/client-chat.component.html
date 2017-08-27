@@ -1,6 +1,7 @@
-<div class="push">
-    <md-input-container>
-        <input mdInput placeholder="{{ 'shared.search' | translate }} ...">
+<div class="push-left push-right push-top">
+    <md-input-container flex>
+        <input mdInput placeholder="{{'shared.search' | translate}}" [formControl]="searchControl" [value]="chatMessagesSearch" />
+        <span mdPrefix><md-icon>search</md-icon></span>
     </md-input-container>
 </div>
 
@@ -22,3 +23,8 @@
         <md-divider></md-divider>
     </ng-container>
 </md-card>
+
+<div class="text-center push">
+    <button *ngIf="!allChatMessagesLoaded" md-raised-button color="accent" (click)="loadMoreMessages()">{{ 'shared.loadMore' | translate }}</button>
+    <button *ngIf="allChatMessagesLoaded" md-raised-button >{{ 'module.clients.chat.allMessagesLoaded' | translate }}</button>
+</div>
