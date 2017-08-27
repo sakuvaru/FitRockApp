@@ -51,7 +51,7 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
 
     private formErrorLines: string[] = [];
 
-    private isDeleteForm: boolean = false;
+    private isDeleteEnabled: boolean = false;
     private isEditForm: boolean = false;
     private isInsertForm: boolean = false;
 
@@ -103,7 +103,7 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
             this.translateLabels();
 
             // form type
-            this.isDeleteForm = this.config.isDeleteForm();
+            this.isDeleteEnabled = this.deleteIsEnabled();
             this.isEditForm = this.config.isEditForm();
             this.isInsertForm = this.config.isInsertForm();
 
@@ -183,7 +183,7 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
             throw Error('Form does not support given save option');
         }
 
-        if (this.config.isDeleteForm()) {
+        if (this.deleteIsEnabled()) {
             if (!this.config.deleteFunction) {
                 throw Error(`Cannot init delete function because it wasn't supplied`);
             }
@@ -207,6 +207,13 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
                     this.handleError(err);
                 });
         }
+    }
+
+    private deleteIsEnabled(): boolean{
+        if( this.config.enableDelete && this.config.deleteFunction){
+            return true;
+        }
+        return false;
     }
 
     private assignQuestions(fields: BaseField<any>[]): void {

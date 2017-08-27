@@ -71,6 +71,12 @@ export class FormConfig<TItem extends IItem>{
     public clearFormAfterSave: boolean;
 
     /**
+     * Indicates if form contains delete button and if user can trigger 'delete method' defined in this form config
+     * This property has to be enabled if the delete method is to be triggered
+     */
+    public enableDelete: boolean = true;
+
+    /**
      * Callback when initializing the form
      */
     public onFormInit: () => void;
@@ -160,12 +166,5 @@ export class FormConfig<TItem extends IItem>{
      */
     public isEditForm(): boolean {
         return this.editFunction != null;
-    }
-
-    /**
-     * Indicates if current form supports deletion
-     */
-    public isDeleteForm(): boolean {
-        return this.deleteFunction != null;
     }
 }
