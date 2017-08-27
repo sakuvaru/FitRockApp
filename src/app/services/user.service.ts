@@ -5,9 +5,8 @@ import { BaseTypeService } from './base/base-type.service';
 
 // required by service
 import { User, UserFilterWithCount } from '../models';
-
-import { RepositoryClient, MultipleItemQuery, CreateItemQuery, ResponseSingle, MultipleItemQueryCustom } from '../../lib/repository';
-
+import { EditFormQuery, RepositoryClient, MultipleItemQuery, CreateItemQuery, ResponseSingle, MultipleItemQueryCustom } from '../../lib/repository';
+import { DynamicFormEditBuilder } from '../../web-components/dynamic-form';
 
 @Injectable()
 export class UserService extends BaseTypeService<User>{
@@ -19,20 +18,27 @@ export class UserService extends BaseTypeService<User>{
         })
     }
 
+    myProfileForm(): Observable<DynamicFormEditBuilder<User>> {
+        var myProfileFormQuery = super.editFormQuery(-1).withCustomAction('GetMyProfileForm');
+
+        // -1 because id is not required for my profile form
+        return super.editForm(-1, { useCustomQuery: myProfileFormQuery});
+    }
+
     clients(): MultipleItemQuery<User> {
-        return this.items().withCustomAction('getClients');
+        return super.items().withCustomAction('getClients');
     }
 
     clientsCount(): MultipleItemQuery<User> {
-        return this.items().withCustomAction('getClients');
+        return super.items().withCustomAction('getClients');
     }
 
     createClient(item: User): CreateItemQuery<User> {
-        return this.create(item).withCustomAction('createClient');
+        return super.create(item).withCustomAction('createClient');
     }
 
     getAuthUser(): Observable<ResponseSingle<User>> {
-        return this.item().withCustomAction('getAuthUser').get();
+        return super.item().withCustomAction('getAuthUser').get();
     }
     
 }

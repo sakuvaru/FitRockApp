@@ -19,6 +19,12 @@
 		"dialogErrorTitle": "Chyba",
 		"dialogDefaultError": "Nastala neočekávána chyba, zkus akci opakovat nebo se nám ozvi pokud chyba přetrvává"
 	},
+	"userMenu": {
+		"notifications": "Notifikace",
+		"profile": "Profil",
+		"logout": "Odhlásit",
+		"myProfile": "Upravit"
+	},
 	"shared": {
 		"login": "Přihlášení",
 		"search": "Hledat",
@@ -201,6 +207,12 @@
 			"pounds": "libry",
 			"reps": "počet opakování",
 			"seconds": "sekundy"
+		},
+		"profile": {
+			"submenu": {
+				"editProfile": "Upravit účet",
+				"myProfile": "Můj účet"
+			}
 		},
 		"shared": {
 			"errors": {

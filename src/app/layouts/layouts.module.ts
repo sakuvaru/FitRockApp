@@ -9,8 +9,7 @@ import { CoreModule } from '../core/module/core.module';
 import { SimpleLayoutComponent } from './simple-layout.component';
 import { AdminLayoutComponent } from './admin-layout.component';
 import { FooterComponent } from './shared/footer.component';
-
-// translate service
+import { UserMenuComponent } from './shared/user-menu.component';
 
 @NgModule({
     imports: [
@@ -21,7 +20,8 @@ import { FooterComponent } from './shared/footer.component';
     declarations: [
         SimpleLayoutComponent,
         AdminLayoutComponent,
-        FooterComponent
+        FooterComponent,
+        UserMenuComponent
     ]
 })
 export class LayoutsModule { }

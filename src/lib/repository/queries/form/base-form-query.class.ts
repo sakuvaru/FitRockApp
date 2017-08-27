@@ -40,7 +40,12 @@ export abstract class BaseFormQuery extends BaseQuery {
         super(authHttp, config)
     }
 
-    public withData(name: string, value: string | boolean | number): this{
+    public withCustomAction(action: string): this {
+        this._action = action;
+        return this;
+    }
+
+    public withData(name: string, value: string | boolean | number): this {
         this._data[name] = value;
         return this;
     }

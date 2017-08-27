@@ -1,0 +1,11 @@
+<a md-icon-button mdTooltip="{{ 'userMenu.notifications' | translate }}">
+    <md-icon>notifications</md-icon>
+</a>
+<a md-icon-button mdTooltip="{{ 'userMenu.profile' | translate }}" [mdMenuTriggerFor]="profileMenu">
+    <md-icon>person</md-icon>
+</a>
+
+<md-menu #profileMenu="mdMenu">
+    <button md-menu-item [routerLink]="getAuthUrl('profile/edit')"><md-icon>edit</md-icon> {{ 'userMenu.myProfile' | translate }}</button>
+    <button md-menu-item [routerLink]="getAuthUrl('logout')"><md-icon>exit_to_app</md-icon> {{ 'userMenu.logout' | translate }}</button>
+</md-menu>
