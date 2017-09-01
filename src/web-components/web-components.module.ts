@@ -11,6 +11,7 @@ import { DataTableModule } from './data-table/data-table.module';
 import { DynamicFormModule } from './dynamic-form/dynamic-form.module';
 import { LoaderModule } from './loader/loader.module';
 import { GraphModule } from './graph/graph.module';
+import { MessagesModule } from './messages/messages.module';
 
 @NgModule({
     imports: [
@@ -23,7 +24,8 @@ import { GraphModule } from './graph/graph.module';
         DataTableModule,
         ButtonsModule,
         LoaderModule,
-        GraphModule
+        GraphModule,
+        MessagesModule
     ]
 })
 export class WebComponentsModule { }

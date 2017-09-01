@@ -350,6 +350,9 @@
 		},
 		"graph": {
 			"legend": "Typ"
+		},
+		"messages":{
+			"noDataTitle": "Nejsou zde žádná data"
 		}
 	}
 }

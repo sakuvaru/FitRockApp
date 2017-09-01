@@ -13,7 +13,7 @@ import { AuthHttp } from 'angular2-jwt';
 import {
     User, Log, Workout, WorkoutCategory, Exercise, ExerciseCategory, WorkoutExercise,
     Diet, DietCategory, DietFood, Food, FoodCategory, FoodUnit, ProgressItem, ProgressItemType,
-    ProgressItemUnit, ChatMessage
+    ProgressItemUnit, ChatMessage, Feed
 } from '../../models';
 
 export function RepositoryClientFactory(authHttp: AuthHttp) {
@@ -38,6 +38,7 @@ export function RepositoryClientFactory(authHttp: AuthHttp) {
         new TypeResolver("ProgressItemType", () => new ProgressItemType()),
         new TypeResolver("ProgressItemUnit", () => new ProgressItemUnit()),
         new TypeResolver("ChatMessage", () => new ChatMessage()),
+        new TypeResolver("Feed", () => new Feed()),
     ];
 
     return new RepositoryClient(

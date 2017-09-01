@@ -23,3 +23,6 @@ export * from './progress/progress-item-unit.service';
 
 // chat
 export * from './chat/chat-message.service';
+
+// feed
+export * from './feed/feed.service';

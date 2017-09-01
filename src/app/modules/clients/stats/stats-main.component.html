@@ -1,4 +1,4 @@
-<ng-container *ngIf="progressItemTypes">
+<ng-container *ngIf="progressItemTypes && progressItemTypes.length > 0">
     <div class="push">
         <md-chip-list>
             <md-chip *ngFor="let progressItemType of progressItemTypes" [selected]="idOfActiveType === progressItemType.id" class="w-cursor-pointer"
@@ -12,10 +12,17 @@
             </md-chip>
         </md-chip-list>
     </div>
+
+    <md-card class="push">
+        <md-card-content>
+            <graph [config]="graphConfig"></graph>
+        </md-card-content>
+    </md-card>
+
 </ng-container>
 
-<md-card class="push">
-    <md-card-content>
-        <graph [config]="graphConfig"></graph>
-    </md-card-content>
-</md-card>
+
+<no-data-message *ngIf="progressItemTypes && progressItemTypes.length <= 0" class="push"></no-data-message>
+
+
+

@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 import { UserService, LogService, ExerciseCategoryService, ExerciseService, 
     WorkoutCategoryService, WorkoutExerciseService, WorkoutService, DietCategoryService,
     DietFoodService, DietService, FoodCategoryService, FoodService, FoodUnitService,
-    ProgressItemService, ProgressItemTypeService, ChatMessageService } from './index';
+    ProgressItemService, ProgressItemTypeService, ChatMessageService, FeedService } from './index';
 
 @NgModule({
     imports: [
@@ -27,7 +27,8 @@ import { UserService, LogService, ExerciseCategoryService, ExerciseService,
         FoodUnitService,
         ProgressItemService,
         ProgressItemTypeService,
-        ChatMessageService
+        ChatMessageService,
+        FeedService
     ]
 })
 export class ServicesModule { }
