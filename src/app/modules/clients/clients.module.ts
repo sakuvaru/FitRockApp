@@ -6,7 +6,6 @@ import { RouterModule } from '@angular/router';
 import { CoreModule } from '../../core';
 
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {CdkTableModule} from '@angular/cdk';
 
 // user components
 import { ClientsOverviewComponent } from './client/list/clients-overview.component';
@@ -53,7 +52,6 @@ import { DietsModule} from '../diets/diets.module';
         SharedModule,
         FormsModule,
         ReactiveFormsModule,
-        CdkTableModule,
         WorkoutsModule,
         DietsModule
     ],
