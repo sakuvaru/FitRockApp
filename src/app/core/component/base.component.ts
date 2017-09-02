@@ -274,8 +274,12 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
         return this.dependencies.coreServices.momentLanguage(inp, format, language, strict).locale(this.defaultMomentLocale);
     }
 
-    formatDate(date: Date): string{
+    formatDate(date: Date): string {
         return this.moment(date).format('D MMMM hh:mm');
+    }
+
+    fromNow(date: Date): string {
+        return this.moment(date).fromNow(); 
     }
 
     // -------------- Observable subscriptions -------------- //

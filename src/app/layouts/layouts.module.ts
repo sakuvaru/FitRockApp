@@ -9,7 +9,7 @@ import { CoreModule } from '../core/module/core.module';
 import { SimpleLayoutComponent } from './simple-layout.component';
 import { AdminLayoutComponent } from './admin-layout.component';
 import { FooterComponent } from './shared/footer.component';
-import { UserMenuComponent } from './shared/user-menu.component';
+import { AdminToolbarComponent } from './shared/admin-toolbar.component';
 
 @NgModule({
     imports: [
@@ -21,7 +21,7 @@ import { UserMenuComponent } from './shared/user-menu.component';
         SimpleLayoutComponent,
         AdminLayoutComponent,
         FooterComponent,
-        UserMenuComponent
+        AdminToolbarComponent
     ]
 })
 export class LayoutsModule { }

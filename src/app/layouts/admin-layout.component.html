@@ -18,49 +18,42 @@
   <loader [enabled]="topLoaderEnabled"></loader>
 
   <td-layout-nav color="primary">
-     <div td-toolbar-content layout="row" layout-align="start center" flex>
-       <button md-icon-button td-menu-button tdLayoutToggle>
-        <md-icon>menu</md-icon>
-      </button>
-      {{componentConfig.appName}}
-      <span flex></span>
-      <user-menu></user-menu>
-    </div>
-     <td-layout-manage-list #manageList
-            [opened]="media.registerQuery('gt-sm') | async"
-            [mode]="(media.registerQuery('gt-sm') | async) ? 'side' :  'over'"
-            [sidenavWidth]="(media.registerQuery('gt-xs') | async) ? '257px' : '100%'">
+      <div td-toolbar-content flex>
+        <admin-toolbar></admin-toolbar>           
+      </div> 
+    <td-layout-manage-list #manageList [opened]="media.registerQuery('gt-sm') | async" [mode]="(media.registerQuery('gt-sm') | async) ? 'side' :  'over'"
+      [sidenavWidth]="(media.registerQuery('gt-xs') | async) ? '257px' : '100%'">
       <md-toolbar td-sidenav-content>
         {{shortenTitle(menuTitle)}}
       </md-toolbar>
       <md-nav-list td-sidenav-content [tdLayoutManageListClose]="!media.query('gt-sm')">
         <ng-template let-item let-last="last" ngFor [ngForOf]="componentConfig.menuItems">
           <a md-list-item [routerLink]="getMenuItemUrl(item.action, item.type)">
-          <md-icon [color]="getMenuItemColor(item.action, item.type)">{{item.icon}}</md-icon>{{ item.label.key | translate}}
-        </a>
+            <md-icon [color]="getMenuItemColor(item.action, item.type)">{{item.icon}}</md-icon>{{ item.label.key | translate}}
+          </a>
         </ng-template>
       </md-nav-list>
 
       <md-toolbar>
         <div layout="row" layout-align="start center" flex>
-            <button md-icon-button tdLayoutManageListOpen [hideWhenOpened]="true" tdMediaToggle="gt-sm" [mediaStyles]="{display: 'none'}">
+          <button md-icon-button tdLayoutManageListOpen [hideWhenOpened]="true" tdMediaToggle="gt-sm" [mediaStyles]="{display: 'none'}">
             <md-icon>arrow_back</md-icon>
           </button>
-           <span>{{componentTitle}}</span>
+          <span>{{componentTitle}}</span>
           <span flex></span>
           <button md-icon-button [routerLink]="getAuthUrl('logout')"><md-icon>exit_to_app</md-icon></button>
         </div>
-      </md-toolbar>  
+      </md-toolbar>
       <loader [enabled]="componentLoaderEnabled"></loader>
-      
+
       <div [ngClass]="{'w-hidden': componentLoaderEnabled && hideAdminLayoutWhenComponentsLoaderIsEnabled}">
         <router-outlet></router-outlet>
       </div>
 
     </td-layout-manage-list>
     <td-layout-footer>
-       <div layout="row" layout-align="start center" class="md-caption">
-      <footer [appName]="componentConfig.appName"></footer>
+      <div layout="row" layout-align="start center" class="md-caption">
+        <footer [appName]="componentConfig.appName"></footer>
       </div>
     </td-layout-footer>
   </td-layout-nav>

@@ -54,9 +54,9 @@ export class StringHelper {
      * @param chars number of characters to keep
      * @param addDots dots to be added if the text is shortened
      */
-    static shorten(text: string, chars: number, addDots?: boolean): string | null{
+    static shorten(text: string, chars: number, addDots?: boolean): string{
         if (!text || !chars){
-            return null;
+            return '';
         }
 
         if (text.length <= chars){

@@ -23,7 +23,8 @@
 		"notifications": "Notifikace",
 		"profile": "Profil",
 		"logout": "Odhlásit",
-		"myProfile": "Upravit"
+		"more": "Více",
+		"seeAllNotifications": "Zobrazit všechny notifikace"
 	},
 	"shared": {
 		"login": "Přihlášení",

@@ -14,7 +14,7 @@ import { RepositoryClient } from '../../../lib/repository';
 import { UserService, ExerciseCategoryService, ExerciseService, LogService, WorkoutCategoryService,
      WorkoutExerciseService, WorkoutService, DietCategoryService, DietFoodService, DietService,
     FoodCategoryService, FoodService, FoodUnitService, ProgressItemService, ProgressItemTypeService,
-   ChatMessageService } from '../../services';
+   ChatMessageService, FeedService } from '../../services';
 
 // Angular material
 import { MdSnackBar, MdDialog } from '@angular/material';
@@ -108,8 +108,11 @@ export class ComponentDependencyService {
         this.itemServices.progressItemService = injector.get(ProgressItemService);
         this.itemServices.progressItemTypeService = injector.get(ProgressItemTypeService);
 
-        // caht services
+        // chat services
         this.itemServices.chatMessageService = injector.get(ChatMessageService);
+
+        // feed services
+        this.itemServices.feedService = injector.get(FeedService);
     }
 }
 
@@ -164,4 +167,7 @@ export class ItemServices {
 
     // chat
     public chatMessageService: ChatMessageService;
+
+    // feed
+    public feedService: FeedService;
 }

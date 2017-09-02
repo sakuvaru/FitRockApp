@@ -7,7 +7,7 @@ export class MyProfileMenuItems {
     constructor() {
         this.menuItems = [
             new MenuItem({ key: 'menu.shared.back' }, 'arrow_back', MenuItemType.trainer, ''),
-            new MenuItem({ key: 'module.profile.submenu.editProfile' }, 'edit', MenuItemType.trainer, 'profile/edit'),
+            new MenuItem({ key: 'module.profile.submenu.editProfile' }, 'edit', MenuItemType.auth, 'profile/edit'),
         ];
     }
 }

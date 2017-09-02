@@ -6,7 +6,42 @@ export class Feed extends BaseItem {
     public feedUserId: number;
     public markedAsRead: boolean;
     public feedType: string;
-    public dataList: DataModel[];
+    public data: DataModel[];
     public feedUser: User;
+}
+
+export class FeedResult {
+
+    /**
+     * Data passed to feed
+     */
+    public data: DataModel[];
+
+    /**
+     * Translation key of the feed
+     */
+    public translationKey?: string;
+
+    /**
+     * Additional data for translation
+     */
+    public translationData?: string;
+
+    /**
+     * Raw text returned with feed (e.g. message text is not and cannot be translated)
+     */
+    public text?: string;
+
+
+    constructor(
+        options: {
+            data?: DataModel[],
+            translationKey?: string,
+            translationData?: any
+            text?: string,
+        }
+    ) {
+        Object.assign(this, options);
+    }
 }
 
