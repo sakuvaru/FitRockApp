@@ -24,7 +24,8 @@
 		"profile": "Profil",
 		"logout": "Odhlásit",
 		"more": "Více",
-		"seeAllNotifications": "Zobrazit všechny notifikace"
+		"seeAllNotifications": "Zobrazit všechny notifikace",
+		"noNotifications": "Nemáš žádné notifikace"
 	},
 	"shared": {
 		"login": "Přihlášení",
@@ -212,7 +213,8 @@
 		"profile": {
 			"submenu": {
 				"editProfile": "Upravit účet",
-				"myProfile": "Můj účet"
+				"myProfile": "Můj účet",
+				"feeds": "Notifikace"
 			}
 		},
 		"shared": {

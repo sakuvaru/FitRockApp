@@ -30,9 +30,10 @@
           <ng-template [ngIf]="feeds" let-last="last">
             <ng-container *ngFor="let feed of feeds">
               <a md-list-item [class.bgc-grey-200]="!feed.markedAsRead" routerLink="{{ getFeedUrl(feed) }}">
-                <md-icon md-list-avatar>{{ getFeedIcon(feed) }}</md-icon>
+                <md-icon md-list-avatar>{{ getFeedIcon(feed) }}</md-icon> 
                 <h4 md-line>
                   <span class="text-wrap">
+                   <span *ngIf="!feed.markedAsRead" class="tc-red-500">* </span>
                     {{ getFeedText(feed) | async }}
                   </span>
                 </h4>
@@ -42,7 +43,10 @@
             </ng-container>
           </ng-template>
         </md-nav-list>
-        <button md-button color="primary" td-menu-footer>
+        <button md-button td-menu-footer *ngIf="!feeds || (feeds && feeds.length <= 0)">
+          {{ 'userMenu.noNotifications' | translate }}
+        </button>
+        <button *ngIf="feeds && feeds.length > 0" md-button color="primary" td-menu-footer routerLink="{{ getAuthUrl('profile/feeds') }}">
           {{ 'userMenu.seeAllNotifications' | translate }}
         </button>
       </td-menu>

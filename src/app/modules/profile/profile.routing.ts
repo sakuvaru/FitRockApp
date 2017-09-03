@@ -7,19 +7,23 @@ import { AuthGuardService } from '../../../lib/auth';
 // config
 import { UrlConfig } from '../../core';
 
-// workouts
+// base layouts
 import { SimpleLayoutComponent } from '../../layouts/simple-layout.component';
 import { AdminLayoutComponent } from '../../layouts/admin-layout.component';
 
 // components
 import { EditMyProfileComponent } from './edit/edit-my-profile.component';
+import { FeedsComponent } from './feeds/feeds.component';
 
 const routes: Routes = [
     {
-        // workouts
+        // profile
         path: UrlConfig.AuthMasterPath, component: AdminLayoutComponent, canActivate: [AuthGuardService], children: [
             {
                 path: 'profile/edit', component: EditMyProfileComponent
+            },
+            {
+                path: 'profile/feeds', component: FeedsComponent
             },
         ],
     },

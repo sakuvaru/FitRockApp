@@ -1,7 +1,7 @@
 // ! order does matter! 
 
 // other exports
-export * from './module/core.module';
+export * from './core.module';
 export * from './services/shared.service';
 export * from './services/authenticated-user.service';
 export * from './error-handler/global-error.handler';

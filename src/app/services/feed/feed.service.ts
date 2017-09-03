@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Feed, FeedResult } from '../../models';
-import { RepositoryClient, MultipleItemQuery } from '../../../lib/repository';
+import { RepositoryClient, MultipleItemQuery, ResponseMultiple } from '../../../lib/repository';
 import { BaseTypeService } from '../base/base-type.service';
+import { Observable } from 'rxjs/Rx';
 
 @Injectable()
 export class FeedService extends BaseTypeService<Feed>{
@@ -55,5 +56,25 @@ export class FeedService extends BaseTypeService<Feed>{
             }
 
         return null;
+    }
+
+     getCountOfUnreadNotifications(userId: number): Observable<number> {
+        return this.count()
+        .whereEquals('FeedUserId', userId)
+        .whereEquals('MarkedAsRead', false)
+        .get()
+        .map(response => response.count);
+    }
+
+     getFeedsForUser(userId: number, limit?: number): MultipleItemQuery<Feed> {
+        var query = this.items()
+            .whereEquals('FeedUserId', userId)
+            .orderByDesc('Created');
+
+        if (limit){
+            query.limit(limit);
+        }
+
+        return query;
     }
 }

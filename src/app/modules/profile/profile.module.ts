@@ -7,6 +7,7 @@ import { CoreModule } from '../../core';
 
 // components
 import { EditMyProfileComponent } from './edit/edit-my-profile.component';
+import { FeedsComponent } from './feeds/feeds.component';
 
 // router
 import { ProfileRouter } from './profile.routing';
@@ -22,7 +23,8 @@ import { SharedModule} from '../shared/shared.module';
         SharedModule
     ],
     declarations: [
-        EditMyProfileComponent
+        EditMyProfileComponent,
+        FeedsComponent
     ]
 })
 export class ProfileModule { }

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
 // Core module
-import { CoreModule } from '../core/module/core.module';
+import { CoreModule } from '../core/core.module';
 
 // components
 import { SimpleLayoutComponent } from './simple-layout.component';

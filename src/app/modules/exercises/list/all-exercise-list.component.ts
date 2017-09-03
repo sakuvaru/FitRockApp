@@ -29,6 +29,10 @@ export class AllExerciseListComponent extends BaseComponent implements OnInit {
       componentTitle: { key: 'module.exercises.overview' },
     });
 
+    this.initDataTable();
+  }
+
+  private initDataTable(): void {
     this.config = this.dependencies.webComponentServices.dataTableService.dataTable<Exercise>()
       .fields([
         { label: 'module.workouts.exerciseName', value: (item) => { return item.exerciseName }, flex: 40 },

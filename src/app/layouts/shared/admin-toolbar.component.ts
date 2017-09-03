@@ -14,40 +14,30 @@ export class AdminToolbarComponent extends BaseComponent implements OnInit {
     private feedsCount: number;
     private feeds: Feed[];
 
+    private readonly limitFeedsCount: number = 8;
+
     constructor(protected dependencies: ComponentDependencyService) {
         super(dependencies)
     }
 
     ngOnInit() {
+        this.subscribeToFeedObservables();
+    }
+
+    private subscribeToFeedObservables():void{
         // do not run it through super.subscribeToObservable
         // as it causes some issues
-        this.getLatestNotificationsObservable().subscribe();
-        this.getCountOfUnreadNotificationsObservable().subscribe();
-    }
 
-    private getCountOfUnreadNotificationsObservable(): Observable<any> {
-        return this.dependencies.itemServices.feedService.count()
-        .whereEquals('FeedUserId', this.dependencies.authenticatedUserService.getUserId())
-        .whereEquals('MarkedAsRead', false)
-        .get()
-        .takeUntil(this.ngUnsubscribe)
-        .map(response => {
-            this.feedsCount = response.count;
-        });
-    }
+        this.dependencies.itemServices.feedService.getCountOfUnreadNotifications(this.dependencies.authenticatedUserService.getUserId())
+            .takeUntil(this.ngUnsubscribe)
+            .map(count => this.feedsCount = count)
+            .subscribe();
 
-    private getLatestNotificationsObservable(): Observable<any> {
-        return this.dependencies.itemServices.feedService.items()
-            .whereEquals('FeedUserId', this.dependencies.authenticatedUserService.getUserId())
-            .limit(10)
-            .orderByDesc('Created')
+        this.dependencies.itemServices.feedService.getFeedsForUser(this.dependencies.authenticatedUserService.getUserId(), this.limitFeedsCount)
             .get()
             .takeUntil(this.ngUnsubscribe)
-            .map(response => {
-                if (!response.isEmpty()) {
-                    this.feeds = response.items;
-                }
-            });
+            .map(response => this.feeds = response.items)
+            .subscribe();
     }
 
     private getFeedUrl(feed: Feed): string | null{
