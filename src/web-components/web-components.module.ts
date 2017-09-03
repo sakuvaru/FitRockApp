@@ -12,6 +12,7 @@ import { DynamicFormModule } from './dynamic-form/dynamic-form.module';
 import { LoaderModule } from './loader/loader.module';
 import { GraphModule } from './graph/graph.module';
 import { MessagesModule } from './messages/messages.module';
+import { LoadMoreModule } from './load-more/load-more.module';
 
 @NgModule({
     imports: [
@@ -25,7 +26,8 @@ import { MessagesModule } from './messages/messages.module';
         ButtonsModule,
         LoaderModule,
         GraphModule,
-        MessagesModule
+        MessagesModule,
+        LoadMoreModule
     ]
 })
 export class WebComponentsModule { }

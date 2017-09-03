@@ -6,10 +6,11 @@ import { AppConfig, UrlConfig, ComponentDependencyService, BaseComponent } from 
 // requied by component
 import { MyProfileMenuItems } from '../menu.items';
 import { FormConfig } from '../../../../web-components/dynamic-form';
-import { Feed } from '../../../models';
+import { Feed, FeedResult } from '../../../models';
 import { DataTableConfig, AlignEnum, Filter } from '../../../../web-components/data-table';
 import { Observable } from 'rxjs/Rx';
 import { StringHelper } from '../../../../lib/utilities';
+import { LoadMoreConfig } from '../../../../web-components/load-more';
 
 @Component({
     templateUrl: 'feeds.component.html'
@@ -17,6 +18,7 @@ import { StringHelper } from '../../../../lib/utilities';
 export class FeedsComponent extends BaseComponent implements OnInit {
 
     private config: DataTableConfig<Feed>;
+    private loadMoreConfig: LoadMoreConfig<Feed>;
 
     constructor(
         protected dependencies: ComponentDependencyService) {
@@ -27,7 +29,7 @@ export class FeedsComponent extends BaseComponent implements OnInit {
         super.ngOnInit();
 
         this.initMenu();
-        this.initDataTable();
+        this.initLoadMore();
     }
 
     private initMenu(): void {
@@ -39,44 +41,47 @@ export class FeedsComponent extends BaseComponent implements OnInit {
         });
     }
 
-    private initDataTable(): void {
-        this.config = this.dependencies.webComponentServices.dataTableService.dataTable<Feed>()
-            .fields([
-                {
-                    value: (item) => {
-                        var feedResult = this.dependencies.itemServices.feedService.getFeedResult(item);
-                        if (feedResult && feedResult.text){
-                            return feedResult.text
+    private initLoadMore(): void {
+        this.loadMoreConfig = this.dependencies.webComponentServices.laodMoreService.loadMore<Feed>(
+            search => this.dependencies.itemServices.feedService.getFeedsForUser(this.dependencies.authenticatedUserService.getUserId()),
+            query => query.get().takeUntil(this.ngUnsubscribe))
+            .text({
+                resolver: item => {
+                    var feedResult = this.getFeedResult(item)
+                    if (feedResult) {
+                        if (feedResult.shouldBeTranslated() && feedResult.translationKey) {
+                            return feedResult.translationKey;
                         }
-                        return '';
-                    },
-                    flex: 70
+                        if (feedResult.text) {
+                            return feedResult.text;
+                        }
+                    }
+                    return '';
                 },
-                {
-                    value: (item) => super.fromNow(item.created),
-                    isSubtle: true,
-                    align: AlignEnum.Right,
-                    hideOnSmallScreens: true,
-                    flex: 30
+                translate: item => {
+                    var feedResult = this.getFeedResult(item)
+                    if (feedResult) {
+                        return feedResult.shouldBeTranslated();
+                    }
+                    return false;
                 },
-            ])
-            .iconResolver(item => {
-               return this.getFeedIcon(item)
+                translationData: item => {
+                    var feedResult = this.getFeedResult(item)
+                    if (feedResult) {
+                        return feedResult.translationData;
+                    }
+                    return false;
+                }
             })
-            .loadQuery(searchTerm => {
-                return this.dependencies.itemServices.feedService.getFeedsForUser(this.dependencies.authenticatedUserService.getUserId())
+            .footer({ resolver: item => super.fromNow(item.created) })
+            .title({
+                htmlResolver: item => !item.markedAsRead ? '<span class="tc-red-500">* </span>' : ''
             })
-            .loadResolver(query => {
-                return query
-                    .get()
-                    .takeUntil(this.ngUnsubscribe)
-            })
-            .showAllFilter(false)
+            .iconResolver(item => this.getFeedIcon(item))
+            .pageSize(15)
             .onBeforeLoad(isInitialLoad => isInitialLoad ? super.startLoader() : super.startGlobalLoader())
             .onAfterLoad(isInitialLoad => isInitialLoad ? super.stopLoader() : super.stopGlobalLoader())
-            .showPager(true)
             .showSearch(false)
-            .pagerSize(10)
             .build();
     }
 
@@ -84,28 +89,8 @@ export class FeedsComponent extends BaseComponent implements OnInit {
         return this.dependencies.itemServices.feedService.getFeedIcon(feed.feedType);
     }
 
-    private getFeedText(feed: Feed): Observable<string> {
+    private getFeedResult(feed: Feed): FeedResult | null {
         var feedResult = this.dependencies.itemServices.feedService.getFeedResult(feed);
-
-        if (!feedResult){
-            return Observable.of('');
-        }
-
-        // output direct text
-        if (feedResult.text){
-            return Observable.of(StringHelper.shorten(feedResult.text, 85, true));
-        }
-
-        // translate output
-        if (feedResult.translationKey){
-            return super.translate(feedResult.translationKey, feedResult.translationData);
-        }
-
-        // something went wrong
-        if (AppConfig.DevModeEnabled){
-            console.warn('Could not process feed result for Feed -> Id = ' + feed.id);
-        }
-
-        return Observable.of('');
+        return feedResult;
     }
 }

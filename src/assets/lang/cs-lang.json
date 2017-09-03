@@ -217,6 +217,9 @@
 				"feeds": "Notifikace"
 			}
 		},
+		"feeds":{
+			"userSentYouAMessage": "<strong>{{user}}</strong>, {{message}}"
+		},
 		"shared": {
 			"errors": {
 				"errorPageTitle": "Nastala neočekáváná chyba",
@@ -356,6 +359,11 @@
 		},
 		"messages":{
 			"noDataTitle": "Nejsou zde žádná data"
+		},
+		"loadMore": {
+			"loadMore": "Další",
+			"defaultAllItemsLoaded": "Všechny záznamy nahrány",
+			"search": "Hledat ..."
 		}
 	}
 }

@@ -1,0 +1,58 @@
+<ng-container *ngIf="config">
+
+  <div *ngIf="config.showSearch" class="push-left push-right push-top">
+    <md-input-container flex>
+      <input mdInput placeholder="{{'webComponents.loadMore.search' | translate}}" [formControl]="searchControl" [value]="searchTerm"
+      />
+      <span mdPrefix><md-icon>search</md-icon></span>
+    </md-input-container>
+  </div>
+
+  <ng-container *ngIf="items && config.wrapInCard">
+    <md-card class="push">
+      <ng-container *ngFor="let item of items; let last = last">
+        <md-list>
+
+          <ng-container *ngIf="{ text: getItemTextField(item), title: getItemTitleField(item), footer: getItemFooterField(item) } as presentation">
+            <md-list-item>
+              <md-icon *ngIf="config.iconResolver" md-list-avatar>{{ config.iconResolver(item) }}</md-icon>
+              <img *ngIf="config.imageResolver" src="{{ config.imageResolver(item) }}" alt="" md-list-avatar>
+              <p md-line>
+                <span *ngIf="presentation.title" class="md-body-1">
+                  <span *ngIf="!presentation.title.translate || !presentation.title.translate(item)">
+                    <span *ngIf="presentation.title.htmlResolver" [innerHtml]="presentation.title.htmlResolver(item)"></span>
+                    <strong *ngIf="presentation.title.resolver">{{ presentation.title.resolver(item) }}</strong>
+                </span>
+                <strong *ngIf="presentation.title.translate && presentation.title.translate(item)" [innerHtml]="presentation.title.resolver(item) | translate:presentation.title.translationData(item)"></strong>
+                </span>
+                <span *ngIf="presentation.text" class="md-body-1">
+                    <span *ngIf="!presentation.text.translate || !presentation.text.translate(item)">
+                        <span *ngIf="presentation.text.htmlResolver" [innerHtml]="presentation.text.htmlResolver(item)"></span>
+                        <span *ngIf="presentation.text.resolver">{{ presentation.text.resolver(item) }}</span>
+                    </span>
+                </span>
+                <span *ngIf="presentation.text.translate && presentation.text.translate(item)" [innerHtml]="presentation.text.resolver(item) | translate:presentation.text.translationData(item)"></span>
+              </p>
+              <p md-line *ngIf="presentation.footer">
+                <span *ngIf="!presentation.footer.translate || !presentation.footer.translate(item)" class="md-caption">
+                    <span *ngIf="presentation.footer.htmlResolver" [innerHtml]="presentation.footer.htmlResolver(item)"></span>
+                    <span *ngIf="presentation.footer.resolver">{{ presentation.footer.resolver(item) }}</span>
+                </span>
+                <span *ngIf="presentation.footer.translate && presentation.footer.translate(item)" class="md-caption" [innerHtml]="presentation.footer.resolver(item) | translate:presentation.footer.translationData(item)"></span>
+              </p>
+            </md-list-item>
+            <md-divider *ngIf="!last" md-inset></md-divider>
+          </ng-container>
+        </md-list>
+
+      </ng-container>
+    </md-card>
+
+    <div class="text-center psh">
+      <button *ngIf="showMoreButton" md-raised-button color="accent" (click)="loadMoreButtonSubject.next()">{{ 'webComponents.loadMore.loadMore' | translate }}</button>
+      <p *ngIf="!showMoreButton"><span class="md-caption"><em>{{ 'webComponents.loadMore.defaultAllItemsLoaded' | translate }}</em></span></p>
+    </div>
+
+  </ng-container>
+
+</ng-container>

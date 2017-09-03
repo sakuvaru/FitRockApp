@@ -1,5 +1,5 @@
 import { IItem } from '../interfaces/iitem.interface';
-import {IPropertyInfo } from '../interfaces/iproperty-info.interface';
+import { IPropertyInfo } from '../interfaces/iproperty-info.interface';
 
 export abstract class BaseItem implements IItem {
     public type: string;
@@ -12,6 +12,9 @@ export abstract class BaseItem implements IItem {
 
     public createdByUserId?: number;
     public updatedByUserId?: number;
+
+    public createdByUser?: any;
+    public updatedByUser?: any;
 
     public resolver?: ((fieldName: string) => string);
 

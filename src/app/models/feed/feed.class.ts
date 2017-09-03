@@ -1,6 +1,7 @@
 import { BaseItem } from '../../../lib/repository';
 import { User } from '../user.class';
 import { DataModel } from '../extra/data-model.class';
+import { StringHelper } from '../../../lib/utilities';
 
 export class Feed extends BaseItem {
     public feedUserId: number;
@@ -32,6 +33,23 @@ export class FeedResult {
      */
     public text?: string;
 
+    /**
+     * Same as text, but shortened
+     */
+    public shortenText(): string{
+        if (this.text){
+            return StringHelper.shorten(this.text, 85, true);
+        }
+
+        return '';
+    }
+
+     /**
+     * Indicates if translation key is present and the feed should be translated
+     */
+    public shouldBeTranslated(): boolean{
+        return this.translationKey != null;
+    }
 
     constructor(
         options: {

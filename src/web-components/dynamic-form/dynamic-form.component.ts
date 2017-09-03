@@ -127,7 +127,7 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
     initButtonClicks() {
         if (this.config.isInsertForm()) {
             this.insertButtonSubject
-                .switchMap(response => {
+                .switchMap(event => {
                     // before save
                     if (this.config.onBeforeSave) {
                         this.config.onBeforeSave();
@@ -154,7 +154,7 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
         }
         else if (this.config.isEditForm()) {
             this.editButtonSubject
-                .switchMap(response => {
+                .switchMap(event => {
                     // before save
                     if (this.config.onBeforeSave) {
                         this.config.onBeforeSave();

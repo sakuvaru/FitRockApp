@@ -16,6 +16,12 @@ export class AdminToolbarComponent extends BaseComponent implements OnInit {
 
     private readonly limitFeedsCount: number = 8;
 
+    /**
+     * This field is used to prevent feeds from being changed when clicking on them (clicking changes its 'markedAsRead' status
+     * which would change styling of the item)
+     */
+    private preventFeedChange: boolean = false;
+
     constructor(protected dependencies: ComponentDependencyService) {
         super(dependencies)
     }
@@ -24,7 +30,7 @@ export class AdminToolbarComponent extends BaseComponent implements OnInit {
         this.subscribeToFeedObservables();
     }
 
-    private subscribeToFeedObservables():void{
+    private subscribeToFeedObservables(): void {
         // do not run it through super.subscribeToObservable
         // as it causes some issues
 
@@ -36,17 +42,19 @@ export class AdminToolbarComponent extends BaseComponent implements OnInit {
         this.dependencies.itemServices.feedService.getFeedsForUser(this.dependencies.authenticatedUserService.getUserId(), this.limitFeedsCount)
             .get()
             .takeUntil(this.ngUnsubscribe)
-            .map(response => this.feeds = response.items)
+            .map(response => {
+                return this.feeds = response.items;
+            })
             .subscribe();
     }
 
-    private getFeedUrl(feed: Feed): string | null{
-        if (!feed){
+    private getFeedUrl(feed: Feed): string | null {
+        if (!feed) {
             return null;
         }
 
         // construct url based on field type
-        if (feed.feedType.toLowerCase() == 'message'){
+        if (feed.feedType.toLowerCase() == 'message') {
             console.warn('New chat app needs to be created and this should point to it');
             return super.getTrainerUrl('clients');
         }
@@ -61,25 +69,57 @@ export class AdminToolbarComponent extends BaseComponent implements OnInit {
     private getFeedText(feed: Feed): Observable<string> {
         var feedResult = this.dependencies.itemServices.feedService.getFeedResult(feed);
 
-        if (!feedResult){
+        if (!feedResult) {
             return Observable.of('');
         }
 
         // output direct text
-        if (feedResult.text){
-            return Observable.of(StringHelper.shorten(feedResult.text, 85, true));
+        if (feedResult.text) {
+            return Observable.of(feedResult.shortenText());
         }
 
         // translate output
-        if (feedResult.translationKey){
+        if (feedResult.translationKey && feedResult.shouldBeTranslated()) {
             return super.translate(feedResult.translationKey, feedResult.translationData);
         }
 
         // something went wrong
-        if (AppConfig.DevModeEnabled){
+        if (AppConfig.DevModeEnabled) {
             console.warn('Could not process feed result for Feed -> Id = ' + feed.id);
         }
 
         return Observable.of('');
+    }
+
+    private handleClickFeed(feed: Feed): void {
+        if (feed) {
+            this.preventFeedChange = true;
+
+            // mark feed as read upon clicking
+            this.getMarkAsReadObservable(feed).subscribe(response => {
+                this.preventFeedChange = false;
+                
+                // there is one less unread feed
+                if (this.feedsCount > 0){
+                    this.feedsCount--;
+                }
+
+                // go to feed details
+                var feedUrl = this.getFeedUrl(feed);
+                if (!feedUrl) {
+                    console.warn('Cannot navigate to feed with id = ' + feed.id);
+                }
+
+                super.navigate([feedUrl]);
+            });
+        }
+        else {
+            console.warn('Cannot click on invalid feed');
+        }
+    }
+
+    private getMarkAsReadObservable(feed: Feed): Observable<any> {
+        return this.dependencies.itemServices.feedService.markFeedAsRead(feed)
+            .takeUntil(this.ngUnsubscribe);
     }
 }

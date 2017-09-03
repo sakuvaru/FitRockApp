@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Feed, FeedResult } from '../../models';
-import { RepositoryClient, MultipleItemQuery, ResponseMultiple } from '../../../lib/repository';
+import { RepositoryClient, MultipleItemQuery, ResponseMultiple, ResponseEdit } from '../../../lib/repository';
 import { BaseTypeService } from '../base/base-type.service';
 import { Observable } from 'rxjs/Rx';
+import { StringHelper } from '../../../lib/utilities';
 
 @Injectable()
 export class FeedService extends BaseTypeService<Feed>{
@@ -41,21 +42,27 @@ export class FeedService extends BaseTypeService<Feed>{
 
         // message feeds
         if (feed.feedType.toLowerCase() === 'message'){
+            // prepare translation data
+            var translationData: any = {};
 
             var chatMessageData = feed.data.find(m => m.key === 'Message');
+            var userData = feed.data.find(m => m.key === 'User');
+
+            translationData.message = chatMessageData ? StringHelper.shorten(chatMessageData.value, 85, true) : '';
+            translationData.user = userData ? userData.value : '';
 
             return new FeedResult({
                 data: feed.data,
-                text: chatMessageData ? chatMessageData.value : ''
+                translationKey: 'module.feeds.userSentYouAMessage',
+                translationData: translationData
             })
         }
-
-            // construct url based on field type
-            if (feed.type.toLowerCase() == 'message'){
-               
-            }
-
         return null;
+    }
+
+    markFeedAsRead(feed: Feed): Observable<ResponseEdit<Feed>> {
+        feed.markedAsRead = true;
+        return super.edit(feed).set();
     }
 
      getCountOfUnreadNotifications(userId: number): Observable<number> {

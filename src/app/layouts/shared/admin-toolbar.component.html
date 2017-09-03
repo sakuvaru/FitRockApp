@@ -29,12 +29,12 @@
         <md-nav-list dense style="padding-top: 0px">
           <ng-template [ngIf]="feeds" let-last="last">
             <ng-container *ngFor="let feed of feeds">
-              <a md-list-item [class.bgc-grey-200]="!feed.markedAsRead" routerLink="{{ getFeedUrl(feed) }}">
+              <a md-list-item [class.bgc-grey-100]="!feed.markedAsRead || (preventFeedChange && !feed.markedAsRead)" (click)="handleClickFeed(feed)">
                 <md-icon md-list-avatar>{{ getFeedIcon(feed) }}</md-icon> 
                 <h4 md-line>
                   <span class="text-wrap">
-                   <span *ngIf="!feed.markedAsRead" class="tc-red-500">* </span>
-                    {{ getFeedText(feed) | async }}
+                   <span *ngIf="!feed.markedAsRead || (preventFeedChange && !feed.markedAsRead)" class="tc-red-500">* </span>
+                      <span [innerHtml]="getFeedText(feed) | async "></span>
                   </span>
                 </h4>
                 <p md-line class="md-caption">{{ fromNow(feed.created) }}</p>

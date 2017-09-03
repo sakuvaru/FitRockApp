@@ -84,11 +84,6 @@ export class DataTableConfig<TItem extends IItem> {
     public onBeforeLoad: (isInitialLoad: boolean) => void;
 
     /**
-     * Handler executed after initial load
-     */
-    public onAfterInitialLoad: () => void;
-
-    /**
      * Set of dynamic filters (do not combine with static filters)
      */
     public dynamicFilters: <TFilter extends Filter<IItem>>(searchTerm: string) => Observable<Filter<IItem>[]>;
@@ -122,7 +117,7 @@ export class DataTableConfig<TItem extends IItem> {
             showSearch?: boolean,
             iconResolver?: (item: TItem) => string,
             avatarUrlResolver?: (item: TItem) => string,
-            searchNoItemsText?: string,
+            searchNoItemsTextKey?: string,
             noItemsText?: string,
             onAfterLoad?: (isInitialLoad) => void,
             onBeforeLoad?: (isInitialLoad) => void,
