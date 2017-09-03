@@ -6,7 +6,7 @@
         <md-list-item (click)="onItemClick(item)">
             <md-checkbox *ngIf="isSelectable" class="push-right" (change)="handleCheckboxChange($event, item)"></md-checkbox>
             <img *ngIf="config.avatarUrlResolver" md-list-avatar src="{{getAvatarUrl()}}" alt="" class="push-right">
-            <md-icon *ngIf="config.iconResolver" md-list-icon>{{getIcon()}}</md-icon>
+            <md-icon *ngIf="config.iconResolver" md-list-icon>{{getIcon(item)}}</md-icon>
             <span hideOnMobile [enabled]="field.hideOnSmallScreens" *ngFor="let field of config.fields" flex="field.flex" class="{{getTextAlignClass(field)}}">
                 <span [class.md-caption]="field.isSubtle" [class.tc-grey-500]="field.isSubtle">
                     <ng-container *ngIf="!translateValue(field)">
@@ -37,7 +37,7 @@
         <md-list-item>
             <md-checkbox *ngIf="isSelectable" class="push-right" (change)="handleCheckboxChange($event, item)"></md-checkbox>
             <img *ngIf="config.avatarUrlResolver" md-list-avatar src="{{getAvatarUrl()}}" alt="" class="push-right">
-            <md-icon *ngIf="config.iconResolver" md-list-icon>{{getIcon()}}</md-icon>
+            <md-icon *ngIf="config.iconResolver" md-list-icon>{{getIcon(item)}}</md-icon>
             <span hideOnMobile [enabled]="field.hideOnSmallScreens" *ngFor="let field of config.fields" flex="field.flex" class="{{getTextAlignClass(field)}}">
                 <span [class.md-caption]="field.isSubtle" [class.tc-grey-500]="field.isSubtle">
                     <ng-container *ngIf="!translateValue(field)">
