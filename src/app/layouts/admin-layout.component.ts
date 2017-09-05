@@ -6,6 +6,7 @@ import { ComponentDependencyService, BaseComponent, MenuItemType, AppConfig } fr
 // required by component
 import { Subscription } from 'rxjs/Rx';
 import { StringHelper } from '../../lib/utilities';
+import { FormControl } from '@angular/forms';
 
 @Component({
     templateUrl: 'admin-layout.component.html'
@@ -16,6 +17,7 @@ export class AdminLayoutComponent extends BaseComponent implements OnDestroy, On
 
     private hideAdminLayoutWhenComponentsLoaderIsEnabled = AppConfig.HideAdminLayoutWhenComponentsLoaderIsEnabled;
 
+    private enableComponentSearch: boolean;
     private componentTitle: string;
     private menuTitle: string;
     private componentLoaderEnabled: boolean;
@@ -29,13 +31,16 @@ export class AdminLayoutComponent extends BaseComponent implements OnDestroy, On
      */
     private urlSegment: string;
 
+    /**
+     * Admin search
+     */
+    private searchControl = new FormControl();
+
+    private searchDebounceTime: number = 300;
+
+    private componentSearchValue: string = '';
 
     private readonly titleCharsLength: number = 22;
-
-    // subscriptions - unsubscribe 
-    private componentLoaderSubscription: Subscription;
-    private topLoaderSubscription: Subscription;
-    private componentConfigSubscription: Subscription;
 
     constructor(
         protected dependencies: ComponentDependencyService,
@@ -50,15 +55,18 @@ export class AdminLayoutComponent extends BaseComponent implements OnDestroy, On
     ngOnInit() {
         super.ngOnInit();
 
+        // init component search if search is enabled
+        this.initComponentSearch();
+
         // init user texts
         var user = this.dependencies.authenticatedUserService.getUser();
-        if (user){
+        if (user) {
             this.displayUsername = user.firstName + ' ' + user.lastName;
             this.email = user.email;
         }
 
         // register loaders
-        this.componentLoaderSubscription = this.dependencies.coreServices.sharedService.componentloaderChanged$
+        this.dependencies.coreServices.sharedService.componentloaderChanged$
             .takeUntil(this.ngUnsubscribe)
             .subscribe(
             enabled => {
@@ -66,7 +74,7 @@ export class AdminLayoutComponent extends BaseComponent implements OnDestroy, On
                 this.cdr.detectChanges();
             });
 
-        this.topLoaderSubscription = this.dependencies.coreServices.sharedService.topLoaderChanged$
+        this.dependencies.coreServices.sharedService.topLoaderChanged$
             .takeUntil(this.ngUnsubscribe)
             .subscribe(
             enabled => {
@@ -74,11 +82,13 @@ export class AdminLayoutComponent extends BaseComponent implements OnDestroy, On
                 this.cdr.detectChanges();
             });
 
-        this.componentConfigSubscription = this.dependencies.coreServices.sharedService.componentConfigChanged$
+        this.dependencies.coreServices.sharedService.componentConfigChanged$
             .takeUntil(this.ngUnsubscribe)
             .subscribe(
             componentConfig => {
                 this.componentConfig = componentConfig;
+
+                this.enableComponentSearch = componentConfig.enableSearch;
 
                 // resolve component's title using translation services
                 if (componentConfig.componentTitle) {
@@ -110,23 +120,17 @@ export class AdminLayoutComponent extends BaseComponent implements OnDestroy, On
         this.cdr.detectChanges();
     }
 
-    ngOnDestroy() {
-        super.ngOnDestroy();
-        // prevent memory leaks when component is destroyed
-        // source: https://angular.io/docs/ts/latest/cookbook/component-communication.html#!#bidirectional-service
+    private initComponentSearch(): void {
+        this.searchControl.valueChanges
+            .debounceTime(this.searchDebounceTime)
+            .takeUntil(this.ngUnsubscribe)
+            .subscribe(search => {
+                this.dependencies.coreServices.sharedService.setComponentSearch(search);
+            });
+    }
 
-        // in some cases subscription is not yet initialized (e.g. when navigating from constructor), check for null
-        if (this.componentConfigSubscription != null) {
-            this.componentConfigSubscription.unsubscribe();
-        }
-
-        if (this.topLoaderSubscription != null) {
-            this.topLoaderSubscription.unsubscribe();
-        }
-
-        if (this.componentLoaderSubscription != null) {
-            this.componentLoaderSubscription.unsubscribe();
-        }
+    private handleComponentSearch(search: string): void {
+        this.dependencies.coreServices.sharedService.setComponentSearch(search);
     }
 
     private getMenuItemUrl(action: string, type: MenuItemType): string {
@@ -148,7 +152,7 @@ export class AdminLayoutComponent extends BaseComponent implements OnDestroy, On
         return url;
     }
 
-    private getMenuItemColor(action: string, type: MenuItemType): string | null{
+    private getMenuItemColor(action: string, type: MenuItemType): string | null {
         var activeColor = 'accent';
 
         var url = this.getMenuItemUrl(action, type);
@@ -165,7 +169,7 @@ export class AdminLayoutComponent extends BaseComponent implements OnDestroy, On
         return null;
     }
 
-    private shortenTitle(text: string): string | null{
+    private shortenTitle(text: string): string | null {
         return StringHelper.shorten(text, this.titleCharsLength, true)
     }
 }

@@ -15,7 +15,8 @@
 
           <ng-container *ngIf="{ text: getItemTextField(item), title: getItemTitleField(item), footer: getItemFooterField(item) } as presentation">
             <md-list-item>
-              <md-icon *ngIf="config.iconResolver" md-list-avatar>{{ config.iconResolver(item) }}</md-icon>
+              <md-icon *ngIf="config.iconResolver && !config.iconClassResolver" md-list-avatar>{{ config.iconResolver(item) }}</md-icon>
+              <md-icon *ngIf="config.iconResolver && config.iconClassResolver" md-list-avatar [ngClass]="[config.iconClassResolver(item)]">{{ config.iconResolver(item) }}</md-icon>
               <img *ngIf="config.imageResolver" src="{{ config.imageResolver(item) }}" alt="" md-list-avatar>
               <p md-line>
                 <span *ngIf="presentation.title" class="md-body-1">

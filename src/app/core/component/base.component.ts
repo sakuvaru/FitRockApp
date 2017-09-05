@@ -153,7 +153,8 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
             componentTitle?: ResourceKey,
             menuItems?: MenuItem[],
             appName?: string,
-            menuTitle?: ResourceKey
+            menuTitle?: ResourceKey,
+            enableSearch?: boolean
         }): void {
         if (options) {
             Object.assign(this.componentConfig, options);

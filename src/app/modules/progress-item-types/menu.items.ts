@@ -6,8 +6,8 @@ export class ProgressItemTypesOverviewMenuItem {
 
     constructor() {
         this.menuItems = [
-            new MenuItem({ key: 'module.progressItemTypes.submenu.myTypes' }, 'timeline', MenuItemType.trainer, 'progress-item-types'),
-            new MenuItem({ key: 'module.progressItemTypes.submenu.globalTypes' }, 'timeline', MenuItemType.trainer, 'progress-item-types/global'),
+            new MenuItem({ key: 'module.progressItemTypes.submenu.myTypes' }, MenuItemType.trainer, 'progress-item-types', { icon: 'timeline' }),
+            new MenuItem({ key: 'module.progressItemTypes.submenu.globalTypes' }, MenuItemType.trainer, 'progress-item-types/global', { icon: 'timeline' }),
         ];
     }
 }
@@ -18,8 +18,8 @@ export class NewProgressItemTypeMenuItems {
     
         constructor() {
             this.menuItems = [
-                new MenuItem({ key: 'menu.shared.back' }, 'arrow_back', MenuItemType.trainer, 'progress-item-types'),
-                new MenuItem({ key: 'module.progressItemTypes.submenu.new' }, 'create', MenuItemType.trainer, 'progress-item-types/new'),
+                new MenuItem({ key: 'menu.shared.back' },MenuItemType.trainer, 'progress-item-types', { icon: 'arrow_back' }),
+                new MenuItem({ key: 'module.progressItemTypes.submenu.new' }, MenuItemType.trainer, 'progress-item-types/new', { icon: 'create' }),
             ];
         }
     }
@@ -30,8 +30,8 @@ export class ProgressItemMenuItems {
 
     constructor(id: number) {
         this.menuItems = [
-            new MenuItem({ key: 'menu.shared.back' }, 'arrow_back', MenuItemType.trainer, 'progress-item-types'),
-            new MenuItem({ key: 'module.progressItemTypes.submenu.edit' }, 'edit', MenuItemType.trainer, 'progress-item-types/edit/' + id)
+            new MenuItem({ key: 'menu.shared.back' }, MenuItemType.trainer, 'progress-item-types', { icon: 'arrow_back' }),
+            new MenuItem({ key: 'module.progressItemTypes.submenu.edit' }, MenuItemType.trainer, 'progress-item-types/edit/' + id, { icon: 'edit' })
         ];
     }
 }

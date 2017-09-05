@@ -6,8 +6,8 @@ export class FoodOverviewItems {
 
     constructor() {
         this.menuItems = [
-            new MenuItem({ key: 'module.foods.submenu.myFoods' }, 'free_breakfast', MenuItemType.trainer, 'foods'),
-            new MenuItem({ key: 'module.foods.submenu.allFoods' }, 'list', MenuItemType.trainer, 'foods/all'),
+            new MenuItem({ key: 'module.foods.submenu.myFoods' }, MenuItemType.trainer, 'foods', { icon: 'free_breakfast' }),
+            new MenuItem({ key: 'module.foods.submenu.allFoods' }, MenuItemType.trainer, 'foods/all', { icon: 'list' }),
         ];
     }
 }
@@ -18,8 +18,8 @@ export class NewFoodMenuItems {
     
         constructor() {
             this.menuItems = [
-                new MenuItem({ key: 'menu.shared.back' }, 'arrow_back', MenuItemType.trainer, 'foods'),
-                new MenuItem({ key: 'module.foods.submenu.new' }, 'create', MenuItemType.trainer, 'foods/new'),
+                new MenuItem({ key: 'menu.shared.back' }, MenuItemType.trainer, 'foods', { icon: 'arrow_back' }),
+                new MenuItem({ key: 'module.foods.submenu.new' }, MenuItemType.trainer, 'foods/new', { icon: 'create' }),
             ];
         }
     }
@@ -30,9 +30,9 @@ export class FoodMenuItems {
 
     constructor(foodId: number) {
         this.menuItems = [
-            new MenuItem({ key: 'menu.shared.back' }, 'arrow_back', MenuItemType.trainer, 'foods'),
-            new MenuItem({ key: 'module.foods.submenu.preview' }, 'pageview', MenuItemType.trainer, 'foods/preview/' + foodId),
-            new MenuItem({ key: 'module.foods.submenu.edit' }, 'edit', MenuItemType.trainer, 'foods/edit/' + foodId)
+            new MenuItem({ key: 'menu.shared.back' }, MenuItemType.trainer, 'foods', { icon: 'arrow_back' }),
+            new MenuItem({ key: 'module.foods.submenu.preview' },  MenuItemType.trainer, 'foods/preview/' + foodId, { icon: 'pageview' }),
+            new MenuItem({ key: 'module.foods.submenu.edit' }, MenuItemType.trainer, 'foods/edit/' + foodId, { icon: 'edit' })
         ];
     }
 }
@@ -43,8 +43,8 @@ export class FoodPreviewMenuItems {
 
     constructor(foodId: number) {
         this.menuItems = [
-            new MenuItem({ key: 'menu.shared.back' }, 'arrow_back', MenuItemType.trainer, 'foods'),
-            new MenuItem({ key: 'module.foods.submenu.preview' }, 'pageview', MenuItemType.trainer, 'foods/preview/' + foodId)
+            new MenuItem({ key: 'menu.shared.back' }, MenuItemType.trainer, 'foods', { icon: 'arrow_back' }),
+            new MenuItem({ key: 'module.foods.submenu.preview' }, MenuItemType.trainer, 'foods/preview/' + foodId, { icon: 'pageview' })
         ];
     }
 }

@@ -67,6 +67,11 @@ export class LoadMoreConfig<TItem extends IItem> {
     public iconResolver: (item: TItem) => string;
 
     /**
+     * Resolver for icon class 
+     */
+    public iconClassResolver: (item: TItem) => string;
+
+    /**
      * Used to generate image from URL
      */
     public imageResolver: (item: TItem) => string;

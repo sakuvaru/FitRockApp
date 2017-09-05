@@ -6,9 +6,9 @@ export class MyProfileMenuItems {
 
     constructor() {
         this.menuItems = [
-            new MenuItem({ key: 'menu.shared.back' }, 'arrow_back', MenuItemType.trainer, ''),
-            new MenuItem({ key: 'module.profile.submenu.editProfile' }, 'edit', MenuItemType.auth, 'profile/edit'),
-            new MenuItem({ key: 'module.profile.submenu.feeds' }, 'rss_feed', MenuItemType.auth, 'profile/feeds'),
+            new MenuItem({ key: 'menu.shared.back' }, MenuItemType.trainer, '', { icon: 'arrow_back' }),
+            new MenuItem({ key: 'module.profile.submenu.editProfile' }, MenuItemType.auth, 'profile/edit', { icon: 'edit' }),
+            new MenuItem({ key: 'module.profile.submenu.feeds' }, MenuItemType.auth, 'profile/feeds', { icon: 'rss_feed' }),
         ];
     }
 }

@@ -74,10 +74,8 @@ export class FeedsComponent extends BaseComponent implements OnInit {
                 }
             })
             .footer({ resolver: item => super.fromNow(item.created) })
-            .title({
-                htmlResolver: item => !item.markedAsRead ? '<span class="tc-red-500">* </span>' : ''
-            })
             .iconResolver(item => this.getFeedIcon(item))
+            .iconClassResolver(item => !item.markedAsRead ? 'tc-red-500' : '')
             .pageSize(15)
             .onBeforeLoad(isInitialLoad => isInitialLoad ? super.startLoader() : super.startGlobalLoader())
             .onAfterLoad(isInitialLoad => isInitialLoad ? super.stopLoader() : super.stopGlobalLoader())

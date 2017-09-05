@@ -6,7 +6,7 @@ export class ClientOverviewMenuItems implements IMenuItems {
 
     constructor() {
         this.menuItems = [
-            new MenuItem({ key: 'module.clients.allClients' }, 'people', MenuItemType.trainer, 'clients'),
+            new MenuItem({ key: 'module.clients.allClients' }, MenuItemType.trainer, 'clients', { icon: 'people' }),
         ];
     }
 }
@@ -17,8 +17,8 @@ export class NewClientMenuItems implements IMenuItems {
 
     constructor() {
         this.menuItems = [
-            new MenuItem({ key: 'menu.shared.back' }, 'arrow_back', MenuItemType.trainer, 'clients'),
-            new MenuItem({ key: 'module.clients.submenu.newClient' }, 'create', MenuItemType.trainer, 'clients/new'),
+            new MenuItem({ key: 'menu.shared.back' }, MenuItemType.trainer, 'clients', { icon: 'arrow_back' }),
+            new MenuItem({ key: 'module.clients.submenu.newClient' }, MenuItemType.trainer, 'clients/new', { icon: 'create' }),
         ];
     }
 }
@@ -29,16 +29,16 @@ export class ClientMenuItems implements IMenuItems {
 
     constructor(id: number) {
         this.menuItems = [
-            new MenuItem({ key: 'menu.shared.back' }, 'arrow_back', MenuItemType.trainer, 'clients'),
-            new MenuItem({ key: 'Profil' }, 'person', MenuItemType.trainer, 'profile'),
-            new MenuItem({ key: 'module.clients.submenu.chat' }, 'mail', MenuItemType.trainer, 'clients/edit/' + id + '/chat'),
-            new MenuItem({ key: 'Schůzky' }, 'schedule', MenuItemType.trainer, 'appointments'),
-            new MenuItem({ key: 'module.clients.submenu.workout' }, 'fitness_center', MenuItemType.trainer, 'clients/edit/' + id + '/workout'),
-            new MenuItem({ key: 'module.clients.submenu.diet' }, 'restaurant', MenuItemType.trainer, 'clients/edit/' + id + '/diet'),
-            new MenuItem({ key: 'module.clients.submenu.progress' }, 'timeline', MenuItemType.trainer, 'clients/edit/' + id + '/progress'),
-            new MenuItem({ key: 'module.clients.submenu.stats' }, 'show_chart', MenuItemType.trainer, 'clients/edit/' + id + '/stats'),
-            new MenuItem({ key: 'Fotogalerie' }, 'camera', MenuItemType.trainer, 'clients/galllery/' + id),
-            new MenuItem({ key: 'Změna údajů' }, 'edit', MenuItemType.trainer, 'clients/edit/' + id)
+            new MenuItem({ key: 'menu.shared.back' }, MenuItemType.trainer, 'clients', { icon: 'arrow_back' }),
+            new MenuItem({ key: 'Profil' }, MenuItemType.trainer, 'profile', { icon: 'person' }),
+            new MenuItem({ key: 'module.clients.submenu.chat' }, MenuItemType.trainer, 'clients/edit/' + id + '/chat', { icon: 'mail' }),
+            new MenuItem({ key: 'Schůzky' }, MenuItemType.trainer, 'appointments', { icon: 'schedule' }),
+            new MenuItem({ key: 'module.clients.submenu.workout' }, MenuItemType.trainer, 'clients/edit/' + id + '/workout', { icon: 'fitness_center' }),
+            new MenuItem({ key: 'module.clients.submenu.diet' }, MenuItemType.trainer, 'clients/edit/' + id + '/diet', { icon: 'restaurant' }),
+            new MenuItem({ key: 'module.clients.submenu.progress' }, MenuItemType.trainer, 'clients/edit/' + id + '/progress', { icon: 'timeline' }),
+            new MenuItem({ key: 'module.clients.submenu.stats' },  MenuItemType.trainer, 'clients/edit/' + id + '/stats', { icon: 'show_chart' }),
+            new MenuItem({ key: 'Fotogalerie' }, MenuItemType.trainer, 'clients/galllery/' + id, { icon: 'camera' }),
+            new MenuItem({ key: 'Změna údajů' }, MenuItemType.trainer, 'clients/edit/' + id, { icon: 'edit' })
         ];
     }
 }
@@ -49,9 +49,9 @@ export class ClientEditWorkoutMenuItems implements IMenuItems {
 
     constructor(clientId: number, workoutId: number) {
         this.menuItems = [
-            new MenuItem({ key: 'menu.shared.back' }, 'arrow_back', MenuItemType.trainer, 'clients/edit/' + clientId + '/workout'),
-            new MenuItem({ key: 'module.clients.workout.editPlan' }, 'list', MenuItemType.trainer, 'clients/edit/' + clientId + '/workout/' + workoutId + '/workout-plan'),
-            new MenuItem({ key: 'module.clients.workout.editWorkout' }, 'edit', MenuItemType.trainer, 'clients/edit/' + clientId + '/workout/' + workoutId),
+            new MenuItem({ key: 'menu.shared.back' }, MenuItemType.trainer, 'clients/edit/' + clientId + '/workout', { icon: 'arrow_back' }),
+            new MenuItem({ key: 'module.clients.workout.editPlan' }, MenuItemType.trainer, 'clients/edit/' + clientId + '/workout/' + workoutId + '/workout-plan', { icon: 'list' }),
+            new MenuItem({ key: 'module.clients.workout.editWorkout' }, MenuItemType.trainer, 'clients/edit/' + clientId + '/workout/' + workoutId, { icon: 'edit' }),
         ];
     }
 }
@@ -62,8 +62,8 @@ export class NewClientWorkoutMenuItems implements IMenuItems {
 
     constructor(clientId: number) {
         this.menuItems = [
-            new MenuItem({ key: 'menu.shared.back' }, 'arrow_back', MenuItemType.trainer, 'clients/edit/' + clientId + '/workout'),
-            new MenuItem({ key: 'module.clients.workout.newWorkout' }, 'create', MenuItemType.trainer, 'clients/edit/' + clientId + '/new-workout'),
+            new MenuItem({ key: 'menu.shared.back' }, MenuItemType.trainer, 'clients/edit/' + clientId + '/workout', { icon: 'arrow_back' }),
+            new MenuItem({ key: 'module.clients.workout.newWorkout' }, MenuItemType.trainer, 'clients/edit/' + clientId + '/new-workout', { icon: 'create' }),
         ];
     }
 }
@@ -74,9 +74,9 @@ export class ClientEditDietMenuItems implements IMenuItems {
 
     constructor(clientId: number, dietId: number) {
         this.menuItems = [
-            new MenuItem({ key: 'menu.shared.back' }, 'arrow_back', MenuItemType.trainer, 'clients/edit/' + clientId + '/diet'),
-            new MenuItem({ key: 'module.clients.diet.editPlan' }, 'list', MenuItemType.trainer, 'clients/edit/' + clientId + '/diet/' + dietId + '/diet-plan'),
-            new MenuItem({ key: 'module.clients.diet.editDiet' }, 'edit', MenuItemType.trainer, 'clients/edit/' + clientId + '/diet/' + dietId),
+            new MenuItem({ key: 'menu.shared.back' }, MenuItemType.trainer, 'clients/edit/' + clientId + '/diet', { icon: 'arrow_back' }),
+            new MenuItem({ key: 'module.clients.diet.editPlan' }, MenuItemType.trainer, 'clients/edit/' + clientId + '/diet/' + dietId + '/diet-plan', { icon: 'list' }),
+            new MenuItem({ key: 'module.clients.diet.editDiet' }, MenuItemType.trainer, 'clients/edit/' + clientId + '/diet/' + dietId, { icon: 'edit' }),
         ];
     }
 }
@@ -87,8 +87,8 @@ export class NewClientDietMenuItems implements IMenuItems {
 
     constructor(clientId: number) {
         this.menuItems = [
-            new MenuItem({ key: 'menu.shared.back' }, 'arrow_back', MenuItemType.trainer, 'clients/edit/' + clientId + '/diet'),
-            new MenuItem({ key: 'module.clients.diet.newDiet' }, 'create', MenuItemType.trainer, 'clients/edit/' + clientId + '/new-diet'),
+            new MenuItem({ key: 'menu.shared.back' }, MenuItemType.trainer, 'clients/edit/' + clientId + '/diet', { icon: 'arrow_back' }),
+            new MenuItem({ key: 'module.clients.diet.newDiet' }, MenuItemType.trainer, 'clients/edit/' + clientId + '/new-diet', { icon: 'create' }),
         ];
     }
 }
@@ -100,8 +100,8 @@ export class NewClientProgressItemTypeMenuItems implements IMenuItems {
     
         constructor(clientId: number) {
             this.menuItems = [
-                new MenuItem({ key: 'menu.shared.back' }, 'arrow_back', MenuItemType.trainer, 'clients/edit/' + clientId + '/diet'),
-                new MenuItem({ key: 'module.clients.progress.newProgressItemType' }, 'create', MenuItemType.trainer, 'clients/edit/' + clientId + '/new-progress-type'),
+                new MenuItem({ key: 'menu.shared.back' }, MenuItemType.trainer, 'clients/edit/' + clientId + '/diet', { icon: 'arrow_back' }),
+                new MenuItem({ key: 'module.clients.progress.newProgressItemType' }, MenuItemType.trainer, 'clients/edit/' + clientId + '/new-progress-type', { icon: 'create' }),
             ];
         }
     }

@@ -6,8 +6,8 @@ export class DietsOverviewMenuItems {
 
     constructor() {
         this.menuItems = [
-            new MenuItem({ key: 'module.diets.submenu.dietTemplates' }, 'restaurant', MenuItemType.trainer, 'diets'),
-            new MenuItem({ key: 'module.diets.submenu.allDiets' }, 'restaurant', MenuItemType.trainer, 'diets/all'),
+            new MenuItem({ key: 'module.diets.submenu.dietTemplates' }, MenuItemType.trainer, 'diets', { icon: 'restaurant' }),
+            new MenuItem({ key: 'module.diets.submenu.allDiets' }, MenuItemType.trainer, 'diets/all', { icon: 'restaurant' }),
         ];
     }
 }
@@ -18,8 +18,8 @@ export class NewDietMenuItems {
     
         constructor() {
             this.menuItems = [
-                new MenuItem({ key: 'menu.shared.back' }, 'arrow_back', MenuItemType.trainer, 'diets'),
-                new MenuItem({ key: 'module.diets.submenu.new' }, 'create', MenuItemType.trainer, 'diets/new'),
+                new MenuItem({ key: 'menu.shared.back' },MenuItemType.trainer, 'diets', { icon: 'arrow_back' }),
+                new MenuItem({ key: 'module.diets.submenu.new' }, MenuItemType.trainer, 'diets/new', { icon: 'create' }),
             ];
         }
     }
@@ -30,10 +30,11 @@ export class DietMenuItems {
 
     constructor(id: number) {
         this.menuItems = [
-            new MenuItem({ key: 'menu.shared.back' }, 'arrow_back', MenuItemType.trainer, 'diets'),
-            new MenuItem({ key: 'module.diets.submenu.view' }, 'info_outline', MenuItemType.trainer, 'diets/view/' + id),
-            new MenuItem({ key: 'module.diets.submenu.editPlan' }, 'list', MenuItemType.trainer, 'diets/edit-plan/' + id),
-            new MenuItem({ key: 'module.diets.submenu.edit' }, 'edit', MenuItemType.trainer, 'diets/edit/' + id)
+            new MenuItem({ key: 'menu.shared.back' }, MenuItemType.trainer, 'diets', { icon: 'arrow_back' }),
+            new MenuItem({ key: 'module.diets.submenu.editPlan' }, MenuItemType.trainer, 'diets/edit-plan/' + id, { icon: 'list' }),
+            new MenuItem({ key: 'module.diets.submenu.view' }, MenuItemType.trainer, 'diets/view/' + id, { icon: 'info_outline' }),
+            new MenuItem({ key: 'module.diets.submenu.editPlan' }, MenuItemType.trainer, 'diets/edit-plan/' + id, { icon: 'list' }),
+            new MenuItem({ key: 'module.diets.submenu.edit' }, MenuItemType.trainer, 'diets/edit/' + id, { icon: 'edit' })
         ];
     }
 }

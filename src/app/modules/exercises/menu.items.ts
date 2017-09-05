@@ -6,8 +6,8 @@ export class ExercisesOverviewMenuItem {
 
     constructor() {
         this.menuItems = [
-            new MenuItem({ key: 'module.exercises.myExercises' }, 'rowing', MenuItemType.trainer, 'exercises'),
-            new MenuItem({ key: 'module.exercises.allExercises' }, 'list', MenuItemType.trainer, 'exercises/all'),
+            new MenuItem({ key: 'module.exercises.myExercises' }, MenuItemType.trainer, 'exercises', { icon: 'rowing' }),
+            new MenuItem({ key: 'module.exercises.allExercises' }, MenuItemType.trainer, 'exercises/all', { icon: 'list' }),
         ];
     }
 }
@@ -18,8 +18,8 @@ export class NewExerciseMenuItems {
     
         constructor() {
             this.menuItems = [
-                new MenuItem({ key: 'menu.shared.back' }, 'arrow_back', MenuItemType.trainer, 'exercises'),
-                new MenuItem({ key: 'module.exercises.new' }, 'create', MenuItemType.trainer, 'exercises/new'),
+                new MenuItem({ key: 'menu.shared.back' }, MenuItemType.trainer, 'exercises', { icon: 'arrow_back' }),
+                new MenuItem({ key: 'module.exercises.new' }, MenuItemType.trainer, 'exercises/new', { icon: 'create' }),
             ];
         }
     }
@@ -30,9 +30,9 @@ export class ExerciseMenuItems {
 
     constructor(id: number) {
         this.menuItems = [
-            new MenuItem({ key: 'menu.shared.back' }, 'arrow_back', MenuItemType.trainer, 'exercises'),
-            new MenuItem({ key: 'module.exercises.preview' }, 'pageview', MenuItemType.trainer, 'exercises/preview/' + id),
-            new MenuItem({ key: 'module.exercises.edit' }, 'edit', MenuItemType.trainer, 'exercises/edit/' + id)
+            new MenuItem({ key: 'menu.shared.back' },MenuItemType.trainer, 'exercises', { icon: 'arrow_back' }),
+            new MenuItem({ key: 'module.exercises.preview' }, MenuItemType.trainer, 'exercises/preview/' + id, { icon: 'pageview' }),
+            new MenuItem({ key: 'module.exercises.edit' }, MenuItemType.trainer, 'exercises/edit/' + id, { icon: 'edit' })
         ];
     }
 }
@@ -43,8 +43,8 @@ export class ExercisePreviewMenuItems {
 
     constructor(id: number) {
         this.menuItems = [
-            new MenuItem({ key: 'menu.shared.back' }, 'arrow_back', MenuItemType.trainer, 'exercises'),
-            new MenuItem({ key: 'module.exercises.preview' }, 'pageview', MenuItemType.trainer, 'exercises/preview/' + id)
+            new MenuItem({ key: 'menu.shared.back' }, MenuItemType.trainer, 'exercises', { icon: 'arrow_back' }),
+            new MenuItem({ key: 'module.exercises.preview' }, MenuItemType.trainer, 'exercises/preview/' + id, { icon: 'pageview' })
         ];
     }
 }

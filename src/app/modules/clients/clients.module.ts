@@ -5,8 +5,6 @@ import { RouterModule } from '@angular/router';
 // core module
 import { CoreModule } from '../../core';
 
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-
 // user components
 import { ClientsOverviewComponent } from './client/list/clients-overview.component';
 import { NewClientComponent } from './client/new/new-client.component';
@@ -50,8 +48,6 @@ import { DietsModule} from '../diets/diets.module';
         CommonModule,
         ClientsRouter,
         SharedModule,
-        FormsModule,
-        ReactiveFormsModule,
         WorkoutsModule,
         DietsModule
     ],

@@ -3,6 +3,9 @@ import { CommonModule } from '@angular/common';
 import { SharedService } from './services/shared.service';
 import { ComponentDependencyService } from './component/component-dependency.service';
 
+// angular forms
+import { FormsModule, ReactiveFormsModule} from '@angular/forms';
+
 // Covalent modules for Angular  - include here so all components can reference them in templates
 import { CovalentModule } from '../../lib/covalent';
 
@@ -31,6 +34,8 @@ import { DragulaModule } from 'ng2-dragula';
 @NgModule({
     imports: [
         CommonModule,
+        ReactiveFormsModule,
+        FormsModule,
         AuthModule,
         CovalentModule,
         AngularMaterialModule,
@@ -49,6 +54,8 @@ import { DragulaModule } from 'ng2-dragula';
     ],
     exports: [
         CommonModule,
+        ReactiveFormsModule,
+        FormsModule,
         AuthModule,
         CovalentModule,
         AngularMaterialModule,

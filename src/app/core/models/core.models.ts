@@ -18,12 +18,19 @@ export class ResourceKey {
 }
 
 export class MenuItem {
+    public icon?: string;
+    public imageUrl?: string;
+
     constructor(
         public label: ResourceKey,
-        public icon: string,
         public type: MenuItemType,
-        public action: string
+        public action: string,
+        options?: {
+            icon?: string,
+            imageUrl?: string
+        }
     ) {
+        if (options) Object.assign(this, options);
     }
 }
 

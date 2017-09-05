@@ -21,7 +21,7 @@ export class ClientChatComponent extends ClientsBaseComponent implements OnInit 
     private chatMessages: ChatMessage[];
 
     private chatMessagesPage: number = 1;
-    private chatMessagesPageSize: number = 5;
+    private readonly chatMessagesPageSize: number = 10;
     private chatMessagesSearch: string = '';
     private allChatMessagesLoaded: boolean = false;
 
@@ -134,6 +134,9 @@ export class ClientChatComponent extends ClientsBaseComponent implements OnInit 
                     }
                 }
                 else{
+                    if (replaceMessages){
+                        this.chatMessages = [];
+                    }
                     this.allChatMessagesLoaded = true;
                 }
             },

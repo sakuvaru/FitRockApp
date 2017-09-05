@@ -4,20 +4,21 @@ import { MenuItem, MenuItemType, ResourceKey } from '../models/core.models';
 export class AdminMenu {
 
     private readonly mainMenu: MenuItem[] = [
-        new MenuItem({ key: 'menu.dashboard' }, 'home', MenuItemType.trainer, ''),
-        new MenuItem({ key: 'menu.clients' }, 'people', MenuItemType.trainer, 'clients'),
-        new MenuItem({ key: 'menu.workouts' }, 'fitness_center', MenuItemType.trainer, 'workouts'),
-        new MenuItem({ key: 'menu.exercises' }, 'rowing', MenuItemType.trainer, 'exercises'),
-        new MenuItem({ key: 'menu.diets' }, 'restaurant', MenuItemType.trainer, 'diets'),
-        new MenuItem({ key: 'menu.foods' }, 'free_breakfast', MenuItemType.trainer, 'foods'),
-        new MenuItem({ key: 'menu.progressItemTypes' }, 'timeline', MenuItemType.trainer, 'progress-item-types'),
-        new MenuItem({ key: 'menu.locations' }, 'place', MenuItemType.trainer, 'todo'),
-        new MenuItem({ key: 'login' }, 'public', MenuItemType.auth, 'login'),
+        new MenuItem({ key: 'menu.dashboard' }, MenuItemType.trainer, '', { icon: 'home' }),
+        new MenuItem({ key: 'menu.chat' }, MenuItemType.auth, 'chat', { icon: 'email' }),
+        new MenuItem({ key: 'menu.clients' }, MenuItemType.trainer, 'clients', { icon: 'people' }),
+        new MenuItem({ key: 'menu.workouts' }, MenuItemType.trainer, 'workouts', { icon: 'fitness_center' }),
+        new MenuItem({ key: 'menu.exercises' }, MenuItemType.trainer, 'exercises', { icon: 'rowing' }),
+        new MenuItem({ key: 'menu.diets' }, MenuItemType.trainer, 'diets', { icon: 'restaurant' }),
+        new MenuItem({ key: 'menu.foods' }, MenuItemType.trainer, 'foods', { icon: 'free_breakfast' }),
+        new MenuItem({ key: 'menu.progressItemTypes' }, MenuItemType.trainer, 'progress-item-types', { icon: 'timeline' }),
+        new MenuItem({ key: 'menu.locations' }, MenuItemType.trainer, 'todo', { icon: 'place' }),
+        new MenuItem({ key: 'login' }, MenuItemType.auth, 'login', { icon: 'public' }),
     ];
 
     private readonly userMenu: MenuItem[] = [
-        new MenuItem({ key: 'menu.dashboard' }, 'home', MenuItemType.trainer, ''),
-        new MenuItem({ key: 'menu.clients' }, 'people', MenuItemType.trainer, 'clients'),
-        new MenuItem({ key: 'menu.workouts' }, 'fitness_center', MenuItemType.trainer, 'workouts'),
+        new MenuItem({ key: 'menu.dashboard' }, MenuItemType.trainer, '', { icon: 'home' }),
+        new MenuItem({ key: 'menu.clients' }, MenuItemType.trainer, 'clients', { icon: 'people' }),
+        new MenuItem({ key: 'menu.workouts' }, MenuItemType.trainer, 'workouts', { icon: 'fitness_center' }),
     ];
 }

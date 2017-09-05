@@ -39,8 +39,14 @@ export class LoadMoreBuilder<TItem extends IItem> {
         return this;
     }
 
-    iconResolver(iconResolver: (item: TItem) => string): this {
-        this.config.iconResolver = iconResolver;
+    iconResolver(resolver: (item: TItem) => string): this {
+        this.config.iconResolver = resolver;
+        return this;
+    }
+
+    
+    iconClassResolver(resolver: (item: TItem) => string): this {
+        this.config.iconClassResolver = resolver;
         return this;
     }
 

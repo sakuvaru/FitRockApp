@@ -12,11 +12,13 @@ export class SharedService {
   private componentConfigSource = new Subject<ComponentConfig>();
   private topLoaderSource = new Subject<boolean>();
   private componentLoaderSource = new Subject<boolean>();
+  private componentSearchSource = new Subject<string>();
   private errorSource = new Subject<Log>();
 
   // Observable string streams
   componentConfigChanged$ = this.componentConfigSource.asObservable();
   componentloaderChanged$ = this.componentLoaderSource.asObservable();
+  componentSearchChanged$ = this.componentSearchSource.asObservable();
   topLoaderChanged$ = this.topLoaderSource.asObservable();
   errorChanged$ = this.errorSource.asObservable();
 
@@ -27,6 +29,10 @@ export class SharedService {
 
   setComponentLoader(enabled: boolean): void {
     this.componentLoaderSource.next(enabled);
+  }
+
+  setComponentSearch(search: string): void{
+    this.componentSearchSource.next(search);
   }
 
   setTopLoader(enabled: boolean): void {

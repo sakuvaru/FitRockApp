@@ -6,8 +6,8 @@ export class WorkoutsOverviewMenuItems {
 
     constructor() {
         this.menuItems = [
-            new MenuItem({ key: 'module.workouts.submenu.workoutTemplates' }, 'fitness_center', MenuItemType.trainer, 'workouts'),
-            new MenuItem({ key: 'module.workouts.submenu.allWorkouts' }, 'fitness_center', MenuItemType.trainer, 'workouts/all'),
+            new MenuItem({ key: 'module.workouts.submenu.workoutTemplates' }, MenuItemType.trainer, 'workouts', { icon: 'fitness_center' }),
+            new MenuItem({ key: 'module.workouts.submenu.allWorkouts' }, MenuItemType.trainer, 'workouts/all', { icon: 'fitness_center' }),
         ];
     }
 }
@@ -18,8 +18,8 @@ export class NewWorkoutMenuItems {
     
         constructor() {
             this.menuItems = [
-                new MenuItem({ key: 'menu.shared.back' }, 'arrow_back', MenuItemType.trainer, 'workouts'),
-                new MenuItem({ key: 'module.workouts.submenu.new' }, 'create', MenuItemType.trainer, 'workouts/new'),
+                new MenuItem({ key: 'menu.shared.back' },MenuItemType.trainer, 'workouts', { icon: 'arrow_back' }),
+                new MenuItem({ key: 'module.workouts.submenu.new' }, MenuItemType.trainer, 'workouts/new', { icon: 'create' }),
             ];
         }
     }
@@ -30,10 +30,10 @@ export class WorkoutMenuItems {
 
     constructor(id: number) {
         this.menuItems = [
-            new MenuItem({ key: 'menu.shared.back' }, 'arrow_back', MenuItemType.trainer, 'workouts'),
-            new MenuItem({ key: 'module.workouts.view' }, 'info_outline', MenuItemType.trainer, 'workouts/view/' + id),
-            new MenuItem({ key: 'module.workouts.editPlan' }, 'list', MenuItemType.trainer, 'workouts/edit-plan/' + id),
-            new MenuItem({ key: 'module.workouts.edit' }, 'edit', MenuItemType.trainer, 'workouts/edit/' + id)
+            new MenuItem({ key: 'menu.shared.back' }, MenuItemType.trainer, 'workouts', { icon: 'arrow_back' }),
+            new MenuItem({ key: 'module.workouts.view' }, MenuItemType.trainer, 'workouts/view/' + id, { icon: 'info_outline' }),
+            new MenuItem({ key: 'module.workouts.editPlan' }, MenuItemType.trainer, 'workouts/edit-plan/' + id, { icon: 'list' }),
+            new MenuItem({ key: 'module.workouts.edit' }, MenuItemType.trainer, 'workouts/edit/' + id, { icon: 'edit' })
         ];
     }
 }
