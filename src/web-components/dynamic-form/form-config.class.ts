@@ -22,17 +22,17 @@ export class FormConfig<TItem extends IItem>{
     /**
      * Function to be executed on insert of new item in the form
      */
-    public insertFunction: (item: any) => Observable<ResponseCreate<TItem>>;
+    public insertFunction?: (item: any) => Observable<ResponseCreate<TItem>>;
 
     /**
      * Function to be executed on edit/update action og existing item in the form
      */
-    public editFunction: (item: any) => Observable<ResponseEdit<TItem>>;
+    public editFunction?: (item: any) => Observable<ResponseEdit<TItem>>;
 
     /**
      * Function to be executed when deleting an existing item in the form
      */
-    public deleteFunction: (item: any) => Observable<ResponseDelete>;
+    public deleteFunction?: (item: any) => Observable<ResponseDelete>;
 
     /**
      * Indicates if snackbar is shown after save
@@ -58,7 +58,7 @@ export class FormConfig<TItem extends IItem>{
     /**
      * Item loaded in the form
      */
-    public item: any;
+    public item?: any;
 
     /**
      * List of fields that are hidden and should not be shown in the form
@@ -68,7 +68,7 @@ export class FormConfig<TItem extends IItem>{
     /**
      * Indicates if field in form are cleared when the form is saved
      */
-    public clearFormAfterSave: boolean;
+    public clearFormAfterSave: boolean = true;
 
     /**
      * Indicates if form contains delete button and if user can trigger 'delete method' defined in this form config
@@ -79,53 +79,60 @@ export class FormConfig<TItem extends IItem>{
     /**
      * Callback when initializing the form
      */
-    public onFormInit: () => void;
+    public onFormInit?: () => void;
 
     /**
      * Callback for when the form has 'config' available. This is useful when the fields are loaded from server
      * rather then defined manually. It is called after 'onFormInit'.
      */
-    public onFormLoaded: () => void;
+    public onFormLoaded?: () => void;
 
     /**
      * Callback after a new item is successfully inserted
      */
-    public onAfterInsert: (response: ResponseCreate<TItem>) => void;
+    public onAfterInsert?: (response: ResponseCreate<TItem>) => void;
 
     /**
      * Callback after an existing item was saved
      */
-    public onAfterUpdate: (response: ResponseEdit<TItem>) => void;
+    public onAfterUpdate?: (response: ResponseEdit<TItem>) => void;
 
     /**
      * Callback for handling errors
      */
-    public onError: (response: ErrorResponse | FormErrorResponse | any) => void;
+    public onError?: (response: ErrorResponse | FormErrorResponse | any) => void;
 
     /**
      * Callback before both updating or inserting an item in the form
      */
-    public onBeforeSave: () => void;
+    public onBeforeSave?: () => void;
 
     /**
      * Callback after an item was inserted on updated/edited
      */
-    public OnAfterSave: () => void;
+    public OnAfterSave?: () => void;
 
     /**
      * Callback after deleting an item
      */
-    public onAfterDelete: (response: ResponseDelete) => void;
+    public onAfterDelete?: (response: ResponseDelete) => void;
 
     /**
      * Callback before deleting an item
      */
-    public onBeforeDelete: (item: any) => void;
+    public onBeforeDelete?: (item: any) => void;
 
      /**
      * Called when a value in a field changes
      */
-    public onFieldValueChange: (config: FormConfig<TItem>, changedField: BaseField<any>, newValue: any) => void;
+    public onFieldValueChange?: (config: FormConfig<TItem>, changedField: BaseField<any>, newValue: any) => void;
+
+    /**
+     * Loader configuration
+     * @param start Loader start function
+     * @param stop Loader stop function
+     */
+    public loaderConfig: { start: () => void, stop: () => void };
 
     constructor(
         config?: {
@@ -148,7 +155,8 @@ export class FormConfig<TItem extends IItem>{
             OnAfterSave?: () => void,
             onBeforeDelete?: (item: any) => void
             onAfterDelete?: (response: ResponseDelete) => void,
-            onFieldValueChange?: (config: FormConfig<TItem>, changedField: BaseField<any>, newValue: any) => void;
+            onFieldValueChange?: (config: FormConfig<TItem>, changedField: BaseField<any>, newValue: any) => void,
+            loaderConfig?: { start: () => void, stop: () => void }
         }
     ) {
         Object.assign(this, config);

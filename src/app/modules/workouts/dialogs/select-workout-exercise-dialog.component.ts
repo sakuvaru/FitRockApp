@@ -24,6 +24,7 @@ export class SelectWorkoutExerciseDialogComponent extends BaseComponent implemen
     @Inject(MD_DIALOG_DATA) public data: any
   ) {
     super(dependencies)
+    super.isDialog();
   }
 
   ngOnInit() {
@@ -58,8 +59,7 @@ export class SelectWorkoutExerciseDialogComponent extends BaseComponent implemen
       .filter(new Filter({ filterNameKey: 'module.workouts.allExercises', onFilter: query => query }))
       .filter(new Filter({ filterNameKey: 'module.workouts.myExercises', onFilter: query => query.byCurrentUser().whereEquals('IsGlobal', false) }))
       .pagerSize(5)
-      .onBeforeLoad(() => super.startGlobalLoader())
-      .onAfterLoad(() => super.stopGlobalLoader())
+      .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
       .showPager(true)
       .showSearch(true)
       .wrapInCard(false)

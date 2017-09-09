@@ -9,6 +9,7 @@ import { Exercise } from '../../../models';
 import { MD_DIALOG_DATA } from '@angular/material';
 import { WorkoutExercise } from '../../../models';
 import { FormConfig } from '../../../../web-components/dynamic-form';
+import { Observable } from 'rxjs/Rx';
 
 @Component({
   templateUrl: 'edit-workout-exercise-dialog.component.html'
@@ -28,29 +29,28 @@ export class EditWorkoutExerciseDialogComponent extends BaseComponent implements
     @Inject(MD_DIALOG_DATA) public data: any
   ) {
     super(dependencies)
+    super.isDialog();
     this.workoutExercise = data;
   }
 
   ngOnInit() {
     super.ngOnInit();
-    
-    super.startGlobalLoader();
 
-    this.dependencies.itemServices.workoutExerciseService.editForm(this.workoutExercise.id)
+    super.subscribeToObservable(this.getFormObservable());
+  }
+
+  private getFormObservable(): Observable<any> {
+    return this.dependencies.itemServices.workoutExerciseService.editForm(this.workoutExercise.id)
       .takeUntil(this.ngUnsubscribe)
-      .subscribe(form => {
+      .map(form => {
         form.onAfterUpdate((response) => {
           this.workoutExercise = response.item;
           this.close();
         });
-        form.onBeforeSave(() => super.startGlobalLoader());
-        form.onAfterSave(() => super.stopGlobalLoader());
-        form.onBeforeDelete(() => super.startGlobalLoader());
-        form.onError(() => super.stopGlobalLoader());
+        form.loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader());
         form.onAfterDelete((response) => {
           this.idOfDeletedWorkoutExercise = response.deletedItemId;
           this.workoutExerciseWasDeleted = true;
-          this.stopGlobalLoader();
           this.close();
         });
 

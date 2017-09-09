@@ -14,12 +14,13 @@ import { EditDietFoodDialogComponent } from '../dialogs/edit-diet-food-dialog.co
 import { AddCustomFoodDialogComponent } from '../dialogs/add-custom-food-dialog.component';
 import { AddDietFoodDialogComponent } from '../dialogs/add-diet-food-dialog.component';
 import * as _ from 'underscore';
+import { Observable } from 'rxjs/Rx';
 
 @Component({
   templateUrl: 'edit-diet-plan-export.component.html',
   selector: 'edit-diet-plan-export'
 })
-export class EditDietPlanExportComponent extends BaseComponent implements OnInit, OnDestroy, OnChanges {
+export class EditDietPlanExportComponent extends BaseComponent implements OnDestroy, OnChanges {
 
   @Output() loadDiet = new EventEmitter();
 
@@ -28,11 +29,6 @@ export class EditDietPlanExportComponent extends BaseComponent implements OnInit
   private diet: Diet;
   private sortedDietFoods: DietFood[];
 
-  /**
-  * Drop subscription for dragula - Unsubscribe on OnDestroy + destroy dragula itself!
-  */
-  private dropSubscription: Subscription;
-
   private dragulaBag: string = 'dragula-bag';
 
   constructor(
@@ -40,12 +36,6 @@ export class EditDietPlanExportComponent extends BaseComponent implements OnInit
     private dragulaService: DragulaService,
     protected dependencies: ComponentDependencyService) {
     super(dependencies)
-  }
-
-  ngOnInit() {
-    super.ngOnInit();
-
-    this.startLoader();
 
     // set handle for dragula
     this.dragulaService.setOptions(this.dragulaBag, {
@@ -55,43 +45,48 @@ export class EditDietPlanExportComponent extends BaseComponent implements OnInit
     });
 
     // subscribe to drop events
-    this.dropSubscription = this.dragulaService.drop
-      .do(() => this.startGlobalLoader())
-      .debounceTime(500)
-      .switchMap(() => {
-        return this.dependencies.itemServices.dietFoodService.updateItemsOrder(this.sortedDietFoods, this.diet.id).set();
-      })
-      .subscribe(() => {
-        super.stopGlobalLoader();
-        super.showSavedSnackbar();
-      });
+    super.subscribeToObservable(this.getInitObsevable());
   }
 
   ngOnDestroy() {
     super.ngOnDestroy();
 
     // unsubscribe from dragula drop events
-    this.dropSubscription.unsubscribe();
     this.dragulaService.destroy(this.dragulaBag);
   }
 
   ngOnChanges(changes: SimpleChanges) {
     var dietId = changes.dietId.currentValue;
     if (dietId) {
-      this.initDiet(dietId)
+      super.subscribeToObservable(this.getDietObservable(dietId));
     }
   }
 
-  private initDiet(dietId: number): void {
-    this.dependencies.itemServices.dietService.item()
+  private getInitObsevable(): Observable<any> {
+    return this.dragulaService.drop
+      .takeUntil(this.ngUnsubscribe)
+      .do(() => {
+        super.startGlobalLoader();
+      })
+      .debounceTime(500)
+      .switchMap(() => {
+        return this.dependencies.itemServices.dietFoodService.updateItemsOrder(this.sortedDietFoods, this.diet.id).set();
+      })
+      .map(() => {
+        super.stopGlobalLoader();
+        super.showSavedSnackbar();
+      })
+  }
+
+  private getDietObservable(dietId: number): Observable<any> {
+    return this.dependencies.itemServices.dietService.item()
       .byId(dietId)
       .includeMultiple(['DietCategory', 'DietFoods.Food.FoodUnit', 'DietFoods', 'DietFoods.Food', 'DietFoods.Food.FoodCategory'])
       .get()
-      .subscribe(response => {
+      .map(response => {
         this.loadDiet.next(response.item);
 
         this.assignDiet(response.item);
-        this.stopLoader();
       });
   }
 
@@ -103,22 +98,22 @@ export class EditDietPlanExportComponent extends BaseComponent implements OnInit
   }
 
   private deleteDietFood(dietFood: DietFood): void {
-    this.startGlobalLoader();
-    this.dependencies.itemServices.dietFoodService.delete(dietFood.id)
-      .set()
-      .do(() => this.startGlobalLoader())
-      .subscribe(response => {
-        // remove diet food from local variable
-        this.sortedDietFoods = _.reject(this.sortedDietFoods, function (item) { return item.id === response.deletedItemId; });
+    super.subscribeToObservable(
+      this.dependencies.itemServices.dietFoodService.delete(dietFood.id)
+        .set()
+        .do(() => this.startGlobalLoader())
+        .map(response => {
+          // remove diet food from local variable
+          this.sortedDietFoods = _.reject(this.sortedDietFoods, function (item) { return item.id === response.deletedItemId; });
 
-        this.showSavedSnackbar();
+          this.showSavedSnackbar();
 
-        this.stopGlobalLoader();
-      },
-      (error) => {
-        super.handleError(error);
-        this.stopGlobalLoader();
-      });
+          this.stopGlobalLoader();
+        },
+        (error) => {
+          super.handleError(error);
+          this.stopGlobalLoader();
+        }));
   }
 
   private openDietFoodDialog(dietFood: DietFood): void {
@@ -152,8 +147,8 @@ export class EditDietPlanExportComponent extends BaseComponent implements OnInit
     })
   }
 
-  private recalculateOrder(): void{
-    if (this.sortedDietFoods){
+  private recalculateOrder(): void {
+    if (this.sortedDietFoods) {
       var order = 0;
       this.sortedDietFoods.forEach(dietFood => {
         dietFood.order = order;

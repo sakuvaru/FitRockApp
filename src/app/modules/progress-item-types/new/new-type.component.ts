@@ -7,6 +7,7 @@ import { AppConfig, ComponentDependencyService, BaseComponent } from '../../../c
 import { FormConfig } from '../../../../web-components/dynamic-form';
 import { NewProgressItemTypeMenuItems } from '../menu.items';
 import { ProgressItemType } from '../../../models';
+import { Observable } from 'rxjs/Rx';
 
 @Component({
     templateUrl: 'new-type.component.html'
@@ -22,11 +23,6 @@ export class NewTypeComponent extends BaseComponent implements OnInit {
 
     ngOnInit() {
         super.ngOnInit();
-        this.initForm();
-    }
-
-    private initForm(): void{
-        this.startLoader();
 
         this.setConfig({
             componentTitle: { key: 'module.progressItemTypes.submenu.new' },
@@ -34,17 +30,16 @@ export class NewTypeComponent extends BaseComponent implements OnInit {
             menuTitle: { key: 'module.progressItemTypes.submenu.overview'}
         });
 
-        this.dependencies.itemServices.progressItemTypeService.insertForm()
+        super.subscribeToObservable(this.getFormObservable());
+        }
+
+    private getFormObservable(): Observable<any> {
+        return this.dependencies.itemServices.progressItemTypeService.insertForm()
             .takeUntil(this.ngUnsubscribe)
-            .subscribe(form => {
-                form.onFormInit(() => this.stopLoader())
-                form.onBeforeSave(() => this.startGlobalLoader());
-                form.onAfterSave(() => this.stopGlobalLoader());
+            .map(form => {
+                form.loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
                 form.insertFunction((item) => this.dependencies.itemServices.progressItemTypeService.create(item).set());
                 form.onAfterInsert((response) => this.navigate([this.getTrainerUrl('progress-item-types/edit'), response.item.id]));
-                form.onError(() => {
-                    super.stopGlobalLoader();
-                });
 
                 this.formConfig = form.build();
             },

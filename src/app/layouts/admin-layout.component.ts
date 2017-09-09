@@ -15,13 +15,14 @@ export class AdminLayoutComponent extends BaseComponent implements OnDestroy, On
     private year: number = new Date().getFullYear();
     private media: TdMediaService;
 
-    private hideAdminLayoutWhenComponentsLoaderIsEnabled = AppConfig.HideAdminLayoutWhenComponentsLoaderIsEnabled;
+    private hideComponentWhenLoaderIsEnabled = AppConfig.HideComponentWhenLoaderIsEnabled;
+    private componentIsInitialized: boolean;
+    private componentIsAutoInitialized: boolean;
 
     private enableComponentSearch: boolean;
     private componentTitle: string;
     private menuTitle: string;
-    private componentLoaderEnabled: boolean;
-    private topLoaderEnabled: boolean;
+    private globalLoaderEnabled: boolean;
 
     private displayUsername: string;
     private email: string;
@@ -66,19 +67,19 @@ export class AdminLayoutComponent extends BaseComponent implements OnDestroy, On
         }
 
         // register loaders
-        this.dependencies.coreServices.sharedService.componentloaderChanged$
-            .takeUntil(this.ngUnsubscribe)
-            .subscribe(
-            enabled => {
-                this.componentLoaderEnabled = enabled;
-                this.cdr.detectChanges();
-            });
-
         this.dependencies.coreServices.sharedService.topLoaderChanged$
             .takeUntil(this.ngUnsubscribe)
             .subscribe(
             enabled => {
-                this.topLoaderEnabled = enabled;
+                this.globalLoaderEnabled = enabled;
+                this.cdr.detectChanges();
+            });
+
+        this.dependencies.coreServices.sharedService.componentIsInitializedChanged$
+            .takeUntil(this.ngUnsubscribe)
+            .subscribe(
+            initialized => {
+                this.componentIsInitialized = initialized;
                 this.cdr.detectChanges();
             });
 
@@ -88,6 +89,7 @@ export class AdminLayoutComponent extends BaseComponent implements OnDestroy, On
             componentConfig => {
                 this.componentConfig = componentConfig;
 
+                this.componentIsAutoInitialized = componentConfig.autoInitComponent;
                 this.enableComponentSearch = componentConfig.enableSearch;
 
                 // resolve component's title using translation services

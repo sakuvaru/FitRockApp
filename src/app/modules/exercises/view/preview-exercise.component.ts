@@ -7,6 +7,7 @@ import { AppConfig, ComponentDependencyService, BaseComponent } from '../../../c
 import { ExercisePreviewMenuItems, ExerciseMenuItems } from '../menu.items';
 import { Exercise } from '../../../models';
 import 'rxjs/add/operator/switchMap';
+import { Observable } from 'rxjs/Rx';
 
 @Component({
     templateUrl: 'preview-exercise.component.html'
@@ -25,15 +26,17 @@ export class PreviewExerciseComponent extends BaseComponent implements OnInit {
     ngOnInit(): void {
         super.ngOnInit();
 
-        super.startLoader();
+        super.subscribeToObservable(this.getItemObservable());
+    }
 
-        this.activatedRoute.params
+    private getItemObservable(): Observable<any> {
+        return this.activatedRoute.params
             .takeUntil(this.ngUnsubscribe)
             .switchMap((params: Params) => this.dependencies.itemServices.exerciseService.item()
                 .byId(+params['id'])
                 .get()
                 .takeUntil(this.ngUnsubscribe))
-            .subscribe(response => {
+            .map(response => {
                 this.exercise = response.item;
 
                 if (this.exercise.createdByUserId === this.dependencies.authenticatedUserService.getUserId()) {
@@ -58,7 +61,6 @@ export class PreviewExerciseComponent extends BaseComponent implements OnInit {
                         }
                     });
                 }
-                super.stopLoader();
             })
     }
 }

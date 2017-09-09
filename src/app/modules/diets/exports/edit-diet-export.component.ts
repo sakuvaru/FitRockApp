@@ -6,7 +6,7 @@ import { AppConfig, ComponentDependencyService, BaseComponent } from '../../../c
 // required by component
 import { FormConfig } from '../../../../web-components/dynamic-form';
 import { Diet } from '../../../models';
-import 'rxjs/add/operator/switchMap';
+import { Observable } from 'rxjs/Rx';
 
 @Component({
     templateUrl: 'edit-diet-export.component.html',
@@ -30,7 +30,7 @@ export class EditDietExportComponent extends BaseComponent implements OnInit, On
     ngOnChanges(changes: SimpleChanges) {
         var dietId = changes.dietId.currentValue;
         if (dietId) {
-            this.initForm(dietId);
+            super.subscribeToObservable(this.getFormObservable(dietId));
         }
     }
 
@@ -38,16 +38,11 @@ export class EditDietExportComponent extends BaseComponent implements OnInit, On
         super.ngOnInit();
     }
 
-    private initForm(dietId: number): void {
-        super.startLoader();
-
-        this.dependencies.itemServices.dietService.editForm(dietId)
+    private getFormObservable(dietId: number): Observable<any> {
+        return this.dependencies.itemServices.dietService.editForm(dietId)
             .takeUntil(this.ngUnsubscribe)
-            .subscribe(form => {
-                form.onFormLoaded(() => super.stopLoader());
-                form.onBeforeSave(() => super.startGlobalLoader());
-                form.onAfterSave(() => super.stopGlobalLoader());
-                form.onError(() => super.stopGlobalLoader());
+            .map(form => {
+                form.loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader());
                 form.onAfterDelete(() => super.navigate([super.getTrainerUrl('diets')]));
                 var workout = form.getItem();
 

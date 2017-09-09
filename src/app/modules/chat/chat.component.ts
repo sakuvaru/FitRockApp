@@ -43,7 +43,7 @@ export class ChatComponent extends BaseComponent implements OnInit {
 
     ngOnInit(): void {
         super.ngOnInit();
-        super.subscribeToObservables(this.getComponentObservables(), { globalLoader: true });
+        super.subscribeToObservables(this.getComponentObservables());
 
         // init chat search
         this.initSearch();
@@ -59,8 +59,7 @@ export class ChatComponent extends BaseComponent implements OnInit {
                 // reset page to 1 when searching
                 this.chatMessagesPage = 1;
                 this.chatMessagesSearch = searchTerm;
-                super.subscribeToObservable(this.getChatMessagesObservable(this.activeChatUserId, this.chatMessagesPage, true, this.chatMessagesSearch),
-                    { globalLoader: true, componentLoader: false });
+                super.subscribeToObservable(this.getChatMessagesObservable(this.activeChatUserId, this.chatMessagesPage, true, this.chatMessagesSearch));
             });
     }
 
@@ -167,25 +166,22 @@ export class ChatComponent extends BaseComponent implements OnInit {
             .map(form => {
                 // manually set recipient & sender
                 form.withFieldValue('SenderUserId', this.dependencies.authenticatedUserService.getUserId());
-                form.withFieldValue('RecipientUserId', userId)
+                form.withFieldValue('RecipientUserId', userId);
 
+                form.loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader());
                 form.snackBarTextKey('module.clients.chat.snackbarSaved');
                 form.submitTextKey('module.clients.chat.submit');
-                form.onFormInit(() => super.stopLoader())
-                form.onBeforeSave(() => super.startGlobalLoader());
-                form.onAfterSave(() => super.stopGlobalLoader());
                 form.insertFunction((item) => this.dependencies.itemServices.chatMessageService.create(item).set());
                 form.onAfterInsert((response) => {
                     // reload messages
                     super.subscribeToObservable(this.getChatMessagesObservable(userId, 1, true, this.chatMessagesSearch)
-                        .takeUntil(this.ngUnsubscribe), { globalLoader: true, componentLoader: false });
+                        .takeUntil(this.ngUnsubscribe));
 
                 });
-                form.onError(() => super.stopGlobalLoader());
 
                 this.formConfig = form.build();
             },
-            error => super.handleError(error))
+            error => super.handleError(error));
     }
 
     private getChatMessagesObservable(clientId: number, page: number, replaceMessages: boolean, search: string): Observable<any> {
@@ -225,7 +221,7 @@ export class ChatComponent extends BaseComponent implements OnInit {
 
     private loadMoreMessages(): void {
         super.subscribeToObservable(this.getChatMessagesObservable(this.activeChatUserId, this.chatMessagesPage, false, this.chatMessagesSearch)
-            .takeUntil(this.ngUnsubscribe), { globalLoader: true, componentLoader: false });
+            .takeUntil(this.ngUnsubscribe));
     }
 
 }

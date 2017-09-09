@@ -15,7 +15,7 @@
     &copy; {{year}} {{componentConfig.appName}}
   </div>
 
-  <loader [enabled]="topLoaderEnabled"></loader>
+  <loader [enabled]="globalLoaderEnabled"></loader>
 
   <td-layout-nav color="primary">
       <div td-toolbar-content flex>
@@ -55,9 +55,7 @@
           <button md-icon-button [routerLink]="getAuthUrl('logout')"><md-icon>exit_to_app</md-icon></button>
         </div>
       </md-toolbar>
-      <loader [enabled]="componentLoaderEnabled"></loader>
-
-      <div [ngClass]="{'w-hidden': componentLoaderEnabled && hideAdminLayoutWhenComponentsLoaderIsEnabled}">
+      <div [ngClass]="{'w-hidden': globalLoaderEnabled && hideComponentWhenLoaderIsEnabled && (!componentIsAutoInitialized && !componentIsInitialized)}">
         <router-outlet></router-outlet>
       </div>
 

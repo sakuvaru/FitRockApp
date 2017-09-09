@@ -55,8 +55,9 @@ export class AdminToolbarComponent extends BaseComponent implements OnInit {
 
         // construct url based on field type
         if (feed.feedType.toLowerCase() == 'message') {
-            console.warn('New chat app needs to be created and this should point to it');
-            return super.getTrainerUrl('clients');
+            var senderUserIdData = feed.data.find(m => m.key === 'SenderUserId');
+
+            return super.getAuthUrl('chat/' + (senderUserIdData ? senderUserIdData.value : ''));
         }
 
         return null;

@@ -7,6 +7,7 @@ import { AppConfig, ComponentDependencyService, BaseComponent } from '../../../c
 import { FormConfig } from '../../../../web-components/dynamic-form';
 import { NewFoodMenuItems } from '../menu.items';
 import { Food } from '../../../models';
+import { Observable } from 'rxjs/Rx';
 
 @Component({
     templateUrl: 'new-food.component.html'
@@ -23,28 +24,21 @@ export class NewFoodComponent extends BaseComponent implements OnInit {
     ngOnInit() {
         super.ngOnInit();
 
-        this.initForm();
-    }
-
-    private initForm(): void {
-        this.startLoader();
-
         this.setConfig({
             componentTitle: { key: 'module.foods.submenu.new' },
             menuItems: new NewFoodMenuItems().menuItems
         });
 
-        this.dependencies.itemServices.foodService.insertForm()
+        super.subscribeToObservable(this.getFormObservable());
+    }
+
+    private getFormObservable(): Observable<any> {
+        return this.dependencies.itemServices.foodService.insertForm()
             .takeUntil(this.ngUnsubscribe)
-            .subscribe(form => {
-                form.onFormInit(() => this.stopLoader())
-                form.onBeforeSave(() => this.startGlobalLoader());
-                form.onAfterSave(() => this.stopGlobalLoader());
+            .map(form => {
+                form.loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader());
                 form.insertFunction((item) => this.dependencies.itemServices.foodService.create(item).set());
                 form.onAfterInsert((response) => this.navigate([this.getTrainerUrl('foods/edit'), response.item.id]));
-                form.onError(() => {
-                    super.stopGlobalLoader();
-                });
 
                 this.formConfig = form.build();
             },

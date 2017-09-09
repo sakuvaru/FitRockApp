@@ -5,6 +5,7 @@ import { AppConfig, ComponentDependencyService, BaseComponent } from '../../core
 
 // required by component
 import { FormConfig } from '../../../web-components/dynamic-form';
+import { Observable } from 'rxjs/Rx';
 
 @Component({
     templateUrl: '_form.component.html'
@@ -22,25 +23,23 @@ export class FormComponent extends BaseComponent implements OnInit {
     ngOnInit() {
         super.ngOnInit();
 
-        this.startLoader();
+        super.subscribeToObservables(this.getFormObservables());
+    }
 
-        this.dependencies.itemServices.logService.insertForm()
-            .subscribe(form => {
-                form.onFormInit(() => this.stopLoader());
-                form.onBeforeSave(() => this.startGlobalLoader());
-                form.onAfterSave(() => this.stopGlobalLoader());
-                form.onError(() => super.stopGlobalLoader());
+    private getFormObservables(): Observable<any>[] {
+        var observables: Observable<any>[] = [];
+
+        observables.push(this.dependencies.itemServices.logService.insertForm()
+            .map(form => {
+                form.loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
                 this.formInsertConfig = form.build();
             },
-            error => super.handleError(error));
+            error => super.handleError(error)));
 
-        this.dependencies.itemServices.logService.editForm(1)
-            .subscribe(form => {
-                form.onFormInit(() => this.stopLoader());
-                form.onBeforeSave(() => this.startGlobalLoader());
-                form.onAfterSave(() => this.stopGlobalLoader());
+        observables.push(this.dependencies.itemServices.logService.editForm(1)
+            .map(form => {
+                form.loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
                 form.onAfterDelete(() => this.navigate([this.getTrainerUrl('workouts')]));
-                form.onError(() => super.stopGlobalLoader());
 
                 var item = form.getItem();
 
@@ -55,6 +54,8 @@ export class FormComponent extends BaseComponent implements OnInit {
 
                 this.formInsertConfig = form.build();
             },
-            error => super.handleError(error));
+            error => super.handleError(error)));
+
+        return observables;
     }
 }

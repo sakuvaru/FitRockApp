@@ -65,6 +65,11 @@ export class LoadMoreBuilder<TItem extends IItem> {
         return this;
     }
 
+    loaderConfig(start: () => void, stop: () => void ): this {
+        this.config.loaderConfig = { start: start, stop: stop };
+        return this;
+    }
+
     /**
      * Text to be shown in the listing
     */

@@ -8,6 +8,7 @@ import { DataTableConfig, AlignEnum } from '../../../../web-components/data-tabl
 import { Food, DietFood } from '../../../models';
 import { MD_DIALOG_DATA } from '@angular/material';
 import { FormConfig } from '../../../../web-components/dynamic-form';
+import { Observable } from 'rxjs/Rx';
 
 @Component({
   templateUrl: 'edit-diet-food-dialog.component.html'
@@ -27,29 +28,29 @@ export class EditDietFoodDialogComponent extends BaseComponent implements OnInit
     @Inject(MD_DIALOG_DATA) public data: any
   ) {
     super(dependencies)
+    super.isDialog();
+
     this.dietFood = data;
   }
 
   ngOnInit() {
     super.ngOnInit();
     
-    super.startGlobalLoader();
+    super.subscribeToObservable(this.getFormObservable());
+  }
 
-    this.dependencies.itemServices.dietFoodService.editForm(this.dietFood.id)
+  private getFormObservable(): Observable<any> {
+    return this.dependencies.itemServices.dietFoodService.editForm(this.dietFood.id)
       .takeUntil(this.ngUnsubscribe)
-      .subscribe(form => {
+      .map(form => {
         form.onAfterUpdate((response) => {
           this.dietFood = response.item;
           this.close();
         });
-        form.onBeforeSave(() => super.startGlobalLoader());
-        form.onAfterSave(() => super.stopGlobalLoader());
-        form.onBeforeDelete(() => super.startGlobalLoader());
-        form.onError(() => super.stopGlobalLoader());
+        form.loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader());
         form.onAfterDelete((response) => {
           this.idOfDeletedDietFood = response.deletedItemId;
           this.dietFoodWasDeleted = true;
-          this.stopGlobalLoader();
           this.close();
         });
 

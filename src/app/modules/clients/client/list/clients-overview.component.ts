@@ -32,6 +32,7 @@ export class ClientsOverviewComponent extends ClientsBaseComponent implements On
 
   private initDataTable(): void {
     this.setConfig({
+      autoInitComponent: true,
       menuTitle: { key: 'menu.clients' },
       menuItems: new ClientOverviewMenuItems().menuItems,
       componentTitle: { key: 'module.clients.allClients' },
@@ -51,8 +52,7 @@ export class ClientsOverviewComponent extends ClientsBaseComponent implements On
           .get()
           .takeUntil(this.ngUnsubscribe)
       })
-      .onBeforeLoad(isInitialLoad => isInitialLoad ? super.startLoader() : super.startGlobalLoader()) 
-      .onAfterLoad(isInitialLoad => isInitialLoad ? super.stopLoader() : super.stopGlobalLoader()) 
+      .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
       .showAllFilter(true)
       .filter(new Filter({
         filterNameKey: 'module.clients.activeClients',

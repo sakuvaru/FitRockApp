@@ -128,6 +128,13 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
         if (this.config.isInsertForm()) {
             this.insertButtonSubject
                 .switchMap(event => {
+                    if (!this.config.insertFunction){
+                        throw new Error('Insert function is not defined');
+                    }
+
+                    // start loader
+                    this.startLoader();
+
                     // before save
                     if (this.config.onBeforeSave) {
                         this.config.onBeforeSave();
@@ -147,6 +154,9 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
                     if (this.config.OnAfterSave) {
                         this.config.OnAfterSave();
                     }
+
+                    // stop loader
+                    this.stopLoader();
                 },
                 (err) => {
                     this.handleError(err);
@@ -155,6 +165,13 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
         else if (this.config.isEditForm()) {
             this.editButtonSubject
                 .switchMap(event => {
+                    if (!this.config.editFunction){
+                        throw new Error('Edit function is not defined');
+                    }
+
+                    // start loader
+                    this.startLoader();
+
                     // before save
                     if (this.config.onBeforeSave) {
                         this.config.onBeforeSave();
@@ -174,6 +191,9 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
                     if (this.config.OnAfterSave) {
                         this.config.OnAfterSave();
                     }
+
+                    // stop loader
+                    this.stopLoader();
                 },
                 (err) => {
                     this.handleError(err);
@@ -190,6 +210,13 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
 
             this.deleteButtonSubject
                 .switchMap(response => {
+                    if (!this.config.deleteFunction){
+                        throw new Error('Delete function is not defined');
+                    }
+
+                    // start loader
+                    this.startLoader();
+
                     // before delete
                     if (this.config.onBeforeDelete) {
                         this.config.onBeforeDelete(this.form.value);
@@ -202,6 +229,9 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
                 .subscribe(response => {
                     this.response = response;
                     this.handleDeleteAfter(response);
+
+                    // stop loader
+                    this.stopLoader();
                 },
                 (err) => {
                     this.handleError(err);
@@ -255,6 +285,18 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
         this.translateService.get('form.error.insufficientLicense').subscribe(key => this.insufficientLicenseError = key);
         this.translateService.get('form.error.saveFailed').subscribe(key => this.generalErrorMessage = key);
         this.translateService.get('form.error.unknownFormErrorMessage').subscribe(key => this.unknownErrorMessage = key);
+    }
+
+    private startLoader(): void {
+        if (this.config.loaderConfig){
+            this.config.loaderConfig.start();
+        }
+    }
+
+    private stopLoader(): void {
+        if (this.config.loaderConfig){
+            this.config.loaderConfig.stop();
+        }
     }
 
     private handleFormChange(): void {
@@ -374,6 +416,9 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
         else {
             this.submissionError = this.unknownErrorMessage;
         }
+
+        // stop loader on error in case the request is pending
+        this.stopLoader();
     }
 
     private getFormErrorMessage(columnValidation: ColumnValidation, fieldLabel: string): Observable<string> {

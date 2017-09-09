@@ -6,6 +6,7 @@ import { AppConfig, ComponentDependencyService, BaseComponent, ComponentConfig }
 // required by component
 import { DietMenuItems } from '../menu.items';
 import { Diet, DietFood } from '../../../models';
+import { Observable } from 'rxjs/Rx';
 
 @Component({
   templateUrl: 'diet-plan.component.html'
@@ -24,20 +25,18 @@ export class DietPlanComponent extends BaseComponent implements OnInit {
   ngOnInit() {
     super.ngOnInit();
 
-    super.startLoader();
-
-    this.initDiet();
+    super.subscribeToObservable(this.getDietObservable());
   }
 
-  private initDiet(): void {
-    this.activatedRoute.params
+  private getDietObservable(): Observable<any> {
+    return this.activatedRoute.params
       .takeUntil(this.ngUnsubscribe)
       .switchMap((params: Params) => this.dependencies.itemServices.dietService.item()
         .byId(+params['id'])
         .includeMultiple(['DietCategory', 'DietFoods.Food.FoodUnit', 'DietFoods', 'DietFoods.Food', 'DietFoods.Food.FoodCategory'])
         .get())
       .takeUntil(this.ngUnsubscribe)
-      .subscribe(response => {
+      .map(response => {
         this.setConfig({
           menuItems: new DietMenuItems(response.item.id).menuItems,
           menuTitle: {
@@ -49,7 +48,6 @@ export class DietPlanComponent extends BaseComponent implements OnInit {
         });
 
         this.assignDiet(response.item);
-        super.stopLoader();
       },
       error => super.handleError(error));
   }

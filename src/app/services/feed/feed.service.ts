@@ -54,7 +54,7 @@ export class FeedService extends BaseTypeService<Feed>{
             return new FeedResult({
                 data: feed.data,
                 translationKey: 'module.feeds.userSentYouAMessage',
-                translationData: translationData
+                translationData: translationData,
             })
         }
         return null;

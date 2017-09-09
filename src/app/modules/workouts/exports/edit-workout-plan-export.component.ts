@@ -14,12 +14,13 @@ import { EditWorkoutExerciseDialogComponent } from '../dialogs/edit-workout-exer
 import { AddWorkoutExerciseDialogComponent } from '../dialogs/add-workout-exercise-dialog.component';
 import { AddCustomExerciseDialogComponent } from '../dialogs/add-custom-exercise-dialog.component';
 import * as _ from 'underscore';
+import { Observable } from 'rxjs/Rx';
 
 @Component({
   templateUrl: 'edit-workout-plan-export.component.html',
   selector: 'edit-workout-plan-export'
 })
-export class EditWorkoutPlanExportComponent extends BaseComponent implements OnInit, OnDestroy, OnChanges {
+export class EditWorkoutPlanExportComponent extends BaseComponent implements OnDestroy, OnChanges {
 
   @Output() loadWorkout = new EventEmitter();
 
@@ -28,11 +29,6 @@ export class EditWorkoutPlanExportComponent extends BaseComponent implements OnI
   private workout: Workout;
   private sortedWorkoutExercises: WorkoutExercise[];
 
-  /**
-  * Drop subscription for dragula - Unsubscribe on OnDestroy + destroy dragula itself!
-  */
-  private dropSubscription: Subscription;
-
   private dragulaBag: string = 'dragula-bag';
 
   constructor(
@@ -40,58 +36,55 @@ export class EditWorkoutPlanExportComponent extends BaseComponent implements OnI
     private dragulaService: DragulaService,
     protected dependencies: ComponentDependencyService) {
     super(dependencies)
-  }
 
-  ngOnInit() {
-    super.ngOnInit();
-
-    this.startLoader();
-
-    // set handle for dragula
-    this.dragulaService.setOptions(this.dragulaBag, {
+     // set handle for dragula
+     this.dragulaService.setOptions(this.dragulaBag, {
       moves: function (el: any, container: any, handle: any): any {
         return StringHelper.contains(handle.className, 'dragula-move-handle');
       }
     });
 
-    // subscribe to drop events
-    this.dropSubscription = this.dragulaService.drop
-      .do(() => this.startGlobalLoader())
-      .debounceTime(500)
-      .switchMap(() => {
-        return this.dependencies.itemServices.workoutExerciseService.updateItemsOrder(this.sortedWorkoutExercises, this.workout.id).set();
-      })
-      .subscribe(() => {
-        super.stopGlobalLoader();
-        super.showSavedSnackbar();
-      });
+    super.subscribeToObservable(this.getInitObservable());
   }
 
   ngOnDestroy() {
     super.ngOnDestroy();
 
     // unsubscribe from dragula drop events
-    this.dropSubscription.unsubscribe();
     this.dragulaService.destroy(this.dragulaBag);
   }
 
   ngOnChanges(changes: SimpleChanges) {
     var workoutId = changes.workoutId.currentValue;
     if (workoutId) {
-      this.initWorkout(workoutId)
+      super.subscribeToObservable(this.getWorkoutObservable(workoutId));
     }
   }
 
-  private initWorkout(workoutId: number): void {
-    this.dependencies.itemServices.workoutService.item()
+  private getInitObservable(): Observable<any> {
+    // subscribe to drop events
+    return this.dragulaService.drop
+      .takeUntil(this.ngUnsubscribe)
+      .do(() => this.startGlobalLoader())
+      .debounceTime(500)
+      .switchMap(() => {
+        return this.dependencies.itemServices.workoutExerciseService.updateItemsOrder(this.sortedWorkoutExercises, this.workout.id).set();
+      })
+      .map(() => {
+        super.stopGlobalLoader();
+        super.showSavedSnackbar();
+      });
+  }
+
+  private getWorkoutObservable(workoutId: number): Observable<any> {
+    return this.dependencies.itemServices.workoutService.item()
       .byId(workoutId)
       .includeMultiple(['WorkoutCategory', 'WorkoutExercises', 'WorkoutExercises.Exercise', 'WorkoutExercises.Exercise.ExerciseCategory'])
       .get()
-      .subscribe(response => {
+      .map(response => {
         this.loadWorkout.next(response.item);
 
         this.assignWorkout(response.item);
-        this.stopLoader();
       });
   }
 

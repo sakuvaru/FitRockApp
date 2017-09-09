@@ -32,17 +32,17 @@ export class LoadMoreConfig<TItem extends IItem> {
     /**
      * Text to be shown in the listing
      */
-    public text: LoadMoreField<TItem>;
+    public text?: LoadMoreField<TItem>;
 
     /**
      * Title to be shown in the listing
      */
-    public title: LoadMoreField<TItem>;
+    public title?: LoadMoreField<TItem>;
     
     /**
      * Footer text to be shown in the listing
      */
-    public footer: LoadMoreField<TItem>;
+    public footer?: LoadMoreField<TItem>;
 
     /**
      * Method that is used to get observable out of loadQuery. 
@@ -59,32 +59,37 @@ export class LoadMoreConfig<TItem extends IItem> {
     /**
      * On click handled
      */
-    public onClick: (item: TItem) => void;
+    public onClick?: (item: TItem) => void;
 
     /**
      * If set, icon with with given function will be resolved, return name of the icon
      */
-    public iconResolver: (item: TItem) => string;
+    public iconResolver?: (item: TItem) => string;
 
     /**
      * Resolver for icon class 
      */
-    public iconClassResolver: (item: TItem) => string;
+    public iconClassResolver?: (item: TItem) => string;
 
     /**
      * Used to generate image from URL
      */
-    public imageResolver: (item: TItem) => string;
+    public imageResolver?: (item: TItem) => string;
 
     /**
      * Handler executed after items are loaded
      */
-    public onAfterLoad: (isInitialLaod: boolean) => void;
+    public onAfterLoad?: (isInitialLaod: boolean) => void;
 
     /**
      * Handler executed before items are loaded
      */
-    public onBeforeLoad: (isInitialLoad: boolean) => void;
+    public onBeforeLoad?: (isInitialLoad: boolean) => void;
+
+        /**
+     * Loader configuration
+     */
+    public loaderConfig?: { start: () => void, stop: () => void }
 
     constructor(
         loadResolver: (query: MultipleItemQuery<TItem>) => Observable<ResponseMultiple<TItem>>,

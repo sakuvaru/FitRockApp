@@ -27,7 +27,7 @@ export class AppConfig {
     public static Auth0_NoJwtError = true;
 
     // components settings
-    public static HideAdminLayoutWhenComponentsLoaderIsEnabled = true;
+    public static HideComponentWhenLoaderIsEnabled = true;
 
     // design defaults
     public static DefaultDialogWidth = '70%';

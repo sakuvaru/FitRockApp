@@ -61,13 +61,9 @@ export class NewClientDietComponent extends ClientsBaseComponent implements OnIn
             .map(form => {
                 // manually set client id
                 form.withFieldValue('ClientId', this.clientId);
-
-                form.onFormInit(() => super.stopLoader())
-                form.onBeforeSave(() => super.startGlobalLoader());
-                form.onAfterSave(() => super.stopGlobalLoader());
+                form.loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
                 form.insertFunction((item) => this.dependencies.itemServices.dietService.create(item).set());
                 form.onAfterInsert((response) => super.navigate([super.getTrainerUrl('clients/edit/' + this.clientId + '/diet/' + response.item.id + '/diet-plan')]));
-                form.onError(() => super.stopGlobalLoader());
 
                 this.formConfig = form.build();
             },

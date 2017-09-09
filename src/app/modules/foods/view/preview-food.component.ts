@@ -7,6 +7,7 @@ import { AppConfig, ComponentDependencyService, BaseComponent } from '../../../c
 import { FoodPreviewMenuItems, FoodMenuItems } from '../menu.items';
 import { Food } from '../../../models';
 import 'rxjs/add/operator/switchMap';
+import { Observable } from 'rxjs/Rx';
 
 @Component({
     templateUrl: 'preview-food.component.html'
@@ -25,19 +26,17 @@ export class PreviewFoodComponent extends BaseComponent implements OnInit {
     ngOnInit(): void {
         super.ngOnInit();
 
-        this.initItem();
+        super.subscribeToObservable(this.getItemObservable());
     }
 
-    private initItem(): void {
-        super.startLoader();
-
-        this.activatedRoute.params
+    private getItemObservable(): Observable<any> {
+        return this.activatedRoute.params
             .takeUntil(this.ngUnsubscribe)
             .switchMap((params: Params) => this.dependencies.itemServices.foodService.item()
                 .byId(+params['id'])
                 .get()
                 .takeUntil(this.ngUnsubscribe))
-            .subscribe(response => {
+            .map(response => {
                 this.food = response.item;
 
                 if (this.food.createdByUserId === this.dependencies.authenticatedUserService.getUserId()) {
@@ -62,7 +61,6 @@ export class PreviewFoodComponent extends BaseComponent implements OnInit {
                         }
                     });
                 }
-                super.stopLoader();
             })
     }
 }

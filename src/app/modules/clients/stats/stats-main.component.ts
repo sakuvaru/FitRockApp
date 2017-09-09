@@ -111,7 +111,7 @@ export class StatsMainComponent extends ClientsBaseComponent implements OnInit {
     }
 
     private onSelectType(progressItemType: ProgressItemType): void {
-        super.subscribeToObservable(this.getStatsObservable(this.clientId, progressItemType.id), { globalLoader: true });
+        super.subscribeToObservable(this.getStatsObservable(this.clientId, progressItemType.id));
     }
 }
 

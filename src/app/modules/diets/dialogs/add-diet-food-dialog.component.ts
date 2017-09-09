@@ -8,6 +8,7 @@ import { DataTableConfig, AlignEnum } from '../../../../web-components/data-tabl
 import { Food, DietFood } from '../../../models';
 import { MD_DIALOG_DATA } from '@angular/material';
 import { FormConfig } from '../../../../web-components/dynamic-form';
+import { Observable } from 'rxjs/Rx';
 
 @Component({
   templateUrl: 'add-diet-food-dialog.component.html'
@@ -30,6 +31,7 @@ export class AddDietFoodDialogComponent extends BaseComponent implements OnInit 
     @Inject(MD_DIALOG_DATA) public data: any
   ) {
     super(dependencies)
+    super.isDialog();
 
     this.dietId = data.dietId;
     this.food = data.food;
@@ -38,18 +40,18 @@ export class AddDietFoodDialogComponent extends BaseComponent implements OnInit 
   ngOnInit() {
     super.ngOnInit();
     
-    super.startGlobalLoader();
+    super.subscribeToObservable(this.getFormObservable());
+  }
 
-    this.dependencies.itemServices.dietFoodService.insertForm()
+  private getFormObservable(): Observable<any> {
+    return this.dependencies.itemServices.dietFoodService.insertForm()
       .takeUntil(this.ngUnsubscribe)
-      .subscribe(form => {
-        form.onFormLoaded(() => super.stopGlobalLoader());
+      .map(form => {
         // set food id & diet id for new DietFood manually
         form.withFieldValue('foodId', this.food.id);
         form.withFieldValue('dietId', this.dietId);
-        form.onBeforeSave(() => super.startGlobalLoader());
-        form.onAfterSave(() => super.stopGlobalLoader());
-        form.onError(() => super.stopGlobalLoader());
+
+        form.loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader());
 
         form.onAfterInsert((response => {
           this.newDietFood = response.item;

@@ -24,6 +24,7 @@ export class MyFoodsListComponent extends BaseComponent implements OnInit {
     super.ngOnInit();
 
     this.setConfig({
+      autoInitComponent: true,
       menuTitle: { key: 'module.foods.submenu.myFoods' },
       menuItems: new FoodOverviewItems().menuItems,
       componentTitle: { key: 'module.foods.submenu.overview' },
@@ -66,8 +67,7 @@ export class MyFoodsListComponent extends BaseComponent implements OnInit {
           .takeUntil(this.ngUnsubscribe)
       })
       .showAllFilter(true)
-      .onBeforeLoad(isInitialLoad => isInitialLoad ? super.startLoader() : super.startGlobalLoader())
-      .onAfterLoad(isInitialLoad => isInitialLoad ? super.stopLoader() : super.stopGlobalLoader())
+      .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
       .showPager(true)
       .showSearch(true)
       .pagerSize(7)

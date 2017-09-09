@@ -51,8 +51,7 @@ export class ClientChatComponent extends ClientsBaseComponent implements OnInit 
                 // reset page to 1 when searching
                 this.chatMessagesPage = 1;
                 this.chatMessagesSearch = searchTerm;
-                super.subscribeToObservable(this.getChatMessagesObservable(this.clientId, this.chatMessagesPage, true, this.chatMessagesSearch),
-                { globalLoader: true, componentLoader: false });
+                super.subscribeToObservable(this.getChatMessagesObservable(this.clientId, this.chatMessagesPage, true, this.chatMessagesSearch));
             });
     }
 
@@ -77,17 +76,14 @@ export class ClientChatComponent extends ClientsBaseComponent implements OnInit 
 
                 form.snackBarTextKey('module.clients.chat.snackbarSaved');
                 form.submitTextKey('module.clients.chat.submit');
-                form.onFormInit(() => super.stopLoader())
-                form.onBeforeSave(() => super.startGlobalLoader());
-                form.onAfterSave(() => super.stopGlobalLoader());
+                form.loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
                 form.insertFunction((item) => this.dependencies.itemServices.chatMessageService.create(item).set());
                 form.onAfterInsert((response) => {
                     // reload messages
                     super.subscribeToObservable(this.getChatMessagesObservable(this.clientId, 1, true, this.chatMessagesSearch)
-                        .takeUntil(this.ngUnsubscribe), { globalLoader: true, componentLoader: false });
+                        .takeUntil(this.ngUnsubscribe));
 
                 });
-                form.onError(() => super.stopGlobalLoader());
 
                 this.formConfig = form.build();
             },
@@ -145,6 +141,6 @@ export class ClientChatComponent extends ClientsBaseComponent implements OnInit 
 
     private loadMoreMessages(): void {
         super.subscribeToObservable(this.getChatMessagesObservable(this.clientId, this.chatMessagesPage, false, this.chatMessagesSearch)
-            .takeUntil(this.ngUnsubscribe), { globalLoader: true, componentLoader: false });
+            .takeUntil(this.ngUnsubscribe));
     }
 }

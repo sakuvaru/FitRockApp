@@ -103,6 +103,11 @@ export class DataTableConfig<TItem extends IItem> {
      */
     public selectableConfig: SelectableConfig<TItem>;
 
+    /**
+     * Loader configuration
+     */
+    public loaderConfig?: { start: () => void, stop: () => void }
+
     constructor(
         public options?: {
             // required 
@@ -128,6 +133,7 @@ export class DataTableConfig<TItem extends IItem> {
             showAllFilter: boolean,
             saveLastFilter: boolean,
             dynamicFilters?: <TFilter extends Filter<IItem>>(searchTerm: string) => Observable<Filter<IItem>[]>,
+            loaderConfig?: { start: () => void, stop: () => void }
         }) {
         Object.assign(this, options);
     }

@@ -79,19 +79,15 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
         return this.dependencies.itemServices.progressItemService.insertForm({
             useCustomQuery: this.dependencies.itemServices.progressItemService.insertFormQuery()
                 .withData('clientId', clientId)
-            })
+        })
             .map(form => {
                 // set clientId manually
                 form.withFieldValue('ClientId', this.clientId);
 
-                form.onFormLoaded(() => super.stopLoader());
-                form.onBeforeSave(() => super.startGlobalLoader());
+                form.loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader());
                 form.onAfterSave(() => {
                     this.reloadDataTable();
-                    super.stopGlobalLoader();
                 });
-
-                form.onError(() => super.stopGlobalLoader());
 
                 // set extra translation value for measurement value based on currently selected type
                 form.onFieldValueChange((config, changedField, newValue) => {
@@ -124,10 +120,9 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
                             }
                         })
                     })
-                   
+
                 });
 
-                // get form
                 // reload form
                 this.formConfig = undefined;
                 this.formConfig = form.build();
@@ -189,10 +184,10 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
                         var filters: Filter<ProgressItemTypeWithCountDto>[] = [];
                         response.items.forEach(type => {
                             var typeKey;
-                            if (type.translateValue){
+                            if (type.translateValue) {
                                 typeKey = 'module.progressItemTypes.globalTypes.' + type.codename;
                             }
-                            else{
+                            else {
                                 typeKey = type.typeName;
                             }
 
@@ -209,16 +204,7 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
             .wrapInCard(true)
             .showAllFilter(true)
             .showSearch(false)
-            .onBeforeLoad(isInitialLoad => {
-                if (!isInitialLoad) {
-                    super.startGlobalLoader()
-                }
-            })
-            .onAfterLoad(isInitialLoad => {
-                if (!isInitialLoad) {
-                    super.stopGlobalLoader()
-                }
-            })
+            .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
             .onClick((item) => this.openEditProgressItemDialog(item))
             .build();
     }
@@ -232,7 +218,7 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
     }
 
     private handleDeleteType(progressItemType: ProgressItemType): void {
-        super.subscribeToObservable(this.getDeleteProgressTypeObservable(progressItemType), { globalLoader: true });
+        super.subscribeToObservable(this.getDeleteProgressTypeObservable(progressItemType));
     }
 
     private openEditProgressItemDialog(progressItem: ProgressItem): void {
@@ -257,7 +243,7 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
         dialog.afterClosed().subscribe(m => {
             if (dialog.componentInstance.selectedItem) {
                 // item was selected, add it
-                super.subscribeToObservable(this.getAddProgressTypeObservable(dialog.componentInstance.selectedItem), { globalLoader: true });
+                super.subscribeToObservable(this.getAddProgressTypeObservable(dialog.componentInstance.selectedItem));
             }
         })
     }
@@ -267,13 +253,14 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
             .withOption('ClientId', this.clientId)
             .set()
             .takeUntil(this.ngUnsubscribe)
-            .map(response => {
+            .flatMap((createResponse) => {
                 // add created type to local list
-                this.progressItemTypes.push(response.item);
+                this.progressItemTypes.push(createResponse.item);
 
-                // refresh form observables
-                super.subscribeToObservable(this.getFormObservable(this.clientId));
-
+                // refresh form
+                return this.getFormObservable(this.clientId);
+            })
+            .map(formResponse => {
                 // refresh data table
                 this.reloadDataTable();
             });

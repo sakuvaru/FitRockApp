@@ -48,8 +48,10 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
     protected adminMenu: AdminMenu = new AdminMenu();
 
     constructor(protected dependencies: ComponentDependencyService) {
+        // set component as not initialized when its constructed
+        this.setComponentAsInitialized(false);
+
         // stop loaders on component init 
-        this.dependencies.coreServices.sharedService.setComponentLoader(false);
         this.dependencies.coreServices.sharedService.setTopLoader(false);
 
         // authenticate user when logging-in (handles the params in URL and extracts token
@@ -91,13 +93,6 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
 
     // ------------------- Loader ---------------------------- //
 
-    startLoader(): void {
-        this.dependencies.coreServices.sharedService.setComponentLoader(true);
-    }
-
-    stopLoader(): void {
-        this.dependencies.coreServices.sharedService.setComponentLoader(false);
-    }
 
     startGlobalLoader(): void {
         this.dependencies.coreServices.sharedService.setTopLoader(true);
@@ -109,7 +104,6 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
 
     stopAllLoaders(): void {
         this.stopGlobalLoader();
-        this.stopLoader();
     }
 
     /**
@@ -154,7 +148,8 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
             menuItems?: MenuItem[],
             appName?: string,
             menuTitle?: ResourceKey,
-            enableSearch?: boolean
+            enableSearch?: boolean,
+            autoInitComponent?: boolean
         }): void {
         if (options) {
             Object.assign(this.componentConfig, options);
@@ -263,6 +258,23 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
             })
     }
 
+    // --------------- Global component initialization flag ------------------ //
+
+    protected setComponentAsInitialized(isInitialized: boolean): void {
+        this.dependencies.coreServices.sharedService.setComponentIsInitialized(isInitialized);
+    }
+
+    // --------------- Component as dialog helper --------------------- //
+
+    /**
+     * Call this method in constructor of dialog components
+     */
+    protected isDialog(): void{
+        // this makes sure that if the dialog is closed, the parent component is still marked as 
+        // initialized
+        this.setComponentAsInitialized(true);
+    }
+
     // --------------- Useful aliases ------------------ //
     translate(key: string, data?: any): Observable<string> {
         return this.dependencies.coreServices.translateService.get(key, data);
@@ -280,33 +292,30 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
     }
 
     fromNow(date: Date): string {
-        return this.moment(date).fromNow(); 
+        return this.moment(date).fromNow();
     }
 
     // -------------- Observable subscriptions -------------- //
     private completedObservablesCount: number = 0;
 
     protected subscribeToObservables(observables: Observable<any>[], options?: {
-        globalLoader?: boolean,
-        componentLoader?: boolean
+        enableLoader?: boolean,
+        setComponentAsInitialized?: boolean
     }): void {
 
-        var useGlobalLoader;
-        var useComponentLoader;
+        var enableLoader;
+        var setComponentAsInitialized;
 
         if (!options) {
-            useComponentLoader = true;
-            useGlobalLoader = false;
+            enableLoader = true;
+            setComponentAsInitialized = true;
         }
         else {
-            useGlobalLoader = options.globalLoader;
-            useComponentLoader = options.componentLoader;
+            enableLoader = options.enableLoader;
+            setComponentAsInitialized = options.setComponentAsInitialized;
         }
 
-        if (useComponentLoader) {
-            this.startLoader();
-        }
-        if (useGlobalLoader) {
+        if (enableLoader) {
             this.startGlobalLoader();
         }
 
@@ -318,6 +327,11 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
                 if (this.completedObservablesCount === observables.length) {
                     this.stopAllLoaders();
                     this.completedObservablesCount = 0;
+
+                    // set component as initialized
+                    if (setComponentAsInitialized) {
+                        this.setComponentAsInitialized(true)
+                    }
                 }
             },
             error => this.handleError(error)
@@ -325,26 +339,23 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
     }
 
     protected subscribeToObservable(observable: Observable<any>, options?: {
-        globalLoader?: boolean,
-        componentLoader?: boolean
+        enableLoader?: boolean,
+        setComponentAsInitialized?: boolean
     }): void {
 
-        var useGlobalLoader;
-        var useComponentLoader;
+        var enableLoader;
+        var setComponentAsInitialized;
 
         if (!options) {
-            useComponentLoader = true;
-            useGlobalLoader = false;
+            enableLoader = true;
+            setComponentAsInitialized = true;
         }
         else {
-            useGlobalLoader = options.globalLoader;
-            useComponentLoader = options.componentLoader;
+            enableLoader = options.enableLoader;
+            setComponentAsInitialized = options.setComponentAsInitialized;
         }
 
-        if (useComponentLoader) {
-            this.startLoader();
-        }
-        if (useGlobalLoader) {
+        if (enableLoader) {
             this.startGlobalLoader();
         }
 
@@ -352,6 +363,11 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
             .takeUntil(this.ngUnsubscribe)
             .subscribe(() => {
                 this.stopAllLoaders();
+
+                // set component as initialized
+                if (setComponentAsInitialized) {
+                    this.setComponentAsInitialized(true)
+                }
             },
             error => this.handleError(error)
             );

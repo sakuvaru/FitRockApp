@@ -35,6 +35,7 @@ export class FeedsComponent extends BaseComponent implements OnInit {
     private initMenu(): void {
 
         this.setConfig({
+            autoInitComponent: true,
             componentTitle: { key: 'module.profile.submenu.feeds' },
             menuItems: new MyProfileMenuItems().menuItems,
             menuTitle: { key: 'module.profile.submenu.myProfile' },
@@ -77,8 +78,7 @@ export class FeedsComponent extends BaseComponent implements OnInit {
             .iconResolver(item => this.getFeedIcon(item))
             .iconClassResolver(item => !item.markedAsRead ? 'tc-red-500' : '')
             .pageSize(15)
-            .onBeforeLoad(isInitialLoad => isInitialLoad ? super.startLoader() : super.startGlobalLoader())
-            .onAfterLoad(isInitialLoad => isInitialLoad ? super.stopLoader() : super.stopGlobalLoader())
+            .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
             .showSearch(false)
             .build();
     }

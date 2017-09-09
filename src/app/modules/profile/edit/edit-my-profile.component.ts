@@ -42,11 +42,8 @@ export class EditMyProfileComponent extends BaseComponent implements OnInit {
             .map(form => {
                 // disable delete on this form
                 form.enableDelete(false);
-
-                form.onFormLoaded(() => super.stopLoader());
-                form.onBeforeSave(() => super.startGlobalLoader());
-                form.onAfterSave(() => super.stopGlobalLoader());
-                form.onError(() => super.stopGlobalLoader());
+                
+                form.loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
 
                 // get form
                 this.formConfig = form.build();

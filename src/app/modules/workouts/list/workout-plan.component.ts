@@ -6,6 +6,7 @@ import { AppConfig, ComponentDependencyService, BaseComponent, ComponentConfig }
 // required by component
 import { WorkoutMenuItems } from '../menu.items';
 import { Workout, WorkoutExercise } from '../../../models';
+import { Observable } from 'rxjs/Rx';
 
 @Component({
   templateUrl: 'workout-plan.component.html'
@@ -24,14 +25,12 @@ export class WorkoutPlanComponent extends BaseComponent implements OnInit {
   ngOnInit() {
     super.ngOnInit();
 
-    super.startLoader();
-
     // init workout
-    this.initWorkout();
+    super.subscribeToObservable(this.getItemObservable());
   }
 
-  private initWorkout(): void {
-    this.activatedRoute.params
+  private getItemObservable(): Observable<any> {
+    return this.activatedRoute.params
       .takeUntil(this.ngUnsubscribe)
       .switchMap((params: Params) => this.dependencies.itemServices.workoutService.item()
         .byId(+params['id'])
@@ -39,7 +38,7 @@ export class WorkoutPlanComponent extends BaseComponent implements OnInit {
         .includeMultiple(['WorkoutCategory', 'WorkoutExercises', 'WorkoutExercises.Exercise', 'WorkoutExercises.Exercise.ExerciseCategory'])
         .get())
       .takeUntil(this.ngUnsubscribe)
-      .subscribe(response => {
+      .map(response => {
         this.setConfig({
           menuItems: new WorkoutMenuItems(response.item.id).menuItems,
           menuTitle: {
@@ -51,7 +50,6 @@ export class WorkoutPlanComponent extends BaseComponent implements OnInit {
         });
 
         this.assignWorkout(response.item);
-        super.stopLoader();
       },
       error => super.handleError(error));
   }

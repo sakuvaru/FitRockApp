@@ -9,6 +9,7 @@ import { Exercise } from '../../../models';
 import { MD_DIALOG_DATA } from '@angular/material';
 import { WorkoutExercise } from '../../../models';
 import { FormConfig } from '../../../../web-components/dynamic-form';
+import { Observable } from 'rxjs/Rx';
 
 @Component({
   templateUrl: 'add-workout-exercise-dialog.component.html'
@@ -31,6 +32,7 @@ export class AddWorkoutExerciseDialogComponent extends BaseComponent implements 
     @Inject(MD_DIALOG_DATA) public data: any
   ) {
     super(dependencies)
+    super.isDialog();
 
     this.workoutId = data.workoutId;
     this.exercise = data.exercise;
@@ -38,19 +40,18 @@ export class AddWorkoutExerciseDialogComponent extends BaseComponent implements 
 
   ngOnInit() {
     super.ngOnInit();
-    
-    super.startGlobalLoader();
 
-    this.dependencies.itemServices.workoutExerciseService.insertForm()
+    super.subscribeToObservable(this.getFormObservable());
+  }
+
+  private getFormObservable(): Observable<any>{
+    return this.dependencies.itemServices.workoutExerciseService.insertForm()
       .takeUntil(this.ngUnsubscribe)
-      .subscribe(form => {
-        form.onFormLoaded(() => super.stopGlobalLoader());
+      .map(form => {
         // set exercise id & workout id for new WorkoutExercise item
         form.withFieldValue('exerciseId', this.exercise.id);
         form.withFieldValue('workoutId', this.workoutId);
-        form.onBeforeSave(() => super.startGlobalLoader());
-        form.onAfterSave(() => super.stopGlobalLoader());
-        form.onError(() => super.stopGlobalLoader());
+        form.loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader());
 
         form.onAfterInsert((response => {
           this.newWorkoutExercise = response.item;

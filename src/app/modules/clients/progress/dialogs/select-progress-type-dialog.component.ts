@@ -22,10 +22,12 @@ export class SelectProgressTypeDialog extends BaseComponent implements OnInit {
     @Inject(MD_DIALOG_DATA) public data: any
   ) {
     super(dependencies)
+    super.isDialog();
   }
 
   ngOnInit() {
     super.ngOnInit();
+
     this.initDataTable();
   }
 
@@ -53,8 +55,7 @@ export class SelectProgressTypeDialog extends BaseComponent implements OnInit {
           .takeUntil(this.ngUnsubscribe)
       })
       .wrapInCard(false)
-      .onBeforeLoad(isInitialLoad => super.startGlobalLoader())
-      .onAfterLoad(isInitialLoad => super.stopGlobalLoader())
+      .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
       .showPager(true)
       .showSearch(false)
       .pagerSize(5)

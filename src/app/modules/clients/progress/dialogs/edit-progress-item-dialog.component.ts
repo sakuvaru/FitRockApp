@@ -8,6 +8,7 @@ import { DataTableConfig, AlignEnum } from '../../../../../web-components/data-t
 import { MD_DIALOG_DATA } from '@angular/material';
 import { ProgressItem } from '../../../../models';
 import { FormConfig } from '../../../../../web-components/dynamic-form';
+import { Observable } from 'rxjs/Rx';
 
 @Component({
   templateUrl: 'edit-progress-item-dialog.component.html'
@@ -27,33 +28,33 @@ export class EditProgressItemDialog extends BaseComponent implements OnInit {
   ) {
     super(dependencies)
     this.item = data;
+
+    super.isDialog();
   }
 
   ngOnInit() {
     super.ngOnInit();
-    
-    super.startGlobalLoader();
 
-    this.dependencies.itemServices.progressItemService.editForm(this.item.id)
+    super.subscribeToObservable(this.getFormObservable());
+  }
+
+  private getFormObservable(): Observable<any> {
+    return this.dependencies.itemServices.progressItemService.editForm(this.item.id)
       .takeUntil(this.ngUnsubscribe)
-      .subscribe(form => {
+      .map(form => {
         form.onAfterUpdate((response) => {
           this.itemWasUpdated = true;
           this.close();
         });
-        form.onBeforeSave(() => super.startGlobalLoader());
-        form.onAfterSave(() => super.stopGlobalLoader());
-        form.onBeforeDelete(() => super.startGlobalLoader());
-        form.onError(() => super.stopGlobalLoader());
+
+        form.loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader());
         form.onAfterDelete((response) => {
           this.idOfDeletedItem = response.deletedItemId;
           this.itemWasDeleted = true;
-          this.stopGlobalLoader();
           this.close();
         });
 
         this.formConfig = form.build();
-        super.stopGlobalLoader();
       },
       error => super.handleError(error));
   }

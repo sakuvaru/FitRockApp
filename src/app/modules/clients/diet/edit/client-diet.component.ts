@@ -6,7 +6,6 @@ import { AppConfig, ComponentDependencyService, BaseComponent } from '../../../.
 // required by component
 import { ClientsBaseComponent } from '../../clients-base.component';
 import { ClientMenuItems } from '../../menu.items';
-import { FormConfig } from '../../../../../web-components/dynamic-form';
 import { User, Diet, DietFood } from '../../../../models';
 import { DragulaService } from 'ng2-dragula';
 import 'rxjs/add/operator/switchMap';

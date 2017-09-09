@@ -136,6 +136,11 @@ export class DataTableBuilder<TItem extends IItem> {
         return this;
     }
 
+    loaderConfig(start: () => void, stop: () => void): this {
+        this.config.loaderConfig = { start: start, stop: stop };
+        return this;
+    }
+
     build(): DataTableConfig<TItem> {
         return this.config;
     }

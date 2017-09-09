@@ -37,10 +37,8 @@ export class EditClientComponent extends ClientsBaseComponent implements OnInit 
             .takeUntil(this.ngUnsubscribe)
             .switchMap(clientId => this.dependencies.itemServices.userService.editForm(clientId))
             .map(form => {
-                form.onFormLoaded(() => super.stopLoader());
-                form.onBeforeSave(() => super.startGlobalLoader());
-                form.onAfterSave(() => super.stopGlobalLoader());
-                form.onError(() => super.stopGlobalLoader());
+                form.enableDelete(false);
+                form.loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
                 form.onAfterDelete(() => super.navigate([this.getTrainerUrl('clients')]));
 
                 var user = form.getItem();

@@ -31,7 +31,6 @@ export class DietMenuItems {
     constructor(id: number) {
         this.menuItems = [
             new MenuItem({ key: 'menu.shared.back' }, MenuItemType.trainer, 'diets', { icon: 'arrow_back' }),
-            new MenuItem({ key: 'module.diets.submenu.editPlan' }, MenuItemType.trainer, 'diets/edit-plan/' + id, { icon: 'list' }),
             new MenuItem({ key: 'module.diets.submenu.view' }, MenuItemType.trainer, 'diets/view/' + id, { icon: 'info_outline' }),
             new MenuItem({ key: 'module.diets.submenu.editPlan' }, MenuItemType.trainer, 'diets/edit-plan/' + id, { icon: 'list' }),
             new MenuItem({ key: 'module.diets.submenu.edit' }, MenuItemType.trainer, 'diets/edit/' + id, { icon: 'edit' })

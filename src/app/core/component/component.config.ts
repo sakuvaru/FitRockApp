@@ -15,13 +15,15 @@ export class ComponentConfig  {
     public appName?: string = this.default_appName;
     public menuTitle?: ResourceKey = this.default_menuTitle;
     public enableSearch: boolean = false;
+    public autoInitComponent: boolean = false;
 
     constructor(options?: {
         componentTitle?: ResourceKey,
         menuItems?: MenuItem[],
         appName?: string,
         menuTitle?: ResourceKey,
-        enableSearch?: boolean
+        enableSearch?: boolean,
+        autoInitComponent?: boolean
     }) {
         if (options) Object.assign(this, options);
     }

@@ -24,6 +24,7 @@ export class MyTypesListComponent extends BaseComponent implements OnInit {
     super.ngOnInit();
 
     this.setConfig({
+      autoInitComponent: true,
       componentTitle: { key: 'module.progressItemTypes.submenu.myTypes' },
       menuItems: new ProgressItemTypesOverviewMenuItem().menuItems,
       menuTitle: { key: 'module.progressItemTypes.submenu.overview' },
@@ -52,8 +53,7 @@ export class MyTypesListComponent extends BaseComponent implements OnInit {
           .get()
           .takeUntil(this.ngUnsubscribe)
       })
-      .onBeforeLoad(isInitialLoad => isInitialLoad ? super.startLoader() : super.startGlobalLoader())
-      .onAfterLoad(isInitialLoad => isInitialLoad ? super.stopLoader() : super.stopGlobalLoader())
+      .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
       .showPager(true)
       .showSearch(false)
       .pagerSize(7)

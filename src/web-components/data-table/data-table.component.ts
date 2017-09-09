@@ -98,6 +98,10 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
         // save page to local storage
         this.savePageToLocalStorage(this.configHash, page);
 
+        if (this.config.loaderConfig){
+            this.config.loaderConfig.start();
+        }
+
         if (this.config.onBeforeLoad) {
             this.config.onBeforeLoad(this.isInitialLoad);
         }
@@ -156,6 +160,9 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
                     if (this.config.onAfterLoad) {
                         this.config.onAfterLoad(this.isInitialLoad);
                     }
+                    if (this.config.loaderConfig){
+                        this.config.loaderConfig.stop();
+                    }
                     // set initial load flag
                     this.isInitialLoad = false;
                 })
@@ -208,6 +215,10 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
                 .finally(() => {
                     if (this.config.onAfterLoad) {
                         this.config.onAfterLoad(this.isInitialLoad);
+                    }
+
+                    if (this.config.loaderConfig){
+                        this.config.loaderConfig.stop();
                     }
                     // update initial load flag
                     this.isInitialLoad = false;

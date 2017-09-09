@@ -8,6 +8,7 @@ import { ProgressItemMenuItems } from '../menu.items';
 import { FormConfig } from '../../../../web-components/dynamic-form';
 import { ProgressItemType } from '../../../models';
 import 'rxjs/add/operator/switchMap';
+import { Observable } from 'rxjs/Rx';
 
 @Component({
     templateUrl: 'edit-type.component.html'
@@ -25,23 +26,18 @@ export class EditTypeComponent extends BaseComponent implements OnInit {
 
     ngOnInit(): void {
         super.ngOnInit();
-        this.initForm();
+        super.subscribeToObservable(this.getFormObservable());
     };
 
-    private initForm(): void{
-        super.startLoader();
-
-        this.activatedRoute.params
+    private getFormObservable(): Observable<any> {
+        return this.activatedRoute.params
             .takeUntil(this.ngUnsubscribe)
             .switchMap((params: Params) => {
                 return this.dependencies.itemServices.progressItemTypeService.editForm(+params['id'])
                     .takeUntil(this.ngUnsubscribe);
             })
-            .subscribe(form => {
-                form.onFormLoaded(() => super.stopLoader());
-                form.onBeforeSave(() => super.startGlobalLoader());
-                form.onAfterSave(() => super.stopGlobalLoader());
-                form.onError(() => super.stopGlobalLoader());
+            .map(form => {
+                form.loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
                 form.onAfterDelete(() => super.navigate([this.getTrainerUrl('progress-item-types')]));
                 var item = form.getItem();
 

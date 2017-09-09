@@ -98,7 +98,7 @@ export abstract class ClientsBaseComponent extends BaseComponent implements OnIn
 
                 this.clientChange.next(response.item);
                 this.client = user;
-                super.stopLoader();
+                super.stopGlobalLoader();
             })
             .subscribe();
     }

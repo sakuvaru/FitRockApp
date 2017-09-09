@@ -8,6 +8,7 @@ import { ExerciseMenuItems } from '../menu.items';
 import { FormConfig } from '../../../../web-components/dynamic-form';
 import { Exercise } from '../../../models';
 import 'rxjs/add/operator/switchMap';
+import { Observable } from 'rxjs/Rx';
 
 @Component({
     templateUrl: 'edit-exercise.component.html'
@@ -26,19 +27,18 @@ export class EditExerciseComponent extends BaseComponent implements OnInit {
     ngOnInit(): void {
         super.ngOnInit();
 
-        super.startLoader();
+        super.subscribeToObservable(this.getFormObservable());
+    }
 
-        this.activatedRoute.params
+    private getFormObservable(): Observable<any> {
+        return this.activatedRoute.params
             .takeUntil(this.ngUnsubscribe)
             .switchMap((params: Params) => {
                 return this.dependencies.itemServices.exerciseService.editForm(+params['id'])
                     .takeUntil(this.ngUnsubscribe);
             })
-            .subscribe(form => {
-                form.onFormLoaded(() => super.stopLoader());
-                form.onBeforeSave(() => super.startGlobalLoader());
-                form.onAfterSave(() => super.stopGlobalLoader());
-                form.onError(() => super.stopGlobalLoader());
+            .map(form => {
+                form.loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
                 form.onAfterDelete(() => super.navigate([this.getTrainerUrl('exercises')]));
                 var item = form.getItem();
 

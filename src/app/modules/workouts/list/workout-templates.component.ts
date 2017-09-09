@@ -24,6 +24,7 @@ export class WorkoutTemplatesComponent extends BaseComponent implements OnInit {
     super.ngOnInit();
 
     this.setConfig({
+      autoInitComponent: true,
       menuTitle: { key: 'menu.workouts' },
       menuItems: new WorkoutsOverviewMenuItems().menuItems,
       componentTitle: { key: 'module.workouts.submenu.workoutTemplates' },
@@ -71,8 +72,7 @@ export class WorkoutTemplatesComponent extends BaseComponent implements OnInit {
           .takeUntil(this.ngUnsubscribe)
       })
       .showAllFilter(true)
-      .onBeforeLoad(isInitialLoad => isInitialLoad ? super.startLoader() : super.startGlobalLoader()) 
-      .onAfterLoad(isInitialLoad => isInitialLoad ? super.stopLoader() : super.stopGlobalLoader()) 
+      .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
       .onClick((item) => super.navigate([super.getTrainerUrl('workouts/edit-plan/') + item.id]))
       .build();
   }

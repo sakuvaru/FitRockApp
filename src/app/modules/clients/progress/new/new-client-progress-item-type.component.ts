@@ -63,12 +63,9 @@ export class NewClientProgressItemTypeComponent extends ClientsBaseComponent imp
                 form.withFieldValue('ClientId', this.clientId);
                 form.withFieldValue('TranslateValue', false);
 
-                form.onFormInit(() => super.stopLoader())
-                form.onBeforeSave(() => super.startGlobalLoader());
-                form.onAfterSave(() => super.stopGlobalLoader());
+                form.loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader());
                 form.insertFunction((item) => this.dependencies.itemServices.progressItemTypeService.create(item).set());
                 form.onAfterInsert((response) => super.navigate([super.getTrainerUrl('clients/edit/' + this.clientId + '/progress')]));
-                form.onError(() => super.stopGlobalLoader());
 
                 this.formConfig = form.build();
             },

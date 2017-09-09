@@ -24,6 +24,7 @@ export class AllDietsComponent extends BaseComponent implements OnInit {
     super.ngOnInit();
 
     this.setConfig({
+      autoInitComponent: true,
       menuTitle: { key: 'menu.diets' },
       menuItems: new DietsOverviewMenuItems().menuItems,
       componentTitle: { key: 'module.diets.submenu.allDiets' },
@@ -78,8 +79,7 @@ export class AllDietsComponent extends BaseComponent implements OnInit {
           .takeUntil(this.ngUnsubscribe)
       })
       .showAllFilter(true)
-      .onBeforeLoad(isInitialLoad => isInitialLoad ? super.startLoader() : super.startGlobalLoader()) 
-      .onAfterLoad(isInitialLoad => isInitialLoad ? super.stopLoader() : super.stopGlobalLoader()) 
+      .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
       .onClick((item) => super.navigate([super.getTrainerUrl('diets/edit-plan/') + item.id]))
       .build();
   }

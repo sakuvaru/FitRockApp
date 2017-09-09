@@ -7,6 +7,7 @@ import { AppConfig, ComponentDependencyService, BaseComponent } from '../../../c
 import { FormConfig } from '../../../../web-components/dynamic-form';
 import { NewExerciseMenuItems } from '../menu.items';
 import { Exercise } from '../../../models';
+import { Observable } from 'rxjs/Rx';
 
 @Component({
     templateUrl: 'new-exercise.component.html'
@@ -23,24 +24,21 @@ export class NewExerciseComponent extends BaseComponent implements OnInit {
     ngOnInit() {
         super.ngOnInit();
 
-        this.startLoader();
-
         this.setConfig({
             componentTitle: { key: 'module.exercises.new' },
             menuItems: new NewExerciseMenuItems().menuItems
         });
 
-        this.dependencies.itemServices.exerciseService.insertForm()
+        super.subscribeToObservable(this.getFormObservable());
+    }
+
+    private getFormObservable(): Observable<any> {
+        return this.dependencies.itemServices.exerciseService.insertForm()
             .takeUntil(this.ngUnsubscribe)
-            .subscribe(form => {
-                form.onFormInit(() => this.stopLoader())
-                form.onBeforeSave(() => this.startGlobalLoader());
-                form.onAfterSave(() => this.stopGlobalLoader());
+            .map(form => {
+                form.loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader());
                 form.insertFunction((item) => this.dependencies.itemServices.exerciseService.create(item).set());
                 form.onAfterInsert((response) => this.navigate([this.getTrainerUrl('exercises/edit'), response.item.id]));
-                form.onError(() => {
-                    super.stopGlobalLoader();
-                });
 
                 this.formConfig = form.build();
             },

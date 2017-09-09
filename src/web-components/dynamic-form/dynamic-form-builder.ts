@@ -163,6 +163,16 @@ class BaseDynamicFormBuilder<TItem extends IItem>{
     }
 
     /**
+ * Loader configuration
+ * @param start Start loader function
+ * @param stop  Stop loader function
+ */
+    loaderConfig(start: () => void, stop: () => void): this {
+        this.config.loaderConfig = { start: start, stop: stop };
+        return this;
+    }
+
+    /**
      * Build form config from the form builder query
      */
     build(): FormConfig<TItem> {
@@ -253,9 +263,6 @@ export class DynamicFormEditBuilder<TItem extends IItem> extends BaseDynamicForm
      * Build form config out of builder query
      */
     build(): FormConfig<TItem> {
-        // default values for edit form
-        this.config.clearFormAfterSave = false;
-
         return this.config;
     }
 }

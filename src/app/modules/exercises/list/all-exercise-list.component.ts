@@ -24,6 +24,7 @@ export class AllExerciseListComponent extends BaseComponent implements OnInit {
     super.ngOnInit();
 
     this.setConfig({
+      autoInitComponent: true,
       menuTitle: { key: 'module.exercises.exercises' },
       menuItems: new ExercisesOverviewMenuItem().menuItems,
       componentTitle: { key: 'module.exercises.overview' },
@@ -69,8 +70,7 @@ export class AllExerciseListComponent extends BaseComponent implements OnInit {
           .takeUntil(this.ngUnsubscribe)
       })
       .showAllFilter(true)
-      .onBeforeLoad(isInitialLoad => isInitialLoad ? super.startLoader() : super.startGlobalLoader())
-      .onAfterLoad(isInitialLoad => isInitialLoad ? super.stopLoader() : super.stopGlobalLoader())
+      .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
       .showPager(true)
       .showSearch(true)
       .pagerSize(7)

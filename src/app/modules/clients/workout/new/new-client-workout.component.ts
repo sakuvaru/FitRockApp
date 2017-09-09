@@ -60,13 +60,10 @@ export class NewClientWorkoutComponent extends ClientsBaseComponent implements O
             .map(form => {
                 // manually set client id
                 form.withFieldValue('ClientId', this.clientId);
-
-                form.onFormInit(() => super.stopLoader())
-                form.onBeforeSave(() => super.startGlobalLoader());
-                form.onAfterSave(() => super.stopGlobalLoader());
+              
+                form.loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader());
                 form.insertFunction((item) => this.dependencies.itemServices.workoutService.create(item).set());
                 form.onAfterInsert((response) => super.navigate([super.getTrainerUrl('clients/edit/' + this.clientId + '/workout/' + response.item.id + '/workout-plan')]));
-                form.onError(() => super.stopGlobalLoader());
 
                 this.formConfig = form.build();
 

@@ -40,11 +40,7 @@ export class NewClientComponent extends ClientsBaseComponent implements OnInit  
         return this.dependencies.itemServices.userService.insertForm()
             .takeUntil(this.ngUnsubscribe)
             .map(form => {
-                form.onFormLoaded(() => super.stopLoader());
-                form.onBeforeSave(() => super.startGlobalLoader());
-                form.onAfterSave(() => super.stopGlobalLoader());
-                form.onError(() => super.stopGlobalLoader());
-
+                form.loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
                 form.insertFunction((item) => this.dependencies.itemServices.userService.createClient(item).set().takeUntil(this.ngUnsubscribe))
                 form.onAfterInsert((response) => {
                     // redirect to view client page
