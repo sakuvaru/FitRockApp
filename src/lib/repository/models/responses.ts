@@ -247,5 +247,52 @@ export class ResponsePost<T extends any>{
     }
 }
 
+export class ResponseUploadMultiple<T> {
+
+    public files: T[];
+
+    constructor(
+        private options?: {
+            fromCache?: boolean,
+            timeCreated?: Date,
+            type?: string,
+            action?: string,
+            model?: string,
+
+            files?: T[]
+        }) {
+        if (options) Object.assign(this, options);
+    }
+
+    isEmpty(): boolean {
+        return !this.files || this.files.length <= 0;
+    }
+
+    firstItem(): T | null {
+        if (this.isEmpty()) {
+            return null;
+        }
+        return this.files[0];
+    }
+}
+
+export class ResponseUploadSingle<T> {
+
+    public file: T;
+
+    constructor(
+        private options?: {
+            fromCache?: boolean,
+            timeCreated?: Date,
+            type?: string,
+            action?: string,
+            model?: string,
+
+            file?: T
+        }) {
+        if (options) Object.assign(this, options);
+    }
+}
+
 
 

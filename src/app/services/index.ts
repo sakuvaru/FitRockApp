@@ -25,4 +25,7 @@ export * from './progress/progress-item-unit.service';
 export * from './chat/chat-message.service';
 
 // feed
-export * from './feed/feed.service';
+export * from './feeds/feed.service';
+
+// file record
+export * from './file-records/file-record.service';

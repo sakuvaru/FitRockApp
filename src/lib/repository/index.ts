@@ -19,6 +19,8 @@ export * from './queries/count/item-count-query.class';
 export * from './queries/form/edit-form-query.class';
 export * from './queries/general/touch-key-query.class';
 export * from './queries/general/post-query.class';
+export * from './queries/upload/upload-single-query.class';
+export * from './queries/upload/upload-multiple-query.class';
 export * from './models/form-fields';
 export * from './models/control-type.enum';
 export * from './models/update-items-request.class';

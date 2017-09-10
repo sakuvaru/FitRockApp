@@ -13,6 +13,7 @@ import { LoaderModule } from './loader/loader.module';
 import { GraphModule } from './graph/graph.module';
 import { MessagesModule } from './messages/messages.module';
 import { LoadMoreModule } from './load-more/load-more.module';
+import { UploaderModule } from './uploader/uploader.module';
 
 @NgModule({
     imports: [
@@ -27,7 +28,8 @@ import { LoadMoreModule } from './load-more/load-more.module';
         LoaderModule,
         GraphModule,
         MessagesModule,
-        LoadMoreModule
+        LoadMoreModule,
+        UploaderModule
     ]
 })
 export class WebComponentsModule { }

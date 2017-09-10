@@ -17,6 +17,8 @@ import { EditFormQuery } from './queries/form/edit-form-query.class';
 import { PostQuery } from './queries/general/post-query.class';
 import { TouchKeyQuery } from './queries/general/touch-key-query.class';
 import { OrderItem, UpdateItemsRequest } from './models/update-items-request.class';
+import { UploadSingleQuery } from './queries/upload/upload-single-query.class';
+import { UploadMultipleQuery } from './queries/upload/upload-multiple-query.class';
 
 // rxjs
 import { Observable } from 'rxjs/Observable';
@@ -69,6 +71,14 @@ export class RepositoryClient {
 
     post<T extends any>(type: string, action: string): PostQuery<T> {
         return new PostQuery(this.authHttp, this.config, type, action);
+    }
+
+    uploadSingleFile<TItem extends IItem>(type: string, action: string, file: File): UploadSingleQuery<TItem> {
+        return new UploadSingleQuery(this.authHttp, this.config, type, action, file);
+    }
+
+    uploadMultipleFiles<TItem extends IItem>(type: string, action: string, files: File[]): UploadMultipleQuery<TItem> {
+        return new UploadMultipleQuery(this.authHttp, this.config, type, action, files);
     }
 
     touchKey(type: string, cacheKeyType: CacheKeyType, itemId?: number): TouchKeyQuery {

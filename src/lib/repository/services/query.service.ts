@@ -1,6 +1,6 @@
 import { Headers, RequestOptions } from '@angular/http';
-import { ResponseCount, ResponsePost, ResponseFormEdit, ResponseFormInsert, ResponseDelete, ResponseCreate, ResponseEdit, ResponseMultiple, ResponseSingle, ErrorResponse, FormErrorResponse } from '../models/responses';
-import { IResponseCountRaw, IResponsePostRaw, IResponseFormEditRaw, IResponseFormInsertRaw, IResponseCreateRaw, IResponseDeleteRaw, IResponseEditRaw, IResponseMultipleRaw, IResponseSingleRaw, IErrorResponseRaw, IFormErrorResponseRaw } from '../interfaces/iraw-responses';
+import { ResponseUploadMultiple, ResponseUploadSingle, ResponseCount, ResponsePost, ResponseFormEdit, ResponseFormInsert, ResponseDelete, ResponseCreate, ResponseEdit, ResponseMultiple, ResponseSingle, ErrorResponse, FormErrorResponse } from '../models/responses';
+import { IResponseUploadMultipleRaw, IResponseUploadSingleRaw, IResponseCountRaw, IResponsePostRaw, IResponseFormEditRaw, IResponseFormInsertRaw, IResponseCreateRaw, IResponseDeleteRaw, IResponseEditRaw, IResponseMultipleRaw, IResponseSingleRaw, IErrorResponseRaw, IFormErrorResponseRaw } from '../interfaces/iraw-responses';
 import { IOption } from '../interfaces/ioption.interface';
 import { AuthHttp } from 'angular2-jwt';
 import { Response } from '@angular/http';
@@ -268,6 +268,36 @@ export class QueryService {
         });
     }
 
+    private getSingleUploadResponse<TItem extends IItem>(response: Response): ResponseUploadSingle<TItem> {
+        var responseUpload = (response.json() || {}) as IResponseUploadSingleRaw<TItem>;
+
+        var file = this.mapService.mapItem(responseUpload.file) as TItem;
+
+        return new ResponseUploadSingle<TItem>({
+            file: file,
+            fromCache: responseUpload.fromCache,
+            action: responseUpload.action,
+            model: responseUpload.model,
+            timeCreated: responseUpload.timeCreated,
+            type: responseUpload.type
+        });
+    }
+
+    private getMultipleUploadResponse<TItem extends IItem>(response: Response): ResponseUploadMultiple<TItem> {
+        var responseUpload = (response.json() || {}) as IResponseUploadMultipleRaw<TItem>;
+
+        var files = this.mapService.mapItems(responseUpload.files) as TItem[];
+
+        return new ResponseUploadMultiple<TItem>({
+            files: files,
+            fromCache: responseUpload.fromCache,
+            action: responseUpload.action,
+            model: responseUpload.model,
+            timeCreated: responseUpload.timeCreated,
+            type: responseUpload.type
+        });
+    }
+
     protected getMultipleCustom<TModel>(url: string): Observable<ResponseMultiple<TModel>> {
         // trigger request
         this.startRequest();
@@ -479,6 +509,57 @@ export class QueryService {
         return this.authHttp.post(url, body)
             .map(response => {
                 return this.getFormInsertResponse(response)
+            })
+            .catch(response => {
+                return Observable.throw(this.handleError(response));
+            })
+            ._finally(() => {
+                this.finishRequest();
+            });
+    }
+    
+    protected uploadSingleFile<TItem extends IItem>(url: string, file: File): Observable<ResponseUploadSingle<TItem>> {
+        // trigger request
+        this.startRequest();
+
+        // do not set 'Content-Type', it messes up the request headers
+        var headers = new Headers({ 'Accept': 'application/json' }); 
+        var headerOptions = new RequestOptions({ headers: headers });
+
+        var formData: FormData = new FormData();
+        formData.append('file', file, file.name);
+
+        return this.authHttp.post(url, formData, headerOptions)
+            .map(response => {
+                return this.getSingleUploadResponse(response)
+            })
+            .catch(response => {
+                return Observable.throw(this.handleError(response));
+            })
+            ._finally(() => {
+                this.finishRequest();
+            });
+    }
+
+    protected uploadMultipleFiles<TItem extends IItem>(url: string, files: File[]): Observable<ResponseUploadMultiple<TItem>> {
+        // trigger request
+        this.startRequest();
+
+        // do not set 'Content-Type', it messes up the request headers
+        var headers = new Headers({ 'Accept': 'application/json' }); 
+        var headerOptions = new RequestOptions({ headers: headers });
+
+        var formData: FormData = new FormData();
+
+        if (files && Array.isArray(files)){
+           files.forEach(file => {
+               formData.append('files', file, file.name);
+           }) 
+        }
+
+        return this.authHttp.post(url, formData, headerOptions)
+            .map(response => {
+                return this.getMultipleUploadResponse(response)
             })
             .catch(response => {
                 return Observable.throw(this.handleError(response));

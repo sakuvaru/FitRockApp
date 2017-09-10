@@ -25,4 +25,7 @@ export * from './progress/progress-item-unit.class';
 export * from './chat/chat-message.class';
 
 // feed
-export * from './feed/feed.class';
+export * from './feeds/feed.class';
+
+// file record
+export * from './file-records/file-record.class';

@@ -14,6 +14,7 @@ import { AdminLayoutComponent } from '../../layouts/admin-layout.component';
 // components
 import { EditMyProfileComponent } from './edit/edit-my-profile.component';
 import { FeedsComponent } from './feeds/feeds.component';
+import { EditAvatarComponent } from './edit/edit-avatar.component';
 
 const routes: Routes = [
     {
@@ -24,6 +25,9 @@ const routes: Routes = [
             },
             {
                 path: 'profile/feeds', component: FeedsComponent
+            },
+            {
+                path: 'profile/avatar', component: EditAvatarComponent
             },
         ],
     },

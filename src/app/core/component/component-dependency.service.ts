@@ -14,7 +14,7 @@ import { RepositoryClient } from '../../../lib/repository';
 import { UserService, ExerciseCategoryService, ExerciseService, LogService, WorkoutCategoryService,
      WorkoutExerciseService, WorkoutService, DietCategoryService, DietFoodService, DietService,
     FoodCategoryService, FoodService, FoodUnitService, ProgressItemService, ProgressItemTypeService,
-   ChatMessageService, FeedService } from '../../services';
+   ChatMessageService, FeedService, FileRecordService } from '../../services';
 
 // Angular material
 import { MdSnackBar, MdDialog } from '@angular/material';
@@ -115,6 +115,9 @@ export class ComponentDependencyService {
 
         // feed services
         this.itemServices.feedService = injector.get(FeedService);
+
+        // file record services
+        this.itemServices.fileRecordService = injector.get(FileRecordService);
     }
 }
 
@@ -173,4 +176,7 @@ export class ItemServices {
 
     // feed
     public feedService: FeedService;
+
+    // file records
+    public fileRecordService: FileRecordService;
 }

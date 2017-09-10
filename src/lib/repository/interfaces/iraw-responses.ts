@@ -78,6 +78,26 @@ export interface IResponsePostRaw extends IResponseBase {
     message: string;
 }
 
+export interface IResponseUploadMultipleRaw<T> {
+
+    files: T[];
+
+    fromCache: boolean,
+    timeCreated: Date,
+    type: string,
+    action: string,
+    model: string,
+}
+export interface IResponseUploadSingleRaw<T> {
+
+    file: T;
+    fromCache: boolean,
+    timeCreated: Date,
+    type: string,
+    action: string,
+    model: string,
+
+}
 
 
 

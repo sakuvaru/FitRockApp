@@ -2,7 +2,7 @@ import { Observable } from 'rxjs/Observable';
 import { BaseTypeServiceConfig } from './base-type-service.config';
 
 import {
-    ItemCountQuery, PostQuery, RepositoryClient, IItem, SingleItemQueryInit, MultipleItemQuery, CreateItemQuery, EditItemQuery, DeleteItemQuery,
+    UploadSingleQuery, UploadMultipleQuery, ItemCountQuery, PostQuery, RepositoryClient, IItem, SingleItemQueryInit, MultipleItemQuery, CreateItemQuery, EditItemQuery, DeleteItemQuery,
     EditFormQuery, InsertFormQuery, TouchKeyQuery, CacheKeyType, SingleItemQueryInitCustom, MultipleItemQueryCustom
 } from '../../../lib/repository';
 
@@ -49,6 +49,14 @@ export abstract class BaseTypeService<TItem extends IItem>{
 
     post<TAny extends any>(action: string): PostQuery<TAny> {
         return this.repositoryClient.post<TAny>(this.type, action);
+    }
+
+    uploadSingleFile<TItem extends IItem>(action: string, file: File): UploadSingleQuery<TItem> {
+        return this.repositoryClient.uploadSingleFile<TItem>(this.type, action, file);
+    }
+
+    uploadMultipleFiles<TItem extends IItem>(action: string, files: File[]): UploadMultipleQuery<TItem> {
+        return this.repositoryClient.uploadMultipleFiles<TItem>(this.type, action, files);
     }
 
     touchKey<TAny extends any>(cackeKeyType: CacheKeyType, itemId?: number): TouchKeyQuery {

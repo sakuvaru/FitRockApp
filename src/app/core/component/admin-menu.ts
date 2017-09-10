@@ -1,4 +1,5 @@
 import { AppConfig } from '../config/app.config';
+import { UrlConfig } from '../config/url.config';
 import { MenuItem, MenuItemType, ResourceKey } from '../models/core.models';
 
 export class AdminMenu {
@@ -13,12 +14,11 @@ export class AdminMenu {
         new MenuItem({ key: 'menu.foods' }, MenuItemType.trainer, 'foods', { icon: 'free_breakfast' }),
         new MenuItem({ key: 'menu.progressItemTypes' }, MenuItemType.trainer, 'progress-item-types', { icon: 'timeline' }),
         new MenuItem({ key: 'menu.locations' }, MenuItemType.trainer, 'todo', { icon: 'place' }),
-        new MenuItem({ key: 'login' }, MenuItemType.auth, 'login', { icon: 'public' }),
     ];
 
     private readonly userMenu: MenuItem[] = [
-        new MenuItem({ key: 'menu.dashboard' }, MenuItemType.trainer, '', { icon: 'home' }),
-        new MenuItem({ key: 'menu.clients' }, MenuItemType.trainer, 'clients', { icon: 'people' }),
-        new MenuItem({ key: 'menu.workouts' }, MenuItemType.trainer, 'workouts', { icon: 'fitness_center' }),
+        new MenuItem({ key: 'menu.editProfile' }, MenuItemType.auth, 'profile/edit', { icon: 'edit' }),
+        new MenuItem({ key: 'menu.feeds' }, MenuItemType.auth, 'profile/feeds', { icon: 'notifications' }),
+        new MenuItem({ key: 'menu.logout' }, MenuItemType.auth, UrlConfig.Logout, { icon: 'exit_to_app' }),
     ];
 }

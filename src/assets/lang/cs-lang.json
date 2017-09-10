@@ -13,7 +13,10 @@
 		"foods": "Potraviny",
 		"progressItemTypes": "Sledované hodnoty",
 		"locations": "Místa",
-		"forms": "Formulář"
+		"forms": "Formulář",
+		"editProfile": "Profil",
+		"feeds": "Notifikace",
+		"logout": "Odhlášení"
 	},
 	"errors": {
 		"invalidLicense": "Pro tuto akci nemáš dostatečnou licenci",
@@ -215,6 +218,7 @@
 			"submenu": {
 				"editProfile": "Upravit účet",
 				"myProfile": "Můj účet",
+				"avatar": "Avatar",
 				"feeds": "Notifikace"
 			}
 		},

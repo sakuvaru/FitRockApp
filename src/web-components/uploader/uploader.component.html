@@ -1,0 +1,14 @@
+<h1>TEST FILE UPLOAD</h1>
+
+<p>Select Event: {{fileSelectMsg}}</p>
+<p>Upload Event: {{fileUploadMsg}}</p>
+
+<td-file-upload #fileUpload defaultColor="accent" activeColor="warn" cancelColor="primary" (select)="selectEvent($event)"
+(upload)="uploadEvent2($event)" (cancel)="cancelEvent()" accept=".jpg, .jpeg, .png, .gif" [disabled]="disabled" multiple>
+<md-icon>file_upload</md-icon><span>{{ fileUpload.files?.name }}</span>
+<ng-template td-file-input-label>
+  <md-icon>attach_file</md-icon><span>Choose a file...</span>
+</ng-template>
+</td-file-upload>
+
+
