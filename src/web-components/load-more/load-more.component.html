@@ -56,4 +56,6 @@
 
   </ng-container>
 
+  <no-data-message *ngIf="items && items.length <= 0 || !items" class="push"></no-data-message>
+
 </ng-container>
