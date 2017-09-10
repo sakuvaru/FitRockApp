@@ -331,7 +331,8 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
     private handleUpdateAfter(response: ResponseEdit<any>): void {
         this.handleSnackBar();
 
-        if (this.config.clearFormAfterSave){
+        // only insert forms can be cleared after save
+        if (this.config.clearFormAfterSave && this.config.isInsertForm()){
             this.initDynamicForm(this.config);
          }
 
