@@ -1,5 +1,5 @@
 <div *ngIf="form">
-  <form [formGroup]="form" autocomplete="off">
+  <form [formGroup]="form" name="form1" autocomplete="off">
     <div *ngFor="let question of questions">
       <df-question [question]="question" [form]="form" [formConfig]="config"></df-question>
     </div>
@@ -15,3 +15,4 @@
     <td-message *ngIf="submissionError" [label]="submissionError" color="red" icon="error"></td-message>
   </form>
 </div>
+

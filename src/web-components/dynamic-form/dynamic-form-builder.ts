@@ -1,6 +1,6 @@
 import { FormConfig } from './form-config.class';
 import { Observable } from 'rxjs/RX';
-import { BaseField, IItem, ResponseCreate, ResponseEdit, FormErrorResponse, ErrorResponse, ResponseDelete } from '../../lib/repository';
+import { FormField, IItem, ResponseCreate, ResponseEdit, FormErrorResponse, ErrorResponse, ResponseDelete } from '../../lib/repository';
 
 class BaseDynamicFormBuilder<TItem extends IItem>{
 
@@ -35,7 +35,7 @@ class BaseDynamicFormBuilder<TItem extends IItem>{
      * Adds field to form
      * @param fields Field to be added to form
      */
-    fields(fields: BaseField<any>[]): this {
+    fields(fields: FormField[]): this {
         this.config.fields = fields;
         return this;
     }
@@ -130,7 +130,7 @@ class BaseDynamicFormBuilder<TItem extends IItem>{
     /**
     * Called when a value in a field changes
     */
-    onFieldValueChange(callback: (config: FormConfig<TItem>, changedField: BaseField<any>, newValue: any) => void): this {
+    onFieldValueChange(callback: (config: FormConfig<TItem>, changedField: FormField, newValue: any) => void): this {
         this.config.onFieldValueChange = callback;
         return this;
     }

@@ -1,11 +1,11 @@
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
-import { BaseField } from '../../lib/repository';
+import { FormField } from '../../lib/repository';
 
 export class FieldControlService {
   constructor() { }
 
-  toFormGroup(fields: BaseField<any>[]) {
+  toFormGroup(fields: FormField[]): FormGroup {
     let group: any = {};
 
     if (fields) {

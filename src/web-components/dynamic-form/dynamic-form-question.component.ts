@@ -1,6 +1,6 @@
 import { Component, Input, AfterViewInit, ChangeDetectorRef, OnInit } from '@angular/core';
 import { FormGroup, AbstractControl } from '@angular/forms';
-import { BaseField, ControlTypeEnum } from '../../lib/repository';
+import { FormField, ControlTypeEnum } from '../../lib/repository';
 import { TranslateService } from '@ngx-translate/core';
 import { FormConfig } from './form-config.class';
 import { StringHelper, NumberHelper } from '../../lib/utilities';
@@ -14,7 +14,7 @@ import { StringHelper, NumberHelper } from '../../lib/utilities';
 
 export class DynamicFormQuestionComponent implements OnInit{
 
-  @Input() question: BaseField<any>;
+  @Input() question: FormField;
 
   @Input() form: FormGroup;
 
@@ -50,6 +50,7 @@ export class DynamicFormQuestionComponent implements OnInit{
    * https://msdn.microsoft.com/en-us/library/system.int32.minvalue(v=vs.110).aspx
    */
   private readonly miniumNumberValue = -2147483648;
+  
 
   ngOnInit() {
     // translation
@@ -81,14 +82,14 @@ export class DynamicFormQuestionComponent implements OnInit{
     if (this.question.controlTypeEnum === ControlTypeEnum.RadioBoolean) {
       if (this.question.options && this.question.options.trueOptionLabel) {
         this.translateService.get(this.question.options.trueOptionLabel).subscribe(translatedText => {
-          if (translatedText) {
+          if (translatedText && this.question.options) {
             this.question.options.trueOptionLabel = translatedText
           }
         });
       }
       if (this.question.options && this.question.options.falseOptionLabel) {
         this.translateService.get(this.question.options.falseOptionLabel).subscribe(translatedText => {
-          if (translatedText) {
+          if (translatedText && this.question.options) {
             this.question.options.falseOptionLabel = translatedText
           }
         });
@@ -100,7 +101,7 @@ export class DynamicFormQuestionComponent implements OnInit{
       if (this.question.options && this.question.options.listOptions) {
         this.question.options.listOptions.forEach(option => {
           this.translateService.get(option.name).subscribe(translatedText => {
-            if (translatedText && this.question.options.listOptions) {
+            if (translatedText && this.question.options && this.question.options.listOptions) {
               var optionInList = this.question.options.listOptions.find(m => m.value === option.value);
               if (!optionInList) {
                 throw Error(`Option '${option.value}' was not found in list`)
@@ -131,7 +132,7 @@ export class DynamicFormQuestionComponent implements OnInit{
         this.checkBoxIsChecked = defaultValue;
       }
     }
-    // set default value for radio checkbox
+    // set default value for radio boolean
     if (this.question.controlTypeEnum === ControlTypeEnum.RadioBoolean) {
       if (this.formConfig.isEditForm()) {
         // set checkbox status based on question value
@@ -243,7 +244,12 @@ export class DynamicFormQuestionComponent implements OnInit{
 
   private translateQuestionLabel(): void {
     var translationKey = this.getQuestionLabelKey();
-    var extraTranslationData = this.question.options.extraTranslationData ? this.question.options.extraTranslationData : {};
+
+    var extraTranslationData;
+    if (this.question.options){
+      extraTranslationData = this.question.options.extraTranslationData;
+    }
+   
     this.translateService.get(translationKey, extraTranslationData).subscribe(translatedText => {
       if (translatedText) {
         this.question.translatedLabel = translatedText
@@ -277,6 +283,9 @@ export class DynamicFormQuestionComponent implements OnInit{
   }
 
   private showLengthHint(): boolean {
+    if (!this.question.options){
+      return false;
+    }
     if (!this.question.options.maxLength) {
       return false;
     }
@@ -287,6 +296,10 @@ export class DynamicFormQuestionComponent implements OnInit{
   }
 
   private getMaxNumberValue(): number {
+    if (!this.question.options){
+      return this.maximumNumberValue;
+    }
+
     var definedNumber = this.question.options.maxNumberValue;
     if (definedNumber === 0) {
       return 0;
@@ -301,6 +314,10 @@ export class DynamicFormQuestionComponent implements OnInit{
   }
 
   private getMinNumberValue(): number {
+    if (!this.question.options){
+      return this.miniumNumberValue;
+    }
+
     var definedNumber = this.question.options.minNumberValue;
     if (definedNumber === 0) {
       return 0;
@@ -319,7 +336,7 @@ export class DynamicFormQuestionComponent implements OnInit{
   }
 
   private getWidthStyle(): string | null {
-    if (!this.question.options.width) {
+    if (!this.question.options || !this.question.options.width) {
       return null;
     }
     return `${this.question.options.width}px`;

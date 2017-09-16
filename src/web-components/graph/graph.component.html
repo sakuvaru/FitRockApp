@@ -1,6 +1,6 @@
 <ng-container *ngIf="config && config.graph && wrapperStyle">
   <div [ngStyle]="wrapperStyle">
-      <ngx-charts-line-chart *ngIf="graph.type === 'LineChart'"
+      <ngx-charts-line-chart *ngIf="graph.type === 0"
       [view]="graph.view"
       [scheme]="graph.scheme"
       [results]="graph.results"
@@ -17,7 +17,7 @@
       (select)="onSelect($event)">
     </ngx-charts-line-chart>
 
-    <ngx-charts-bar-vertical *ngIf="graph.type === 'VerticalBarChart'"
+    <ngx-charts-bar-vertical *ngIf="graph.type === 1"
       [view]="graph.view"
       [scheme]="graph.scheme"
       [results]="graph.results"

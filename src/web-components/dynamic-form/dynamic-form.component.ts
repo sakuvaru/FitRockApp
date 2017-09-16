@@ -5,7 +5,7 @@ import { FormConfig } from './form-config.class';
 import { MdSnackBar } from '@angular/material';
 import {
     ColumnValidation, FieldErrorEnum, ResponseCreate, ResponseEdit, FormErrorResponse,
-    ErrorResponse, ErrorReasonEnum, BaseField, ResponseDelete
+    ErrorResponse, ErrorReasonEnum, FormField, ResponseDelete
 } from '../../lib/repository';
 import { TranslateService } from '@ngx-translate/core';
 import { BaseWebComponent } from '../base-web-component.class';
@@ -35,7 +35,7 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
     private generalErrorMessage: string;
     private unknownErrorMessage: string;
 
-    private questions: BaseField<any>[] = [];
+    private questions: FormField[] = [];
 
     private deleteText: string;
     private submitText: string;
@@ -75,9 +75,9 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
         if (this.config) {
             // !! Important - unsubscribe from buttons. If dynamic form is reloaded within the same page, it may happen
             // that clicking save will fire multiple times
-            this.insertButtonSubject = new Subject();
-            this.deleteButtonSubject = new Subject();
-            this.editButtonSubject = new Subject();
+            this.insertButtonSubject = new Subject<void>();
+            this.deleteButtonSubject = new Subject<void>();
+            this.editButtonSubject = new Subject<void>();
 
             this.config = config;
 
@@ -87,7 +87,7 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
 
             // subscribe to button events
             this.initButtonClicks();
-
+            
             // load fields
             this.form = this.fieldControlService.toFormGroup(this.config.fields);
 
@@ -127,6 +127,7 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
     initButtonClicks() {
         if (this.config.isInsertForm()) {
             this.insertButtonSubject
+                .takeUntil(this.ngUnsubscribe)
                 .switchMap(event => {
                     if (!this.config.insertFunction){
                         throw new Error('Insert function is not defined');
@@ -145,7 +146,6 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
 
                     return this.config.insertFunction(this.form.value)
                 })
-                .takeUntil(this.ngUnsubscribe)
                 .subscribe(response => {
                     this.response = response;
                     this.handleInsertAfter(response);
@@ -164,6 +164,7 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
         }
         else if (this.config.isEditForm()) {
             this.editButtonSubject
+                .takeUntil(this.ngUnsubscribe)
                 .switchMap(event => {
                     if (!this.config.editFunction){
                         throw new Error('Edit function is not defined');
@@ -182,7 +183,6 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
 
                     return this.config.editFunction(this.form.value)
                 })
-                .takeUntil(this.ngUnsubscribe)
                 .subscribe(response => {
                     this.response = response;
                     this.handleUpdateAfter(response);
@@ -209,6 +209,7 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
             }
 
             this.deleteButtonSubject
+                .takeUntil(this.ngUnsubscribe)
                 .switchMap(response => {
                     if (!this.config.deleteFunction){
                         throw new Error('Delete function is not defined');
@@ -225,7 +226,6 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
 
                     return this.config.deleteFunction(this.form.value)
                 })
-                .takeUntil(this.ngUnsubscribe)
                 .subscribe(response => {
                     this.response = response;
                     this.handleDeleteAfter(response);
@@ -246,12 +246,12 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
         return false;
     }
 
-    private assignQuestions(fields: BaseField<any>[]): void {
+    private assignQuestions(fields: FormField[]): void {
         if (!fields) {
             return;
         }
 
-        var tempQuestions: BaseField<any>[] = [];
+        var tempQuestions: FormField[] = [];
 
         fields.forEach(field => {
             if (this.showField(field.key)) {
@@ -395,7 +395,7 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
 
                         if (formField){
                             // form error
-                            this.getFormErrorMessage(validationResult, formField.translatedLabel).subscribe(error => this.formErrorLines.push(error))
+                            this.getFormErrorMessage(validationResult, formField.translatedLabel || formField.key).subscribe(error => this.formErrorLines.push(error))
                         }
                         else{
                             console.warn(`Form field '${validationResult.columnName}' could not be found in form and therefore error message could not be displayed`);

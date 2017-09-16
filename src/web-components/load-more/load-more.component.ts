@@ -141,7 +141,7 @@ export class LoadMoreComponent extends BaseWebComponent implements OnInit, OnCha
     }
 
     private initLoadMoreButton() {
-        this.loadMoreButtonSubject = new Subject();
+        this.loadMoreButtonSubject = new Subject<void>();
 
         this.loadMoreButtonSubject
             .switchMap(event => {

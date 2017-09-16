@@ -1,17 +1,22 @@
 import { ControlTypeEnum } from './control-type.enum';
 import { IDropdownFieldOption, IFormField, IFormFieldOptions } from '../interfaces/iform-fields';
 
-export class BaseField<T> implements IFormField<T> {
+export class FormField implements IFormField{
+
+    /**
+     * Raw value of given field
+     */
+    public rawValue?: any;
 
     /**
      * Value of the field
      */
-    public value: T;
+    public value?: any;
 
     /**
      * Default value of the field
      */
-    public defaultValue: T;
+    public defaultValue?: any;
 
     /**
      * Key of the field (= property name/column)
@@ -36,29 +41,33 @@ export class BaseField<T> implements IFormField<T> {
     /**
      * Additional field options
      */
-    public options: IFormFieldOptions;
+    public options?: IFormFieldOptions;
 
     /**
      * Translated field name label
      */
-    public translatedLabel: string;
+    public translatedLabel?: string;
 
     constructor(constructorOptions: {
-        value?: T,
-        defaultValue?: T,
-        key?: string,
+        // required
+        key: string,
+        controlType: string,
+
+        // optional
+        rawValue?: any,
+        defaultValue?: any,
         required?: boolean,
-        controlType?: string,
         options?: IFormFieldOptions
     }) {
         Object.assign(this, constructorOptions);
 
-        if (this.controlType) {
-            this.mapControlType(this.controlType);
-        }
+        this.mapFormField(this.controlType, constructorOptions.rawValue);
     }
 
-    private mapControlType(controlType: string): void {
+    private mapFormField(controlType: string, rawValue?: any): void {
+        // by default the rawValue === value, however some fields need to be converted to their proper types (e.g. number, boolean or Date)
+        this.value = rawValue;
+
         if (controlType === 'None') {
             this.controlTypeEnum = ControlTypeEnum.None;
         }
@@ -67,6 +76,7 @@ export class BaseField<T> implements IFormField<T> {
         }
         else if (controlType === 'Date') {
             this.controlTypeEnum = ControlTypeEnum.Date;
+            this.value = new Date(rawValue);
         }
         else if (controlType === 'Boolean') {
             this.controlTypeEnum = ControlTypeEnum.Boolean;
@@ -85,6 +95,7 @@ export class BaseField<T> implements IFormField<T> {
         }
         else if (controlType === 'Number') {
             this.controlTypeEnum = ControlTypeEnum.Number;
+            this.value = +rawValue;
         }
     }
 }

@@ -1,55 +1,52 @@
 <div layout="row" layout-align="start center" flex>
-  <md-toolbar color="primary">
-    <button md-icon-button tdLayoutToggle>
+  <button md-icon-button tdLayoutToggle>
       <md-icon>menu</md-icon>
     </button>
-    <span>{{componentConfig.appName}}</span>
-    <!-- Search box is disabled for now
+  <span>{{componentConfig.appName}}</span>
+  <!-- Search box is disabled for now
     <td-search-box placeholder="Search" [alwaysVisible]="false" flex></td-search-box>
     !-->
-    <span flex></span>
+  <span flex></span>
 
-    <button md-icon-button [mdMenuTriggerFor]="feedsMenu" mdTooltip="{{ 'userMenu.notifications' | translate }}">
+  <button md-icon-button [mdMenuTriggerFor]="feedsMenu" mdTooltip="{{ 'userMenu.notifications' | translate }}">
         <td-notification-count [notifications]="feedsCount">
           <md-icon>notifications</md-icon>
         </td-notification-count>
       </button>
-    <button md-icon-button [routerLink]="getAuthUrl('profile/edit')" mdTooltip="{{ 'userMenu.profile' | translate }}">
+  <button md-icon-button [routerLink]="getAuthUrl('profile/edit')" mdTooltip="{{ 'userMenu.profile' | translate }}">
           <md-icon>person</md-icon>
         </button>
-    <button md-icon-button [mdMenuTriggerFor]="moreMenu" mdTooltip="{{ 'userMenu.more' | translate }}">
+  <button md-icon-button [mdMenuTriggerFor]="moreMenu" mdTooltip="{{ 'userMenu.more' | translate }}">
         <md-icon>more_vert</md-icon></button>
 
-    <md-menu #moreMenu="mdMenu">
-      <button md-menu-item [routerLink]="getAuthUrl('logout')"><md-icon>exit_to_app</md-icon> {{ 'userMenu.logout' | translate }}</button>
-    </md-menu>
+  <md-menu #moreMenu="mdMenu">
+    <button md-menu-item [routerLink]="getAuthUrl('logout')"><md-icon>exit_to_app</md-icon> {{ 'userMenu.logout' | translate }}</button>
+  </md-menu>
 
-    <md-menu #feedsMenu="mdMenu" [overlapTrigger]="false">
-      <td-menu>
-        <md-nav-list dense style="padding-top: 0px">
-          <ng-template [ngIf]="feeds" let-last="last">
-            <ng-container *ngFor="let feed of feeds">
-              <a md-list-item [class.bgc-grey-100]="!feed.markedAsRead || (preventFeedChange && !feed.markedAsRead)" (click)="handleClickFeed(feed)">
-                <md-icon [class.tc-red-500]="!feed.markedAsRead || (preventFeedChange && !feed.markedAsRead)" md-list-avatar>{{ getFeedIcon(feed) }}</md-icon> 
-                <h4 md-line>
-                  <span class="text-wrap">
+  <md-menu #feedsMenu="mdMenu" [overlapTrigger]="false">
+    <td-menu>
+      <md-nav-list dense style="padding-top: 0px">
+        <ng-template [ngIf]="feeds" let-last="last">
+          <ng-container *ngFor="let feed of feeds">
+            <a md-list-item [class.bgc-grey-100]="!feed.markedAsRead || (preventFeedChange && !feed.markedAsRead)" (click)="handleClickFeed(feed)">
+              <md-icon [class.tc-red-500]="!feed.markedAsRead || (preventFeedChange && !feed.markedAsRead)" md-list-avatar>{{ getFeedIcon(feed) }}</md-icon>
+              <h4 md-line>
+                <span class="text-wrap">
                     <span [innerHtml]="getFeedText(feed) | async "></span>
-                  </span>
-                </h4>
-                <p md-line class="md-caption">{{ fromNow(feed.created) }}</p>
-              </a>
-              <md-divider *ngIf="!last"></md-divider>
-            </ng-container>
-          </ng-template>
-        </md-nav-list>
-        <button md-button td-menu-footer *ngIf="!feeds || (feeds && feeds.length <= 0)">
+                </span>
+              </h4>
+              <p md-line class="md-caption">{{ fromNow(feed.created) }}</p>
+            </a>
+            <md-divider *ngIf="!last"></md-divider>
+          </ng-container>
+        </ng-template>
+      </md-nav-list>
+      <button md-button td-menu-footer *ngIf="!feeds || (feeds && feeds.length <= 0)">
           {{ 'userMenu.noNotifications' | translate }}
         </button>
-        <button *ngIf="feeds && feeds.length > 0" md-button color="primary" td-menu-footer routerLink="{{ getAuthUrl('profile/feeds') }}">
+      <button *ngIf="feeds && feeds.length > 0" md-button color="primary" td-menu-footer routerLink="{{ getAuthUrl('profile/feeds') }}">
           {{ 'userMenu.seeAllNotifications' | translate }}
         </button>
-      </td-menu>
-    </md-menu>
-
-  </md-toolbar>
+    </td-menu>
+  </md-menu>
 </div>

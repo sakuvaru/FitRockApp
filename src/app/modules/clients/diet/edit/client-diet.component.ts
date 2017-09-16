@@ -12,7 +12,6 @@ import 'rxjs/add/operator/switchMap';
 import { Observable, Subscription } from 'rxjs/Rx';
 import * as _ from 'underscore';
 import { StringHelper } from '../../../../../lib/utilities';
-import { DataSource } from '@angular/cdk';
 
 @Component({
     templateUrl: 'client-diet.component.html'

@@ -1,16 +1,21 @@
 import { ControlTypeEnum } from '../models/control-type.enum';
 
-export interface IFormField<T> {
+export interface IFormField {
+    
+    /**
+     * Raw value of the field
+     */
+    rawValue?: any;
 
     /**
-     * Value of the field
+     * Value of the field converted to fields proper type (i.e. boolean, integer, Date) where applicable
      */
-    value: T;
+    value?: any;
 
     /**
      * Default value of the field
      */
-    defaultValue: T;
+    defaultValue?: any;
 
     /**
      * Key of the field (= property name/column)
@@ -35,12 +40,12 @@ export interface IFormField<T> {
     /**
      * Additional field options
      */
-    options: IFormFieldOptions;
+    options?: IFormFieldOptions;
 
     /**
      * Translated field name label
      */
-    translatedLabel: string;
+    translatedLabel?: string;
 }
 
 export interface IDropdownFieldOption {

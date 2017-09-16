@@ -1,22 +1,22 @@
 <div *ngIf="question" layout="row" layout-margin [formGroup]="form">
   <!-- Question types -->
-  <md-input-container *ngIf="isTextField()" flex hintLabel="{{questionHint}}">
+  <md-form-field *ngIf="isTextField()" flex hintLabel="{{questionHint}}">
     <input mdInput [attr.maxLength]="question.options.maxLength > 0 ? question.options.maxLength : null"
-      required="{{question.required}}" placeholder="{{question.translatedLabel}}" [formControlName]="question.key" [id]="question.key"
+      [required]="question.required" placeholder="{{question.translatedLabel}}" [formControlName]="question.key" [id]="question.key"
       [type]="question.type" #elem>
     <md-hint *ngIf="showLengthHint()" [ngClass]="{'tc-red-600': elem.value.length > question.options.maxLength}" align="end">{{elem.value.length}} / {{question.options.maxLength}}</md-hint>
     <md-error>{{customError}}</md-error>
-  </md-input-container>
+  </md-form-field>
 
   <div *ngIf="isBooleanField()" flex>
-    <md-checkbox [checked]="checkBoxIsChecked" [formControlName]="question.key" [id]="question.key" required="{{question.required}}"
+    <md-checkbox [checked]="checkBoxIsChecked" [formControlName]="question.key" [id]="question.key" [required]="question.required"
       #elem>&nbsp;{{question.translatedLabel}} <span class="md-caption">({{questionHint}})</span>
     </md-checkbox>
     <span *ngIf="question.required && !elem.checked" class="tc-grey-500 md-caption"> ({{ 'form.shared.required' | translate }})</span>
   </div>
 
   <div *ngIf="isRadioBooleanField()" flex>
-    <md-radio-group [formControlName]="question.key" [id]="question.key" required="{{question.required}}" (change)="handleRadioButtonChange($event)"
+    <md-radio-group [formControlName]="question.key" [id]="question.key" [required]="question.required" (change)="handleRadioButtonChange($event)"
       #elem>
       <md-radio-button [checked]="radioCheckboxTrueChecked" value="true" class="push-right">{{question.options.trueOptionLabel}}</md-radio-button>
       <md-radio-button [checked]="radioCheckboxFalseChecked" value="false">{{question.options.falseOptionLabel}}</md-radio-button>
@@ -24,25 +24,22 @@
   </div>
 
   <div *ngIf="isDateField()" flex>
-    <md-input-container>
-      <input mdInput [mdDatepicker]="datepicker" [formControlName]="question.key" [id]="question.key" [placeholder]="question.translatedLabel"
-        [required]="question.required">
-      <button mdSuffix [mdDatepickerToggle]="datepicker"></button>
-      <md-error>{{customError}}</md-error>
-    </md-input-container>
-  
-    <md-datepicker startView="day" [startAt]="datePickerStartDate" #datepicker></md-datepicker>
+      <md-form-field>
+          <input mdInput [mdDatepicker]="datepicker" [formControlName]="question.key" [id]="question.key" [required]="question.required" placeholder="{{question.translatedLabel}}">
+          <md-datepicker-toggle mdSuffix [for]="datepicker"></md-datepicker-toggle>
+          <md-datepicker #datepicker></md-datepicker>
+      </md-form-field>
   </div>
 
-  <md-input-container *ngIf="isTextAreaField()" flex hintLabel="{{questionHint}}">
+  <md-form-field *ngIf="isTextAreaField()" flex hintLabel="{{questionHint}}">
     <textarea MdTextareaAutosize mdInput mdAutosizeMinRows="question.options.minAutosizeRows" mdAutosizeMaxRows="question.options.maxAutosizeRows"
-      [attr.maxLength]="question.options.maxLength > 0 ? question.options.maxLength : null" required="{{question.required}}"
+      [attr.maxLength]="question.options.maxLength > 0 ? question.options.maxLength : null" [required]="question.required"
       placeholder="{{question.translatedLabel}}" [formControlName]="question.key" [id]="question.key" [type]="question.type"
       #elem>
     </textarea>
     <md-hint *ngIf="showLengthHint()" [ngClass]="{'tc-red-600': elem.value.length > question.options.maxLength}" align="end">{{elem.value.length}} / {{question.options.maxLength}}</md-hint>
     <md-error>{{customError}}</md-error>
-  </md-input-container>
+  </md-form-field>
 
   <div *ngIf="isHiddenField()">
     <input type="hidden" [formControlName]="question.key">
@@ -57,12 +54,12 @@
     </div>
   </div>
 
-  <md-input-container *ngIf="isNumberField()" flex hintLabel="{{questionHint}}">
+  <md-form-field *ngIf="isNumberField()" flex hintLabel="{{questionHint}}">
     <input mdInput [attr.maxLength]="question.options.maxLength > 0 ? question.options.maxLength : null"
-      required="{{question.required}}" placeholder="{{question.translatedLabel}}" [formControlName]="question.key" [id]="question.key"
+      [required]="question.required" placeholder="{{question.translatedLabel}}" [formControlName]="question.key" [id]="question.key"
       type="number" [attr.min]="getMinNumberValue()" [attr.max]="getMaxNumberValue()" #elem>
     <md-hint *ngIf="showLengthHint()" [ngClass]="{'tc-red-600': elem.value.length > question.options.maxLength}" align="end">{{elem.value.length}} / {{question.options.maxLength}}</md-hint>
     <md-error>{{customError}}</md-error>
-  </md-input-container>
+  </md-form-field>
 
 </div>

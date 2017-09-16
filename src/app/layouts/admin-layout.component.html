@@ -17,7 +17,7 @@
 
   <loader [enabled]="globalLoaderEnabled"></loader>
 
-  <td-layout-nav color="primary">
+  <td-layout-nav>
       <div td-toolbar-content flex>
         <admin-toolbar></admin-toolbar>           
       </div> 
@@ -27,10 +27,10 @@
         <span *ngIf="!enableComponentSearch">{{shortenTitle(menuTitle)}}</span>
         <!-- using display none because otherwise the search control could not be initialized -->
         <div [style.display]="enableComponentSearch ? 'block' : 'none'" class="md-body-2">
-            <md-input-container flex>
+            <md-form-field flex>
                 <input mdInput [formControl]="searchControl" [value]="componentSearchValue" />
                 <span mdPrefix><md-icon>search</md-icon></span>
-            </md-input-container>
+            </md-form-field>
         </div>
       </md-toolbar>
       <md-nav-list td-sidenav-content [tdLayoutManageListClose]="!media.query('gt-sm')">

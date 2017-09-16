@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs/RX';
 import { FormGroup } from '@angular/forms';
-import { BaseField, IItem, ResponseCreate, ResponseEdit, FormErrorResponse, ErrorResponse, ResponseDelete } from '../../lib/repository';
+import { FormField, IItem, ResponseCreate, ResponseEdit, FormErrorResponse, ErrorResponse, ResponseDelete } from '../../lib/repository';
 
 export class FormConfig<TItem extends IItem>{
 
@@ -17,7 +17,7 @@ export class FormConfig<TItem extends IItem>{
     /**
      * List of fields (questions) assigned to the form
      */
-    public fields: BaseField<any>[] = [];
+    public fields: FormField[] = [];
 
     /**
      * Function to be executed on insert of new item in the form
@@ -125,7 +125,7 @@ export class FormConfig<TItem extends IItem>{
      /**
      * Called when a value in a field changes
      */
-    public onFieldValueChange?: (config: FormConfig<TItem>, changedField: BaseField<any>, newValue: any) => void;
+    public onFieldValueChange?: (config: FormConfig<TItem>, changedField: FormField, newValue: any) => void;
 
     /**
      * Loader configuration
@@ -137,7 +137,7 @@ export class FormConfig<TItem extends IItem>{
     constructor(
         config?: {
             submitTextKey?: string,
-            fields: BaseField<any>[],
+            fields: FormField[],
             showSnackBar?: boolean,
             snackBarTextKey?: string,
             insertFunction?: (item: any) => Observable<ResponseCreate<TItem>>, // insert or edit function needs to be provided
@@ -155,7 +155,7 @@ export class FormConfig<TItem extends IItem>{
             OnAfterSave?: () => void,
             onBeforeDelete?: (item: any) => void
             onAfterDelete?: (response: ResponseDelete) => void,
-            onFieldValueChange?: (config: FormConfig<TItem>, changedField: BaseField<any>, newValue: any) => void,
+            onFieldValueChange?: (config: FormConfig<TItem>, changedField: FormField, newValue: any) => void,
             loaderConfig?: { start: () => void, stop: () => void }
         }
     ) {

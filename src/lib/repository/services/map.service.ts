@@ -1,7 +1,7 @@
 import { TypeResolver } from '../models/type-resolver.class';
 import { TypeResolverService } from './type-resolver.service';
 import { IItem } from '../interfaces/iitem.interface';
-import { BaseField, FormFieldOptions, DropdownFieldOption } from '../models/form-fields';
+import { FormField, FormFieldOptions, DropdownFieldOption } from '../models/form-fields';
 import { IFormField, IDropdownFieldOption } from '../interfaces/iform-fields';
 import { IPropertyInfo } from '../interfaces/iproperty-info.interface';
 import { PropertyInfo } from '../models/property-info.class';
@@ -104,12 +104,12 @@ export class MapService {
         return typedItems;
     }
 
-    mapFormFields(formFields: IFormField<any>[]): BaseField<any>[] {
+    mapFormFields(formFields: IFormField[]): FormField[] {
         if (!formFields) {
             throw Error(`Cannot map form fields`);
         }
 
-        var fields: BaseField<any>[] = [];
+        var fields: FormField[] = [];
 
         formFields.forEach(field => {
             fields.push(this.mapFormField(field));
@@ -118,14 +118,14 @@ export class MapService {
         return fields;
     }
 
-    mapFormField(formField: IFormField<any>): BaseField<any> {
-        return new BaseField<any>({
+    mapFormField(formField: IFormField): FormField {
+        return new FormField({
             key: formField.key,
             controlType: formField.controlType,
             defaultValue: formField.defaultValue,
             required: formField.required,
-            value: formField.value,
-            options: new FormFieldOptions({
+            rawValue: formField.value,
+            options: formField.options ? new FormFieldOptions({
                 falseOptionLabel: formField.options.falseOptionLabel,
                 trueOptionLabel: formField.options.trueOptionLabel,
                 listOptions: this.mapListOptions(formField.options.listOptions),
@@ -136,7 +136,7 @@ export class MapService {
                 width: formField.options.width,
                 maxNumberValue: formField.options.maxNumberValue,
                 minNumberValue: formField.options.minNumberValue
-            })
+            }) : undefined
         });
     }
 

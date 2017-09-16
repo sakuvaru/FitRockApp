@@ -112,7 +112,7 @@ export class ChatComponent extends BaseComponent implements OnInit {
             .switchMap(response => {
                 if (!response || !response.items[0]) {
                     this.setNoUserFound();
-                    return Observable.of(0);
+                    return Observable.empty()
                 }
 
                 var activeUser = response.items[0];

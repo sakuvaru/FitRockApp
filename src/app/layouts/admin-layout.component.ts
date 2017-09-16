@@ -1,3 +1,4 @@
+
 // common
 import { Component, Input, OnDestroy, ChangeDetectorRef, OnInit } from '@angular/core';
 import { TdMediaService } from '@covalent/core';
@@ -45,7 +46,7 @@ export class AdminLayoutComponent extends BaseComponent implements OnDestroy, On
 
     constructor(
         protected dependencies: ComponentDependencyService,
-        private cdr: ChangeDetectorRef,
+        private changeDetectorRef: ChangeDetectorRef,
     ) {
         super(dependencies)
 
@@ -72,7 +73,7 @@ export class AdminLayoutComponent extends BaseComponent implements OnDestroy, On
             .subscribe(
             enabled => {
                 this.globalLoaderEnabled = enabled;
-                this.cdr.detectChanges();
+                this.changeDetectorRef.detectChanges();
             });
 
         this.dependencies.coreServices.sharedService.componentIsInitializedChanged$
@@ -80,7 +81,7 @@ export class AdminLayoutComponent extends BaseComponent implements OnDestroy, On
             .subscribe(
             initialized => {
                 this.componentIsInitialized = initialized;
-                this.cdr.detectChanges();
+                this.changeDetectorRef.detectChanges();
             });
 
         this.dependencies.coreServices.sharedService.componentConfigChanged$
@@ -97,6 +98,7 @@ export class AdminLayoutComponent extends BaseComponent implements OnDestroy, On
                     this.dependencies.coreServices.translateService.get(componentConfig.componentTitle.key, componentConfig.componentTitle.data)
                         .subscribe(text => {
                             this.componentTitle = text;
+                            this.changeDetectorRef.detectChanges();
                         });
                 }
 
@@ -106,20 +108,18 @@ export class AdminLayoutComponent extends BaseComponent implements OnDestroy, On
                         .takeUntil(this.ngUnsubscribe)
                         .subscribe(text => {
                             this.menuTitle = text;
+                            this.changeDetectorRef.detectChanges();
                         });
                 }
             });
     }
 
     ngAfterViewInit(): void {
-        this.media.broadcast();
         // broadcast to all listener observables when loading the page
-        // note required by 'Covalent' for its templates
-        // source: https://teradata.github.io/covalent/#/layouts/manage-list
-        // + broadcast change detection issue, see - https://github.com/Teradata/covalent/issues/425
-        // + fixed with ChangeDetectorRef => https://stackoverflow.com/questions/34364880/expression-has-changed-after-it-was-checked
-        // mentioned in official doc now -> https://teradata.github.io/covalent/#/layouts/manage-list
-        this.cdr.detectChanges();
+        setTimeout(() => { // workaround since MdSidenav has issues redrawing at the beggining
+            this.media.broadcast();
+            this.changeDetectorRef.detectChanges();
+        });
     }
 
     private initComponentSearch(): void {

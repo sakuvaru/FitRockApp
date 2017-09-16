@@ -1,8 +1,7 @@
 // Note: This module is used to import all angular material components
 // https://material.angular.io/guide/getting-started
 
-// https://teradata.github.io/covalent/#/docs/angular-material is built on top of Angular material but as of 1.0.0.4 (beta)
-// Teradata does not seem to export Angular Material modules therefore they need to be imported
+// Demo material module: https://github.com/angular/material2/blob/master/src/demo-app/demo-material-module.ts
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
@@ -15,12 +14,14 @@ import {
     MdButtonModule, MdButtonToggleModule, MdCardModule, MdCheckboxModule, MdChipsModule, MdCoreModule,
     CompatibilityModule, MaterialModule, MdCommonModule, A11yModule, MdDialogModule, MdGridListModule,
     MdIconModule, MdInputModule, MdLineModule, MdListModule, MdMenuModule, MdOptionModule, MdProgressBarModule,
-    MdProgressSpinnerModule, MdRadioModule, MdRippleModule, MdSelectionModule, MdSelectModule, MdSidenavModule,
-    MdSliderModule, MdSlideToggleModule, MdTabsModule, MdToolbarModule, MdTooltipModule, NativeDateModule, ObserveContentModule,
-    OverlayModule, PlatformModule, PortalModule, ScrollDispatchModule, StyleModule, MdTableModule,
+    MdProgressSpinnerModule, MdRadioModule, MdRippleModule, MdSelectModule, MdSidenavModule,
+    MdSliderModule, MdSlideToggleModule, MdTabsModule, MdToolbarModule, MdTooltipModule, NativeDateModule,
+    PortalModule, StyleModule, MdTableModule,
     MdExpansionModule, MdPaginatorModule, MdSortModule
 } from '@angular/material';
 
+import { OverlayModule } from '@angular/cdk/overlay';
+import { PlatformModule } from '@angular/cdk/platform';
 
 @NgModule({
     imports: [
@@ -28,10 +29,11 @@ import {
         MdButtonModule, MdButtonToggleModule, MdCardModule, MdCheckboxModule, MdChipsModule, MdCoreModule,
         CompatibilityModule, MaterialModule, MdCommonModule, A11yModule, MdDialogModule, MdGridListModule,
         MdIconModule, MdInputModule, MdLineModule, MdListModule, MdMenuModule, MdOptionModule, MdProgressBarModule,
-        MdProgressSpinnerModule, MdRadioModule, MdRippleModule, MdSelectionModule, MdSelectModule, MdSidenavModule,
-        MdSliderModule, MdSlideToggleModule, MdTabsModule, MdToolbarModule, MdTooltipModule, NativeDateModule, ObserveContentModule,
-        OverlayModule, PlatformModule, PortalModule, ScrollDispatchModule, StyleModule, MdTableModule,
-        MdExpansionModule, MdPaginatorModule, MdSortModule
+        MdProgressSpinnerModule, MdRadioModule, MdRippleModule, MdSelectModule, MdSidenavModule,
+        MdSliderModule, MdSlideToggleModule, MdTabsModule, MdToolbarModule, MdTooltipModule, NativeDateModule,
+        PlatformModule, PortalModule, StyleModule, MdTableModule,
+        MdExpansionModule, MdPaginatorModule, MdSortModule,
+        OverlayModule
     ],
     declarations: [
     ],
@@ -42,9 +44,9 @@ import {
         MdButtonModule, MdButtonToggleModule, MdCardModule, MdCheckboxModule, MdChipsModule, MdCoreModule,
         CompatibilityModule, MaterialModule, MdCommonModule, A11yModule, MdDialogModule, MdGridListModule,
         MdIconModule, MdInputModule, MdLineModule, MdListModule, MdMenuModule, MdOptionModule, MdProgressBarModule,
-        MdProgressSpinnerModule, MdRadioModule, MdRippleModule, MdSelectionModule, MdSelectModule, MdSidenavModule,
-        MdSliderModule, MdSlideToggleModule, MdTabsModule, MdToolbarModule, MdTooltipModule, NativeDateModule, ObserveContentModule,
-        OverlayModule, PlatformModule, PortalModule, ScrollDispatchModule, StyleModule, MdTableModule,
+        MdProgressSpinnerModule, MdRadioModule, MdRippleModule, MdSelectModule, MdSidenavModule,
+        MdSliderModule, MdSlideToggleModule, MdTabsModule, MdToolbarModule, MdTooltipModule, NativeDateModule,
+        OverlayModule, PlatformModule, PortalModule, StyleModule, MdTableModule,
         MdExpansionModule, MdPaginatorModule, MdSortModule
     ]
 })

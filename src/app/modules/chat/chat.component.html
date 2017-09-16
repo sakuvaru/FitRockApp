@@ -1,10 +1,10 @@
 <ng-container *ngIf="formConfig && chatMessages">
 
     <div class="push-left push-right push-top">
-        <md-input-container flex>
+        <md-form-field flex>
             <input mdInput placeholder="{{'shared.search' | translate}}" [formControl]="searchControl" [value]="chatMessagesSearch" />
             <span mdPrefix><md-icon>search</md-icon></span>
-        </md-input-container>
+        </md-form-field>
     </div>
 
     <md-card class="push">

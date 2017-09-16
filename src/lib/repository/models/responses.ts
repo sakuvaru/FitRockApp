@@ -3,7 +3,7 @@ import { IItem } from '../interfaces/iitem.interface';
 import { IErrorResponseRaw, IFormErrorResponseRaw } from '../interfaces/iraw-responses';
 import { IFormValidationResult } from '../interfaces/iform-validation-result.interface';
 import { ErrorReasonEnum } from './error-reason.enum';
-import { BaseField } from './form-fields';
+import { FormField } from './form-fields';
 
 export function mapReason(reasonCode: number): ErrorReasonEnum {
     if (reasonCode === 0) {
@@ -190,14 +190,14 @@ export class ResponseFormInsert {
 
     public type: string;
     public formType: string;
-    public fields: BaseField<any>[];
+    public fields: FormField[];
     public model: string;
 
     constructor(
         private options?: {
             type?: string,
             formType?: string,
-            fields?: BaseField<any>[],
+            fields?: FormField[],
             model?: string,
 
         }) {
@@ -209,7 +209,7 @@ export class ResponseFormEdit<T extends IItem>  {
 
     public type: string;
     public formType: string;
-    public fields: BaseField<any>[];
+    public fields: FormField[];
     public timeCreated: Date;
     public fromCache: boolean;
     public item: T;
@@ -219,7 +219,7 @@ export class ResponseFormEdit<T extends IItem>  {
         private options?: {
             type?: string,
             formType?: string,
-            fields?: BaseField<any>[],
+            fields?: FormField[],
             timeCreated: Date;
             fromCache: boolean;
             item: T;

@@ -2,7 +2,7 @@ import { ResponseGetBase } from '../models/response-get-base.class';
 import { IItem } from './iitem.interface';
 import { IFormValidationResult } from './iform-validation-result.interface';
 import { ErrorReasonEnum } from '../models/error-reason.enum';
-import { BaseField } from '../models/form-fields';
+import { FormField } from '../models/form-fields';
 
 export interface IResponseBase {
     type: string;
@@ -62,12 +62,12 @@ export interface IResponseEditRaw extends IResponseBase {
 
 export interface IResponseFormInsertRaw extends IResponseBase {
     formType: string,
-    fields: BaseField<any>[],
+    fields: FormField[],
 }
 
 export interface IResponseFormEditRaw extends IResponseBase {
     formType: string,
-    fields: BaseField<any>[],
+    fields: FormField[],
     timeCreated: Date,
     fromCache: boolean,
     item: any
