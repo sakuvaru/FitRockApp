@@ -19,13 +19,13 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
       "styles": [
+        "assets/css/dragula/dragula.min.css", 
+        "assets/material/fit-rock-material-theme.scss",
+        "../node_modules/@covalent/core/common/platform.scss",
         "styles.css",
         "assets/css/loader.css",
         "assets/css/social.css",
-        "assets/css/fitrock.css",
-        "assets/css/dragula/dragula.min.css", 
-        "assets/material/fit-rock-material-theme.scss",
-        "../node_modules/@covalent/core/common/platform.scss"       
+        "assets/css/fitrock.css"
       ],
       "scripts": [],
       "environmentSource": "environments/environment.ts",

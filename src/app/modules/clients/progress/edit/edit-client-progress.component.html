@@ -10,24 +10,25 @@
     <div fxFlex="50%">
         <md-card>
             <md-card-content>
-                <button md-raised-button color="primary" (click)="openSelectTypeDialog()" >{{'module.clients.progress.assignProgressItemType' | translate}}</button>
+                <button md-raised-button color="primary" (click)="openSelectTypeDialog()">{{'module.clients.progress.assignProgressItemType' | translate}}</button>
                 <button md-raised-button color="primary" [routerLink]="[getTrainerUrl('clients/edit/' + clientId + '/new-progress-type')]">{{'module.clients.progress.newProgressItemType' | translate}}</button>
+
+                <div class="push-top">
+                    <md-chip-list selectable="false">
+                        <md-chip *ngFor="let progressItemType of progressItemTypes">
+                            <ng-container *ngIf="progressItemType.translateValue">
+                                {{'module.progressItemTypes.globalTypes.' + progressItemType.codename | translate}}
+                            </ng-container>
+                            <ng-container *ngIf="!progressItemType.translateValue">
+                                {{progressItemType.typeName}}
+                            </ng-container>
+                            &nbsp;
+                            <delete-button mode="simple" (confirm)="handleDeleteType(progressItemType)"></delete-button>
+                        </md-chip>
+                    </md-chip-list>
+                </div>
             </md-card-content>
         </md-card>
-
-        <div class="push">
-            <md-chip-list>
-                <md-chip *ngFor="let progressItemType of progressItemTypes">
-                    <ng-container *ngIf="progressItemType.translateValue">
-                        {{'module.progressItemTypes.globalTypes.' + progressItemType.codename | translate}}
-                    </ng-container>
-                    <ng-container *ngIf="!progressItemType.translateValue">
-                        {{progressItemType.typeName}}
-                    </ng-container>
-                    <delete-button mode="simple" (confirm)="handleDeleteType(progressItemType)"></delete-button>
-                </md-chip>
-            </md-chip-list>
-        </div>
     </div>
 </div>
 
