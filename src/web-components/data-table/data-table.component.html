@@ -1,13 +1,13 @@
 <ng-container *ngIf="config">
 
-  <ng-template tdLoading [tdLoadingUntil]="!localLoaderLoading" tdLoadingStrategy="overlay">
+  <ng-container *ngIf="config.wrapInCard">
+    <div *ngIf="hasFilters" class="push" flex="95">
+      <!-- Flex is used so that chips don't jump to second row because of overflow (happens if there are many chips & items in data table cause vertical scroller to appear) -->
+      <data-table-layout-filters [filters]="filters" [activeFilterGuid]="activeFilterGuid" (activateFilter)="applyFilter($event)"></data-table-layout-filters>
+    </div>
+    <md-card *ngIf="config.wrapInCard" class="push">
+      <ng-template tdLoading [tdLoadingUntil]="!localLoaderLoading" tdLoadingStrategy="overlay">
 
-    <ng-container *ngIf="config.wrapInCard">
-      <div *ngIf="hasFilters" class="push" flex="95">
-        <!-- Flex is used so that chips don't jump to second row because of overflow (happens if there are many chips & items in data table cause vertical scroller to appear) -->
-        <data-table-layout-filters [filters]="filters" [activeFilterGuid]="activeFilterGuid" (activateFilter)="applyFilter($event)"></data-table-layout-filters>
-      </div>
-      <md-card *ngIf="config.wrapInCard" class="push">
         <md-card-title layout>
           <data-table-layout-search *ngIf="config.showSearch" [config]="config" [searchTerm]="searchTerm" (search)="handleSearch($event)"></data-table-layout-search>
         </md-card-title>
@@ -15,10 +15,12 @@
         <md-card-actions>
           <data-table-layout-pager [pagerConfig]="config.pagerConfig" [totalPages]="totalPages" [currentPage]="currentPage" (goToPage)="filterItems($event)"></data-table-layout-pager>
         </md-card-actions>
-      </md-card>
-    </ng-container>
+      </ng-template>
+    </md-card>
+  </ng-container>
 
-    <ng-container *ngIf="!config.wrapInCard">
+  <ng-container *ngIf="!config.wrapInCard">
+    <ng-template tdLoading [tdLoadingUntil]="!localLoaderLoading" tdLoadingStrategy="overlay">
       <div *ngIf="hasFilters" class="push-bottom" flex="95">
         <!-- Flex is used so that chips don't jump to second row because of overflow (happens if there are many chips & items in data table cause vertical scroller to appear) -->
         <data-table-layout-filters [filters]="filters" [activeFilterGuid]="activeFilterGuid" (activateFilter)="applyFilter($event)"></data-table-layout-filters>
@@ -30,8 +32,7 @@
       <md-card-actions>
         <data-table-layout-pager [pagerConfig]="config.pagerConfig" [totalPages]="totalPages" [currentPage]="currentPage" (goToPage)="filterItems($event)"></data-table-layout-pager>
       </md-card-actions>
-    </ng-container>
-
-  </ng-template>
+    </ng-template>
+  </ng-container>
 
 </ng-container>
