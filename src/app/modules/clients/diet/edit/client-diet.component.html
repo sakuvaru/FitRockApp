@@ -15,9 +15,9 @@
     </md-card-content>
 </md-card>
 
-<md-list *ngIf="existingDiets" [dragula]='"dragula-bag"' [dragulaModel]="existingDiets">
+<md-list *ngIf="existingDiets" [dragula]='"dragula-bag"' [dragulaModel]="existingDiets" class="push" >
     <ng-container *ngFor="let diet of existingDiets; let i = index">
-        <td-expansion-panel class="push" [disableRipple]="false">
+        <td-expansion-panel [disableRipple]="false">
             <ng-template td-expansion-panel-header>
                 <md-list-item class="w-cursor-pointer">
                     <span class="dragula-move-handle w-cursor-move md-headline tc-blue-600">
