@@ -12,6 +12,11 @@ export class DataTableBuilder<TItem extends IItem> {
         return this;
     }
 
+    enableLocalLoader(enabled: boolean): this{
+        this.config.enableLocalLoader = enabled;
+        return this;
+    }
+
     loadQuery(loadQuery: (searchTerm: string) => MultipleItemQuery<TItem>): this {
         this.config.loadQuery = loadQuery;
         return this;

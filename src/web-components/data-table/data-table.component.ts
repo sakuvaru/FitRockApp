@@ -42,6 +42,9 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
     // search
     private searchTerm: string = '';
 
+    // local loader
+    private localLoaderLoading: boolean = false;
+
     /**
      * Indicates if the load of items is the initial load
      */
@@ -98,6 +101,11 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
         // save page to local storage
         this.savePageToLocalStorage(this.configHash, page);
 
+        // enable local loader
+        if (this.config.enableLocalLoader){
+            this.localLoaderLoading = true;
+        }
+
         if (this.config.loaderConfig){
             this.config.loaderConfig.start();
         }
@@ -108,7 +116,8 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
 
         if (this.config.dynamicFilters) {
             this.config.dynamicFilters(this.searchTerm)
-                .flatMap((dynamicFilters) => {
+                .takeUntil(this.ngUnsubscribe)
+                .switchMap((dynamicFilters) => {
                     // reset filters so that they are not added multiple times across requests
                     this.filters = [];
 
@@ -165,8 +174,12 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
                     }
                     // set initial load flag
                     this.isInitialLoad = false;
+
+                    // finish local loader
+                    if (this.config.enableLocalLoader){
+                        this.localLoaderLoading = false;
+                    }
                 })
-                .takeUntil(this.ngUnsubscribe)
                 .subscribe(response => {
                     this.currentPage = page;
                     this.items = response.items;
@@ -222,6 +235,11 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
                     }
                     // update initial load flag
                     this.isInitialLoad = false;
+
+                    // finish local loader
+                    if (this.config.enableLocalLoader){
+                        this.localLoaderLoading = false;
+                    }
                 })
                 .subscribe(response => {
                     this.currentPage = page;

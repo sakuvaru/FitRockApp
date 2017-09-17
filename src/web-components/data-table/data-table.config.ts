@@ -11,6 +11,11 @@ export class DataTableConfig<TItem extends IItem> {
     public fields: DataTableField<any>[];
 
     /**
+     * Indicates if local loader is enabled
+     */
+    public enableLocalLoader: boolean = true;
+
+    /**
      * Indicates if data table is wrapped in a material design card
      */
     public wrapInCard: boolean = true;
@@ -116,6 +121,7 @@ export class DataTableConfig<TItem extends IItem> {
             fields: DataTableField<any>[];
 
             // optional 
+            enableLocalLoader?: boolean,
             wrapInCard?: boolean,
             showHeader?: boolean,
             showPager?: boolean,
