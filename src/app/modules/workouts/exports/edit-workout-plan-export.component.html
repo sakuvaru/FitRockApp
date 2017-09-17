@@ -4,16 +4,17 @@
   <md-card-content *ngIf="workout.description">
     {{workout.description}}
   </md-card-content>
-  <md-divider></md-divider>
-  <md-card-content *ngIf="sortedWorkoutExercises">
-    <md-card-actions>
-      <button md-button color="primary" class="text-upper" (click)="openSelecExerciseDialog()">{{'module.workouts.addExercise' | translate }}</button>
-    </md-card-actions>
-    <md-list [dragula]='"dragula-bag"' [dragulaModel]="sortedWorkoutExercises">
+</md-card>
+
+<div *ngIf="sortedWorkoutExercises" class="push">
+  <button md-raised-button color="primary" class="text-upper" (click)="openSelecExerciseDialog()">{{'module.workouts.addExercise' | translate }}</button>
+
+  <div *ngIf="sortedWorkoutExercises">
+    <md-list [dragula]='"dragula-bag"' class="push-top" [dragulaModel]="sortedWorkoutExercises">
       <ng-container *ngFor="let workoutExercise of sortedWorkoutExercises; let i = index">
-        <td-expansion-panel class="push-left push-right push-bottom" [disableRipple]="false">
+        <td-expansion-panel [disableRipple]="false">
           <ng-template td-expansion-panel-header>
-            <md-list-item style="background:whitesmoke">
+            <md-list-item>
               <span class="dragula-move-handle w-cursor-move md-headline tc-blue-600">
                 +&nbsp;
               </span>
@@ -28,21 +29,21 @@
           <div class="md-caption push">
             <span>
                 {{'module.workouts.sets' | translate }}: <strong>{{workoutExercise.sets}}</strong> | {{'module.workouts.reps' | translate }}: <strong>{{workoutExercise.reps}}</strong>
-            </span> 
+            </span>
 
-              <p *ngIf="workoutExercise.notes">
-                {{ workoutExercise.notes }}
+            <p *ngIf="workoutExercise.notes">
+              {{ workoutExercise.notes }}
             </p>
             <p *ngIf="!workoutExercise.notes">
               <em>{{'module.workouts.exerciseHasNoNotes' | translate}}</em>
             </p>
           </div>
 
-          </td-expansion-panel>
+        </td-expansion-panel>
       </ng-container>
     </md-list>
-  </md-card-content>
-  <md-card-actions *ngIf="sortedWorkoutExercises && sortedWorkoutExercises.length > 5">
-    <button md-button color="primary" class="text-upper" (click)="openSelecExerciseDialog()">{{'module.workouts.addExercise' | translate }}</button>
-  </md-card-actions>
-</md-card>
+  </div>
+  <div *ngIf="sortedWorkoutExercises && sortedWorkoutExercises.length > 5" class="push-top">
+    <button md-raised-button color="primary" class="text-upper" (click)="openSelecExerciseDialog()">{{'module.workouts.addExercise' | translate }}</button>
+  </div>
+</div>
