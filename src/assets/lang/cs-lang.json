@@ -369,6 +369,14 @@
 			"loadMore": "Další",
 			"defaultAllItemsLoaded": "Všechny záznamy nahrány",
 			"search": "Hledat ..."
+		},
+		"uploader": {
+			"noFilesSelected": "Žádné soubory nebyly vybrány",
+			"chooseAFile": "Vyber soubor ...",
+			"chooseFiles": "Vyber soubory (max. {{maxFiles}}) ...",
+			"uploadSuccessful": "Soubory byly úspěšně uloženy",
+			"uploadFailed": "Nastala chyba při náhrávání souborů",
+			"extensionNotAllowed": "Soubory typu '{{extensions}}' nelze nahrát"
 		}
 	}
 }

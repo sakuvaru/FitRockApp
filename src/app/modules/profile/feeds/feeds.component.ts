@@ -43,7 +43,7 @@ export class FeedsComponent extends BaseComponent implements OnInit {
     }
 
     private initLoadMore(): void {
-        this.loadMoreConfig = this.dependencies.webComponentServices.laodMoreService.loadMore<Feed>(
+        this.loadMoreConfig = this.dependencies.webComponentServices.loadMoreService.loadMore<Feed>(
             search => this.dependencies.itemServices.feedService.getFeedsForUser(this.dependencies.authenticatedUserService.getUserId()),
             query => query.get().takeUntil(this.ngUnsubscribe))
             .text({

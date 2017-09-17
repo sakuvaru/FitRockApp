@@ -19,6 +19,10 @@
     display: none;
 }
 
+.w-tc-white{
+    color: #FFFFFF;
+}
+
 /* Overrides 
 Note: in order for overrides to work, this css should be loaded after the material's css
 */

@@ -1,14 +1,31 @@
-<h1>TEST FILE UPLOAD</h1>
+<ng-container *ngIf="config">
 
-<p>Select Event: {{fileSelectMsg}}</p>
-<p>Upload Event: {{fileUploadMsg}}</p>
+  <div class="push-bottom" *ngIf="noFilesSelected || uploadSuccessful || uploadFailed || extensionNotAllowed">
+    <info-message *ngIf="noFilesSelected" title="{{ 'webComponents.uploader.noFilesSelected' | translate }}"></info-message>
+    <success-message *ngIf="uploadSuccessful" title="{{ 'webComponents.uploader.uploadSuccessful' | translate }}"></success-message>
+    <error-message *ngIf="uploadFailed" title="{{ 'webComponents.uploader.uploadFailed' | translate }}"></error-message>
+    <error-message *ngIf="extensionNotAllowed" title="{{ 'webComponents.uploader.extensionNotAllowed' | translate:extensionsNotAllowedParam }}"></error-message>
+  </div>
 
-<td-file-upload #fileUpload defaultColor="accent" activeColor="warn" cancelColor="primary" (select)="selectEvent($event)"
-(upload)="uploadEvent2($event)" (cancel)="cancelEvent()" accept=".jpg, .jpeg, .png, .gif" [disabled]="disabled" multiple>
-<md-icon>file_upload</md-icon><span>{{ fileUpload.files?.name }}</span>
-<ng-template td-file-input-label>
-  <md-icon>attach_file</md-icon><span>Choose a file...</span>
-</ng-template>
-</td-file-upload>
+  <ng-container *ngIf="config.mode === 0">
+    <td-file-upload #fileUpload defaultColor="primary" activeColor="primary" cancelColor="warn" (select)="selectEvent($event)"
+      (upload)="uploadSingle($event)" (cancel)="cancelEvent()" [accept]="acceptedExtensionsString" [disabled]="disabled">
+      <md-icon>file_upload</md-icon><span>{{ fileUpload.files?.name }}</span>
+      <ng-template td-file-input-label>
+        <md-icon>attach_file</md-icon><span>{{ 'webComponents.uploader.chooseAFile' | translate}}</span>
+      </ng-template>
+    </td-file-upload>
+  </ng-container>
 
+  <ng-container *ngIf="config.mode === 1">
+    <td-file-upload #fileUpload defaultColor="primary" activeColor="primary" cancelColor="warn" (select)="selectEvent($event)"
+      (upload)="uploadMultiple($event)" (cancel)="cancelEvent()" [accept]="acceptedExtensionsString" [disabled]="disabled"
+      multiple>
+      <md-icon>file_upload</md-icon><span>{{ fileUpload.files?.name }}</span>
+      <ng-template td-file-input-label>
+        <md-icon>attach_file</md-icon><span translate [translateParams]="{maxFiles: maxFiles}">webComponents.uploader.chooseFiles</span>
+      </ng-template>
+    </td-file-upload>
+  </ng-container>
 
+</ng-container>

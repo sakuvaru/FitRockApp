@@ -116,10 +116,8 @@ export class AdminLayoutComponent extends BaseComponent implements OnDestroy, On
 
     ngAfterViewInit(): void {
         // broadcast to all listener observables when loading the page
-        setTimeout(() => { // workaround since MdSidenav has issues redrawing at the beggining
-            this.media.broadcast();
-            this.changeDetectorRef.detectChanges();
-        });
+        this.media.broadcast();
+        this.changeDetectorRef.detectChanges();
     }
 
     private initComponentSearch(): void {

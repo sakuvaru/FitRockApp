@@ -29,6 +29,7 @@ import * as moment from 'moment';
 import { DataTableService } from '../../../web-components/data-table';
 import { DynamicFormService } from '../../../web-components/dynamic-form';
 import { LoadMoreService } from '../../../web-components/load-more';
+import { UploaderService } from '../../../web-components/uploader';
 
 // Models
 import { User } from '../../models/';
@@ -84,7 +85,8 @@ export class ComponentDependencyService {
         this.webComponentServices = new WebComponentServices();
         this.webComponentServices.dataTableService = injector.get(DataTableService);
         this.webComponentServices.dynamicFormService = injector.get(DynamicFormService);
-        this.webComponentServices.laodMoreService = injector.get(LoadMoreService);
+        this.webComponentServices.loadMoreService = injector.get(LoadMoreService);
+        this.webComponentServices.uploaderService = injector.get(UploaderService);
 
         // item services
         this.itemServices = new ItemServices();
@@ -124,7 +126,8 @@ export class ComponentDependencyService {
 export class WebComponentServices {
     public dataTableService: DataTableService;
     public dynamicFormService: DynamicFormService;
-    public laodMoreService: LoadMoreService;
+    public loadMoreService: LoadMoreService;
+    public uploaderService: UploaderService;
 }
 
 export class CoreServices {

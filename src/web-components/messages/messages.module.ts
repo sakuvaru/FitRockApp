@@ -8,6 +8,8 @@ import { SharedWebComponentModule } from '../shared-web-components.module';
 // components
 import { InfoMessageComponent } from './info/info-message.component';
 import { NoDataMessageComponent } from './data/no-data-message.component';
+import { SuccessMessageComponent } from './success/success-message.component';
+import { ErrorMessageComponent } from './error/error-message.component';
 
 @NgModule({
     imports: [
@@ -17,11 +19,15 @@ import { NoDataMessageComponent } from './data/no-data-message.component';
     ],
     declarations: [
         InfoMessageComponent,
-        NoDataMessageComponent
+        NoDataMessageComponent,
+        SuccessMessageComponent,
+        ErrorMessageComponent
     ],
     exports: [
         InfoMessageComponent,
-        NoDataMessageComponent
+        NoDataMessageComponent,
+        SuccessMessageComponent,
+        ErrorMessageComponent
     ]
 })
 export class MessagesModule { }
