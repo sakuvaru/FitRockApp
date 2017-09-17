@@ -5,19 +5,19 @@
   <md-card-content *ngIf="workout.description">
     {{workout.description}}
   </md-card-content>
-  <md-divider></md-divider>
-  <md-card-content *ngIf="sortedWorkoutExercises">
-    <td-expansion-panel *ngFor="let workoutExercise of sortedWorkoutExercises; let i = index">
-      <ng-template td-expansion-panel-label>
-        <span class="tc-red-700">{{i + 1}}.</span> {{workoutExercise.exercise.exerciseName}}
-        <span class="md-caption tc-grey-700">({{workoutExercise.exercise.exerciseCategory.categoryName}})</span>
-      </ng-template>
-      <ng-template td-expansion-panel-sublabel>
-        <span class="md-caption">  {{'module.workouts.sets' | translate }}: {{workoutExercise.sets}} / {{'module.workouts.reps' | translate }}: {{workoutExercise.reps}} </span>
-      </ng-template>
-      <div class="md-padding md-caption">
-        {{workoutExercise.notes}}
-      </div>
-    </td-expansion-panel>
-  </md-card-content>
 </md-card>
+
+<div class="push" *ngIf="sortedWorkoutExercises">
+  <td-expansion-panel *ngFor="let workoutExercise of sortedWorkoutExercises; let i = index">
+    <ng-template td-expansion-panel-label>
+      <span class="tc-red-700">{{i + 1}}.</span> {{workoutExercise.exercise.exerciseName}}
+      <span class="md-caption tc-grey-700">({{workoutExercise.exercise.exerciseCategory.categoryName}})</span>
+    </ng-template>
+    <ng-template td-expansion-panel-sublabel>
+      <span class="md-caption">  {{'module.workouts.sets' | translate }}: {{workoutExercise.sets}} / {{'module.workouts.reps' | translate }}: {{workoutExercise.reps}} </span>
+    </ng-template>
+    <div class="md-padding md-caption">
+      {{workoutExercise.notes}}
+    </div>
+  </td-expansion-panel>
+</div>
