@@ -11,7 +11,7 @@
     </md-card-content>
     <ng-container *ngFor="let chatMessage of chatMessages">
         <md-card-header>
-            <div md-card-avatar style=" background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');background-size: cover;"></div>
+            <div mdCardAvatar style=" background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');background-size: cover;"></div>
             <md-card-title>{{ chatMessage.sender.getFullName() }}</md-card-title>
             <md-card-subtitle><span class="md-caption">{{ formatDate(chatMessage.created)}}</span></md-card-subtitle>
         </md-card-header>
@@ -25,6 +25,6 @@
 </md-card>
 
 <div class="text-center push">
-    <button *ngIf="!allChatMessagesLoaded" md-raised-button color="accent" (click)="loadMoreMessages()">{{ 'shared.loadMore' | translate }}</button>
+    <button *ngIf="!allChatMessagesLoaded" md-raised-button color="primary" (click)="loadMoreMessages()">{{ 'shared.loadMore' | translate }}</button>
     <button *ngIf="allChatMessagesLoaded" md-raised-button >{{ 'module.clients.chat.allMessagesLoaded' | translate }}</button>
 </div>

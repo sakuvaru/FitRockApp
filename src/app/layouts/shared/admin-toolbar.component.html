@@ -30,12 +30,12 @@
           <ng-container *ngFor="let feed of feeds">
             <a md-list-item [class.bgc-grey-100]="!feed.markedAsRead || (preventFeedChange && !feed.markedAsRead)" (click)="handleClickFeed(feed)">
               <md-icon [class.tc-red-500]="!feed.markedAsRead || (preventFeedChange && !feed.markedAsRead)" md-list-avatar>{{ getFeedIcon(feed) }}</md-icon>
-              <h4 md-line>
+              <h4 mdLine>
                 <span class="text-wrap">
                     <span [innerHtml]="getFeedText(feed) | async "></span>
                 </span>
               </h4>
-              <p md-line class="md-caption">{{ fromNow(feed.created) }}</p>
+              <p mdLine class="md-caption">{{ fromNow(feed.created) }}</p>
             </a>
             <md-divider *ngIf="!last"></md-divider>
           </ng-container>

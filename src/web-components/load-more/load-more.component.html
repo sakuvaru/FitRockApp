@@ -18,7 +18,7 @@
               <md-icon *ngIf="config.iconResolver && !config.iconClassResolver" md-list-avatar>{{ config.iconResolver(item) }}</md-icon>
               <md-icon *ngIf="config.iconResolver && config.iconClassResolver" md-list-avatar [ngClass]="[config.iconClassResolver(item)]">{{ config.iconResolver(item) }}</md-icon>
               <img *ngIf="config.imageResolver" src="{{ config.imageResolver(item) }}" alt="" md-list-avatar>
-              <p md-line>
+              <p mdLine>
                 <span *ngIf="presentation.title" class="md-body-1">
                   <span *ngIf="!presentation.title.translate || !presentation.title.translate(item)">
                     <span *ngIf="presentation.title.htmlResolver" [innerHtml]="presentation.title.htmlResolver(item)"></span>
@@ -34,7 +34,7 @@
                 </span>
                 <span *ngIf="presentation.text.translate && presentation.text.translate(item)" [innerHtml]="presentation.text.resolver(item) | translate:presentation.text.translationData(item)"></span>
               </p>
-              <p md-line *ngIf="presentation.footer">
+              <p mdLine *ngIf="presentation.footer">
                 <span *ngIf="!presentation.footer.translate || !presentation.footer.translate(item)" class="md-caption">
                     <span *ngIf="presentation.footer.htmlResolver" [innerHtml]="presentation.footer.htmlResolver(item)"></span>
                     <span *ngIf="presentation.footer.resolver">{{ presentation.footer.resolver(item) }}</span>
@@ -50,7 +50,7 @@
     </md-card>
 
     <div class="text-center psh">
-      <button *ngIf="showMoreButton" md-raised-button color="accent" (click)="loadMoreButtonSubject.next()">{{ 'webComponents.loadMore.loadMore' | translate }}</button>
+      <button *ngIf="showMoreButton" md-raised-button color="primary" (click)="loadMoreButtonSubject.next()">{{ 'webComponents.loadMore.loadMore' | translate }}</button>
       <p *ngIf="!showMoreButton"><span class="md-caption"><em>{{ 'webComponents.loadMore.defaultAllItemsLoaded' | translate }}</em></span></p>
     </div>
 
