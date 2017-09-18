@@ -18,6 +18,7 @@ export class User extends BaseItem {
     public trainerPublicNotes: string;
     public trainer: User;
     public isActive: boolean;
+    public avatarUrl: string;
 
     getFullName(): string {
         return this.firstName + ' ' + this.lastName;

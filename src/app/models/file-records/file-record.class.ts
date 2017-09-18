@@ -6,4 +6,5 @@ export class FileRecord extends BaseItem {
     public sizeInBytes: number;
     public extension: string;
     public fileRecordType: string;
+    public fileUrl: string;
 }

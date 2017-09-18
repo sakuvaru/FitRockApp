@@ -1,5 +1,5 @@
 // common
-import { Component, Input, Output, EventEmitter, ViewContainerRef, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { BaseWebComponent } from '../base-web-component.class';
 import { FileRecordService } from '../../app/services';
@@ -55,9 +55,9 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
      */
     private acceptedExtensionsString: string;
 
-     /**
-     * List of accepted extensions, these are checked against selected files
-     */
+    /**
+    * List of accepted extensions, these are checked against selected files
+    */
     private acceptedExtensions: string[];
 
     constructor(
@@ -70,7 +70,7 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
     @Input() config: UploaderConfig;
 
     ngOnInit() {
-        if (this.config){
+        if (this.config) {
             this.initUploader(this.config);
         }
     }
@@ -90,7 +90,7 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
         this.config = config;
 
         // check that upload function is defined
-        if (!config.uploadFunction){
+        if (!config.uploadFunction) {
             console.warn('Uploader could not be initialized because upload function is not defined');
         }
 
@@ -112,8 +112,8 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
             allowedExtensions = _.union(allowedExtensions, config.defaultFileExtensions);
         }
 
-           // add default extensions if allowed
-           if (config.useDefaultImageExtensions) {
+        // add default extensions if allowed
+        if (config.useDefaultImageExtensions) {
             allowedExtensions = _.union(allowedExtensions, config.defaultImageExtensions);
         }
 
@@ -159,13 +159,13 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
 
     uploadSingle(file: File): void {
         this.resetCounters();
-        
-        if (!file){
+
+        if (!file) {
             this.noFilesSelected = true;
             return;
         }
 
-        if (!this.fileIsAllowed(file)){
+        if (!this.fileIsAllowed(file)) {
             this.extensionNotAllowed = true;
             this.extensionsNotAllowedParam.extensions = this.getListOfNotAllowedExtensions([file]);
             return;
@@ -182,6 +182,9 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
                     if (this.config.onAfterUpload) {
                         this.config.onAfterUpload(uploadedFile);
                     }
+                },
+                error => {
+                    this.uploadFailed = true;
                 });
         }
         catch (error) {
@@ -191,13 +194,12 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
                 this.config.onFailedUpload(error);
             }
         }
-
     }
 
     uploadMultiple(file: any): void {
         this.resetCounters();
-        
-        if (!file){
+
+        if (!file) {
             this.noFilesSelected = true;
             return;
         }
@@ -216,12 +218,12 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
             }
         }
 
-        if (files.length === 0){
+        if (files.length === 0) {
             this.noFilesSelected = true;
             return;
         }
 
-        if (!this.allFilesAllowed(files)){
+        if (!this.allFilesAllowed(files)) {
             this.extensionNotAllowed = true;
             this.extensionsNotAllowedParam.extensions = this.getListOfNotAllowedExtensions(files);
             return;
@@ -238,6 +240,9 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
                             this.config.onAfterUpload(response.files);
                         }
                     }
+                },
+                error => {
+                    this.uploadFailed = true;
                 });
         }
         catch (error) {
@@ -251,43 +256,42 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
     }
 
     private getListOfNotAllowedExtensions(files: File[]): string {
-        if (!files){
+        if (!files) {
             return '';
         }
 
-        if (!Array.isArray(files)){
+        if (!Array.isArray(files)) {
             return '';
         }
 
         var notAllowedExtensions: string = '';
 
-        for (var i = 0; i < files.length; i++){
+        for (var i = 0; i < files.length; i++) {
             var file = files[i];
             var fileAllowed = this.fileIsAllowed(file);
-            if (!fileAllowed){
+            if (!fileAllowed) {
                 notAllowedExtensions += this.getFileExtension(file.name);
 
-                if (i !== files.length - 1){
+                if (i !== files.length - 1) {
                     notAllowedExtensions += ', ';
                 }
             }
         }
-    
         return notAllowedExtensions;
     }
 
-    private allFilesAllowed(files: File[]): boolean{
-        if (!files){
+    private allFilesAllowed(files: File[]): boolean {
+        if (!files) {
             return false;
         }
 
-        if (!Array.isArray(files)){
+        if (!Array.isArray(files)) {
             return false;
         }
 
         files.forEach(file => {
             var fileAllowed = this.fileIsAllowed(file);
-            if (!fileAllowed){
+            if (!fileAllowed) {
                 return false;
             }
             return true;
@@ -300,7 +304,7 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
     private fileIsAllowed(file: File): boolean {
         var fileExtension = this.getFileExtension(file.name);
 
-        if (!fileExtension){
+        if (!fileExtension) {
             return false;
         }
 
@@ -308,10 +312,9 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
 
         var isAllowedExtension = this.acceptedExtensions.find(m => m.toLowerCase() === fileExtension);
 
-        if (isAllowedExtension){
+        if (isAllowedExtension) {
             return true;
         }
-
         return false;
     }
 
@@ -320,7 +323,7 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
 
         var result = re.exec(fileName);
 
-        if (result && result[1]){
+        if (result && result[1]) {
             return result[1];
         }
         return null;

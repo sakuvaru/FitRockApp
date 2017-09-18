@@ -4,6 +4,6 @@
     </md-card-content>
 </md-card>
 
-<div class="push">
-    <img alt="avatar" src="http://localhost:61466/users/af2d5f9a-7cf6-4479-8a53-25019de582a4/avatar.jpg" />
+<div class="push" *ngIf="avatarSrc">
+    <img alt="avatar" [src]="avatarSrc" />
 </div>

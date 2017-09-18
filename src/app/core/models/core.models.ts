@@ -46,6 +46,7 @@ export class AuthenticatedUser{
         public email: string,
         public firstName: string,
         public lastName: string,
-        public trainerId: number
+        public trainerId: number,
+        public avatarUrl: string
     ){}
 }

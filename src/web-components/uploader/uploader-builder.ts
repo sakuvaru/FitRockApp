@@ -59,7 +59,7 @@ export class UploaderBuilder {
     /**
      * Callback for when items are uploaded
      */
-    onAfterUpload?(callback: <T>(uploadedItems: T[] | T) => void): this {
+    onAfterUpload<T>(callback: (uploadedItems: T[]) => void): this {
         this.config.onAfterUpload = callback;
         return this;
     }

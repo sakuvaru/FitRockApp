@@ -48,7 +48,7 @@ export class UploaderConfig {
     /**
      * Callback for when items are uploaded
      */
-    public onAfterUpload?: <T>(uploadedItems: T[] | T) => void;
+    public onAfterUpload?: <T>(uploadedItems: T[]) => void;
 
     /**
      * Callback for when upload fails

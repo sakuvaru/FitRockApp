@@ -31,7 +31,7 @@ export class EntryPointComponent extends BaseComponent {
         super.stopGlobalLoader();
 
         var user = response.item;
-        var authUser = new AuthenticatedUser(user.id, user.email, user.firstName, user.lastName, user.trainerUserId);
+        var authUser = new AuthenticatedUser(user.id, user.email, user.firstName, user.lastName, user.trainerUserId, user.avatarUrl);
 
         // store user in authenticated user
         this.dependencies.authenticatedUserService.setUser(authUser);
