@@ -7,7 +7,7 @@ import { AppConfig, ComponentDependencyService, BaseComponent } from '../../../.
 import { ClientsBaseComponent } from '../../clients-base.component';
 import { ClientEditWorkoutMenuItems } from '../../menu.items';
 import { Workout } from '../../../../models';
-import 'rxjs/add/operator/switchMap';
+import { Observable } from 'rxjs/Rx';
 
 @Component({
     templateUrl: 'edit-client-workout.component.html'
@@ -27,6 +27,7 @@ export class EditClientWorkoutComponent extends ClientsBaseComponent implements 
         super.ngOnInit();
 
         this.initWorkoudId();
+        super.subscribeToObservable(this.getMenuInitObservable());
         super.initClientSubscriptions();
     }
 
@@ -38,15 +39,22 @@ export class EditClientWorkoutComponent extends ClientsBaseComponent implements 
             });
     }
 
+    private getMenuInitObservable(): Observable<any> {
+        return this.clientChange.map(client => {
+            this.setConfig({
+                menuItems: new ClientEditWorkoutMenuItems(client.id, this.workoutId).menuItems,
+                menuTitle: {
+                    key: 'module.clients.viewClientSubtitle',
+                    data: { 'fullName': client.getFullName() }
+                },
+                menuAvatarUrl: client.avatarUrl
+            })
+        })
+    }
+
     private handleLoadWorkout(workout: Workout): void {
-        this.setConfig({
-            menuItems: new ClientEditWorkoutMenuItems(this.clientId, this.workoutId).menuItems,
-            menuTitle: {
-                key: 'module.clients.workout.editWorkout'
-            },
-            componentTitle: {
-                key: workout.workoutName
-            }
-        });
+        var translationData: any = {};
+        translationData.workoutName = workout.workoutName;
+        super.updateComponentTitle({ key: 'module.clients.workout.editWorkoutWithName', data: translationData });
     }
 }

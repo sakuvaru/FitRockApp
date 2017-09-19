@@ -100,7 +100,8 @@ export class ClientDietComponent extends ClientsBaseComponent implements OnInit,
                     },
                     componentTitle: {
                         'key': 'module.clients.submenu.diet'
-                    }
+                    },
+                    menuAvatarUrl: client.avatarUrl
                 });
             });
 

@@ -230,15 +230,13 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
         }
 
         try {
-            this.config.uploadFunction(file)
+            this.config.uploadFunction(files)
                 .takeUntil(this.ngUnsubscribe)
                 .subscribe(response => {
-                    response => {
-                        this.uploadSuccessful = true;
+                    this.uploadSuccessful = true;
 
-                        if (this.config.onAfterUpload) {
-                            this.config.onAfterUpload(response.files);
-                        }
+                    if (this.config.onAfterUpload) {
+                        this.config.onAfterUpload(response.files);
                     }
                 },
                 error => {

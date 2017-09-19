@@ -24,7 +24,10 @@
     <td-layout-manage-list #manageList [opened]="media.registerQuery('gt-sm') | async" [mode]="(media.registerQuery('gt-sm') | async) ? 'side' :  'over'"
       [sidenavWidth]="(media.registerQuery('gt-xs') | async) ? '257px' : '100%'">
       <md-toolbar td-sidenav-content>
-        <span *ngIf="!enableComponentSearch">{{shortenTitle(menuTitle)}}</span>
+        <ng-container *ngIf="!enableComponentSearch">
+          <img *ngIf="menuAvatarUrl" mdCardAvatar class="push-right" [src]="menuAvatarUrl" alt="menu avatar">
+          <span>{{shortenTitle(menuTitle)}}</span>
+        </ng-container>
         <!-- using display none because otherwise the search control could not be initialized -->
         <div [style.display]="enableComponentSearch ? 'block' : 'none'" class="md-body-2">
             <md-form-field flex>

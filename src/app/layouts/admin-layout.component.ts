@@ -13,10 +13,13 @@ import { FormControl } from '@angular/forms';
     templateUrl: 'admin-layout.component.html'
 })
 export class AdminLayoutComponent extends BaseComponent implements OnDestroy, OnInit {
-    private year: number = new Date().getFullYear();
+    
+    private readonly titleCharsLength: number = 22;
+    private readonly year: number = new Date().getFullYear();
+    private readonly hideComponentWhenLoaderIsEnabled = AppConfig.HideComponentWhenLoaderIsEnabled;
+    
     private media: TdMediaService;
 
-    private hideComponentWhenLoaderIsEnabled = AppConfig.HideComponentWhenLoaderIsEnabled;
     private componentIsInitialized: boolean;
     private componentIsAutoInitialized: boolean;
 
@@ -24,6 +27,7 @@ export class AdminLayoutComponent extends BaseComponent implements OnDestroy, On
     private componentTitle: string;
     private menuTitle: string;
     private globalLoaderEnabled: boolean;
+    private menuAvatarUrl: string;
 
     private displayUsername: string;
     private email: string;
@@ -36,13 +40,9 @@ export class AdminLayoutComponent extends BaseComponent implements OnDestroy, On
     /**
      * Admin search
      */
+    private readonly searchDebounceTime: number = 300;
     private searchControl = new FormControl();
-
-    private searchDebounceTime: number = 300;
-
     private componentSearchValue: string = '';
-
-    private readonly titleCharsLength: number = 22;
 
     constructor(
         protected dependencies: ComponentDependencyService,
@@ -89,9 +89,12 @@ export class AdminLayoutComponent extends BaseComponent implements OnDestroy, On
             .subscribe(
             componentConfig => {
                 this.componentConfig = componentConfig;
-
                 this.componentIsAutoInitialized = componentConfig.autoInitComponent;
                 this.enableComponentSearch = componentConfig.enableSearch;
+
+                if (componentConfig.menuAvatarUrl){
+                    this.menuAvatarUrl = componentConfig.menuAvatarUrl;
+                }
 
                 // resolve component's title using translation services
                 if (componentConfig.componentTitle) {

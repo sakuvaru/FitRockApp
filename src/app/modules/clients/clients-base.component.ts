@@ -95,7 +95,6 @@ export abstract class ClientsBaseComponent extends BaseComponent implements OnIn
             })
             .map(response => {
                 var user = response.item;
-
                 this.clientChange.next(response.item);
                 this.client = user;
                 super.stopGlobalLoader();

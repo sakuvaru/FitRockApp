@@ -44,6 +44,9 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
     // component config
     protected componentConfig: ComponentConfig = new ComponentConfig();
 
+    // image used when no image is found
+    protected readonly defaultImageSrc: string = 'https://semantic-ui.com/images/avatar/large/elliot.jpg';
+
     // admin menu
     protected adminMenu: AdminMenu = new AdminMenu();
 
@@ -149,7 +152,8 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
             appName?: string,
             menuTitle?: ResourceKey,
             enableSearch?: boolean,
-            autoInitComponent?: boolean
+            autoInitComponent?: boolean,
+            menuAvatarUrl?: string
         }): void {
         if (options) {
             Object.assign(this.componentConfig, options);
@@ -269,7 +273,7 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
     /**
      * Call this method in constructor of dialog components
      */
-    protected isDialog(): void{
+    protected isDialog(): void {
         // this makes sure that if the dialog is closed, the parent component is still marked as 
         // initialized
         this.setComponentAsInitialized(true);

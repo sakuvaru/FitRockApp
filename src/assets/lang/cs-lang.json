@@ -43,13 +43,14 @@
 		"clients": {
 			"submenu": {
 				"workout": "Trénink",
-				"editWorkout": "Základní údaje",
 				"newWorkout": "Nový trénink",
 				"diet": "Jídelníček",
 				"progress": "Sledované hodnoty",
 				"stats": "Statistiky",
 				"newClient": "Nový klient",
-				"chat": "Zprávy"
+				"chat": "Zprávy",
+				"gallery": "Galerie",
+				"editProfile": "Upravit profil"
 			},
 			"workout": {
 				"copyWorkoutLabel": "Tréninková šáblona",
@@ -57,6 +58,7 @@
 				"workoutNotSelected": "Vyber trénink",
 				"newWorkout": "Nový trénink",
 				"editWorkout": "Upravit trénink",
+				"editWorkoutWithName": "Upravit trénink - {{workoutName}}",
 				"editPlan": "Upravit plán"
 			},
 			"diet": {
@@ -64,6 +66,7 @@
 				"newDiet": "Nový jídelníček",
 				"copyDietLabel": "Výběr jídelníčku",
 				"editPlan": "Upravit jídelníček",
+				"editPlanWithName": "Upravit jídelníček - {{dietName}}",
 				"editDiet": "Základní údaje",
 				"dietNotSelected": "Vyber jídelníček"
 			},

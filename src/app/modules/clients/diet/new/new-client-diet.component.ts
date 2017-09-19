@@ -46,7 +46,8 @@ export class NewClientDietComponent extends ClientsBaseComponent implements OnIn
                 menuTitle: {
                     key: 'module.clients.viewClientSubtitle',
                     data: { 'fullName': client.getFullName() }
-                }
+                },
+                menuAvatarUrl: client.avatarUrl
             });
         });
     }

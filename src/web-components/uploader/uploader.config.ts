@@ -16,7 +16,7 @@ export class UploaderConfig {
     /**
     * Function responsible for uploading files
     */
-    public uploadFunction: (files: FileList | File) => Observable<any>;
+    public uploadFunction: (files: File[] | File) => Observable<any>;
 
     /**
      * Mode of the uploader
@@ -64,7 +64,7 @@ export class UploaderConfig {
         options: {
             // required
             mode: UploaderModeEnum,
-            uploadFunction: (files: FileList | File) => Observable<any>,
+            uploadFunction: (files: File[] | File) => Observable<any>,
 
             // optional
             useDefaultFileExtensions?: boolean,

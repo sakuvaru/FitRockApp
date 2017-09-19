@@ -34,6 +34,9 @@ import { StatsMainComponent } from './stats/stats-main.component';
 // chat components
 import { ClientChatComponent } from './chat/client-chat.component';
 
+// gallery
+import { UserGalleryComponent } from './gallery/user-gallery.component';
+
 // router
 import { ClientsRouter } from './clients.routing';
 
@@ -74,7 +77,9 @@ import { DietsModule} from '../diets/diets.module';
         // stats
         StatsMainComponent,
         // chat
-        ClientChatComponent
+        ClientChatComponent,
+        // gallery
+        UserGalleryComponent
     ],
     exports:[
     ]

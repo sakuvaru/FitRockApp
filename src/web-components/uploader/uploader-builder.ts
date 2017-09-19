@@ -14,7 +14,7 @@ export class UploaderBuilder {
         /**
          * Method responsible for uploading file || files
          */
-        uploadFunction: (files: FileList | File) => Observable<any>
+        uploadFunction: (files: File[] | File) => Observable<any>
     ) {
         this.config = new UploaderConfig({
             mode: this.mode,

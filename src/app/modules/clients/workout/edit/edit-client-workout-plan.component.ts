@@ -4,6 +4,7 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { AppConfig, ComponentDependencyService, BaseComponent, ComponentConfig } from '../../../../core';
 
 // required by component
+import { Observable } from 'rxjs/Rx';
 import { ClientsBaseComponent } from '../../clients-base.component';
 import { ClientEditWorkoutMenuItems } from '../../menu.items';
 import { Workout } from '../../../../models';
@@ -27,6 +28,7 @@ export class EditClientWorkoutPlanComponent extends ClientsBaseComponent impleme
     super.ngOnInit();
 
     this.initWorkoutId();
+    super.subscribeToObservable(this.getMenuInitObservable());
     super.initClientSubscriptions();
   }
 
@@ -38,15 +40,22 @@ export class EditClientWorkoutPlanComponent extends ClientsBaseComponent impleme
       });
   }
 
+  private getMenuInitObservable(): Observable<any> {
+    return this.clientChange.map(client => {
+      this.setConfig({
+        menuItems: new ClientEditWorkoutMenuItems(client.id, this.workoutId).menuItems,
+        menuTitle: {
+          key: 'module.clients.viewClientSubtitle',
+          data: { 'fullName': client.getFullName() }
+        },
+        menuAvatarUrl: client.avatarUrl
+      })
+    })
+  }
+
   private handleLoadWorkout(workout: Workout): void {
-    this.setConfig({
-      menuItems: new ClientEditWorkoutMenuItems(this.clientId, this.workoutId).menuItems,
-      menuTitle: {
-        key: workout.workoutName
-      },
-      componentTitle: {
-        'key': 'module.clients.workout.editPlan'
-      }
-    });
+    var translationData: any = {};
+    translationData.workoutName = workout.workoutName;
+    super.updateComponentTitle({ key: 'module.clients.workout.editWorkoutWithName', data: translationData });
   }
 }

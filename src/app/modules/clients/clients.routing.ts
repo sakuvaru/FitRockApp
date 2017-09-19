@@ -40,6 +40,9 @@ import { StatsMainComponent } from './stats/stats-main.component';
 // chat components
 import { ClientChatComponent } from './chat/client-chat.component';
 
+// gallery
+import { UserGalleryComponent } from './gallery/user-gallery.component';
+
 const routes: Routes = [
     {
         path: UrlConfig.TrainerMasterPath, component: AdminLayoutComponent, canActivate: [AuthGuardService], children: [
@@ -99,6 +102,10 @@ const routes: Routes = [
             // chat
             {
                 path: 'clients/edit/:id/chat', component: ClientChatComponent
+            },
+            // gallery
+            {
+                path: 'clients/edit/:id/gallery', component: UserGalleryComponent
             },
         ]
     }

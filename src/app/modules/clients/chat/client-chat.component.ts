@@ -99,11 +99,11 @@ export class ClientChatComponent extends ClientsBaseComponent implements OnInit 
                     menuItems: new ClientMenuItems(this.clientId).menuItems,
                     menuTitle: {
                         key: 'module.clients.viewClientSubtitle',
-                        data: { 'fullName': this.client.getFullName() }
-                    },
+                        data: { 'fullName': this.client.getFullName() }                    },
                     componentTitle: {
                         'key': 'module.clients.submenu.chat'
-                    }
+                    },
+                    menuAvatarUrl:  this.client.avatarUrl
                 });
             },
             error => super.handleError(error));

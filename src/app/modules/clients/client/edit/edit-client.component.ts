@@ -51,7 +51,8 @@ export class EditClientComponent extends ClientsBaseComponent implements OnInit 
                     },
                     componentTitle: {
                         'key': 'module.clients.editClient'
-                    }
+                    },
+                    menuAvatarUrl: user.avatarUrl
                 });
 
                 // get form

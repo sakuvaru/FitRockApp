@@ -37,8 +37,8 @@ export class ClientMenuItems implements IMenuItems {
             new MenuItem({ key: 'module.clients.submenu.diet' }, MenuItemType.trainer, 'clients/edit/' + id + '/diet', { icon: 'restaurant' }),
             new MenuItem({ key: 'module.clients.submenu.progress' }, MenuItemType.trainer, 'clients/edit/' + id + '/progress', { icon: 'timeline' }),
             new MenuItem({ key: 'module.clients.submenu.stats' },  MenuItemType.trainer, 'clients/edit/' + id + '/stats', { icon: 'show_chart' }),
-            new MenuItem({ key: 'Fotogalerie' }, MenuItemType.trainer, 'clients/galllery/' + id, { icon: 'camera' }),
-            new MenuItem({ key: 'Změna údajů' }, MenuItemType.trainer, 'clients/edit/' + id, { icon: 'edit' })
+            new MenuItem({ key: 'module.clients.submenu.gallery' }, MenuItemType.trainer, 'clients/edit/' + id + '/gallery', { icon: 'camera' }),
+            new MenuItem({ key: 'module.clients.submenu.editProfile' }, MenuItemType.trainer, 'clients/edit/' + id, { icon: 'edit' })
         ];
     }
 }

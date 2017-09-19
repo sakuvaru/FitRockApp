@@ -13,7 +13,7 @@
         </md-card-content>
         <ng-container *ngFor="let chatMessage of chatMessages">
             <md-card-header>
-                <img mdCardAvatar alt="" [src]="chatMessage.recipient.avatarUrl" />
+                <img mdCardAvatar alt="" [src]="chatMessage.sender.avatarUrl" />
                 <md-card-title>{{ chatMessage.sender.getFullName() }}</md-card-title>
                 <md-card-subtitle><span class="md-caption">{{ formatDate(chatMessage.created)}}</span></md-card-subtitle>
             </md-card-header>

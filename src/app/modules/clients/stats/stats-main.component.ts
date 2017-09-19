@@ -74,7 +74,8 @@ export class StatsMainComponent extends ClientsBaseComponent implements OnInit {
                     },
                     componentTitle: {
                         'key': 'module.clients.submenu.stats'
-                    }
+                    },
+                    menuAvatarUrl: client.avatarUrl
                 });
             });
     }

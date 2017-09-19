@@ -31,7 +31,7 @@ export class NewClientProgressItemTypeComponent extends ClientsBaseComponent imp
         super.initClientSubscriptions();
     }
 
-    private getObservables(): Observable<any>[]{
+    private getObservables(): Observable<any>[] {
         var observables: Observable<any>[] = [];
         observables.push(this.getClientObservable());
         observables.push(this.getFormObservable());
@@ -40,13 +40,16 @@ export class NewClientProgressItemTypeComponent extends ClientsBaseComponent imp
 
     private getClientObservable(): Observable<any> {
         return this.clientChange.map(client => {
-           this.setConfig({
-                componentTitle: { key: 'module.clients.progress.newProgressItemType' },
+            this.setConfig({
                 menuItems: new NewClientProgressItemTypeMenuItems(client.id).menuItems,
                 menuTitle: {
                     key: 'module.clients.viewClientSubtitle',
                     data: { 'fullName': client.getFullName() }
-                }
+                },
+                componentTitle: {
+                    'key': 'module.clients.progress.newProgressItemType'
+                },
+                menuAvatarUrl: client.avatarUrl
             });
         });
     }

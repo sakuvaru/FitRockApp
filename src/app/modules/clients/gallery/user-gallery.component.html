@@ -1,0 +1,9 @@
+<md-card class="push">
+    <md-card-content>
+        <uploader [config]="uploaderConfig"></uploader>
+    </md-card-content>
+</md-card>
+
+<div class="push" *ngIf="avatarSrc">
+    <img alt="avatar" [src]="avatarSrc" />
+</div>
