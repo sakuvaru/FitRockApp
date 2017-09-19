@@ -8,7 +8,7 @@ export class ChatMenuItems {
     constructor(users: User[]) {
         users.forEach(user => {
             this.menuItems.push(
-                new MenuItem({ key: user.getFullName() }, MenuItemType.auth, 'chat/' + user.id, { imageUrl: 'https://acrossthepondtv.files.wordpress.com/2015/05/kryten.jpg' })
+                new MenuItem({ key: user.getFullName() }, MenuItemType.auth, 'chat/' + user.id, { imageUrl: user.avatarUrl })
             );
         });
     }

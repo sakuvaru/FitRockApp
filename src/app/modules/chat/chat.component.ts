@@ -38,7 +38,6 @@ export class ChatComponent extends BaseComponent implements OnInit {
         protected componentDependencyService: ComponentDependencyService
     ) {
         super(componentDependencyService)
-
     }
 
     ngOnInit(): void {
