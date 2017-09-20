@@ -3,7 +3,7 @@ import { BaseTypeServiceConfig } from './base-type-service.config';
 
 import {
     UploadSingleQuery, UploadMultipleQuery, ItemCountQuery, PostQuery, RepositoryClient, IItem, SingleItemQueryInit, MultipleItemQuery, CreateItemQuery, EditItemQuery, DeleteItemQuery,
-    EditFormQuery, InsertFormQuery, TouchKeyQuery, CacheKeyType, SingleItemQueryInitCustom, MultipleItemQueryCustom
+    SingleFileQuery, MultipleFileQuery, EditFormQuery, InsertFormQuery, TouchKeyQuery, CacheKeyType, SingleItemQueryInitCustom, MultipleItemQueryCustom
 } from '../../../lib/repository';
 
 import { DynamicFormEditBuilder, DynamicFormInsertBuilder } from '../../../web-components/dynamic-form';
@@ -72,6 +72,14 @@ export abstract class BaseTypeService<TItem extends IItem>{
             throw Error(`Delete is not allowed for type '${this.type}'`);
         }
         return this.repositoryClient.delete(this.type, itemId);
+    }
+
+    singleFile(action: string): SingleFileQuery {
+        return this.repositoryClient.singleFile(this.type, action);
+    }
+
+    multipleFile(action: string): MultipleFileQuery {
+        return this.repositoryClient.multipleFiles(this.type, action);
     }
 
     insertFormQuery(): InsertFormQuery<TItem>{

@@ -25,3 +25,6 @@ export * from './models/form-fields';
 export * from './models/control-type.enum';
 export * from './models/update-items-request.class';
 export * from './models/cache-key-type';
+export * from './queries/file/multiple-file-query.class';
+export * from './queries/file/single-file-query.class';
+export * from './models/fetched-file.class';

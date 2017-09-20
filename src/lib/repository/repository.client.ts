@@ -19,6 +19,8 @@ import { TouchKeyQuery } from './queries/general/touch-key-query.class';
 import { OrderItem, UpdateItemsRequest } from './models/update-items-request.class';
 import { UploadSingleQuery } from './queries/upload/upload-single-query.class';
 import { UploadMultipleQuery } from './queries/upload/upload-multiple-query.class';
+import { MultipleFileQuery } from './queries/file/multiple-file-query.class';
+import { SingleFileQuery } from './queries/file/single-file-query.class';
 
 // rxjs
 import { Observable } from 'rxjs/Observable';
@@ -95,6 +97,14 @@ export class RepositoryClient {
 
     editForm<TItem extends IItem>(type: string, itemId: number): EditFormQuery<TItem> {
         return new EditFormQuery<TItem>(this.authHttp, this.config, type, itemId);
+    }
+
+    singleFile(type: string, action: string): SingleFileQuery {
+        return new SingleFileQuery(this.authHttp, this.config, type, action);
+    }
+
+    multipleFiles(type: string, action: string): MultipleFileQuery {
+        return new MultipleFileQuery(this.authHttp, this.config, type, action);
     }
 
     mergeObservables(observables: Observable<any>[]): Observable<any> {

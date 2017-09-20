@@ -1,6 +1,6 @@
 import { Headers, RequestOptions } from '@angular/http';
-import { ResponseUploadMultiple, ResponseUploadSingle, ResponseCount, ResponsePost, ResponseFormEdit, ResponseFormInsert, ResponseDelete, ResponseCreate, ResponseEdit, ResponseMultiple, ResponseSingle, ErrorResponse, FormErrorResponse } from '../models/responses';
-import { IResponseUploadMultipleRaw, IResponseUploadSingleRaw, IResponseCountRaw, IResponsePostRaw, IResponseFormEditRaw, IResponseFormInsertRaw, IResponseCreateRaw, IResponseDeleteRaw, IResponseEditRaw, IResponseMultipleRaw, IResponseSingleRaw, IErrorResponseRaw, IFormErrorResponseRaw } from '../interfaces/iraw-responses';
+import { ResponseFileMultiple, ResponseFileSingle, ResponseUploadMultiple, ResponseUploadSingle, ResponseCount, ResponsePost, ResponseFormEdit, ResponseFormInsert, ResponseDelete, ResponseCreate, ResponseEdit, ResponseMultiple, ResponseSingle, ErrorResponse, FormErrorResponse } from '../models/responses';
+import { IResponseFileMultiple, IResponseFileSingle, IResponseUploadMultipleRaw, IResponseUploadSingleRaw, IResponseCountRaw, IResponsePostRaw, IResponseFormEditRaw, IResponseFormInsertRaw, IResponseCreateRaw, IResponseDeleteRaw, IResponseEditRaw, IResponseMultipleRaw, IResponseSingleRaw, IErrorResponseRaw, IFormErrorResponseRaw } from '../interfaces/iraw-responses';
 import { IOption } from '../interfaces/ioption.interface';
 import { AuthHttp } from 'angular2-jwt';
 import { Response } from '@angular/http';
@@ -13,6 +13,8 @@ import { IColumnValidation } from '../interfaces/icolumn-validation.interface';
 import { FormValidationResult } from '../models/form-validation-result.class';
 import { IFormValidationResult } from '../interfaces/iform-validation-result.interface';
 import { ErrorReasonEnum } from '../models/error-reason.enum';
+import { FetchedFile } from '../models/fetched-file.class';
+import { IFetchedFile } from '../interfaces/ifetched-file.interface';
 
 // rxjs
 import { Observable, Subject } from 'rxjs/Rx';
@@ -298,6 +300,36 @@ export class QueryService {
         });
     }
 
+    private getSingleFileResponse(response: Response): ResponseFileSingle {
+        var fileResponse = (response.json() || {}) as IResponseFileSingle;
+
+        var file;
+        if (fileResponse.file){
+            file = this.mapService.mapFile(fileResponse.file);
+        }
+
+        return new ResponseFileSingle({
+            file: file,
+            fileFound: fileResponse.fileFound,
+            action: fileResponse.action
+        });
+    }
+
+    private getMultipleFileResponse(response: Response): ResponseFileMultiple {
+        var filesResponse = (response.json() || {}) as IResponseFileMultiple;
+
+        var files;
+        if (filesResponse.files){
+            files = this.mapService.mapFiles(filesResponse.files);
+        }
+
+        return new ResponseFileMultiple({
+            action: filesResponse.action,
+            files: files,
+            filesCount: filesResponse.filesCount
+        });
+    }
+
     protected getMultipleCustom<TModel>(url: string): Observable<ResponseMultiple<TModel>> {
         // trigger request
         this.startRequest();
@@ -560,6 +592,38 @@ export class QueryService {
         return this.authHttp.post(url, formData, headerOptions)
             .map(response => {
                 return this.getMultipleUploadResponse(response)
+            })
+            .catch(response => {
+                return Observable.throw(this.handleError(response));
+            })
+            ._finally(() => {
+                this.finishRequest();
+            });
+    }
+
+    protected getSingleFile(url: string): Observable<ResponseFileSingle> {
+        // trigger request
+        this.startRequest();
+
+        return this.authHttp.get(url)
+            .map(response => {
+                return this.getSingleFileResponse(response)
+            })
+            .catch(response => {
+                return Observable.throw(this.handleError(response));
+            })
+            ._finally(() => {
+                this.finishRequest();
+            });
+    }
+
+    protected getMultipleFiles(url: string): Observable<ResponseFileMultiple> {
+        // trigger request
+        this.startRequest();
+
+        return this.authHttp.get(url)
+            .map(response => {
+                return this.getMultipleFileResponse(response)
             })
             .catch(response => {
                 return Observable.throw(this.handleError(response));

@@ -92,8 +92,13 @@ export class AdminLayoutComponent extends BaseComponent implements OnDestroy, On
                 this.componentIsAutoInitialized = componentConfig.autoInitComponent;
                 this.enableComponentSearch = componentConfig.enableSearch;
 
+
                 if (componentConfig.menuAvatarUrl){
                     this.menuAvatarUrl = componentConfig.menuAvatarUrl;
+                }
+                else{
+                    // clear avatar if its not set
+                    this.menuAvatarUrl = '';
                 }
 
                 // resolve component's title using translation services

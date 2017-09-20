@@ -4,6 +4,7 @@ import { IErrorResponseRaw, IFormErrorResponseRaw } from '../interfaces/iraw-res
 import { IFormValidationResult } from '../interfaces/iform-validation-result.interface';
 import { ErrorReasonEnum } from './error-reason.enum';
 import { FormField } from './form-fields';
+import { FetchedFile } from './fetched-file.class';
 
 export function mapReason(reasonCode: number): ErrorReasonEnum {
     if (reasonCode === 0) {
@@ -251,6 +252,12 @@ export class ResponseUploadMultiple<T> {
 
     public files: T[];
 
+    public fromCache: boolean;
+    public timeCreated: Date;
+    public type: string;
+    public action: string;
+    public model: string;
+
     constructor(
         private options?: {
             fromCache?: boolean,
@@ -279,6 +286,11 @@ export class ResponseUploadMultiple<T> {
 export class ResponseUploadSingle<T> {
 
     public file: T;
+    public fromCache: boolean;
+    public timeCreated: Date;
+    public type: string;
+    public action: string;
+    public model: string;
 
     constructor(
         private options?: {
@@ -291,6 +303,40 @@ export class ResponseUploadSingle<T> {
             file?: T
         }) {
         if (options) Object.assign(this, options);
+    }
+}
+
+export class ResponseFileSingle {
+
+    public file?: FetchedFile;
+    public filesCount: number;
+    public action: string;
+
+    constructor(
+        options: {
+            file?: FetchedFile,
+            fileFound: boolean,
+            action: string
+        }
+    ) {
+        Object.assign(this, options);
+    }
+}
+
+export class ResponseFileMultiple {
+
+    public files: FetchedFile[];
+    public filesCount: number;
+    public action: string;
+
+    constructor(
+        options: {
+            files: FetchedFile[],
+            filesCount: number,
+            action: string
+        }
+    ) {
+        Object.assign(this, options);
     }
 }
 

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FileRecord } from '../../models';
-import { RepositoryClient, UploadSingleQuery, UploadMultipleQuery } from '../../../lib/repository';
+import { RepositoryClient, UploadSingleQuery, UploadMultipleQuery, MultipleFileQuery, SingleFileQuery } from '../../../lib/repository';
 import { BaseTypeService } from '../base/base-type.service';
 
 import { Observable } from 'rxjs/Rx';
@@ -24,11 +24,19 @@ export class FileRecordService extends BaseTypeService<FileRecord>{
         })
     }
 
-    uploadAvatar(file: File, userId: number): UploadSingleQuery<FileRecord>{
+    getAvatar(userId: number): SingleFileQuery {
+        return super.singleFile('getAvatar/' + userId);
+    }
+
+    getGalleryFiles(userId: number): MultipleFileQuery {
+        return super.multipleFile('getGalleryFiles/' + userId);
+    }
+
+    uploadAvatar(file: File, userId: number): UploadSingleQuery<FileRecord> {
         return super.uploadSingleFile<FileRecord>('uploadAvatar/' + userId, file);
     }
 
-    uploadGalleryImages(files: File[], userId: number): UploadMultipleQuery<FileRecord>{
+    uploadGalleryImages(files: File[], userId: number): UploadMultipleQuery<FileRecord> {
         return super.uploadMultipleFiles<FileRecord>('uploadGalleryImages/' + userId, files);
     }
 }

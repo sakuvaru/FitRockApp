@@ -5,14 +5,16 @@ import { RepositoryConfig } from '../../repository.config';
 import { AuthHttp } from 'angular2-jwt';
 import { BaseQuery } from '../common/base-query.class';
 
+// models
+import { FetchedFile } from '../../models/fetched-file.class';
+
 // responses
-import { IItem } from '../../interfaces/iitem.interface';
-import { ResponseUploadSingle } from '../../models/responses';
+import { ResponseFileMultiple } from '../../models/responses';
 
 // rxjs
 import { Observable } from 'rxjs/Rx';
 
-export class UploadSingleQuery<TItem extends IItem> extends BaseQuery {
+export class MultipleFileQuery extends BaseQuery {
 
     private _action: string;
 
@@ -20,11 +22,10 @@ export class UploadSingleQuery<TItem extends IItem> extends BaseQuery {
         protected authHttp: AuthHttp,
         protected config: RepositoryConfig,
         protected type: string,
-        private action: string,
-        private file: File,
+        protected action: string
     ) {
         super(authHttp, config);
-        this._action = this.action;
+        this._action = action;
     }
 
     /**
@@ -37,10 +38,10 @@ export class UploadSingleQuery<TItem extends IItem> extends BaseQuery {
     }
 
     // url
-    protected getUploadUrl(): string{
+    protected getFileUrl(): string{
 
         if (!this._action){
-            throw new Error('No action was specified for upload query');
+            throw new Error('No action was specified for files query');
         }
 
         return super.getUrl(this.type, this._action);
@@ -48,17 +49,13 @@ export class UploadSingleQuery<TItem extends IItem> extends BaseQuery {
 
     // execution
 
-    set(): Observable<ResponseUploadSingle<TItem>> {
-        if (!this.file){
-            throw new Error('No file was added to upload query')
-        }
-
-        return super.uploadSingleFile(this.getUploadUrl(), this.file);
+    set(): Observable<ResponseFileMultiple> {
+        return super.getMultipleFiles(this.getFileUrl());
     }
 
     // debug
 
     toString(): string {
-        return this.getUploadUrl();
+        return this.getFileUrl();
     }
 }

@@ -47,7 +47,7 @@ export class EditAvatarComponent extends BaseComponent implements OnInit {
             .onAfterUpload<FileRecord>((avatar => {
                 if (avatar && avatar.length === 1){
                     // update src of the avatar
-                    this.avatarSrc = avatar[0].fileUrl;
+                    this.avatarSrc = avatar[0].fetchedFile.absoluteUrl;
                 }
             }))
             .build();

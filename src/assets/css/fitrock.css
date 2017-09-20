@@ -23,6 +23,13 @@
     color: #FFFFFF;
 }
 
+.w-component-avatar {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
 /* Overrides 
 Note: in order for overrides to work, this css should be loaded after the material's css
 */

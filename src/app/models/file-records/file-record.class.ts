@@ -1,4 +1,4 @@
-import { BaseItem } from '../../../lib/repository';
+import { BaseItem, FetchedFile } from '../../../lib/repository';
 
 export class FileRecord extends BaseItem {
     public fileName: string;
@@ -6,6 +6,7 @@ export class FileRecord extends BaseItem {
     public sizeInBytes: number;
     public extension: string;
     public fileRecordType: string;
-    public fileUrl: string;
     public folderPath: string;
+
+    public fetchedFile: FetchedFile;
 }

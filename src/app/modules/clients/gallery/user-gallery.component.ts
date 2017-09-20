@@ -9,6 +9,7 @@ import { ClientsBaseComponent } from '../clients-base.component';
 import { ClientMenuItems } from '../menu.items';
 import { UploaderConfig, UploaderModeEnum } from '../../../../web-components/uploader';
 import { FileRecord } from '../../../models';
+import { FetchedFile } from '../../../../lib/repository';
 import * as _ from 'underscore';
 
 @Component({
@@ -17,7 +18,7 @@ import * as _ from 'underscore';
 export class UserGalleryComponent extends ClientsBaseComponent implements OnInit {
 
     private uploaderConfig: UploaderConfig;
-    private galleryFiles: FileRecord[];
+    private galleryFiles: FetchedFile[];
 
     constructor(
         protected componentDependencyService: ComponentDependencyService,
@@ -28,28 +29,42 @@ export class UserGalleryComponent extends ClientsBaseComponent implements OnInit
     ngOnInit() {
         super.ngOnInit();
 
-        this.initUploader();
-        super.subscribeToObservable(this.getClientMenuObservable());
+        super.subscribeToObservables(this.getComponentObservables());
         super.initClientSubscriptions();
     }
 
-    private initUploader(): void {
-        var userId = this.dependencies.authenticatedUserService.getUserId();
+    private getInitUploaderObservable(): Observable<any> {
+        return this.clientIdChange
+            .takeUntil(this.ngUnsubscribe)
+            .map(clientId => {
+                this.uploaderConfig = this.dependencies.webComponentServices.uploaderService.uploader(
+                    UploaderModeEnum.MultipleFiles,
+                    (files: File[]) => this.dependencies.itemServices.fileRecordService.uploadGalleryImages(files, clientId)
+                        .set())
+                    .useDefaultImageExtensions(true)
+                    .onAfterUpload<FileRecord>((files => {
+                        // append uploaded files to current gallery list
+                         this.galleryFiles = _.union(this.galleryFiles, files.map(m => m.fetchedFile));
+                    }))
+                    .build();
+            });
+    }
 
-        this.uploaderConfig = this.dependencies.webComponentServices.uploaderService.uploader(
-            UploaderModeEnum.MultipleFiles,
-            (files: File[]) => this.dependencies.itemServices.fileRecordService.uploadGalleryImages(files, userId)
-                .set())
-            .useDefaultImageExtensions(true)
-            .onAfterUpload<FileRecord>((files => {
-                // append uploaded files to current gallery list
-                this.galleryFiles = _.union(this.galleryFiles, files);
-            }))
-            .build();
+    private getComponentObservables(): Observable<any>[] {
+        var observables: Observable<any>[] = [];
+        observables.push(this.getUserGalleryFilesObservable());
+        observables.push(this.getClientMenuObservable());
+        observables.push(this.getInitUploaderObservable())
+        return observables;
     }
 
     private getUserGalleryFilesObservable(): Observable<any> {
-        return Observable.of(null); // todo
+        return this.clientIdChange
+            .takeUntil(this.ngUnsubscribe)
+            .switchMap(clientId => this.dependencies.itemServices.fileRecordService.getGalleryFiles(clientId).set())
+            .map(response => {
+                this.galleryFiles = response.files;
+            })
     }
 
     private getClientMenuObservable(): Observable<any> {
@@ -63,7 +78,7 @@ export class UserGalleryComponent extends ClientsBaseComponent implements OnInit
                         data: { 'fullName': client.getFullName() }
                     },
                     componentTitle: {
-                        'key': 'module.clients.submenu.stats'
+                        'key': 'module.clients.submenu.gallery'
                     },
                     menuAvatarUrl: client.avatarUrl
                 });

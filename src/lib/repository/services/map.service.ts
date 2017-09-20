@@ -5,6 +5,8 @@ import { FormField, FormFieldOptions, DropdownFieldOption } from '../models/form
 import { IFormField, IDropdownFieldOption } from '../interfaces/iform-fields';
 import { IPropertyInfo } from '../interfaces/iproperty-info.interface';
 import { PropertyInfo } from '../models/property-info.class';
+import { FetchedFile } from '../models/fetched-file.class';
+import { IFetchedFile } from '../interfaces/ifetched-file.interface';
 
 export class MapService {
 
@@ -138,6 +140,33 @@ export class MapService {
                 minNumberValue: formField.options.minNumberValue
             }) : undefined
         });
+    }
+
+    mapFile(file: IFetchedFile): FetchedFile {
+        if (!file){
+            throw Error(`Cannot map file because its not defined`);
+        }
+
+        return new FetchedFile({
+            absoluteUrl: file.absoluteUrl,
+            fileLastModifiedHash: file.fileLastModifiedHash,
+            fileName: file.fileName,
+            fileNameWithExtension: file.fileNameWithExtension,
+            fileNotFound: file.fileNotFound,
+            fileSizeInBytes: file.fileSizeInBytes,
+        });
+    }
+
+    mapFiles(files: IFetchedFile[]): FetchedFile[] {
+        if (!files || !Array.isArray(files)){
+            return [];
+        }
+
+        var mappedFiles: FetchedFile[] = [];
+
+        files.forEach(file => mappedFiles.push(this.mapFile(file)));
+
+        return mappedFiles;
     }
 
     private mapListOptions(listOptions: IDropdownFieldOption[] | undefined): DropdownFieldOption[]{

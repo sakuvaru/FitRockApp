@@ -9,7 +9,7 @@ export class ComponentConfig {
     ];
     private readonly default_menuTitle: ResourceKey = { key: 'menu.main' };
     private readonly default_appName: string = AppConfig.AppName;
-    private readonly default_menuAvatarUrl: string | undefined = undefined;
+    private readonly default_menuAvatarUrl: string = '';
 
     public componentTitle?: ResourceKey = this.default_componentTitle;
     public menuItems?: MenuItem[] = this.default_menuItems;

@@ -1,9 +1,9 @@
-<md-card class="push">
-    <md-card-content>
+<div class="push">
         <uploader [config]="uploaderConfig"></uploader>
-    </md-card-content>
-</md-card>
+</div>
 
-<div class="push" *ngIf="avatarSrc">
-    <img alt="avatar" [src]="avatarSrc" />
+<div *ngIf="galleryFiles" class="push">
+    <ng-container *ngFor="let file of galleryFiles">
+        <img alt="gallery image" [src]="file.absoluteUrl" />
+    </ng-container>
 </div>

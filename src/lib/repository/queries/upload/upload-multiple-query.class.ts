@@ -43,7 +43,7 @@ export class UploadMultipleQuery<TItem extends IItem> extends BaseQuery {
             throw new Error('No action was specified for upload query');
         }
 
-        return this.getUrl(this.type, this._action);
+        return super.getUrl(this.type, this._action);
     }
 
     // execution
