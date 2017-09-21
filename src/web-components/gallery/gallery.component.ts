@@ -82,6 +82,13 @@ export class GalleryComponent extends BaseWebComponent implements OnInit, OnChan
     onShowImageModal(event: ImageModalEvent) {
     }
     
+    onCloseImageModal(event: ImageModalEvent) {
+    }
+
+    onImageOver(): void {
+        console.log('over');
+    }
+
     private getButtonsConfig(config: GalleryConfig): any {
         if (config.downloadable) {
             var buttonsConfig: any = {};
@@ -90,6 +97,7 @@ export class GalleryComponent extends BaseWebComponent implements OnInit, OnChan
         }
         return null;
     }
+
 
     private convertToImageType(images: GalleryImage[]): Image[] {
         if (!images || !Array.isArray(images)) {
