@@ -1,11 +1,7 @@
 <ng-container *ngIf="config && initialized">
     <div class="w-gallery-wrapper">
-
-        <div *ngIf="openModalWindow">
-            <modal-gallery [modalImages]="images" (show)="onShowImageModal($event)" (close)="onCloseImageModal($event)"
-                [downloadable]="config.downloadable" [buttonsConfig]="buttonsConfig" enableClose="true" enableCloseOutside="true"
-                [description]="customFullDescription">
-            </modal-gallery>
-        </div>
+        <modal-gallery [modalImages]="images" (show)="onShowImageModal($event)" (close)="onCloseImageModal($event)" [downloadable]="config.downloadable"
+            [buttonsConfig]="buttonsConfig" enableClose="true" enableCloseOutside="true" [description]="customFullDescription">
+        </modal-gallery>
     </div>
 </ng-container>
