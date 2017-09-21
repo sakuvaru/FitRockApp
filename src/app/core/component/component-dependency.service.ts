@@ -30,6 +30,7 @@ import { DataTableService } from '../../../web-components/data-table';
 import { DynamicFormService } from '../../../web-components/dynamic-form';
 import { LoadMoreService } from '../../../web-components/load-more';
 import { UploaderService } from '../../../web-components/uploader';
+import { GalleryService } from '../../../web-components/gallery';
 
 // Models
 import { User } from '../../models/';
@@ -87,6 +88,7 @@ export class ComponentDependencyService {
         this.webComponentServices.dynamicFormService = injector.get(DynamicFormService);
         this.webComponentServices.loadMoreService = injector.get(LoadMoreService);
         this.webComponentServices.uploaderService = injector.get(UploaderService);
+        this.webComponentServices.galleryService = injector.get(GalleryService);
 
         // item services
         this.itemServices = new ItemServices();
@@ -128,6 +130,7 @@ export class WebComponentServices {
     public dynamicFormService: DynamicFormService;
     public loadMoreService: LoadMoreService;
     public uploaderService: UploaderService;
+    public galleryService: GalleryService;
 }
 
 export class CoreServices {

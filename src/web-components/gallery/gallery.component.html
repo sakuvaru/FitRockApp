@@ -1,0 +1,6 @@
+<ng-container *ngIf="config && initialized">
+    <div class="w-gallery-wrapper">
+        <modal-gallery [modalImages]="images" [downloadable]="config.downloadable" [buttonsConfig]="buttonsConfig" enableClose="true">
+        </modal-gallery>
+    </div>
+</ng-container>

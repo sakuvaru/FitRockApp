@@ -1,9 +1,7 @@
 <div class="push">
-        <uploader [config]="uploaderConfig"></uploader>
+    <uploader [config]="uploaderConfig"></uploader>
 </div>
 
-<div *ngIf="galleryFiles" class="push">
-    <ng-container *ngFor="let file of galleryFiles">
-        <img alt="gallery image" [src]="file.absoluteUrl" />
-    </ng-container>
+<div class="push">
+    <gallery [config]="galleryConfig"></gallery>
 </div>

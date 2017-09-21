@@ -25,7 +25,8 @@
         "styles.css",
         "assets/css/loader.css",
         "assets/css/social.css",
-        "assets/css/fitrock.css"
+        "assets/css/fitrock.css",
+        "../node_modules/font-awesome/css/font-awesome.css"
       ],
       "scripts": [],
       "environmentSource": "environments/environment.ts",

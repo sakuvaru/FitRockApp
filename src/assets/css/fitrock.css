@@ -30,6 +30,12 @@
     flex-shrink: 0;
 }
 
+/* Gallery styles */
+
+.w-gallery-wrapper img{
+    height: 140px!important;
+}
+
 /* Overrides 
 Note: in order for overrides to work, this css should be loaded after the material's css
 */

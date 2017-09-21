@@ -7,9 +7,14 @@ import { HttpClientModule, HttpClient } from "@angular/common/http";
 import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-// material angular
-// Info: https://material.angular.io/guide/getting-started
+// required by material angular + gallery
+// Info: https://material.angular.io/guide/getting-started and https://ks89.github.io/angular-modal-gallery.github.io/gettingStarted
 import 'hammerjs';
+
+// required by gallery
+// Info: https://ks89.github.io/angular-modal-gallery.github.io/gettingStarted
+import 'mousetrap';
+import { ModalGalleryModule } from 'angular-modal-gallery';
 
 // entry point to application (redirection from Auth0)
 import { EntryPointComponent } from './entry-point.component';
@@ -126,7 +131,10 @@ import { FormModule } from './modules/_forms/_form.module';
     FormModule,
 
     // web components
-    WebComponentsModule
+    WebComponentsModule,
+
+    // gallery module
+    ModalGalleryModule.forRoot()
   ],
   providers: [
     RepositoryClientProvider,

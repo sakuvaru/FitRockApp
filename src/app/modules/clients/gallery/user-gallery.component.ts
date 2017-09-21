@@ -10,6 +10,7 @@ import { ClientMenuItems } from '../menu.items';
 import { UploaderConfig, UploaderModeEnum } from '../../../../web-components/uploader';
 import { FileRecord } from '../../../models';
 import { FetchedFile } from '../../../../lib/repository';
+import { GalleryConfig, GalleryImage } from '../../../../web-components/gallery';
 import * as _ from 'underscore';
 
 @Component({
@@ -17,8 +18,13 @@ import * as _ from 'underscore';
 })
 export class UserGalleryComponent extends ClientsBaseComponent implements OnInit {
 
+    /**
+     * This property is used to add uploaded images to gallery config
+     */
+    private currentImages: GalleryImage[] = [];
+
     private uploaderConfig: UploaderConfig;
-    private galleryFiles: FetchedFile[];
+    private galleryConfig: GalleryConfig;
 
     constructor(
         protected componentDependencyService: ComponentDependencyService,
@@ -43,8 +49,15 @@ export class UserGalleryComponent extends ClientsBaseComponent implements OnInit
                         .set())
                     .useDefaultImageExtensions(true)
                     .onAfterUpload<FileRecord>((files => {
-                        // append uploaded files to current gallery list
-                         this.galleryFiles = _.union(this.galleryFiles, files.map(m => m.fetchedFile));
+                        if (files){
+                            // append uploaded files to current gallery list
+                            this.currentImages = _.union(this.currentImages, files.map(m => new GalleryImage({
+                               imageUrl: m.fetchedFile.absoluteUrl 
+                            })));
+
+                            // refresh gallery
+                            this.galleryConfig = this.getGalleryConfig(this.currentImages);
+                        }
                     }))
                     .build();
             });
@@ -63,7 +76,14 @@ export class UserGalleryComponent extends ClientsBaseComponent implements OnInit
             .takeUntil(this.ngUnsubscribe)
             .switchMap(clientId => this.dependencies.itemServices.fileRecordService.getGalleryFiles(clientId).set())
             .map(response => {
-                this.galleryFiles = response.files;
+                if (response.files) {
+                    var galleryImages = response.files.map(m => new GalleryImage({
+                       imageUrl: m.absoluteUrl 
+                    }));
+
+                    this.currentImages = galleryImages;
+                    this.galleryConfig = this.getGalleryConfig(galleryImages);
+                }
             })
     }
 
@@ -83,6 +103,13 @@ export class UserGalleryComponent extends ClientsBaseComponent implements OnInit
                     menuAvatarUrl: client.avatarUrl
                 });
             });
+    }
+
+    private getGalleryConfig(images: GalleryImage[]): GalleryConfig {
+        return this.dependencies.webComponentServices.galleryService.gallery({
+            images: images
+        })
+            .build();;
     }
 }
 
