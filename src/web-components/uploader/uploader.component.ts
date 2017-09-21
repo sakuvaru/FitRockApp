@@ -182,6 +182,8 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
                     if (this.config.onAfterUpload) {
                         this.config.onAfterUpload(uploadedFile);
                     }
+
+                    this.clearSelectedFiles();
                 },
                 error => {
                     this.uploadFailed = true;
@@ -238,6 +240,8 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
                     if (this.config.onAfterUpload) {
                         this.config.onAfterUpload(response.files);
                     }
+
+                    this.clearSelectedFiles();
                 },
                 error => {
                     this.uploadFailed = true;
@@ -325,6 +329,13 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
             return result[1];
         }
         return null;
+    }
+
+    private clearSelectedFiles(): void{
+        // currently the covalent will remove selected files if the control is disabled
+        this.disabled = true;
+        // not ideal, but only way to clear files at this moment
+        setTimeout(() => this.disabled = false, 100);
     }
 
     private resetCounters(): void {
