@@ -3,7 +3,7 @@ import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/cor
 import { BaseWebComponent } from '../base-web-component.class';
 
 // gallery classes
-import { Image, Description } from 'angular-modal-gallery';
+import { Image, Description, ImageModalEvent } from 'angular-modal-gallery';
 
 // required by component
 import { GalleryImage } from './gallery-image.class';
@@ -78,7 +78,10 @@ export class GalleryComponent extends BaseWebComponent implements OnInit, OnChan
         // finally mark component as initialized
         this.initialized = true;
     }
-
+    
+    onShowImageModal(event: ImageModalEvent) {
+    }
+    
     private getButtonsConfig(config: GalleryConfig): any {
         if (config.downloadable) {
             var buttonsConfig: any = {};
@@ -87,7 +90,6 @@ export class GalleryComponent extends BaseWebComponent implements OnInit, OnChan
         }
         return null;
     }
-
 
     private convertToImageType(images: GalleryImage[]): Image[] {
         if (!images || !Array.isArray(images)) {
