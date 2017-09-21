@@ -3,7 +3,7 @@ import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/cor
 import { BaseWebComponent } from '../base-web-component.class';
 
 // gallery classes
-import { Image } from 'angular-modal-gallery';
+import { Image, Description } from 'angular-modal-gallery';
 
 // required by component
 import { GalleryImage } from './gallery-image.class';
@@ -31,6 +31,11 @@ export class GalleryComponent extends BaseWebComponent implements OnInit, OnChan
      * Buttons configuration
      */
     private buttonsConfig: any = {};
+
+    /**
+     * Full description
+     */
+    private customFullDescription: Description;
 
     constructor(
     ) {
@@ -67,18 +72,22 @@ export class GalleryComponent extends BaseWebComponent implements OnInit, OnChan
         // init buttons config
         this.buttonsConfig = this.getButtonsConfig(config);
 
+        // init custom description
+        this.customFullDescription = this.getCustomDescription();
+
         // finally mark component as initialized
         this.initialized = true;
     }
 
     private getButtonsConfig(config: GalleryConfig): any {
-        if (config.downloadable){
+        if (config.downloadable) {
             var buttonsConfig: any = {};
             buttonsConfig.download = true;
             return buttonsConfig;
         }
         return null;
     }
+
 
     private convertToImageType(images: GalleryImage[]): Image[] {
         if (!images || !Array.isArray(images)) {
@@ -87,9 +96,21 @@ export class GalleryComponent extends BaseWebComponent implements OnInit, OnChan
 
         return images.map(m => new Image(
             m.imageUrl,
-            null,
-            '',
+            m.thumbnailUrl,
+            m.description,
             m.imageUrl
         ));
+    }
+
+    private getCustomDescription(): Description {
+        var customFullDescription: Description = {
+            // you should build this value programmaticaly with the result of (show)="..()" event
+            // if customFullDescription !== undefined, all other fields will be ignored
+            imageText: '', // removes the 'Image' string from the gallery
+            numberSeparator: '/',
+            // beforeTextDescription: '',
+        };
+
+        return customFullDescription;
     }
 }

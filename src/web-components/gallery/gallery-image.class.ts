@@ -5,8 +5,23 @@ export class GalleryImage {
      */
     public imageUrl: string;
 
+    /**
+     * Description of the image
+     */
+    public description?: string | null = null;
+
+    /**
+     * Url to thumbnail image
+     */
+    public thumbnailUrl?: string;
+
     constructor(options: {
-        imageUrl: string
+        // required
+        imageUrl: string,
+
+        // optional
+        description?: string
+        thumbnailUrl?: string
     }) { 
         Object.assign(this, options);
     }

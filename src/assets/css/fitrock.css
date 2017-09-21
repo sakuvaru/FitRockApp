@@ -32,7 +32,7 @@
 
 /* Gallery styles */
 
-.w-gallery-wrapper img{
+.w-gallery-wrapper img.ng-thumb{
     height: 140px!important;
 }
 
