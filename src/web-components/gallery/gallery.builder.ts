@@ -13,11 +13,18 @@ export class GalleryBuilder {
         })
     }
 
+    /**
+     * Indicates if images can be downloaded easily
+     * @param downloadable true if images can be downloaded easily
+     */
     isDownlodable(downloadable: boolean): this {
         this.config.downloadable = downloadable;
         return this;
     }
 
+    /**
+     * Build the gallery configuration
+     */
     build(): GalleryConfig {
         return this.config;
     }

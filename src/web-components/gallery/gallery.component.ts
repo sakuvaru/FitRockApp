@@ -86,7 +86,6 @@ export class GalleryComponent extends BaseWebComponent implements OnInit, OnChan
     }
 
     onImageOver(): void {
-        console.log('over');
     }
 
     private getButtonsConfig(config: GalleryConfig): any {

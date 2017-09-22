@@ -59,6 +59,7 @@ export class UserGalleryComponent extends ClientsBaseComponent implements OnInit
                             this.galleryConfig = this.getGalleryConfig(this.currentImages);
                         }
                     }))
+                    .loaderConfig({ start: () => super.startGlobalLoader(), stop: () => super.stopGlobalLoader()})
                     .build();
             });
     }

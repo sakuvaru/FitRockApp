@@ -18,7 +18,7 @@ export class GalleryConfig {
             images: GalleryImage[],
 
             // optional
-            downloadable?: boolean;
+            downloadable?: boolean
         }
     ){
         Object.assign(this, options);

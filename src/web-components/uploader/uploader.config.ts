@@ -60,6 +60,11 @@ export class UploaderConfig {
      */
     public onSelectFiles?: (files: FileList | File) => void;
 
+     /**
+     * Loader configuration
+     */
+    public loaderConfig?: { start: () => void, stop: () => void }
+
     constructor(
         options: {
             // required
@@ -72,7 +77,8 @@ export class UploaderConfig {
             onAfterUpload?: <T>(uploadedItems: T[] | T) => void,
             onFailedUpload?: () => void,
             onSelectFiles?: (files: FileList | File) => void,
-            maxUploadedFiles?: number
+            maxUploadedFiles?: number,
+            loaderConfig?: { start: () => void, stop: () => void }
         }
     ) {
         Object.assign(this, options);

@@ -232,6 +232,10 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
         }
 
         try {
+            if (this.config.loaderConfig) {
+                this.config.loaderConfig.start();
+            }
+
             this.config.uploadFunction(files)
                 .takeUntil(this.ngUnsubscribe)
                 .subscribe(response => {
@@ -242,9 +246,21 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
                     }
 
                     this.clearSelectedFiles();
+
+                    if (this.config.loaderConfig) {
+                        this.config.loaderConfig.stop();
+                    }
                 },
                 error => {
                     this.uploadFailed = true;
+
+                    if (this.config.onFailedUpload) {
+                        this.config.onFailedUpload(error);
+                    }
+
+                    if (this.config.loaderConfig) {
+                        this.config.loaderConfig.stop();
+                    }
                 });
         }
         catch (error) {
@@ -252,6 +268,10 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
 
             if (this.config.onFailedUpload) {
                 this.config.onFailedUpload(error);
+            }
+
+            if (this.config.loaderConfig) {
+                this.config.loaderConfig.stop();
             }
         }
 
@@ -331,7 +351,7 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
         return null;
     }
 
-    private clearSelectedFiles(): void{
+    private clearSelectedFiles(): void {
         // currently the covalent will remove selected files if the control is disabled
         this.disabled = true;
         // not ideal, but only way to clear files at this moment

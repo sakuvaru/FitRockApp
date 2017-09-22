@@ -81,6 +81,15 @@ export class UploaderBuilder {
     }
 
     /**
+     * Loader configuration
+     * @param loaderConfig Configuration
+     */
+    loaderConfig(loaderConfig: { start: () => void, stop: () => void }): this {
+        this.config.loaderConfig = loaderConfig;
+        return this;
+    }
+
+    /**
      * Builds config
      */
     build(): UploaderConfig {
