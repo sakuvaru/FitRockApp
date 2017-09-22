@@ -1,4 +1,6 @@
 import { GalleryImage } from './gallery-image.class';
+import { GalleryGroup } from './gallery-group.class';
+import { ImageGroupResult } from './image-group-result.class';
 
 export class GalleryConfig {
 
@@ -16,18 +18,24 @@ export class GalleryConfig {
      * Function used to group images to different categories
      * Return string that will be used as the group title
      */
-    public groupResolver: (image: GalleryImage) => string;
+    public groupResolver?: (image: GalleryImage) => ImageGroupResult;
+
+    /**
+     * Can be used to order gallery groups
+     */
+    public groupsOrder?: (groups: GalleryGroup[]) => GalleryGroup[];
 
     constructor(
-        options:{
+        options: {
             // required
             images: GalleryImage[],
 
             // optional
             downloadable?: boolean,
-            groupResolver?: (image: GalleryImage) => string
+            groupResolver?: (image: GalleryImage) => ImageGroupResult,
+            groupsOrder?: (groups: GalleryGroup[]) => GalleryGroup[]
         }
-    ){
+    ) {
         Object.assign(this, options);
     }
 

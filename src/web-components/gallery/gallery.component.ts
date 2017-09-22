@@ -8,6 +8,8 @@ import { Image, Description, ImageModalEvent } from 'angular-modal-gallery';
 // required by component
 import { GalleryImage } from './gallery-image.class';
 import { GalleryConfig } from './gallery.config';
+import { GalleryGroup } from './gallery-group.class';
+import { ImageGroupResult } from './image-group-result.class';
 
 @Component({
     selector: 'gallery',
@@ -123,25 +125,31 @@ export class GalleryComponent extends BaseWebComponent implements OnInit, OnChan
             throw Error(`Could not evaluate gallery groups`);
         }
 
-        if (!config.groupResolver){
-            throw Error(`Could not evaluate gallery groups because no resolver is defined`);
-        }
-
         config.images.forEach(image => {
+
+            if (!config.groupResolver){
+                throw Error(`Could not evaluate gallery groups because no resolver is defined`);
+            }
+
             // get image group
-            var groupTitle = config.groupResolver(image);
+            var imageGroup = config.groupResolver(image);
 
             // create group if not exist
-            var group = groups.find(m => m.groupTitle === groupTitle);
+            var group = groups.find(m => m.groupTitle === imageGroup.groupTitle);
             if (!group){
                 // group does not exist, create it
-                groups.push(new GalleryGroup(groupTitle, [this.convertToImageType(image)]));
+                groups.push(new GalleryGroup(imageGroup.groupTitle, [this.convertToImageType(image)], imageGroup.groupDate));
             }
             else{
                 // group exists, push the image
                 group.images.push(this.convertToImageType(image));
             }
         });
+
+        // order groups
+        if (config.groupsOrder){
+            groups = config.groupsOrder(groups); 
+        }
 
         return groups;
     }
@@ -187,12 +195,4 @@ export class GalleryComponent extends BaseWebComponent implements OnInit, OnChan
 
         return customFullDescription;
     }
-}
-
-class GalleryGroup {
-
-    constructor(
-        public groupTitle: string,
-        public images: Image[]
-    ) { }
 }

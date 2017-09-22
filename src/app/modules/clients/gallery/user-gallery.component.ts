@@ -10,7 +10,7 @@ import { ClientMenuItems } from '../menu.items';
 import { UploaderConfig, UploaderModeEnum } from '../../../../web-components/uploader';
 import { FileRecord } from '../../../models';
 import { FetchedFile } from '../../../../lib/repository';
-import { GalleryConfig, GalleryImage } from '../../../../web-components/gallery';
+import { GalleryConfig, GalleryImage, GalleryGroup, ImageGroupResult } from '../../../../web-components/gallery';
 import * as _ from 'underscore';
 
 @Component({
@@ -81,7 +81,7 @@ export class UserGalleryComponent extends ClientsBaseComponent implements OnInit
                 if (response.files) {
                     var galleryImages = response.files.map(m => new GalleryImage({
                         imageUrl: m.absoluteUrl,
-                        imageDate: m.fileLastModified
+                        imageDate: super.moment(m.fileLastModified).add(Math.floor(Math.random() * 20), 'days').toDate()
                     }));
 
                     this.currentImages = galleryImages;
@@ -115,9 +115,10 @@ export class UserGalleryComponent extends ClientsBaseComponent implements OnInit
         .isDownlodable(true)
         .groupResolver((galleryImage: GalleryImage) => {
             // group images by day
-            return galleryImage.imageDate ? super.moment(galleryImage.imageDate).format('LL') : '';
+            return galleryImage.imageDate ? new ImageGroupResult(super.moment(galleryImage.imageDate).format('LL'), super.moment(galleryImage.imageDate).startOf('day').toDate()) : new ImageGroupResult('');
         })
-        .build();;
+        .groupsOrder((groups: GalleryGroup[]) => _.sortBy(groups, (m) => m.groupDate).reverse())
+        .build();
     }
 }
 

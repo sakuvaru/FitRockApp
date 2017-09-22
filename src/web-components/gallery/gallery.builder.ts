@@ -1,5 +1,7 @@
 import { GalleryImage } from './gallery-image.class';
 import { GalleryConfig } from './gallery.config';
+import { GalleryGroup } from './gallery-group.class';
+import { ImageGroupResult } from './image-group-result.class';
 
 export class GalleryBuilder {
 
@@ -26,8 +28,17 @@ export class GalleryBuilder {
      * Function used to group images to different categories
      * Return string that will be used as the group title
      */
-    groupResolver(resolver: (image: GalleryImage) => string): this {
+    groupResolver(resolver: (image: GalleryImage) => ImageGroupResult): this {
         this.config.groupResolver = resolver;
+        return this;
+    }
+
+    /**
+     * Used to order gallery groups. Applicable only if 'groupResolver' is set
+     * @param orderFunction Order function
+     */
+    groupsOrder(orderFunction: (groups: GalleryGroup[]) => GalleryGroup[]): this {
+        this.config.groupsOrder = orderFunction;
         return this;
     }
 
