@@ -36,9 +36,6 @@ export class DynamicFormQuestionComponent implements OnInit{
 
   private customError: string = '';
 
-  // setup
-  private datePickerStartDate: Date = new Date();
-
   /**
    * Maximum value for numbers (assuming the number is represented by Int32)
    * https://msdn.microsoft.com/en-us/library/system.int32.maxvalue(v=vs.110).aspx
@@ -158,9 +155,14 @@ export class DynamicFormQuestionComponent implements OnInit{
     // set date field starting date (if its set)
     if (this.isDateField()){
       var date = this.getQuestionValue();
-      if (date){
+
+      if (this.question.rawValue){
         // date is set, use it as starting date
-        this.datePickerStartDate = new Date(date);
+        this.form.controls[this.question.key].setValue(new Date(date));
+      }
+      else{
+        // use current date as starting value
+        this.form.controls[this.question.key].setValue(new Date());
       }
     }
 
