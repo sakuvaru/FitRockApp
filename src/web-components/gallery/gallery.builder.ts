@@ -23,6 +23,15 @@ export class GalleryBuilder {
     }
 
     /**
+     * Function used to group images to different categories
+     * Return string that will be used as the group title
+     */
+    groupResolver(resolver: (image: GalleryImage) => string): this {
+        this.config.groupResolver = resolver;
+        return this;
+    }
+
+    /**
      * Build the gallery configuration
      */
     build(): GalleryConfig {

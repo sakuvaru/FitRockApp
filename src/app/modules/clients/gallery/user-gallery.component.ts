@@ -49,18 +49,18 @@ export class UserGalleryComponent extends ClientsBaseComponent implements OnInit
                         .set())
                     .useDefaultImageExtensions(true)
                     .onAfterUpload<FileRecord>((files => {
-                        if (files){
+                        if (files) {
                             // append uploaded files to current gallery list
                             this.currentImages = _.union(this.currentImages, files.map(m => new GalleryImage({
-                               imageUrl: m.fetchedFile.absoluteUrl,
-                               imageDate: m.fetchedFile.fileLastModified
+                                imageUrl: m.fetchedFile.absoluteUrl,
+                                imageDate: m.fetchedFile.fileLastModified
                             })));
 
                             // refresh gallery
                             this.galleryConfig = this.getGalleryConfig(this.currentImages);
                         }
                     }))
-                    .loaderConfig({ start: () => super.startGlobalLoader(), stop: () => super.stopGlobalLoader()})
+                    .loaderConfig({ start: () => super.startGlobalLoader(), stop: () => super.stopGlobalLoader() })
                     .build();
             });
     }
@@ -80,7 +80,8 @@ export class UserGalleryComponent extends ClientsBaseComponent implements OnInit
             .map(response => {
                 if (response.files) {
                     var galleryImages = response.files.map(m => new GalleryImage({
-                       imageUrl: m.absoluteUrl 
+                        imageUrl: m.absoluteUrl,
+                        imageDate: m.fileLastModified
                     }));
 
                     this.currentImages = galleryImages;
@@ -111,7 +112,12 @@ export class UserGalleryComponent extends ClientsBaseComponent implements OnInit
         return this.dependencies.webComponentServices.galleryService.gallery({
             images: images
         })
-            .build();;
+        .isDownlodable(true)
+        .groupResolver((galleryImage: GalleryImage) => {
+            // group images by day
+            return galleryImage.imageDate ? super.moment(galleryImage.imageDate).format('LL') : '';
+        })
+        .build();;
     }
 }
 

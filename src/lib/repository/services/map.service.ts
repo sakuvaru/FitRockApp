@@ -154,7 +154,7 @@ export class MapService {
             fileNameWithExtension: file.fileNameWithExtension,
             fileNotFound: file.fileNotFound,
             fileSizeInBytes: file.fileSizeInBytes,
-            fileLastModified: file.fileLastModified
+            fileLastModified: new Date(file.fileLastModified)
         });
     }
 

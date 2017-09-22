@@ -28,6 +28,11 @@ export class GalleryComponent extends BaseWebComponent implements OnInit, OnChan
     private images: Image[];
 
     /**
+     * Groups with images
+     */
+    private groups: GalleryGroup[] | null = null;
+
+    /**
      * Buttons configuration
      */
     private buttonsConfig: any = {};
@@ -36,6 +41,12 @@ export class GalleryComponent extends BaseWebComponent implements OnInit, OnChan
      * Full description
      */
     private customFullDescription: Description;
+
+    /**
+     * This is required for the image pointer feature
+     */
+    private openModalWindow: boolean = false;
+    private imagePointer: number = 0;
 
     constructor(
     ) {
@@ -67,7 +78,7 @@ export class GalleryComponent extends BaseWebComponent implements OnInit, OnChan
         this.config = config;
 
         // assign gallery images
-        this.images = this.convertToImageType(config.images);
+        this.images = this.convertArrayToImageType(config.images);
 
         // init buttons config
         this.buttonsConfig = this.getButtonsConfig(config);
@@ -75,17 +86,64 @@ export class GalleryComponent extends BaseWebComponent implements OnInit, OnChan
         // init custom description
         this.customFullDescription = this.getCustomDescription();
 
+        // init gallery groups if configured
+        if (config.groupResolver)   {
+            this.groups = this.getGalleryGroups(config);
+        }
+
         // finally mark component as initialized
         this.initialized = true;
     }
-    
-    onShowImageModal(event: ImageModalEvent) {
-    }
-    
-    onCloseImageModal(event: ImageModalEvent) {
+
+    openImageModal(image: Image) {
+        // find image based on its URL
+        var imageToOpen = this.images.find(m => m.extUrl === image.extUrl);
+        if (!imageToOpen){
+            console.warn('Could not open image in modal:');
+            console.warn(image);
+        }
+        else{
+            this.imagePointer = this.images.indexOf(imageToOpen);
+            this.openModalWindow = true;
+        }
     }
 
-    onImageOver(): void {
+    onShowImageModal(event: ImageModalEvent) {
+    }
+
+    onCloseImageModal(event: ImageModalEvent) {
+        this.openModalWindow = false;
+    }
+
+    private getGalleryGroups(config: GalleryConfig): GalleryGroup[] {
+        var groups: GalleryGroup[] = [];
+
+        // go through each image and assign it to correct group based on the evaluation function
+        if (!config || !config.images || !Array.isArray(config.images)){
+            throw Error(`Could not evaluate gallery groups`);
+        }
+
+        if (!config.groupResolver){
+            throw Error(`Could not evaluate gallery groups because no resolver is defined`);
+        }
+
+        config.images.forEach(image => {
+            // get image group
+            var groupTitle = config.groupResolver(image);
+
+            // create group if not exist
+            var group = groups.find(m => m.groupTitle === groupTitle);
+            if (!group){
+                // group does not exist, create it
+                groups.push(new GalleryGroup(groupTitle, [this.convertToImageType(image)]));
+            }
+            else{
+                // group exists, push the image
+                group.images.push(this.convertToImageType(image));
+            }
+        });
+
+        return groups;
     }
 
     private getButtonsConfig(config: GalleryConfig): any {
@@ -97,18 +155,25 @@ export class GalleryComponent extends BaseWebComponent implements OnInit, OnChan
         return null;
     }
 
+    private convertToImageType(image: GalleryImage): Image {
+       if (!image){
+           throw Error(`Could not convert 'GalleryImage' to 'Image'`)
+       }
 
-    private convertToImageType(images: GalleryImage[]): Image[] {
+        return new Image(
+            image.imageUrl,
+            image.thumbnailUrl,
+            image.description,
+            image.imageUrl
+        );
+    }
+
+    private convertArrayToImageType(images: GalleryImage[]): Image[] {
         if (!images || !Array.isArray(images)) {
             return [];
         }
 
-        return images.map(m => new Image(
-            m.imageUrl,
-            m.thumbnailUrl,
-            m.description,
-            m.imageUrl
-        ));
+        return images.map(m => this.convertToImageType(m));
     }
 
     private getCustomDescription(): Description {
@@ -122,4 +187,12 @@ export class GalleryComponent extends BaseWebComponent implements OnInit, OnChan
 
         return customFullDescription;
     }
+}
+
+class GalleryGroup {
+
+    constructor(
+        public groupTitle: string,
+        public images: Image[]
+    ) { }
 }

@@ -19,7 +19,7 @@
     display: none;
 }
 
-.w-tc-white{
+.w-tc-white {
     color: #FFFFFF;
 }
 
@@ -30,11 +30,25 @@
     flex-shrink: 0;
 }
 
+.w-clear {
+    clear: both;
+}
+
 /* Gallery styles */
 
 .w-gallery-wrapper img.ng-thumb {
-    height: 140px!important;
+    height: 120px!important;
+    margin: 3px 3px 0 0!important;
 }
+
+.w-gallery-wrapper .w-gallery-thumb {
+    height: 120px;
+    float: left;
+    display: block;
+    cursor: pointer;
+    margin: 3px 3px 0 0;
+}
+
 
 /* Overrides 
 Note: in order for overrides to work, this css should be loaded after the material's css
