@@ -52,7 +52,8 @@ export class UserGalleryComponent extends ClientsBaseComponent implements OnInit
                         if (files){
                             // append uploaded files to current gallery list
                             this.currentImages = _.union(this.currentImages, files.map(m => new GalleryImage({
-                               imageUrl: m.fetchedFile.absoluteUrl 
+                               imageUrl: m.fetchedFile.absoluteUrl,
+                               imageDate: m.fetchedFile.fileLastModified
                             })));
 
                             // refresh gallery

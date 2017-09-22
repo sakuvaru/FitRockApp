@@ -6,6 +6,7 @@ export class FetchedFile {
     public fileSizeInBytes: number;
     public fileNameWithExtension: string
     public fileLastModifiedHash: string;
+    public fileLastModified: Date;
 
     constructor(
         options: {
@@ -14,7 +15,8 @@ export class FetchedFile {
             fileNotFound: string,
             fileSizeInBytes: number,
             fileNameWithExtension: string,
-            fileLastModifiedHash: string
+            fileLastModifiedHash: string,
+            fileLastModified: Date
         }
     ) {
         Object.assign(this, options);

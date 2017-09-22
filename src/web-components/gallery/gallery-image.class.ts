@@ -6,6 +6,11 @@ export class GalleryImage {
     public imageUrl: string;
 
     /**
+     * Date of the image
+     */
+    public imageDate?: Date;
+
+    /**
      * Description of the image
      */
     public description?: string | null = null;
@@ -20,6 +25,7 @@ export class GalleryImage {
         imageUrl: string,
 
         // optional
+        imageDate?: Date,
         description?: string
         thumbnailUrl?: string
     }) { 

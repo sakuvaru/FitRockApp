@@ -5,4 +5,5 @@ export interface IFetchedFile{
     fileSizeInBytes: number;
     fileNameWithExtension: string;
     fileLastModifiedHash: string;
+    fileLastModified: Date;
 }
