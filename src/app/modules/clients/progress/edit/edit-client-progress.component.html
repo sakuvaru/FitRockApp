@@ -4,7 +4,7 @@
             <md-card-content class="push-top">
                 <h3>{{'module.clients.progress.newProgressItemRecord' | translate}}</h3>
                 <dynamic-form *ngIf="progressItemTypes && progressItemTypes.length > 0" [config]="formConfig"></dynamic-form>
-                <info-message *ngIf="!progressItemTypes || progressItemTypes && progressItemTypes.length === 0" title="{{ 'module.clients.progress.addProgressTypeFirst' | translate }}"></info-message>
+                <info-message *ngIf="progressItemTypes && progressItemTypes.length === 0" title="{{ 'module.clients.progress.addProgressTypeFirst' | translate }}"></info-message>
             </md-card-content>
         </md-card>
     </div>

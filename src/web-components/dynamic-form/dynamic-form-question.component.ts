@@ -12,7 +12,7 @@ import { StringHelper, NumberHelper } from '../../lib/utilities';
   templateUrl: './dynamic-form-question.component.html'
 })
 
-export class DynamicFormQuestionComponent implements OnInit{
+export class DynamicFormQuestionComponent implements OnInit {
 
   @Input() question: FormField;
 
@@ -47,30 +47,30 @@ export class DynamicFormQuestionComponent implements OnInit{
    * https://msdn.microsoft.com/en-us/library/system.int32.minvalue(v=vs.110).aspx
    */
   private readonly miniumNumberValue = -2147483648;
-  
+
 
   ngOnInit() {
     // translation
     this.reloadTranslations();
 
+    // subscribe to value changes
+    this.subscribeToChanges();
+
     // init values
     this.initValues();
   }
 
-  reloadTranslations(): void{
+  reloadTranslations(): void {
     this.translateQuestionHint();
     this.translateQuestionLabel();
   }
 
   private initValues(): void {
-    // subscribe to value changes
-    this.subscribeToChanges();
-
     // this should be first -> set the 'value' of form control to 'defaultValue' in case of insert form
     // this can be overriden by more specific control types needs (e.g the radio button)
-    if (this.formConfig.isInsertForm()){
+    if (this.formConfig.isInsertForm()) {
       // set value only if standard 'value' is not set (value could be set for e.g. hidden field)
-      if (!this.question.value){
+      if (!this.question.value) {
         this.form.controls[this.question.key].setValue(this.question.defaultValue);
       }
     }
@@ -152,18 +152,19 @@ export class DynamicFormQuestionComponent implements OnInit{
       }
     }
 
-    // set date field starting date (if its set)
-    if (this.isDateField()){
-      var date = this.getQuestionValue();
+    if (this.formConfig.isEditForm()) {
+      // set date field starting date (if its set)
+      if (this.isDateField()) {
+        var date = this.getQuestionValue();
 
-      if (this.question.rawValue){
-        // date is set, use it as starting date
-        this.form.controls[this.question.key].setValue(new Date(date));
+        if (this.question.rawValue) {
+          // date is set, set it
+          this.form.controls[this.question.key].setValue(new Date(date));
+        }
       }
-      else{
-        // use current date as starting value
-        this.form.controls[this.question.key].setValue(new Date());
-      }
+    }
+    else {
+      this.form.controls[this.question.key].setValue(new Date());
     }
 
     // fix angular js changes error
@@ -248,10 +249,10 @@ export class DynamicFormQuestionComponent implements OnInit{
     var translationKey = this.getQuestionLabelKey();
 
     var extraTranslationData;
-    if (this.question.options){
+    if (this.question.options) {
       extraTranslationData = this.question.options.extraTranslationData;
     }
-   
+
     this.translateService.get(translationKey, extraTranslationData).subscribe(translatedText => {
       if (translatedText) {
         this.question.translatedLabel = translatedText
@@ -285,7 +286,7 @@ export class DynamicFormQuestionComponent implements OnInit{
   }
 
   private showLengthHint(): boolean {
-    if (!this.question.options){
+    if (!this.question.options) {
       return false;
     }
     if (!this.question.options.maxLength) {
@@ -298,7 +299,7 @@ export class DynamicFormQuestionComponent implements OnInit{
   }
 
   private getMaxNumberValue(): number {
-    if (!this.question.options){
+    if (!this.question.options) {
       return this.maximumNumberValue;
     }
 
@@ -316,7 +317,7 @@ export class DynamicFormQuestionComponent implements OnInit{
   }
 
   private getMinNumberValue(): number {
-    if (!this.question.options){
+    if (!this.question.options) {
       return this.miniumNumberValue;
     }
 
