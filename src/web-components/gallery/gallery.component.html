@@ -12,7 +12,6 @@
 
         <ng-container *ngIf="groups">
             <div *ngFor="let group of groups">
-                <div>
                 <h4>{{group.groupTitle}}</h4>
                 <div *ngFor="let img of group.images; let i = index">
                     <img *ngIf="img.thumb" class="w-gallery-thumb" src="{{img.thumb}}" (click)="openImageModal(img)" alt='{{img.description}}'
@@ -21,7 +20,6 @@
                     />
                 </div>
                 <div style="clear: both"></div>
-            </div>
             </div>
         </ng-container>
 

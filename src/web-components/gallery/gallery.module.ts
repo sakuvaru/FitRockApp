@@ -16,12 +16,16 @@ import { GalleryComponent } from './gallery.component';
 // services
 import { GalleryService } from './gallery.service';
 
+// buttons
+import { ButtonsModule} from '../buttons/buttons.module';
+
 @NgModule({
     imports: [
         CommonModule,
         SharedWebComponentModule, 
         RouterModule, // router needs to be importes so that routerLink can be used within components
-        ModalGalleryModule
+        ModalGalleryModule,
+        ButtonsModule
     ],
     declarations: [
         GalleryComponent,

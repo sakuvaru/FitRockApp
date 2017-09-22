@@ -44,9 +44,12 @@
 .w-gallery-wrapper .w-gallery-thumb {
     height: 120px;
     float: left;
-    display: block;
     cursor: pointer;
     margin: 3px 3px 0 0;
+}
+
+.w-gallery-wrapper .w-gallery-image-wrapper {
+    float: left;
 }
 
 
