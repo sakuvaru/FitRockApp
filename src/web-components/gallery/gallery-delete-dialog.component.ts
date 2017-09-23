@@ -3,7 +3,7 @@ import { Component, Inject, Input, OnInit, OnChanges, SimpleChanges } from '@ang
 import { BaseWebComponent } from '../base-web-component.class';
 
 // material
-import { MdDialog, MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
+import { MdDialog, MdDialogRef, MD_DIALOG_DATA, MdSnackBar } from '@angular/material';
 
 // gallery
 import { Image } from 'angular-modal-gallery';
@@ -16,6 +16,9 @@ import { GalleryConfig } from './gallery.config';
 // helpers
 import * as _ from 'underscore';
 
+// translations
+import { TranslateService } from '@ngx-translate/core';
+
 @Component({
     templateUrl: 'gallery-delete-dialog.component.html'
 })
@@ -24,17 +27,33 @@ export class GalleryDeleteDialogComponent extends BaseWebComponent implements On
     public groups: GalleryGroup[];
     public images: Image[];
     private config: GalleryConfig;
+    private snackBarService: MdSnackBar;
 
     private imageDeletionFailed: boolean = false;
 
+    private readonly snackbarDefaultDuration: number = 2500;
+
+    /**
+     * Text to be shown when file is deleted
+     */
+    private snackbarDeleteText: string;
+
+    /**
+     * Key used to translate deleted text
+     */
+    private snackbarDeleteTextKey: string = 'webComponents.gallery.deleted';
+
     constructor(
         public dialogRef: MdDialogRef<GalleryDeleteDialogComponent>,
-        @Inject(MD_DIALOG_DATA) public data: any) {
+        @Inject(MD_DIALOG_DATA) public data: any,
+        private translateService: TranslateService,
+    ) {
         super();
 
         this.groups = data.groups;
         this.images = data.images;
         this.config = data.config;
+        this.snackBarService = data.snackBarService;
 
         if (!this.config) {
             throw Error(`Gallery delete dialog needs to receive 'GalleryConfig'`);
@@ -46,7 +65,7 @@ export class GalleryDeleteDialogComponent extends BaseWebComponent implements On
     }
 
     ngOnInit() {
-
+        this.initTranslations();
     }
 
     onDelete(image: Image): void {
@@ -67,12 +86,15 @@ export class GalleryDeleteDialogComponent extends BaseWebComponent implements On
             .subscribe(imageDeleted => {
                 if (imageDeleted) {
                     // image was successfully deleted
-                    if (this.config.onDelete && galleryImage){
+                    if (this.config.onDelete && galleryImage) {
                         this.config.onDelete(galleryImage);
                     }
 
                     // remove image from local variables
                     this.removeImage(image);
+
+                    // show snackbar message
+                    this.snackBarService.open(this.snackbarDeleteText, undefined,  { duration: this.snackbarDefaultDuration});
                 }
                 else {
                     // image deletion failed
@@ -83,6 +105,10 @@ export class GalleryDeleteDialogComponent extends BaseWebComponent implements On
                 // image deletion faield
                 this.imageDeletionFailed = true;
             })
+    }
+
+    private initTranslations(): void{
+        this.translateService.get('webComponents.gallery.deleted').subscribe(result => this.snackbarDeleteText = result);
     }
 
     private removeImage(image: Image): void {
@@ -99,6 +125,11 @@ export class GalleryDeleteDialogComponent extends BaseWebComponent implements On
                     this.groups = _.reject(this.groups, function (item) { return item.groupTitle === group.groupTitle; });
                 }
             })
+        }
+
+        // if there are no images left, close dialog automatically
+        if (this.images.length === 0) {
+            this.dialogRef.close();
         }
     }
 

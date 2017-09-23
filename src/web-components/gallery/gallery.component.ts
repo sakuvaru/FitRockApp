@@ -1,5 +1,5 @@
 // common
-import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnInit, Output, OnChanges, SimpleChanges, EventEmitter } from '@angular/core';
 import { BaseWebComponent } from '../base-web-component.class';
 
 // gallery classes
@@ -15,14 +15,25 @@ import { ImageGroupResult } from './image-group-result.class';
 import { MdDialog, MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
 import { GalleryDeleteDialogComponent } from './gallery-delete-dialog.component';
 
+// material
+import { MdSnackBar } from '@angular/material';
+
 @Component({
     selector: 'gallery',
     templateUrl: 'gallery.component.html'
 })
 export class GalleryComponent extends BaseWebComponent implements OnInit, OnChanges {
 
+    /**
+     * Gallery configuration
+     */
     @Input() config: GalleryConfig;
 
+    /**
+     * Executed when the images array changes
+     */
+    @Output() imagesUpdated: EventEmitter<GalleryImage[]> = new EventEmitter<GalleryImage[]>();
+    
     /**
      * Component initiliazed flag
      */
@@ -55,7 +66,8 @@ export class GalleryComponent extends BaseWebComponent implements OnInit, OnChan
     private imagePointer: number = 0;
 
     constructor(
-        public dialog: MdDialog
+        public dialog: MdDialog,
+        public snackBarService: MdSnackBar
     ) {
         super()
     }
@@ -94,7 +106,7 @@ export class GalleryComponent extends BaseWebComponent implements OnInit, OnChan
         this.customFullDescription = this.getCustomDescription();
 
         // init gallery groups if configured
-        if (config.groupResolver)   {
+        if (config.groupResolver) {
             this.groups = this.getGalleryGroups(config);
         }
 
@@ -105,11 +117,11 @@ export class GalleryComponent extends BaseWebComponent implements OnInit, OnChan
     openImageModal(image: Image) {
         // find image based on its URL
         var imageToOpen = this.images.find(m => m.extUrl === image.extUrl);
-        if (!imageToOpen){
+        if (!imageToOpen) {
             console.warn('Could not open image in modal:');
             console.warn(image);
         }
-        else{
+        else {
             this.imagePointer = this.images.indexOf(imageToOpen);
             this.openModalWindow = true;
         }
@@ -126,13 +138,13 @@ export class GalleryComponent extends BaseWebComponent implements OnInit, OnChan
         var groups: GalleryGroup[] = [];
 
         // go through each image and assign it to correct group based on the evaluation function
-        if (!config || !config.images || !Array.isArray(config.images)){
+        if (!config || !config.images || !Array.isArray(config.images)) {
             throw Error(`Could not evaluate gallery groups`);
         }
 
         config.images.forEach(image => {
 
-            if (!config.groupResolver){
+            if (!config.groupResolver) {
                 throw Error(`Could not evaluate gallery groups because no resolver is defined`);
             }
 
@@ -141,19 +153,19 @@ export class GalleryComponent extends BaseWebComponent implements OnInit, OnChan
 
             // create group if not exist
             var group = groups.find(m => m.groupTitle === imageGroup.groupTitle);
-            if (!group){
+            if (!group) {
                 // group does not exist, create it
                 groups.push(new GalleryGroup(imageGroup.groupTitle, [this.convertToImageType(image)], imageGroup.groupDate));
             }
-            else{
+            else {
                 // group exists, push the image
                 group.images.push(this.convertToImageType(image));
             }
         });
 
         // order groups
-        if (config.groupsOrder){
-            groups = config.groupsOrder(groups); 
+        if (config.groupsOrder) {
+            groups = config.groupsOrder(groups);
         }
 
         return groups;
@@ -169,9 +181,9 @@ export class GalleryComponent extends BaseWebComponent implements OnInit, OnChan
     }
 
     private convertToImageType(image: GalleryImage): Image {
-       if (!image){
-           throw Error(`Could not convert 'GalleryImage' to 'Image'`)
-       }
+        if (!image) {
+            throw Error(`Could not convert 'GalleryImage' to 'Image'`)
+        }
 
         return new Image(
             image.imageUrl,
@@ -204,13 +216,33 @@ export class GalleryComponent extends BaseWebComponent implements OnInit, OnChan
     private openDeleteDialog(): void {
         let dialogRef = this.dialog.open(GalleryDeleteDialogComponent, {
             width: this.config.dialogWidth,
-            data: { groups: this.groups, images: this.images, config: this.config }
-          });
-      
-          dialogRef.afterClosed().subscribe(result => {
-              // update images & groups in case some images were deleted
-              this.groups = dialogRef.componentInstance.groups;
-              this.images = dialogRef.componentInstance.images;
-          });
-      }
+            data: { groups: this.groups, images: this.images, config: this.config, snackBarService: this.snackBarService }
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            // check if images changed and if so, fire event
+            var executeUpdateImages = false;
+            if (this.images.length !== dialogRef.componentInstance.images.length) {
+                // some images were deleted
+                // get gallery image objects of current images
+                executeUpdateImages = true;
+            }
+
+            // update images & groups in case some images were deleted
+            this.groups = dialogRef.componentInstance.groups;
+            this.images = dialogRef.componentInstance.images;
+
+            if (executeUpdateImages){
+                // get GalleryImages of current Images
+                var galleryImages: GalleryImage[] = [];
+                this.images.forEach(image => {
+                    var galleryImage = this.config.images.find(m => m.imageUrl === image.extUrl);
+                    if (galleryImage){
+                        galleryImages.push(galleryImage);
+                    }
+                });
+                this.imagesUpdated.next(galleryImages);
+            }
+        });
+    }
 }

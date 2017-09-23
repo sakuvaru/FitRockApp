@@ -7,6 +7,7 @@ import { FileRecordService } from '../../app/services';
 // required by component
 import { UploaderConfig } from './uploader.config';
 import * as _ from 'underscore';
+import { MdSnackBar } from '@angular/material';
 
 @Component({
     selector: 'uploader',
@@ -29,11 +30,6 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
      * Indicates if no files were selected
      */
     private noFilesSelected: boolean = false;
-
-    /**
-     * Indicates if upload was successful
-     */
-    private uploadSuccessful: boolean = false;
 
     /**
      * Indicates if upload failed
@@ -60,9 +56,25 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
     */
     private acceptedExtensions: string[];
 
+    /**
+     * Text to be shown when files are uploaded
+     */
+    private snackbarUploadedText: string;
+
+    /**
+     * Key used to translate uploaded text
+     */
+    private snackbarUploadedTextKey: string = 'webComponents.uploader.uploaded';
+
+    /**
+     * Duration which the snackbar is visible
+     */
+    private readonly snackbarDefaultDuration: number = 2500;
+
     constructor(
         private translateService: TranslateService,
-        private fileRecordService: FileRecordService
+        private fileRecordService: FileRecordService,
+        private snackBarService: MdSnackBar,
     ) {
         super()
     }
@@ -89,6 +101,9 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
 
         this.config = config;
 
+        // init translations
+        this.initTranslations();
+
         // check that upload function is defined
         if (!config.uploadFunction) {
             console.warn('Uploader could not be initialized because upload function is not defined');
@@ -102,6 +117,10 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
         if (this.config.maxUploadedFiles) {
             this.maxFiles = this.config.maxUploadedFiles;
         }
+    }
+
+    private initTranslations(): void{
+        this.translateService.get(this.snackbarUploadedTextKey).subscribe(result => this.snackbarUploadedText = result);
     }
 
     private getAcceptedExtensions(config: UploaderConfig): string[] {
@@ -175,8 +194,6 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
             this.config.uploadFunction(file)
                 .takeUntil(this.ngUnsubscribe)
                 .subscribe(response => {
-                    this.uploadSuccessful = true;
-
                     var uploadedFile: any[] = response.file ? [response.file] : [];
 
                     if (this.config.onAfterUpload) {
@@ -184,6 +201,8 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
                     }
 
                     this.clearSelectedFiles();
+
+                    this.snackBarService.open(this.snackbarUploadedText, undefined,  { duration: this.snackbarDefaultDuration});
                 },
                 error => {
                     this.uploadFailed = true;
@@ -239,8 +258,6 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
             this.config.uploadFunction(files)
                 .takeUntil(this.ngUnsubscribe)
                 .subscribe(response => {
-                    this.uploadSuccessful = true;
-
                     if (this.config.onAfterUpload) {
                         this.config.onAfterUpload(response.files);
                     }
@@ -250,6 +267,8 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
                     if (this.config.loaderConfig) {
                         this.config.loaderConfig.stop();
                     }
+
+                    this.snackBarService.open(this.snackbarUploadedText, undefined,  { duration: this.snackbarDefaultDuration});
                 },
                 error => {
                     this.uploadFailed = true;
@@ -359,7 +378,6 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
     }
 
     private resetCounters(): void {
-        this.uploadSuccessful = false;
         this.uploadFailed = false;
         this.noFilesSelected = false;
         this.extensionNotAllowed = false;

@@ -1,6 +1,12 @@
 import { Headers, RequestOptions } from '@angular/http';
-import { ResponseFileMultiple, ResponseFileSingle, ResponseUploadMultiple, ResponseUploadSingle, ResponseCount, ResponsePost, ResponseFormEdit, ResponseFormInsert, ResponseDelete, ResponseCreate, ResponseEdit, ResponseMultiple, ResponseSingle, ErrorResponse, FormErrorResponse } from '../models/responses';
-import { IResponseFileMultiple, IResponseFileSingle, IResponseUploadMultipleRaw, IResponseUploadSingleRaw, IResponseCountRaw, IResponsePostRaw, IResponseFormEditRaw, IResponseFormInsertRaw, IResponseCreateRaw, IResponseDeleteRaw, IResponseEditRaw, IResponseMultipleRaw, IResponseSingleRaw, IErrorResponseRaw, IFormErrorResponseRaw } from '../interfaces/iraw-responses';
+import { ResponseDeleteFile, ResponseFileMultiple, ResponseFileSingle, ResponseUploadMultiple, 
+    ResponseUploadSingle, ResponseCount, ResponsePost, ResponseFormEdit, ResponseFormInsert, 
+    ResponseDelete, ResponseCreate, ResponseEdit, ResponseMultiple, ResponseSingle,
+    ErrorResponse, FormErrorResponse } from '../models/responses';
+import { IResponseDeleteFile, IResponseFileMultiple, IResponseFileSingle, IResponseUploadMultipleRaw, 
+    IResponseUploadSingleRaw, IResponseCountRaw, IResponsePostRaw, IResponseFormEditRaw, 
+    IResponseFormInsertRaw, IResponseCreateRaw, IResponseDeleteRaw, IResponseEditRaw, IResponseMultipleRaw,
+    IResponseSingleRaw, IErrorResponseRaw, IFormErrorResponseRaw } from '../interfaces/iraw-responses';
 import { IOption } from '../interfaces/ioption.interface';
 import { AuthHttp } from 'angular2-jwt';
 import { Response } from '@angular/http';
@@ -330,6 +336,16 @@ export class QueryService {
         });
     }
 
+    private getDeleteFileResponse(response: Response): ResponseDeleteFile {
+        var responseDelete = (response.json() || {}) as IResponseDeleteFile;
+
+        return new ResponseDeleteFile({
+            action: responseDelete.action,
+            fileDeleted: responseDelete.fileDeleted,
+            fileName: responseDelete.fileName
+        });
+    }
+
     protected getMultipleCustom<TModel>(url: string): Observable<ResponseMultiple<TModel>> {
         // trigger request
         this.startRequest();
@@ -624,6 +640,25 @@ export class QueryService {
         return this.authHttp.get(url)
             .map(response => {
                 return this.getMultipleFileResponse(response)
+            })
+            .catch(response => {
+                return Observable.throw(this.handleError(response));
+            })
+            ._finally(() => {
+                this.finishRequest();
+            });
+    }
+
+    protected deleteFile(url: string, fileUrl: string): Observable<ResponseDeleteFile> {
+        // trigger request
+        this.startRequest();
+
+        var body: any = {};
+        body.fileUrl = fileUrl; // fileUrl property is required by the API Server
+
+        return this.authHttp.post(url, body)
+            .map(response => {
+                return this.getDeleteFileResponse(response)
             })
             .catch(response => {
                 return Observable.throw(this.handleError(response));

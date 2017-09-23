@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FileRecord } from '../../models';
-import { RepositoryClient, UploadSingleQuery, UploadMultipleQuery, MultipleFileQuery, SingleFileQuery } from '../../../lib/repository';
+import { RepositoryClient, UploadSingleQuery, UploadMultipleQuery, MultipleFileQuery, 
+    DeleteFileQuery, SingleFileQuery } from '../../../lib/repository';
 import { BaseTypeService } from '../base/base-type.service';
 
 import { Observable } from 'rxjs/Rx';
@@ -20,8 +21,12 @@ export class FileRecordService extends BaseTypeService<FileRecord>{
     ) {
         super(repositoryClient, {
             type: 'FileRecord',
-            allowDelete: true
+            allowDelete: false
         })
+    }
+
+    deleteFile(fileUrl: string): DeleteFileQuery {
+        return super.deleteFile('deleteFile', fileUrl);
     }
 
     getAvatar(userId: number): SingleFileQuery {

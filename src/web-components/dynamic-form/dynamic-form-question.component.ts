@@ -152,9 +152,10 @@ export class DynamicFormQuestionComponent implements OnInit {
       }
     }
 
-    if (this.formConfig.isEditForm()) {
-      // set date field starting date (if its set)
-      if (this.isDateField()) {
+    if (this.isDateField()) {
+      if (this.formConfig.isEditForm()) {
+        // set date field starting date (if its set)
+
         var date = this.getQuestionValue();
 
         if (this.question.rawValue) {
@@ -162,9 +163,9 @@ export class DynamicFormQuestionComponent implements OnInit {
           this.form.controls[this.question.key].setValue(new Date(date));
         }
       }
-    }
-    else {
-      this.form.controls[this.question.key].setValue(new Date());
+      else {
+        this.form.controls[this.question.key].setValue(new Date());
+      }
     }
 
     // fix angular js changes error

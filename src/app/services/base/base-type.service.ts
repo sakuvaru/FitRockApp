@@ -2,8 +2,10 @@ import { Observable } from 'rxjs/Observable';
 import { BaseTypeServiceConfig } from './base-type-service.config';
 
 import {
-    UploadSingleQuery, UploadMultipleQuery, ItemCountQuery, PostQuery, RepositoryClient, IItem, SingleItemQueryInit, MultipleItemQuery, CreateItemQuery, EditItemQuery, DeleteItemQuery,
-    SingleFileQuery, MultipleFileQuery, EditFormQuery, InsertFormQuery, TouchKeyQuery, CacheKeyType, SingleItemQueryInitCustom, MultipleItemQueryCustom
+    UploadSingleQuery, UploadMultipleQuery, ItemCountQuery, PostQuery, RepositoryClient, IItem, SingleItemQueryInit, 
+    MultipleItemQuery, CreateItemQuery, EditItemQuery, DeleteItemQuery, SingleFileQuery, MultipleFileQuery, 
+    EditFormQuery, InsertFormQuery, TouchKeyQuery, CacheKeyType, SingleItemQueryInitCustom, MultipleItemQueryCustom,
+    DeleteFileQuery
 } from '../../../lib/repository';
 
 import { DynamicFormEditBuilder, DynamicFormInsertBuilder } from '../../../web-components/dynamic-form';
@@ -81,6 +83,10 @@ export abstract class BaseTypeService<TItem extends IItem>{
     multipleFile(action: string): MultipleFileQuery {
         return this.repositoryClient.multipleFiles(this.type, action);
     }
+
+    deleteFile(action: string, fileUrl: string): DeleteFileQuery {
+        return this.repositoryClient.deleteFile(this.type, action, fileUrl);
+    } 
 
     insertFormQuery(): InsertFormQuery<TItem>{
         return this.repositoryClient.insertForm(this.type);

@@ -105,6 +105,12 @@ export interface IResponseFileMultiple extends IResponseBase {
     filesCount: number;
 }
 
+export interface IResponseDeleteFile extends IResponseBase {
+    fileName: string;
+    fileDeleted: boolean;
+}
+
+
 
 
 

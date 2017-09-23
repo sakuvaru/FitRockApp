@@ -119,11 +119,16 @@ export class UserGalleryComponent extends ClientsBaseComponent implements OnInit
         })
         .groupsOrder((groups: GalleryGroup[]) => _.sortBy(groups, (m) => m.groupDate).reverse())
         .deleteFunction((image: GalleryImage) => {
-            console.log(image);
-            return Observable.of(true);
+            return this.dependencies.itemServices.fileRecordService.deleteFile(image.imageUrl)
+                .set()
+                .map(response => response.fileDeleted)
         })
-        .onDelete((image: GalleryImage) => super.showDeletedSnackbar())
         .build();
+    }
+
+    private onImagesChange(images: GalleryImage[]): void {
+        // update current images so that no duplicates are inserted to gallery
+        this.currentImages = images;
     }
 }
 

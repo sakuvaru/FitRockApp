@@ -340,5 +340,21 @@ export class ResponseFileMultiple {
     }
 }
 
+export class ResponseDeleteFile {
+    public fileName: string;
+    public fileDeleted: boolean;
+    public action: string;
+
+    constructor(
+        options: {
+            fileName: string,
+            fileDeleted: boolean,
+            action: string
+        }
+    ) {
+        Object.assign(this, options);
+     }
+}
+
 
 

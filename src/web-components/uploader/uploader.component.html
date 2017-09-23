@@ -2,7 +2,6 @@
 
   <div class="push-bottom" *ngIf="noFilesSelected || uploadSuccessful || uploadFailed || extensionNotAllowed">
     <info-message *ngIf="noFilesSelected" title="{{ 'webComponents.uploader.noFilesSelected' | translate }}"></info-message>
-    <success-message *ngIf="uploadSuccessful" title="{{ 'webComponents.uploader.uploadSuccessful' | translate }}"></success-message>
     <error-message *ngIf="uploadFailed" title="{{ 'webComponents.uploader.uploadFailed' | translate }}"></error-message>
     <error-message *ngIf="extensionNotAllowed" title="{{ 'webComponents.uploader.extensionNotAllowed' | translate:extensionsNotAllowedParam }}"></error-message>
   </div>

@@ -21,6 +21,7 @@ import { UploadSingleQuery } from './queries/upload/upload-single-query.class';
 import { UploadMultipleQuery } from './queries/upload/upload-multiple-query.class';
 import { MultipleFileQuery } from './queries/file/multiple-file-query.class';
 import { SingleFileQuery } from './queries/file/single-file-query.class';
+import { DeleteFileQuery } from './queries/file/delete-file-query.class';
 
 // rxjs
 import { Observable } from 'rxjs/Observable';
@@ -105,6 +106,10 @@ export class RepositoryClient {
 
     multipleFiles(type: string, action: string): MultipleFileQuery {
         return new MultipleFileQuery(this.authHttp, this.config, type, action);
+    }
+
+    deleteFile(type: string, action: string, fileUrl: string): DeleteFileQuery {
+        return new DeleteFileQuery(this.authHttp, this.config, type, action, fileUrl);
     }
 
     mergeObservables(observables: Observable<any>[]): Observable<any> {
