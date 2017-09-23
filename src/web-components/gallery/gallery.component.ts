@@ -11,6 +11,10 @@ import { GalleryConfig } from './gallery.config';
 import { GalleryGroup } from './gallery-group.class';
 import { ImageGroupResult } from './image-group-result.class';
 
+// dialog
+import { MdDialog, MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
+import { GalleryDeleteDialogComponent } from './gallery-delete-dialog.component';
+
 @Component({
     selector: 'gallery',
     templateUrl: 'gallery.component.html'
@@ -51,6 +55,7 @@ export class GalleryComponent extends BaseWebComponent implements OnInit, OnChan
     private imagePointer: number = 0;
 
     constructor(
+        public dialog: MdDialog
     ) {
         super()
     }
@@ -195,4 +200,17 @@ export class GalleryComponent extends BaseWebComponent implements OnInit, OnChan
 
         return customFullDescription;
     }
+
+    private openDeleteDialog(): void {
+        let dialogRef = this.dialog.open(GalleryDeleteDialogComponent, {
+            width: this.config.dialogWidth,
+            data: { groups: this.groups, images: this.images, config: this.config }
+          });
+      
+          dialogRef.afterClosed().subscribe(result => {
+              // update images & groups in case some images were deleted
+              this.groups = dialogRef.componentInstance.groups;
+              this.images = dialogRef.componentInstance.images;
+          });
+      }
 }

@@ -37,7 +37,8 @@
 		"updated": "Poslední změna",
 		"close": "Zavřít",
 		"saved": "Uloženo",
-		"loadMore": "Další"
+		"loadMore": "Další",
+		"deleted": "Smazáno"
 	},
 	"module": {
 		"clients": {
@@ -381,6 +382,13 @@
 			"uploadSuccessful": "Soubory byly úspěšně uloženy",
 			"uploadFailed": "Nastala chyba při náhrávání souborů",
 			"extensionNotAllowed": "Soubory typu '{{extensions}}' nelze nahrát"
+		},
+		"gallery": {
+			"noImages": "Žádné fotografie nebyly nahrány",
+			"deleteImages": "Smazat fotografie",
+			"close": "Zavřít",
+			"imageDeletionFailed": "Smazaní fotografie selhalo",
+			"imageSuccessfullyDeleted": "Fotografie smazána"
 		}
 	}
 }

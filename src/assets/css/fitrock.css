@@ -48,7 +48,20 @@
     margin: 3px 3px 0 0;
 }
 
-.w-gallery-wrapper .w-gallery-image-wrapper {
+
+.w-gallery-dialog-wrapper img.ng-thumb {
+    height: 50px!important;
+    margin: 3px 3px 0 0!important;
+}
+
+.w-gallery-dialog-wrapper .w-gallery-thumb {
+    height: 50px;
+    float: left;
+    cursor: default;
+    margin: 3px 3px 0 0;
+}
+
+.w-gallery-dialog-wrapper .w-gallery-image-wrapper {
     float: left;
 }
 

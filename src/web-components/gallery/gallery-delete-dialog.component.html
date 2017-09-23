@@ -1,0 +1,38 @@
+<error-message *ngIf="imageDeletionFailed" title="{{ 'webComponents.gallery.imageDeletionFailed' | translate }}"></error-message>
+
+<md-dialog-content>
+
+    <div class="w-gallery-dialog-wrapper">
+        <ng-container *ngIf="!groups">
+            <md-list>
+                <md-list-item *ngFor="let img of group.images; let i = index">
+                    <img mdListAvatar *ngIf="img.thumb" class="w-gallery-thumb" src="{{img.thumb}}" alt='{{img.description}}' />
+                    <img mdListAvatar *ngIf="!img.thumb" class="w-gallery-thumb" src="{{img.img}}" alt='{{img.description}}' />
+                    <span flex></span>
+                    <delete-button (confirm)="onDelete(img)"></delete-button>
+                </md-list-item>
+            </md-list>
+            <div style="clear: both"></div>
+    </ng-container>
+
+    <ng-container *ngIf="groups">
+        <div *ngFor="let group of groups">
+            <h4>{{group.groupTitle}}</h4>
+            <md-list>
+                <md-list-item *ngFor="let img of group.images; let i = index">
+                    <img mdListAvatar *ngIf="img.thumb" class="w-gallery-thumb" src="{{img.thumb}}" alt='{{img.description}}' />
+                    <img mdListAvatar *ngIf="!img.thumb" class="w-gallery-thumb" src="{{img.img}}" alt='{{img.description}}' />
+                    <span flex></span>
+                    <delete-button (confirm)="onDelete(img)"></delete-button>
+                </md-list-item>
+            </md-list>
+            <div style="clear: both"></div>
+        </div>
+    </ng-container>
+    
+    </div>
+</md-dialog-content>
+
+<md-dialog-actions>
+    <button md-raised-button color="accent" (click)="onClose()" tabindex="-1">{{ 'webComponents.gallery.close' | translate }}</button>
+</md-dialog-actions>

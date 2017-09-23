@@ -35,6 +35,7 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
 
     // translations
     private snackbarSavedText: string;
+    private snackbarDeletedText: string;
     private dialogErrorTitle: string;
     private dialogDefaultError: string;
     private dialogCloseButton: string;
@@ -72,6 +73,8 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
 
         // translations
         this.dependencies.coreServices.translateService.get('shared.saved').subscribe(text => this.snackbarSavedText = text);
+
+        this.dependencies.coreServices.translateService.get('shared.deleted').subscribe(text => this.snackbarDeletedText = text);
     }
 
     // ----------------------- Lifecycle Events --------------------- // 
@@ -202,6 +205,10 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
 
     showSavedSnackbar(): void {
         this.showSnackbar(this.snackbarSavedText);
+    }
+
+    showDeletedSnackbar(): void {
+        this.showSnackbar(this.snackbarDeletedText);
     }
 
     // --------------- Urls ------------------- //

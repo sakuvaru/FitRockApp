@@ -118,6 +118,11 @@ export class UserGalleryComponent extends ClientsBaseComponent implements OnInit
             return galleryImage.imageDate ? new ImageGroupResult(super.moment(galleryImage.imageDate).format('LL'), super.moment(galleryImage.imageDate).startOf('day').toDate()) : new ImageGroupResult('');
         })
         .groupsOrder((groups: GalleryGroup[]) => _.sortBy(groups, (m) => m.groupDate).reverse())
+        .deleteFunction((image: GalleryImage) => {
+            console.log(image);
+            return Observable.of(true);
+        })
+        .onDelete((image: GalleryImage) => super.showDeletedSnackbar())
         .build();
     }
 }

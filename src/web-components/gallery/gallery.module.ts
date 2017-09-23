@@ -10,6 +10,9 @@ import { ModalGalleryModule } from 'angular-modal-gallery';
 import 'hammerjs'; // Mandatory for angular-modal-gallery 3.x.x or greater (`npm i --save hammerjs`)
 import 'mousetrap'; // Mandatory for angular-modal-gallery 3.x.x or greater (`npm i --save mousetrap`)
 
+// dialogs
+import { GalleryDeleteDialogComponent } from './gallery-delete-dialog.component';
+
 // components
 import { GalleryComponent } from './gallery.component';
 
@@ -17,7 +20,10 @@ import { GalleryComponent } from './gallery.component';
 import { GalleryService } from './gallery.service';
 
 // buttons
-import { ButtonsModule} from '../buttons/buttons.module';
+import { ButtonsModule } from '../buttons/buttons.module';
+
+// messages
+import { MessagesModule } from '../messages/messages.module';
 
 @NgModule({
     imports: [
@@ -25,16 +31,21 @@ import { ButtonsModule} from '../buttons/buttons.module';
         SharedWebComponentModule, 
         RouterModule, // router needs to be importes so that routerLink can be used within components
         ModalGalleryModule,
-        ButtonsModule
+        ButtonsModule,
+        MessagesModule
     ],
     declarations: [
         GalleryComponent,
+        GalleryDeleteDialogComponent
     ],
     exports: [
         GalleryComponent,
     ],
     providers: [
         GalleryService
+    ],
+    entryComponents: [
+        GalleryDeleteDialogComponent
     ]
 })
 export class GalleryModule { }
