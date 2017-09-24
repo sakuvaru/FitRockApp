@@ -20,7 +20,7 @@ import { StringHelper } from '../../../../../lib/utilities';
 export class ClientWorkoutComponent extends ClientsBaseComponent implements OnInit, OnDestroy {
 
     private workoutExists: boolean = true;
-    private workoutTemplates: Workout[] = [];
+    private workoutTemplates: Workout[];
     private existingWorkouts: Workout[];
 
     /**

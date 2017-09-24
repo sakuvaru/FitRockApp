@@ -19,7 +19,7 @@ import { StringHelper } from '../../../../../lib/utilities';
 export class ClientDietComponent extends ClientsBaseComponent implements OnInit, OnDestroy {
 
     private workoutExists: boolean = true;
-    private dietTemplates: Diet[] = [];
+    private dietTemplates: Diet[];
     private existingDiets: Diet[];
 
     /**

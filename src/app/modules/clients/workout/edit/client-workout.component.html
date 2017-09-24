@@ -5,7 +5,7 @@
     <md-divider></md-divider>
     <md-card-content class="push-top">
         <p>{{'module.clients.workout.newWorkoutFromTemplate' | translate }}:
-            <md-select #copyFromWorkout style="width: 260px" placeholder="{{'module.clients.workout.copyWorkoutLabel' | translate}}" [(ngModel)]="selectedValue">
+            <md-select #copyFromWorkout [disabled]="!workoutTemplates" style="width: 260px" placeholder="{{'module.clients.workout.copyWorkoutLabel' | translate}}" [(ngModel)]="selectedValue">
                 <md-option *ngFor="let workout of workoutTemplates" [value]="workout">
                     {{ workout.workoutName }}
                 </md-option>

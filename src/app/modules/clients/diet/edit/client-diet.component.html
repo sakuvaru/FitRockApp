@@ -5,7 +5,7 @@
     <md-divider></md-divider>
     <md-card-content class="push-top">
         <p>{{'module.clients.diet.newDietFormTemplate' | translate }}:
-            <md-select #copyFromDiet style="width: 260px" placeholder="{{'module.clients.diet.copyDietLabel' | translate}}" [(ngModel)]="selectedValue">
+            <md-select #copyFromDiet [disabled]="!dietTemplates" style="width: 260px" placeholder="{{'module.clients.diet.copyDietLabel' | translate}}" [(ngModel)]="selectedValue">
                 <md-option *ngFor="let diet of dietTemplates" [value]="diet">
                     {{ diet.dietName }}
                 </md-option>
