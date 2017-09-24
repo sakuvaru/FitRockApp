@@ -70,6 +70,12 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
         this.initDynamicForm(this.config);
     }
 
+    private initButtons(): void{
+        this.insertButtonSubject = new Subject<void>();
+        this.deleteButtonSubject = new Subject<void>();
+        this.editButtonSubject = new Subject<void>();
+    }
+
     initDynamicForm(config: FormConfig<any>): void {
         // try to initialize component if config is available during init
         if (this.config) {
@@ -417,6 +423,10 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
         else {
             this.submissionError = this.unknownErrorMessage;
         }
+
+        // buttons clicks need to be reinitialized because otherwise it was not possible to resubmit the form 
+        // after it failed because of some error
+        this.initButtonClicks();
 
         // stop loader on error in case the request is pending
         this.stopLoader();
