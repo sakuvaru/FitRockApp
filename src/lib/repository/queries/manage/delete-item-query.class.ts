@@ -47,7 +47,7 @@ export class DeleteItemQuery extends BaseQuery {
 
     // url
     protected getDeleteUrl(): string{
-        return this.getUrl(this.type, this._action + '/' + this.itemId);
+        return this.getTypeUrl(this.type, this._action + '/' + this.itemId);
     }
 
     // execution

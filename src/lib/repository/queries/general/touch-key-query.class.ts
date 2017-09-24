@@ -33,7 +33,7 @@ export class TouchKeyQuery extends BaseQuery {
 
     // url
     protected getPostUrl(): string{
-        return this.getUrl(this.type, this._action);
+        return this.getTypeUrl(this.type, this._action);
     }
 
     // execution

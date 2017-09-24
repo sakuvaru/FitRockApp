@@ -17,8 +17,8 @@ import { EditFormQuery } from './queries/form/edit-form-query.class';
 import { PostQuery } from './queries/general/post-query.class';
 import { TouchKeyQuery } from './queries/general/touch-key-query.class';
 import { OrderItem, UpdateItemsRequest } from './models/update-items-request.class';
-import { UploadSingleQuery } from './queries/upload/upload-single-query.class';
-import { UploadMultipleQuery } from './queries/upload/upload-multiple-query.class';
+import { UploadSingleQuery } from './queries/file/upload-single-query.class';
+import { UploadMultipleQuery } from './queries/file/upload-multiple-query.class';
 import { MultipleFileQuery } from './queries/file/multiple-file-query.class';
 import { SingleFileQuery } from './queries/file/single-file-query.class';
 import { DeleteFileQuery } from './queries/file/delete-file-query.class';
@@ -37,6 +37,8 @@ export class RepositoryClient {
     ) {
         this.queryService = new QueryService(this.authHttp, this.config);
     }
+
+    /* ------------ Item ---------- */
 
     items<TItem extends IItem>(type: string): MultipleItemQuery<TItem> {
         return new MultipleItemQuery<TItem>(this.authHttp, this.config, type);
@@ -76,14 +78,6 @@ export class RepositoryClient {
         return new PostQuery(this.authHttp, this.config, type, action);
     }
 
-    uploadSingleFile<TItem extends IItem>(type: string, action: string, file: File): UploadSingleQuery<TItem> {
-        return new UploadSingleQuery(this.authHttp, this.config, type, action, file);
-    }
-
-    uploadMultipleFiles<TItem extends IItem>(type: string, action: string, files: File[]): UploadMultipleQuery<TItem> {
-        return new UploadMultipleQuery(this.authHttp, this.config, type, action, files);
-    }
-
     touchKey(type: string, cacheKeyType: CacheKeyType, itemId?: number): TouchKeyQuery {
         return new TouchKeyQuery(this.authHttp, this.config, type, cacheKeyType, itemId);
     }
@@ -100,21 +94,35 @@ export class RepositoryClient {
         return new EditFormQuery<TItem>(this.authHttp, this.config, type, itemId);
     }
 
-    singleFile(type: string, action: string): SingleFileQuery {
-        return new SingleFileQuery(this.authHttp, this.config, type, action);
+    /* ------------ Files ---------- */
+
+    singleFile(controller: string, action: string): SingleFileQuery {
+        return new SingleFileQuery(this.authHttp, this.config, controller, action);
     }
 
-    multipleFiles(type: string, action: string): MultipleFileQuery {
-        return new MultipleFileQuery(this.authHttp, this.config, type, action);
+    multipleFiles(controller: string, action: string): MultipleFileQuery {
+        return new MultipleFileQuery(this.authHttp, this.config, controller, action);
     }
 
-    deleteFile(type: string, action: string, fileUrl: string): DeleteFileQuery {
-        return new DeleteFileQuery(this.authHttp, this.config, type, action, fileUrl);
+    deleteFile(controller: string, action: string, fileUrl: string): DeleteFileQuery {
+        return new DeleteFileQuery(this.authHttp, this.config, action, controller, fileUrl);
     }
+
+    uploadSingleFile(controller: string, action: string, file: File): UploadSingleQuery {
+        return new UploadSingleQuery(this.authHttp, this.config, controller, action, file);
+    }
+
+    uploadMultipleFiles(controller: string, action: string, files: File[]): UploadMultipleQuery {
+        return new UploadMultipleQuery(this.authHttp, this.config, controller, action, files);
+    }
+
+    /* ------------ Helpers ---------- */
 
     mergeObservables(observables: Observable<any>[]): Observable<any> {
         return this.queryService.mergeObservables(observables);
     }
+
+    /* ------------ Private ---------- */
 
     private getItemsOrderJson<TItem extends IItem>(orderedItems: TItem[]): OrderItem[] {
         var data: OrderItem[] = [];

@@ -76,8 +76,14 @@ export class QueryService {
         return url;
     }
 
-    protected getUrl(type: string, action: string, options?: IOption[]): string {
-        var url = this.config.apiUrl + '/' + type + '/' + action;
+    protected getTypeUrl(type: string, action: string, options?: IOption[]): string {
+        var url = this.config.apiUrl + '/' + this.config.typeEndpoint + '/' + type + '/' + action;
+
+        return this.addOptionsToUrl(url, options);
+    }
+
+    protected getGenericUrl(controller: string, action: string, options?: IOption[]): string {
+        var url = this.config.apiUrl + '/' + controller + '/' + action;
 
         return this.addOptionsToUrl(url, options);
     }
@@ -276,33 +282,25 @@ export class QueryService {
         });
     }
 
-    private getSingleUploadResponse<TItem extends IItem>(response: Response): ResponseUploadSingle<TItem> {
-        var responseUpload = (response.json() || {}) as IResponseUploadSingleRaw<TItem>;
+    private getSingleUploadResponse(response: Response): ResponseUploadSingle {
+        var responseUpload = (response.json() || {}) as IResponseUploadSingleRaw;
 
-        var file = this.mapService.mapItem(responseUpload.file) as TItem;
+        var file = this.mapService.mapFile(responseUpload.file);
 
-        return new ResponseUploadSingle<TItem>({
+        return new ResponseUploadSingle({
             file: file,
-            fromCache: responseUpload.fromCache,
             action: responseUpload.action,
-            model: responseUpload.model,
-            timeCreated: responseUpload.timeCreated,
-            type: responseUpload.type
         });
     }
 
-    private getMultipleUploadResponse<TItem extends IItem>(response: Response): ResponseUploadMultiple<TItem> {
-        var responseUpload = (response.json() || {}) as IResponseUploadMultipleRaw<TItem>;
+    private getMultipleUploadResponse(response: Response): ResponseUploadMultiple {
+        var responseUpload = (response.json() || {}) as IResponseUploadMultipleRaw;
 
-        var files = this.mapService.mapItems(responseUpload.files) as TItem[];
+        var files = this.mapService.mapFiles(responseUpload.files);
 
-        return new ResponseUploadMultiple<TItem>({
+        return new ResponseUploadMultiple({
             files: files,
-            fromCache: responseUpload.fromCache,
             action: responseUpload.action,
-            model: responseUpload.model,
-            timeCreated: responseUpload.timeCreated,
-            type: responseUpload.type
         });
     }
 
@@ -566,7 +564,7 @@ export class QueryService {
             });
     }
     
-    protected uploadSingleFile<TItem extends IItem>(url: string, file: File): Observable<ResponseUploadSingle<TItem>> {
+    protected uploadSingleFile(url: string, file: File): Observable<ResponseUploadSingle> {
         // trigger request
         this.startRequest();
 
@@ -589,7 +587,7 @@ export class QueryService {
             });
     }
 
-    protected uploadMultipleFiles<TItem extends IItem>(url: string, files: File[]): Observable<ResponseUploadMultiple<TItem>> {
+    protected uploadMultipleFiles(url: string, files: File[]): Observable<ResponseUploadMultiple> {
         // trigger request
         this.startRequest();
 

@@ -61,6 +61,6 @@ export abstract class BaseItemCountQuery extends BaseQuery {
     }
 
     protected getQueryUrl(): string {
-        return this.getUrl(this.type, this._action, this._options);
+        return this.getTypeUrl(this.type, this._action, this._options);
     }
 }

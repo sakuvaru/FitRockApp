@@ -19,6 +19,7 @@ import {
 export function RepositoryClientFactory(authHttp: AuthHttp) {
 
     let apiUrl = AppConfig.RepositoryApiEndpoint;
+    let typeEndpoint = AppConfig.RepositoryTypeEndpoint;
 
     let typeResolvers: TypeResolver[] = [
         new TypeResolver("User", () => new User()),
@@ -44,7 +45,7 @@ export function RepositoryClientFactory(authHttp: AuthHttp) {
 
     return new RepositoryClient(
         authHttp,
-        new RepositoryConfig(apiUrl, typeResolvers, {
+        new RepositoryConfig(apiUrl, typeEndpoint, typeResolvers, {
             logErrorsToConsole: AppConfig.DevModeEnabled
         })
     )

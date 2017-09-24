@@ -45,15 +45,15 @@ export class UserGalleryComponent extends ClientsBaseComponent implements OnInit
             .map(clientId => {
                 this.uploaderConfig = this.dependencies.webComponentServices.uploaderService.uploader(
                     UploaderModeEnum.MultipleFiles,
-                    (files: File[]) => this.dependencies.itemServices.fileRecordService.uploadGalleryImages(files, clientId)
+                    (files: File[]) => this.dependencies.fileService.uploadGalleryImages(files, clientId)
                         .set())
                     .useDefaultImageExtensions(true)
-                    .onAfterUpload<FileRecord>((files => {
+                    .onAfterUpload<FetchedFile>((files => {
                         if (files) {
                             // append uploaded files to current gallery list
                             this.currentImages = _.union(this.currentImages, files.map(m => new GalleryImage({
-                                imageUrl: m.fetchedFile.absoluteUrl,
-                                imageDate: m.fetchedFile.fileLastModified
+                                imageUrl: m.absoluteUrl,
+                                imageDate: m.fileLastModified
                             })));
 
                             // refresh gallery
@@ -76,12 +76,13 @@ export class UserGalleryComponent extends ClientsBaseComponent implements OnInit
     private getUserGalleryFilesObservable(): Observable<any> {
         return this.clientIdChange
             .takeUntil(this.ngUnsubscribe)
-            .switchMap(clientId => this.dependencies.itemServices.fileRecordService.getGalleryFiles(clientId).set())
+            .switchMap(clientId => this.dependencies.fileService.getGalleryFiles(clientId).set())
             .map(response => {
                 if (response.files) {
                     var galleryImages = response.files.map(m => new GalleryImage({
                         imageUrl: m.absoluteUrl,
-                        imageDate: super.moment(m.fileLastModified).add(Math.floor(Math.random() * 20), 'days').toDate()
+                        imageDate: m.fileLastModified
+                        // used for testing the gallery grouping -> imageDate: super.moment(m.fileLastModified).add(Math.floor(Math.random() * 20), 'days').toDate()
                     }));
 
                     this.currentImages = galleryImages;
@@ -119,7 +120,7 @@ export class UserGalleryComponent extends ClientsBaseComponent implements OnInit
         })
         .groupsOrder((groups: GalleryGroup[]) => _.sortBy(groups, (m) => m.groupDate).reverse())
         .deleteFunction((image: GalleryImage) => {
-            return this.dependencies.itemServices.fileRecordService.deleteFile(image.imageUrl)
+            return this.dependencies.fileService.deleteFile(image.imageUrl)
                 .set()
                 .map(response => response.fileDeleted)
         })

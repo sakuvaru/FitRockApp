@@ -86,15 +86,12 @@ export interface IResponsePostRaw extends IResponseBase {
     model: string;
 }
 
-export interface IResponseUploadMultipleRaw<T> extends IItemResponseBase {
-    files: T[];
-    type: string;
+export interface IResponseUploadMultipleRaw extends IResponseBase {
+    files: IFetchedFile[];
 }
-export interface IResponseUploadSingleRaw<T> extends IItemResponseBase {
-    file: T;
+export interface IResponseUploadSingleRaw extends IResponseBase {
+    file: IFetchedFile;
 }
-
-
 export interface IResponseFileSingle extends IResponseBase {
     file?: IFetchedFile;
     fileFound: boolean;

@@ -1,3 +1,4 @@
+// shared/common
 export * from './log.service';
 export * from './user.service';
 
@@ -27,5 +28,5 @@ export * from './chat/chat-message.service';
 // feed
 export * from './feeds/feed.service';
 
-// file record
-export * from './file-records/file-record.service';
+// files
+export * from './file/file.service';

@@ -21,7 +21,7 @@ export class MultipleFileQuery extends BaseQuery {
     constructor(
         protected authHttp: AuthHttp,
         protected config: RepositoryConfig,
-        protected type: string,
+        protected controller: string,
         protected action: string
     ) {
         super(authHttp, config);
@@ -44,7 +44,7 @@ export class MultipleFileQuery extends BaseQuery {
             throw new Error('No action was specified for files query');
         }
 
-        return super.getUrl(this.type, this._action);
+        return super.getGenericUrl(this.controller, this._action);
     }
 
     // execution

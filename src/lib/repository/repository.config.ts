@@ -6,6 +6,7 @@ export class RepositoryConfig {
 
     constructor(
         public apiUrl: string,
+        public typeEndpoint: string,
         public typeResolvers: TypeResolver[],
         options?: {
             logErrorsToConsole: boolean

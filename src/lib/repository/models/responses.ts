@@ -248,9 +248,9 @@ export class ResponsePost<T extends any>{
     }
 }
 
-export class ResponseUploadMultiple<T> {
+export class ResponseUploadMultiple {
 
-    public files: T[];
+    public files: FetchedFile[];
 
     public fromCache: boolean;
     public timeCreated: Date;
@@ -266,7 +266,7 @@ export class ResponseUploadMultiple<T> {
             action?: string,
             model?: string,
 
-            files?: T[]
+            files?: FetchedFile[]
         }) {
         if (options) Object.assign(this, options);
     }
@@ -275,7 +275,7 @@ export class ResponseUploadMultiple<T> {
         return !this.files || this.files.length <= 0;
     }
 
-    firstItem(): T | null {
+    firstItem(): FetchedFile | null {
         if (this.isEmpty()) {
             return null;
         }
@@ -283,9 +283,9 @@ export class ResponseUploadMultiple<T> {
     }
 }
 
-export class ResponseUploadSingle<T> {
+export class ResponseUploadSingle{
 
-    public file: T;
+    public file: FetchedFile;
     public fromCache: boolean;
     public timeCreated: Date;
     public type: string;
@@ -300,7 +300,7 @@ export class ResponseUploadSingle<T> {
             action?: string,
             model?: string,
 
-            file?: T
+            file?: FetchedFile
         }) {
         if (options) Object.assign(this, options);
     }

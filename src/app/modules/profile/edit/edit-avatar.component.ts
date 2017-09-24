@@ -7,7 +7,7 @@ import { AppConfig, UrlConfig, ComponentDependencyService, BaseComponent } from 
 import { MyProfileMenuItems } from '../menu.items';
 import { Observable } from 'rxjs/Rx';
 import { UploaderConfig, UploaderModeEnum } from '../../../../web-components/uploader';
-import { FileRecord } from '../../../models';
+import { FetchedFile } from '../../../../lib/repository';
 
 @Component({
     templateUrl: 'edit-avatar.component.html'
@@ -42,12 +42,15 @@ export class EditAvatarComponent extends BaseComponent implements OnInit {
     private initUploader(): void {
         var userId = this.dependencies.authenticatedUserService.getUserId();
 
-        this.uploaderConfig = this.dependencies.webComponentServices.uploaderService.uploader(UploaderModeEnum.SingleFile, (file: File) => this.dependencies.itemServices.fileRecordService.uploadAvatar(file, userId).set())
+        this.uploaderConfig = this.dependencies.webComponentServices.uploaderService.uploader(
+            UploaderModeEnum.SingleFile, 
+            (file: File) => this.dependencies.fileService.uploadAvatar(file, userId)
+            .set())
             .useDefaultImageExtensions(true)
-            .onAfterUpload<FileRecord>((avatar => {
+            .onAfterUpload<FetchedFile>((avatar => {
                 if (avatar && avatar.length === 1){
                     // update src of the avatar
-                    this.avatarSrc = avatar[0].fetchedFile.absoluteUrl;
+                    this.avatarSrc = avatar[0].absoluteUrl;
                 }
             }))
             .build();

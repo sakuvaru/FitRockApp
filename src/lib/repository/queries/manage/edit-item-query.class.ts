@@ -47,7 +47,7 @@ export class EditItemQuery<TItem extends IItem> extends BaseQuery {
 
     // url
     protected getEditUrl(): string{
-        return this.getUrl(this.type, this._action);
+        return this.getTypeUrl(this.type, this._action);
     }
 
     // execution

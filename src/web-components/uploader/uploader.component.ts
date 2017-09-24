@@ -2,7 +2,6 @@
 import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { BaseWebComponent } from '../base-web-component.class';
-import { FileRecordService } from '../../app/services';
 
 // required by component
 import { UploaderConfig } from './uploader.config';
@@ -73,7 +72,6 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
 
     constructor(
         private translateService: TranslateService,
-        private fileRecordService: FileRecordService,
         private snackBarService: MdSnackBar,
     ) {
         super()

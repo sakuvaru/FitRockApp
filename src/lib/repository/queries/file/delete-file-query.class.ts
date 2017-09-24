@@ -18,8 +18,8 @@ export class DeleteFileQuery extends BaseQuery {
     constructor(
         protected authHttp: AuthHttp,
         protected config: RepositoryConfig,
-        protected type: string,
         protected action: string,
+        protected controller: string,
         protected fileUrl: string
     ) {
         super(authHttp, config);
@@ -41,7 +41,7 @@ export class DeleteFileQuery extends BaseQuery {
             throw Error(`No action was specified for delete file query`);
         }
 
-        return super.getUrl(this.type, this._action);
+        return super.getGenericUrl(this.controller, this._action);
     }
 
     // execution

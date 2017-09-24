@@ -11,7 +11,8 @@ export class AppConfig {
     public static RedirectQueryString = 'url';
 
     // web api config
-    public static RepositoryApiEndpoint = 'http://localhost:61466/type';
+    public static RepositoryApiEndpoint = 'http://localhost:61466';
+    public static RepositoryTypeEndpoint = 'type';
 
     // auth0 config
     public static Auth0_Domain = 'fitrock.eu.auth0.com'; // domain for Auth0 authentication

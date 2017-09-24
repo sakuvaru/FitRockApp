@@ -51,7 +51,7 @@ export abstract class BaseFormQuery extends BaseQuery {
     }
 
     protected getFormQueryUrl(): string {
-        return this.getUrl(this.type, this._action, this._options);
+        return this.getTypeUrl(this.type, this._action, this._options);
     }
 
     protected runEditFormQuery<TItem extends IItem>(itemId: number, disableCache?: boolean): Observable<ResponseFormEdit<TItem>> {

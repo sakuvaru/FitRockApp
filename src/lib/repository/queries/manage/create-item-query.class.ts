@@ -53,7 +53,7 @@ export class CreateItemQuery<TItem extends IItem> extends BaseQuery {
 
     // url
     protected getCreateUrl(): string{
-        return this.getUrl(this.type, this._action);
+        return this.getTypeUrl(this.type, this._action);
     }
 
     // execution

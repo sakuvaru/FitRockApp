@@ -12,14 +12,14 @@ import { ResponseUploadSingle } from '../../models/responses';
 // rxjs
 import { Observable } from 'rxjs/Rx';
 
-export class UploadSingleQuery<TItem extends IItem> extends BaseQuery {
+export class UploadSingleQuery extends BaseQuery {
 
     private _action: string;
 
     constructor(
         protected authHttp: AuthHttp,
         protected config: RepositoryConfig,
-        protected type: string,
+        protected controller: string,
         private action: string,
         private file: File,
     ) {
@@ -43,12 +43,12 @@ export class UploadSingleQuery<TItem extends IItem> extends BaseQuery {
             throw new Error('No action was specified for upload query');
         }
 
-        return super.getUrl(this.type, this._action);
+        return super.getGenericUrl(this.controller, this._action);
     }
 
     // execution
 
-    set(): Observable<ResponseUploadSingle<TItem>> {
+    set(): Observable<ResponseUploadSingle> {
         if (!this.file){
             throw new Error('No file was added to upload query')
         }
