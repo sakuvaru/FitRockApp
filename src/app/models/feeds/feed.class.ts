@@ -1,7 +1,7 @@
 import { BaseItem } from '../../../lib/repository';
 import { User } from '../user.class';
 import { DataModel } from '../extra/data-model.class';
-import { StringHelper } from '../../../lib/utilities';
+import { stringHelper } from '../../../lib/utilities';
 
 export class Feed extends BaseItem {
     public feedUserId: number;
@@ -38,7 +38,7 @@ export class FeedResult {
      */
     public shortenText(): string{
         if (this.text){
-            return StringHelper.shorten(this.text, 85, true);
+            return stringHelper.shorten(this.text, 85, true);
         }
 
         return '';

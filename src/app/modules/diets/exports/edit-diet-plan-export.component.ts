@@ -8,7 +8,7 @@ import { Diet, DietFood, Food } from '../../../models';
 import { DragulaService } from 'ng2-dragula';
 import { Subscription } from 'rxjs/Rx';
 import { CacheKeyType } from '../../../../lib/repository';
-import { StringHelper } from '../../../../lib/utilities';
+import { stringHelper } from '../../../../lib/utilities';
 import { SelectDietFoodDialogComponent } from '../dialogs/select-diet-food-dialog.component';
 import { EditDietFoodDialogComponent } from '../dialogs/edit-diet-food-dialog.component';
 import { AddCustomFoodDialogComponent } from '../dialogs/add-custom-food-dialog.component';
@@ -40,7 +40,7 @@ export class EditDietPlanExportComponent extends BaseComponent implements OnDest
     // set handle for dragula
     this.dragulaService.setOptions(this.dragulaBag, {
       moves: function (el: any, container: any, handle: any): any {
-        return StringHelper.contains(handle.className, 'dragula-move-handle');
+        return stringHelper.contains(handle.className, 'dragula-move-handle');
       }
     });
 

@@ -255,18 +255,16 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
             observables.push(this.translate('shared.close').map(text => this.dialogCloseButton = text));
         }
 
-        var mergedObservable = this.dependencies.coreServices.repositoryClient.mergeObservables(observables);
-
-        mergedObservable.subscribe(
-            () => Function(),
-            (error) => this.handleFatalError(error),
-            () => {
+        var zippedObservable = this.dependencies.helpers.observableHelper.zipObservables(observables)
+            .map(() => {
                 this.dependencies.tdServices.dialogService.openAlert({
                     message: this.dialogDynamicTranslationMessage,
                     title: this.dialogDynamicTranslationTitle,
                     closeButton: this.dialogCloseButton
                 });
             })
+
+        this.subscribeToObservable(zippedObservable);
     }
 
     // --------------- Global component initialization flag ------------------ //
@@ -330,9 +328,9 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
             this.startGlobalLoader();
         }
 
-        var mergedObservable = this.dependencies.coreServices.repositoryClient.mergeObservables(observables);
-        mergedObservable
+        this.dependencies.helpers.observableHelper.zipObservables(observables)
             .takeUntil(this.ngUnsubscribe)
+            .finally(() => this.stopAllLoaders())
             .subscribe(() => {
                 this.completedObservablesCount++;
                 if (this.completedObservablesCount === observables.length) {

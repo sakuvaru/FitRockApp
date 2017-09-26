@@ -6,7 +6,7 @@ import { ComponentDependencyService, BaseComponent, MenuItemType, AppConfig } fr
 
 // required by component
 import { Subscription } from 'rxjs/Rx';
-import { StringHelper } from '../../lib/utilities';
+import { stringHelper } from '../../lib/utilities';
 import { FormControl } from '@angular/forms';
 
 @Component({
@@ -178,6 +178,6 @@ export class AdminLayoutComponent extends BaseComponent implements OnDestroy, On
     }
 
     private shortenTitle(text: string): string | null {
-        return StringHelper.shorten(text, this.titleCharsLength, true)
+        return stringHelper.shorten(text, this.titleCharsLength, true)
     }
 }

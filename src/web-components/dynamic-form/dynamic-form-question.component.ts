@@ -3,7 +3,7 @@ import { FormGroup, AbstractControl } from '@angular/forms';
 import { FormField, ControlTypeEnum } from '../../lib/repository';
 import { TranslateService } from '@ngx-translate/core';
 import { FormConfig } from './form-config.class';
-import { StringHelper, NumberHelper } from '../../lib/utilities';
+import { stringHelper, numberHelper } from '../../lib/utilities';
 
 // NOTE: see https://angular.io/docs/ts/latest/cookbook/dynamic-form.html for more details
 
@@ -215,7 +215,7 @@ export class DynamicFormQuestionComponent implements OnInit {
 
     // check custom validation
     if (this.isNumberField()) {
-      if (!NumberHelper.isNumber(this.getQuestionValue())) {
+      if (!numberHelper.isNumber(this.getQuestionValue())) {
         // if min value = 0 && number is 0, its all good
         if (this.getMinNumberValue() == 0 && value === 0) {
           isValid = true;
@@ -279,7 +279,7 @@ export class DynamicFormQuestionComponent implements OnInit {
   }
 
   private getQuestionLabelKey(): string {
-    return 'form.' + StringHelper.firstCharToLowerCase(this.formConfig.type) + '.' + StringHelper.firstCharToLowerCase(this.question.key);
+    return 'form.' + stringHelper.firstCharToLowerCase(this.formConfig.type) + '.' + stringHelper.firstCharToLowerCase(this.question.key);
   }
 
   private getQuestionHintKey(): string {

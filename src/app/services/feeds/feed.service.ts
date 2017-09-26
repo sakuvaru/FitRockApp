@@ -3,7 +3,7 @@ import { Feed, FeedResult } from '../../models';
 import { RepositoryClient, MultipleItemQuery, ResponseMultiple, ResponseEdit } from '../../../lib/repository';
 import { BaseTypeService } from '../base/base-type.service';
 import { Observable } from 'rxjs/Rx';
-import { StringHelper } from '../../../lib/utilities';
+import { stringHelper } from '../../../lib/utilities';
 
 @Injectable()
 export class FeedService extends BaseTypeService<Feed>{
@@ -48,7 +48,7 @@ export class FeedService extends BaseTypeService<Feed>{
             var chatMessageData = feed.data.find(m => m.key === 'Message');
             var userData = feed.data.find(m => m.key === 'User');
 
-            translationData.message = chatMessageData ? StringHelper.shorten(chatMessageData.value, 85, true) : '';
+            translationData.message = chatMessageData ? stringHelper.shorten(chatMessageData.value, 85, true) : '';
             translationData.user = userData ? userData.value : '';
 
             return new FeedResult({

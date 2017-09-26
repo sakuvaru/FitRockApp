@@ -4,7 +4,7 @@ export class StringHelper {
      * Converts first char of the text to lowercase
      * @param text text 
      */
-    static firstCharToLowerCase(text) {
+    firstCharToLowerCase(text) {
         if (!text) {
             return null;
         }
@@ -15,7 +15,7 @@ export class StringHelper {
      * capitalizeTxt('this is a test'); // returns 'This is a test'
      * @param text text to capitalize
      */
-    static capitalizeText(text) {
+    capitalizeText(text) {
         if (!text) {
             return null;
         }
@@ -26,7 +26,7 @@ export class StringHelper {
      * Gets hash from given string
      * @param text text to hash
      */
-    static getHash(text: string): number {
+    getHash(text: string): number {
         var hash = 0, i, chr;
         if (!text) return hash;
         for (i = 0; i < text.length; i++) {
@@ -41,31 +41,31 @@ export class StringHelper {
      * Returns true if text contains the other one
      * @param text text to hash
      */
-    static contains(text: string, contains: string): boolean{
-        if (!text || !contains){
+    contains(text: string, contains: string): boolean {
+        if (!text || !contains) {
             return false;
         }
         return text.indexOf(contains) !== -1;
     }
 
-     /**
-     * Shortens given text
-     * @param text text to shorten
-     * @param chars number of characters to keep
-     * @param addDots dots to be added if the text is shortened
-     */
-    static shorten(text: string, chars: number, addDots?: boolean): string{
-        if (!text || !chars){
+    /**
+    * Shortens given text
+    * @param text text to shorten
+    * @param chars number of characters to keep
+    * @param addDots dots to be added if the text is shortened
+    */
+    shorten(text: string, chars: number, addDots?: boolean): string {
+        if (!text || !chars) {
             return '';
         }
 
-        if (text.length <= chars){
+        if (text.length <= chars) {
             return text;
         }
 
         var shortenedText = text.substr(0, chars);
 
-        if (addDots){
+        if (addDots) {
             shortenedText += '...';
         }
 
@@ -73,3 +73,5 @@ export class StringHelper {
     }
 
 }
+
+export var stringHelper = new StringHelper();

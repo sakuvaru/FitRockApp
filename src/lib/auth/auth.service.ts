@@ -7,7 +7,7 @@ import { UrlConfig } from '../../app/core/config/url.config';
 import { Auth0ErrorResponse } from './models/auth0-error-response.class';
 import { CurrentUser } from './models/current-user.class';
 import { Router } from '@angular/router';
-import { Guid } from '../../lib/utilities';
+import { guidHelper } from '../../lib/utilities';
 
 // auth0 class exposed by auth0 js
 declare var auth0: any;
@@ -47,7 +47,7 @@ export class AuthService {
         console.error(response.description);
 
         // redirect back to logon page & add a random hash (hash needs to be added to URL for lifecycle check)
-        this.router.navigate([UrlConfig.getLoginUrl()], { queryParams: { result: "error" }, fragment: Guid.newGuid() })
+        this.router.navigate([UrlConfig.getLoginUrl()], { queryParams: { result: "error" }, fragment: guidHelper.newGuid() })
 
         return false;
     }

@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs/Observable';
 import { MultipleItemQuery, IItem, ResponseMultiple, ItemCountQuery } from '../../lib/repository';
 import { DataTableField } from './data-table-field.class';
-import { Guid, StringHelper } from '../../lib/utilities';
+import { guidHelper, stringHelper } from '../../lib/utilities';
 
 export class DataTableConfig<TItem extends IItem> {
 
@@ -164,7 +164,7 @@ export class DataTableConfig<TItem extends IItem> {
                 fullText +=  property + '=' + propertyValue;
             }
         })
-        return StringHelper.getHash(fullText);
+        return stringHelper.getHash(fullText);
     }
 }
 

@@ -10,6 +10,9 @@ import { SharedService } from '../services/shared.service';
 import { AuthenticatedUserService } from '../services/authenticated-user.service';
 import { RepositoryClient } from '../../../lib/repository';
 
+// Helpers
+import { guidHelper, numberHelper, observableHelper, stringHelper, GuidHelper, NumberHelper, ObservableHelper, StringHelper } from '../../../lib/utilities';
+
 // Services
 import { UserService, ExerciseCategoryService, ExerciseService, LogService, WorkoutCategoryService,
      WorkoutExerciseService, WorkoutService, DietCategoryService, DietFoodService, DietService,
@@ -55,6 +58,7 @@ export class ComponentDependencyService {
     public webComponentServices: WebComponentServices;
     public mdServices: MdServices;
     public tdServices: TdServices;
+    public helpers: Helpers;
 
     constructor(private injector: Injector) {
         // use Angular's injector to get service instances
@@ -71,6 +75,13 @@ export class ComponentDependencyService {
         this.coreServices.sharedService = injector.get(SharedService);
         this.coreServices.moment = moment;
         this.coreServices.momentLanguage = moment;
+
+        // helpers
+        this.helpers = new Helpers();
+        this.helpers.guidHelper = guidHelper;
+        this.helpers.numberHelper = numberHelper;
+        this.helpers.observableHelper = observableHelper;
+        this.helpers.stringHelper = stringHelper;
 
         //td services (teradata covalent)
         this.tdServices = new TdServices();
@@ -183,4 +194,11 @@ export class ItemServices {
 
     // feed
     public feedService: FeedService;
+}
+
+export class Helpers {
+    public stringHelper: StringHelper;
+    public numberHelper: NumberHelper;
+    public guidHelper: GuidHelper;
+    public observableHelper: ObservableHelper;
 }

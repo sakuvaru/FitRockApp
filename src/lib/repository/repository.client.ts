@@ -1,4 +1,3 @@
-import { QueryService } from './services/query.service';
 import { IItem } from './interfaces/iitem.interface';
 import { AuthHttp } from 'angular2-jwt';
 import { RepositoryConfig } from './repository.config';
@@ -23,22 +22,15 @@ import { MultipleFileQuery } from './queries/file/multiple-file-query.class';
 import { SingleFileQuery } from './queries/file/single-file-query.class';
 import { DeleteFileQuery } from './queries/file/delete-file-query.class';
 
-// rxjs
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-
 export class RepositoryClient {
-
-    private queryService: QueryService;
 
     constructor(
         protected authHttp: AuthHttp,
         protected config: RepositoryConfig
     ) {
-        this.queryService = new QueryService(this.authHttp, this.config);
     }
 
-    /* ------------ Item ---------- */
+    /* ------------ Item queries ---------- */
 
     items<TItem extends IItem>(type: string): MultipleItemQuery<TItem> {
         return new MultipleItemQuery<TItem>(this.authHttp, this.config, type);
@@ -86,6 +78,8 @@ export class RepositoryClient {
         return new DeleteItemQuery(this.authHttp, this.config, type, itemId);
     }
 
+    /* --------------- Form queries ------------- */
+
     insertForm<TItem extends IItem>(type: string): InsertFormQuery<TItem> {
         return new InsertFormQuery<TItem>(this.authHttp, this.config, type);
     }
@@ -94,7 +88,7 @@ export class RepositoryClient {
         return new EditFormQuery<TItem>(this.authHttp, this.config, type, itemId);
     }
 
-    /* ------------ Files ---------- */
+    /* ------------ File queroes ---------- */
 
     singleFile(controller: string, action: string): SingleFileQuery {
         return new SingleFileQuery(this.authHttp, this.config, controller, action);
@@ -114,12 +108,6 @@ export class RepositoryClient {
 
     uploadMultipleFiles(controller: string, action: string, files: File[]): UploadMultipleQuery {
         return new UploadMultipleQuery(this.authHttp, this.config, controller, action, files);
-    }
-
-    /* ------------ Helpers ---------- */
-
-    mergeObservables(observables: Observable<any>[]): Observable<any> {
-        return this.queryService.mergeObservables(observables);
     }
 
     /* ------------ Private ---------- */

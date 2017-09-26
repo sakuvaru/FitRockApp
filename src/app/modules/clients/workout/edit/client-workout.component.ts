@@ -12,7 +12,7 @@ import { DragulaService } from 'ng2-dragula';
 import 'rxjs/add/operator/switchMap';
 import { Observable, Subscription } from 'rxjs/Rx';
 import * as _ from 'underscore';
-import { StringHelper } from '../../../../../lib/utilities';
+import { stringHelper } from '../../../../../lib/utilities';
 
 @Component({
     templateUrl: 'client-workout.component.html'
@@ -68,7 +68,7 @@ export class ClientWorkoutComponent extends ClientsBaseComponent implements OnIn
         var that = this;
         this.dragulaService.setOptions(this.dragulaBag, {
             moves: function (el: any, container: any, handle: any): any {
-                return StringHelper.contains(handle.className, that.dragulaMoveHandle);
+                return stringHelper.contains(handle.className, that.dragulaMoveHandle);
             }
         });
 

@@ -8,7 +8,7 @@ import { Workout, WorkoutExercise, Exercise } from '../../../models';
 import { DragulaService } from 'ng2-dragula';
 import { Subscription } from 'rxjs/Rx';
 import { CacheKeyType } from '../../../../lib/repository';
-import { StringHelper } from '../../../../lib/utilities';
+import { stringHelper } from '../../../../lib/utilities';
 import { SelectWorkoutExerciseDialogComponent } from '../dialogs/select-workout-exercise-dialog.component';
 import { EditWorkoutExerciseDialogComponent } from '../dialogs/edit-workout-exercise-dialog.component';
 import { AddWorkoutExerciseDialogComponent } from '../dialogs/add-workout-exercise-dialog.component';
@@ -40,7 +40,7 @@ export class EditWorkoutPlanExportComponent extends BaseComponent implements OnD
      // set handle for dragula
      this.dragulaService.setOptions(this.dragulaBag, {
       moves: function (el: any, container: any, handle: any): any {
-        return StringHelper.contains(handle.className, 'dragula-move-handle');
+        return stringHelper.contains(handle.className, 'dragula-move-handle');
       }
     });
 
