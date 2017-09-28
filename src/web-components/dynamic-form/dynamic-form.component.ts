@@ -63,14 +63,17 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
         private snackBarService: MdSnackBar,
         private translateService: TranslateService,
         private cdr: ChangeDetectorRef
-    ) { super()
+    ) {
+        super()
     }
 
     ngOnInit() {
-        this.initDynamicForm(this.config);
+        if (this.config) {
+            this.initDynamicForm(this.config);
+        }
     }
 
-    private initButtons(): void{
+    private initButtons(): void {
         this.insertButtonSubject = new Subject<void>();
         this.deleteButtonSubject = new Subject<void>();
         this.editButtonSubject = new Subject<void>();
@@ -93,7 +96,7 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
 
             // subscribe to button events
             this.initButtonClicks();
-            
+
             // load fields
             this.form = this.fieldControlService.toFormGroup(this.config.fields);
 
@@ -114,7 +117,7 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
             this.isInsertForm = this.config.isInsertForm();
 
             // after init
-            if (this.config.onFormLoaded){
+            if (this.config.onFormLoaded) {
                 this.config.onFormLoaded();
             }
         }
@@ -122,7 +125,7 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
         this.cdr.detectChanges();
     }
 
-    ngOnChanges(changes: SimpleChanges ) {
+    ngOnChanges(changes: SimpleChanges) {
         // re-initalize form when questions changes because dynamic form may recieve config with questions 
         // after the initilization of component 
         if (changes.config && changes.config.currentValue) {
@@ -135,7 +138,7 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
             this.insertButtonSubject
                 .takeUntil(this.ngUnsubscribe)
                 .switchMap(event => {
-                    if (!this.config.insertFunction){
+                    if (!this.config.insertFunction) {
                         throw new Error('Insert function is not defined');
                     }
 
@@ -163,6 +166,9 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
 
                     // stop loader
                     this.stopLoader();
+                    
+                    // form clear
+                    this.handleFormClear();
                 },
                 (err) => {
                     this.handleError(err);
@@ -172,7 +178,7 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
             this.editButtonSubject
                 .takeUntil(this.ngUnsubscribe)
                 .switchMap(event => {
-                    if (!this.config.editFunction){
+                    if (!this.config.editFunction) {
                         throw new Error('Edit function is not defined');
                     }
 
@@ -217,7 +223,7 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
             this.deleteButtonSubject
                 .takeUntil(this.ngUnsubscribe)
                 .switchMap(response => {
-                    if (!this.config.deleteFunction){
+                    if (!this.config.deleteFunction) {
                         throw new Error('Delete function is not defined');
                     }
 
@@ -245,8 +251,8 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
         }
     }
 
-    private deleteIsEnabled(): boolean{
-        if( this.config.enableDelete && this.config.deleteFunction){
+    private deleteIsEnabled(): boolean {
+        if (this.config.enableDelete && this.config.deleteFunction) {
             return true;
         }
         return false;
@@ -276,7 +282,7 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
 
         var fieldInHiddenFields = this.config.hiddenFields.find(m => m === key);
 
-        if (fieldInHiddenFields){
+        if (fieldInHiddenFields) {
             return false;
         }
         return true;
@@ -294,13 +300,13 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
     }
 
     private startLoader(): void {
-        if (this.config.loaderConfig){
+        if (this.config.loaderConfig) {
             this.config.loaderConfig.start();
         }
     }
 
     private stopLoader(): void {
-        if (this.config.loaderConfig){
+        if (this.config.loaderConfig) {
             this.config.loaderConfig.stop();
         }
     }
@@ -337,25 +343,26 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
     private handleUpdateAfter(response: ResponseEdit<any>): void {
         this.handleSnackBar();
 
-        // only insert forms can be cleared after save
-        if (this.config.clearFormAfterSave && this.config.isInsertForm()){
-            this.initDynamicForm(this.config);
-         }
-
         if (this.config.onAfterUpdate) {
             this.config.onAfterUpdate(response);
         }
+
+
     }
 
     private handleInsertAfter(response: ResponseCreate<any>): void {
         this.handleSnackBar();
 
-        if (this.config.clearFormAfterSave){
-           this.initDynamicForm(this.config);
-        }
-
         if (this.config.onAfterInsert) {
             this.config.onAfterInsert(response);
+        }
+    }
+
+    private handleFormClear(): void {
+        // only insert forms can be cleared after save
+        if (this.config.clearFormAfterSave && this.config.isInsertForm()) {
+            this.questions = [];
+            this.initDynamicForm(this.config);
         }
     }
 
@@ -399,11 +406,11 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
                         // get translated label of the form field
                         var formField = this.questions.find(m => m.key.toLowerCase() === validationResult.columnName.toLocaleLowerCase());
 
-                        if (formField){
+                        if (formField) {
                             // form error
                             this.getFormErrorMessage(validationResult, formField.translatedLabel || formField.key).subscribe(error => this.formErrorLines.push(error))
                         }
-                        else{
+                        else {
                             console.warn(`Form field '${validationResult.columnName}' could not be found in form and therefore error message could not be displayed`);
                         }
                     }

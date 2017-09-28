@@ -89,6 +89,7 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
                 form.onAfterSave(() => {
                     this.reloadDataTable();
                 });
+                form.clearFormAfterSave(true);
 
                 // set extra translation value for measurement value based on currently selected type
                 form.onFieldValueChange((config, changedField, newValue) => {
@@ -124,10 +125,7 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
 
                 });
 
-                // reload form
-                this.formConfig = undefined;
                 this.formConfig = form.build();
-                this.formConfig.item
             },
             error => super.handleError(error));
     }

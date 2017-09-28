@@ -1,4 +1,4 @@
-import { Component, Input, AfterViewInit, ChangeDetectorRef, OnInit } from '@angular/core';
+import { Component, Input, AfterViewInit, ChangeDetectorRef, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { FormGroup, AbstractControl } from '@angular/forms';
 import { FormField, ControlTypeEnum } from '../../lib/repository';
 import { TranslateService } from '@ngx-translate/core';
@@ -12,7 +12,7 @@ import { stringHelper, numberHelper } from '../../lib/utilities';
   templateUrl: './dynamic-form-question.component.html'
 })
 
-export class DynamicFormQuestionComponent implements OnInit {
+export class DynamicFormQuestionComponent implements OnInit, OnChanges {
 
   @Input() question: FormField;
 
@@ -50,14 +50,16 @@ export class DynamicFormQuestionComponent implements OnInit {
 
 
   ngOnInit() {
-    // translation
-    this.reloadTranslations();
+    // init question
+    if (this.formConfig) {
+      this.initValues(this.formConfig);
+    }
+  }
 
-    // subscribe to value changes
-    this.subscribeToChanges();
-
-    // init values
-    this.initValues();
+  ngOnChanges(changes: SimpleChanges) {
+    if (this.question && this.formConfig && changes.form && changes.form.currentValue) {
+      this.initValues(this.formConfig);
+    }
   }
 
   reloadTranslations(): void {
@@ -65,7 +67,20 @@ export class DynamicFormQuestionComponent implements OnInit {
     this.translateQuestionLabel();
   }
 
-  private initValues(): void {
+  private initValues(config: FormConfig<any>): void {
+    if (!config) {
+      console.warn(`Cannot initialize question '${this.question.key}')`);
+      return;
+    }
+
+    this.formConfig = config;
+
+    // translation
+    this.reloadTranslations();
+
+    // subscribe to value changes
+    this.subscribeToChanges();
+
     // this should be first -> set the 'value' of form control to 'defaultValue' in case of insert form
     // this can be overriden by more specific control types needs (e.g the radio button)
     if (this.formConfig.isInsertForm()) {
@@ -163,8 +178,9 @@ export class DynamicFormQuestionComponent implements OnInit {
           this.form.controls[this.question.key].setValue(new Date(date));
         }
       }
-      else {
+      else if (this.formConfig.isInsertForm()) {
         this.form.controls[this.question.key].setValue(new Date());
+        console.log('here');
       }
     }
 
