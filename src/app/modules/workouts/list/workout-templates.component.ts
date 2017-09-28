@@ -48,7 +48,7 @@ export class WorkoutTemplatesComponent extends BaseComponent implements OnInit {
           .include('WorkoutCategory')
           .byCurrentUser()
           .whereLike('WorkoutName', searchTerm)
-          .whereNullOrEmpty('ClientId')
+          .whereNull('ClientId')
       })
       .loadResolver(query => {
         return query
@@ -56,7 +56,7 @@ export class WorkoutTemplatesComponent extends BaseComponent implements OnInit {
           .takeUntil(this.ngUnsubscribe)
       })
       .dynamicFilters((searchTerm) => {
-        return this.dependencies.itemServices.workoutCategoryService.getCategoriesWithWorkoutTemplatesCount(searchTerm)
+        return this.dependencies.itemServices.workoutCategoryService.getCategoryCountForWorkoutTemplates(searchTerm)
           .get()
           .map(response => {
             var filters: Filter<WorkoutCategoryListWithWorkoutsCount>[] = [];

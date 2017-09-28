@@ -65,8 +65,13 @@ export abstract class BaseItemQuery extends BaseQuery {
         return this;
     }
 
-     whereNullOrEmpty(field: string): this {
-        this._options.push(new Options.WhereNullOrEmpty(field));
+    whereNotEquals(field: string, value: string | number | boolean): this {
+        this._options.push(new Options.WhereNotEquals(field, value));
+        return this;
+    }
+
+    whereEmpty(field: string): this {
+        this._options.push(new Options.WhereEmpty(field));
         return this;
     }
 
@@ -75,8 +80,28 @@ export abstract class BaseItemQuery extends BaseQuery {
         return this;
     }
 
-    WhereLikeMultiple(fields: string[], value: string | number | boolean): this {
+    whereLikeMultiple(fields: string[], value: string | number | boolean): this {
         this._options.push(new Options.WhereLikeMultiple(fields, value));
+        return this;
+    }
+
+    whereNull(field: string): this {
+        this._options.push(new Options.WhereNull(field));
+        return this;
+    }
+
+    whereNullMultiple(fields: string[]): this {
+        this._options.push(new Options.WhereNullMultiple(fields));
+        return this;
+    }
+
+    whereNotNull(field: string): this {
+        this._options.push(new Options.WhereNotNull(field));
+        return this;
+    }
+
+    whereNotNullMultiple(fields: string[]): this {
+        this._options.push(new Options.WhereNotNullMultiple(fields));
         return this;
     }
 

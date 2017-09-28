@@ -7,7 +7,7 @@ export class DietsOverviewMenuItems {
     constructor() {
         this.menuItems = [
             new MenuItem({ key: 'module.diets.submenu.dietTemplates' }, MenuItemType.trainer, 'diets', { icon: 'restaurant' }),
-            new MenuItem({ key: 'module.diets.submenu.allDiets' }, MenuItemType.trainer, 'diets/all', { icon: 'restaurant' }),
+            new MenuItem({ key: 'module.diets.submenu.clientDiets' }, MenuItemType.trainer, 'diets/client-diets', { icon: 'restaurant' }),
         ];
     }
 }

@@ -6,7 +6,7 @@ import { RouterModule } from '@angular/router';
 import { CoreModule } from '../../core';
 
 // components
-import { AllDietsComponent } from './list/all-diets.component';
+import { ClientDietsComponent } from './list/client-diets.component';
 import { DietTemplatesComponent } from './list/diet-templates.component';
 import { NewDietTemplateComponent } from './new/new-diet-template.component';
 import { EditDietComponent } from './edit/edit-diet.component';
@@ -40,7 +40,7 @@ import { SharedModule} from '../shared/shared.module';
         AddCustomFoodDialogComponent // has to be added here because its created by another dialog
     ],
     declarations: [
-        AllDietsComponent,
+        ClientDietsComponent,
         DietTemplatesComponent,
         NewDietTemplateComponent,
         EditDietComponent,

@@ -116,7 +116,7 @@ export class ClientWorkoutComponent extends ClientsBaseComponent implements OnIn
             .takeUntil(this.ngUnsubscribe)
             .switchMap(clientId => this.dependencies.itemServices.workoutService.items()
                 .byCurrentUser()
-                .whereNullOrEmpty('ClientId')
+                .whereEmpty('ClientId')
                 .orderByAsc("WorkoutName")
                 .get())
             .map(response => {

@@ -12,7 +12,7 @@ import { SimpleLayoutComponent } from '../../layouts/simple-layout.component';
 import { AdminLayoutComponent } from '../../layouts/admin-layout.component';
 
 // workouts
-import { AllWorkoutsComponent } from './list/all-workouts.component';
+import { ClientWorkoutsComponent } from './list/client-workouts.component';
 import { WorkoutTemplatesComponent } from './list/workout-templates.component';
 import { NewWorkoutComponent } from './new/new-workout.component';
 import { EditWorkoutComponent } from './edit/edit-workout.component';
@@ -30,7 +30,7 @@ const routes: Routes = [
                 path: 'workouts', component: WorkoutTemplatesComponent
             },
             {
-                path: 'workouts/all', component: AllWorkoutsComponent
+                path: 'workouts/client-workouts', component: ClientWorkoutsComponent
             },
             {
                 path: 'workouts/new', component: NewWorkoutComponent

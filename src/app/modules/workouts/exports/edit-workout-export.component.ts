@@ -35,10 +35,6 @@ export class EditWorkoutExportComponent extends BaseComponent implements OnInit,
         }
     }
 
-    handleClick(): void {
-        throw Error('BOOM!');
-    }
-
     ngOnInit(): void {
         super.ngOnInit();
     }

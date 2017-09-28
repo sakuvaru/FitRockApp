@@ -4,16 +4,16 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { AppConfig, ComponentDependencyService, BaseComponent, ComponentConfig } from '../../../core';
 
 // required by component
-import { DietsOverviewMenuItems } from '../menu.items';
+import { WorkoutsOverviewMenuItems } from '../menu.items';
 import { DataTableConfig, AlignEnum, Filter } from '../../../../web-components/data-table';
-import { Diet, DietCategoryWithDietsCountDto } from '../../../models';
+import { Workout, WorkoutCategoryListWithWorkoutsCount } from '../../../models';
 
 @Component({
-  templateUrl: 'all-diets.component.html'
+  templateUrl: 'client-workouts.component.html'
 })
-export class AllDietsComponent extends BaseComponent implements OnInit {
+export class ClientWorkoutsComponent extends BaseComponent implements OnInit {
 
-  private config: DataTableConfig<Diet>;
+  private config: DataTableConfig<Workout>;
 
   constructor(
     protected dependencies: ComponentDependencyService) {
@@ -25,20 +25,20 @@ export class AllDietsComponent extends BaseComponent implements OnInit {
 
     this.setConfig({
       autoInitComponent: true,
-      menuTitle: { key: 'menu.diets' },
-      menuItems: new DietsOverviewMenuItems().menuItems,
-      componentTitle: { key: 'module.diets.submenu.allDiets' },
+      menuTitle: { key: 'menu.workouts' },
+      menuItems: new WorkoutsOverviewMenuItems().menuItems,
+      componentTitle: { key: 'module.workouts.submenu.clientWorkouts' },
     });
 
     this.initDataTable();
   }
 
   private initDataTable(): void {
-    this.config = this.dependencies.webComponentServices.dataTableService.dataTable<Diet>()
+    this.config = this.dependencies.webComponentServices.dataTableService.dataTable<Workout>()
       .fields([
-        { value: (item) => { return item.dietName }, flex: 40 },
+        { label: 'module.workouts.workoutName', value: (item) => { return item.workoutName }, flex: 40 },
         {
-          value: (item) => {
+          label: '-', value: (item) => {
             if (item.client) {
               return item.client.getFullName();
             }
@@ -46,16 +46,17 @@ export class AllDietsComponent extends BaseComponent implements OnInit {
           }, isSubtle: true, align: AlignEnum.Left, hideOnSmallScreens: true
         },
         {
-          value: (item) => {
-            return item.dietCategory.categoryName;
+          label: 'shared.updated', value: (item) => {
+            return item.workoutCategory.categoryName;
           }, isSubtle: true, align: AlignEnum.Right, hideOnSmallScreens: true
         },
       ])
       .loadQuery(searchTerm => {
-        return this.dependencies.itemServices.dietService.items()
-          .includeMultiple(['DietCategory', 'Client'])
+        return this.dependencies.itemServices.workoutService.items()
+          .includeMultiple(['WorkoutCategory', 'Client'])
           .byCurrentUser()
-          .whereLike('DietName', searchTerm)
+          .whereLike('WorkoutName', searchTerm)
+          .whereNotNull('ClientId')
       })
       .loadResolver(query => {
         return query
@@ -63,15 +64,15 @@ export class AllDietsComponent extends BaseComponent implements OnInit {
           .takeUntil(this.ngUnsubscribe)
       })
       .dynamicFilters((searchTerm) => {
-        return this.dependencies.itemServices.dietCategoryService.getDietCategoryWithDietsCount(searchTerm, true)
+        return this.dependencies.itemServices.workoutCategoryService.getCategoryCountForClientWorkouts(searchTerm)
           .get()
           .map(response => {
-            var filters: Filter<DietCategoryWithDietsCountDto>[] = [];
+            var filters: Filter<WorkoutCategoryListWithWorkoutsCount>[] = [];
             response.items.forEach(category => {
               filters.push(new Filter({
                 filterNameKey: category.codename,
-                onFilter: (query) => query.whereEquals('DietCategoryId', category.id),
-                count: category.dietsCount
+                onFilter: (query) => query.whereEquals('WorkoutCategoryId', category.id),
+                count: category.workoutsCount
               }));
             });
             return filters;
@@ -80,7 +81,7 @@ export class AllDietsComponent extends BaseComponent implements OnInit {
       })
       .showAllFilter(true)
       .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
-      .onClick((item) => super.navigate([super.getTrainerUrl('diets/edit-plan/') + item.id]))
+      .onClick((item) => super.navigate([super.getTrainerUrl('workouts/edit-plan/') + item.id]))
       .build();
   }
 }

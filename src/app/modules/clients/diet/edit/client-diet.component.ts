@@ -114,7 +114,7 @@ export class ClientDietComponent extends ClientsBaseComponent implements OnInit,
             .takeUntil(this.ngUnsubscribe)
             .switchMap(clientId => this.dependencies.itemServices.dietService.items()
                 .byCurrentUser()
-                .whereNullOrEmpty('ClientId')
+                .whereNull('ClientId')
                 .orderByAsc("DietName")
                 .get())
             .map(response => {

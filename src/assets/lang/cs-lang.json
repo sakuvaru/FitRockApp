@@ -95,7 +95,7 @@
 		},
 		"workouts": {
 			"submenu": {
-				"allWorkouts": "Všechny tréninky",
+				"clientWorkouts": "Klientské tréninky",
 				"workoutTemplates": "Šablony",
 				"new": "Nová šablona tréninku"
 			},
@@ -118,7 +118,8 @@
 			"myExercises": "Moje cviky",
 			"allExercises": "Všechny cviky",
 			"addCustomExercise": "Vytvořit vlastní cvik",
-			"exerciseHasNoNotes": "Cvik nemá žádné poznámky"
+			"exerciseHasNoNotes": "Cvik nemá žádné poznámky",
+			"clientWorkoutsNotice": "Na této stránce najdeš všechny tréninky použité pro klienty. Tyto tréninky jsou nezávislé na šablonách a lze je upravit pro každého klienta samostatně."
 		},
 		"exercises": {
 			"exercise": "Cviky",
@@ -135,7 +136,7 @@
 		"diets": {
 			"submenu": {
 				"dietTemplates": "Šablony",
-				"allDiets": "Všechny jídelníčky",
+				"clientDiets": "Klientské jídelníčky",
 				"view": "Zobrazit",
 				"editPlan": "Upravit šablonu",
 				"edit": "Upravit základní údaje",
@@ -152,7 +153,8 @@
 			"myFoods": "Moje jídla",
 			"dietFoodHasNoNotes": "Nejsou zde žádné poznámky",
 			"eatTime": "Čas",
-			"selectFood": "Vybrat jídlo"
+			"selectFood": "Vybrat jídlo",
+			"clientDietsNotice": "Na této stránce najdeš všechny jídelníčky použité pro klienty. Tyto jídelníčky jsou nezávislé na šablonách a lze je upravit pro každého klienta samostatně."
 		},
 		"foods": {
 			"submenu": {

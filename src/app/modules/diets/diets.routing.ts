@@ -12,7 +12,7 @@ import { SimpleLayoutComponent } from '../../layouts/simple-layout.component';
 import { AdminLayoutComponent } from '../../layouts/admin-layout.component';
 
 // components
-import { AllDietsComponent } from './list/all-diets.component';
+import { ClientDietsComponent } from './list/client-diets.component';
 import { DietTemplatesComponent } from './list/diet-templates.component';
 import { NewDietTemplateComponent } from './new/new-diet-template.component';
 import { EditDietComponent } from './edit/edit-diet.component';
@@ -33,7 +33,7 @@ const routes: Routes = [
                 path: 'diets', component: DietTemplatesComponent
             },
             {
-                path: 'diets/all', component: AllDietsComponent
+                path: 'diets/client-diets', component: ClientDietsComponent
             },
             {
                 path: 'diets/new', component: NewDietTemplateComponent

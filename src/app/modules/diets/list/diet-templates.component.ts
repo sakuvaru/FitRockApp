@@ -56,6 +56,7 @@ export class DietTemplatesComponent extends BaseComponent implements OnInit {
           .includeMultiple(['DietCategory', 'Client'])
           .byCurrentUser()
           .whereLike('DietName', searchTerm)
+          .whereNull('ClientId')
       })
       .loadResolver(query => {
         return query
@@ -63,7 +64,7 @@ export class DietTemplatesComponent extends BaseComponent implements OnInit {
           .takeUntil(this.ngUnsubscribe)
       })
       .dynamicFilters((searchTerm) => {
-        return this.dependencies.itemServices.dietCategoryService.getDietCategoryWithDietsCount(searchTerm, false)
+        return this.dependencies.itemServices.dietCategoryService.getCategoryCountForDietTemplates(searchTerm)
           .get()
           .map(response => {
             var filters: Filter<DietCategoryWithDietsCountDto>[] = [];

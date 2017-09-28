@@ -75,7 +75,7 @@ export class ChatComponent extends BaseComponent implements OnInit {
             .switchMap(search => {
                 return this.dependencies.itemServices.userService.clients()
                     .pageSize(this.clientsPageSize)
-                    .WhereLikeMultiple(['FirstName', 'LastName'], search)
+                    .whereLikeMultiple(['FirstName', 'LastName'], search)
                     .orderByAsc('FirstName')
                     .get()
                     .takeUntil(this.ngUnsubscribe);

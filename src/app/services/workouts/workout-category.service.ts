@@ -13,16 +13,16 @@ export class WorkoutCategoryService extends BaseTypeService<WorkoutCategory>{
         })
     }
 
-    getCategoriesWithWorkoutsCount(workoutName: string): MultipleItemQueryCustom<WorkoutCategoryListWithWorkoutsCount> {
+    getCategoryCountForClientWorkouts(workoutName: string): MultipleItemQueryCustom<WorkoutCategoryListWithWorkoutsCount> {
         return this.customItems<WorkoutCategoryListWithWorkoutsCount>()
             .withCustomOption('workoutName', workoutName)
-            .withCustomAction('GetCategoriesWithWorkoutsCount');
+            .withCustomAction('GetCategoryCountForClientWorkouts');
     }
 
-    getCategoriesWithWorkoutTemplatesCount(workoutName: string): MultipleItemQueryCustom<WorkoutCategoryListWithWorkoutsCount> {
+    getCategoryCountForWorkoutTemplates(workoutName: string): MultipleItemQueryCustom<WorkoutCategoryListWithWorkoutsCount> {
         return this.customItems<WorkoutCategoryListWithWorkoutsCount>()
             .withCustomOption('workoutName', workoutName)
-            .withCustomAction('GetCategoriesWithWorkoutTemplatesCount');
+            .withCustomAction('GetCategoryCountForWorkoutTemplates');
     }
 
 }

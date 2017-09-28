@@ -13,10 +13,15 @@ export class DietCategoryService extends BaseTypeService<DietCategory>{
         })
     }
 
-    getDietCategoryWithDietsCount(dietName: string, takeAllDiets: boolean): MultipleItemQueryCustom<DietCategoryWithDietsCountDto>{
+    getCategoryCountForDietTemplates(dietName: string): MultipleItemQueryCustom<DietCategoryWithDietsCountDto>{
         return this.customItems<DietCategoryWithDietsCountDto>()
             .withCustomOption('dietName', dietName)
-            .withCustomOption('takeAllDiets', takeAllDiets)
-            .withCustomAction('DietCategoryWithDietsCount');
+            .withCustomAction('GetCategoryCountForDietTemplates');
+    }
+
+    getCategoryCountForClientDiets(dietName: string): MultipleItemQueryCustom<DietCategoryWithDietsCountDto>{
+        return this.customItems<DietCategoryWithDietsCountDto>()
+            .withCustomOption('dietName', dietName)
+            .withCustomAction('GetCategoryCountForClientDiets');
     }
 }

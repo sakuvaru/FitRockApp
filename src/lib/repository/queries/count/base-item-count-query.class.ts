@@ -45,8 +45,8 @@ export abstract class BaseItemCountQuery extends BaseQuery {
         return this;
     }
 
-    whereNullOrEmpty(field: string): this {
-        this._options.push(new Options.WhereNullOrEmpty(field));
+    whereEmpty(field: string): this {
+        this._options.push(new Options.WhereEmpty(field));
         return this;
     }
 
