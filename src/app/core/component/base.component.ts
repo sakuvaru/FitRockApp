@@ -332,15 +332,10 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
             .takeUntil(this.ngUnsubscribe)
             .finally(() => this.stopAllLoaders())
             .subscribe(() => {
-                this.completedObservablesCount++;
-                if (this.completedObservablesCount === observables.length) {
-                    this.stopAllLoaders();
-                    this.completedObservablesCount = 0;
+                this.stopAllLoaders();
 
-                    // set component as initialized
-                    if (setComponentAsInitialized) {
-                        this.setComponentAsInitialized(true)
-                    }
+                if (setComponentAsInitialized) {
+                    this.setComponentAsInitialized(true)
                 }
             },
             error => this.handleError(error)
