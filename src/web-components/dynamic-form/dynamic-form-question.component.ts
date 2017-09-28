@@ -180,7 +180,6 @@ export class DynamicFormQuestionComponent implements OnInit, OnChanges {
       }
       else if (this.formConfig.isInsertForm()) {
         this.form.controls[this.question.key].setValue(new Date());
-        console.log('here');
       }
     }
 

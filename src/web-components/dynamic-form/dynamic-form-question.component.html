@@ -32,7 +32,7 @@
   </div>
 
   <md-form-field *ngIf="isTextAreaField()" flex [hintLabel]="questionHint">
-    <textarea MdTextareaAutosize mdInput mdAutosizeMinRows="question.options.minAutosizeRows" mdAutosizeMaxRows="question.options.maxAutosizeRows"
+    <textarea mdTextareaAutosize mdInput [mdAutosizeMinRows]="question.options.minAutosizeRows" [mdAutosizeMaxRows]="question.options.maxAutosizeRows"
       [attr.maxLength]="question.options.maxLength > 0 ? question.options.maxLength : null" [required]="question.required"
       [placeholder]="question.translatedLabel" [formControlName]="question.key" [id]="question.key" [type]="question.type"
       #elem>
