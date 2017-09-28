@@ -31,12 +31,17 @@ export class ClientWorkoutComponent extends ClientsBaseComponent implements OnIn
     /**
      * Class of the handle used to drag & drop dragula items
      */
-    private readonly dragulaMoveHandle: string = 'dragula-move-handle';
+    private readonly dragulaMoveHandle: string = 'mat-list-item-content';
 
     /**
      * Drop subscription for dragula - Unsubscribe on destroy!
      */
     private dropSubscription: Subscription;
+
+    /**
+     * Indicates which workout is expanded
+     */
+    private expandedWorkoutId: number | null = null;
 
     constructor(
         protected componentDependencyService: ComponentDependencyService,
@@ -205,6 +210,15 @@ export class ClientWorkoutComponent extends ClientsBaseComponent implements OnIn
 
     private goToEditWorkout(workout: Workout): void {
         super.navigate([this.getTrainerUrl('clients/edit/' + this.clientId + '/workout/' + workout.id + '/workout-plan')]);
+    }
+
+    private expandWorkout(workout: Workout): void {
+        if (this.expandedWorkoutId === workout.id) {
+            this.expandedWorkoutId = null;
+        }
+        else {
+            this.expandedWorkoutId = workout.id;
+        }
     }
 }
 

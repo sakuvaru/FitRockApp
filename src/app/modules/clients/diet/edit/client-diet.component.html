@@ -5,7 +5,8 @@
     <md-divider></md-divider>
     <md-card-content class="push-top">
         <p>{{'module.clients.diet.newDietFormTemplate' | translate }}:
-            <md-select #copyFromDiet [disabled]="!dietTemplates" style="width: 260px" placeholder="{{'module.clients.diet.copyDietLabel' | translate}}" [(ngModel)]="selectedValue">
+            <md-select #copyFromDiet [disabled]="!dietTemplates" style="width: 260px" placeholder="{{'module.clients.diet.copyDietLabel' | translate}}"
+                [(ngModel)]="selectedValue">
                 <md-option *ngFor="let diet of dietTemplates" [value]="diet">
                     {{ diet.dietName }}
                 </md-option>
@@ -15,30 +16,24 @@
     </md-card-content>
 </md-card>
 
-<md-list *ngIf="existingDiets" [dragula]='"dragula-bag"' [dragulaModel]="existingDiets" class="push" >
-    <ng-container *ngFor="let diet of existingDiets; let i = index">
-        <td-expansion-panel [disableRipple]="false">
-            <ng-template td-expansion-panel-header>
-                <md-list-item class="w-cursor-pointer">
-                    <span class="dragula-move-handle w-cursor-move md-headline tc-blue-600">
-                        +&nbsp;
-                    </span>
-                    <span class="dragula-move-handle w-cursor-move tc-red-700">{{i + 1}}. &nbsp;</span>
-                    <span>{{diet.dietName}}</span>
-                    <span flex></span>
-                    <edit-button (editAction)="goToEditDiet(diet)"></edit-button>
-                    <delete-button (confirm)="deleteDiet(diet)"></delete-button>
-                </md-list-item>
-            </ng-template>
-
-            <md-list class="push-left">
-                <md-list-item *ngFor="let dietFood of diet.dietFoods; let i = index">
-                    <span  class="md-caption">
-                        {{dietFood.eatTime}}: {{ dietFood.food.foodName }} ({{dietFood.unitValue}} {{dietFood.food.foodUnit.unitCode | translate}})
-                    </span>
-                </md-list-item>
-            </md-list>
-
-        </td-expansion-panel>
-    </ng-container>
-</md-list>
+<div *ngIf="existingDiets" class="push">
+    <md-list [dragula]='"dragula-bag"' [dragulaModel]="existingDiets">
+        <ng-container *ngFor="let diet of existingDiets; let i = index">
+            <md-list-item class="w-sort-list-item">
+                <span class="tc-red-700">{{i + 1}}. &nbsp;</span>
+                <span>{{diet.dietName}}</span>
+                <span flex></span>
+                <md-icon class="w-cursor-pointer" (click)="expandDiet(diet)">list</md-icon>
+                <edit-button (editAction)="goToEditDiet(diet)"></edit-button>
+                <delete-button (confirm)="deleteDiet(diet)"></delete-button>
+            </md-list-item>
+            <md-list-item *ngIf="expandedDietId === diet.id">
+                <div mdLine *ngFor="let dietFood of diet.dietFoods; let i = index">
+                    <div class="md-caption push-xs"><strong>{{dietFood.eatTime}}: </strong> {{ dietFood.food.foodName }} ({{dietFood.unitValue}} {{dietFood.food.foodUnit.unitCode
+                        | translate}})
+                    </div>
+                </div>
+            </md-list-item>
+        </ng-container>
+    </md-list>
+</div>

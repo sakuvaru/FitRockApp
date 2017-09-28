@@ -12,37 +12,18 @@
   <div *ngIf="sortedWorkoutExercises">
     <md-list [dragula]='"dragula-bag"' class="push-top" [dragulaModel]="sortedWorkoutExercises">
       <ng-container *ngFor="let workoutExercise of sortedWorkoutExercises; let i = index">
-        <td-expansion-panel [disableRipple]="false">
-          <ng-template td-expansion-panel-header>
-            <md-list-item>
-              <span class="dragula-move-handle w-cursor-move md-headline tc-blue-600">
-                +&nbsp;
-              </span>
-              <span class="dragula-move-handle w-cursor-move tc-red-700">{{i + 1}}. &nbsp;</span>
-              <span>{{workoutExercise.exercise.exerciseName}}</span>
-              <span flex></span>
-              <edit-button color="none" (editAction)="openWorkoutExerciseDialog(workoutExercise)"></edit-button>
-              <delete-button color="none" (confirm)="deleteWorkoutExercise(workoutExercise)"></delete-button>
-            </md-list-item>
-          </ng-template>
-
-          <div class="md-caption push">
-            <span>
-                {{'module.workouts.sets' | translate }}: <strong>{{workoutExercise.sets}}</strong> | {{'module.workouts.reps' | translate }}: <strong>{{workoutExercise.reps}}</strong>
-            </span>
-
-            <p *ngIf="workoutExercise.notes">
-              {{ workoutExercise.notes }}
-            </p>
-            <p *ngIf="!workoutExercise.notes">
-              <em>{{'module.workouts.exerciseHasNoNotes' | translate}}</em>
-            </p>
-          </div>
-
-        </td-expansion-panel>
+        <md-list-item class="w-sort-list-item">
+          <span class="tc-red-700">{{i + 1}}. &nbsp;</span>
+          <span>{{workoutExercise.exercise.exerciseName}}</span>
+          <span class="md-caption tc-grey-700">&nbsp;&nbsp;<span *ngIf="workoutExercise.sets && workoutExercise.reps">{{workoutExercise.sets}}x{{workoutExercise.reps}}</span></span>
+          <span flex></span>
+          <edit-button color="none" (editAction)="openWorkoutExerciseDialog(workoutExercise)"></edit-button>
+          <delete-button color="none" (confirm)="deleteWorkoutExercise(workoutExercise)"></delete-button>
+        </md-list-item>
       </ng-container>
     </md-list>
   </div>
+
   <div *ngIf="sortedWorkoutExercises && sortedWorkoutExercises.length > 5" class="push-top">
     <button md-raised-button color="primary" class="text-upper" (click)="openSelecExerciseDialog()">{{'module.workouts.addExercise' | translate }}</button>
   </div>

@@ -9,43 +9,23 @@
 <div *ngIf="diet" class="push">
   <button md-raised-button color="primary" class="text-upper" (click)="openSelectFoodDialog()">{{'module.diets.addDietFood' | translate }}</button>
   <div *ngIf="sortedDietFoods">
-    <md-list [dragula]='"dragula-bag"' class="push-top" [dragulaModel]="sortedDietFoods">
-      <ng-container *ngFor="let dietFood of sortedDietFoods; let i = index">
-        <td-expansion-panel [disableRipple]="false">
-          <ng-template td-expansion-panel-header>
-            <md-list-item>
-              <span class="dragula-move-handle w-cursor-move md-headline tc-blue-600">
-                +&nbsp;
-              </span>
-              <span class="dragula-move-handle w-cursor-move tc-red-700">{{i + 1}}. &nbsp;</span>
-              <span>{{dietFood.food.foodName}}</span>
-              <span flex></span>
-              <edit-button color="none" (editAction)="openDietFoodDialog(dietFood)"></edit-button>
-              <delete-button color="none" (confirm)="deleteDietFood(dietFood)"></delete-button>
-            </md-list-item>
-          </ng-template>
 
-          <div class="md-caption push">
-            <p>
-              {{'module.diets.foodUnit' | translate }}: <strong>{{dietFood.unitValue}} {{dietFood.food.foodUnit.unitCode | translate}}</strong>
-              <br /> {{'module.diets.eatTime' | translate }}: <strong>{{dietFood.eatTime}}</strong>
-            </p>
+    <div *ngIf="sortedDietFoods">
+      <md-list [dragula]='"dragula-bag"' class="push-top" [dragulaModel]="sortedDietFoods">
+        <ng-container *ngFor="let dietFood of sortedDietFoods; let i = index">
+          <md-list-item class="w-sort-list-item">
+            <span class="tc-red-700">{{i + 1}}. &nbsp;</span>
+            <span>{{dietFood.food.foodName}}</span>
+            <span flex></span>
+            <edit-button color="none" (editAction)="openDietFoodDialog(dietFood)"></edit-button>
+            <delete-button color="none" (confirm)="deleteDietFood(dietFood)"></delete-button>
+          </md-list-item>
+        </ng-container>
+      </md-list>
+    </div>
 
-            <p *ngIf="dietFood.notes">
-              {{ dietFood.notes }}
-            </p>
-            <p *ngIf="!dietFood.notes">
-              <em>{{'module.diets.dietFoodHasNoNotes' | translate}}</em>
-            </p>
-          </div>
-
-        </td-expansion-panel>
-      </ng-container>
-    </md-list>
-    <div>
-      <div *ngIf="sortedDietFoods && sortedDietFoods.length > 5" class="push-top">
-        <button md-raised-button color="primary" class="text-upper" (click)="openSelectFoodDialog()">{{'module.diets.addDietFood' | translate }}</button>
-      </div>
+    <div *ngIf="sortedDietFoods && sortedDietFoods.length > 5" class="push-top">
+      <button md-raised-button color="primary" class="text-upper" (click)="openSelectFoodDialog()">{{'module.diets.addDietFood' | translate }}</button>
     </div>
   </div>
 </div>

@@ -29,7 +29,8 @@ export class EditWorkoutPlanExportComponent extends BaseComponent implements OnD
   private workout: Workout;
   private sortedWorkoutExercises: WorkoutExercise[];
 
-  private dragulaBag: string = 'dragula-bag';
+  private readonly dragulaBag: string = 'dragula-bag';
+  private readonly dragulaHandle: string = 'mat-list-item-content';
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -38,9 +39,10 @@ export class EditWorkoutPlanExportComponent extends BaseComponent implements OnD
     super(dependencies)
 
      // set handle for dragula
+     var that = this;
      this.dragulaService.setOptions(this.dragulaBag, {
       moves: function (el: any, container: any, handle: any): any {
-        return stringHelper.contains(handle.className, 'dragula-move-handle');
+        return stringHelper.contains(handle.className, that.dragulaHandle);
       }
     });
 

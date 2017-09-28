@@ -30,12 +30,17 @@ export class ClientDietComponent extends ClientsBaseComponent implements OnInit,
     /**
      * Class of the handle used to drag & drop dragula items
      */
-    private readonly dragulaMoveHandle: string = 'dragula-move-handle';
+    private readonly dragulaMoveHandle: string = 'mat-list-item-content';
 
     /**
      * Drop subscription for dragula - Unsubscribe on destroy!
      */
     private dropSubscription: Subscription;
+
+    /**
+     * Indicates which diet is expanded
+     */
+    private expandedDietId: number | null = null;
 
     constructor(
         protected activatedRoute: ActivatedRoute,
@@ -118,7 +123,6 @@ export class ClientDietComponent extends ClientsBaseComponent implements OnInit,
                 }
             });
 
-        var obsExistingDiets = this.existingDietsObservable();
         var obsExistingDiets = this.existingDietsObservable();
 
         observables.push(obsClientMenu);
@@ -208,6 +212,15 @@ export class ClientDietComponent extends ClientsBaseComponent implements OnInit,
 
     private goToEditDiet(diet: Diet): void {
         super.navigate([this.getTrainerUrl('clients/edit/' + this.clientId + '/diet/' + diet.id + '/diet-plan')]);
+    }
+
+    private expandDiet(diet: Diet): void {
+        if (this.expandedDietId === diet.id) {
+            this.expandedDietId = null;
+        }
+        else {
+            this.expandedDietId = diet.id;
+        }
     }
 }
 

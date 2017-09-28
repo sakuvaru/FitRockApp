@@ -81,7 +81,6 @@ export class AdminLayoutComponent extends BaseComponent implements OnDestroy, On
             .subscribe(
             initialized => {
                 this.componentIsInitialized = initialized;
-                console.log(initialized);
                 this.changeDetectorRef.detectChanges();
             });
 

@@ -14,7 +14,7 @@
       <span class="md-caption tc-grey-700">({{workoutExercise.exercise.exerciseCategory.categoryName}})</span>
     </ng-template>
     <ng-template td-expansion-panel-sublabel>
-      <span class="md-caption">  {{'module.workouts.sets' | translate }}: {{workoutExercise.sets}} / {{'module.workouts.reps' | translate }}: {{workoutExercise.reps}} </span>
+      <span *ngIf="workoutExercise.sets && workoutExercise.reps" class="md-caption">{{workoutExercise.sets}}x{{workoutExercise.reps}}</span>
     </ng-template>
     <div class="md-padding md-caption">
       {{workoutExercise.notes}}
