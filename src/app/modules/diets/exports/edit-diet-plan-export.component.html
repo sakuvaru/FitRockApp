@@ -13,7 +13,7 @@
     <div *ngIf="sortedDietFoods">
       <md-list [dragula]='"dragula-bag"' class="push-top" [dragulaModel]="sortedDietFoods">
         <ng-container *ngFor="let dietFood of sortedDietFoods; let i = index">
-          <md-list-item class="w-sort-list-item">
+          <md-list-item class="w-sort-list-item dragula-move-handle">
             <span class="tc-red-700">{{i + 1}}. &nbsp;</span>
             <span>{{dietFood.food.foodName}}</span>
             <span flex></span>

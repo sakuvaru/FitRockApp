@@ -31,7 +31,7 @@ export class ClientWorkoutComponent extends ClientsBaseComponent implements OnIn
     /**
      * Class of the handle used to drag & drop dragula items
      */
-    private readonly dragulaMoveHandle: string = 'mat-list-item-content';
+    private readonly dragulaMoveHandle: string = 'dragula-move-handle';
 
     /**
      * Drop subscription for dragula - Unsubscribe on destroy!
@@ -73,7 +73,7 @@ export class ClientWorkoutComponent extends ClientsBaseComponent implements OnIn
         var that = this;
         this.dragulaService.setOptions(this.dragulaBag, {
             moves: function (el: any, container: any, handle: any): any {
-                return stringHelper.contains(handle.className, that.dragulaMoveHandle);
+                return stringHelper.contains(el.className, that.dragulaMoveHandle);
             }
         });
 

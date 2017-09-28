@@ -30,7 +30,7 @@ export class EditDietPlanExportComponent extends BaseComponent implements OnDest
   private sortedDietFoods: DietFood[];
 
   private readonly dragulaBag: string = 'dragula-bag';
-  private readonly dragulaHandle: string = 'mat-list-item-content';
+  private readonly dragulaHandle: string = 'dragula-move-handle';
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -42,7 +42,7 @@ export class EditDietPlanExportComponent extends BaseComponent implements OnDest
     var that = this;
     this.dragulaService.setOptions(this.dragulaBag, {
       moves: function (el: any, container: any, handle: any): any {
-        return stringHelper.contains(handle.className, that.dragulaHandle);
+        return stringHelper.contains(el.className, that.dragulaHandle);
       }
     });
 

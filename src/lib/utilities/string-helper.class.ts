@@ -39,13 +39,37 @@ export class StringHelper {
 
     /**
      * Returns true if text contains the other one
-     * @param text text to hash
+     * @param text text 
+     * @param contains text to contain
      */
     contains(text: string, contains: string): boolean {
         if (!text || !contains) {
             return false;
         }
         return text.indexOf(contains) !== -1;
+    }
+
+     /**
+     * Returns true if text contains one of the given inputs
+     * @param text text 
+     * @param contains text array 
+     */
+    containsAny(text: string, containsArr: string[]): boolean {
+        if (!text || !containsArr || !Array.isArray(containsArr)) {
+            return false;
+        }
+
+        var result: boolean = false;
+
+        containsArr.forEach(contains => {
+            var textContainsResult = text.indexOf(contains) !== -1;
+            if (textContainsResult){
+                result = true;
+                return;
+            }
+        });
+
+        return result;
     }
 
     /**

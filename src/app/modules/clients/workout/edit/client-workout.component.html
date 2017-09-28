@@ -19,7 +19,7 @@
 <div *ngIf="existingWorkouts" class="push">
     <md-list [dragula]='"dragula-bag"' [dragulaModel]="existingWorkouts">
         <ng-container *ngFor="let workout of existingWorkouts; let i = index">
-            <md-list-item class="w-sort-list-item">
+            <md-list-item class="w-sort-list-item dragula-move-handle">
                 <span class="tc-red-700">{{i + 1}}. &nbsp;</span>
                 <span>{{workout.workoutName}}</span>
                 <span flex></span>
