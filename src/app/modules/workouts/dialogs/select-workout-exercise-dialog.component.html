@@ -1,9 +1,10 @@
+<md-dialog-actions>
+    <span class="md-title"> {{'module.workouts.selectExercise' | translate}}</span>
+    <span flex></span>
+    <add-button class="push-right" tooltip="{{'module.workouts.addCustomExercise' | translate }}" (click)="addCustomExercise()"></add-button>
+    <close-button (click)="close()"></close-button>
+</md-dialog-actions>
+
 <md-dialog-content>
-    <h2>
-        {{'module.workouts.selectExercise' | translate}}
-    </h2>
-
     <data-table [config]="config"></data-table>
-
-    <button md-raised-button color="accent" (click)="addCustomExercise()">{{'module.workouts.addCustomExercise' | translate }}</button>
 </md-dialog-content>

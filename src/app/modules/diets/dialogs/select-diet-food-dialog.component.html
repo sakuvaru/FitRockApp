@@ -1,9 +1,11 @@
+<md-dialog-actions>
+    <span class="md-title">{{'module.diets.selectFood' | translate}}</span>
+    <span flex></span>
+    <add-button class="push-right" tooltip="{{'module.diets.addCustomFood' | translate }}" (click)="addCustomFood()"></add-button>
+    <close-button (click)="close()"></close-button>
+</md-dialog-actions>
+
 <md-dialog-content>
-    <h2>
-        {{'module.diets.selectFood' | translate}}
-    </h2>
-
     <data-table [config]="config"></data-table>
-
-    <button md-raised-button color="accent" (click)="addCustomFood()">{{'module.diets.addCustomFood' | translate }}</button>
+    <button md-raised-button color="accent"></button>
 </md-dialog-content>

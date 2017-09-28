@@ -1,6 +1,10 @@
-<md-dialog-content>
-    <h2 *ngIf="exercise">{{'module.workouts.addWorkoutExercise' | translate }} - {{ exercise.exerciseName }}</h2>
+<md-dialog-actions>
+    <span *ngIf="exercise" class="md-title">{{'module.workouts.addWorkoutExercise' | translate }} - {{ exercise.exerciseName }}</span>
+    <span flex></span>
+    <close-button (click)="close()"></close-button>
+</md-dialog-actions>
 
+<md-dialog-content>
     <div class="md-padding">
         <dynamic-form [config]="workoutExerciseForm"></dynamic-form>
     </div>

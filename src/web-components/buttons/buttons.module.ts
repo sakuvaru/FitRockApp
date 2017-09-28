@@ -9,6 +9,9 @@ import { SharedWebComponentModule } from '../shared-web-components.module';
 import { FixedButtonComponent } from './fixed-button.component';
 import { DeleteButtonComponent } from './delete-button.component';
 import { EditButtonComponent } from './edit-button.component';
+import { DialogButtonComponent} from './dialog-button-component';
+import { CloseButtonComponent } from './close-button.component';
+import { AddButtonComponent } from './add-button.component';
 
 @NgModule({
     imports: [
@@ -19,12 +22,18 @@ import { EditButtonComponent } from './edit-button.component';
     declarations: [
         FixedButtonComponent,
         DeleteButtonComponent,
-        EditButtonComponent
+        EditButtonComponent,
+        DialogButtonComponent,
+        CloseButtonComponent,
+        AddButtonComponent
     ],
     exports: [
         FixedButtonComponent,
         DeleteButtonComponent,
-        EditButtonComponent
+        EditButtonComponent,
+        DialogButtonComponent,
+        CloseButtonComponent,
+        AddButtonComponent
     ]
 })
 export class ButtonsModule { }

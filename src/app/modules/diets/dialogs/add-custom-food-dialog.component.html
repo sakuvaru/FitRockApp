@@ -1,6 +1,10 @@
-<md-dialog-content>
-    <h2>{{'module.diets.addCustomFood' | translate }}</h2>
+<md-dialog-actions>
+    <span class="md-title">{{'module.diets.addCustomFood' | translate }}</span>
+    <span flex></span>
+    <close-button (click)="close()"></close-button>
+</md-dialog-actions>
 
+<md-dialog-content>
     <div class="md-padding">
         <dynamic-form [config]="foodForm"></dynamic-form>
     </div>

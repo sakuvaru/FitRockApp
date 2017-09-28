@@ -364,6 +364,9 @@
 			},
 			"editButton": {
 				"tooltip": "Upravit"
+			},
+			"closeButton": {
+				"close": "Zavřít"
 			}
 		},
 		"graph": {
