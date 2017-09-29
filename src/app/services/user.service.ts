@@ -18,11 +18,11 @@ export class UserService extends BaseTypeService<User>{
         })
     }
 
-    myProfileForm(): Observable<DynamicFormEditBuilder<User>> {
+    myProfileForm(): DynamicFormEditBuilder<User> {
         var myProfileFormQuery = super.editFormQuery(-1).withCustomAction('GetMyProfileForm');
 
         // -1 because id is not required for my profile form
-        return super.editForm(-1, { useCustomQuery: myProfileFormQuery});
+        return super.editForm(-1, myProfileFormQuery);
     }
 
     clients(): MultipleItemQuery<User> {

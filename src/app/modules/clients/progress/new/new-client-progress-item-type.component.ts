@@ -57,20 +57,20 @@ export class NewClientProgressItemTypeComponent extends ClientsBaseComponent imp
     private getFormObservable(): Observable<any> {
         return this.clientChange
             .takeUntil(this.ngUnsubscribe)
-            .switchMap(client => {
-                return this.dependencies.itemServices.progressItemTypeService.insertForm()
-                    .takeUntil(this.ngUnsubscribe)
-            })
-            .map(form => {
-                // set client id manually
-                form.withFieldValue('ClientId', this.clientId);
-                form.withFieldValue('TranslateValue', false);
-
-                form.loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader());
-                form.insertFunction((item) => this.dependencies.itemServices.progressItemTypeService.create(item).set());
-                form.onAfterInsert((response) => super.navigate([super.getTrainerUrl('clients/edit/' + this.clientId + '/progress')]));
-
-                this.formConfig = form.build();
+            .map(client => {
+                this.formConfig = this.dependencies.itemServices.progressItemTypeService.insertForm()
+                    .fieldValueResolver((fieldName, value) => {
+                        if (fieldName === 'ClientId') {
+                            return this.clientId;
+                        }
+                        else if (fieldName === 'TranslateValue') {
+                            return false
+                        }
+                        return value;
+                    })
+                    .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
+                    .onAfterInsert((response) => super.navigate([super.getTrainerUrl('clients/edit/' + this.clientId + '/progress')]))
+                    .build();
             },
             error => super.handleError(error))
     }

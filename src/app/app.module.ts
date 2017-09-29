@@ -62,9 +62,6 @@ import { ProgressItemTypesModule } from './modules/progress-item-types/progress-
 import { ProfileModule } from './modules/profile/profile.module';
 import { ChatModule } from './modules/chat/chat.module';
 
-// test form module
-import { FormModule } from './modules/_forms/_form.module';
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -126,9 +123,6 @@ import { FormModule } from './modules/_forms/_form.module';
         deps: [HttpClient]
       }
     }),
-
-    // test form module
-    FormModule,
 
     // web components
     WebComponentsModule,

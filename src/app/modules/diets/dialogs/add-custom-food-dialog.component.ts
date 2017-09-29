@@ -32,23 +32,17 @@ export class AddCustomFoodDialogComponent extends BaseComponent implements OnIni
   ngOnInit() {
     super.ngOnInit();
 
-    super.subscribeToObservable(this.getFormObservable());
+    this.initForm();
   }
 
-  private getFormObservable(): Observable<any>{
-    return this.dependencies.itemServices.foodService.insertForm()
-      .takeUntil(this.ngUnsubscribe)
-      .map(form => {
-        form.loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader());
-
-        form.onAfterInsert((response => {
-          this.newFood = response.item;
-          this.close();
-        }))
-
-        this.foodForm = form.build();
-      },
-      error => super.handleError(error));
+  private initForm(): void {
+    this.foodForm = this.dependencies.itemServices.foodService.insertForm()
+      .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
+      .onAfterInsert((response => {
+        this.newFood = response.item;
+        this.close();
+      }))
+      .build();
   }
 
   private close(): void {

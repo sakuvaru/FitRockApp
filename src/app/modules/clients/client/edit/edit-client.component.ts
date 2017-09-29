@@ -22,42 +22,39 @@ export class EditClientComponent extends ClientsBaseComponent implements OnInit 
         protected componentDependencyService: ComponentDependencyService
     ) {
         super(componentDependencyService, activatedRoute, { subscribeToClient: false })
-
     }
 
     ngOnInit(): void {
         super.ngOnInit();
 
-        super.subscribeToObservable(this.getFormObservable());
+        this.initForm();
         super.initClientSubscriptions();
     }
 
-    private getFormObservable(): Observable<any> {
-        return this.clientIdChange
+    private initForm(): void {
+        this.clientIdChange
             .takeUntil(this.ngUnsubscribe)
-            .switchMap(clientId => this.dependencies.itemServices.userService.editForm(clientId))
-            .map(form => {
-                form.enableDelete(false);
-                form.loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
-                form.onAfterDelete(() => super.navigate([this.getTrainerUrl('clients')]));
+            .map(clientId => {
+                this.formConfig = this.dependencies.itemServices.userService.editForm(clientId)
+                    .enableDelete(false)
+                    .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
+                    .onAfterDelete(() => super.navigate([this.getTrainerUrl('clients')]))
+                    .onFormLoaded(form => {
+                        var user = form.item;
 
-                var user = form.getItem();
-
-                this.setConfig({
-                    menuItems: new ClientMenuItems(user.id).menuItems,
-                    menuTitle: {
-                        key: 'module.clients.viewClientSubtitle',
-                        data: { 'fullName': user.getFullName() }
-                    },
-                    componentTitle: {
-                        'key': 'module.clients.editClient'
-                    },
-                    menuAvatarUrl: user.avatarUrl
-                });
-
-                // get form
-                this.formConfig = form.build();
-            },
-            error => super.handleError(error));
+                        this.setConfig({
+                            menuItems: new ClientMenuItems(user.id).menuItems,
+                            menuTitle: {
+                                key: 'module.clients.viewClientSubtitle',
+                                data: { 'fullName': user.getFullName() }
+                            },
+                            componentTitle: {
+                                'key': 'module.clients.editClient'
+                            },
+                            menuAvatarUrl: user.avatarUrl
+                        });
+                    })
+                    .build()
+            });
     }
 }

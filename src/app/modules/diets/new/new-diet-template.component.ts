@@ -29,19 +29,13 @@ export class NewDietTemplateComponent extends BaseComponent implements OnInit {
             menuItems: new NewDietMenuItems().menuItems
         });
 
-        super.subscribeToObservable(this.getFormObservable());
+        this.initForm();
     }
 
-    private getFormObservable(): Observable<any> {
-        return this.dependencies.itemServices.dietService.insertForm()
-            .takeUntil(this.ngUnsubscribe)
-            .map(form => {
-                form.loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
-                form.insertFunction((item) => this.dependencies.itemServices.dietService.create(item).set());
-                form.onAfterInsert((response) => this.navigate([this.getTrainerUrl('diets/edit-plan'), response.item.id]));
-
-                this.formConfig = form.build();
-            },
-            error => super.handleError(error));
+    private initForm(): void {
+        this.formConfig = this.dependencies.itemServices.dietService.insertForm()
+            .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
+            .onAfterInsert((response) => this.navigate([this.getTrainerUrl('diets/edit-plan'), response.item.id]))
+            .build();
     }
 }

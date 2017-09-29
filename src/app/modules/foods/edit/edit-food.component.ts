@@ -27,35 +27,27 @@ export class EditFoodCompoent extends BaseComponent implements OnInit {
     ngOnInit(): void {
         super.ngOnInit();
 
-        super.subscribeToObservable(this.getFormObservable());
+        this.initForm();
     }
 
-    private getFormObservable(): Observable<any> {
-        return this.activatedRoute.params
-            .takeUntil(this.ngUnsubscribe)
-            .switchMap((params: Params) => {
-                return this.dependencies.itemServices.foodService.editForm(+params['id'])
-                    .takeUntil(this.ngUnsubscribe);
+    private initForm(): void {
+        this.activatedRoute.params
+            .map((params: Params) => {
+                this.formConfig = this.dependencies.itemServices.foodService.editForm(+params['id'])
+                    .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
+                    .onAfterDelete(() => super.navigate([this.getTrainerUrl('foods')]))
+                    .onFormLoaded(form => {
+                        this.setConfig({
+                            menuItems: new FoodMenuItems(form.item.id).menuItems,
+                            menuTitle: {
+                                key: form.item.foodName
+                            },
+                            componentTitle: {
+                                'key': 'module.foods.submenu.edit'
+                            }
+                        });
+                    })
+                    .build();
             })
-            .map(form => {
-                form.loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader());
-                form.onAfterDelete(() => super.navigate([this.getTrainerUrl('foods')]));
-                var item = form.getItem();
-
-                this.setConfig({
-                    menuItems: new FoodMenuItems(item.id).menuItems,
-                    menuTitle: {
-                        key: item.foodName
-                    },
-                    componentTitle: {
-                        'key': 'module.foods.submenu.edit'
-                    }
-                });
-
-                // get form
-                this.formConfig = form.build();
-            }
-            ,
-            error => super.handleError(error));
     }
 }

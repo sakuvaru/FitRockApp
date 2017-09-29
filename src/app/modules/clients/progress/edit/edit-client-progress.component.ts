@@ -60,7 +60,7 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
                 });
             });
 
-        observables.push(this.getInitFormObseravble());
+        observables.push(this.getInitFormObservable());
         observables.push(this.getDataTableObservable());
         observables.push(obsClientMenu);
         observables.push(this.getProgressTypesObservable());
@@ -68,66 +68,62 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
         return observables;
     }
 
-    private getInitFormObseravble(): Observable<any> {
+    private getInitFormObservable(): Observable<any> {
         return this.clientIdChange
             .takeUntil(this.ngUnsubscribe)
-            .switchMap(clientId => {
-                return this.getFormObservable(clientId);
+            .map(clientId => {
+                this.initProgressItemsForm(clientId);
             });
     }
 
-    private getFormObservable(clientId: number): Observable<any> {
-        return this.dependencies.itemServices.progressItemService.insertForm({
-            useCustomQuery: this.dependencies.itemServices.progressItemService.insertFormQuery()
-                .withData('clientId', clientId)
-        })
-            .map(form => {
-                // set clientId manually
-                form.withFieldValue('ClientId', this.clientId);
+    private initProgressItemsForm(clientId: number): void {
+        this.formConfig = this.dependencies.itemServices.progressItemService.insertForm(
+            this.dependencies.itemServices.progressItemService.insertFormQuery().withData('clientId', clientId))
+            .fieldValueResolver((fieldName, value) => {
+                if (fieldName === 'ClientId') {
+                    return this.clientId;
+                }
+                return value;
+            })
+            .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
+            .onAfterSave(() => {
+                this.reloadDataTable();
+            })
+            .clearFormAfterSave(true)
 
-                form.loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader());
-                form.onAfterSave(() => {
-                    this.reloadDataTable();
-                });
-                form.clearFormAfterSave(true);
+            // set extra translation value for measurement value based on currently selected type
+            .onFieldValueChange((config, changedField, newValue) => {
+                // get measurement value field
+                var measurementValueField = config.fields.find(m => m.key === 'Value');
+                if (!measurementValueField) {
+                    return
+                }
 
-                // set extra translation value for measurement value based on currently selected type
-                form.onFieldValueChange((config, changedField, newValue) => {
-                    // get measurement value field
-                    var measurementValueField = config.fields.find(m => m.key === 'Value');
-                    if (!measurementValueField) {
-                        return
-                    }
+                // get option with the value === newValue 
+                if (!changedField.options || !changedField.options.listOptions) {
+                    return;
+                }
 
-                    // get option with the value === newValue 
-                    if (!changedField.options || !changedField.options.listOptions) {
-                        return;
-                    }
+                var listOption = changedField.options.listOptions.find(m => m.value === newValue);
+                if (!listOption) {
+                    return;
+                }
 
-                    var listOption = changedField.options.listOptions.find(m => m.value === newValue);
-                    if (!listOption) {
-                        return;
-                    }
-
-                    // set new custom translation label
+                // set new custom translation label
+                var translationData: any = {};
+                var unitCode = listOption.extraDataJson.unit;
+                super.translate('module.progressItemUnits.' + unitCode).subscribe(unitTranslation => {
                     var translationData: any = {};
-                    var unitCode = listOption.extraDataJson.unit;
-                    super.translate('module.progressItemUnits.' + unitCode).subscribe(unitTranslation => {
-                        var translationData: any = {};
-                        translationData.unit = unitTranslation;
-                        super.translate('form.progressItem.valueWithUnit', translationData).subscribe(translation => {
-                            var field = config.fields.find(m => m.key === 'Value');
-                            if (field) {
-                                field.translatedLabel = translation;
-                            }
-                        })
+                    translationData.unit = unitTranslation;
+                    super.translate('form.progressItem.valueWithUnit', translationData).subscribe(translation => {
+                        var field = config.fields.find(m => m.key === 'Value');
+                        if (field) {
+                            field.translatedLabel = translation;
+                        }
                     })
-
-                });
-
-                this.formConfig = form.build();
-            },
-            error => super.handleError(error));
+                })
+            })
+            .build();
     }
 
     private getProgressTypesObservable(): Observable<any> {
@@ -252,16 +248,15 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
             .withOption('ClientId', this.clientId)
             .set()
             .takeUntil(this.ngUnsubscribe)
-            .flatMap((createResponse) => {
+            .map(createResponse => {
                 // add created type to local list
                 this.progressItemTypes.push(createResponse.item);
 
-                // refresh form
-                return this.getFormObservable(this.clientId);
-            })
-            .map(formResponse => {
                 // refresh data table
                 this.reloadDataTable();
+
+                // refresh form
+                this.reloadForm();
             });
     }
 
@@ -274,7 +269,7 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
                 this.progressItemTypes = _.reject(this.progressItemTypes, function (item) { return item.id === respose.deletedItemId; });
 
                 // refresh form observables
-                super.subscribeToObservable(this.getFormObservable(this.clientId));
+                this.reloadForm();
 
                 // refresh data table
                 this.reloadDataTable();
@@ -285,4 +280,7 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
         this.initDataTable(this.clientId);
     }
 
+    private reloadForm(): void {
+        this.initProgressItemsForm(this.clientId);
+    }
 }

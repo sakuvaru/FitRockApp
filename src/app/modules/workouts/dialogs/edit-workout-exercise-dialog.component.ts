@@ -36,28 +36,22 @@ export class EditWorkoutExerciseDialogComponent extends BaseComponent implements
   ngOnInit() {
     super.ngOnInit();
 
-    super.subscribeToObservable(this.getFormObservable());
+    this.initForm();
   }
 
-  private getFormObservable(): Observable<any> {
-    return this.dependencies.itemServices.workoutExerciseService.editForm(this.workoutExercise.id)
-      .takeUntil(this.ngUnsubscribe)
-      .map(form => {
-        form.onAfterUpdate((response) => {
-          this.workoutExercise = response.item;
-          this.close();
-        });
-        form.loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader());
-        form.onAfterDelete((response) => {
-          this.idOfDeletedWorkoutExercise = response.deletedItemId;
-          this.workoutExerciseWasDeleted = true;
-          this.close();
-        });
-
-        this.workoutExerciseForm = form.build();
-        super.stopGlobalLoader();
-      },
-      error => super.handleError(error));
+  private initForm(): void {
+    this.workoutExerciseForm = this.dependencies.itemServices.workoutExerciseService.editForm(this.workoutExercise.id)
+      .onAfterUpdate((response) => {
+        this.workoutExercise = response.item;
+        this.close();
+      })
+      .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
+      .onAfterDelete((response) => {
+        this.idOfDeletedWorkoutExercise = response.deletedItemId;
+        this.workoutExerciseWasDeleted = true;
+        this.close();
+      })
+      .build();
   }
 
   private close(): void {

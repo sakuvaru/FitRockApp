@@ -25,11 +25,11 @@ export class EditMyProfileComponent extends BaseComponent implements OnInit {
         super.ngOnInit();
 
         this.initMenu();
-        super.subscribeToObservable(this.getFormObservable());
+        this.initForm();
     }
 
-    private initMenu(): void{
-        
+    private initMenu(): void {
+
         this.setConfig({
             componentTitle: { key: 'module.profile.submenu.editProfile' },
             menuItems: new MyProfileMenuItems().menuItems,
@@ -37,17 +37,10 @@ export class EditMyProfileComponent extends BaseComponent implements OnInit {
         });
     }
 
-    private getFormObservable(): Observable<any> {
-        return this.dependencies.itemServices.userService.myProfileForm()
-            .map(form => {
-                // disable delete on this form
-                form.enableDelete(false);
-                
-                form.loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
-
-                // get form
-                this.formConfig = form.build();
-            },
-            error => super.handleError(error));
+    private initForm(): void {
+        this.formConfig = this.dependencies.itemServices.userService.myProfileForm()
+            .enableDelete(false)
+            .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
+            .build();
     }
 }

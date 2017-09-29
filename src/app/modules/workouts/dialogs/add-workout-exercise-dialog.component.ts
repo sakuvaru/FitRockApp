@@ -41,26 +41,26 @@ export class AddWorkoutExerciseDialogComponent extends BaseComponent implements 
   ngOnInit() {
     super.ngOnInit();
 
-    super.subscribeToObservable(this.getFormObservable());
+    this.initForm();
   }
 
-  private getFormObservable(): Observable<any>{
-    return this.dependencies.itemServices.workoutExerciseService.insertForm()
-      .takeUntil(this.ngUnsubscribe)
-      .map(form => {
-        // set exercise id & workout id for new WorkoutExercise item
-        form.withFieldValue('exerciseId', this.exercise.id);
-        form.withFieldValue('workoutId', this.workoutId);
-        form.loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader());
-
-        form.onAfterInsert((response => {
-          this.newWorkoutExercise = response.item;
-          this.close();
-        }))
-
-        this.workoutExerciseForm = form.build();
-      },
-      error => super.handleError(error));
+  private initForm(): void {
+    this.workoutExerciseForm = this.dependencies.itemServices.workoutExerciseService.insertForm()
+      .fieldValueResolver((fieldName, value) => {
+        if (fieldName === 'ExerciseId') {
+          return this.exercise.id;
+        }
+        else if (fieldName === 'WorkoutId') {
+          return this.workoutId;
+        }
+        return value;
+      })
+      .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
+      .onAfterInsert((response => {
+        this.newWorkoutExercise = response.item;
+        this.close();
+      }))
+      .build();
   }
 
   private close(): void {

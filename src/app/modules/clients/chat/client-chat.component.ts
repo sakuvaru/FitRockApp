@@ -65,29 +65,31 @@ export class ClientChatComponent extends ClientsBaseComponent implements OnInit 
     private getFormObservable(): Observable<any> {
         return this.clientIdChange
             .takeUntil(this.ngUnsubscribe)
-            .switchMap(clientId => {
-                return this.dependencies.itemServices.chatMessageService.insertForm()
-                    .takeUntil(this.ngUnsubscribe)
-            })
-            .map(form => {
-                // manually set recipient & sender
-                form.withFieldValue('SenderUserId', this.dependencies.authenticatedUserService.getUserId());
-                form.withFieldValue('RecipientUserId', this.clientId)
+            .map(clientId => {
+                var formConfig = this.dependencies.itemServices.chatMessageService.insertForm()
+                    .fieldValueResolver((fieldName, value) => {
+                        // manually set recipient & sender
+                        if (fieldName === 'SenderUserId') {
+                            return this.dependencies.authenticatedUserService.getUserId()
+                        }
+                        else if (fieldName === 'RecipientUserId') {
+                            return this.clientId
+                        }
+                        return value;
+                    })
+                    .snackBarTextKey('module.clients.chat.snackbarSaved')
+                    .submitTextKey('module.clients.chat.submit')
+                    .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
+                    .onAfterInsert((response) => {
+                        // reload messages
+                        super.subscribeToObservable(this.getChatMessagesObservable(this.clientId, 1, true, this.chatMessagesSearch)
+                            .takeUntil(this.ngUnsubscribe))
+                    })
+                    .build();
 
-                form.snackBarTextKey('module.clients.chat.snackbarSaved');
-                form.submitTextKey('module.clients.chat.submit');
-                form.loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
-                form.insertFunction((item) => this.dependencies.itemServices.chatMessageService.create(item).set());
-                form.onAfterInsert((response) => {
-                    // reload messages
-                    super.subscribeToObservable(this.getChatMessagesObservable(this.clientId, 1, true, this.chatMessagesSearch)
-                        .takeUntil(this.ngUnsubscribe));
-
-                });
-
-                this.formConfig = form.build();
+                this.formConfig == formConfig;
             },
-            error => super.handleError(error))
+            error => super.handleError(error));
     }
 
     private getInitChatMessagesObservable(): Observable<any> {
@@ -99,11 +101,12 @@ export class ClientChatComponent extends ClientsBaseComponent implements OnInit 
                     menuItems: new ClientMenuItems(this.clientId).menuItems,
                     menuTitle: {
                         key: 'module.clients.viewClientSubtitle',
-                        data: { 'fullName': this.client.getFullName() }                    },
+                        data: { 'fullName': this.client.getFullName() }
+                    },
                     componentTitle: {
                         'key': 'module.clients.submenu.chat'
                     },
-                    menuAvatarUrl:  this.client.avatarUrl
+                    menuAvatarUrl: this.client.avatarUrl
                 });
             },
             error => super.handleError(error));
@@ -129,8 +132,8 @@ export class ClientChatComponent extends ClientsBaseComponent implements OnInit 
                         this.chatMessages = _.union(this.chatMessages, response.items);
                     }
                 }
-                else{
-                    if (replaceMessages){
+                else {
+                    if (replaceMessages) {
                         this.chatMessages = [];
                     }
                     this.allChatMessagesLoaded = true;

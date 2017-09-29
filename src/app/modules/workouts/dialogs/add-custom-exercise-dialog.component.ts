@@ -32,23 +32,17 @@ export class AddCustomExerciseDialogComponent extends BaseComponent implements O
   ngOnInit() {
     super.ngOnInit();
 
-    super.subscribeToObservable(this.getFormObservable());
+    this.initForm();
   }
 
-  private getFormObservable(): Observable<any>{
-    return this.dependencies.itemServices.exerciseService.insertForm()
-      .takeUntil(this.ngUnsubscribe)
-      .map(form => {
-        form.loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader());
-
-        form.onAfterInsert((response => {
-          this.newExercise = response.item;
-          this.close();
-        }))
-
-        this.workoutExerciseForm = form.build();
-      },
-      error => super.handleError(error));
+  private initForm(): void {
+    this.workoutExerciseForm = this.dependencies.itemServices.exerciseService.insertForm()
+      .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
+      .onAfterInsert((response => {
+        this.newExercise = response.item;
+        this.close();
+      }))
+      .build();
   }
 
   private close(): void {

@@ -39,28 +39,27 @@ export class AddDietFoodDialogComponent extends BaseComponent implements OnInit 
 
   ngOnInit() {
     super.ngOnInit();
-    
-    super.subscribeToObservable(this.getFormObservable());
+
+    this.initForm();
   }
 
-  private getFormObservable(): Observable<any> {
-    return this.dependencies.itemServices.dietFoodService.insertForm()
-      .takeUntil(this.ngUnsubscribe)
-      .map(form => {
-        // set food id & diet id for new DietFood manually
-        form.withFieldValue('foodId', this.food.id);
-        form.withFieldValue('dietId', this.dietId);
-
-        form.loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader());
-
-        form.onAfterInsert((response => {
-          this.newDietFood = response.item;
-          this.close();
-        }))
-
-        this.dietFoodForm = form.build();
-      },
-      error => super.handleError(error));
+  private initForm(): void {
+    this.dietFoodForm = this.dependencies.itemServices.dietFoodService.insertForm()
+      .fieldValueResolver((fieldName, value) => {
+        if (fieldName === 'DoodId') {
+          return this.food.id;
+        }
+        else if (fieldName === 'DietId') {
+          return this.dietId;
+        }
+        return value;
+      })
+      .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
+      .onAfterInsert((response => {
+        this.newDietFood = response.item;
+        this.close();
+      }))
+      .build();
   }
 
   private close(): void {

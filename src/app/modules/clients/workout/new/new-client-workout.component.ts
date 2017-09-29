@@ -30,7 +30,7 @@ export class NewClientWorkoutComponent extends ClientsBaseComponent implements O
         super.initClientSubscriptions();
     }
 
-    private getObservables(): Observable<any>[]{
+    private getObservables(): Observable<any>[] {
         var observables: Observable<any>[] = [];
         observables.push(this.getClientObservable());
         observables.push(this.getFormObservable());
@@ -39,7 +39,7 @@ export class NewClientWorkoutComponent extends ClientsBaseComponent implements O
 
     private getClientObservable(): Observable<any> {
         return this.clientChange.map(client => {
-           this.setConfig({
+            this.setConfig({
                 componentTitle: { key: 'module.clients.submenu.newClient' },
                 menuItems: new NewClientWorkoutMenuItems(client.id).menuItems,
                 menuTitle: {
@@ -53,24 +53,24 @@ export class NewClientWorkoutComponent extends ClientsBaseComponent implements O
     private getFormObservable(): Observable<any> {
         return this.clientIdChange
             .takeUntil(this.ngUnsubscribe)
-            .switchMap(params => {
-                return this.dependencies.itemServices.workoutService.insertForm()
-                    .takeUntil(this.ngUnsubscribe)
-            })
-            .map(form => {
-                // manually set client id
-                form.withFieldValue('ClientId', this.clientId);
-              
-                form.loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader());
-                form.insertFunction((item) => this.dependencies.itemServices.workoutService.create(item).set());
-                form.onAfterInsert((response) => super.navigate([super.getTrainerUrl('clients/edit/' + this.clientId + '/workout/' + response.item.id + '/workout-plan')]));
+            .map(params => {
+                this.formConfig = this.dependencies.itemServices.workoutService.insertForm()
+                    .fieldValueResolver((fieldName, value) => {
+                        if (fieldName === 'ClientId') {
+                            return this.clientId;
+                        }
+                        return value;
+                    })
+                    .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
+                    .onAfterInsert((response) => super.navigate([super.getTrainerUrl('clients/edit/' + this.clientId + '/workout/' + response.item.id + '/workout-plan')]))
+                    .onFormLoaded(form => {
+                        this.setConfig({
+                            componentTitle: { key: 'module.clients.workout.newWorkout' },
+                            menuItems: new NewClientWorkoutMenuItems(this.clientId).menuItems
+                        });
+                    })
+                    .build();
 
-                this.formConfig = form.build();
-
-                this.setConfig({
-                    componentTitle: { key: 'module.clients.workout.newWorkout' },
-                    menuItems: new NewClientWorkoutMenuItems(this.clientId).menuItems
-                });
             },
             error => super.handleError(error))
     }

@@ -1,19 +1,10 @@
 import { FormConfig } from './form-config.class';
 import { Observable } from 'rxjs/RX';
-import { FormField, IItem, ResponseCreate, ResponseEdit, FormErrorResponse, ErrorResponse, ResponseDelete } from '../../lib/repository';
+import { ResponseFormInsert, ResponseFormEdit, FormField, IItem, ResponseCreate, ResponseEdit, FormErrorResponse, ErrorResponse, ResponseDelete } from '../../lib/repository';
 
 class BaseDynamicFormBuilder<TItem extends IItem>{
 
     protected config: FormConfig<TItem> = new FormConfig<TItem>();
-
-    /**
-     * Type of the item in the form. This equals to the 'Codename' of the type. 
-     * For example, workouts are defined as 'Workout' type.
-     */
-    type(type: string): this {
-        this.config.type = type;
-        return this;
-    }
 
     /** 
     * Key of delete text button
@@ -32,7 +23,7 @@ class BaseDynamicFormBuilder<TItem extends IItem>{
     }
 
     /**
-     * Adds field to form
+     * Adds fields to form
      * @param fields Field to be added to form
      */
     fields(fields: FormField[]): this {
@@ -79,8 +70,8 @@ class BaseDynamicFormBuilder<TItem extends IItem>{
     }
 
     /**
-  * Key of the text shown in snackbar after inserting/saving item
-  */
+    * Key of the text shown in snackbar after inserting/saving item
+    */
     snackBarTextKey(text: string): this {
         this.config.snackBarTextKey = text;
         return this;
@@ -97,17 +88,8 @@ class BaseDynamicFormBuilder<TItem extends IItem>{
     /**
     * Callback when initializing the form
     */
-    onFormInit(callback: () => void): this {
-        this.config.onFormInit = callback;
-        return this;
-    }
-
-    /**
-     * Callback for when the form has 'config' available. This is useful when the fields are loaded from server
-     * rather then defined manually. It is called after 'onFormInit'.
-     */
-    onFormLoaded(callback: () => void): this {
-        this.config.onFormLoaded = callback;
+    onBeforeFormInit(callback: () => void): this {
+        this.config.onBeforeFormInit = callback;
         return this;
     }
 
@@ -135,38 +117,19 @@ class BaseDynamicFormBuilder<TItem extends IItem>{
         return this;
     }
 
-    /**
-     * Use to manually set value of certain field in form.
-     * Call after all fields were initiliazed
-     * @param fieldName Name of field
-     * @param value Value
+     /**
+     * Resolver used to change the value of certain fields manually
      */
-    withFieldValue(fieldName: string, value: string | boolean | number): this {
-        // find field
-        var field = this.config.fields.find(m => m.key.toLowerCase() === fieldName.toLowerCase());
-
-        if (!field) {
-            throw Error(`Cannot set value for field '${fieldName}' because it does not exist in form`);
-        }
-
-        // boolean field needs to return 'string' with 'false' value otherwise the JSON .NET mapping
-        // does not map the object 
-        if (!value) {
-            if (typeof (value) === 'boolean') {
-                field.value = 'false';
-            }
-            field.value = '';
-        }
-
-        field.value = value.toString().trim();;
+    fieldValueResolver(resolver: (fieldName: string, value: any) => string | boolean | number): this {
+        this.config.fieldValueResolver = resolver;
         return this;
     }
 
     /**
- * Loader configuration
- * @param start Start loader function
- * @param stop  Stop loader function
- */
+    * Loader configuration
+    * @param start Start loader function
+    * @param stop  Stop loader function
+    */
     loaderConfig(start: () => void, stop: () => void): this {
         this.config.loaderConfig = { start: start, stop: stop };
         return this;
@@ -185,12 +148,25 @@ class BaseDynamicFormBuilder<TItem extends IItem>{
 
 export class DynamicFormInsertBuilder<TItem extends IItem> extends BaseDynamicFormBuilder<TItem>{
 
-    /**
-    * Function to be executed on insert of new item in the form
-    */
-    insertFunction(callback: (item: any) => Observable<ResponseCreate<TItem>>): this {
-        this.config.insertFunction = callback;
-        return this;
+    constructor(
+        /**
+         * Type of the item (codename)
+         */
+        protected type: string,
+        /**
+        * Function/Query used to fetch insert form definition from server
+        */
+        protected insertFormDefinition: Observable<ResponseFormInsert>,
+        /**
+         * Function used to insert a new object
+         */
+        protected insertFunction: (item: any) => Observable<ResponseCreate<TItem>>
+    ) {
+        super();
+
+        this.config.type = type;
+        this.config.insertFormDefinition = insertFormDefinition;
+        this.config.insertFunction = insertFunction;
     }
 
     /**
@@ -200,30 +176,46 @@ export class DynamicFormInsertBuilder<TItem extends IItem> extends BaseDynamicFo
         this.config.onAfterInsert = callback;
         return this;
     }
+
+    /**
+     * Function to call when form is loaded
+     * @param callback Callback
+     */
+    onFormLoaded(callback: (form: ResponseFormInsert) => void): this {
+        this.config.onInsertFormLoaded = callback;
+        return this;
+    }
 }
 
 export class DynamicFormEditBuilder<TItem extends IItem> extends BaseDynamicFormBuilder<TItem>{
 
-    /**
-    * Item loaded in the form
-    */
-    getItem(): TItem {
-        return this.config.item;
+    constructor(
+        /**
+         * Type of the item (codename)
+         */
+        protected type: string,
+        /**
+        * Function/Query used to fetch edit form definition from server
+        */
+        protected editFormDefinition: Observable<ResponseFormEdit<TItem>>,
+        /**
+         * Function used to edit given object
+         */
+        protected editFunction: (item: any) => Observable<ResponseEdit<TItem>>
+    ) {
+        super();
+
+        this.config.type = type;
+        this.config.editFunction = editFunction;
+        this.config.editFormDefinition = editFormDefinition;
     }
 
     /**
-    * Item loaded in the form
-    */
-    setItem(item: TItem): this {
-        this.config.item = item;
-        return this;
-    }
-
-    /**
-    * Function to be executed on edit/update action og existing item in the form
-    */
-    editFunction(callback: (item: any) => Observable<ResponseEdit<TItem>>): this {
-        this.config.editFunction = callback;
+     * Function to call when form is loaded
+     * @param callback Callback
+     */
+    onFormLoaded(callback: (form: ResponseFormEdit<TItem>) => void): this {
+        this.config.onEditFormLoaded = callback;
         return this;
     }
 

@@ -82,79 +82,39 @@ export abstract class BaseTypeService<TItem extends IItem>{
         return this.repositoryClient.editForm(this.type, itemId);
     }
 
-    insertForm(options?: {
-        useCustomQuery?: InsertFormQuery<TItem>
-    }): Observable<DynamicFormInsertBuilder<TItem>> {
+    /**
+     * Gets insert form builder
+     * @param customQuery Query used to get form definition from server, if none is provided a default one is used
+     */
+    insertForm(customQuery?: InsertFormQuery<TItem>): DynamicFormInsertBuilder<TItem> {
+        // query used to get form definition from server
+        var query = customQuery ? customQuery : this.insertFormQuery();
 
-        var query;
-
-        if (options && options.useCustomQuery) {
-            query = options.useCustomQuery;
-        }
-        else {
-            query = this.insertFormQuery();
-        }
-
-        return query
-            .get()
-            .map(form => {
-                var builder = new DynamicFormInsertBuilder<TItem>();
-
-                // set fields
-                builder.fields(form.fields);
-
-                // set type of form
-                builder.type(form.type);
-
-                // set default save function
-                builder.insertFunction((item) => this.create(item).set())
-
-                // set default button text for insert
-                builder.submitTextKey('form.shared.insert');
-
-                return builder;
-            })
+        return new DynamicFormInsertBuilder<TItem>(
+            this.type, query.get(),
+            (item) => this.create(item).set())
+            .submitTextKey('form.shared.insert');
     }
 
-    editForm(itemId: number, options?: {
-        useCustomQuery: EditFormQuery<TItem>
-    }): Observable<DynamicFormEditBuilder<TItem>> {
+    /**
+    * Gets edit form builder
+    * @param itemId Id of the item to edit
+    * @param customQuery Query used to get form definition from server, if none is provided a default one is used
+    */
+    editForm(itemId: number, customQuery?: EditFormQuery<TItem>): DynamicFormEditBuilder<TItem> {
+        // query used to get form definition from server
+        var query = customQuery ? customQuery : this.editFormQuery(itemId);
 
-        var query;
+        var builder = new DynamicFormEditBuilder<TItem>(this.type, query.get(), (item) => this.edit(item).set());
 
-        if (options && options.useCustomQuery) {
-            query = options.useCustomQuery;
+        // set default delete function if its enabled
+        if (this.config.allowDelete) {
+            builder.deleteFunction((item) => this.delete(item.Id).set());
         }
-        else {
-            query = this.editFormQuery(itemId);
-        }
 
-        return query
-            .get()
-            .map(form => {
-                var builder = new DynamicFormEditBuilder<TItem>();
+        // set default button text for update
+        builder.submitTextKey('form.shared.save');
 
-                // set type of form
-                builder.type(form.type);
-
-                // set returned item
-                builder.setItem(form.item as TItem);
-
-                // set fields
-                builder.fields(form.fields);
-
-                // set default delete function if its enabled
-                if (this.config.allowDelete) {
-                    builder.deleteFunction((item) => this.delete(item.Id).set());
-                }
-
-                // set default save function
-                builder.editFunction((item) => this.edit(item).set());
-
-                // set default button text for update
-                builder.submitTextKey('form.shared.save');
-
-                return builder;
-            })
+        return builder;
     }
 }

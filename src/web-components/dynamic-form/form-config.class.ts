@@ -1,8 +1,18 @@
 import { Observable } from 'rxjs/RX';
 import { FormGroup } from '@angular/forms';
-import { FormField, IItem, ResponseCreate, ResponseEdit, FormErrorResponse, ErrorResponse, ResponseDelete } from '../../lib/repository';
+import { ResponseFormInsert, ResponseFormEdit, FormField, IItem, ResponseCreate, ResponseEdit, FormErrorResponse, ErrorResponse, ResponseDelete } from '../../lib/repository';
 
 export class FormConfig<TItem extends IItem>{
+
+     /**
+     * Edit form definition query
+     */
+    public editFormDefinition?: Observable<ResponseFormEdit<TItem>>;
+
+    /**
+     * Insert form definition query
+     */
+    public insertFormDefinition?: Observable<ResponseFormInsert>;
 
     /**
      * Key of submit text button
@@ -77,15 +87,19 @@ export class FormConfig<TItem extends IItem>{
     public enableDelete: boolean = true;
 
     /**
-     * Callback when initializing the form
+     * Callback before initializing the form
      */
-    public onFormInit?: () => void;
+    public onBeforeFormInit?: () => void;
 
     /**
-     * Callback for when the form has 'config' available. This is useful when the fields are loaded from server
-     * rather then defined manually. It is called after 'onFormInit'.
+     * Callback for when the form has fetched data from server and loaded form definitions
      */
-    public onFormLoaded?: () => void;
+    public onEditFormLoaded?: (form: ResponseFormEdit<TItem>) => void;
+
+    /**
+     * Callback for when the form has fetched data from server and loaded form definitions
+     */
+    public onInsertFormLoaded?: (form: ResponseFormInsert) => void;
 
     /**
      * Callback after a new item is successfully inserted
@@ -134,10 +148,23 @@ export class FormConfig<TItem extends IItem>{
      */
     public loaderConfig: { start: () => void, stop: () => void };
 
+    /**
+     * Resolver used to change the value of certain fields manually
+     */
+    public fieldValueResolver: (fieldName: string, value: any) => string | boolean | number;
+
     constructor(
         config?: {
-            submitTextKey?: string,
+            // required
             fields: FormField[],
+
+            // optional
+            fieldValueResolver?: (fieldName: string, value: any) => string | boolean | number,
+            onEditFormLoaded?: (form: ResponseFormEdit<TItem>) => void,
+            onInsertFormLoaded?: (form: ResponseFormInsert) => void,
+            editFormDefinition?: Observable<ResponseFormEdit<TItem>>,
+            insertFormDefinition?: () => Observable<ResponseFormInsert>,
+            submitTextKey?: string,
             showSnackBar?: boolean,
             snackBarTextKey?: string,
             insertFunction?: (item: any) => Observable<ResponseCreate<TItem>>, // insert or edit function needs to be provided
@@ -146,7 +173,7 @@ export class FormConfig<TItem extends IItem>{
             type?: string,
             item?: TItem,
             hiddenFields?: string[],
-            onFormInit?: () => void,
+            onBeforeFormInit?: () => void,
             onFormLoaded?: () => void,
             onAfterInsert?: (response: ResponseCreate<TItem>) => void,
             onAfterUpdate?: (response: ResponseEdit<TItem>) => void,

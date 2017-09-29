@@ -7,8 +7,6 @@ import { AppConfig, ComponentDependencyService, BaseComponent } from '../../../c
 import { ProgressItemMenuItems } from '../menu.items';
 import { FormConfig } from '../../../../web-components/dynamic-form';
 import { ProgressItemType } from '../../../models';
-import 'rxjs/add/operator/switchMap';
-import { Observable } from 'rxjs/Rx';
 
 @Component({
     templateUrl: 'edit-type.component.html'
@@ -26,35 +24,27 @@ export class EditTypeComponent extends BaseComponent implements OnInit {
 
     ngOnInit(): void {
         super.ngOnInit();
-        super.subscribeToObservable(this.getFormObservable());
+        this.initForm();
     };
 
-    private getFormObservable(): Observable<any> {
-        return this.activatedRoute.params
-            .takeUntil(this.ngUnsubscribe)
-            .switchMap((params: Params) => {
-                return this.dependencies.itemServices.progressItemTypeService.editForm(+params['id'])
-                    .takeUntil(this.ngUnsubscribe);
+    private initForm(): void {
+        this.activatedRoute.params
+            .map((params: Params) => {
+                this.formConfig = this.dependencies.itemServices.progressItemTypeService.editForm(+params['id'])
+                    .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
+                    .onAfterDelete(() => super.navigate([this.getTrainerUrl('progress-item-types')]))
+                    .onFormLoaded(form => {
+                        this.setConfig({
+                            menuItems: new ProgressItemMenuItems(form.item.id).menuItems,
+                            menuTitle: {
+                                key: form.item.typeName
+                            },
+                            componentTitle: {
+                                'key': 'module.progressItemTypes.edit'
+                            }
+                        });
+                    })
+                    .build();
             })
-            .map(form => {
-                form.loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
-                form.onAfterDelete(() => super.navigate([this.getTrainerUrl('progress-item-types')]));
-                var item = form.getItem();
-
-                this.setConfig({
-                    menuItems: new ProgressItemMenuItems(item.id).menuItems,
-                    menuTitle: {
-                        key: item.typeName
-                    },
-                    componentTitle: {
-                        'key': 'module.progressItemTypes.edit'
-                    }
-                });
-
-                // get form
-                this.formConfig = form.build();
-            }
-            ,
-            error => super.handleError(error));
     }
 }

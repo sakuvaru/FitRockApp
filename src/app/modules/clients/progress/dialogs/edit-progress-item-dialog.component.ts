@@ -35,28 +35,22 @@ export class EditProgressItemDialog extends BaseComponent implements OnInit {
   ngOnInit() {
     super.ngOnInit();
 
-    super.subscribeToObservable(this.getFormObservable());
+    this.initForm();
   }
 
-  private getFormObservable(): Observable<any> {
-    return this.dependencies.itemServices.progressItemService.editForm(this.item.id)
-      .takeUntil(this.ngUnsubscribe)
-      .map(form => {
-        form.onAfterUpdate((response) => {
-          this.itemWasUpdated = true;
-          this.close();
-        });
-
-        form.loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader());
-        form.onAfterDelete((response) => {
-          this.idOfDeletedItem = response.deletedItemId;
-          this.itemWasDeleted = true;
-          this.close();
-        });
-
-        this.formConfig = form.build();
-      },
-      error => super.handleError(error));
+  private initForm(): void {
+    this.formConfig = this.dependencies.itemServices.progressItemService.editForm(this.item.id)
+      .onAfterUpdate((response) => {
+        this.itemWasUpdated = true;
+        this.close();
+      })
+      .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
+      .onAfterDelete((response) => {
+        this.idOfDeletedItem = response.deletedItemId;
+        this.itemWasDeleted = true;
+        this.close();
+      })
+      .build();
   }
 
   private close(): void {

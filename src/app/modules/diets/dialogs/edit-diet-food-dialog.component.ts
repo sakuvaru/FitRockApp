@@ -35,29 +35,23 @@ export class EditDietFoodDialogComponent extends BaseComponent implements OnInit
 
   ngOnInit() {
     super.ngOnInit();
-    
-    super.subscribeToObservable(this.getFormObservable());
+
+    this.initForm();
   }
 
-  private getFormObservable(): Observable<any> {
-    return this.dependencies.itemServices.dietFoodService.editForm(this.dietFood.id)
-      .takeUntil(this.ngUnsubscribe)
-      .map(form => {
-        form.onAfterUpdate((response) => {
-          this.dietFood = response.item;
-          this.close();
-        });
-        form.loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader());
-        form.onAfterDelete((response) => {
-          this.idOfDeletedDietFood = response.deletedItemId;
-          this.dietFoodWasDeleted = true;
-          this.close();
-        });
-
-        this.dietFoodForm = form.build();
-        super.stopGlobalLoader();
-      },
-      error => super.handleError(error));
+  private initForm(): void {
+    this.dietFoodForm = this.dependencies.itemServices.dietFoodService.editForm(this.dietFood.id)
+      .onAfterUpdate((response) => {
+        this.dietFood = response.item;
+        this.close();
+      })
+      .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
+      .onAfterDelete((response) => {
+        this.idOfDeletedDietFood = response.deletedItemId;
+        this.dietFoodWasDeleted = true;
+        this.close();
+      })
+      .build();
   }
 
   private close(): void {

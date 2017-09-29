@@ -27,22 +27,16 @@ export class NewTypeComponent extends BaseComponent implements OnInit {
         this.setConfig({
             componentTitle: { key: 'module.progressItemTypes.submenu.new' },
             menuItems: new NewProgressItemTypeMenuItems().menuItems,
-            menuTitle: { key: 'module.progressItemTypes.submenu.overview'}
+            menuTitle: { key: 'module.progressItemTypes.submenu.overview' }
         });
 
-        super.subscribeToObservable(this.getFormObservable());
-        }
+        this.initForm();
+    }
 
-    private getFormObservable(): Observable<any> {
-        return this.dependencies.itemServices.progressItemTypeService.insertForm()
-            .takeUntil(this.ngUnsubscribe)
-            .map(form => {
-                form.loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
-                form.insertFunction((item) => this.dependencies.itemServices.progressItemTypeService.create(item).set());
-                form.onAfterInsert((response) => this.navigate([this.getTrainerUrl('progress-item-types/edit'), response.item.id]));
-
-                this.formConfig = form.build();
-            },
-            error => super.handleError(error));
+    private initForm(): void {
+        this.formConfig = this.dependencies.itemServices.progressItemTypeService.insertForm()
+            .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
+            .onAfterInsert((response) => this.navigate([this.getTrainerUrl('progress-item-types/edit'), response.item.id]))
+            .build()
     }
 }

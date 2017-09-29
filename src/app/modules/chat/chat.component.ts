@@ -130,16 +130,13 @@ export class ChatComponent extends BaseComponent implements OnInit {
                     return Observable.of(response);
                 }
 
-                return this.getFormObservable(this.activeChatUserId);
-            })
-            .switchMap(response => {
-                if (!this.activeChatUserId) {
-                    return Observable.of(response);
-                }
-
                 return this.getChatMessagesObservable(this.activeChatUserId, this.chatMessagesPage, true, this.chatMessagesSearch);
             })
-            .map(() => super.stopAllLoaders())
+            .map(() => {
+                this.initChatForm(this.activeChatUserId);
+
+                super.stopAllLoaders();
+            })
     }
 
     private resetChatUser(): void {
@@ -159,28 +156,28 @@ export class ChatComponent extends BaseComponent implements OnInit {
         this.noUserFound = false;
     }
 
-    private getFormObservable(userId: number): Observable<any> {
-        return this.dependencies.itemServices.chatMessageService.insertForm()
-            .takeUntil(this.ngUnsubscribe)
-            .map(form => {
+    private initChatForm(userId: number): void {
+        this.formConfig = this.dependencies.itemServices.chatMessageService.insertForm()
+            .fieldValueResolver((fieldName, value) => {
                 // manually set recipient & sender
-                form.withFieldValue('SenderUserId', this.dependencies.authenticatedUserService.getUserId());
-                form.withFieldValue('RecipientUserId', userId);
+                if (fieldName === 'SenderUserId') {
+                    return this.dependencies.authenticatedUserService.getUserId()
+                }
+                else if (fieldName === 'RecipientUserId') {
+                    return userId
+                }
+                return value;
+            })
+            .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
+            .snackBarTextKey('module.clients.chat.snackbarSaved')
+            .submitTextKey('module.clients.chat.submit')
+            .onAfterInsert((response) => {
+                // reload messages
+                super.subscribeToObservable(this.getChatMessagesObservable(userId, 1, true, this.chatMessagesSearch)
+                    .takeUntil(this.ngUnsubscribe));
 
-                form.loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader());
-                form.snackBarTextKey('module.clients.chat.snackbarSaved');
-                form.submitTextKey('module.clients.chat.submit');
-                form.insertFunction((item) => this.dependencies.itemServices.chatMessageService.create(item).set());
-                form.onAfterInsert((response) => {
-                    // reload messages
-                    super.subscribeToObservable(this.getChatMessagesObservable(userId, 1, true, this.chatMessagesSearch)
-                        .takeUntil(this.ngUnsubscribe));
-
-                });
-
-                this.formConfig = form.build();
-            },
-            error => super.handleError(error));
+            })
+            .build();
     }
 
     private getChatMessagesObservable(clientId: number, page: number, replaceMessages: boolean, search: string): Observable<any> {
@@ -200,10 +197,10 @@ export class ChatComponent extends BaseComponent implements OnInit {
                         this.chatMessages = response.items;
                     }
                     else {
-                        if (this.chatMessages){
+                        if (this.chatMessages) {
                             this.chatMessages = _.union(this.chatMessages, response.items);
                         }
-                        else{
+                        else {
                             this.chatMessages = response.items;
                         }
                     }

@@ -1,19 +1,26 @@
-import { Component, Input, Output, OnInit, EventEmitter, OnChanges, SimpleChanges, ChangeDetectorRef } from '@angular/core';
+// Core 
+import { Component, Input, Output, OnInit, OnChanges, SimpleChanges, ChangeDetectorRef } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { FieldControlService } from './field-control.service';
-import { FormConfig } from './form-config.class';
 import { MdSnackBar } from '@angular/material';
+import { Observable, Subject } from 'rxjs/Rx';
+
+// models
+import { FormConfig } from './form-config.class';
+
+import { BaseWebComponent } from '../base-web-component.class';
 import {
     ColumnValidation, FieldErrorEnum, ResponseCreate, ResponseEdit, FormErrorResponse,
     ErrorResponse, ErrorReasonEnum, FormField, ResponseDelete
 } from '../../lib/repository';
+
+// services
 import { TranslateService } from '@ngx-translate/core';
-import { BaseWebComponent } from '../base-web-component.class';
-import { Observable, Subject } from 'rxjs/Rx';
-import 'rxjs/add/operator/catch';
+import { FieldControlService } from './field-control.service';
 
-// NOTE: see https://angular.io/docs/ts/latest/cookbook/dynamic-form.html for more details
+//helpers
+import { observableHelper } from '../../lib/utilities';
 
+// NOTE: see https://angular.io/docs/ts/latest/cookbook/dynamic-form.html for more details about dynamic forms
 @Component({
     selector: 'dynamic-form',
     templateUrl: './dynamic-form.component.html',
@@ -73,58 +80,6 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
         }
     }
 
-    private initButtons(): void {
-        this.insertButtonSubject = new Subject<void>();
-        this.deleteButtonSubject = new Subject<void>();
-        this.editButtonSubject = new Subject<void>();
-    }
-
-    initDynamicForm(config: FormConfig<any>): void {
-        // try to initialize component if config is available during init
-        if (this.config) {
-            // !! Important - unsubscribe from buttons. If dynamic form is reloaded within the same page, it may happen
-            // that clicking save will fire multiple times
-            this.insertButtonSubject = new Subject<void>();
-            this.deleteButtonSubject = new Subject<void>();
-            this.editButtonSubject = new Subject<void>();
-
-            this.config = config;
-
-            if (this.config.onFormInit) {
-                this.config.onFormInit();
-            }
-
-            // subscribe to button events
-            this.initButtonClicks();
-
-            // load fields
-            this.form = this.fieldControlService.toFormGroup(this.config.fields);
-
-            // assign questions from fields
-            this.assignQuestions(this.config.fields)
-
-            // subscribe to form changes
-            this.form.valueChanges
-                .takeUntil(this.ngUnsubscribe)
-                .subscribe(response => this.handleFormChange());
-
-            // translate labels
-            this.translateLabels();
-
-            // form type
-            this.isDeleteEnabled = this.deleteIsEnabled();
-            this.isEditForm = this.config.isEditForm();
-            this.isInsertForm = this.config.isInsertForm();
-
-            // after init
-            if (this.config.onFormLoaded) {
-                this.config.onFormLoaded();
-            }
-        }
-
-        this.cdr.detectChanges();
-    }
-
     ngOnChanges(changes: SimpleChanges) {
         // re-initalize form when questions changes because dynamic form may recieve config with questions 
         // after the initilization of component 
@@ -133,126 +88,244 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
         }
     }
 
-    initButtonClicks() {
-        if (this.config.isInsertForm()) {
+    private initDynamicForm(config: FormConfig<any>): void {
+        // try to initialize component if config is available during init
+        if (config) {
+            // !! Important - unsubscribe from buttons. If dynamic form is reloaded within the same page, it may happen
+            // that clicking save will fire multiple times
+            this.initButtons();
+
+            if (config.onBeforeFormInit) {
+                config.onBeforeFormInit();
+            }
+
+            // subscribe to button events
+            this.initButtonClicks(config);
+
+            // form type
+            this.isDeleteEnabled = this.deleteIsEnabled(config);
+            this.isEditForm = config.isEditForm();
+            this.isInsertForm = config.isInsertForm();
+
+            var translateLabelsObservable = this.getTranslateLabelsObservable(config);
+
+            // init fields
+            this.getInitFormObservable(config)
+                .takeUntil(this.ngUnsubscribe)
+                .zip(translateLabelsObservable)
+                .subscribe(() => {
+                    // form initialized
+                })
+        }
+
+        // should be necessary, delete if all is working fine
+        //this.cdr.detectChanges();
+    }
+
+    private getInitFormObservable(config: FormConfig<any>): Observable<any> {
+
+        if (config.isInsertForm()) {
+            if (!config.insertFormDefinition) {
+                throw Error(`Cannot init 'insert' form because no form definition was provided`);
+            }
+
+            return config.insertFormDefinition
+                .map(form => {
+                    var fields = form.fields;
+
+                    if (config.fieldValueResolver && fields && fields.length > 0) {
+                        // resolve custom field values
+                        if (config.fieldValueResolver) {
+                            // got through all fields and try resolving their value through custom resolver
+                            fields.forEach(field => {
+                                var newValue = config.fieldValueResolver(field.key, field.value);
+                                field.value = this.getFieldValueSetByResolver(newValue);
+                            })
+                        }
+                    }
+
+                    // load fields
+                    this.form = this.fieldControlService.toFormGroup(fields);
+
+                    // assign questions from fields
+                    this.assignQuestions(fields);
+
+                    // subscribe to form changes
+                    this.form.valueChanges
+                        .takeUntil(this.ngUnsubscribe)
+                        .subscribe(response => this.handleFormChange());
+
+                    // form loaded
+                    if (config.onInsertFormLoaded) {
+                        config.onInsertFormLoaded(form);
+                    }
+                });
+        }
+        else if (config.isEditForm()) {
+            if (!config.editFormDefinition) {
+                throw Error(`Cannot init 'edit' form because no form definition was provided`);
+            }
+            return config.editFormDefinition
+                .map(form => {
+                    var fields = form.fields;
+
+                    // load fields
+                    this.form = this.fieldControlService.toFormGroup(fields);
+
+                    // assign questions from fields
+                    this.assignQuestions(fields);
+
+                    // resolve custom field values
+                    if (config.fieldValueResolver && fields && fields.length > 0) {
+                        if (config.fieldValueResolver) {
+                            // got through all fields and try resolving their value through custom resolver
+                            fields.forEach(field => {
+                                var newValue = config.fieldValueResolver(field.key, field.value);
+                                field.value = this.getFieldValueSetByResolver(newValue);
+                            })
+                        }
+                    }
+
+                    // subscribe to form changes
+                    this.form.valueChanges
+                        .takeUntil(this.ngUnsubscribe)
+                        .subscribe(response => this.handleFormChange());
+
+                    // after init
+                    if (config.onEditFormLoaded) {
+                        config.onEditFormLoaded(form);
+                    }
+                })
+        }
+        throw Error(`Unsupported form type`);
+    }
+
+    private initButtonClicks(config: FormConfig<any>) {
+        if (config.isInsertForm()) {
             this.insertButtonSubject
                 .takeUntil(this.ngUnsubscribe)
                 .switchMap(event => {
-                    if (!this.config.insertFunction) {
+                    if (!config.insertFunction) {
                         throw new Error('Insert function is not defined');
                     }
 
                     // start loader
-                    this.startLoader();
+                    this.startLoader(config);
 
                     // before save
-                    if (this.config.onBeforeSave) {
-                        this.config.onBeforeSave();
+                    if (config.onBeforeSave) {
+                        config.onBeforeSave();
                     }
 
                     // do not allow nulls to be send
                     this.convertEmptyStringsToNull();
 
-                    return this.config.insertFunction(this.form.value)
+                    return config.insertFunction(this.form.value)
                 })
                 .subscribe(response => {
                     this.response = response;
-                    this.handleInsertAfter(response);
+                    this.handleInsertAfter(config, response);
 
                     // after save
-                    if (this.config.OnAfterSave) {
-                        this.config.OnAfterSave();
+                    if (config.OnAfterSave) {
+                        config.OnAfterSave();
                     }
 
                     // stop loader
-                    this.stopLoader();
-                    
+                    this.stopLoader(config);
+
                     // form clear
-                    this.handleFormClear();
+                    this.handleFormClear(config);
                 },
                 (err) => {
-                    this.handleError(err);
+                    this.handleError(config, err);
                 });
         }
-        else if (this.config.isEditForm()) {
+        else if (config.isEditForm()) {
             this.editButtonSubject
                 .takeUntil(this.ngUnsubscribe)
                 .switchMap(event => {
-                    if (!this.config.editFunction) {
+                    if (!config.editFunction) {
                         throw new Error('Edit function is not defined');
                     }
 
                     // start loader
-                    this.startLoader();
+                    this.startLoader(config);
 
                     // before save
-                    if (this.config.onBeforeSave) {
-                        this.config.onBeforeSave();
+                    if (config.onBeforeSave) {
+                        config.onBeforeSave();
                     }
 
                     // do not allow nulls to be send
                     this.convertEmptyStringsToNull();
 
-                    return this.config.editFunction(this.form.value)
+                    return config.editFunction(this.form.value)
                 })
                 .subscribe(response => {
                     this.response = response;
-                    this.handleUpdateAfter(response);
+                    this.handleUpdateAfter(config, response);
 
                     // after save
-                    if (this.config.OnAfterSave) {
-                        this.config.OnAfterSave();
+                    if (config.OnAfterSave) {
+                        config.OnAfterSave();
                     }
 
                     // stop loader
-                    this.stopLoader();
+                    this.stopLoader(config);
                 },
                 (err) => {
-                    this.handleError(err);
+                    this.handleError(config, err);
                 });
         }
         else {
             throw Error('Form does not support given save option');
         }
 
-        if (this.deleteIsEnabled()) {
-            if (!this.config.deleteFunction) {
+        if (this.deleteIsEnabled(config)) {
+            if (!config.deleteFunction) {
                 throw Error(`Cannot init delete function because it wasn't supplied`);
             }
 
             this.deleteButtonSubject
                 .takeUntil(this.ngUnsubscribe)
                 .switchMap(response => {
-                    if (!this.config.deleteFunction) {
+                    if (!config.deleteFunction) {
                         throw new Error('Delete function is not defined');
                     }
 
                     // start loader
-                    this.startLoader();
+                    this.startLoader(config);
 
                     // before delete
-                    if (this.config.onBeforeDelete) {
-                        this.config.onBeforeDelete(this.form.value);
+                    if (config.onBeforeDelete) {
+                        config.onBeforeDelete(this.form.value);
                     }
                     this.convertEmptyStringsToNull();
 
-                    return this.config.deleteFunction(this.form.value)
+                    return config.deleteFunction(this.form.value)
                 })
                 .subscribe(response => {
                     this.response = response;
-                    this.handleDeleteAfter(response);
+                    this.handleDeleteAfter(config, response);
 
                     // stop loader
-                    this.stopLoader();
+                    this.stopLoader(config);
                 },
                 (err) => {
-                    this.handleError(err);
+                    this.handleError(config, err);
                 });
         }
     }
 
-    private deleteIsEnabled(): boolean {
-        if (this.config.enableDelete && this.config.deleteFunction) {
+    private initButtons(): void {
+        this.insertButtonSubject = new Subject<void>();
+        this.deleteButtonSubject = new Subject<void>();
+        this.editButtonSubject = new Subject<void>();
+    }
+
+    private deleteIsEnabled(config: FormConfig<any>): boolean {
+        if (config.enableDelete && config.deleteFunction) {
             return true;
         }
         return false;
@@ -288,26 +361,30 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
         return true;
     }
 
-    private translateLabels(): void {
-        this.translateService.get(this.config.submitTextKey).subscribe(key => this.submitText = key);
-        this.translateService.get(this.config.snackBarTextKey).subscribe(key => this.snackbarText = key);
-        this.translateService.get(this.config.deleteSnackBarTextKey).subscribe(key => this.deleteSnackbarText = key);
-        this.translateService.get(this.config.deleteTextKey).subscribe(key => this.deleteText = key);
+    private getTranslateLabelsObservable(config: FormConfig<any>): Observable<any> {
+        var observables: Observable<any>[] = [];
 
-        this.translateService.get('form.error.insufficientLicense').subscribe(key => this.insufficientLicenseError = key);
-        this.translateService.get('form.error.saveFailed').subscribe(key => this.generalErrorMessage = key);
-        this.translateService.get('form.error.unknownFormErrorMessage').subscribe(key => this.unknownErrorMessage = key);
+        observables.push(this.translateService.get(config.submitTextKey).map(key => this.submitText = key));
+        observables.push(this.translateService.get(config.snackBarTextKey).map(key => this.snackbarText = key));
+        observables.push(this.translateService.get(config.deleteSnackBarTextKey).map(key => this.deleteSnackbarText = key));
+        observables.push(this.translateService.get(config.deleteTextKey).map(key => this.deleteText = key));
+
+        observables.push(this.translateService.get('form.error.insufficientLicense').map(key => this.insufficientLicenseError = key));
+        observables.push(this.translateService.get('form.error.saveFailed').map(key => this.generalErrorMessage = key));
+        observables.push(this.translateService.get('form.error.unknownFormErrorMessage').map(key => this.unknownErrorMessage = key));
+
+        return observableHelper.zipObservables(observables);
     }
 
-    private startLoader(): void {
-        if (this.config.loaderConfig) {
-            this.config.loaderConfig.start();
+    private startLoader(config: FormConfig<any>): void {
+        if (config.loaderConfig) {
+            config.loaderConfig.start();
         }
     }
 
-    private stopLoader(): void {
-        if (this.config.loaderConfig) {
-            this.config.loaderConfig.stop();
+    private stopLoader(config: FormConfig<any>): void {
+        if (config.loaderConfig) {
+            config.loaderConfig.stop();
         }
     }
 
@@ -320,45 +397,43 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
         this.cdr.detectChanges();
     }
 
-    private handleSnackBar(): void {
+    private handleSnackBar(config: FormConfig<any>, ): void {
         if (this.config.showSnackBar) {
             this.snackBarService.open(this.snackbarText, '', { duration: 2500 });
         }
     }
 
-    private handleDeleteSnackBar(): void {
+    private handleDeleteSnackBar(config: FormConfig<any>, ): void {
         if (this.config.showSnackBar) {
             this.snackBarService.open(this.deleteSnackbarText, '', { duration: 2500 });
         }
     }
 
-    private handleDeleteAfter(response: ResponseDelete): void {
-        this.handleDeleteSnackBar();
+    private handleDeleteAfter(config: FormConfig<any>, response: ResponseDelete): void {
+        this.handleDeleteSnackBar(config);
 
-        if (this.config.onAfterDelete) {
-            this.config.onAfterDelete(response);
+        if (config.onAfterDelete) {
+            config.onAfterDelete(response);
         }
     }
 
-    private handleUpdateAfter(response: ResponseEdit<any>): void {
-        this.handleSnackBar();
+    private handleUpdateAfter(config: FormConfig<any>, response: ResponseEdit<any>): void {
+        this.handleSnackBar(config);
 
         if (this.config.onAfterUpdate) {
             this.config.onAfterUpdate(response);
         }
-
-
     }
 
-    private handleInsertAfter(response: ResponseCreate<any>): void {
-        this.handleSnackBar();
+    private handleInsertAfter(config: FormConfig<any>, response: ResponseCreate<any>): void {
+        this.handleSnackBar(config);
 
         if (this.config.onAfterInsert) {
             this.config.onAfterInsert(response);
         }
     }
 
-    private handleFormClear(): void {
+    private handleFormClear(config: FormConfig<any>): void {
         // only insert forms can be cleared after save
         if (this.config.clearFormAfterSave && this.config.isInsertForm()) {
             this.questions = [];
@@ -376,7 +451,7 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
         });
     }
 
-    private handleError(errorResponse: ErrorResponse | FormErrorResponse | any): void {
+    private handleError(config: FormConfig<any>, errorResponse: ErrorResponse | FormErrorResponse | any): void {
         if (this.config.onError) {
             this.config.onError(errorResponse);
         }
@@ -433,10 +508,10 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
 
         // buttons clicks need to be reinitialized because otherwise it was not possible to resubmit the form 
         // after it failed because of some error
-        this.initButtonClicks();
+        this.initButtonClicks(config);
 
         // stop loader on error in case the request is pending
-        this.stopLoader();
+        this.stopLoader(config);
     }
 
     private getFormErrorMessage(columnValidation: ColumnValidation, fieldLabel: string): Observable<string> {
@@ -480,5 +555,25 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
         }
 
         return this.translateService.get('form.error.unknownn');
+    }
+
+    /**
+     * Use to manually set value of certain field in form.
+     * Call after all fields were initiliazed
+     * @param fields all fields in form
+     * @param fieldName Name of field
+     * @param value Value
+     */
+    private getFieldValueSetByResolver(value: string | boolean | number): string {
+        // boolean field needs to return 'string' with 'false' value otherwise the JSON .NET mapping
+        // does not map the object 
+        if (!value) {
+            if (typeof (value) === 'boolean') {
+                return 'false';
+            }
+            return '';
+        }
+
+        return value.toString().trim();
     }
 }

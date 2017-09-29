@@ -31,7 +31,7 @@ export class EditWorkoutExportComponent extends BaseComponent implements OnInit,
     ngOnChanges(changes: SimpleChanges) {
         var workoutId = changes.workoutId.currentValue;
         if (workoutId) {
-            super.subscribeToObservable(this.getFormObservable(workoutId));
+            this.initForm(workoutId);
         }
     }
 
@@ -39,20 +39,11 @@ export class EditWorkoutExportComponent extends BaseComponent implements OnInit,
         super.ngOnInit();
     }
 
-    private getFormObservable(workoutId: number): Observable<any> {
-        return this.dependencies.itemServices.workoutService.editForm(workoutId)
-            .takeUntil(this.ngUnsubscribe)
-            .map(form => {
-                form.loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader());
-                form.onAfterDelete(() => super.navigate([super.getTrainerUrl('workouts')]));
-                var workout = form.getItem();
-
-                // get form
-                this.formConfig = form.build();
-
-                // set loaded workout
-                this.loadWorkout.next(workout);
-            },
-            error => super.handleError(error));
+    private initForm(workoutId: number): void {
+        this.formConfig = this.dependencies.itemServices.workoutService.editForm(workoutId)
+            .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
+            .onAfterDelete(() => super.navigate([super.getTrainerUrl('workouts')]))
+            .onFormLoaded(form => this.loadWorkout.next(form.item))
+            .build();
     }
 }

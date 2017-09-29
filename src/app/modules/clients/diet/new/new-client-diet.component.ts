@@ -31,7 +31,7 @@ export class NewClientDietComponent extends ClientsBaseComponent implements OnIn
         super.initClientSubscriptions();
     }
 
-    private getObservables(): Observable<any>[]{
+    private getObservables(): Observable<any>[] {
         var observables: Observable<any>[] = [];
         observables.push(this.getClientObservable());
         observables.push(this.getFormObservable());
@@ -40,7 +40,7 @@ export class NewClientDietComponent extends ClientsBaseComponent implements OnIn
 
     private getClientObservable(): Observable<any> {
         return this.clientChange.map(client => {
-           this.setConfig({
+            this.setConfig({
                 componentTitle: { key: 'module.clients.diet.newDiet' },
                 menuItems: new NewClientDietMenuItems(client.id).menuItems,
                 menuTitle: {
@@ -55,18 +55,18 @@ export class NewClientDietComponent extends ClientsBaseComponent implements OnIn
     private getFormObservable(): Observable<any> {
         return this.clientIdChange
             .takeUntil(this.ngUnsubscribe)
-            .switchMap(clientId => {
-                return this.dependencies.itemServices.dietService.insertForm()
-                    .takeUntil(this.ngUnsubscribe)
-            })
-            .map(form => {
-                // manually set client id
-                form.withFieldValue('ClientId', this.clientId);
-                form.loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
-                form.insertFunction((item) => this.dependencies.itemServices.dietService.create(item).set());
-                form.onAfterInsert((response) => super.navigate([super.getTrainerUrl('clients/edit/' + this.clientId + '/diet/' + response.item.id + '/diet-plan')]));
-
-                this.formConfig = form.build();
+            .map(clientId => {
+                this.formConfig = this.dependencies.itemServices.dietService.insertForm()
+                    .fieldValueResolver((fieldName, value) => {
+                        // manually set client
+                        if (fieldName === 'ClientId') {
+                            return this.clientId;
+                        }
+                        return value;
+                    })
+                    .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
+                    .onAfterInsert((response) => super.navigate([super.getTrainerUrl('clients/edit/' + this.clientId + '/diet/' + response.item.id + '/diet-plan')]))
+                    .build();
             },
             error => super.handleError(error))
     }

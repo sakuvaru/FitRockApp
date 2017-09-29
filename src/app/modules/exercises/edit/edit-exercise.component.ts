@@ -27,35 +27,28 @@ export class EditExerciseComponent extends BaseComponent implements OnInit {
     ngOnInit(): void {
         super.ngOnInit();
 
-        super.subscribeToObservable(this.getFormObservable());
+        this.initForm();
     }
 
-    private getFormObservable(): Observable<any> {
-        return this.activatedRoute.params
+    private initForm(): void {
+        this.activatedRoute.params
             .takeUntil(this.ngUnsubscribe)
-            .switchMap((params: Params) => {
-                return this.dependencies.itemServices.exerciseService.editForm(+params['id'])
-                    .takeUntil(this.ngUnsubscribe);
+            .map((params: Params) => {
+                this.formConfig = this.dependencies.itemServices.exerciseService.editForm(+params['id'])
+                    .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
+                    .onAfterDelete(() => super.navigate([this.getTrainerUrl('exercises')]))
+                    .onFormLoaded(form => {
+                        this.setConfig({
+                            menuItems: new ExerciseMenuItems(form.item.id).menuItems,
+                            menuTitle: {
+                                key: form.item.exerciseName
+                            },
+                            componentTitle: {
+                                'key': 'module.exercises.edit'
+                            }
+                        });
+                    })
+                    .build();
             })
-            .map(form => {
-                form.loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
-                form.onAfterDelete(() => super.navigate([this.getTrainerUrl('exercises')]));
-                var item = form.getItem();
-
-                this.setConfig({
-                    menuItems: new ExerciseMenuItems(item.id).menuItems,
-                    menuTitle: {
-                        key: item.exerciseName
-                    },
-                    componentTitle: {
-                        'key': 'module.exercises.edit'
-                    }
-                });
-
-                // get form
-                this.formConfig = form.build();
-            }
-            ,
-            error => super.handleError(error));
     }
 }

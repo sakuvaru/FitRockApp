@@ -30,7 +30,7 @@ export class EditDietExportComponent extends BaseComponent implements OnInit, On
     ngOnChanges(changes: SimpleChanges) {
         var dietId = changes.dietId.currentValue;
         if (dietId) {
-            super.subscribeToObservable(this.getFormObservable(dietId));
+            this.initForm(dietId);
         }
     }
 
@@ -38,20 +38,16 @@ export class EditDietExportComponent extends BaseComponent implements OnInit, On
         super.ngOnInit();
     }
 
-    private getFormObservable(dietId: number): Observable<any> {
-        return this.dependencies.itemServices.dietService.editForm(dietId)
-            .takeUntil(this.ngUnsubscribe)
-            .map(form => {
-                form.loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader());
-                form.onAfterDelete(() => super.navigate([super.getTrainerUrl('diets')]));
-                var workout = form.getItem();
-
-                // get form
-                this.formConfig = form.build();
+    private initForm(dietId: number): void {
+        this.formConfig = this.dependencies.itemServices.dietService.editForm(dietId)
+            .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
+            .onAfterDelete(() => super.navigate([super.getTrainerUrl('diets')]))
+            .onFormLoaded(form => {
+                var workout = form.item;
 
                 // set loaded workout
                 this.loadDiet.next(workout);
-            },
-            error => super.handleError(error));
+            })
+            .build();
     }
 }

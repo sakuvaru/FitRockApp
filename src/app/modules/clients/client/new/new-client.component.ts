@@ -8,12 +8,11 @@ import { ClientsBaseComponent } from '../../clients-base.component';
 import { FormConfig } from '../../../../../web-components/dynamic-form';
 import { NewClientMenuItems } from '../../menu.items';
 import { User } from '../../../../models';
-import { Observable } from 'rxjs/Rx';
 
 @Component({
     templateUrl: 'new-client.component.html'
 })
-export class NewClientComponent extends ClientsBaseComponent implements OnInit  {
+export class NewClientComponent extends ClientsBaseComponent implements OnInit {
 
     private formConfig: FormConfig<User>;
 
@@ -27,28 +26,22 @@ export class NewClientComponent extends ClientsBaseComponent implements OnInit  
     ngOnInit(): void {
         super.ngOnInit();
 
-         this.setConfig({
+        this.setConfig({
             componentTitle: { key: 'module.clients.submenu.newClient' },
             menuItems: new NewClientMenuItems().menuItems
         });
 
-        super.subscribeToObservable(this.getFormObservable());
+        this.initForm();
         super.initClientSubscriptions();
     }
 
-    private getFormObservable(): Observable<any>{
-        return this.dependencies.itemServices.userService.insertForm()
-            .takeUntil(this.ngUnsubscribe)
-            .map(form => {
-                form.loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
-                form.insertFunction((item) => this.dependencies.itemServices.userService.createClient(item).set().takeUntil(this.ngUnsubscribe))
-                form.onAfterInsert((response) => {
-                    // redirect to view client page
-                    super.navigate([super.getTrainerUrl('clients/edit'), response.item.id])
-                })
-
-                this.formConfig = form.build();
-            },
-            error => super.handleError(error));
+    private initForm(): void {
+        this.formConfig = this.dependencies.itemServices.userService.insertForm()
+            .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
+            .onAfterInsert((response) => {
+                // redirect to view client page
+                super.navigate([super.getTrainerUrl('clients/edit'), response.item.id])
+            })
+            .build();
     }
 }
