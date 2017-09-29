@@ -1,17 +1,26 @@
+// core models
 import { Headers, RequestOptions } from '@angular/http';
-import { ResponseDeleteFile, ResponseFileMultiple, ResponseFileSingle, ResponseUploadMultiple, 
-    ResponseUploadSingle, ResponseCount, ResponsePost, ResponseFormEdit, ResponseFormInsert, 
-    ResponseDelete, ResponseCreate, ResponseEdit, ResponseMultiple, ResponseSingle,
-    ErrorResponse, FormErrorResponse } from '../models/responses';
-import { IResponseDeleteFile, IResponseFileMultiple, IResponseFileSingle, IResponseUploadMultipleRaw, 
-    IResponseUploadSingleRaw, IResponseCountRaw, IResponsePostRaw, IResponseFormEditRaw, 
-    IResponseFormInsertRaw, IResponseCreateRaw, IResponseDeleteRaw, IResponseEditRaw, IResponseMultipleRaw,
-    IResponseSingleRaw, IErrorResponseRaw, IFormErrorResponseRaw } from '../interfaces/iraw-responses';
 import { IOption } from '../interfaces/ioption.interface';
 import { AuthHttp } from 'angular2-jwt';
 import { Response } from '@angular/http';
 import { IItem } from '../interfaces/iitem.interface';
 import { RepositoryConfig } from '../repository.config';
+
+// responses
+import { ResponseDeleteFile, ResponseFileMultiple, ResponseFileSingle, ResponseUploadMultiple, 
+    ResponseUploadSingle, ResponseCount, ResponsePost, ResponseFormEdit, ResponseFormInsert, 
+    ResponseDelete, ResponseCreate, ResponseEdit, ResponseMultiple, ResponseSingle,
+    ErrorResponse, FormErrorResponse, ResponseUpdateItemsOrder
+    } from '../models/responses';
+
+// raw responses
+import { IResponseDeleteFile, IResponseFileMultiple, IResponseFileSingle, IResponseUploadMultipleRaw, 
+    IResponseUploadSingleRaw, IResponseCountRaw, IResponsePostRaw, IResponseFormEditRaw, 
+    IResponseFormInsertRaw, IResponseCreateRaw, IResponseDeleteRaw, IResponseEditRaw, IResponseMultipleRaw,
+    IResponseSingleRaw, IErrorResponseRaw, IFormErrorResponseRaw, IResponseUpdateItemsOrder 
+    } from '../interfaces/iraw-responses';
+
+// services
 import { MapService } from './map.service';
 import { TypeResolverService } from './type-resolver.service';
 
@@ -66,7 +75,6 @@ export class ResponseMapService {
 
      mapSingleResponseCustom<TModel>(response: Response): ResponseSingle<TModel> {
         var responseSingle = (response.json() || {}) as IResponseSingleRaw;
-
         return new ResponseSingle<TModel>({
             fromCache: responseSingle.fromCache,
             action: responseSingle.action,
@@ -124,6 +132,19 @@ export class ResponseMapService {
         return new ResponseEdit<TItem>({
             item: item,
             model: responseEdit.model
+        });
+    }
+
+    mapUpdateItemsOrderResponse<TItem extends IItem>(response: Response): ResponseUpdateItemsOrder<TItem> {
+        var responseUpdateItemsOrder = (response.json() || {}) as IResponseUpdateItemsOrder;
+
+        var items = this.mapService.mapItems<TItem>(responseUpdateItemsOrder.orderedItems);
+
+        return new ResponseUpdateItemsOrder<TItem>({
+            orderedItems: items,
+            type: responseUpdateItemsOrder.type,
+            action: responseUpdateItemsOrder.action,
+            model: responseUpdateItemsOrder.model
         });
     }
 

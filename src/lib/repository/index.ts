@@ -29,3 +29,4 @@ export * from './queries/file/multiple-file-query.class';
 export * from './queries/file/single-file-query.class';
 export * from './queries/file/delete-file-query.class';
 export * from './models/fetched-file.class';
+export * from './queries/order/items-order-query.class';

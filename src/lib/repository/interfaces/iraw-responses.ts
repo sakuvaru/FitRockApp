@@ -31,7 +31,7 @@ export interface IResponseMultipleRaw extends IItemResponseBase {
     totalItems: number;
     limit: number;
     pages: number;
-    items: any;
+    items: any[];
 }
 
 export interface IResponseCountRaw extends IResponseBase {
@@ -48,7 +48,7 @@ export interface IResponseSingleRaw extends IItemResponseBase {
 
 export interface IResponseCreateRaw extends IResponseBase {
     model: string;
-    item: any;
+    item: IItem;
 }
 
 export interface IResponseDeleteRaw extends IResponseBase {
@@ -57,7 +57,7 @@ export interface IResponseDeleteRaw extends IResponseBase {
 }
 
 export interface IResponseEditRaw extends IResponseBase {
-    item: any;
+    item: IItem;
     timeCreated: Date;
     fromCache: boolean;
     model: string;
@@ -75,7 +75,7 @@ export interface IResponseFormEditRaw extends IResponseBase {
     fields: FormField[];
     timeCreated: Date;
     fromCache: boolean;
-    item: any;
+    item: IItem;
     model: string;
     type: string
 }
@@ -106,6 +106,14 @@ export interface IResponseDeleteFile extends IResponseBase {
     fileName: string;
     fileDeleted: boolean;
 }
+
+export interface IResponseUpdateItemsOrder {
+    orderedItems: IItem[];
+    model: string;
+    type: string;
+    action: string;
+}
+
 
 
 

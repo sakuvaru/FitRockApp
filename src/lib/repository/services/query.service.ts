@@ -4,13 +4,14 @@ import { IOption } from '../interfaces/ioption.interface';
 import { Response } from '@angular/http';
 import { IItem } from '../interfaces/iitem.interface';
 import { RepositoryConfig } from '../repository.config';
+import { UpdateItemsRequest } from '../models/update-items-request.class';
 
 // raw responses
 import {
     IResponseDeleteFile, IResponseFileMultiple, IResponseFileSingle, IResponseUploadMultipleRaw,
     IResponseUploadSingleRaw, IResponseCountRaw, IResponsePostRaw, IResponseFormEditRaw,
     IResponseFormInsertRaw, IResponseCreateRaw, IResponseDeleteRaw, IResponseEditRaw, IResponseMultipleRaw,
-    IResponseSingleRaw, IErrorResponseRaw, IFormErrorResponseRaw
+    IResponseSingleRaw, IErrorResponseRaw, IFormErrorResponseRaw, IResponseUpdateItemsOrder
 } from '../interfaces/iraw-responses';
 
 // responses
@@ -18,7 +19,7 @@ import {
     ResponseDeleteFile, ResponseFileMultiple, ResponseFileSingle, ResponseUploadMultiple,
     ResponseUploadSingle, ResponseCount, ResponsePost, ResponseFormEdit, ResponseFormInsert,
     ResponseDelete, ResponseCreate, ResponseEdit, ResponseMultiple, ResponseSingle,
-    ErrorResponse, FormErrorResponse
+    ErrorResponse, FormErrorResponse, ResponseUpdateItemsOrder
 } from '../models/responses';
 
 // form validation models
@@ -193,6 +194,16 @@ export class QueryService {
         return this.getPostResponse(url, body, headerOptions)
             .map(response => {
                 return this.responseMapService.mapEditResponse(response)
+            });
+    }
+
+    protected updateItemsOrder<TItem extends IItem>(url: string, updateOrderRequest: UpdateItemsRequest): Observable<ResponseUpdateItemsOrder<TItem>> {
+        var headers = new Headers({ 'Content-Type': 'application/json' });
+        var headerOptions = new RequestOptions({ headers: headers });
+
+        return this.getPostResponse(url, updateOrderRequest, headerOptions)
+            .map(response => {
+                return this.responseMapService.mapUpdateItemsOrderResponse(response)
             });
     }
 

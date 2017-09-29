@@ -283,7 +283,7 @@ export class ResponseUploadMultiple {
     }
 }
 
-export class ResponseUploadSingle{
+export class ResponseUploadSingle {
 
     public file: FetchedFile;
     public fromCache: boolean;
@@ -353,8 +353,25 @@ export class ResponseDeleteFile {
         }
     ) {
         Object.assign(this, options);
-     }
+    }
 }
 
+export class ResponseUpdateItemsOrder<T> {
+
+    public orderedItems: T[];
+    public model: string;
+    public type: string;
+    public action: string;
+
+    constructor(
+        private options: {
+            orderedItems: T[],
+            model: string,
+            type: string,
+            action: string
+        }) {
+        if (options) Object.assign(this, options);
+    }
+}
 
 

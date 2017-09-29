@@ -15,12 +15,12 @@ import { InsertFormQuery } from './queries/form/insert-form-query.class';
 import { EditFormQuery } from './queries/form/edit-form-query.class';
 import { PostQuery } from './queries/general/post-query.class';
 import { TouchKeyQuery } from './queries/general/touch-key-query.class';
-import { OrderItem, UpdateItemsRequest } from './models/update-items-request.class';
 import { UploadSingleQuery } from './queries/file/upload-single-query.class';
 import { UploadMultipleQuery } from './queries/file/upload-multiple-query.class';
 import { MultipleFileQuery } from './queries/file/multiple-file-query.class';
 import { SingleFileQuery } from './queries/file/single-file-query.class';
 import { DeleteFileQuery } from './queries/file/delete-file-query.class';
+import { ItemsOrderQuery } from './queries/order/items-order-query.class';
 
 export class RepositoryClient {
 
@@ -60,10 +60,8 @@ export class RepositoryClient {
         return new ItemCountQuery(this.authHttp, this.config, type);
     }
 
-    updateItemsOrder<TItem extends IItem>(type: string, orderedItems: TItem[], distinguishByValue: number): PostQuery<any> {
-        var action = 'updateItemsOrder';
-        var updateRequest = new UpdateItemsRequest(distinguishByValue, this.getItemsOrderJson(orderedItems));
-        return new PostQuery(this.authHttp, this.config, type, action).withJsonData(updateRequest);
+    updateItemsOrder<TItem extends IItem>(type: string, orderedItems: TItem[], distinguishByValue: number): ItemsOrderQuery<TItem> {
+        return new ItemsOrderQuery(this.authHttp, this.config, type, orderedItems, distinguishByValue);
     }
 
     post<T extends any>(type: string, action: string): PostQuery<T> {
@@ -108,19 +106,6 @@ export class RepositoryClient {
 
     uploadMultipleFiles(controller: string, action: string, files: File[]): UploadMultipleQuery {
         return new UploadMultipleQuery(this.authHttp, this.config, controller, action, files);
-    }
-
-    /* ------------ Private ---------- */
-
-    private getItemsOrderJson<TItem extends IItem>(orderedItems: TItem[]): OrderItem[] {
-        var data: OrderItem[] = [];
-        if (orderedItems) {
-            for (var i = 0; i < orderedItems.length; i++) {
-                var orderItem = orderedItems[i];
-                data.push(new OrderItem(orderItem.id, i));
-            }
-        }
-        return data;
     }
 }
 
