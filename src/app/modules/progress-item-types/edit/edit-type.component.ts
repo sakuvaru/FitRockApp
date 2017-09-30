@@ -46,5 +46,6 @@ export class EditTypeComponent extends BaseComponent implements OnInit {
                     })
                     .build();
             })
+            .subscribe();
     }
 }

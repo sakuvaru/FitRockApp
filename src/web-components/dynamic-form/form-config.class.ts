@@ -26,6 +26,7 @@ export class FormConfig<TItem extends IItem>{
 
     /**
      * List of fields (questions) assigned to the form
+     * This field should be populated automatically from the form definiton, do NOT set this field manually
      */
     public fields: FormField[] = [];
 
@@ -151,7 +152,17 @@ export class FormConfig<TItem extends IItem>{
     /**
      * Resolver used to change the value of certain fields manually
      */
-    public fieldValueResolver: (fieldName: string, value: any) => string | boolean | number;
+    public fieldValueResolver?: (fieldName: string, value: any) => string | boolean | number;
+
+    /**
+     * Indicates if local loader is enabled
+     */
+    public enableLocalLoader: boolean = true;
+
+    /**
+     * Can be used to get custom field labels
+     */
+    public fieldLabelResolver?: (field: FormField, originalLabel: string) => Observable<string>;
 
     constructor(
         config?: {
@@ -159,6 +170,8 @@ export class FormConfig<TItem extends IItem>{
             fields: FormField[],
 
             // optional
+            fieldLabelResolver?: (field: FormField, originalLabel: string) => Observable<string>,
+            enableLocalLoader?: boolean,
             fieldValueResolver?: (fieldName: string, value: any) => string | boolean | number,
             onEditFormLoaded?: (form: ResponseFormEdit<TItem>) => void,
             onInsertFormLoaded?: (form: ResponseFormInsert) => void,

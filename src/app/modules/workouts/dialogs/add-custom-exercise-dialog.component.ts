@@ -8,7 +8,7 @@ import { DataTableConfig, AlignEnum } from '../../../../web-components/data-tabl
 import { Exercise } from '../../../models';
 import { MD_DIALOG_DATA } from '@angular/material';
 import { FormConfig } from '../../../../web-components/dynamic-form';
-import { Observable } from 'rxjs/Rx';
+import { Observable, Subject } from 'rxjs/Rx';
 
 @Component({
   templateUrl: 'add-custom-exercise-dialog.component.html'
@@ -21,6 +21,10 @@ export class AddCustomExerciseDialogComponent extends BaseComponent implements O
    * Accessed by parent component
    */
   public newExercise: Exercise;
+
+  private customSaveButtonSubject: Subject<void> = new Subject<void>();
+  private customDeleteButtonSubject: Subject<void> = new Subject<void>();
+  private formIsValid: boolean = false;
 
   constructor(
     protected dependencies: ComponentDependencyService,
@@ -43,6 +47,10 @@ export class AddCustomExerciseDialogComponent extends BaseComponent implements O
         this.close();
       }))
       .build();
+  }
+
+  private onStatusChanged(valid: boolean): void {
+    this.formIsValid = valid;
   }
 
   private close(): void {

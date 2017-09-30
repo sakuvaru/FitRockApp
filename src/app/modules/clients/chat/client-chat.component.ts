@@ -87,7 +87,7 @@ export class ClientChatComponent extends ClientsBaseComponent implements OnInit 
                     })
                     .build();
 
-                this.formConfig == formConfig;
+                this.formConfig = formConfig;
             },
             error => super.handleError(error));
     }

@@ -37,7 +37,11 @@ import { SharedModule} from '../shared/shared.module';
         SharedModule
     ],
     entryComponents:[
-        AddCustomFoodDialogComponent // has to be added here because its created by another dialog
+        AddCustomFoodDialogComponent, 
+        AddDietFoodDialogComponent,
+        SelectDietFoodDialogComponent,
+        EditDietFoodDialogComponent,
+        AddCustomFoodDialogComponent,
     ],
     declarations: [
         ClientDietsComponent,

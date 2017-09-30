@@ -173,39 +173,22 @@ export class ClientWorkoutComponent extends ClientsBaseComponent implements OnIn
 
         var selectedWorkout = selected.value as Workout;
 
-        super.startGlobalLoader();
-
         // copy data from selected workout to a new workout with assigned client
-        this.dependencies.itemServices.workoutService.copyFromWorkout(selectedWorkout.id, this.clientId)
+        super.subscribeToObservable(this.dependencies.itemServices.workoutService.copyFromWorkout(selectedWorkout.id, this.clientId)
             .set()
-            .subscribe(response => {
-                var obsExistingExercises = this.reloadExistingWorkoutsObservable(this.clientId);
-                obsExistingExercises.subscribe((response) => {
-                    super.stopGlobalLoader();
-                },
-                    error => super.handleError(error)
-                )
-            },
-            error => super.handleError(error)
-            );
+            .flatMap(response => this.reloadExistingWorkoutsObservable(this.clientId))
+        );
+
     }
 
     private deleteWorkout(workout: Workout): void {
-        this.startGlobalLoader();
-        this.dependencies.itemServices.workoutService.delete(workout.id)
+        super.subscribeToObservable(this.dependencies.itemServices.workoutService.delete(workout.id)
             .set()
-            .do(() => this.startGlobalLoader())
-            .subscribe(response => {
+            .map(response => {
                 // remove workout  from local variable
                 this.existingWorkouts = _.reject(this.existingWorkouts, function (item) { return item.id === response.deletedItemId; });
-
-                this.showSavedSnackbar();
-                this.stopGlobalLoader();
-            },
-            (error) => {
-                super.handleError(error);
-                this.stopGlobalLoader();
-            });
+                this.showDeletedSnackbar();
+            }));
     }
 
     private goToEditWorkout(workout: Workout): void {

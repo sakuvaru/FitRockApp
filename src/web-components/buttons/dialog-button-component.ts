@@ -12,7 +12,18 @@ export class DialogButtonComponent extends BaseWebComponent {
     ) { super()
     }
 
-    @Input() type: 'normal' = 'normal'; // can be extended in future if needed
-    @Input() text: string;
+    @Output() handleClick = new EventEmitter();
+
+    @Input() color: 'primary' | 'accent' = 'primary';
+
     @Input() tooltip: string;
+    
+    @Input() disabled: boolean;
+
+    private onClick(): void{
+        if (!this.disabled){
+            this.handleClick.next();
+        }
+    }
+    
 }

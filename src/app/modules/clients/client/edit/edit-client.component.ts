@@ -27,12 +27,12 @@ export class EditClientComponent extends ClientsBaseComponent implements OnInit 
     ngOnInit(): void {
         super.ngOnInit();
 
-        this.initForm();
+        super.subscribeToObservable(this.getInitFormObservable());
         super.initClientSubscriptions();
     }
 
-    private initForm(): void {
-        this.clientIdChange
+    private getInitFormObservable(): Observable<any> {
+        return this.clientIdChange
             .takeUntil(this.ngUnsubscribe)
             .map(clientId => {
                 this.formConfig = this.dependencies.itemServices.userService.editForm(clientId)

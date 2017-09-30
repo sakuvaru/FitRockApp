@@ -89,12 +89,6 @@ const routes: Routes = [
             {
                 path: 'clients/edit/:id/new-progress-type', component: NewClientProgressItemTypeComponent
             },
-            {
-                path: 'clients/edit/edit-progress-item-dialog', component: EditProgressItemDialog
-            },
-            {
-                path: 'clients/edit/select-progress-type-dialog', component: SelectProgressTypeDialog
-            },
             // stats
             {
                  path: 'clients/edit/:id/stats', component: StatsMainComponent

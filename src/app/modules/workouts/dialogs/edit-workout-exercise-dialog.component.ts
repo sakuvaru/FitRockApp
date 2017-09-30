@@ -9,7 +9,7 @@ import { Exercise } from '../../../models';
 import { MD_DIALOG_DATA } from '@angular/material';
 import { WorkoutExercise } from '../../../models';
 import { FormConfig } from '../../../../web-components/dynamic-form';
-import { Observable } from 'rxjs/Rx';
+import { Observable, Subject } from 'rxjs/Rx';
 
 @Component({
   templateUrl: 'edit-workout-exercise-dialog.component.html'
@@ -23,6 +23,10 @@ export class EditWorkoutExerciseDialogComponent extends BaseComponent implements
 
   public idOfDeletedWorkoutExercise: number;
   public workoutExerciseWasDeleted: boolean = false;
+
+  private customSaveButtonSubject: Subject<void> = new Subject<void>();
+  private customDeleteButtonSubject: Subject<void> = new Subject<void>();
+  private formIsValid: boolean = false;
 
   constructor(
     protected dependencies: ComponentDependencyService,
@@ -52,6 +56,10 @@ export class EditWorkoutExerciseDialogComponent extends BaseComponent implements
         this.close();
       })
       .build();
+  }
+
+  private onStatusChanged(valid: boolean): void {
+    this.formIsValid = valid;
   }
 
   private close(): void {

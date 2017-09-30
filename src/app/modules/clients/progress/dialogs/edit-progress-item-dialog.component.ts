@@ -8,7 +8,7 @@ import { DataTableConfig, AlignEnum } from '../../../../../web-components/data-t
 import { MD_DIALOG_DATA } from '@angular/material';
 import { ProgressItem } from '../../../../models';
 import { FormConfig } from '../../../../../web-components/dynamic-form';
-import { Observable } from 'rxjs/Rx';
+import { Observable, Subject } from 'rxjs/Rx';
 
 @Component({
   templateUrl: 'edit-progress-item-dialog.component.html'
@@ -21,6 +21,10 @@ export class EditProgressItemDialog extends BaseComponent implements OnInit {
   public idOfDeletedItem: number;
   public itemWasDeleted: boolean = false;
   public itemWasUpdated: boolean = false;
+
+  private customSaveButtonSubject: Subject<void> = new Subject<void>();
+  private customDeleteButtonSubject: Subject<void> = new Subject<void>();
+  private formIsValid: boolean = false;
 
   constructor(
     protected dependencies: ComponentDependencyService,
@@ -51,6 +55,10 @@ export class EditProgressItemDialog extends BaseComponent implements OnInit {
         this.close();
       })
       .build();
+  }
+
+  private onStatusChanged(valid: boolean): void {
+    this.formIsValid = valid;
   }
 
   private close(): void {

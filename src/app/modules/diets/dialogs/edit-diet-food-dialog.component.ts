@@ -8,7 +8,7 @@ import { DataTableConfig, AlignEnum } from '../../../../web-components/data-tabl
 import { Food, DietFood } from '../../../models';
 import { MD_DIALOG_DATA } from '@angular/material';
 import { FormConfig } from '../../../../web-components/dynamic-form';
-import { Observable } from 'rxjs/Rx';
+import { Observable, Subject } from 'rxjs/Rx';
 
 @Component({
   templateUrl: 'edit-diet-food-dialog.component.html'
@@ -22,6 +22,10 @@ export class EditDietFoodDialogComponent extends BaseComponent implements OnInit
 
   public idOfDeletedDietFood: number;
   public dietFoodWasDeleted: boolean = false;
+
+  private customSaveButtonSubject: Subject<void> = new Subject<void>();
+  private customDeleteButtonSubject: Subject<void> = new Subject<void>();
+  private formIsValid: boolean = false;
 
   constructor(
     protected dependencies: ComponentDependencyService,
@@ -52,6 +56,10 @@ export class EditDietFoodDialogComponent extends BaseComponent implements OnInit
         this.close();
       })
       .build();
+  }
+
+  private onStatusChanged(valid: boolean): void {
+    this.formIsValid = valid;
   }
 
   private close(): void {

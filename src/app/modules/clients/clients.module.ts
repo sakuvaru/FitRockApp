@@ -54,6 +54,10 @@ import { DietsModule} from '../diets/diets.module';
         WorkoutsModule,
         DietsModule
     ],
+    entryComponents: [
+        EditProgressItemDialog,
+        SelectProgressTypeDialog
+    ],
     declarations: [
         // user
         ClientsOverviewComponent,

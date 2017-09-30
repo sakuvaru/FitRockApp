@@ -8,7 +8,7 @@ import { DataTableConfig, AlignEnum } from '../../../../web-components/data-tabl
 import { Food } from '../../../models';
 import { MD_DIALOG_DATA } from '@angular/material';
 import { FormConfig } from '../../../../web-components/dynamic-form';
-import { Observable } from 'rxjs/Rx';
+import { Observable, Subject } from 'rxjs/Rx';
 
 @Component({
   templateUrl: 'add-custom-food-dialog.component.html'
@@ -17,6 +17,10 @@ export class AddCustomFoodDialogComponent extends BaseComponent implements OnIni
 
   private foodForm: FormConfig<Food>;
 
+  private customSaveButtonSubject: Subject<void> = new Subject<void>();
+  private customDeleteButtonSubject: Subject<void> = new Subject<void>();
+  private formIsValid: boolean = false;
+  
   /**
    * Accessed by parent component
    */
@@ -43,6 +47,10 @@ export class AddCustomFoodDialogComponent extends BaseComponent implements OnIni
         this.close();
       }))
       .build();
+  }
+
+  private onStatusChanged(valid: boolean): void {
+    this.formIsValid = valid;
   }
 
   private close(): void {

@@ -173,41 +173,24 @@ export class ClientDietComponent extends ClientsBaseComponent implements OnInit,
 
         var selectedDiet = selected.value as Diet;
 
-         super.startGlobalLoader();
-
         // copy data from selected diet to a new diet with assigned client
-        this.dependencies.itemServices.dietService.copyFromDiet(selectedDiet.id, this.clientId)
+        super.subscribeToObservable(this.dependencies.itemServices.dietService.copyFromDiet(selectedDiet.id, this.clientId)
             .set()
             .takeUntil(this.ngUnsubscribe)
-            .subscribe(response => {
-                var obsExistingDiets = this.reloadExistingDietsObservable(this.clientId);
-                obsExistingDiets.subscribe((response) => {
-                    super.stopGlobalLoader();
-                },
-                    error => super.handleError(error)
-                )
-            },
-            error => super.handleError(error)
-            );
+            .flatMap(response => {
+                return this.reloadExistingDietsObservable(this.clientId);
+            }));
     }
 
     private deleteDiet(diet: Diet): void {
         this.startGlobalLoader();
-        this.dependencies.itemServices.dietService.delete(diet.id)
+        super.subscribeToObservable(this.dependencies.itemServices.dietService.delete(diet.id)
             .set()
-            .takeUntil(this.ngUnsubscribe)
-            .do(() => this.startGlobalLoader())
-            .subscribe(response => {
+            .map(response => {
                 // remove diet from local variable
                 this.existingDiets = _.reject(this.existingDiets, function (item) { return item.id === response.deletedItemId; });
-
-                this.showSavedSnackbar();
-                this.stopGlobalLoader();
-            },
-            (error) => {
-                super.handleError(error);
-                this.stopGlobalLoader();
-            });
+                this.showDeletedSnackbar();
+            }));
     }
 
     private goToEditDiet(diet: Diet): void {

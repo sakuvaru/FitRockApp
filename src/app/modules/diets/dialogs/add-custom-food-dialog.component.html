@@ -6,6 +6,13 @@
 
 <md-dialog-content>
     <div class="md-padding">
-        <dynamic-form [config]="foodForm"></dynamic-form>
+        <dynamic-form [config]="foodForm" (statusChanged)="onStatusChanged($event)" [customSaveButtonSubject]="customSaveButtonSubject"
+            [customDeleteButtonSubject]="customDeleteButtonSubject"></dynamic-form>
     </div>
 </md-dialog-content>
+
+<md-dialog-actions>
+    <dialog-button [disabled]="!formIsValid" color="accent" (handleClick)="customSaveButtonSubject.next()">{{ 'shared.create' | translate }}</dialog-button>
+    <span flex></span>
+    <delete-button (confirm)="customDeleteButtonSubject.next()"></delete-button>
+</md-dialog-actions>

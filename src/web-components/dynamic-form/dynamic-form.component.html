@@ -1,18 +1,21 @@
-<div *ngIf="form">
-  <form [formGroup]="form"  autocomplete="off">
-    <div *ngFor="let question of questions">
-      <df-question [question]="question" [form]="form" [formConfig]="config"></df-question>
+<ng-container *ngIf="form">
+  <ng-template tdLoading [tdLoadingUntil]="!localLoaderEnabled" tdLoadingStrategy="overlay">
+    <div style="min-height: 150px">
+      <form [formGroup]="form" autocomplete="off">
+        <div *ngFor="let question of questions">
+          <df-question [question]="question" [form]="form" [formConfig]="config"></df-question>
+        </div>
+        <div *ngIf="!customDeleteButtonSubject && !customDeleteButtonSubject" layout="row" layout-margin>
+          <div flex>
+            <button *ngIf="isInsertForm" md-raised-button color="accent" (click)="insertButtonSubject.next()" [disabled]="!form.valid">{{submitText}}</button>
+            <button *ngIf="isEditForm" md-raised-button color="accent" (click)="editButtonSubject.next()" [disabled]="!form.valid">{{submitText}}</button>
+          </div>
+          <div *ngIf="isDeleteEnabled" flex class="text-right">
+            <delete-button (confirm)="deleteButtonSubject.next()"></delete-button>
+          </div>
+        </div>
+        <td-message *ngIf="submissionError" [label]="submissionError" color="red" icon="error"></td-message>
+      </form>
     </div>
-    <div layout="row" layout-margin>
-      <div flex>
-        <button *ngIf="isInsertForm" md-raised-button color="accent" (click)="insertButtonSubject.next()" [disabled]="!form.valid">{{submitText}}</button>
-        <button *ngIf="isEditForm" md-raised-button color="accent" (click)="editButtonSubject.next()" [disabled]="!form.valid">{{submitText}}</button>
-      </div>
-      <div *ngIf="isDeleteEnabled" flex class="text-right">
-        <delete-button (confirm)="deleteButtonSubject.next()"></delete-button>
-      </div>
-    </div>
-    <td-message *ngIf="submissionError" [label]="submissionError" color="red" icon="error"></td-message>
-  </form>
-</div>
-
+  </ng-template>
+</ng-container>

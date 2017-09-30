@@ -47,15 +47,6 @@ const routes: Routes = [
             {
                 path: 'diets/edit-plan/:id', component: EditDietPlan
             },
-            {
-                path: 'diets/dialogs/add-diet-food', component: AddDietFoodDialogComponent
-            },
-            {
-                path: 'diets/dialogs/select-diet-food', component: SelectDietFoodDialogComponent
-            },
-            {
-                path: 'diets/dialogs/edit-diet-food', component: EditDietFoodDialogComponent
-            }
         ],
     },
 ];

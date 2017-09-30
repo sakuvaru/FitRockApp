@@ -38,7 +38,9 @@
 		"close": "Zavřít",
 		"saved": "Uloženo",
 		"loadMore": "Další",
-		"deleted": "Smazáno"
+		"deleted": "Smazáno",
+		"save": "Uložit",
+		"create": "Vytvořit"
 	},
 	"module": {
 		"clients": {
@@ -331,7 +333,7 @@
 		},
 		"progressItem":{
 			"progressItemTypeId": "Typ",
-			"valueWithUnit": "Hodnota měření - {{unit}}",
+			"valueWithUnit": "Množství ({{unit}})",
 			"value": "Hodnota měření",
 			"measurementDate": "Datum měření"
 		},

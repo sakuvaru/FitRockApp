@@ -4,6 +4,8 @@ import { FormField, ControlTypeEnum } from '../../lib/repository';
 import { TranslateService } from '@ngx-translate/core';
 import { FormConfig } from './form-config.class';
 import { stringHelper, numberHelper } from '../../lib/utilities';
+import { BaseWebComponent } from '../base-web-component.class';
+import { Observable } from 'rxjs/Rx';
 
 // NOTE: see https://angular.io/docs/ts/latest/cookbook/dynamic-form.html for more details
 
@@ -12,7 +14,7 @@ import { stringHelper, numberHelper } from '../../lib/utilities';
   templateUrl: './dynamic-form-question.component.html'
 })
 
-export class DynamicFormQuestionComponent implements OnInit, OnChanges {
+export class DynamicFormQuestionComponent extends BaseWebComponent implements OnInit, OnChanges {
 
   @Input() question: FormField;
 
@@ -24,6 +26,7 @@ export class DynamicFormQuestionComponent implements OnInit, OnChanges {
     private translateService: TranslateService,
     private cdr: ChangeDetectorRef
   ) {
+    super();
   }
 
   public questionLabel: string;
@@ -62,9 +65,9 @@ export class DynamicFormQuestionComponent implements OnInit, OnChanges {
     }
   }
 
-  reloadTranslations(): void {
-    this.translateQuestionHint();
-    this.translateQuestionLabel();
+  getReloadTranslationObservable(): Observable<any> {
+    return this.getQuestionHintTranslationObservable()
+      .zip(this.getQuestionLabelTranslationObservable());
   }
 
   private initValues(config: FormConfig<any>): void {
@@ -73,13 +76,17 @@ export class DynamicFormQuestionComponent implements OnInit, OnChanges {
       return;
     }
 
-    this.formConfig = config;
+    // translations
+    var translationsObservable = this.getReloadTranslationObservable();
 
-    // translation
-    this.reloadTranslations();
+    // value change observable
+    var changeObservable = this.getSubscribeToChangesObservable();
 
-    // subscribe to value changes
-    this.subscribeToChanges();
+    // subscribe to observables
+    translationsObservable
+      .takeUntil(this.ngUnsubscribe)
+      .zip(changeObservable)
+      .subscribe();
 
     // this should be first -> set the 'value' of form control to 'defaultValue' in case of insert form
     // this can be overriden by more specific control types needs (e.g the radio button)
@@ -183,7 +190,7 @@ export class DynamicFormQuestionComponent implements OnInit, OnChanges {
       }
     }
 
-    // fix angular js changes error
+    // fix angular changes error
     this.cdr.detectChanges();
   }
 
@@ -191,10 +198,11 @@ export class DynamicFormQuestionComponent implements OnInit, OnChanges {
   /**
    * Use this method to check value changes & to determin whether the value is valid or not
    */
-  private subscribeToChanges(): void {
+  private getSubscribeToChangesObservable(): Observable<any> {
     var control = this.getQuestionControl();
-    control.valueChanges
-      .subscribe(newValue => {
+    return control.valueChanges
+      .takeUntil(this.ngUnsubscribe)
+      .map(newValue => {
         // run field change callback if defined
         if (this.formConfig.onFieldValueChange) {
           this.formConfig.onFieldValueChange(this.formConfig, this.question, newValue);
@@ -261,31 +269,45 @@ export class DynamicFormQuestionComponent implements OnInit, OnChanges {
     return new ValueValidationResult(isValid, errorMessageKey, translationData);
   }
 
-  private translateQuestionLabel(): void {
-    var translationKey = this.getQuestionLabelKey();
+  private getQuestionLabelTranslationObservable(): Observable<any> {
+    var labelTranslationKey = this.getQuestionLabelKey();
 
     var extraTranslationData;
     if (this.question.options) {
       extraTranslationData = this.question.options.extraTranslationData;
     }
 
-    this.translateService.get(translationKey, extraTranslationData).subscribe(translatedText => {
-      if (translatedText) {
-        this.question.translatedLabel = translatedText
+    var originalTranslationObservable = this.translateService
+      .get(labelTranslationKey, extraTranslationData)
+      .map(translatedLabel => this.question.translatedLabel = translatedLabel);
+   
+    // no field label resolver is defined so we can return original translation
+    if (!this.formConfig.fieldLabelResolver) {
+      return originalTranslationObservable;
+    }
+
+    // use custom translation
+    return originalTranslationObservable.flatMap(fieldLabel => {
+      if (!this.formConfig.fieldLabelResolver) {
+        return Observable.of(fieldLabel);
       }
-    });
+      return this.formConfig.fieldLabelResolver(this.question, fieldLabel)
+        .map(fieldLabel => {
+          this.question.translatedLabel = fieldLabel;
+        });
+    })
   }
 
-  private translateQuestionHint(): void {
+  private getQuestionHintTranslationObservable(): Observable<any> {
     var translationKey = this.getQuestionHintKey();
-    this.translateService.get(translationKey).subscribe(translatedText => {
-      if (this.translatioSuccessful(translatedText)) {
+    return this.translateService.get(translationKey).map(translatedText => {
+      if (this.translationSuccessful(translatedText)) {
         this.questionHint = translatedText
       }
     });
   }
 
-  private translatioSuccessful(translatedText: string): boolean {
+  private translationSuccessful(translatedText: string): boolean {
     if (!translatedText) {
       return false;
     }

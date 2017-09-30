@@ -145,7 +145,23 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
         this.dataTableConfig = this.dependencies.webComponentServices.dataTableService.dataTable<ProgressItem>()
             .fields([
                 {
-                    value: (item) => { return item.value.toString() }, flex: 60
+                    translateValue: true,
+                    value: (item) =>  'module.progressItemTypes.globalTypes.' + item.progressItemType.codename,
+                    isSubtle: false,
+                    hideOnSmallScreens: false,
+                    align: AlignEnum.Left,
+                },
+                {
+                    value: (item) => { return item.value.toString() }, 
+                    isSubtle: true,
+                    hideOnSmallScreens: false,
+                    align: AlignEnum.Left,
+                },
+                {
+                    value: (item) => { return super.moment(item.measurementDate).format('MMMM DD') },
+                    isSubtle: true,
+                    hideOnSmallScreens: false,
+                    align: AlignEnum.Left,
                 },
                 {
                     translateValue: true,
@@ -154,12 +170,7 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
                     hideOnSmallScreens: true,
                     align: AlignEnum.Right
                 },
-                {
-                    value: (item) => { return super.moment(item.measurementDate).format('MMMM DD') },
-                    isSubtle: true,
-                    hideOnSmallScreens: true,
-                    align: AlignEnum.Right
-                },
+               
             ])
             .loadQuery(searchTerm => {
                 return this.dependencies.itemServices.progressItemService.items()

@@ -23,15 +23,6 @@ class BaseDynamicFormBuilder<TItem extends IItem>{
     }
 
     /**
-     * Adds fields to form
-     * @param fields Field to be added to form
-     */
-    fields(fields: FormField[]): this {
-        this.config.fields = fields;
-        return this;
-    }
-
-    /**
      * Fields that are hidden from form
      * @param fields Hidden fields
      */
@@ -117,9 +108,9 @@ class BaseDynamicFormBuilder<TItem extends IItem>{
         return this;
     }
 
-     /**
-     * Resolver used to change the value of certain fields manually
-     */
+    /**
+    * Resolver used to change the value of certain fields manually
+    */
     fieldValueResolver(resolver: (fieldName: string, value: any) => string | boolean | number): this {
         this.config.fieldValueResolver = resolver;
         return this;
@@ -132,6 +123,24 @@ class BaseDynamicFormBuilder<TItem extends IItem>{
     */
     loaderConfig(start: () => void, stop: () => void): this {
         this.config.loaderConfig = { start: start, stop: stop };
+        return this;
+    }
+
+    /**
+     * Indicates if local loader is enabled
+     * @param enable Enabled or disabled
+     */
+    enableLocalLoader(enable: boolean): this {
+        this.config.enableLocalLoader = enable;
+        return this;
+    }
+
+
+    /**
+     * Can be used to get custom field labels
+     */
+    fieldLabelResolver(resolver: (field: FormField, originalLabel: string) => Observable<string>): this {
+        this.config.fieldLabelResolver = resolver;
         return this;
     }
 

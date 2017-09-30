@@ -50,6 +50,13 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
      */
     private isInitialLoad: boolean = true;
 
+    /**
+    * Flag for initialization component, used because ngOngChanges can be called before ngOnInit 
+    * which would cause component to be initialized twice (happened when component is inside a dialog)
+    * Info: https://stackoverflow.com/questions/43111474/how-to-stop-ngonchanges-called-before-ngoninit/43111597
+    */
+    private initialized: boolean = false;
+
     constructor(
         private translateService: TranslateService,
         private mediaService: TdMediaService,
@@ -58,12 +65,13 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
     }
 
     ngOnInit() {
-        this.initDataTable();
+        if (this.config) {
+            this.initDataTable();
+        }
     }
 
     ngOnChanges(changes: SimpleChanges) {
         if (changes.config.currentValue) {
-
             // set config after changes
             this.config = changes.config.currentValue;
 
@@ -73,13 +81,13 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
     }
 
     private initDataTable(): void {
-        if (this.config) {
+        if (this.config && !this.initialized) {
             // translate all labels (which have 'labelKey' set)
             this.config.fields.forEach(field => {
-                if (field.labelKey){
-                     this.translateService.get(field.labelKey).subscribe(text => {
-                    field.labelKey = text;
-                });
+                if (field.labelKey) {
+                    this.translateService.get(field.labelKey).subscribe(text => {
+                        field.labelKey = text;
+                    });
                 }
             });
 
@@ -93,6 +101,9 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
 
             // load items
             this.filterItems(this.currentPage);
+
+            // set component as initialized
+            this.initialized = true;
         }
     }
 
@@ -102,11 +113,11 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
         this.savePageToLocalStorage(this.configHash, page);
 
         // enable local loader
-        if (this.config.enableLocalLoader){
+        if (this.config.enableLocalLoader) {
             this.localLoaderLoading = true;
         }
 
-        if (this.config.loaderConfig){
+        if (this.config.loaderConfig) {
             this.config.loaderConfig.start();
         }
 
@@ -169,14 +180,14 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
                     if (this.config.onAfterLoad) {
                         this.config.onAfterLoad(this.isInitialLoad);
                     }
-                    if (this.config.loaderConfig){
+                    if (this.config.loaderConfig) {
                         this.config.loaderConfig.stop();
                     }
                     // set initial load flag
                     this.isInitialLoad = false;
 
                     // finish local loader
-                    if (this.config.enableLocalLoader){
+                    if (this.config.enableLocalLoader) {
                         this.localLoaderLoading = false;
                     }
                 })
@@ -230,14 +241,14 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
                         this.config.onAfterLoad(this.isInitialLoad);
                     }
 
-                    if (this.config.loaderConfig){
+                    if (this.config.loaderConfig) {
                         this.config.loaderConfig.stop();
                     }
                     // update initial load flag
                     this.isInitialLoad = false;
 
                     // finish local loader
-                    if (this.config.enableLocalLoader){
+                    if (this.config.enableLocalLoader) {
                         this.localLoaderLoading = false;
                     }
                 })
@@ -309,7 +320,7 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
    }
    */
 
-    private getFilterByGuid(guid: string): Filter<any> | undefined{
+    private getFilterByGuid(guid: string): Filter<any> | undefined {
         var filter = this.filters.find(m => m.guid === guid);
         return filter;
     }
@@ -356,20 +367,20 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
         var pageFromStorage = this.getPageFromLocalStorage(hash);
         var searchTermFromStorage = this.getSearchedDataFromLocalStorage(hash);
 
-        if (filterFormStorage){
+        if (filterFormStorage) {
             this.activeFilterGuid = filterFormStorage;
         }
 
-        if (pageFromStorage){
+        if (pageFromStorage) {
             this.currentPage = pageFromStorage;
         }
 
-        if (searchTermFromStorage){
+        if (searchTermFromStorage) {
             this.searchTerm = searchTermFromStorage;
         }
     }
 
-    private getFilterFromLocalStorage(hash: number): string | null{
+    private getFilterFromLocalStorage(hash: number): string | null {
         return localStorage.getItem(this.localStorageActiveFilter + '_' + hash);
     }
 
@@ -384,7 +395,7 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
         return +page;
     }
 
-    private getSearchedDataFromLocalStorage(hash: number): string | null{
+    private getSearchedDataFromLocalStorage(hash: number): string | null {
         return localStorage.getItem(this.localStorageSearchedData + '_' + hash);
     }
 

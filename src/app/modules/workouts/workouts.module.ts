@@ -37,7 +37,12 @@ import { SharedModule} from '../shared/shared.module';
         SharedModule
     ],
     entryComponents:[
-        AddCustomExerciseDialogComponent // has to be added here because its created by another dialog
+        AddCustomExerciseDialogComponent,
+        EditWorkoutExerciseDialogComponent,
+        SelectWorkoutExerciseDialogComponent,
+        EditWorkoutExerciseDialogComponent,
+        AddCustomExerciseDialogComponent,
+        AddWorkoutExerciseDialogComponent
     ],
     declarations: [
         ClientWorkoutsComponent,

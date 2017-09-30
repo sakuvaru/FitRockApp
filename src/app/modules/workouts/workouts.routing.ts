@@ -43,15 +43,6 @@ const routes: Routes = [
             },
             {
                 path: 'workouts/edit-plan/:id', component: EditWorkoutPlanComponent
-            },
-            {
-                path: 'workouts/dialogs/add-workout-exercise', component: AddWorkoutExerciseDialogComponent
-            },
-            {
-                path: 'workouts/dialogs/select-workout-exercise', component: SelectWorkoutExerciseDialogComponent
-            },
-            {
-                path: 'workouts/dialogs/edit-workout-exercise', component: EditWorkoutExerciseDialogComponent
             }
         ],
     },

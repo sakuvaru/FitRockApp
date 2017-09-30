@@ -8,7 +8,8 @@ import { DataTableConfig, AlignEnum } from '../../../../web-components/data-tabl
 import { Food, DietFood } from '../../../models';
 import { MD_DIALOG_DATA } from '@angular/material';
 import { FormConfig } from '../../../../web-components/dynamic-form';
-import { Observable } from 'rxjs/Rx';
+import { Observable, Subject } from 'rxjs/Rx';
+import { stringHelper } from '../../../../lib/utilities'
 
 @Component({
   templateUrl: 'add-diet-food-dialog.component.html'
@@ -20,6 +21,10 @@ export class AddDietFoodDialogComponent extends BaseComponent implements OnInit 
   private food: Food;
 
   private dietFoodForm: FormConfig<DietFood>;
+
+  private customSaveButtonSubject: Subject<void> = new Subject<void>();
+  private customDeleteButtonSubject: Subject<void> = new Subject<void>();
+  private formIsValid: boolean = false;
 
   /**
    * Accessed by parent component
@@ -46,7 +51,7 @@ export class AddDietFoodDialogComponent extends BaseComponent implements OnInit 
   private initForm(): void {
     this.dietFoodForm = this.dependencies.itemServices.dietFoodService.insertForm()
       .fieldValueResolver((fieldName, value) => {
-        if (fieldName === 'DoodId') {
+        if (fieldName === 'FoodId') {
           return this.food.id;
         }
         else if (fieldName === 'DietId') {
@@ -54,12 +59,31 @@ export class AddDietFoodDialogComponent extends BaseComponent implements OnInit 
         }
         return value;
       })
+      .fieldLabelResolver((field, originalLabel) => {
+        if (field.key === 'UnitValue'){
+          return this.dependencies.itemServices.foodUnitService.item().byId(this.food.foodUnitId)
+            .get()
+            .flatMap(response => {
+              if (response.isEmpty()){
+                console.warn(`FoodUnit with id '${this.food.foodUnitId}' was not found, this should have not happened here`);
+                return Observable.of(originalLabel);
+              }
+              return super.translate('module.foodUnits.' + response.item.unitCode)
+                .map(unitTranslation => originalLabel + ' (' + unitTranslation + ')');
+            })
+        }
+        return Observable.of(originalLabel);
+      })
       .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
       .onAfterInsert((response => {
         this.newDietFood = response.item;
         this.close();
       }))
       .build();
+  }
+
+  private onStatusChanged(valid: boolean): void {
+    this.formIsValid = valid;
   }
 
   private close(): void {
