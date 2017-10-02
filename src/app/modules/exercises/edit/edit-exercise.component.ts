@@ -50,5 +50,6 @@ export class EditExerciseComponent extends BaseComponent implements OnInit {
                     })
                     .build();
             })
+            .subscribe();
     }
 }

@@ -62,6 +62,11 @@ export class LoadMoreComponent extends BaseWebComponent implements OnInit, OnCha
     */
     private isInitialLoad: boolean = true;
 
+    /**
+     * Indicates if component was initialized
+     */
+    private initialized: boolean = false;
+
     constructor(
         private translateService: TranslateService
     ) {
@@ -69,35 +74,45 @@ export class LoadMoreComponent extends BaseWebComponent implements OnInit, OnCha
     }
 
     ngOnInit() {
-        this.initConfig(this.config);
-        this.initSearch();
-    }
-
-    ngOnChanges(changes: SimpleChanges) {
-        if (changes.config.currentValue && !changes.config.isFirstChange()) {
-            this.initConfig(changes.config.currentValue);
+        if (this.config){
+            this.initLoadMoreComponent(this.config);
         }
     }
 
-    private initConfig(config: LoadMoreConfig<any>) {
-        if (!config) {
+    ngOnChanges(changes: SimpleChanges) {
+        if (changes.config.currentValue) {
+            this.initLoadMoreComponent(changes.config.currentValue);
+        }
+    }
+
+    private initLoadMoreComponent(config: LoadMoreConfig<any>) {
+        if (!config || this.initialized) {
             return;
         }
 
         this.config = config;
 
-        this.initLoadMoreButton();
-        this.initItems(false);
+        this.getInitLoadMoreButtonObservable()
+            .zip(
+                this.getInitItemsObservable(false)
+            )
+            .zip(
+                this.getInitSearchObservable()
+            )
+            .takeUntil(this.ngUnsubscribe)
+            .subscribe(() => {
+                this.initialized = true;
+            });
     }
 
-    private initItems(appendItems: boolean): void {
+    private getInitItemsObservable(appendItems: boolean): Observable<any> {
         if (this.config.onBeforeLoad) {
             this.config.onBeforeLoad(this.isInitialLoad);
         }
 
         // load first items
-        this.getLoadObservable(appendItems)
-            .subscribe(() => {
+        return this.getLoadObservable(appendItems)
+            .map(() => {
                 if (this.config.onAfterLoad) {
                     this.config.onAfterLoad(this.isInitialLoad);
                 }
@@ -140,17 +155,17 @@ export class LoadMoreComponent extends BaseWebComponent implements OnInit, OnCha
             });
     }
 
-    private initLoadMoreButton() {
+    private getInitLoadMoreButtonObservable(): Observable<any> {
         this.loadMoreButtonSubject = new Subject<void>();
 
-        this.loadMoreButtonSubject
+        return this.loadMoreButtonSubject
             .switchMap(event => {
                 if (this.config.onBeforeLoad) {
                     this.config.onBeforeLoad(this.isInitialLoad);
                 }
                 return this.getLoadObservable(true);
             })
-            .subscribe(() => {
+            .map(() => {
                 if (this.config.onAfterLoad) {
                     this.config.onAfterLoad(this.isInitialLoad);
                 }
@@ -180,16 +195,18 @@ export class LoadMoreComponent extends BaseWebComponent implements OnInit, OnCha
         return null;
     }
 
-    private initSearch(): void {
-        this.searchControl.valueChanges
+    private getInitSearchObservable(): Observable<any> {
+        return this.searchControl.valueChanges
             .debounceTime(this.searchDebounce)
-            .subscribe(text => {
+            .map(text => {
                 // reset page to 1 when searching
                 this.currentPage = 1;
                 this.searchTerm = text;
                 
                 // reload data
-                this.initItems(false);                
+                this.getInitItemsObservable(false)
+                    .takeUntil(this.ngUnsubscribe)
+                    .subscribe();                
             });
     }
 }

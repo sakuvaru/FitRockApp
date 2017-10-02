@@ -32,6 +32,7 @@ export class EditFoodCompoent extends BaseComponent implements OnInit {
 
     private initForm(): void {
         this.activatedRoute.params
+            .takeUntil(this.ngUnsubscribe)
             .map((params: Params) => {
                 this.formConfig = this.dependencies.itemServices.foodService.editForm(+params['id'])
                     .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
@@ -49,5 +50,6 @@ export class EditFoodCompoent extends BaseComponent implements OnInit {
                     })
                     .build();
             })
+            .subscribe();
     }
 }
