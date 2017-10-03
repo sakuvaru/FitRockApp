@@ -144,6 +144,11 @@ export class ClientWorkoutComponent extends ClientsBaseComponent implements OnIn
             .map(response => {
                 if (!response.isEmpty()) {
                     this.existingWorkouts = response.items;
+
+                    // order workout exercises
+                    this.existingWorkouts.forEach(workout => {
+                        workout.workoutExercises = _.sortBy(workout.workoutExercises, m => m.order)
+                    })
                 }
             });
     }

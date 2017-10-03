@@ -144,6 +144,11 @@ export class ClientDietComponent extends ClientsBaseComponent implements OnInit,
             .map(response => {
                 if (!response.isEmpty()) {
                     this.existingDiets = response.items;
+
+                    // order diet foods
+                    this.existingDiets.forEach(diet => {
+                        diet.dietFoods = _.sortBy(diet.dietFoods, m => m.order)
+                    })
                 }
             });
     }
