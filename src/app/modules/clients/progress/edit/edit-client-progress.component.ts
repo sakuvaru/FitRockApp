@@ -8,7 +8,7 @@ import { ProgressItemType } from '../../../../models';
 import { ClientsBaseComponent } from '../../clients-base.component';
 import { ClientMenuItems } from '../../menu.items';
 import { FormConfig, DynamicFormComponent } from '../../../../../web-components/dynamic-form';
-import { DataTableConfig, AlignEnum, Filter } from '../../../../../web-components/data-table';
+import { DataTableConfig, AlignEnum, Filter, DataTableComponent } from '../../../../../web-components/data-table';
 import { ProgressItem, User, ProgressItemTypeWithCountDto } from '../../../../models';
 import 'rxjs/add/operator/switchMap';
 import { Observable } from 'rxjs/Rx';
@@ -21,11 +21,12 @@ import * as _ from 'underscore';
 })
 export class EditClientProgressComponent extends ClientsBaseComponent implements OnInit {
 
-    private formConfig: FormConfig<ProgressItem> | undefined;
+    private formConfig: FormConfig<ProgressItem>;
     private dataTableConfig: DataTableConfig<ProgressItem>;
     private progressItemTypes: ProgressItemType[];
 
-    @ViewChild(DynamicFormComponent) formComponent: DynamicFormComponent;
+    @ViewChild(DataTableComponent) progressItemsDataTable: DataTableComponent;
+    @ViewChild(DynamicFormComponent) progressItemForm: DynamicFormComponent;
 
     constructor(
         protected activatedRoute: ActivatedRoute,
@@ -90,7 +91,6 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
                 this.reloadDataTable();
             })
             .clearFormAfterSave(true)
-
             // set extra translation value for measurement value based on currently selected type
             .onFieldValueChange((config, changedField, newValue) => {
                 // get measurement value field
@@ -288,10 +288,10 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
     }
 
     private reloadDataTable(): void {
-        this.initDataTable(this.clientId);
+        this.progressItemsDataTable.forceReinitialization(this.dataTableConfig);
     }
 
     private reloadForm(): void {
-        this.initProgressItemsForm(this.clientId);
+        this.progressItemForm.forceReinitialization(this.formConfig);
     }
 }

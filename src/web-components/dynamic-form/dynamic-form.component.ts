@@ -108,9 +108,19 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
         if (changes.config.currentValue) {
             this.initDynamicForm(changes.config.currentValue);
         }
+
+        if (changes.forceReload){
+            if (changes.forceReload.currentValue === true){
+                this.forceReinitialization(this.config);
+            }
+        }
     }
 
-    private forceReinitialization(config: FormConfig<any>): void {
+    /**
+     * Reloads form
+     * @param config Form config
+     */
+    forceReinitialization(config: FormConfig<any>): void {
         this.initialized = false;
         this.initDynamicForm(config);
     }
@@ -140,12 +150,14 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
             this.isEditForm = config.isEditForm();
             this.isInsertForm = config.isInsertForm();
 
-            var translateLabelsObservable = this.getTranslateLabelsObservable(config);
+            // translate labels
+            this.getTranslateLabelsObservable(config)
+                .takeUntil(this.ngUnsubscribe)    
+                .subscribe();
 
             // init fields
             this.getInitFormObservable(config)
                 .takeUntil(this.ngUnsubscribe)
-                .zip(translateLabelsObservable)
                 .subscribe(() => {
                     // subscribe to form status changes so that it can be emitted
                     this.form.statusChanges
@@ -177,9 +189,6 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
 
         // set component as initialized
         this.initialized = true;
-
-        // should be necessary, delete if all is working fine
-        //this.cdr.detectChanges();
     }
 
     private getInitFormObservable(config: FormConfig<any>): Observable<any> {

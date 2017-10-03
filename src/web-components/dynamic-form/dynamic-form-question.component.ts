@@ -77,16 +77,15 @@ export class DynamicFormQuestionComponent extends BaseWebComponent implements On
     }
 
     // translations
-    var translationsObservable = this.getReloadTranslationObservable();
+    var translationsObservable = this.getReloadTranslationObservable()
+      .takeUntil(this.ngUnsubscribe)
+      .subscribe();
 
     // value change observable
-    var changeObservable = this.getSubscribeToChangesObservable();
-
-    // subscribe to observables
-    translationsObservable
+    var changeObservable = this.getSubscribeToChangesObservable()
       .takeUntil(this.ngUnsubscribe)
-      .zip(changeObservable)
       .subscribe();
+
 
     // this should be first -> set the 'value' of form control to 'defaultValue' in case of insert form
     // this can be overriden by more specific control types needs (e.g the radio button)
@@ -280,7 +279,7 @@ export class DynamicFormQuestionComponent extends BaseWebComponent implements On
     var originalTranslationObservable = this.translateService
       .get(labelTranslationKey, extraTranslationData)
       .map(translatedLabel => this.question.translatedLabel = translatedLabel);
-   
+
     // no field label resolver is defined so we can return original translation
     if (!this.formConfig.fieldLabelResolver) {
       return originalTranslationObservable;

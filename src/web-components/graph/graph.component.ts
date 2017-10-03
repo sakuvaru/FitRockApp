@@ -22,6 +22,11 @@ export class GraphComponent extends BaseWebComponent implements OnInit, OnChange
 
     private wrapperStyle: any;
 
+    /**
+     * Indicates if component is initialized
+     */
+    private initialized: boolean = false;
+
     constructor(
         protected translateService: TranslateService
     ) { super() }
@@ -39,12 +44,36 @@ export class GraphComponent extends BaseWebComponent implements OnInit, OnChange
         }
     }
 
+    
+    /**
+     * Reinitializes graph
+     * @param config Graph config
+     */
+    forceReinitialization(config: GraphConfig<BaseGraph>): void {
+        this.initialized = false;
+        this.initGraph(config);
+    }
+
+    /**
+     * Reloads graph data
+     */
+    reloadData(): void {
+        this.initialized = false;
+        this.initGraph(this.config);
+    }
+
     private initGraph(config: GraphConfig<BaseGraph>): void {
+        if (this.initialized){
+            return;
+        }
+
         this.config = config;
         this.graph = this.config.graph;
 
         this.initWrapperStyle();
         this.initTranslations();
+
+        this.initialized = true;
     }
 
     private initWrapperStyle(): void {

@@ -80,6 +80,16 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
         }
     }
 
+    
+    /**
+     * Reloads data table
+     * @param config Data table config
+     */
+    forceReinitialization(config: DataTableConfig<any>): void {
+        this.initialized = false;
+        this.initDataTable();
+    }
+
     private initDataTable(): void {
         if (this.config && !this.initialized) {
             // translate all labels (which have 'labelKey' set)

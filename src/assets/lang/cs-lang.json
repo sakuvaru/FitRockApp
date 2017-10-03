@@ -333,7 +333,7 @@
 		},
 		"progressItem":{
 			"progressItemTypeId": "Typ",
-			"valueWithUnit": "Množství ({{unit}})",
+			"valueWithUnit": "Hodnota ({{unit}})",
 			"value": "Hodnota měření",
 			"measurementDate": "Datum měření"
 		},

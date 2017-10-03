@@ -1,5 +1,5 @@
 // common
-import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
+import { Component, Input, Output, OnInit, EventEmitter, ViewChild } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { AppConfig, ComponentDependencyService, BaseComponent } from '../../../core';
 
@@ -7,7 +7,7 @@ import { AppConfig, ComponentDependencyService, BaseComponent } from '../../../c
 import { ProgressItemType } from '../../../models';
 import { ClientsBaseComponent } from '../clients-base.component';
 import { ClientMenuItems } from '../menu.items';
-import { GraphConfig, MultiSeries, BaseGraph, SingleSeries, LineChart, VerticalBarChart } from '../../../../web-components/graph';
+import { GraphConfig, MultiSeries, BaseGraph, SingleSeries, LineChart, VerticalBarChart, GraphComponent } from '../../../../web-components/graph';
 import { Observable } from 'rxjs/Rx';
 
 @Component({
@@ -19,6 +19,8 @@ export class StatsMainComponent extends ClientsBaseComponent implements OnInit {
     private progressItemTypes: ProgressItemType[];
     private idOfActiveType: number;
 
+    @ViewChild(GraphComponent) graph: GraphComponent;
+
     constructor(
         protected componentDependencyService: ComponentDependencyService,
         protected activatedRoute: ActivatedRoute) {
@@ -28,7 +30,7 @@ export class StatsMainComponent extends ClientsBaseComponent implements OnInit {
     ngOnInit() {
         super.ngOnInit();
 
-        super.subscribeToObservables(this.getComponentObservables());
+        super.subscribeToObservables(this.getComponentObservables(), { setComponentAsInitialized: false });
         super.initClientSubscriptions();
     }
 
@@ -48,7 +50,6 @@ export class StatsMainComponent extends ClientsBaseComponent implements OnInit {
                     .byCurrentUser()
                     .whereEquals('ClientId', clientId)
                     .get()
-                    .takeUntil(this.ngUnsubscribe)
                     .flatMap((response) => {
                         this.progressItemTypes = response.items;
 
@@ -107,6 +108,11 @@ export class StatsMainComponent extends ClientsBaseComponent implements OnInit {
                     super.translate(response.data.yAxisLabel).subscribe(translation => {
                         this.graphConfig.graph.yAxisLabel = translation;
                     });
+
+                    this.graph.forceReinitialization(this.graphConfig);
+
+                    // set component as initialized once graph is ready
+                    super.setComponentAsInitialized(true);
                 }
             })
     }
