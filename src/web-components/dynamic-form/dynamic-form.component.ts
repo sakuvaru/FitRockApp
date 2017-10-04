@@ -109,8 +109,8 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
             this.initDynamicForm(changes.config.currentValue);
         }
 
-        if (changes.forceReload){
-            if (changes.forceReload.currentValue === true){
+        if (changes.forceReload) {
+            if (changes.forceReload.currentValue === true) {
                 this.forceReinitialization(this.config);
             }
         }
@@ -152,7 +152,7 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
 
             // translate labels
             this.getTranslateLabelsObservable(config)
-                .takeUntil(this.ngUnsubscribe)    
+                .takeUntil(this.ngUnsubscribe)
                 .subscribe();
 
             // init fields
@@ -212,7 +212,12 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
                                     return;
                                 }
                                 var newValue = config.fieldValueResolver(field.key, field.value);
+
+                                // set value
                                 field.value = this.getFieldValueSetByResolver(newValue);
+
+                                // set also this value as default value because otherwise clearing form would clear these values too
+                                field.defaultValue = newValue;
                             })
                         }
                     }
@@ -264,7 +269,12 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
                                     return;
                                 }
                                 var newValue = config.fieldValueResolver(field.key, field.value);
+
+                                // set field value
                                 field.value = this.getFieldValueSetByResolver(newValue);
+
+                                // set also this value as default value because otherwise clearing form would clear these values too
+                                field.defaultValue = newValue;
                             })
                         }
                     }
@@ -569,9 +579,12 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
     private handleFormClear(config: FormConfig<any>): void {
         // only insert forms can be cleared after save
         if (this.config.clearFormAfterSave && this.config.isInsertForm()) {
-            this.questions = [];
-            this.forceReinitialization(this.config);
+            this.clearForm();
         }
+    }
+
+    private clearForm(): void {
+        this.form = this.fieldControlService.toFormGroup(this.questions);
     }
 
     private convertEmptyStringsToNull(): void {
