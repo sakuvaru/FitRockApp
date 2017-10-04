@@ -56,7 +56,7 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
         this.setComponentAsInitialized(false);
 
         // stop loaders on component init 
-        this.dependencies.coreServices.sharedService.setTopLoader(false);
+        this.dependencies.coreServices.sharedService.setGlobalLoader(false, false);
 
         // authenticate user when logging-in (handles the params in URL and extracts token
         // more info: https://auth0.com/docs/quickstart/spa/angular2/02-custom-login
@@ -101,15 +101,15 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
 
 
     startGlobalLoader(): void {
-        this.dependencies.coreServices.sharedService.setTopLoader(true);
+        this.dependencies.coreServices.sharedService.setGlobalLoader(true, false);
     }
 
-    stopGlobalLoader(): void {
-        this.dependencies.coreServices.sharedService.setTopLoader(false);
+    stopGlobalLoader(forceDisable: boolean = false): void {
+        this.dependencies.coreServices.sharedService.setGlobalLoader(false, forceDisable);
     }
 
-    stopAllLoaders(): void {
-        this.stopGlobalLoader();
+    stopAllLoaders(forceDisable: boolean = false): void {
+        this.stopGlobalLoader(forceDisable);
     }
 
     /**
@@ -128,7 +128,6 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
     navigateTo404(): void {
         this.dependencies.router.navigate([UrlConfig.getItem404()]);
     }
-
 
     navigateToError(): void {
         this.dependencies.router.navigate([UrlConfig.getAppErrorUrl()]);
@@ -178,14 +177,16 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
             if (error.reason == ErrorReasonEnum.LicenseLimitation) {
                 this.showErrorDialog('errors.invalidLicense');
             }
+            // handle unknown ErrorResponse error
+            this.showErrorDialog();
         }
         else {
             // handle unknown error
             this.showErrorDialog();
         }
 
-        // stop all loaders
-        this.stopAllLoaders();
+        // force stop all loaders
+        this.stopAllLoaders(true);
     }
 
     /**
@@ -330,8 +331,7 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
 
         this.dependencies.helpers.observableHelper.zipObservables(observables)
             .takeUntil(this.ngUnsubscribe)
-            .finally(() => this.stopAllLoaders())
-            .subscribe(() => {
+            .subscribe((val) => {
                 this.stopAllLoaders();
 
                 if (setComponentAsInitialized) {

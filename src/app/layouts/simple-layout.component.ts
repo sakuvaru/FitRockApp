@@ -1,32 +1,65 @@
 // common
 import { Component, Input, OnDestroy, ChangeDetectorRef, OnInit } from '@angular/core';
 import { TdMediaService } from '@covalent/core';
-import { ComponentDependencyService, BaseComponent } from '../core';
+import { ComponentDependencyService, BaseComponent, MenuItemType, AppConfig } from '../core';
 
 // required by component
 import { Subscription } from 'rxjs/Rx';
+import { stringHelper } from '../../lib/utilities';
+import { GlobalLoaderStatus } from '../core';
+import { FormControl } from '@angular/forms';
 
 @Component({
     templateUrl: 'simple-layout.component.html'
 })
 export class SimpleLayoutComponent extends BaseComponent implements OnDestroy, OnInit {
+    // Setup properties
+    private readonly titleCharsLength: number = 22;
+    private readonly year: number = new Date().getFullYear();
+    private readonly hideComponentWhenLoaderIsEnabled = AppConfig.HideComponentWhenLoaderIsEnabled;
+
+    // Services
     private media: TdMediaService;
 
+    // Component configuration & data
+    private globalLoaderStatus: GlobalLoaderStatus;
+    private componentIsInitialized: boolean;
+    private componentIsAutoInitialized: boolean;
+    private enableComponentSearch: boolean;
     private componentTitle: string;
     private menuTitle: string;
+    private menuAvatarUrl: string;
 
-    private topLoaderEnabled: boolean;
+    // calculated data
+    private displayUsername: string;
+    private email: string;
 
-    // subscriptions - unsubscribe 
-    private topLoaderSubscription: Subscription;
-    private componentConfigSubscription: Subscription;
+    /**
+     * This property indicates if component should be shown
+     */
+    private showComponent: boolean = false;
+
+    /**
+     * Indicates if loader should be shown
+     */
+    private showLoading: boolean = false;
+
+    /**
+     * Part of url identifying 'client' or 'trainer' app type
+     */
+    private urlSegment: string;
+
+    // Admin search
+    private readonly searchDebounceTime: number = 300;
+    private readonly searchControl = new FormControl();
+    private componentSearchValue: string = '';
 
     constructor(
-        private cdr: ChangeDetectorRef,
         protected dependencies: ComponentDependencyService,
+        private changeDetectorRef: ChangeDetectorRef,
     ) {
         super(dependencies)
-        
+
         // set alias for media
         this.media = this.dependencies.tdServices.mediaService;
     }
@@ -34,60 +67,144 @@ export class SimpleLayoutComponent extends BaseComponent implements OnDestroy, O
     ngOnInit() {
         super.ngOnInit();
 
-        // don't forget to unsubscribe
-        this.topLoaderSubscription = this.dependencies.coreServices.sharedService.topLoaderChanged$
+        // init component search if search is enabled
+        this.initComponentSearch();
+
+        // init user texts
+        var user = this.dependencies.authenticatedUserService.getUser();
+        if (user) {
+            this.displayUsername = user.firstName + ' ' + user.lastName;
+            this.email = user.email;
+        }
+
+        // register subscriptions
+        this.dependencies.coreServices.sharedService.globalLoaderChanged$
             .takeUntil(this.ngUnsubscribe)
             .subscribe(
-            enabled => {
-                this.topLoaderEnabled = enabled;
-                this.cdr.detectChanges();
+            status => {
+                this.globalLoaderStatus = status;
+                this.componentChangedNotification();
             });
 
-        this.componentConfigSubscription = this.dependencies.coreServices.sharedService.componentConfigChanged$
+        this.dependencies.coreServices.sharedService.componentIsInitializedChanged$
+            .takeUntil(this.ngUnsubscribe)
+            .subscribe(
+            initialized => {
+                this.componentIsInitialized = initialized;
+                this.componentChangedNotification();
+            });
+
+        this.dependencies.coreServices.sharedService.componentConfigChanged$
             .takeUntil(this.ngUnsubscribe)
             .subscribe(
             componentConfig => {
                 this.componentConfig = componentConfig;
+                this.componentIsAutoInitialized = componentConfig.autoInitComponent;
+                this.enableComponentSearch = componentConfig.enableSearch;
+
+
+                if (componentConfig.menuAvatarUrl) {
+                    this.menuAvatarUrl = componentConfig.menuAvatarUrl;
+                }
+                else {
+                    // clear avatar if its not set
+                    this.menuAvatarUrl = '';
+                }
 
                 // resolve component's title using translation services
                 if (componentConfig.componentTitle) {
                     this.dependencies.coreServices.translateService.get(componentConfig.componentTitle.key, componentConfig.componentTitle.data)
-                        .takeUntil(this.ngUnsubscribe)
-                        .subscribe(text => this.componentTitle = text);
+                        .subscribe(text => {
+                            this.componentTitle = text;
+                            this.componentChangedNotification();
+                        });
                 }
 
                 // resolve menu title using translation services
                 if (componentConfig.menuTitle) {
                     this.dependencies.coreServices.translateService.get(componentConfig.menuTitle.key, componentConfig.menuTitle.data)
                         .takeUntil(this.ngUnsubscribe)
-                        .subscribe(text => this.menuTitle = text);
+                        .subscribe(text => {
+                            this.menuTitle = text;
+                            this.componentChangedNotification();
+                        });
                 }
             });
     }
 
     ngAfterViewInit(): void {
-        this.dependencies.tdServices.mediaService.broadcast();
         // broadcast to all listener observables when loading the page
-        // note required by 'Covalent' for its templates
-        // source: https://teradata.github.io/covalent/#/layouts/manage-list
-        // + broadcast change detection issue, see - https://github.com/Teradata/covalent/issues/425
-        // + fixed with ChangeDetectorRef => https://stackoverflow.com/questions/34364880/expression-has-changed-after-it-was-checked
-        // mentioned in official doc now -> https://teradata.github.io/covalent/#/layouts/manage-list
-        this.cdr.detectChanges();
+        this.media.broadcast();
+        this.componentChangedNotification();
     }
 
-    ngOnDestroy() {
-        super.ngOnDestroy();
-        // prevent memory leak when component destroyed
-        // source: https://angular.io/docs/ts/latest/cookbook/component-communication.html#!#bidirectional-service
+    /**
+     * This method has to be called each time any property changes
+     */
+    private componentChangedNotification(): void {
+        this.calcualteShowComponent();
+        this.calculateShowLoader();
+        this.changeDetectorRef.detectChanges();
+    }
 
-        // in some cases subscription is not yet initialized (e.g. when navigating from constructor), check for null
-        if (this.componentConfigSubscription != null){
-            this.componentConfigSubscription.unsubscribe();
+    private calculateShowLoader(): void {
+        this.showLoading = !this.globalLoaderStatus.forceDisable && ((this.hideComponentWhenLoaderIsEnabled && this.globalLoaderStatus.show) || (!this.componentIsAutoInitialized && !this.componentIsInitialized));
+    }
+
+    private calcualteShowComponent(): void {
+        this.showComponent = !(!this.componentIsAutoInitialized && !this.componentIsInitialized);
+    }
+
+    private initComponentSearch(): void {
+        this.searchControl.valueChanges
+            .debounceTime(this.searchDebounceTime)
+            .takeUntil(this.ngUnsubscribe)
+            .subscribe(search => {
+                this.dependencies.coreServices.sharedService.setComponentSearch(search);
+            });
+    }
+
+    private handleComponentSearch(search: string): void {
+        this.dependencies.coreServices.sharedService.setComponentSearch(search);
+    }
+
+    private getMenuItemUrl(action: string, type: MenuItemType): string {
+        var url;
+
+        if (type === MenuItemType.client) {
+            url = this.getClientUrl(action);
+        }
+        else if (type === MenuItemType.trainer) {
+            url = this.getTrainerUrl(action);
+        }
+        else if (type === MenuItemType.auth) {
+            url = this.getAuthUrl(action);
+        }
+        else {
+            throw Error(`Cannot get menu item url of '${type}' type`);
         }
 
-        if (this.topLoaderSubscription != null){
-            this.topLoaderSubscription.unsubscribe();
+        return url;
+    }
+
+    private getMenuItemColor(action: string, type: MenuItemType): string | null {
+        var activeColor = 'accent';
+
+        var url = this.getMenuItemUrl(action, type);
+        var currentUrl = this.dependencies.router.url;
+
+        if (currentUrl === url) {
+            return activeColor;
         }
+
+        if (currentUrl.startsWith(url) && currentUrl.endsWith(url)) {
+            return activeColor;
+        }
+
+        return null;
+    }
+
+    private shortenTitle(text: string): string | null {
+        return stringHelper.shorten(text, this.titleCharsLength, true)
     }
 }

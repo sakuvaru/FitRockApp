@@ -12,7 +12,7 @@ import { DragulaService } from 'ng2-dragula';
 import 'rxjs/add/operator/switchMap';
 import { Observable, Subscription } from 'rxjs/Rx';
 import * as _ from 'underscore';
-import { stringHelper } from '../../../../../lib/utilities';
+import { stringHelper, observableHelper } from '../../../../../lib/utilities';
 
 @Component({
     templateUrl: 'client-workout.component.html'
@@ -135,12 +135,14 @@ export class ClientWorkoutComponent extends ClientsBaseComponent implements OnIn
     private existingWorkoutsObservable(): Observable<any> {
         return this.clientIdChange
             .takeUntil(this.ngUnsubscribe)
-            .switchMap(clientId => this.dependencies.itemServices.workoutService.items()
-                .byCurrentUser()
-                .includeMultiple(['WorkoutExercises', 'WorkoutExercises.Exercise'])
-                .whereEquals('ClientId', clientId)
-                .orderByAsc("Order")
-                .get())
+            .switchMap(clientId => {
+                return this.dependencies.itemServices.workoutService.items()
+                    .byCurrentUser()
+                    .includeMultiple(['WorkoutExercises', 'WorkoutExercises.Exercise'])
+                    .whereEquals('ClientId', clientId)
+                    .orderByAsc("Order")
+                    .get()
+            })
             .map(response => {
                 if (!response.isEmpty()) {
                     this.existingWorkouts = response.items;

@@ -30,49 +30,13 @@ export class DashboardComponent extends BaseComponent implements OnInit {
             componentTitle: { key: 'menu.dashboard'}
         });
 
-        this.dependencies.itemServices.logService.items().limit(5).orderByDesc('id').get()
+        super.subscribeToObservable(this.dependencies.itemServices.logService.items().limit(5).orderByDesc('id').get()
             .takeUntil(this.ngUnsubscribe)
-            .subscribe(
+            .map(
             response => {
                 console.log(response);
                 this.logs = response.items;
-            });
-
-
-        /* this.dependencies.itemServices.logService.item().byId(2).get().subscribe(
-             response => {
-                 console.log(response);
-                 this.log = response.item;
-             }
-         );
-         */
-        /*
-        // create sample log
-        var newLog = new Log({
-            user: 'Smurf',
-            errorMessage: 'This is a test error',
-            stacktrace: 'stacktrace here'
-        });
-
-        this.logService.create(newLog).subscribe(
-            log => console.log(log.errorMessage)
-        );
-        
-        
-
-        // edit log
-        var editLog = new Log({
-            errorMessage: "This was edited by smurfie",
-            user:'Smurfy smurf',
-            id: 1
-        });
-
-        this.logService.edit(editLog).subscribe(
-            log => console.log(log)
-        );
-        */
-
-        //this.logService.delete(1).subscribe( isSuccess => console.log(isSuccess));
+            }));
 
         this.currentUser = this.dependencies.coreServices.authService.getCurrentUser();
     }

@@ -40,12 +40,25 @@ export enum MenuItemType {
     client
 }
 
-export class AuthenticatedUser{
+export class AuthenticatedUser {
     constructor(
         public id: number,
         public email: string,
         public firstName: string,
         public lastName: string,
         public trainerId: number,
+    ){}
+}
+
+export class GlobalLoaderStatus  {
+    constructor(
+        /**
+         * Indicates if loader should be shown
+         */
+        public show,
+        /**
+         * Indicates if loader should be hidden no matter what
+         */
+        public forceDisable
     ){}
 }

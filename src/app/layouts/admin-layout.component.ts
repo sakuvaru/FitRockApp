@@ -7,41 +7,53 @@ import { ComponentDependencyService, BaseComponent, MenuItemType, AppConfig } fr
 // required by component
 import { Subscription } from 'rxjs/Rx';
 import { stringHelper } from '../../lib/utilities';
+import { GlobalLoaderStatus } from '../core';
 import { FormControl } from '@angular/forms';
 
 @Component({
     templateUrl: 'admin-layout.component.html'
 })
 export class AdminLayoutComponent extends BaseComponent implements OnDestroy, OnInit {
-    
+
+    // Setup properties
     private readonly titleCharsLength: number = 22;
     private readonly year: number = new Date().getFullYear();
     private readonly hideComponentWhenLoaderIsEnabled = AppConfig.HideComponentWhenLoaderIsEnabled;
-    
+
+    // Services
     private media: TdMediaService;
 
+    // Component configuration & data
+    private globalLoaderStatus: GlobalLoaderStatus;
     private componentIsInitialized: boolean;
     private componentIsAutoInitialized: boolean;
-
     private enableComponentSearch: boolean;
     private componentTitle: string;
     private menuTitle: string;
-    private globalLoaderEnabled: boolean;
     private menuAvatarUrl: string;
 
+    // calculated data
     private displayUsername: string;
     private email: string;
+
+    /**
+     * This property indicates if component should be shown
+     */
+    private showComponent: boolean = false;
+
+    /**
+     * Indicates if loader should be shown
+     */
+    private showLoading: boolean = false;
 
     /**
      * Part of url identifying 'client' or 'trainer' app type
      */
     private urlSegment: string;
 
-    /**
-     * Admin search
-     */
+    // Admin search
     private readonly searchDebounceTime: number = 300;
-    private searchControl = new FormControl();
+    private readonly searchControl = new FormControl();
     private componentSearchValue: string = '';
 
     constructor(
@@ -67,13 +79,13 @@ export class AdminLayoutComponent extends BaseComponent implements OnDestroy, On
             this.email = user.email;
         }
 
-        // register loaders
-        this.dependencies.coreServices.sharedService.topLoaderChanged$
+        // register subscriptions
+        this.dependencies.coreServices.sharedService.globalLoaderChanged$
             .takeUntil(this.ngUnsubscribe)
             .subscribe(
-            enabled => {
-                this.globalLoaderEnabled = enabled;
-                this.changeDetectorRef.detectChanges();
+            status => {
+                this.globalLoaderStatus = status;
+                this.componentChangedNotification();
             });
 
         this.dependencies.coreServices.sharedService.componentIsInitializedChanged$
@@ -81,7 +93,7 @@ export class AdminLayoutComponent extends BaseComponent implements OnDestroy, On
             .subscribe(
             initialized => {
                 this.componentIsInitialized = initialized;
-                this.changeDetectorRef.detectChanges();
+                this.componentChangedNotification();
             });
 
         this.dependencies.coreServices.sharedService.componentConfigChanged$
@@ -93,10 +105,10 @@ export class AdminLayoutComponent extends BaseComponent implements OnDestroy, On
                 this.enableComponentSearch = componentConfig.enableSearch;
 
 
-                if (componentConfig.menuAvatarUrl){
+                if (componentConfig.menuAvatarUrl) {
                     this.menuAvatarUrl = componentConfig.menuAvatarUrl;
                 }
-                else{
+                else {
                     // clear avatar if its not set
                     this.menuAvatarUrl = '';
                 }
@@ -106,7 +118,7 @@ export class AdminLayoutComponent extends BaseComponent implements OnDestroy, On
                     this.dependencies.coreServices.translateService.get(componentConfig.componentTitle.key, componentConfig.componentTitle.data)
                         .subscribe(text => {
                             this.componentTitle = text;
-                            this.changeDetectorRef.detectChanges();
+                            this.componentChangedNotification();
                         });
                 }
 
@@ -116,7 +128,7 @@ export class AdminLayoutComponent extends BaseComponent implements OnDestroy, On
                         .takeUntil(this.ngUnsubscribe)
                         .subscribe(text => {
                             this.menuTitle = text;
-                            this.changeDetectorRef.detectChanges();
+                            this.componentChangedNotification();
                         });
                 }
             });
@@ -125,7 +137,24 @@ export class AdminLayoutComponent extends BaseComponent implements OnDestroy, On
     ngAfterViewInit(): void {
         // broadcast to all listener observables when loading the page
         this.media.broadcast();
+        this.componentChangedNotification();
+    }
+
+    /**
+     * This method has to be called each time any property changes
+     */
+    private componentChangedNotification(): void {
+        this.calcualteShowComponent();
+        this.calculateShowLoader();
         this.changeDetectorRef.detectChanges();
+    }
+
+    private calculateShowLoader(): void {
+        this.showLoading = !this.globalLoaderStatus.forceDisable && ((this.hideComponentWhenLoaderIsEnabled && this.globalLoaderStatus.show) || (!this.componentIsAutoInitialized && !this.componentIsInitialized));
+    }
+
+    private calcualteShowComponent(): void {
+        this.showComponent = !(!this.componentIsAutoInitialized && !this.componentIsInitialized);
     }
 
     private initComponentSearch(): void {

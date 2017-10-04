@@ -26,7 +26,7 @@ export class ComponentConfig {
         menuTitle?: ResourceKey,
         enableSearch?: boolean,
         autoInitComponent?: boolean,
-        menuAvatarUrl?: string
+        menuAvatarUrl?: string,
 
     }) {
         if (options) Object.assign(this, options);

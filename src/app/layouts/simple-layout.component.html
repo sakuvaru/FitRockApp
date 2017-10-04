@@ -1,5 +1,5 @@
-<loader [enabled]="topLoaderEnabled"></loader>
-<td-layout-nav toolbarTitle="{{componentConfig.appName}}" logo="logo" icon="home" color="primary" navigationRoute="/">
+<loader [enabled]="showLoading"></loader>
+<td-layout-nav toolbarTitle="{{componentTitle}}" logo="logo" icon="home" color="primary" navigationRoute="/">
     <div td-toolbar-content>
     </div>
     <div layout="row" layout-padding>
@@ -8,6 +8,6 @@
         </div>
     </div>
     <td-layout-footer>
-        <footer [appName]="componentConfig.appName"></footer>
+        <footer [appName]="componentTitle"></footer>
     </td-layout-footer>
 </td-layout-nav>

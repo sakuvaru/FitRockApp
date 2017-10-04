@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import { ComponentConfig } from '../component/component.config';
+import { GlobalLoaderStatus } from '../models/core.models';
 import { Log } from '../../models/';
 
 /// Shared data app
@@ -10,7 +11,7 @@ export class SharedService {
 
   // Observable string sources
   private componentConfigSource = new Subject<ComponentConfig>();
-  private topLoaderSource = new Subject<boolean>();
+  private globalLoaderSource = new Subject<GlobalLoaderStatus>();
   private componentSearchSource = new Subject<string>();
   private errorSource = new Subject<Log>();
   private componentIsInitializedSource = new Subject<boolean>();
@@ -18,7 +19,7 @@ export class SharedService {
   // Observable string streams
   componentConfigChanged$ = this.componentConfigSource.asObservable();
   componentSearchChanged$ = this.componentSearchSource.asObservable();
-  topLoaderChanged$ = this.topLoaderSource.asObservable();
+  globalLoaderChanged$ = this.globalLoaderSource.asObservable();
   errorChanged$ = this.errorSource.asObservable();
   componentIsInitializedChanged$ = this.componentIsInitializedSource.asObservable();
 
@@ -31,14 +32,12 @@ export class SharedService {
     this.componentSearchSource.next(search);
   }
 
-  setTopLoader(enabled: boolean): void {
-    this.topLoaderSource.next(enabled);
+  setGlobalLoader(show: boolean, forceDisable: boolean): void {
+    this.globalLoaderSource.next(new GlobalLoaderStatus(show, forceDisable));
   }
 
   setError(log: Log): void {
     this.errorSource.next(log);
-    // stop loaders on error
-    this.topLoaderSource.next(false);
   }
 
   setComponentIsInitialized(isInitialized: boolean): void{

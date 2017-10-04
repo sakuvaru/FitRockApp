@@ -15,7 +15,7 @@
     &copy; {{year}} {{componentConfig.appName}}
   </div>
 
-  <loader [enabled]="globalLoaderEnabled"></loader>
+  <loader [enabled]="showLoading"></loader>
 
   <td-layout-nav>
       <div td-toolbar-content flex>
@@ -60,7 +60,8 @@
           <button md-icon-button [routerLink]="getAuthUrl('logout')"><md-icon>exit_to_app</md-icon></button>
         </div>
       </md-toolbar>
-      <div [ngClass]="{'w-hidden': globalLoaderEnabled && hideComponentWhenLoaderIsEnabled && (!componentIsAutoInitialized && !componentIsInitialized)}">
+      <!-- ngClass with hidden styles is used because *ngIf would cause the router to not be executed at all -->
+      <div [ngClass]="{'w-hidden': !showComponent}">
         <router-outlet></router-outlet>
       </div>
 

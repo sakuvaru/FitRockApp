@@ -3,7 +3,6 @@ import { Observable } from 'rxjs/Rx';
 export class ObservableHelper {
 
     /**
-    * Zips array of observables into one that gets executed once all inner subscriptions complete
     * https://www.learnrxjs.io/operators/combination/zip.html
     * @param observables Observables to zip
     */
@@ -32,6 +31,26 @@ export class ObservableHelper {
         }
 
         return zippedObservable;
+    }
+
+    /**
+    * https://www.learnrxjs.io/operators/combination/forkjoin.html
+    * @param observables Observables to fork join
+    */
+    forkJoinObservables(observables: Observable<any>[]): Observable<any> {
+        if (!observables) {
+            throw Error(`Given observables are not valid`);
+        }
+
+        if (!Array.isArray(observables)) {
+            throw Error(`Given observables are not in array`);
+        }
+
+        if (observables.length === 0) {
+            throw Error(`Observables array doesn't contain any observable`);
+        }
+
+        return Observable.forkJoin(observables);
     }
 }
 
