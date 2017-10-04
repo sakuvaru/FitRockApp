@@ -40,6 +40,23 @@
     cursor: move;
 }
 
+/* Custom chip */
+.w-chip {
+    /* This code is taken out of the angular material chip */
+    transition: box-shadow 280ms cubic-bezier(.4,0,.2,1);
+    display: inline-flex;
+    padding: 7px 12px;
+    border-radius: 24px;
+    align-items: center;
+    cursor: default;
+    background-color: #e0e0e0;
+    color: rgba(0, 0, 0, 0.87);
+    font-size: 13px;
+    line-height: 18px;
+    margin: 0 0 3px 8px;
+}
+
+
 /* Gallery styles */
 
 .w-gallery-wrapper img.ng-thumb {

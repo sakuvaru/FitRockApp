@@ -1,4 +1,4 @@
-import { Component, Input, Output, OnInit, EventEmitter, AfterViewInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, Output, OnInit, EventEmitter, AfterViewInit, OnChanges, SimpleChanges, ViewChild, ElementRef } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { DataTableField } from '../data-table-field.class';
 import { DataTableConfig, Filter, PagerConfig, } from '../data-table.config';
@@ -126,7 +126,7 @@ export class DataTableLayoutHeader {
 export class DataTableLayoutSearch implements OnInit {
     @Input() config: DataTableConfig<any>;
     @Input() searchTerm: string;
-
+    
     @Output() search = new EventEmitter<string>();
 
     private readonly debounceTime = 300;
@@ -144,9 +144,14 @@ export class DataTableLayoutSearch implements OnInit {
     templateUrl: 'data-table-layout-filters.component.html'
 })
 export class DataTableLayoutFilters {
+
     @Input() activeFilterGuid: string;
     @Input() filters: Filter<any>[] = [];
     @Output() activateFilter = new EventEmitter<string>();
+
+    private selectChip(filter: Filter<any>): void{
+        this.activateFilter.emit(filter.guid);
+    }
 }
 
 @Component({

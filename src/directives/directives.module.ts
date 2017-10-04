@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormGroup } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
+// directives
 import { HideOnMobileDirective } from './hide-on-mobile.directive';
 
 @NgModule({
@@ -10,10 +11,10 @@ import { HideOnMobileDirective } from './hide-on-mobile.directive';
         CommonModule,
     ],
     declarations: [
-        HideOnMobileDirective
+        HideOnMobileDirective,
     ],
     exports: [
-        HideOnMobileDirective
+        HideOnMobileDirective,
     ],
 })
 export class DirectivesModule { }

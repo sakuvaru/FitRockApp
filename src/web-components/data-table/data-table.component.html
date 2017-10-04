@@ -9,7 +9,7 @@
       <ng-template tdLoading [tdLoadingUntil]="!localLoaderLoading" tdLoadingStrategy="overlay">
 
         <md-card-title layout>
-          <data-table-layout-search *ngIf="config.showSearch" [config]="config" [searchTerm]="searchTerm" (search)="handleSearch($event)"></data-table-layout-search>
+          <data-table-layout-search #searchInput *ngIf="config.showSearch" [config]="config" [searchTerm]="searchTerm" (search)="handleSearch($event)"></data-table-layout-search>
         </md-card-title>
         <data-table-layout-items [config]="config" [items]="items"></data-table-layout-items>
         <md-card-actions>
@@ -26,7 +26,7 @@
         <data-table-layout-filters [filters]="filters" [activeFilterGuid]="activeFilterGuid" (activateFilter)="applyFilter($event)"></data-table-layout-filters>
       </div>
       <div layout>
-        <data-table-layout-search *ngIf="config.showSearch" [config]="config" [searchTerm]="searchTerm" (search)="handleSearch($event)"></data-table-layout-search>
+        <data-table-layout-search #searchInput *ngIf="config.showSearch" [config]="config" [searchTerm]="searchTerm" (search)="handleSearch($event)"></data-table-layout-search>
       </div>
       <data-table-layout-items [config]="config" [items]="items"></data-table-layout-items>
       <md-card-actions>

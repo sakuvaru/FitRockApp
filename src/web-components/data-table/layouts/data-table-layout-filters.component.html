@@ -1,3 +1,13 @@
-  <md-chip-list>
-    <md-chip *ngFor="let filter of filters" class="w-cursor-pointer" [selected]="activeFilterGuid === filter.guid" (click)="activateFilter.emit(filter.guid)">{{filter.filterNameKey | translate}} <span *ngIf="filter.count >= 0">&nbsp;({{ filter.count }})</span></md-chip>
+<!-- md-chip-list is not used directly because ':focus' messes up with the search focus when some chip is selected(focused) -->
+<!--
+    <md-chip-list >
+    <md-chip  *ngFor="let filter of filters" class="w-cursor-pointer" [selected]="activeFilterGuid === filter.guid" (click)="selectChip(filter)">{{filter.filterNameKey | translate}} <span *ngIf="filter.count >= 0">&nbsp;({{ filter.count }})</span></md-chip>
   </md-chip-list>
+-->
+
+<div class="mat-chip-list">
+  <div class="mat-chip-list-wrapper">
+    <div tabindex="-1" *ngFor="let filter of filters" [class.mat-chip-selected]="activeFilterGuid === filter.guid" class="w-cursor-pointer w-chip mat-chip mat-primary"
+      (click)="selectChip(filter)">{{filter.filterNameKey | translate}} <span *ngIf="filter.count >= 0">&nbsp;({{ filter.count }})</span></div>
+  </div>
+</div>

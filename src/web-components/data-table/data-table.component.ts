@@ -1,10 +1,11 @@
-import { Component, Input, Output, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, Output, OnInit, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
 import { MultipleItemQuery } from '../../lib/repository';
 import { DataTableConfig, Filter } from './data-table.config';
 import { Observable } from 'rxjs/Rx';
 import { TranslateService } from '@ngx-translate/core';
 import { TdMediaService } from '@covalent/core';
 import { BaseWebComponent } from '../base-web-component.class';
+import { DataTableLayoutSearch } from './layouts/layouts.components';
 import * as _ from 'underscore';
 
 @Component({
@@ -12,6 +13,9 @@ import * as _ from 'underscore';
     templateUrl: 'data-table.component.html'
 })
 export class DataTableComponent extends BaseWebComponent implements OnInit, OnChanges {
+
+    // search component
+    @ViewChild(DataTableLayoutSearch) searchInput: DataTableLayoutSearch;
 
     // data table config
     @Input() config: DataTableConfig<any>;
@@ -80,7 +84,6 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
         }
     }
 
-    
     /**
      * Reloads data table
      * @param config Data table config
@@ -200,6 +203,7 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
                     if (this.config.enableLocalLoader) {
                         this.localLoaderLoading = false;
                     }
+
                 })
                 .subscribe(response => {
                     this.currentPage = page;
@@ -261,6 +265,7 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
                     if (this.config.enableLocalLoader) {
                         this.localLoaderLoading = false;
                     }
+
                 })
                 .subscribe(response => {
                     this.currentPage = page;
