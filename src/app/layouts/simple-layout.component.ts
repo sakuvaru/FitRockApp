@@ -22,7 +22,7 @@ export class SimpleLayoutComponent extends BaseComponent implements OnDestroy, O
     private media: TdMediaService;
 
     // Component configuration & data
-    private globalLoaderStatus: GlobalLoaderStatus;
+    private globalLoaderStatus: GlobalLoaderStatus = new GlobalLoaderStatus(false, false);
     private componentIsInitialized: boolean;
     private componentIsAutoInitialized: boolean;
     private enableComponentSearch: boolean;
@@ -148,7 +148,9 @@ export class SimpleLayoutComponent extends BaseComponent implements OnDestroy, O
     }
 
     private calculateShowLoader(): void {
-        this.showLoading = !this.globalLoaderStatus.forceDisable && ((this.hideComponentWhenLoaderIsEnabled && this.globalLoaderStatus.show) || (!this.componentIsAutoInitialized && !this.componentIsInitialized));
+        // simplified for now as components using this layout do not use component init status which might be removed anyway
+        this.showLoading = !this.globalLoaderStatus.forceDisable && ((this.hideComponentWhenLoaderIsEnabled && this.globalLoaderStatus.show));
+        //this.showLoading = !this.globalLoaderStatus.forceDisable && ((this.hideComponentWhenLoaderIsEnabled && this.globalLoaderStatus.show) || (!this.componentIsAutoInitialized && !this.componentIsInitialized));
     }
 
     private calcualteShowComponent(): void {

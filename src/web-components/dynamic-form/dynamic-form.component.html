@@ -1,6 +1,6 @@
-<ng-container *ngIf="form">
-  <ng-template tdLoading [tdLoadingUntil]="!localLoaderEnabled" tdLoadingStrategy="overlay">
-    <div style="min-height: 150px">
+<ng-template tdLoading [tdLoadingUntil]="!localLoaderEnabled" tdLoadingStrategy="overlay">
+  <div style="min-height: 150px">
+    <ng-container *ngIf="form">
       <form [formGroup]="form" autocomplete="off">
         <div *ngFor="let question of questions">
           <df-question [question]="question" [form]="form" [formConfig]="config"></df-question>
@@ -16,6 +16,6 @@
         </div>
         <td-message *ngIf="submissionError" [label]="submissionError" color="red" icon="error"></td-message>
       </form>
-    </div>
-  </ng-template>
-</ng-container>
+    </ng-container>
+  </div>
+</ng-template>

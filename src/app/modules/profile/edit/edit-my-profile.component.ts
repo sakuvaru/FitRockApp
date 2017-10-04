@@ -24,6 +24,7 @@ export class EditMyProfileComponent extends BaseComponent implements OnInit {
     ngOnInit() {
         super.ngOnInit();
 
+        super.setComponentAsInitialized(true);
         this.initMenu();
         this.initForm();
     }

@@ -24,7 +24,7 @@ export class AdminLayoutComponent extends BaseComponent implements OnDestroy, On
     private media: TdMediaService;
 
     // Component configuration & data
-    private globalLoaderStatus: GlobalLoaderStatus;
+    private globalLoaderStatus: GlobalLoaderStatus = new GlobalLoaderStatus(false, false);
     private componentIsInitialized: boolean;
     private componentIsAutoInitialized: boolean;
     private enableComponentSearch: boolean;
