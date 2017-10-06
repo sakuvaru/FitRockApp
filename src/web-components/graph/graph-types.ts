@@ -1,9 +1,10 @@
 import { MultiSeries, SingleSeries } from './graph-models';
 import { GraphTypeEnum } from './graph-type.enum';
+import { Observable } from 'rxjs/Rx';
 
 export abstract class BaseGraph {
 
-    abstract results: MultiSeries[] | SingleSeries[];
+    abstract data: Observable<MultiSeries[] | SingleSeries[]>;
     abstract type: GraphTypeEnum;
 
     /**
@@ -28,7 +29,7 @@ export class LineChart extends BaseGraph {
     public readonly type: GraphTypeEnum = GraphTypeEnum.LineChart;
 
     // required
-    public results: MultiSeries[];
+    public data: Observable<MultiSeries[]>;
     public xAxisLabel: string;
     public yAxisLabel: string;
 
@@ -43,7 +44,7 @@ export class LineChart extends BaseGraph {
 
     constructor(
         options: {
-            results: MultiSeries[],
+            data: Observable<MultiSeries[]>,
             xAxisLabel?: string,
             yAxisLabel?: string
         }
@@ -58,7 +59,7 @@ export class VerticalBarChart extends BaseGraph {
     public readonly type: GraphTypeEnum = GraphTypeEnum.VerticalBarChart;
 
     // required
-    public results: SingleSeries[];
+    public data: Observable<SingleSeries[]>;
     public xAxisLabel: string;
     public yAxisLabel: string;
 
@@ -73,9 +74,9 @@ export class VerticalBarChart extends BaseGraph {
 
     constructor(
         options: {
-            results: SingleSeries[],
-            xAxisLabel: string,
-            yAxisLabel: string
+            data: Observable<SingleSeries[]>,
+            xAxisLabel?: string,
+            yAxisLabel?: string
         }
 
     ) {

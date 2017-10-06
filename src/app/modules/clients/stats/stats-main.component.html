@@ -1,6 +1,6 @@
 <ng-container *ngIf="progressItemTypes && progressItemTypes.length > 0">
     <div class="push">
-        <mat-chip-list>
+        <mat-chip-list selectable="true">
             <mat-chip *ngFor="let progressItemType of progressItemTypes" [selected]="idOfActiveType === progressItemType.id" class="w-cursor-pointer"
                 (click)="onSelectType(progressItemType)">
                 <ng-container *ngIf="progressItemType.translateValue">

@@ -15,7 +15,7 @@ import { Observable } from 'rxjs/Rx';
 })
 export class StatsMainComponent extends ClientsBaseComponent implements OnInit {
 
-    private graphConfig: GraphConfig<LineChart>;
+    private graphConfig: GraphConfig<BaseGraph>;
     private progressItemTypes: ProgressItemType[];
     private idOfActiveType: number;
 
@@ -30,10 +30,74 @@ export class StatsMainComponent extends ClientsBaseComponent implements OnInit {
     ngOnInit() {
         super.ngOnInit();
 
-        super.subscribeToObservables(this.getComponentObservables(), { setComponentAsInitialized: false });
+        super.subscribeToObservables(this.getComponentObservables());
         super.initClientSubscriptions();
     }
 
+    private getComponentObservables(): Observable<any>[] {
+        var observables: Observable<any>[] = [];
+        observables.push(this.getClientMenuObservable());
+        observables.push(this.getProgressTypesAndInitGraphObservable());
+
+        return observables;
+    }
+
+    private getGraphConfig(clientId: number, progressItemId: number): GraphConfig<BaseGraph> {
+        return this.graphConfig = this.dependencies.webComponentServices.graphService.lineChart(
+            this.dependencies.itemServices.progressItemService.getMultiSeriesStats(clientId, progressItemId)
+                .set()
+                .map(response => {
+                    this.idOfActiveType = progressItemId;
+                    return response.data.items
+                })
+            )
+            .build();
+    }
+
+    private getClientMenuObservable(): Observable<any> {
+        return this.clientChange
+            .takeUntil(this.ngUnsubscribe)
+            .map(client => {
+                this.setConfig({
+                    menuItems: new ClientMenuItems(client.id).menuItems,
+                    menuTitle: {
+                        key: 'module.clients.viewClientSubtitle',
+                        data: { 'fullName': client.getFullName() }
+                    },
+                    componentTitle: {
+                        'key': 'module.clients.submenu.stats'
+                    },
+                    menuAvatarUrl: client.avatarUrl,
+                });
+            });
+    }
+
+    private getProgressTypesAndInitGraphObservable(): Observable<any> {
+        return this.clientIdChange
+            .takeUntil(this.ngUnsubscribe)
+            .switchMap(clientId => {
+                return this.dependencies.itemServices.progressItemTypeService.items()
+                    .byCurrentUser()
+                    .whereEquals('ClientId', clientId)
+                    .get()
+            })
+            .map(response => {
+                this.progressItemTypes = response.items;
+                
+                if (this.progressItemTypes.length > 0) {
+                    this.graphConfig = this.getGraphConfig(this.clientId, this.progressItemTypes[0].id);
+                }
+            });
+    }
+
+    private onSelectType(progressItemType: ProgressItemType): void {
+        var newGraphConfig = this.getGraphConfig(this.clientId, progressItemType.id);
+        // reload graph
+        this.graph.forceReinitialization(newGraphConfig);
+    }
+
+    /*
+    
     private getComponentObservables(): Observable<any>[] {
         var observables: Observable<any>[] = [];
         observables.push(this.getClientMenuObservable());
@@ -88,6 +152,7 @@ export class StatsMainComponent extends ClientsBaseComponent implements OnInit {
                 return this.getStatsObservable(clientId, progressTypeId);
             });
     }
+    /*
 
     private getStatsObservable(clientId: number, progressTypeId: number): Observable<any> {
         return this.dependencies.itemServices.progressItemService.getMultiSeriesStats(clientId, progressTypeId)
@@ -118,7 +183,10 @@ export class StatsMainComponent extends ClientsBaseComponent implements OnInit {
     }
 
     private onSelectType(progressItemType: ProgressItemType): void {
-        super.subscribeToObservable(this.getStatsObservable(this.clientId, progressItemType.id));
+        //super.subscribeToObservable(this.getStatsObservable(this.clientId, progressItemType.id));
     }
+
+    */
+
 }
 
