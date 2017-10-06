@@ -79,7 +79,7 @@ export class LoadMoreComponent extends BaseWebComponent implements OnInit, OnCha
     }
 
     ngOnInit() {
-        if (this.config){
+        if (this.config) {
             this.initLoadMoreComponent(this.config);
         }
     }
@@ -97,17 +97,21 @@ export class LoadMoreComponent extends BaseWebComponent implements OnInit, OnCha
 
         this.config = config;
 
+        // subscribe to load more button clicks
         this.getInitLoadMoreButtonObservable()
-            .zip(
-                this.getInitItemsObservable(false)
-            )
-            .zip(
-                this.getInitSearchObservable()
-            )
             .takeUntil(this.ngUnsubscribe)
-            .subscribe(() => {
-                this.initialized = true;
-            });
+            .subscribe();
+
+        // subscribe to search input events
+        this.getInitSearchObservable()
+            .takeUntil(this.ngUnsubscribe)
+            .subscribe();
+
+        // load items
+        this.getInitItemsObservable(false)
+            .takeUntil(this.ngUnsubscribe)
+            .subscribe(() => this.initialized = true);
+
     }
 
     private getInitItemsObservable(appendItems: boolean): Observable<any> {
@@ -127,11 +131,11 @@ export class LoadMoreComponent extends BaseWebComponent implements OnInit, OnCha
     }
 
     private getLoadObservable(appendItems: boolean): Observable<void> {
-        if (this.config.enableLocalLoader){
+        if (this.config.enableLocalLoader) {
             this.localLoaderLoading = true;
         }
 
-        if (this.config.loaderConfig){
+        if (this.config.loaderConfig) {
             this.config.loaderConfig.start();
         }
 
@@ -149,10 +153,10 @@ export class LoadMoreComponent extends BaseWebComponent implements OnInit, OnCha
                 this.totalPages = response.pages;
 
                 if (!response.isEmpty()) {
-                    if (appendItems){
+                    if (appendItems) {
                         this.items = _.union(this.items, response.items);
                     }
-                    else{
+                    else {
                         this.items = response.items;
                     }
                 }
@@ -163,12 +167,12 @@ export class LoadMoreComponent extends BaseWebComponent implements OnInit, OnCha
                 else {
                     this.showMoreButton = true;
                 }
-                
-                if (this.config.enableLocalLoader){
+
+                if (this.config.enableLocalLoader) {
                     this.localLoaderLoading = false;
                 }
 
-                if (this.config.loaderConfig){
+                if (this.config.loaderConfig) {
                     this.config.loaderConfig.stop();
                 }
             }, (err) => {
@@ -195,21 +199,21 @@ export class LoadMoreComponent extends BaseWebComponent implements OnInit, OnCha
             });
     }
 
-    private getItemTextField(): LoadMoreField<any> | null{
+    private getItemTextField(): LoadMoreField<any> | null {
         if (this.config.text) {
             return this.config.text;
         }
         return null;
     }
 
-    private getItemTitleField(): LoadMoreField<any> | null{
+    private getItemTitleField(): LoadMoreField<any> | null {
         if (this.config.title) {
             return this.config.title;
         }
         return null;
     }
 
-    private getItemFooterField(): LoadMoreField<any> | null{
+    private getItemFooterField(): LoadMoreField<any> | null {
         if (this.config.footer) {
             return this.config.footer;
         }
@@ -223,11 +227,11 @@ export class LoadMoreComponent extends BaseWebComponent implements OnInit, OnCha
                 // reset page to 1 when searching
                 this.currentPage = 1;
                 this.searchTerm = text;
-                
+
                 // reload data
                 this.getInitItemsObservable(false)
                     .takeUntil(this.ngUnsubscribe)
-                    .subscribe();                
+                    .subscribe();
             });
     }
 }
