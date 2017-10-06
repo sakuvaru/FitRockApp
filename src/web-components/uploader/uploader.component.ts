@@ -6,7 +6,7 @@ import { BaseWebComponent } from '../base-web-component.class';
 // required by component
 import { UploaderConfig } from './uploader.config';
 import * as _ from 'underscore';
-import { MdSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
     selector: 'uploader',
@@ -72,7 +72,7 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
 
     constructor(
         private translateService: TranslateService,
-        private snackBarService: MdSnackBar,
+        private snackBarService: MatSnackBar,
     ) {
         super()
     }

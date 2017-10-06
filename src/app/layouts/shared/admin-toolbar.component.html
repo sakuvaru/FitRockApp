@@ -1,6 +1,6 @@
 <div layout="row" layout-align="start center" flex>
-  <button md-icon-button tdLayoutToggle>
-      <md-icon>menu</md-icon>
+  <button mat-icon-button tdLayoutToggle>
+      <mat-icon>menu</mat-icon>
     </button>
   <span>{{componentConfig.appName}}</span>
     <!-- Search box is not used for now
@@ -8,45 +8,45 @@
     !-->
   <span flex></span>
 
-  <button md-icon-button [mdMenuTriggerFor]="feedsMenu" mdTooltip="{{ 'userMenu.notifications' | translate }}">
+  <button mat-icon-button [matMenuTriggerFor]="feedsMenu" matTooltip="{{ 'userMenu.notifications' | translate }}">
         <td-notification-count [notifications]="feedsCount">
-          <md-icon>notifications</md-icon>
+          <mat-icon>notifications</mat-icon>
         </td-notification-count>
       </button>
-  <button md-icon-button [routerLink]="getAuthUrl('profile/edit')" mdTooltip="{{ 'userMenu.profile' | translate }}">
-          <md-icon>person</md-icon>
+  <button mat-icon-button [routerLink]="getAuthUrl('profile/edit')" matTooltip="{{ 'userMenu.profile' | translate }}">
+          <mat-icon>person</mat-icon>
         </button>
-  <button md-icon-button [mdMenuTriggerFor]="moreMenu" mdTooltip="{{ 'userMenu.more' | translate }}">
-        <md-icon>more_vert</md-icon></button>
+  <button mat-icon-button [matMenuTriggerFor]="moreMenu" matTooltip="{{ 'userMenu.more' | translate }}">
+        <mat-icon>more_vert</mat-icon></button>
 
-  <md-menu #moreMenu="mdMenu">
-    <button md-menu-item [routerLink]="getAuthUrl('logout')"><md-icon>exit_to_app</md-icon> {{ 'userMenu.logout' | translate }}</button>
-  </md-menu>
+  <mat-menu #moreMenu="matMenu">
+    <button mat-menu-item [routerLink]="getAuthUrl('logout')"><mat-icon>exit_to_app</mat-icon> {{ 'userMenu.logout' | translate }}</button>
+  </mat-menu>
 
-  <md-menu #feedsMenu="mdMenu" [overlapTrigger]="false">
+  <mat-menu #feedsMenu="matMenu" [overlapTrigger]="false">
     <td-menu>
-      <md-nav-list dense style="padding-top: 0px">
+      <mat-nav-list dense style="padding-top: 0px">
         <ng-template [ngIf]="feeds" let-last="last">
           <ng-container *ngFor="let feed of feeds">
-            <a md-list-item [class.bgc-grey-100]="!feed.markedAsRead || (preventFeedChange && !feed.markedAsRead)" (click)="handleClickFeed(feed)">
-              <md-icon [class.tc-red-500]="!feed.markedAsRead || (preventFeedChange && !feed.markedAsRead)" md-list-avatar>{{ getFeedIcon(feed) }}</md-icon>
-              <h4 mdLine>
+            <a mat-list-item [class.bgc-grey-100]="!feed.markedAsRead || (preventFeedChange && !feed.markedAsRead)" (click)="handleClickFeed(feed)">
+              <mat-icon [class.tc-red-500]="!feed.markedAsRead || (preventFeedChange && !feed.markedAsRead)" mat-list-avatar>{{ getFeedIcon(feed) }}</mat-icon>
+              <h4 matLine>
                 <span class="text-wrap">
                     <span [innerHtml]="getFeedText(feed) | async "></span>
                 </span>
               </h4>
-              <p mdLine class="md-caption">{{ fromNow(feed.created) }}</p>
+              <p matLine class="md-caption">{{ fromNow(feed.created) }}</p>
             </a>
-            <md-divider *ngIf="!last"></md-divider>
+            <mat-divider *ngIf="!last"></mat-divider>
           </ng-container>
         </ng-template>
-      </md-nav-list>
-      <button md-button td-menu-footer *ngIf="!feeds || (feeds && feeds.length <= 0)">
+      </mat-nav-list>
+      <button mat-button td-menu-footer *ngIf="!feeds || (feeds && feeds.length <= 0)">
           {{ 'userMenu.noNotifications' | translate }}
         </button>
-      <button *ngIf="feeds && feeds.length > 0" md-button color="primary" td-menu-footer routerLink="{{ getAuthUrl('profile/feeds') }}">
+      <button *ngIf="feeds && feeds.length > 0" mat-button color="primary" td-menu-footer routerLink="{{ getAuthUrl('profile/feeds') }}">
           {{ 'userMenu.seeAllNotifications' | translate }}
         </button>
     </td-menu>
-  </md-menu>
+  </mat-menu>
 </div>

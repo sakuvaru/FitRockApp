@@ -1,7 +1,7 @@
 <ng-container *ngIf="progressItemTypes && progressItemTypes.length > 0">
     <div class="push">
-        <md-chip-list>
-            <md-chip *ngFor="let progressItemType of progressItemTypes" [selected]="idOfActiveType === progressItemType.id" class="w-cursor-pointer"
+        <mat-chip-list>
+            <mat-chip *ngFor="let progressItemType of progressItemTypes" [selected]="idOfActiveType === progressItemType.id" class="w-cursor-pointer"
                 (click)="onSelectType(progressItemType)">
                 <ng-container *ngIf="progressItemType.translateValue">
                     {{'module.progressItemTypes.globalTypes.' + progressItemType.codename | translate}}
@@ -9,15 +9,15 @@
                 <ng-container *ngIf="!progressItemType.translateValue">
                     {{progressItemType.typeName}}
                 </ng-container>
-            </md-chip>
-        </md-chip-list>
+            </mat-chip>
+        </mat-chip-list>
     </div>
 
-    <md-card class="push">
-        <md-card-content>
+    <mat-card class="push">
+        <mat-card-content>
             <graph #graph [config]="graphConfig"></graph>
-        </md-card-content>
-    </md-card>
+        </mat-card-content>
+    </mat-card>
 
 </ng-container>
 

@@ -12,11 +12,11 @@ import { GalleryGroup } from './gallery-group.class';
 import { ImageGroupResult } from './image-group-result.class';
 
 // dialog
-import { MdDialog, MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { GalleryDeleteDialogComponent } from './gallery-delete-dialog.component';
 
 // material
-import { MdSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
     selector: 'gallery',
@@ -66,8 +66,8 @@ export class GalleryComponent extends BaseWebComponent implements OnInit, OnChan
     private imagePointer: number = 0;
 
     constructor(
-        public dialog: MdDialog,
-        public snackBarService: MdSnackBar
+        public dialog: MatDialog,
+        public snackBarService: MatSnackBar
     ) {
         super()
     }

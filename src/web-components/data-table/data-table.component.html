@@ -5,18 +5,18 @@
       <!-- Flex is used so that chips don't jump to second row because of overflow (happens if there are many chips & items in data table cause vertical scroller to appear) -->
       <data-table-layout-filters [filters]="filters" [activeFilterGuid]="activeFilterGuid" (activateFilter)="applyFilter($event)"></data-table-layout-filters>
     </div>
-    <md-card *ngIf="config.wrapInCard" class="push">
+    <mat-card *ngIf="config.wrapInCard" class="push">
       <ng-template tdLoading [tdLoadingUntil]="!localLoaderLoading" tdLoadingStrategy="overlay">
 
-        <md-card-title layout>
+        <mat-card-title layout>
           <data-table-layout-search #searchInput *ngIf="config.showSearch" [config]="config" [searchTerm]="searchTerm" (search)="handleSearch($event)"></data-table-layout-search>
-        </md-card-title>
+        </mat-card-title>
         <data-table-layout-items [config]="config" [items]="items"></data-table-layout-items>
-        <md-card-actions>
+        <mat-card-actions>
           <data-table-layout-pager [pagerConfig]="config.pagerConfig" [totalPages]="totalPages" [currentPage]="currentPage" (goToPage)="filterItems($event)"></data-table-layout-pager>
-        </md-card-actions>
+        </mat-card-actions>
       </ng-template>
-    </md-card>
+    </mat-card>
   </ng-container>
 
   <ng-container *ngIf="!config.wrapInCard">
@@ -29,9 +29,9 @@
         <data-table-layout-search #searchInput *ngIf="config.showSearch" [config]="config" [searchTerm]="searchTerm" (search)="handleSearch($event)"></data-table-layout-search>
       </div>
       <data-table-layout-items [config]="config" [items]="items"></data-table-layout-items>
-      <md-card-actions>
+      <mat-card-actions>
         <data-table-layout-pager [pagerConfig]="config.pagerConfig" [totalPages]="totalPages" [currentPage]="currentPage" (goToPage)="filterItems($event)"></data-table-layout-pager>
-      </md-card-actions>
+      </mat-card-actions>
     </ng-template>
   </ng-container>
 

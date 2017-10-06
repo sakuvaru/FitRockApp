@@ -1,39 +1,39 @@
-<md-card class="push">
-    <md-card-content>
-        <button md-raised-button color="primary" [routerLink]="[getTrainerUrl('clients/edit/' + clientId + '/new-diet')]">{{'module.clients.diet.newDiet' | translate}}</button>
-    </md-card-content>
-    <md-divider></md-divider>
-    <md-card-content class="push-top">
+<mat-card class="push">
+    <mat-card-content>
+        <button mat-raised-button color="primary" [routerLink]="[getTrainerUrl('clients/edit/' + clientId + '/new-diet')]">{{'module.clients.diet.newDiet' | translate}}</button>
+    </mat-card-content>
+    <mat-divider></mat-divider>
+    <mat-card-content class="push-top">
         <p>{{'module.clients.diet.newDietFormTemplate' | translate }}:
-            <md-select #copyFromDiet [disabled]="!dietTemplates" style="width: 260px" placeholder="{{'module.clients.diet.copyDietLabel' | translate}}"
+            <mat-select #copyFromDiet [disabled]="!dietTemplates" style="width: 260px" placeholder="{{'module.clients.diet.copyDietLabel' | translate}}"
                 [(ngModel)]="selectedValue">
-                <md-option *ngFor="let diet of dietTemplates" [value]="diet">
+                <mat-option *ngFor="let diet of dietTemplates" [value]="diet">
                     {{ diet.dietName }}
-                </md-option>
-            </md-select>
+                </mat-option>
+            </mat-select>
         </p>
-        <button md-raised-button color="primary" [disabled]="!copyFromDiet.selected" (click)="newDietFromTemplate(copyFromDiet)">{{'module.clients.copy' | translate}}</button>
-    </md-card-content>
-</md-card>
+        <button mat-raised-button color="primary" [disabled]="!copyFromDiet.selected" (click)="newDietFromTemplate(copyFromDiet)">{{'module.clients.copy' | translate}}</button>
+    </mat-card-content>
+</mat-card>
 
 <div *ngIf="existingDiets" class="push">
-    <md-list [dragula]='"dragula-bag"' [dragulaModel]="existingDiets">
+    <mat-list [dragula]='"dragula-bag"' [dragulaModel]="existingDiets">
         <ng-container *ngFor="let diet of existingDiets; let i = index">
-            <md-list-item class="w-sort-list-item dragula-move-handle">
+            <mat-list-item class="w-sort-list-item dragula-move-handle">
                 <span class="tc-red-700">{{i + 1}}. &nbsp;</span>
                 <span>{{diet.dietName}}</span>
                 <span flex></span>
-                <md-icon class="w-cursor-pointer" (click)="expandDiet(diet)">list</md-icon>
+                <mat-icon class="w-cursor-pointer" (click)="expandDiet(diet)">list</mat-icon>
                 <edit-button (editAction)="goToEditDiet(diet)"></edit-button>
                 <delete-button (confirm)="deleteDiet(diet)"></delete-button>
-            </md-list-item>
-            <md-list-item *ngIf="expandedDietId === diet.id">
-                <div mdLine *ngFor="let dietFood of diet.dietFoods; let i = index">
+            </mat-list-item>
+            <mat-list-item *ngIf="expandedDietId === diet.id">
+                <div matLine *ngFor="let dietFood of diet.dietFoods; let i = index">
                     <div class="md-caption push-xs"><strong>{{dietFood.eatTime}}: </strong> {{ dietFood.food.foodName }} ({{dietFood.unitValue}} {{dietFood.food.foodUnit.unitCode
                         | translate}})
                     </div>
                 </div>
-            </md-list-item>
+            </mat-list-item>
         </ng-container>
-    </md-list>
+    </mat-list>
 </div>

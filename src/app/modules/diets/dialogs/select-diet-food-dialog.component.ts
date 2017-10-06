@@ -6,7 +6,7 @@ import { AppConfig, ComponentDependencyService, BaseComponent, ComponentConfig }
 // required by component
 import { DataTableConfig, AlignEnum, Filter } from '../../../../web-components/data-table';
 import { Food } from '../../../models';
-import { MD_DIALOG_DATA } from '@angular/material';
+import { MAT_DIALOG_DATA } from '@angular/material';
 
 @Component({
   templateUrl: 'select-diet-food-dialog.component.html'
@@ -21,7 +21,7 @@ export class SelectDietFoodDialogComponent extends BaseComponent implements OnIn
 
   constructor(
     protected dependencies: ComponentDependencyService,
-    @Inject(MD_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     super(dependencies)
     super.isDialog();

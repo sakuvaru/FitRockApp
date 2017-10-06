@@ -1,45 +1,45 @@
 <div *ngIf="question" layout="row" layout-margin [formGroup]="form">
   <!-- Question types -->
-  <md-form-field *ngIf="isTextField()" flex [hintLabel]="questionHint">
-    <input mdInput [attr.maxLength]="question.options.maxLength > 0 ? question.options.maxLength : null"
+  <mat-form-field *ngIf="isTextField()" flex [hintLabel]="questionHint">
+    <input matInput [attr.maxLength]="question.options.maxLength > 0 ? question.options.maxLength : null"
       [required]="question.required" [placeholder]="question.translatedLabel" [formControlName]="question.key" [id]="question.key"
       [type]="question.type" #elem>
-    <md-hint *ngIf="showLengthHint()" [ngClass]="{'tc-red-600': elem.value.length > question.options.maxLength}" align="end">{{elem.value.length}} / {{question.options.maxLength}}</md-hint>
-    <md-error>{{customError}}</md-error>
-  </md-form-field>
+    <mat-hint *ngIf="showLengthHint()" [ngClass]="{'tc-red-600': elem.value.length > question.options.maxLength}" align="end">{{elem.value.length}} / {{question.options.maxLength}}</mat-hint>
+    <mat-error>{{customError}}</mat-error>
+  </mat-form-field>
 
   <div *ngIf="isBooleanField()" flex>
-    <md-checkbox [checked]="checkBoxIsChecked" [formControlName]="question.key" [id]="question.key" [required]="question.required"
+    <mat-checkbox [checked]="checkBoxIsChecked" [formControlName]="question.key" [id]="question.key" [required]="question.required"
       #elem>&nbsp;{{question.translatedLabel}} <span class="md-caption">({{questionHint}})</span>
-    </md-checkbox>
+    </mat-checkbox>
     <span *ngIf="question.required && !elem.checked" class="tc-grey-500 md-caption"> ({{ 'form.shared.required' | translate }})</span>
   </div>
 
   <div *ngIf="isRadioBooleanField()" flex>
-    <md-radio-group [formControlName]="question.key" [id]="question.key" [required]="question.required" (change)="handleRadioButtonChange($event)"
+    <mat-radio-group [formControlName]="question.key" [id]="question.key" [required]="question.required" (change)="handleRadioButtonChange($event)"
       #elem>
-      <md-radio-button [checked]="radioCheckboxTrueChecked" value="true" class="push-right">{{question.options.trueOptionLabel}}</md-radio-button>
-      <md-radio-button [checked]="radioCheckboxFalseChecked" value="false">{{question.options.falseOptionLabel}}</md-radio-button>
-    </md-radio-group>
+      <mat-radio-button [checked]="radioCheckboxTrueChecked" value="true" class="push-right">{{question.options.trueOptionLabel}}</mat-radio-button>
+      <mat-radio-button [checked]="radioCheckboxFalseChecked" value="false">{{question.options.falseOptionLabel}}</mat-radio-button>
+    </mat-radio-group>
   </div>
 
   <div *ngIf="isDateField()" flex>
-      <md-form-field>
-          <input mdInput [mdDatepicker]="datepicker" [formControlName]="question.key" [id]="question.key" [required]="question.required" [placeholder]="question.translatedLabel">
-          <md-datepicker-toggle mdSuffix [for]="datepicker"></md-datepicker-toggle>
-          <md-datepicker #datepicker ></md-datepicker>
-      </md-form-field>
+      <mat-form-field>
+          <input matInput [matDatepicker]="datepicker" [formControlName]="question.key" [id]="question.key" [required]="question.required" [placeholder]="question.translatedLabel">
+          <mat-datepicker-toggle matSuffix [for]="datepicker"></mat-datepicker-toggle>
+          <mat-datepicker #datepicker ></mat-datepicker>
+      </mat-form-field>
   </div>
 
-  <md-form-field *ngIf="isTextAreaField()" flex [hintLabel]="questionHint">
-    <textarea mdTextareaAutosize mdInput [mdAutosizeMinRows]="question.options.minAutosizeRows" [mdAutosizeMaxRows]="question.options.maxAutosizeRows"
+  <mat-form-field *ngIf="isTextAreaField()" flex [hintLabel]="questionHint">
+    <textarea matTextareaAutosize matInput [matAutosizeMinRows]="question.options.minAutosizeRows" [matAutosizeMaxRows]="question.options.maxAutosizeRows"
       [attr.maxLength]="question.options.maxLength > 0 ? question.options.maxLength : null" [required]="question.required"
       [placeholder]="question.translatedLabel" [formControlName]="question.key" [id]="question.key" [type]="question.type"
       #elem>
     </textarea>
-    <md-hint *ngIf="showLengthHint()" [ngClass]="{'tc-red-600': elem.value.length > question.options.maxLength}" align="end">{{elem.value.length}} / {{question.options.maxLength}}</md-hint>
-    <md-error>{{customError}}</md-error>
-  </md-form-field>
+    <mat-hint *ngIf="showLengthHint()" [ngClass]="{'tc-red-600': elem.value.length > question.options.maxLength}" align="end">{{elem.value.length}} / {{question.options.maxLength}}</mat-hint>
+    <mat-error>{{customError}}</mat-error>
+  </mat-form-field>
 
   <div *ngIf="isHiddenField()">
     <input type="hidden" [formControlName]="question.key">
@@ -47,19 +47,19 @@
 
   <div *ngIf="isDropdownField()" flex>
     <div>
-      <md-select [style.width]="getWidthStyle()" [id]="question.key" [formControlName]="question.key" [required]="question.required"
+      <mat-select [style.width]="getWidthStyle()" [id]="question.key" [formControlName]="question.key" [required]="question.required"
         [placeholder]="question.translatedLabel">
-        <md-option *ngFor="let option of question.options.listOptions" [value]="option.value">{{option.name}}</md-option>
-      </md-select>
+        <mat-option *ngFor="let option of question.options.listOptions" [value]="option.value">{{option.name}}</mat-option>
+      </mat-select>
     </div>
   </div>
 
-  <md-form-field *ngIf="isNumberField()" flex [hintLabel]="questionHint">
-    <input mdInput [attr.maxLength]="question.options.maxLength > 0 ? question.options.maxLength : null"
+  <mat-form-field *ngIf="isNumberField()" flex [hintLabel]="questionHint">
+    <input matInput [attr.maxLength]="question.options.maxLength > 0 ? question.options.maxLength : null"
       [required]="question.required" [placeholder]="question.translatedLabel" [formControlName]="question.key" [id]="question.key"
       type="number" [attr.min]="getMinNumberValue()" [attr.max]="getMaxNumberValue()" #elem>
-    <md-hint *ngIf="showLengthHint()" [ngClass]="{'tc-red-600': elem.value.length > question.options.maxLength}" align="end">{{elem.value.length}} / {{question.options.maxLength}}</md-hint>
-    <md-error>{{customError}}</md-error>
-  </md-form-field>
+    <mat-hint *ngIf="showLengthHint()" [ngClass]="{'tc-red-600': elem.value.length > question.options.maxLength}" align="end">{{elem.value.length}} / {{question.options.maxLength}}</mat-hint>
+    <mat-error>{{customError}}</mat-error>
+  </mat-form-field>
 
 </div>

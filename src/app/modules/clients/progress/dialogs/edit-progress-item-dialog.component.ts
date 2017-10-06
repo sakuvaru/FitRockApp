@@ -5,7 +5,7 @@ import { AppConfig, ComponentDependencyService, BaseComponent, ComponentConfig }
 
 // required by component
 import { DataTableConfig, AlignEnum } from '../../../../../web-components/data-table';
-import { MD_DIALOG_DATA } from '@angular/material';
+import { MAT_DIALOG_DATA } from '@angular/material';
 import { ProgressItem } from '../../../../models';
 import { FormConfig } from '../../../../../web-components/dynamic-form';
 import { Observable, Subject } from 'rxjs/Rx';
@@ -28,7 +28,7 @@ export class EditProgressItemDialog extends BaseComponent implements OnInit {
 
   constructor(
     protected dependencies: ComponentDependencyService,
-    @Inject(MD_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     super(dependencies)
     this.item = data;

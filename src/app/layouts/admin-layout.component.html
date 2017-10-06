@@ -1,14 +1,14 @@
 <td-layout>
   <td-navigation-drawer flex [sidenavTitle]="componentConfig.appName" logo="assets:teradata" [name]="displayUsername" [email]="email">
-    <md-nav-list>
-      <a *ngFor="let item of adminMenu.mainMenu" md-list-item [routerLink]="getMenuItemUrl(item.action, item.type)">
-        <md-icon>{{item.icon}}</md-icon>{{item.label.key | translate}}</a>
-    </md-nav-list>
+    <mat-nav-list>
+      <a *ngFor="let item of adminMenu.mainMenu" mat-list-item [routerLink]="getMenuItemUrl(item.action, item.type)">
+        <mat-icon>{{item.icon}}</mat-icon>{{item.label.key | translate}}</a>
+    </mat-nav-list>
     <div td-navigation-drawer-menu>
-      <md-nav-list>
-        <a *ngFor="let item of adminMenu.userMenu" md-list-item [routerLink]="getMenuItemUrl(item.action, item.type)">
-          <md-icon>{{item.icon}}</md-icon>{{item.label.key | translate}}</a>
-      </md-nav-list>
+      <mat-nav-list>
+        <a *ngFor="let item of adminMenu.userMenu" mat-list-item [routerLink]="getMenuItemUrl(item.action, item.type)">
+          <mat-icon>{{item.icon}}</mat-icon>{{item.label.key | translate}}</a>
+      </mat-nav-list>
     </div>
   </td-navigation-drawer>
   <div td-sidenav-content class="td-layout-footer pad">
@@ -23,43 +23,43 @@
       </div> 
     <td-layout-manage-list #manageList [opened]="media.registerQuery('gt-sm') | async" [mode]="(media.registerQuery('gt-sm') | async) ? 'side' :  'over'"
       [sidenavWidth]="(media.registerQuery('gt-xs') | async) ? '257px' : '100%'">
-      <md-toolbar td-sidenav-content>
+      <mat-toolbar td-sidenav-content>
         <ng-container *ngIf="!enableComponentSearch">
           <ng-container *ngIf="menuAvatarUrl">
-            <img mdCardAvatar class="push-right w-component-avatar" [src]="menuAvatarUrl" alt="menu avatar">
+            <img matCardAvatar class="push-right w-component-avatar" [src]="menuAvatarUrl" alt="menu avatar">
           </ng-container>
           <span>{{shortenTitle(menuTitle)}}</span>
         </ng-container>
         <!-- using display none because otherwise the search control could not be initialized -->
         <div [style.display]="enableComponentSearch ? 'block' : 'none'" class="md-body-2">
-            <md-form-field flex>
-                <input mdInput [formControl]="searchControl" [value]="componentSearchValue" />
-                <span mdPrefix><md-icon>search</md-icon></span>
-            </md-form-field>
+            <mat-form-field flex>
+                <input matInput [formControl]="searchControl" [value]="componentSearchValue" />
+                <span matPrefix><mat-icon>search</mat-icon></span>
+            </mat-form-field>
         </div>
-      </md-toolbar>
-      <md-nav-list td-sidenav-content [tdLayoutManageListClose]="!media.query('gt-sm')">
+      </mat-toolbar>
+      <mat-nav-list td-sidenav-content [tdLayoutManageListClose]="!media.query('gt-sm')">
         <ng-template let-item let-last="last" ngFor [ngForOf]="componentConfig.menuItems">
-          <a md-list-item [routerLink]="getMenuItemUrl(item.action, item.type)">
-            <img *ngIf="item.imageUrl" md-list-avatar alt="" [src]="item.imageUrl">
-            <md-icon *ngIf="item.icon" [color]="getMenuItemColor(item.action, item.type)">{{item.icon}}</md-icon>
+          <a mat-list-item [routerLink]="getMenuItemUrl(item.action, item.type)">
+            <img *ngIf="item.imageUrl" mat-list-avatar alt="" [src]="item.imageUrl">
+            <mat-icon *ngIf="item.icon" [color]="getMenuItemColor(item.action, item.type)">{{item.icon}}</mat-icon>
             <div class="mat-list-text">
               {{ item.label.key | translate}}
             </div>
           </a>
         </ng-template>
-      </md-nav-list>
+      </mat-nav-list>
 
-      <md-toolbar>
+      <mat-toolbar>
         <div layout="row" layout-align="start center" flex>
-          <button md-icon-button tdLayoutManageListOpen [hideWhenOpened]="true" tdMediaToggle="gt-sm" [mediaStyles]="{display: 'none'}">
-            <md-icon>arrow_back</md-icon>
+          <button mat-icon-button tdLayoutManageListOpen [hideWhenOpened]="true" tdMediaToggle="gt-sm" [mediaStyles]="{display: 'none'}">
+            <mat-icon>arrow_back</mat-icon>
           </button>
           <span>{{componentTitle}}</span>
           <span flex></span>
-          <button md-icon-button [routerLink]="getAuthUrl('logout')"><md-icon>exit_to_app</md-icon></button>
+          <button mat-icon-button [routerLink]="getAuthUrl('logout')"><mat-icon>exit_to_app</mat-icon></button>
         </div>
-      </md-toolbar>
+      </mat-toolbar>
       <!-- ngClass with hidden styles is used because *ngIf would cause the router to not be executed at all -->
       <div [ngClass]="{'w-hidden': !showComponent}">
         <router-outlet></router-outlet>

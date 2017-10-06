@@ -6,7 +6,7 @@ import { AppConfig, ComponentDependencyService, BaseComponent, ComponentConfig }
 // required by component
 import { DataTableConfig, AlignEnum } from '../../../../web-components/data-table';
 import { Exercise } from '../../../models';
-import { MD_DIALOG_DATA } from '@angular/material';
+import { MAT_DIALOG_DATA } from '@angular/material';
 import { WorkoutExercise } from '../../../models';
 import { FormConfig } from '../../../../web-components/dynamic-form';
 import { Observable, Subject } from 'rxjs/Rx';
@@ -33,7 +33,7 @@ export class AddWorkoutExerciseDialogComponent extends BaseComponent implements 
 
   constructor(
     protected dependencies: ComponentDependencyService,
-    @Inject(MD_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     super(dependencies)
     super.isDialog();

@@ -1,8 +1,8 @@
-<!-- md-chip-list is not used directly because ':focus' messes up with the search focus when some chip is selected(focused) -->
+<!-- mat-chip-list is not used directly because ':focus' messes up with the search focus when some chip is selected(focused) -->
 <!--
-    <md-chip-list >
-    <md-chip  *ngFor="let filter of filters" class="w-cursor-pointer" [selected]="activeFilterGuid === filter.guid" (click)="selectChip(filter)">{{filter.filterNameKey | translate}} <span *ngIf="filter.count >= 0">&nbsp;({{ filter.count }})</span></md-chip>
-  </md-chip-list>
+    <mat-chip-list >
+    <mat-chip  *ngFor="let filter of filters" class="w-cursor-pointer" [selected]="activeFilterGuid === filter.guid" (click)="selectChip(filter)">{{filter.filterNameKey | translate}} <span *ngIf="filter.count >= 0">&nbsp;({{ filter.count }})</span></mat-chip>
+  </mat-chip-list>
 -->
 
 <div class="mat-chip-list">

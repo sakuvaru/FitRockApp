@@ -8,14 +8,14 @@
 </div>
 
 <div *ngIf="showDebugDetails && log" class="push">
-    <md-card>
-        <md-card-title>Error message</md-card-title>
-        <md-card-content>
+    <mat-card>
+        <mat-card-title>Error message</mat-card-title>
+        <mat-card-content>
             {{log.errorMessage }}
-        </md-card-content>
-        <md-card-subtitle>Stacktrace</md-card-subtitle>
-        <md-card-content>
+        </mat-card-content>
+        <mat-card-subtitle>Stacktrace</mat-card-subtitle>
+        <mat-card-content>
             {{log.stacktrace}}
-        </md-card-content>
-    </md-card>
+        </mat-card-content>
+    </mat-card>
 </div>

@@ -6,7 +6,7 @@
 
     <div *ngIf="images && images.length > 0" class="w-gallery-wrapper">
 
-        <button *ngIf="config.deleteFunction" (click)="openDeleteDialog()" md-raised-button color="accent">{{ 'webComponents.gallery.deleteImages' | translate }}</button>
+        <button *ngIf="config.deleteFunction" (click)="openDeleteDialog()" mat-raised-button color="accent">{{ 'webComponents.gallery.deleteImages' | translate }}</button>
 
         <ng-container *ngIf="!groups">
             <div *ngFor="let img of images; let i = index">

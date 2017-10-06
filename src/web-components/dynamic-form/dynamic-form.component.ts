@@ -1,7 +1,7 @@
 // Core 
 import { EventEmitter, Component, Input, Output, OnInit, OnChanges, SimpleChanges, ChangeDetectorRef, ElementRef, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { MdSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
 import { Observable, Subject } from 'rxjs/Rx';
 
 // models
@@ -89,7 +89,7 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
 
     constructor(
         private fieldControlService: FieldControlService,
-        private snackBarService: MdSnackBar,
+        private snackBarService: MatSnackBar,
         private translateService: TranslateService,
         private cdr: ChangeDetectorRef
     ) {

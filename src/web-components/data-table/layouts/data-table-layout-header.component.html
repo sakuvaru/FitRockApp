@@ -1,5 +1,5 @@
-<md-list-item *ngIf="config.showHeader" disableRipple="true">
+<mat-list-item *ngIf="config.showHeader" disableRipple="true">
   <span *ngFor="let field of config.fields" flex="field.flex" class="{{getTextAlignClass(field)}}">
     {{field.label}}
   </span>
-</md-list-item>
+</mat-list-item>

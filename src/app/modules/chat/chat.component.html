@@ -1,34 +1,34 @@
 <ng-container *ngIf="formConfig && chatMessages">
 
     <div class="push-left push-right push-top">
-        <md-form-field flex>
-            <input mdInput placeholder="{{'shared.search' | translate}}" [formControl]="searchControl" [value]="chatMessagesSearch" />
-            <span mdPrefix><md-icon>search</md-icon></span>
-        </md-form-field>
+        <mat-form-field flex>
+            <input matInput placeholder="{{'shared.search' | translate}}" [formControl]="searchControl" [value]="chatMessagesSearch" />
+            <span matPrefix><mat-icon>search</mat-icon></span>
+        </mat-form-field>
     </div>
 
-    <md-card class="push">
-        <md-card-content class="bgc-blue-grey-50">
+    <mat-card class="push">
+        <mat-card-content class="bgc-blue-grey-50">
             <dynamic-form [config]="formConfig"></dynamic-form>
-        </md-card-content>
+        </mat-card-content>
         <ng-container *ngFor="let chatMessage of chatMessages">
-            <md-card-header>
-                <img mdCardAvatar alt="" [src]="chatMessage.sender.avatarUrl" />
-                <md-card-title>{{ chatMessage.sender.getFullName() }}</md-card-title>
-                <md-card-subtitle><span class="md-caption">{{ formatDate(chatMessage.created)}}</span></md-card-subtitle>
-            </md-card-header>
-            <md-card-content>
+            <mat-card-header>
+                <img matCardAvatar alt="" [src]="chatMessage.sender.avatarUrl" />
+                <mat-card-title>{{ chatMessage.sender.getFullName() }}</mat-card-title>
+                <mat-card-subtitle><span class="md-caption">{{ formatDate(chatMessage.created)}}</span></mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
                 <p>
                     {{ chatMessage.message }}
                 </p>
-            </md-card-content>
-            <md-divider></md-divider>
+            </mat-card-content>
+            <mat-divider></mat-divider>
         </ng-container>
-    </md-card>
+    </mat-card>
 
     <div class="text-center push">
-        <button *ngIf="!allChatMessagesLoaded" md-raised-button color="accent" (click)="loadMoreMessages()">{{ 'shared.loadMore' | translate }}</button>
-        <button *ngIf="allChatMessagesLoaded" md-raised-button>{{ 'module.clients.chat.allMessagesLoaded' | translate }}</button>
+        <button *ngIf="!allChatMessagesLoaded" mat-raised-button color="accent" (click)="loadMoreMessages()">{{ 'shared.loadMore' | translate }}</button>
+        <button *ngIf="allChatMessagesLoaded" mat-raised-button>{{ 'module.clients.chat.allMessagesLoaded' | translate }}</button>
     </div>
 
 </ng-container>

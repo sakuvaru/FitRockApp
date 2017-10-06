@@ -1,31 +1,31 @@
-<md-card *ngIf="diet" class="push">
-  <md-card-title>{{diet.dietName}}</md-card-title>
-  <md-card-subtitle>{{diet.dietCategory.categoryName}}</md-card-subtitle>
-  <md-card-content *ngIf="diet.description">
+<mat-card *ngIf="diet" class="push">
+  <mat-card-title>{{diet.dietName}}</mat-card-title>
+  <mat-card-subtitle>{{diet.dietCategory.categoryName}}</mat-card-subtitle>
+  <mat-card-content *ngIf="diet.description">
     {{diet.description}}
-  </md-card-content>
-</md-card>
+  </mat-card-content>
+</mat-card>
 
 <div *ngIf="diet" class="push">
-  <button md-raised-button color="primary" class="text-upper" (click)="openSelectFoodDialog()">{{'module.diets.addDietFood' | translate }}</button>
+  <button mat-raised-button color="primary" class="text-upper" (click)="openSelectFoodDialog()">{{'module.diets.addDietFood' | translate }}</button>
   <div *ngIf="sortedDietFoods">
 
     <div *ngIf="sortedDietFoods">
-      <md-list [dragula]='"dragula-bag"' class="push-top" [dragulaModel]="sortedDietFoods">
+      <mat-list [dragula]='"dragula-bag"' class="push-top" [dragulaModel]="sortedDietFoods">
         <ng-container *ngFor="let dietFood of sortedDietFoods; let i = index">
-          <md-list-item class="w-sort-list-item dragula-move-handle">
+          <mat-list-item class="w-sort-list-item dragula-move-handle">
             <span class="tc-red-700">{{i + 1}}. &nbsp;</span>
             <span>{{dietFood.food.foodName}}</span>
             <span flex></span>
             <edit-button color="none" (editAction)="openDietFoodDialog(dietFood)"></edit-button>
             <delete-button color="none" (confirm)="deleteDietFood(dietFood)"></delete-button>
-          </md-list-item>
+          </mat-list-item>
         </ng-container>
-      </md-list>
+      </mat-list>
     </div>
 
     <div *ngIf="sortedDietFoods && sortedDietFoods.length > 5" class="push-top">
-      <button md-raised-button color="primary" class="text-upper" (click)="openSelectFoodDialog()">{{'module.diets.addDietFood' | translate }}</button>
+      <button mat-raised-button color="primary" class="text-upper" (click)="openSelectFoodDialog()">{{'module.diets.addDietFood' | translate }}</button>
     </div>
   </div>
 </div>

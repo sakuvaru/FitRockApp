@@ -3,7 +3,7 @@ import { Component, Inject, Input, OnInit, OnChanges, SimpleChanges } from '@ang
 import { BaseWebComponent } from '../base-web-component.class';
 
 // material
-import { MdDialog, MdDialogRef, MD_DIALOG_DATA, MdSnackBar } from '@angular/material';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 
 // gallery
 import { Image } from 'angular-modal-gallery';
@@ -27,7 +27,7 @@ export class GalleryDeleteDialogComponent extends BaseWebComponent implements On
     public groups: GalleryGroup[];
     public images: Image[];
     private config: GalleryConfig;
-    private snackBarService: MdSnackBar;
+    private snackBarService: MatSnackBar;
 
     private imageDeletionFailed: boolean = false;
 
@@ -44,8 +44,8 @@ export class GalleryDeleteDialogComponent extends BaseWebComponent implements On
     private snackbarDeleteTextKey: string = 'webComponents.gallery.deleted';
 
     constructor(
-        public dialogRef: MdDialogRef<GalleryDeleteDialogComponent>,
-        @Inject(MD_DIALOG_DATA) public data: any,
+        public dialogRef: MatDialogRef<GalleryDeleteDialogComponent>,
+        @Inject(MAT_DIALOG_DATA) public data: any,
         private translateService: TranslateService,
     ) {
         super();

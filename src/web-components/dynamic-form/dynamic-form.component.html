@@ -7,8 +7,8 @@
         </div>
         <div *ngIf="!customDeleteButtonSubject && !customDeleteButtonSubject" layout="row" layout-margin>
           <div flex>
-            <button *ngIf="isInsertForm" md-raised-button color="accent" (click)="insertButtonSubject.next()" [disabled]="!form.valid">{{submitText}}</button>
-            <button *ngIf="isEditForm" md-raised-button color="accent" (click)="editButtonSubject.next()" [disabled]="!form.valid">{{submitText}}</button>
+            <button *ngIf="isInsertForm" mat-raised-button color="accent" (click)="insertButtonSubject.next()" [disabled]="!form.valid">{{submitText}}</button>
+            <button *ngIf="isEditForm" mat-raised-button color="accent" (click)="editButtonSubject.next()" [disabled]="!form.valid">{{submitText}}</button>
           </div>
           <div *ngIf="isDeleteEnabled" flex class="text-right">
             <delete-button (confirm)="deleteButtonSubject.next()"></delete-button>

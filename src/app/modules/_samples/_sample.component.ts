@@ -6,7 +6,6 @@ import { AppConfig, ComponentDependencyService, BaseComponent } from '../../core
 // required by component
 
 @Component({
-    templateUrl: 'sample.component.html'
 })
 export class SampleComponent extends BaseComponent {
     constructor(
