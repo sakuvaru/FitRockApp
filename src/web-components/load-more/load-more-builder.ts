@@ -71,26 +71,34 @@ export class LoadMoreBuilder<TItem extends IItem> {
     }
 
     /**
-     * Text to be shown in the listing
+    * Text to be shown in the listing
     */
-    public text(field: LoadMoreField<TItem>): this {
+    text(field: LoadMoreField<TItem>): this {
         this.config.text = field;
         return this;
     }
 
     /**
-     * Title to be shown in the listing
-     */
-    public title(field: LoadMoreField<TItem>): this {
+    * Title to be shown in the listing
+    */
+    title(field: LoadMoreField<TItem>): this {
         this.config.title = field;
         return this;
     }
 
     /**
-       * Footer text to be shown in the listing
-       */
-    public footer(field: LoadMoreField<TItem>): this {
+    * Footer text to be shown in the listing
+    */
+    footer(field: LoadMoreField<TItem>): this {
         this.config.footer = field;
+        return this;
+    }
+
+    /**
+    * Indicates if local loader is enabled
+    */
+    enableLocalLoader(enable: boolean): this {
+        this.config.enableLocalLoader = enable;
         return this;
     }
 

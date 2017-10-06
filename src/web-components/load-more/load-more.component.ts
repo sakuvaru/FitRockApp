@@ -67,6 +67,11 @@ export class LoadMoreComponent extends BaseWebComponent implements OnInit, OnCha
      */
     private initialized: boolean = false;
 
+    /**
+     * Indicates if local loader is active
+     */
+    private localLoaderLoading: boolean = false;
+
     constructor(
         private translateService: TranslateService
     ) {
@@ -122,6 +127,14 @@ export class LoadMoreComponent extends BaseWebComponent implements OnInit, OnCha
     }
 
     private getLoadObservable(appendItems: boolean): Observable<void> {
+        if (this.config.enableLocalLoader){
+            this.localLoaderLoading = true;
+        }
+
+        if (this.config.loaderConfig){
+            this.config.loaderConfig.start();
+        }
+
         // prepare item query
         var query = this.config.loadQuery(this.searchTerm);
 
@@ -149,6 +162,14 @@ export class LoadMoreComponent extends BaseWebComponent implements OnInit, OnCha
                 }
                 else {
                     this.showMoreButton = true;
+                }
+                
+                if (this.config.enableLocalLoader){
+                    this.localLoaderLoading = false;
+                }
+
+                if (this.config.loaderConfig){
+                    this.config.loaderConfig.stop();
                 }
             }, (err) => {
                 console.error(err);

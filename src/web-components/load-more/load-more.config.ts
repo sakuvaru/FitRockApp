@@ -86,10 +86,15 @@ export class LoadMoreConfig<TItem extends IItem> {
      */
     public onBeforeLoad?: (isInitialLoad: boolean) => void;
 
-        /**
+     /**
      * Loader configuration
      */
     public loaderConfig?: { start: () => void, stop: () => void }
+
+    /**
+     * Indicates if local loader is enabled
+     */
+    public enableLocalLoader: boolean = true;
 
     constructor(
         loadResolver: (query: MultipleItemQuery<TItem>) => Observable<ResponseMultiple<TItem>>,

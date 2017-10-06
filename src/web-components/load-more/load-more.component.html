@@ -8,56 +8,59 @@
     </mat-form-field>
   </div>
 
-  <ng-container *ngIf="items && config.wrapInCard">
+  <ng-container *ngIf="config.wrapInCard">
     <mat-card class="push">
-      <ng-container *ngFor="let item of items; let last = last">
-        <mat-list>
-
-          <ng-container *ngIf="{ text: getItemTextField(item), title: getItemTitleField(item), footer: getItemFooterField(item) } as presentation">
-            <mat-list-item>
-              <mat-icon *ngIf="config.iconResolver && !config.iconClassResolver" mat-list-avatar>{{ config.iconResolver(item) }}</mat-icon>
-              <mat-icon *ngIf="config.iconResolver && config.iconClassResolver" mat-list-avatar [ngClass]="[config.iconClassResolver(item)]">{{ config.iconResolver(item) }}</mat-icon>
-              <img *ngIf="config.imageResolver" src="{{ config.imageResolver(item) }}" alt="" mat-list-avatar>
-              <p matLine>
-                <span *ngIf="presentation.title" class="md-body-1">
+      <ng-template tdLoading [tdLoadingUntil]="!localLoaderLoading" tdLoadingStrategy="overlay">
+        <div style="min-height: 150px">
+          <ng-container *ngIf="items">
+            <ng-container *ngFor="let item of items; let last = last">
+              <mat-list>
+                <ng-container *ngIf="{ text: getItemTextField(item), title: getItemTitleField(item), footer: getItemFooterField(item) } as presentation">
+                  <mat-list-item>
+                    <mat-icon *ngIf="config.iconResolver && !config.iconClassResolver" mat-list-avatar>{{ config.iconResolver(item) }}</mat-icon>
+                    <mat-icon *ngIf="config.iconResolver && config.iconClassResolver" mat-list-avatar [ngClass]="[config.iconClassResolver(item)]">{{ config.iconResolver(item) }}</mat-icon>
+                    <img *ngIf="config.imageResolver" src="{{ config.imageResolver(item) }}" alt="" mat-list-avatar>
+                    <p matLine>
+                      <span *ngIf="presentation.title" class="md-body-1">
                   <span *ngIf="!presentation.title.translate || !presentation.title.translate(item)">
                     <span *ngIf="presentation.title.htmlResolver" [innerHtml]="presentation.title.htmlResolver(item)"></span>
-                    <strong *ngIf="presentation.title.resolver">{{ presentation.title.resolver(item) }}</strong>
-                </span>
-                <strong *ngIf="presentation.title.translate && presentation.title.translate(item)" [innerHtml]="presentation.title.resolver(item) | translate:presentation.title.translationData(item)"></strong>
-                </span>
-                <span *ngIf="presentation.text" class="md-body-1">
+                      <strong *ngIf="presentation.title.resolver">{{ presentation.title.resolver(item) }}</strong>
+                      </span>
+                      <strong *ngIf="presentation.title.translate && presentation.title.translate(item)" [innerHtml]="presentation.title.resolver(item) | translate:presentation.title.translationData(item)"></strong>
+                      </span>
+                      <span *ngIf="presentation.text" class="md-body-1">
                     <span *ngIf="!presentation.text.translate || !presentation.text.translate(item)">
                         <span *ngIf="presentation.text.htmlResolver" [innerHtml]="presentation.text.htmlResolver(item)"></span>
-                        <span *ngIf="presentation.text.resolver">{{ presentation.text.resolver(item) }}</span>
-                    </span>
-                </span>
-                <span *ngIf="presentation.text.translate && presentation.text.translate(item)" [innerHtml]="presentation.text.resolver(item) | translate:presentation.text.translationData(item)"></span>
-              </p>
-              <p matLine *ngIf="presentation.footer">
-                <span *ngIf="!presentation.footer.translate || !presentation.footer.translate(item)" class="md-caption">
+                      <span *ngIf="presentation.text.resolver">{{ presentation.text.resolver(item) }}</span>
+                      </span>
+                      </span>
+                      <span *ngIf="presentation.text.translate && presentation.text.translate(item)" [innerHtml]="presentation.text.resolver(item) | translate:presentation.text.translationData(item)"></span>
+                    </p>
+                    <p matLine *ngIf="presentation.footer">
+                      <span *ngIf="!presentation.footer.translate || !presentation.footer.translate(item)" class="md-caption">
                     <span *ngIf="presentation.footer.htmlResolver" [innerHtml]="presentation.footer.htmlResolver(item)"></span>
-                    <span *ngIf="presentation.footer.resolver">{{ presentation.footer.resolver(item) }}</span>
-                </span>
-                <span *ngIf="presentation.footer.translate && presentation.footer.translate(item)" class="md-caption" [innerHtml]="presentation.footer.resolver(item) | translate:presentation.footer.translationData(item)"></span>
-              </p>
-            </mat-list-item>
-            <mat-divider *ngIf="!last" md-inset></mat-divider>
+                      <span *ngIf="presentation.footer.resolver">{{ presentation.footer.resolver(item) }}</span>
+                      </span>
+                      <span *ngIf="presentation.footer.translate && presentation.footer.translate(item)" class="md-caption" [innerHtml]="presentation.footer.resolver(item) | translate:presentation.footer.translationData(item)"></span>
+                    </p>
+                  </mat-list-item>
+                  <mat-divider *ngIf="!last" md-inset></mat-divider>
+                </ng-container>
+              </mat-list>
+            </ng-container>
           </ng-container>
-        </mat-list>
-
-      </ng-container>
+        </div>
+      </ng-template>
     </mat-card>
-
-    <div class="text-center psh">
-      <button *ngIf="showMoreButton" mat-raised-button color="primary" (click)="loadMoreButtonSubject.next()">{{ 'webComponents.loadMore.loadMore' | translate }}</button>
-      <p *ngIf="!showMoreButton"><span class="md-caption"><em>{{ 'webComponents.loadMore.defaultAllItemsLoaded' | translate }}</em></span></p>
-    </div>
-
   </ng-container>
 
-  <div class="push" *ngIf="items && items.length <= 0 || !items">
-      <no-data-message></no-data-message>
+  <div *ngIf="items" class="text-center psh">
+    <button *ngIf="showMoreButton" mat-raised-button color="primary" (click)="loadMoreButtonSubject.next()">{{ 'webComponents.loadMore.loadMore' | translate }}</button>
+    <p *ngIf="!showMoreButton"><span class="md-caption"><em>{{ 'webComponents.loadMore.defaultAllItemsLoaded' | translate }}</em></span></p>
+  </div>
+
+  <div class="push" *ngIf="items && items.length === 0">
+    <no-data-message></no-data-message>
   </div>
 
 </ng-container>

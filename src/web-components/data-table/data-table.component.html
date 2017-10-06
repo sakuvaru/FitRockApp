@@ -7,7 +7,6 @@
     </div>
     <mat-card *ngIf="config.wrapInCard" class="push">
       <ng-template tdLoading [tdLoadingUntil]="!localLoaderLoading" tdLoadingStrategy="overlay">
-
         <mat-card-title layout>
           <data-table-layout-search #searchInput *ngIf="config.showSearch" [config]="config" [searchTerm]="searchTerm" (search)="handleSearch($event)"></data-table-layout-search>
         </mat-card-title>
