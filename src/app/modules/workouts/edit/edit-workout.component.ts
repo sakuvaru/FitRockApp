@@ -41,6 +41,7 @@ export class EditWorkoutComponent extends BaseComponent implements OnInit {
             componentTitle: {
                 'key': 'module.workouts.editWorkout'
             },
+            autoInitComponent: true
         });
     }
 }
