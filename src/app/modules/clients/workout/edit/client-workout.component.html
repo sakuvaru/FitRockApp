@@ -3,16 +3,16 @@
         <button mat-raised-button color="primary" [routerLink]="[getTrainerUrl('clients/edit/' + clientId + '/new-workout')]">{{'module.clients.workout.newWorkout' | translate}}</button>
     </mat-card-content>
     <mat-divider></mat-divider>
-    <mat-card-content class="push-top">
-        <p>{{'module.clients.workout.newWorkoutFromTemplate' | translate }}:
-            <mat-select #copyFromWorkout [disabled]="!workoutTemplates" style="width: 260px" placeholder="{{'module.clients.workout.copyWorkoutLabel' | translate}}"
+    <mat-card-content>
+        <mat-form-field>
+            <mat-select #copyFromWorkout [disabled]="!workoutTemplates" placeholder="{{'module.clients.workout.copyWorkoutLabel' | translate}}"
                 [(ngModel)]="selectedValue">
                 <mat-option *ngFor="let workout of workoutTemplates" [value]="workout">
                     {{ workout.workoutName }}
                 </mat-option>
             </mat-select>
-        </p>
-        <button mat-raised-button color="primary" [disabled]="!copyFromWorkout.selected" (click)="newWorkoutFromTemplate(copyFromWorkout)">{{'module.clients.copy' | translate}}</button>
+        </mat-form-field>
+        <button mat-raised-button class="push-left" color="primary" [disabled]="!copyFromWorkout.selected" (click)="newWorkoutFromTemplate(copyFromWorkout)">{{'module.clients.copyFromTemplate' | translate}}</button>
     </mat-card-content>
 </mat-card>
 
@@ -29,10 +29,10 @@
             </mat-list-item>
             <mat-list-item *ngIf="expandedWorkoutId === workout.id">
                 <div matLine *ngFor="let workoutExercise of workout.workoutExercises; let i = index">
-                    <div class="md-caption push-xs"><strong>{{i + 1}}.</strong> 
-                        {{ workoutExercise.exercise.exerciseName }} 
+                    <div class="md-caption push-xs"><strong>{{i + 1}}.</strong> {{ workoutExercise.exercise.exerciseName }}
                         <span *ngIf="workoutExercise.sets && workoutExercise.reps">
-                            <span matTooltip="{{'module.workouts.sets' | translate}}">{{workoutExercise.sets}}</span>x<span matTooltip="{{'module.workouts.reps' | translate}}">{{workoutExercise.reps}}</span>
+                            <span matTooltip="{{'module.workouts.sets' | translate}}">{{workoutExercise.sets}}</span>x
+                        <span matTooltip="{{'module.workouts.reps' | translate}}">{{workoutExercise.reps}}</span>
                         </span>
                     </div>
                 </div>

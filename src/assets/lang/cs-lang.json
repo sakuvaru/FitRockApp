@@ -56,7 +56,7 @@
 				"editProfile": "Upravit profil"
 			},
 			"workout": {
-				"copyWorkoutLabel": "Tréninková šáblona",
+				"copyWorkoutLabel": "Šablona tréninkového plánu",
 				"newWorkoutFromTemplate": "Zkopírovat trénink ze šablony",
 				"workoutNotSelected": "Vyber trénink",
 				"newWorkout": "Nový trénink",
@@ -67,7 +67,7 @@
 			"diet": {
 				"newDietFormTemplate": "Nový jídelníček ze šablony",
 				"newDiet": "Nový jídelníček",
-				"copyDietLabel": "Výběr jídelníčku",
+				"copyDietLabel": "Šablona jídelníčku",
 				"editPlan": "Upravit jídelníček",
 				"editPlanWithName": "Upravit jídelníček - {{dietName}}",
 				"editDiet": "Základní údaje",
@@ -93,7 +93,7 @@
 			"activeClients": "Aktivní",
 			"inactiveClients": "Neaktivní",
 			"editClient": "Změna údajů",
-			"copy": "Zkopírovat"
+			"copyFromTemplate": "Zkopírovat ze šablony"
 		},
 		"workouts": {
 			"submenu": {
