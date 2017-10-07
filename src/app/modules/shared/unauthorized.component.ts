@@ -1,7 +1,7 @@
 // common
 import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { UrlConfig, AppConfig, ComponentDependencyService, BaseComponent } from '../../core';
+import { UrlConfig, AppConfig, ComponentDependencyService, BaseComponent, ComponentSetup } from '../../core';
 
 @Component({
   selector: 'unauthorized',
@@ -17,5 +17,11 @@ export class UnauthorizedComponent extends BaseComponent {
     super(dependencies)
 
     this.loginUrl = '/' + UrlConfig.getLoginUrl();
+  }
+
+  setup(): ComponentSetup | null {
+    return {
+        initialized: true
+    }
   }
 }

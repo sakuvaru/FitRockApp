@@ -1,7 +1,7 @@
 // common
 import { Component, Input, Output, OnInit, EventEmitter, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { AppConfig, ComponentDependencyService, BaseComponent } from '../../../core';
+import { AppConfig, ComponentDependencyService, BaseComponent, ComponentSetup } from '../../../core';
 
 // required by component
 import { DietMenuItems } from '../menu.items';
@@ -21,6 +21,12 @@ export class EditDietComponent extends BaseComponent implements OnInit {
     ) {
         super(componentDependencyService)
     }
+
+    setup(): ComponentSetup | null {
+        return {
+            initialized: true
+        }
+      }
 
     ngOnInit() {
         super.ngOnInit();

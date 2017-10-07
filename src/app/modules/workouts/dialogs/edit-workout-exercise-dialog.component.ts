@@ -1,7 +1,7 @@
 // common
 import { Component, Input, Output, OnInit, EventEmitter, Inject } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { AppConfig, ComponentDependencyService, BaseComponent, ComponentConfig } from '../../../core';
+import { AppConfig, ComponentDependencyService, BaseComponent, ComponentConfig, ComponentSetup } from '../../../core';
 
 // required by component
 import { DataTableConfig, AlignEnum } from '../../../../web-components/data-table';
@@ -33,8 +33,14 @@ export class EditWorkoutExerciseDialogComponent extends BaseComponent implements
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     super(dependencies)
-    super.isDialog();
+    
     this.workoutExercise = data;
+  }
+
+  setup(): ComponentSetup | null {
+    return {
+        initialized: true
+    }
   }
 
   ngOnInit() {

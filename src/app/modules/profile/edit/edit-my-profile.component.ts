@@ -1,7 +1,7 @@
 // common
 import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { AppConfig, UrlConfig, ComponentDependencyService, BaseComponent } from '../../../core';
+import { AppConfig, UrlConfig, ComponentDependencyService, BaseComponent, ComponentSetup } from '../../../core';
 
 // requied by component
 import { MyProfileMenuItems } from '../menu.items';
@@ -21,16 +21,19 @@ export class EditMyProfileComponent extends BaseComponent implements OnInit {
         super(dependencies)
     }
 
+    setup(): ComponentSetup {
+         return {
+             initialized: true
+         };
+    }
+
     ngOnInit() {
         super.ngOnInit();
-
-        super.setComponentAsInitialized(true);
         this.initMenu();
         this.initForm();
     }
 
     private initMenu(): void {
-
         this.setConfig({
             componentTitle: { key: 'module.profile.submenu.editProfile' },
             menuItems: new MyProfileMenuItems().menuItems,

@@ -1,7 +1,7 @@
 import { Component, Input, Output, OnInit, EventEmitter, OnDestroy } from '@angular/core';
 import { AuthService } from '../lib/auth';
 import { ActivatedRoute, Params } from '@angular/router';
-import { AppConfig, ComponentDependencyService, BaseComponent, UrlConfig } from './core';
+import { AppConfig, ComponentDependencyService, BaseComponent, UrlConfig, ComponentSetup } from './core';
 import { AuthenticatedUserService } from './core/services/authenticated-user.service';
 import { AuthenticatedUser } from './core/models/core.models';
 
@@ -12,6 +12,11 @@ import { AuthenticatedUser } from './core/models/core.models';
   template: ''
 })
 export class EntryPointComponent extends BaseComponent {
+
+  setup(): ComponentSetup | null {
+    return null;
+  }
+
   constructor(
     protected dependencies: ComponentDependencyService,
   ) {

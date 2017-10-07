@@ -1,7 +1,7 @@
 // common
 import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { AppConfig, UrlConfig, ComponentDependencyService, BaseComponent } from '../../core';
+import { AppConfig, UrlConfig, ComponentDependencyService, BaseComponent, ComponentSetup } from '../../core';
 
 // required by component
 import { Log } from '../../models';
@@ -20,6 +20,12 @@ export class AppErrorComponent extends BaseComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     protected dependencies: ComponentDependencyService) {
     super(dependencies)
+  }
+
+  setup(): ComponentSetup | null {
+    return {
+        initialized: true
+    }
   }
 
   ngOnInit() {

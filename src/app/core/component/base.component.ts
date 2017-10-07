@@ -8,6 +8,7 @@ import { AdminMenu } from './admin-menu';
 import { MenuItem, ResourceKey } from '../models/core.models';
 import { Observable, Subject } from 'rxjs/Rx';
 import { NavigationExtras } from '@angular/router'
+import { ComponentSetup } from './component-setup.class';
 
 // moment js
 import * as moment from 'moment';
@@ -15,6 +16,14 @@ import * as moment from 'moment';
 @Component({
 })
 export abstract class BaseComponent implements OnInit, OnDestroy {
+
+    /**
+    * Every child component should setup its base config.
+    * This is setup during the component initialization and should serve
+    * different purpose then the ComponentConfig which can be set at any time during the component lifecycle.
+    * If no setup is provided, default setup will be used
+    */
+    abstract setup(): ComponentSetup | null | undefined;
 
     /**
      * Important - used to unsubsribe ALL subscriptions when component is destroyed. This ensures that requests are cancelled
@@ -52,45 +61,23 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
     protected adminMenu: AdminMenu = new AdminMenu();
 
     constructor(protected dependencies: ComponentDependencyService) {
-        // set component as not initialized when its constructed
-        this.setComponentAsInitialized(false);
-
-        // stop loaders on component init 
-        this.dependencies.coreServices.sharedService.setGlobalLoader(false, false);
-
-        // authenticate user when logging-in (handles the params in URL and extracts token
-        // more info: https://auth0.com/docs/quickstart/spa/angular2/02-custom-login
-        if (!this.dependencies.coreServices.authService.isAuthenticated()) {
-            this.dependencies.coreServices.authService.handleAuthentication();
-        }
-
-        // set language version
-        // this language will be used as a fallback when a translation isn't found in the current language
-        this.dependencies.coreServices.translateService.setDefaultLang(AppConfig.DefaultLanguage);
-
-        // the lang to use, if the lang isn't available, it will use the current loader to get them
-        this.dependencies.coreServices.translateService.use(this.dependencies.coreServices.translateService.getBrowserLang());
-
-        // translations
-        this.dependencies.coreServices.translateService.get('shared.saved').subscribe(text => this.snackbarSavedText = text);
-
-        this.dependencies.coreServices.translateService.get('shared.deleted').subscribe(text => this.snackbarDeletedText = text);
     }
 
     // ----------------------- Lifecycle Events --------------------- // 
 
     /**
-     * If a child component implements its own ngOnDestory, it needs to call 'super.ngOnInit' as otherwise
-     * this method will not be called
+     * If a child component implements its own ngOnInit, it needs to call 'super.ngOnInit' as otherwise
+     * this method will not be called.
      */
-    ngOnInit() {
+    ngOnInit(): void {
+        this.setupComponent();
     }
 
     /**
      * If a child component implements its own ngOnDestory, it needs to call 'super.ngOnDestroy' as otherwise
-     * this method will not be called
+     * this method will not be called.
      */
-    ngOnDestroy() {
+    ngOnDestroy(): void {
         // ng unsubscribe as per recommendation
         // see comments on top
         this.ngUnsubscribe.next();
@@ -98,7 +85,6 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
     }
 
     // ------------------- Loader ---------------------------- //
-
 
     startGlobalLoader(): void {
         this.dependencies.coreServices.sharedService.setGlobalLoader(true, false);
@@ -268,23 +254,47 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
         this.subscribeToObservable(zippedObservable);
     }
 
-    // --------------- Global component initialization flag ------------------ //
+    // --------------- Component initialization  ------------------ //
 
-    protected setComponentAsInitialized(isInitialized: boolean): void {
-        this.dependencies.coreServices.sharedService.setComponentIsInitialized(isInitialized);
+    protected setupComponent(): void {
+        var setup = this.setup();
+        if (setup) {
+            this.dependencies.coreServices.sharedService.setComponentSetup(setup);
+        }
+
+        // stop loaders on component init 
+        this.dependencies.coreServices.sharedService.setGlobalLoader(false, false);
+
+        // authenticate user when logging-in (handles the params in URL and extracts token
+        // more info: https://auth0.com/docs/quickstart/spa/angular2/02-custom-login
+        if (!this.dependencies.coreServices.authService.isAuthenticated()) {
+            this.dependencies.coreServices.authService.handleAuthentication();
+        }
+
+        // set language version
+        // this language will be used as a fallback when a translation isn't found in the current language
+        this.dependencies.coreServices.translateService.setDefaultLang(AppConfig.DefaultLanguage);
+
+        // the lang to use, if the lang isn't available, it will use the current loader to get them
+        this.dependencies.coreServices.translateService.use(this.dependencies.coreServices.translateService.getBrowserLang());
+
+        // translations
+        this.dependencies.coreServices.translateService.get('shared.saved').subscribe(text => this.snackbarSavedText = text);
+
+        this.dependencies.coreServices.translateService.get('shared.deleted').subscribe(text => this.snackbarDeletedText = text);
     }
 
-    // --------------- Component as dialog helper --------------------- //
-
-    /**
-     * Call this method in constructor of dialog components
-     */
-    protected isDialog(): void {
-        // this makes sure that if the dialog is closed, the parent component is still marked as 
-        // initialized
-        this.setComponentAsInitialized(true);
+    protected initializeComponent(initialize: boolean = true): void {
+        var currentSetup = this.setup();
+        if (currentSetup) {
+            currentSetup.initialized = initialize;
+        }
+        else {
+            currentSetup = { initialized: initialize }
+        }
+        this.dependencies.coreServices.sharedService.setComponentSetup(currentSetup);
     }
-
+    
     // --------------- Useful aliases ------------------ //
     translate(key: string, data?: any): Observable<string> {
         return this.dependencies.coreServices.translateService.get(key, data);
@@ -335,7 +345,7 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
                 this.stopAllLoaders();
 
                 if (setComponentAsInitialized) {
-                    this.setComponentAsInitialized(true)
+                    this.initializeComponent(true)
                 }
             },
             error => this.handleError(error)
@@ -370,7 +380,7 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
 
                 // set component as initialized
                 if (setComponentAsInitialized) {
-                    this.setComponentAsInitialized(true)
+                    this.initializeComponent(true)
                 }
             },
             error => this.handleError(error)

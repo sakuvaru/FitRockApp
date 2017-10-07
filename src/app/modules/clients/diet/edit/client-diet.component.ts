@@ -1,7 +1,7 @@
 // common
 import { Component, Input, Output, OnInit, EventEmitter, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { AppConfig, ComponentDependencyService, BaseComponent } from '../../../../core';
+import { AppConfig, ComponentDependencyService, BaseComponent, ComponentSetup } from '../../../../core';
 
 // required by component
 import { ClientsBaseComponent } from '../../clients-base.component';
@@ -48,6 +48,12 @@ export class ClientDietComponent extends ClientsBaseComponent implements OnInit,
         private dragulaService: DragulaService,
     ) {
         super(componentDependencyService, activatedRoute)
+    }
+
+    setup(): ComponentSetup | null {
+        return {
+            initialized: false
+        }
     }
 
     ngOnInit(): void {

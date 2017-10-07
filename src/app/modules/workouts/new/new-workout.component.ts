@@ -1,7 +1,7 @@
 // common
 import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { AppConfig, ComponentDependencyService, BaseComponent } from '../../../core';
+import { AppConfig, ComponentDependencyService, BaseComponent, ComponentSetup } from '../../../core';
 
 // required by component
 import { FormConfig } from '../../../../web-components/dynamic-form';
@@ -20,6 +20,12 @@ export class NewWorkoutComponent extends BaseComponent implements OnInit {
         protected componentDependencyService: ComponentDependencyService) {
         super(componentDependencyService)
     }
+
+    setup(): ComponentSetup | null {
+        return {
+            initialized: true
+        }
+      }
 
     ngOnInit() {
         super.ngOnInit();

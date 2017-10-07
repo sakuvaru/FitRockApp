@@ -1,7 +1,7 @@
 // common
 import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { AppConfig, UrlConfig, ComponentDependencyService, BaseComponent } from '../../core';
+import { AppConfig, UrlConfig, ComponentDependencyService, BaseComponent, ComponentSetup } from '../../core';
 
 @Component({
     templateUrl: 'login-page.component.html'
@@ -17,4 +17,10 @@ export class LoginPageComponent extends BaseComponent {
             this.dependencies.router.navigate([UrlConfig.getTrainerUrl('')]);
         }
     }
+
+    setup(): ComponentSetup | null {
+        return {
+            initialized: false
+        }
+      }
 }

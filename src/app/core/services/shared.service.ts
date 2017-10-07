@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import { ComponentConfig } from '../component/component.config';
 import { GlobalLoaderStatus } from '../models/core.models';
+import { ComponentSetup } from '../component/component-setup.class'
 import { Log } from '../../models/';
 
 /// Shared data app
@@ -14,14 +15,14 @@ export class SharedService {
   private globalLoaderSource = new Subject<GlobalLoaderStatus>();
   private componentSearchSource = new Subject<string>();
   private errorSource = new Subject<Log>();
-  private componentIsInitializedSource = new Subject<boolean>();
+  private componentSetupSource = new Subject<ComponentSetup>();
 
   // Observable string streams
   componentConfigChanged$ = this.componentConfigSource.asObservable();
   componentSearchChanged$ = this.componentSearchSource.asObservable();
   globalLoaderChanged$ = this.globalLoaderSource.asObservable();
   errorChanged$ = this.errorSource.asObservable();
-  componentIsInitializedChanged$ = this.componentIsInitializedSource.asObservable();
+  componentSetupChanged$ = this.componentSetupSource.asObservable();
 
   // Service message commands
   setComponentConfig(config: ComponentConfig): void {
@@ -40,7 +41,7 @@ export class SharedService {
     this.errorSource.next(log);
   }
 
-  setComponentIsInitialized(isInitialized: boolean): void{
-    this.componentIsInitializedSource.next(isInitialized);
+  setComponentSetup(setup: ComponentSetup): void{
+    this.componentSetupSource.next(setup);
   }
 }

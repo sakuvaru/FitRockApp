@@ -1,7 +1,7 @@
 // common
 import { Component, Input, Output, OnInit, EventEmitter, Inject } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { AppConfig, ComponentDependencyService, BaseComponent, ComponentConfig } from '../../../core';
+import { AppConfig, ComponentDependencyService, BaseComponent, ComponentConfig, ComponentSetup } from '../../../core';
 
 // required by component
 import { DataTableConfig, AlignEnum } from '../../../../web-components/data-table';
@@ -30,7 +30,13 @@ export class AddCustomExerciseDialogComponent extends BaseComponent implements O
     protected dependencies: ComponentDependencyService,
   ) {
     super(dependencies)
-    super.isDialog();
+    
+  }
+
+  setup(): ComponentSetup | null {
+    return {
+        initialized: true
+    }
   }
 
   ngOnInit() {

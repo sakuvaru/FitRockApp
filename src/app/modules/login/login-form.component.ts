@@ -1,7 +1,7 @@
 // common
 import { Component, Input, Output, OnInit, EventEmitter, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { AppConfig, ComponentDependencyService, BaseComponent } from '../../core';
+import { AppConfig, ComponentDependencyService, BaseComponent, ComponentSetup } from '../../core';
 
 // required by component
 @Component({
@@ -26,6 +26,12 @@ export class LoginFormComponent extends BaseComponent {
         protected dependencies: ComponentDependencyService) {
         super(dependencies)
     }
+
+    setup(): ComponentSetup | null {
+        return {
+            initialized: false
+        }
+      }
 
     ngOnInit() {
         super.ngOnInit();

@@ -2,7 +2,7 @@
 // common
 import { Component, Input, OnDestroy, ChangeDetectorRef, OnInit } from '@angular/core';
 import { TdMediaService } from '@covalent/core';
-import { ComponentDependencyService, BaseComponent, MenuItemType, AppConfig } from '../core';
+import { ComponentDependencyService, BaseComponent, MenuItemType, AppConfig, ComponentSetup } from '../core';
 
 // required by component
 import { Subscription } from 'rxjs/Rx';
@@ -26,7 +26,6 @@ export class AdminLayoutComponent extends BaseComponent implements OnDestroy, On
     // Component configuration & data
     private globalLoaderStatus: GlobalLoaderStatus = new GlobalLoaderStatus(false, false);
     private componentIsInitialized: boolean;
-    private componentIsAutoInitialized: boolean;
     private enableComponentSearch: boolean;
     private componentTitle: string;
     private menuTitle: string;
@@ -66,6 +65,10 @@ export class AdminLayoutComponent extends BaseComponent implements OnDestroy, On
         this.media = this.dependencies.tdServices.mediaService;
     }
 
+    setup(): ComponentSetup | null {
+        return null;
+      }
+
     ngOnInit() {
         super.ngOnInit();
 
@@ -88,11 +91,11 @@ export class AdminLayoutComponent extends BaseComponent implements OnDestroy, On
                 this.componentChangedNotification();
             });
 
-        this.dependencies.coreServices.sharedService.componentIsInitializedChanged$
+        this.dependencies.coreServices.sharedService.componentSetupChanged$
             .takeUntil(this.ngUnsubscribe)
             .subscribe(
-            initialized => {
-                this.componentIsInitialized = initialized;
+            setup => {
+                this.componentIsInitialized = setup.initialized;
                 this.componentChangedNotification();
             });
 
@@ -101,7 +104,6 @@ export class AdminLayoutComponent extends BaseComponent implements OnDestroy, On
             .subscribe(
             componentConfig => {
                 this.componentConfig = componentConfig;
-                this.componentIsAutoInitialized = componentConfig.autoInitComponent;
                 this.enableComponentSearch = componentConfig.enableSearch;
 
 
@@ -144,17 +146,17 @@ export class AdminLayoutComponent extends BaseComponent implements OnDestroy, On
      * This method has to be called each time any property changes
      */
     private componentChangedNotification(): void {
-        this.calcualteShowComponent();
+        this.calculateShowComponent();
         this.calculateShowLoader();
         this.changeDetectorRef.detectChanges();
     }
 
     private calculateShowLoader(): void {
-        this.showLoading = !this.globalLoaderStatus.forceDisable && ((this.hideComponentWhenLoaderIsEnabled && this.globalLoaderStatus.show) || (!this.componentIsAutoInitialized && !this.componentIsInitialized));
+        this.showLoading = !this.globalLoaderStatus.forceDisable && ((this.hideComponentWhenLoaderIsEnabled && this.globalLoaderStatus.show) || (!this.componentIsInitialized));
     }
 
-    private calcualteShowComponent(): void {
-        this.showComponent = !(!this.componentIsAutoInitialized && !this.componentIsInitialized);
+    private calculateShowComponent(): void {
+        this.showComponent = this.componentIsInitialized;
     }
 
     private initComponentSearch(): void {

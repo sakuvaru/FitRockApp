@@ -1,7 +1,7 @@
 // common
 import { Component, Input, Output, OnInit, EventEmitter, OnDestroy, OnChanges, SimpleChanges } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { AppConfig, ComponentDependencyService, BaseComponent } from '../../../core';
+import { AppConfig, ComponentDependencyService, BaseComponent, ComponentSetup } from '../../../core';
 
 // required by component
 import { FormConfig } from '../../../../web-components/dynamic-form';
@@ -27,6 +27,12 @@ export class EditWorkoutExportComponent extends BaseComponent implements OnInit,
     ) {
         super(componentDependencyService)
     }
+
+    setup(): ComponentSetup | null {
+        return {
+            initialized: false
+        }
+      }
 
     ngOnChanges(changes: SimpleChanges) {
         var workoutId = changes.workoutId.currentValue;

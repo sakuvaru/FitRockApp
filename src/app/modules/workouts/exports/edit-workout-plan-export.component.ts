@@ -1,7 +1,7 @@
 // common
 import { Component, Input, Output, OnInit, EventEmitter, OnDestroy, AfterViewInit, OnChanges, SimpleChanges } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { AppConfig, ComponentDependencyService, BaseComponent, ComponentConfig } from '../../../core';
+import { AppConfig, ComponentDependencyService, BaseComponent, ComponentConfig, ComponentSetup } from '../../../core';
 
 // required by component
 import { Workout, WorkoutExercise, Exercise } from '../../../models';
@@ -47,6 +47,12 @@ export class EditWorkoutPlanExportComponent extends BaseComponent implements OnD
     });
 
     super.subscribeToObservable(this.getInitObservable());
+  }
+
+  setup(): ComponentSetup | null {
+    return {
+        initialized: false
+    }
   }
 
   ngOnDestroy() {

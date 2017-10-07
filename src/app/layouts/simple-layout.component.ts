@@ -1,7 +1,7 @@
 // common
 import { Component, Input, OnDestroy, ChangeDetectorRef, OnInit } from '@angular/core';
 import { TdMediaService } from '@covalent/core';
-import { ComponentDependencyService, BaseComponent, MenuItemType, AppConfig } from '../core';
+import { ComponentDependencyService, BaseComponent, MenuItemType, AppConfig, ComponentSetup } from '../core';
 
 // required by component
 import { Subscription } from 'rxjs/Rx';
@@ -24,7 +24,6 @@ export class SimpleLayoutComponent extends BaseComponent implements OnDestroy, O
     // Component configuration & data
     private globalLoaderStatus: GlobalLoaderStatus = new GlobalLoaderStatus(false, false);
     private componentIsInitialized: boolean;
-    private componentIsAutoInitialized: boolean;
     private enableComponentSearch: boolean;
     private componentTitle: string;
     private menuTitle: string;
@@ -64,6 +63,10 @@ export class SimpleLayoutComponent extends BaseComponent implements OnDestroy, O
         this.media = this.dependencies.tdServices.mediaService;
     }
 
+    setup(): ComponentSetup | null {
+        return null;
+      }
+
     ngOnInit() {
         super.ngOnInit();
 
@@ -86,11 +89,11 @@ export class SimpleLayoutComponent extends BaseComponent implements OnDestroy, O
                 this.componentChangedNotification();
             });
 
-        this.dependencies.coreServices.sharedService.componentIsInitializedChanged$
+        this.dependencies.coreServices.sharedService.componentSetupChanged$
             .takeUntil(this.ngUnsubscribe)
             .subscribe(
-            initialized => {
-                this.componentIsInitialized = initialized;
+            setup => {
+                this.componentIsInitialized = setup.initialized;
                 this.componentChangedNotification();
             });
 
@@ -99,7 +102,6 @@ export class SimpleLayoutComponent extends BaseComponent implements OnDestroy, O
             .subscribe(
             componentConfig => {
                 this.componentConfig = componentConfig;
-                this.componentIsAutoInitialized = componentConfig.autoInitComponent;
                 this.enableComponentSearch = componentConfig.enableSearch;
 
 
@@ -154,7 +156,7 @@ export class SimpleLayoutComponent extends BaseComponent implements OnDestroy, O
     }
 
     private calcualteShowComponent(): void {
-        this.showComponent = !(!this.componentIsAutoInitialized && !this.componentIsInitialized);
+        this.showComponent = !(!this.componentIsInitialized);
     }
 
     private initComponentSearch(): void {

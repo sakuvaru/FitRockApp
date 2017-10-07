@@ -1,7 +1,7 @@
 // common
 import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { AppConfig, ComponentDependencyService, BaseComponent } from '../../core';
+import { AppConfig, ComponentDependencyService, BaseComponent, ComponentSetup } from '../../core';
 
 // required by component
 
@@ -12,4 +12,8 @@ export class SampleComponent extends BaseComponent {
         protected dependencies: ComponentDependencyService) {
         super(dependencies)
     }
+
+    setup(): ComponentSetup | null {
+        return null;
+      }
 }

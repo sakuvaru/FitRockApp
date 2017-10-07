@@ -1,7 +1,7 @@
 // common
 import { Component, Input, Output, OnInit, EventEmitter, ViewChild } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { AppConfig, ComponentDependencyService, BaseComponent } from '../../../../core';
+import { AppConfig, ComponentDependencyService, BaseComponent, ComponentSetup } from '../../../../core';
 
 // required by component
 import { ProgressItemType } from '../../../../models';
@@ -33,6 +33,12 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
         protected componentDependencyService: ComponentDependencyService,
     ) {
         super(componentDependencyService, activatedRoute)
+    }
+
+    setup(): ComponentSetup | null {
+        return {
+            initialized: false
+        }
     }
 
     ngOnInit(): void {

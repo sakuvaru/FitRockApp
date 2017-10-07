@@ -1,7 +1,7 @@
 // common
 import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { AppConfig, ComponentDependencyService, BaseComponent, ComponentConfig } from '../../../core';
+import { AppConfig, ComponentDependencyService, BaseComponent, ComponentConfig, ComponentSetup } from '../../../core';
 
 // required by component
 import { WorkoutMenuItems } from '../menu.items';
@@ -20,6 +20,12 @@ export class WorkoutPlanComponent extends BaseComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     protected dependencies: ComponentDependencyService) {
     super(dependencies)
+  }
+
+  setup(): ComponentSetup | null {
+    return {
+        initialized: false
+    }
   }
 
   ngOnInit() {

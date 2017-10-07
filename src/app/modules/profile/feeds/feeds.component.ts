@@ -1,7 +1,7 @@
 // common
 import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { AppConfig, UrlConfig, ComponentDependencyService, BaseComponent } from '../../../core';
+import { AppConfig, UrlConfig, ComponentDependencyService, BaseComponent, ComponentSetup } from '../../../core';
 
 // requied by component
 import { MyProfileMenuItems } from '../menu.items';
@@ -24,6 +24,12 @@ export class FeedsComponent extends BaseComponent implements OnInit {
         protected dependencies: ComponentDependencyService) {
         super(dependencies)
     }
+
+    setup(): ComponentSetup | null {
+        return {
+            initialized: true
+        }
+      }
 
     ngOnInit() {
         super.ngOnInit();

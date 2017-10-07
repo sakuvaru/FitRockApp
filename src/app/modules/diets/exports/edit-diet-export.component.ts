@@ -1,7 +1,7 @@
 // common
 import { Component, Input, Output, OnInit, EventEmitter, OnDestroy, OnChanges, SimpleChanges } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { AppConfig, ComponentDependencyService, BaseComponent } from '../../../core';
+import { AppConfig, ComponentDependencyService, BaseComponent, ComponentSetup } from '../../../core';
 
 // required by component
 import { FormConfig } from '../../../../web-components/dynamic-form';
@@ -26,6 +26,12 @@ export class EditDietExportComponent extends BaseComponent implements OnInit, On
     ) {
         super(componentDependencyService)
     }
+
+    setup(): ComponentSetup | null {
+        return {
+            initialized: true
+        }
+      }
 
     ngOnChanges(changes: SimpleChanges) {
         var dietId = changes.dietId.currentValue;

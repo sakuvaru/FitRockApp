@@ -1,7 +1,7 @@
 // common
 import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { AppConfig, UrlConfig, ComponentDependencyService, BaseComponent } from '../../core';
+import { AppConfig, UrlConfig, ComponentDependencyService, BaseComponent, ComponentSetup } from '../../core';
 
 @Component({
     templateUrl: 'login-page.component.html'
@@ -18,4 +18,10 @@ export class LogoutComponent extends BaseComponent {
         // redirect after logging-out
         this.dependencies.router.navigate([UrlConfig.getLogoutUrl()]);
     }
+
+    setup(): ComponentSetup | null {
+        return {
+            initialized: false
+        }
+      }
 }

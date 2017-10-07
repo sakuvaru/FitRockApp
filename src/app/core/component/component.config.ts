@@ -16,7 +16,6 @@ export class ComponentConfig {
     public appName?: string = this.default_appName;
     public menuTitle?: ResourceKey = this.default_menuTitle;
     public enableSearch: boolean = false;
-    public autoInitComponent: boolean = false;
     public menuAvatarUrl?: string = this.default_menuAvatarUrl;
 
     constructor(options?: {
@@ -25,7 +24,6 @@ export class ComponentConfig {
         appName?: string,
         menuTitle?: ResourceKey,
         enableSearch?: boolean,
-        autoInitComponent?: boolean,
         menuAvatarUrl?: string,
 
     }) {

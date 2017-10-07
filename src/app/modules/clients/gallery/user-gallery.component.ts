@@ -1,7 +1,7 @@
 // common
 import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { AppConfig, ComponentDependencyService, BaseComponent } from '../../../core';
+import { AppConfig, ComponentDependencyService, BaseComponent, ComponentSetup } from '../../../core';
 
 // required by component
 import { Observable } from 'rxjs/Rx';
@@ -30,6 +30,12 @@ export class UserGalleryComponent extends ClientsBaseComponent implements OnInit
         protected componentDependencyService: ComponentDependencyService,
         protected activatedRoute: ActivatedRoute) {
         super(componentDependencyService, activatedRoute)
+    }
+
+    setup(): ComponentSetup | null {
+        return {
+            initialized: false
+        }
     }
 
     ngOnInit() {

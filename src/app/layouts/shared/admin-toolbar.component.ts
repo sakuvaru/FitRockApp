@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { ComponentDependencyService, BaseComponent, MenuItemType, AppConfig } from '../../core';
+import { ComponentDependencyService, BaseComponent, MenuItemType, AppConfig,ComponentSetup } from '../../core';
 
 import { StringHelper } from '../../../lib/utilities';
 import { Feed, FeedResult } from '../../models';
@@ -25,6 +25,10 @@ export class AdminToolbarComponent extends BaseComponent implements OnInit {
     constructor(protected dependencies: ComponentDependencyService) {
         super(dependencies)
     }
+
+    setup(): ComponentSetup | null {
+        return null;
+      }
 
     ngOnInit() {
         this.subscribeToFeedObservables();

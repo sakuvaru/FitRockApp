@@ -1,7 +1,7 @@
 // common
 import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { AppConfig, ComponentDependencyService, BaseComponent } from '../../../../core';
+import { AppConfig, ComponentDependencyService, BaseComponent, ComponentSetup } from '../../../../core';
 
 // required by component
 import { ClientsBaseComponent } from '../../clients-base.component';
@@ -21,6 +21,12 @@ export class NewClientComponent extends ClientsBaseComponent implements OnInit {
         protected componentDependencyService: ComponentDependencyService,
     ) {
         super(componentDependencyService, activatedRoute)
+    }
+
+    setup(): ComponentSetup | null {
+        return {
+            initialized: true
+        }
     }
 
     ngOnInit(): void {

@@ -1,7 +1,7 @@
 // common
 import { Component, Input, Output, OnInit, EventEmitter, OnDestroy, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { AppConfig, ComponentDependencyService, BaseComponent, ComponentConfig } from '../../../../core';
+import { AppConfig, ComponentDependencyService, BaseComponent, ComponentConfig, ComponentSetup } from '../../../../core';
 
 // required by component
 import { Observable } from 'rxjs/Rx';
@@ -23,6 +23,12 @@ export class EditClientDietPlanComponent extends ClientsBaseComponent implements
   ) {
     super(componentDependencyService, activatedRoute)
   }
+
+  setup(): ComponentSetup | null {
+    return {
+        initialized: false
+    }
+}
 
   ngOnInit() {
     super.ngOnInit();
