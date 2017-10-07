@@ -60,7 +60,7 @@ export class EditClientWorkoutPlanComponent extends ClientsBaseComponent impleme
   }
 
   private handleLoadWorkout(workout: Workout): void {
-    var translationData: any = {};
+    let translationData: any = {};
     translationData.workoutName = workout.workoutName;
     super.updateComponentTitle({ key: 'module.clients.workout.editWorkoutWithName', data: translationData });
   }

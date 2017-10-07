@@ -15,7 +15,7 @@ export class ComponentConfig {
     public menuItems?: MenuItem[] = this.default_menuItems;
     public appName?: string = this.default_appName;
     public menuTitle?: ResourceKey = this.default_menuTitle;
-    public enableSearch: boolean = false;
+    public enableSearch = false;
     public menuAvatarUrl?: string = this.default_menuAvatarUrl;
 
     constructor(options?: {
@@ -27,7 +27,9 @@ export class ComponentConfig {
         menuAvatarUrl?: string,
 
     }) {
-        if (options) Object.assign(this, options);
+        if (options) {
+            Object.assign(this, options);
+        } 
     }
 
     setDefaultValues(): void {
@@ -43,8 +45,8 @@ export class ComponentConfig {
         if (!this.menuTitle) {
             this.menuTitle = this.default_menuTitle;
         }
-        if (!this.menuAvatarUrl){
-            this.menuAvatarUrl = this.default_menuAvatarUrl
+        if (!this.menuAvatarUrl) {
+            this.menuAvatarUrl = this.default_menuAvatarUrl;
         }
     }
 }

@@ -27,12 +27,12 @@ export class TouchKeyQuery extends BaseQuery {
         private cacheKeyType: CacheKeyType,
         private itemId?: number
     ) {
-        super(authHttp, config)
+        super(authHttp, config);
         this._action = this._defaultAction;
     }
 
     // url
-    protected getPostUrl(): string{
+    protected getPostUrl(): string {
         return this.getTypeUrl(this.type, this._action);
     }
 

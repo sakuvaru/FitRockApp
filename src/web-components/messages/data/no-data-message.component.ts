@@ -6,9 +6,9 @@ import { BaseWebComponent } from '../../base-web-component.class';
     selector: 'no-data-message',
     templateUrl: 'no-data-message.component.html'
 })
-export class NoDataMessageComponent extends BaseWebComponent{
+export class NoDataMessageComponent extends BaseWebComponent {
 
     constructor(
-    ) { super()
+    ) { super();
     }
 }

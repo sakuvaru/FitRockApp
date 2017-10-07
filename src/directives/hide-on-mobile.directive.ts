@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs/Rx';
 export class HideOnMobileDirective implements OnInit, OnDestroy, AfterViewInit {
 
     /**
-     * For query options, see 
+     * For query options, see
      * https://teradata.github.io/covalent/#/components/media
      */
     private readonly query: string = '(max-width: 959px)';
@@ -14,10 +14,10 @@ export class HideOnMobileDirective implements OnInit, OnDestroy, AfterViewInit {
     /**
      * Indicates if resizing is enabled
      */
-    @Input() enabled: boolean = true;
+    @Input() enabled = true;
 
     // screen size
-    private isSmallScreen: boolean = false;
+    private isSmallScreen = false;
     private _querySubscription: Subscription;
 
     constructor(

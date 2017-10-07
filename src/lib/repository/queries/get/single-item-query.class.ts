@@ -22,14 +22,14 @@ export class SingleItemQuery<TItem extends IItem> extends BaseSingleItemQuery {
         protected type: string,
         protected action: string
     ) {
-        super(authHttp, config, type)
+        super(authHttp, config, type);
         this._action = action;
     }
 
     // execution
 
     get(): Observable<ResponseSingle<TItem>> {
-        var url = super.getSingleItemQueryUrl();
+        const url = super.getSingleItemQueryUrl();
         return super.getSingle(url);
     }
 
@@ -49,13 +49,13 @@ export class SingleItemQueryInit<TItem extends IItem> {
     }
 
     byId(id: number): SingleItemQuery<TItem> {
-        var action = 'getbyid/' + id;
+        const action = 'getbyid/' + id;
 
-        return new SingleItemQuery(this.authHttp, this.config, this.type, action)
+        return new SingleItemQuery(this.authHttp, this.config, this.type, action);
     }
 
     withCustomAction(action: string): SingleItemQuery<TItem> {
-        return new SingleItemQuery(this.authHttp, this.config, this.type, action)
+        return new SingleItemQuery(this.authHttp, this.config, this.type, action);
     }
 }
 

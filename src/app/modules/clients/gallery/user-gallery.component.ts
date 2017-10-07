@@ -72,7 +72,7 @@ export class UserGalleryComponent extends ClientsBaseComponent implements OnInit
     }
 
     private getComponentObservables(): Observable<any>[] {
-        var observables: Observable<any>[] = [];
+        let observables: Observable<any>[] = [];
         observables.push(this.getUserGalleryFilesObservable());
         observables.push(this.getClientMenuObservable());
         observables.push(this.getInitUploaderObservable())
@@ -85,7 +85,7 @@ export class UserGalleryComponent extends ClientsBaseComponent implements OnInit
             .switchMap(clientId => this.dependencies.fileService.getGalleryFiles(clientId).set())
             .map(response => {
                 if (response.files) {
-                    var galleryImages = response.files.map(m => new GalleryImage({
+                    let galleryImages = response.files.map(m => new GalleryImage({
                         imageUrl: m.absoluteUrl,
                         imageDate: m.fileLastModified
                         // used for testing the gallery grouping -> imageDate: super.moment(m.fileLastModified).add(Math.floor(Math.random() * 20), 'days').toDate()

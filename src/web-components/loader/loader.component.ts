@@ -6,11 +6,11 @@ import { BaseWebComponent } from '../base-web-component.class';
     selector: 'loader',
     templateUrl: 'loader.component.html'
 })
-export class LoaderComponent extends BaseWebComponent{
+export class LoaderComponent extends BaseWebComponent {
     @Input() enabled: boolean;
-    @Input() color: 'primary' | 'accent' = 'primary'
+    @Input() color: 'primary' | 'accent' = 'primary';
 
     constructor(
-    ) { super()
+    ) { super();
     }
 }

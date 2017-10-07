@@ -75,7 +75,7 @@ export class ClientDietComponent extends ClientsBaseComponent implements OnInit,
 
     private initDragula(): void {
         // set handle for dragula
-        var that = this;
+        let that = this;
         this.dragulaService.setOptions(this.dragulaBag, {
             moves: function (el: any, container: any, handle: any): any {
                 return stringHelper.contains(el.className, that.dragulaMoveHandle);
@@ -98,9 +98,9 @@ export class ClientDietComponent extends ClientsBaseComponent implements OnInit,
     }
 
     private getComponentObservables(): Observable<any>[] {
-        var observables: Observable<any>[] = [];
+        let observables: Observable<any>[] = [];
 
-        var obsClientMenu = this.clientChange
+        let obsClientMenu = this.clientChange
             .takeUntil(this.ngUnsubscribe)
             .map(client => {
                 this.setConfig({
@@ -116,12 +116,12 @@ export class ClientDietComponent extends ClientsBaseComponent implements OnInit,
                 });
             });
 
-        var obsDietTemplates = this.clientIdChange
+        let obsDietTemplates = this.clientIdChange
             .takeUntil(this.ngUnsubscribe)
             .switchMap(clientId => this.dependencies.itemServices.dietService.items()
                 .byCurrentUser()
                 .whereNull('ClientId')
-                .orderByAsc("DietName")
+                .orderByAsc('DietName')
                 .get())
             .map(response => {
                 if (!response.isEmpty()) {
@@ -129,7 +129,7 @@ export class ClientDietComponent extends ClientsBaseComponent implements OnInit,
                 }
             });
 
-        var obsExistingDiets = this.existingDietsObservable();
+        let obsExistingDiets = this.existingDietsObservable();
 
         observables.push(obsClientMenu);
         observables.push(obsDietTemplates);
@@ -145,7 +145,7 @@ export class ClientDietComponent extends ClientsBaseComponent implements OnInit,
                 .byCurrentUser()
                 .includeMultiple(['DietFoods', 'DietFoods.Food', 'DietFoods.Food.FoodUnit'])
                 .whereEquals('ClientId', clientId)
-                .orderByAsc("Order")
+                .orderByAsc('Order')
                 .get())
             .map(response => {
                 if (!response.isEmpty()) {
@@ -164,7 +164,7 @@ export class ClientDietComponent extends ClientsBaseComponent implements OnInit,
             .byCurrentUser()
             .includeMultiple(['DietFoods', 'DietFoods.Food', 'DietFoods.Food.FoodUnit'])
             .whereEquals('ClientId', clientId)
-            .orderByAsc("Order")
+            .orderByAsc('Order')
             .get()
             .map(response => {
                 if (!response.isEmpty()) {
@@ -174,7 +174,7 @@ export class ClientDietComponent extends ClientsBaseComponent implements OnInit,
     }
 
     private newDietFromTemplate(data: any): void {
-        var selected = data.selected;
+        let selected = data.selected;
 
         if (!selected) {
             super.translate('module.clients.diet.dietNotSelected').subscribe(text => {
@@ -182,7 +182,7 @@ export class ClientDietComponent extends ClientsBaseComponent implements OnInit,
             });
         }
 
-        var selectedDiet = selected.value as Diet;
+        let selectedDiet = selected.value as Diet;
 
         // copy data from selected diet to a new diet with assigned client
         super.subscribeToObservable(this.dependencies.itemServices.dietService.copyFromDiet(selectedDiet.id, this.clientId)
@@ -198,7 +198,7 @@ export class ClientDietComponent extends ClientsBaseComponent implements OnInit,
         super.subscribeToObservable(this.dependencies.itemServices.dietService.delete(diet.id)
             .set()
             .map(response => {
-                // remove diet from local variable
+                // remove diet from local letiable
                 this.existingDiets = _.reject(this.existingDiets, function (item) { return item.id === response.deletedItemId; });
                 this.showDeletedSnackbar();
             }));

@@ -48,7 +48,7 @@ export class LoginFormComponent extends BaseComponent {
     }
 
     private processFailedLogonRedirect() {
-        var result = this.activatedRoute.snapshot.queryParams['result'];
+        let result = this.activatedRoute.snapshot.queryParams['result'];
 
         // auth service will redirect back to logon page with query param 'result=error' and radnom fragment (hash) if login fails
         if (result === 'error') {
@@ -67,7 +67,7 @@ export class LoginFormComponent extends BaseComponent {
     onLogin() {
         this.startGlobalLoader();
         this.onLoginEvent.emit();
-        var success = this.dependencies.coreServices.authService.authenticate(this.username, this.password);
+        let success = this.dependencies.coreServices.authService.authenticate(this.username, this.password);
     }
 
     onLogout() {

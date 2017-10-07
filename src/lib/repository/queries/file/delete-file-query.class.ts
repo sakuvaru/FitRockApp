@@ -36,8 +36,8 @@ export class DeleteFileQuery extends BaseQuery {
     }
 
     // url
-    protected getDeleteUrl(): string{
-        if (!this._action){
+    protected getDeleteUrl(): string {
+        if (!this._action) {
             throw Error(`No action was specified for delete file query`);
         }
 
@@ -47,7 +47,7 @@ export class DeleteFileQuery extends BaseQuery {
     // execution
 
     set(): Observable<ResponseDeleteFile> {
-        if (!this.fileUrl){
+        if (!this.fileUrl) {
             throw Error(`File url has to be specified when deleting file`);
         }
 

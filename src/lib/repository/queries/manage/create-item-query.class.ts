@@ -35,7 +35,7 @@ export class CreateItemQuery<TItem extends IItem> extends BaseQuery {
         protected type: string,
         protected item: TItem
     ) {
-        super(authHttp, config)
+        super(authHttp, config);
         this._action = this.defaultAction;
     }
 
@@ -52,7 +52,7 @@ export class CreateItemQuery<TItem extends IItem> extends BaseQuery {
     }
 
     // url
-    protected getCreateUrl(): string{
+    protected getCreateUrl(): string {
         return this.getTypeUrl(this.type, this._action);
     }
 

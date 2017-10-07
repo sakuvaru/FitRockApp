@@ -117,12 +117,12 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
         }
     }
 
-    private initTranslations(): void{
+    private initTranslations(): void {
         this.translateService.get(this.snackbarUploadedTextKey).subscribe(result => this.snackbarUploadedText = result);
     }
 
     private getAcceptedExtensions(config: UploaderConfig): string[] {
-        var allowedExtensions: string[] = [];
+        let allowedExtensions: string[] = [];
 
         // add default extensions if allowed
         if (config.useDefaultFileExtensions) {
@@ -148,9 +148,9 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
             return '';
         }
 
-        var extensionsString: string = '';
+        let extensionsString: string = '';
 
-        for (var i = 0; i < extensions.length; i++) {
+        for (let i = 0; i < extensions.length; i++) {
             extensionsString += '.' + extensions[i];
 
             if (i !== extensions.length - 1) {
@@ -192,7 +192,7 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
             this.config.uploadFunction(file)
                 .takeUntil(this.ngUnsubscribe)
                 .subscribe(response => {
-                    var uploadedFile: any[] = response.file ? [response.file] : [];
+                    let uploadedFile: any[] = response.file ? [response.file] : [];
 
                     if (this.config.onAfterUpload) {
                         this.config.onAfterUpload(uploadedFile);
@@ -222,7 +222,7 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
             this.noFilesSelected = true;
             return;
         }
-        var files: File[] = [];
+        let files: File[] = [];
 
         // if multiple selection is used, but only 1 file is selected, it is returned directly
         if (file instanceof File) {
@@ -230,7 +230,7 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
         }
         else {
             // this means multiple files were selected
-            for (var i = 0; i < this.maxFiles; i++) {
+            for (let i = 0; i < this.maxFiles; i++) {
                 if (file[i]) {
                     files.push(file[i]);
                 }
@@ -303,11 +303,11 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
             return '';
         }
 
-        var notAllowedExtensions: string = '';
+        let notAllowedExtensions: string = '';
 
-        for (var i = 0; i < files.length; i++) {
-            var file = files[i];
-            var fileAllowed = this.fileIsAllowed(file);
+        for (let i = 0; i < files.length; i++) {
+            let file = files[i];
+            let fileAllowed = this.fileIsAllowed(file);
             if (!fileAllowed) {
                 notAllowedExtensions += this.getFileExtension(file.name);
 
@@ -329,7 +329,7 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
         }
 
         files.forEach(file => {
-            var fileAllowed = this.fileIsAllowed(file);
+            let fileAllowed = this.fileIsAllowed(file);
             if (!fileAllowed) {
                 return false;
             }
@@ -341,7 +341,7 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
     }
 
     private fileIsAllowed(file: File): boolean {
-        var fileExtension = this.getFileExtension(file.name);
+        let fileExtension = this.getFileExtension(file.name);
 
         if (!fileExtension) {
             return false;
@@ -349,7 +349,7 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
 
         fileExtension = fileExtension.toLowerCase();
 
-        var isAllowedExtension = this.acceptedExtensions.find(m => m.toLowerCase() === fileExtension);
+        let isAllowedExtension = this.acceptedExtensions.find(m => m.toLowerCase() === fileExtension);
 
         if (isAllowedExtension) {
             return true;
@@ -358,9 +358,9 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
     }
 
     private getFileExtension(fileName: string): string | null {
-        var re = /(?:\.([^.]+))?$/;
+        let re = /(?:\.([^.]+))?$/;
 
-        var result = re.exec(fileName);
+        let result = re.exec(fileName);
 
         if (result && result[1]) {
             return result[1];

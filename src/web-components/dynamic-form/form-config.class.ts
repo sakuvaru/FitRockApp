@@ -17,12 +17,12 @@ export class FormConfig<TItem extends IItem>{
     /**
      * Key of submit text button
      */
-    public submitTextKey: string = 'form.shared.save';
+    public submitTextKey = 'form.shared.save';
 
-    /** 
+    /**
      * Key of delete text button
     */
-    public deleteTextKey: string = 'form.shared.delete';
+    public deleteTextKey = 'form.shared.delete';
 
     /**
      * List of fields (questions) assigned to the form
@@ -48,20 +48,20 @@ export class FormConfig<TItem extends IItem>{
     /**
      * Indicates if snackbar is shown after save
      */
-    public showSnackBar: boolean = true;
+    public showSnackBar = true;
 
     /**
      * Key of the text shown in snackbar after inserting/saving item
      */
-    public snackBarTextKey: string = 'form.shared.saved';
+    public snackBarTextKey = 'form.shared.saved';
 
     /**
      * Key of the text shown in snackbar after successfully deleting an item
      */
-    public deleteSnackBarTextKey: string = 'form.shared.deleted';
+    public deleteSnackBarTextKey = 'form.shared.deleted';
 
     /**
-     * Type of the item in the form. This equals to the 'Codename' of the type. 
+     * Type of the item in the form. This equals to the 'Codename' of the type.
      * For example, workouts are defined as 'Workout' type.
      */
     public type: string;
@@ -79,13 +79,13 @@ export class FormConfig<TItem extends IItem>{
     /**
      * Indicates if field in form are cleared when the form is saved
      */
-    public clearFormAfterSave: boolean = true;
+    public clearFormAfterSave = true;
 
     /**
      * Indicates if form contains delete button and if user can trigger 'delete method' defined in this form config
      * This property has to be enabled if the delete method is to be triggered
      */
-    public enableDelete: boolean = true;
+    public enableDelete = true;
 
     /**
      * Callback before initializing the form
@@ -157,7 +157,7 @@ export class FormConfig<TItem extends IItem>{
     /**
      * Indicates if local loader is enabled
      */
-    public enableLocalLoader: boolean = true;
+    public enableLocalLoader = true;
 
     /**
      * Can be used to get custom field labels

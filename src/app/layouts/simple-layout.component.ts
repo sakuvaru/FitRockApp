@@ -1,5 +1,5 @@
 // common
-import { Component, Input, OnDestroy, ChangeDetectorRef, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, ChangeDetectorRef, OnInit, AfterViewInit } from '@angular/core';
 import { TdMediaService } from '@covalent/core';
 import { ComponentDependencyService, BaseComponent, MenuItemType, AppConfig, ComponentSetup } from '../core';
 
@@ -12,7 +12,7 @@ import { FormControl } from '@angular/forms';
 @Component({
     templateUrl: 'simple-layout.component.html'
 })
-export class SimpleLayoutComponent extends BaseComponent implements OnDestroy, OnInit {
+export class SimpleLayoutComponent extends BaseComponent implements OnDestroy, OnInit, AfterViewInit {
     // Setup properties
     private readonly titleCharsLength: number = 22;
     private readonly year: number = new Date().getFullYear();
@@ -57,7 +57,7 @@ export class SimpleLayoutComponent extends BaseComponent implements OnDestroy, O
         protected dependencies: ComponentDependencyService,
         private changeDetectorRef: ChangeDetectorRef,
     ) {
-        super(dependencies)
+        super(dependencies);
 
         // set alias for media
         this.media = this.dependencies.tdServices.mediaService;
@@ -74,7 +74,7 @@ export class SimpleLayoutComponent extends BaseComponent implements OnDestroy, O
         this.initComponentSearch();
 
         // init user texts
-        var user = this.dependencies.authenticatedUserService.getUser();
+        const user = this.dependencies.authenticatedUserService.getUser();
         if (user) {
             this.displayUsername = user.firstName + ' ' + user.lastName;
             this.email = user.email;
@@ -107,8 +107,7 @@ export class SimpleLayoutComponent extends BaseComponent implements OnDestroy, O
 
                 if (componentConfig.menuAvatarUrl) {
                     this.menuAvatarUrl = componentConfig.menuAvatarUrl;
-                }
-                else {
+                } else {
                     // clear avatar if its not set
                     this.menuAvatarUrl = '';
                 }
@@ -152,7 +151,6 @@ export class SimpleLayoutComponent extends BaseComponent implements OnDestroy, O
     private calculateShowLoader(): void {
         // simplified for now as components using this layout do not use component init status which might be removed anyway
         this.showLoading = !this.globalLoaderStatus.forceDisable && ((this.hideComponentWhenLoaderIsEnabled && this.globalLoaderStatus.show));
-        //this.showLoading = !this.globalLoaderStatus.forceDisable && ((this.hideComponentWhenLoaderIsEnabled && this.globalLoaderStatus.show) || (!this.componentIsAutoInitialized && !this.componentIsInitialized));
     }
 
     private calcualteShowComponent(): void {
@@ -173,18 +171,15 @@ export class SimpleLayoutComponent extends BaseComponent implements OnDestroy, O
     }
 
     private getMenuItemUrl(action: string, type: MenuItemType): string {
-        var url;
+        let url;
 
         if (type === MenuItemType.client) {
             url = this.getClientUrl(action);
-        }
-        else if (type === MenuItemType.trainer) {
+        } else if (type === MenuItemType.trainer) {
             url = this.getTrainerUrl(action);
-        }
-        else if (type === MenuItemType.auth) {
+        } else if (type === MenuItemType.auth) {
             url = this.getAuthUrl(action);
-        }
-        else {
+        } else {
             throw Error(`Cannot get menu item url of '${type}' type`);
         }
 
@@ -192,10 +187,10 @@ export class SimpleLayoutComponent extends BaseComponent implements OnDestroy, O
     }
 
     private getMenuItemColor(action: string, type: MenuItemType): string | null {
-        var activeColor = 'accent';
+        const activeColor = 'accent';
 
-        var url = this.getMenuItemUrl(action, type);
-        var currentUrl = this.dependencies.router.url;
+        const url = this.getMenuItemUrl(action, type);
+        const currentUrl = this.dependencies.router.url;
 
         if (currentUrl === url) {
             return activeColor;
@@ -209,6 +204,6 @@ export class SimpleLayoutComponent extends BaseComponent implements OnDestroy, O
     }
 
     private shortenTitle(text: string): string | null {
-        return stringHelper.shorten(text, this.titleCharsLength, true)
+        return stringHelper.shorten(text, this.titleCharsLength, true);
     }
 }

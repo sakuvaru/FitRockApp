@@ -6,10 +6,10 @@ import { BaseTypeService } from '../base/base-type.service';
 @Injectable()
 export class FoodService extends BaseTypeService<Food>{
 
-    constructor(repositoryClient: RepositoryClient) { 
+    constructor(repositoryClient: RepositoryClient) {
         super (repositoryClient, {
             type: 'Food',
             allowDelete: true
-        })
+        });
     }
 }

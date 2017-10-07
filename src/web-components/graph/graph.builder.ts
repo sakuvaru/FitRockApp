@@ -68,7 +68,7 @@ export class GraphBuilder<TGraph extends BaseGraph> {
     scheme(colorScheme: any): this {
         this.config.scheme = colorScheme;
         return this;
-    };
+    }
 
     /**
      * Gets the Graph config

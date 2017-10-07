@@ -17,7 +17,7 @@ export class GraphConfig<TGraph extends BaseGraph>{
     /**
      * Indicates if local loader is enabled
      */
-    public enableLocalLoader: boolean = true;
+    public enableLocalLoader = true;
 
     /**
      * Leave undefined so that size of graph matches the parent
@@ -38,12 +38,12 @@ export class GraphConfig<TGraph extends BaseGraph>{
     /**
      * Indicates if legend will be shown
      */
-    public showLegend: boolean = false;
+    public showLegend = false;
 
     /**
      * Legend translation key
      */
-    public legendTitleKey: string = 'webComponents.graph.legend';
+    public legendTitleKey = 'webComponents.graph.legend';
 
     /**
      * Graph color scheme

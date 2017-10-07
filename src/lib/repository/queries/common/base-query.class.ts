@@ -11,7 +11,7 @@ export abstract class BaseQuery extends QueryService {
         protected authHttp: AuthHttp,
         protected config: RepositoryConfig
     ) {
-        super(authHttp, config)
+        super(authHttp, config);
     }
 
     abstract toString(): string;

@@ -9,7 +9,7 @@ import { GraphConfig } from './graph.config';
 import { BaseGraphComponent } from './graph-components/base-graph.component';
 
 // graphs
-import { LineChartGraphComponent } from './graph-components/line-chart.component'
+import { LineChartGraphComponent } from './graph-components/line-chart.component';
 import { VerticalBarGraphComponent } from './graph-components/vertical-bar-chart.component';
 
 @Component({
@@ -27,7 +27,7 @@ export class GraphComponent extends BaseWebComponent {
 
     constructor(
         protected translateService: TranslateService
-    ) { super() }
+    ) { super(); }
 
     /**
      * Reinitializes graph

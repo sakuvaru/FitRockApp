@@ -6,7 +6,7 @@ class BaseDynamicFormBuilder<TItem extends IItem>{
 
     protected config: FormConfig<TItem> = new FormConfig<TItem>();
 
-    /** 
+    /**
     * Key of delete text button
     */
     deleteTextKey(key: string): this {
@@ -36,7 +36,7 @@ class BaseDynamicFormBuilder<TItem extends IItem>{
     /**
      * /**
      * Indicates if field in form are cleared when the form is saved
-     * @param clear 
+     * @param clear
      */
     clearFormAfterSave(clear: boolean): this {
         this.config.clearFormAfterSave = clear;

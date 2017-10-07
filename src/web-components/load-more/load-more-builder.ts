@@ -44,7 +44,7 @@ export class LoadMoreBuilder<TItem extends IItem> {
         return this;
     }
 
-    
+
     iconClassResolver(resolver: (item: TItem) => string): this {
         this.config.iconClassResolver = resolver;
         return this;
@@ -105,4 +105,4 @@ export class LoadMoreBuilder<TItem extends IItem> {
     build(): LoadMoreConfig<TItem> {
         return this.config;
     }
-}   
+}

@@ -30,7 +30,7 @@ export abstract class BaseItemQuery extends BaseQuery {
         protected config: RepositoryConfig,
         protected type: string,
     ) {
-        super(authHttp, config)
+        super(authHttp, config);
     }
 
     // options

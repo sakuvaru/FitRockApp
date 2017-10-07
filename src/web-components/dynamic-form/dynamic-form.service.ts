@@ -7,7 +7,7 @@ export class DynamicFormService {
     /**
      * Gets insert form builder
      * @param type Type of the item (e.g. 'workout')
-     * @param insertFormDefinition Query to get the insert form definition  
+     * @param insertFormDefinition Query to get the insert form definition
      * @param insertFunction Function to be called when saving new item
      */
     insertForm<TItem extends IItem>(

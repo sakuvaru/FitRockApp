@@ -49,9 +49,9 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
     }
 
     private getComponentObservables(): Observable<any>[] {
-        var observables: Observable<any>[] = [];
+        let observables: Observable<any>[] = [];
 
-        var obsClientMenu = this.clientChange
+        let obsClientMenu = this.clientChange
             .takeUntil(this.ngUnsubscribe)
             .map(client => {
                 this.setConfig({
@@ -100,7 +100,7 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
             // set extra translation value for measurement value based on currently selected type
             .onFieldValueChange((config, changedField, newValue) => {
                 // get measurement value field
-                var measurementValueField = config.fields.find(m => m.key === 'Value');
+                let measurementValueField = config.fields.find(m => m.key === 'Value');
                 if (!measurementValueField) {
                     return
                 }
@@ -110,19 +110,19 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
                     return;
                 }
 
-                var listOption = changedField.options.listOptions.find(m => m.value === newValue);
+                let listOption = changedField.options.listOptions.find(m => m.value === newValue);
                 if (!listOption) {
                     return;
                 }
 
                 // set new custom translation label
-                var translationData: any = {};
-                var unitCode = listOption.extraDataJson.unit;
+                let translationData: any = {};
+                let unitCode = listOption.extraDataJson.unit;
                 super.translate('module.progressItemUnits.' + unitCode).subscribe(unitTranslation => {
-                    var translationData: any = {};
+                    let translationData: any = {};
                     translationData.unit = unitTranslation;
                     super.translate('form.progressItem.valueWithUnit', translationData).subscribe(translation => {
-                        var field = config.fields.find(m => m.key === 'Value');
+                        let field = config.fields.find(m => m.key === 'Value');
                         if (field) {
                             field.translatedLabel = translation;
                         }
@@ -193,9 +193,9 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
                 return this.dependencies.itemServices.progressItemTypeService.getProgressItemTypeWithCountDto(this.clientId, undefined)
                     .get()
                     .map(response => {
-                        var filters: Filter<ProgressItemTypeWithCountDto>[] = [];
+                        let filters: Filter<ProgressItemTypeWithCountDto>[] = [];
                         response.items.forEach(type => {
-                            var typeKey;
+                            let typeKey;
                             if (type.translateValue) {
                                 typeKey = 'module.progressItemTypes.globalTypes.' + type.codename;
                             }
@@ -234,7 +234,7 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
     }
 
     private openAddNewProgressItemTypeDialog(): void {
-        var dialog = this.dependencies.tdServices.dialogService.open(NewClientProgressItemTypeDialogComponent, {
+        let dialog = this.dependencies.tdServices.dialogService.open(NewClientProgressItemTypeDialogComponent, {
             width: AppConfig.DefaultDialogWidth,
         });
 
@@ -250,7 +250,7 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
     }
 
     private openEditProgressItemDialog(progressItem: ProgressItem): void {
-        var dialog = this.dependencies.tdServices.dialogService.open(EditProgressItemDialog, {
+        let dialog = this.dependencies.tdServices.dialogService.open(EditProgressItemDialog, {
             width: AppConfig.DefaultDialogWidth,
             data: progressItem
         });
@@ -264,7 +264,7 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
     }
 
     private openSelectTypeDialog(): void {
-        var dialog = this.dependencies.tdServices.dialogService.open(SelectProgressTypeDialog, {
+        let dialog = this.dependencies.tdServices.dialogService.open(SelectProgressTypeDialog, {
             width: AppConfig.DefaultDialogWidth,
         });
 

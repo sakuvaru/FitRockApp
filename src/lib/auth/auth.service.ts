@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 import { guidHelper } from '../../lib/utilities';
 
 // auth0 class exposed by auth0 js
-declare var auth0: any;
+declare let auth0: any;
 
 /*
 Authentication service requirements:
@@ -40,32 +40,32 @@ export class AuthService {
 
     private handleAuthenticationError(response: Auth0ErrorResponse): boolean {
         if (response == null) {
-            throw Error("Response from Auth0 is missing");
+            throw Error('Response from Auth0 is missing');
         }
 
         // log error
         console.error(response.description);
 
         // redirect back to logon page & add a random hash (hash needs to be added to URL for lifecycle check)
-        this.router.navigate([UrlConfig.getLoginUrl()], { queryParams: { result: "error" }, fragment: guidHelper.newGuid() })
+        this.router.navigate([UrlConfig.getLoginUrl()], { queryParams: { result: 'error' }, fragment: guidHelper.newGuid() });
 
         return false;
     }
 
-    public getCurrentUser(): CurrentUser | null{
+    public getCurrentUser(): CurrentUser | null {
         if (!this.isAuthenticated()) {
-            return new CurrentUser(false)
+            return new CurrentUser(false);
         }
 
-        var idToken = this.tokenService.getIdToken();
-        if (!idToken){
-            console.warn('IdToken could not be retrieved from local storage')
+        const idToken = this.tokenService.getIdToken();
+        if (!idToken) {
+            console.warn('IdToken could not be retrieved from local storage');
             return null;
         }
 
-        var decodedToken = this.jwtHelper.decodeToken(idToken);
+        const decodedToken = this.jwtHelper.decodeToken(idToken);
 
-        return new CurrentUser(true, decodedToken["email"], decodedToken["nickname"]);
+        return new CurrentUser(true, decodedToken['email'], decodedToken['nickname']);
     }
 
     public authenticate(username: string, password: string): boolean {
@@ -116,7 +116,7 @@ export class AuthService {
     }
 
     public isAuthenticated(): boolean {
-        var idToken = this.tokenService.getIdToken();
+        const idToken = this.tokenService.getIdToken();
 
         if (!idToken) {
             // missing token - not authenticated

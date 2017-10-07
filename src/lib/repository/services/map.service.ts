@@ -20,7 +20,7 @@ export class MapService {
     private isEntityField(fieldValue: any): boolean {
         if (fieldValue instanceof Object) {
             // if field contains property 'type' it is considered as 'Entity' field
-            if (fieldValue["type"]) {
+            if (fieldValue['type']) {
                 return true;
             }
         }
@@ -28,24 +28,24 @@ export class MapService {
     }
 
     private mapFields(item: IItem): any {
-        var properties = Object.getOwnPropertyNames(item);
+        const properties = Object.getOwnPropertyNames(item);
 
         // create typed item
-        var itemTyped = this.typeResolverService.createTypedObj(item.type, item);
+        const itemTyped = this.typeResolverService.createTypedObj(item.type, item);
 
         // map item property infos
-        var itemProperties = this.mapListOfItemProperties(item.itemProperties);
+        const itemProperties = this.mapListOfItemProperties(item.itemProperties);
 
         // assign item properties
         itemTyped.itemProperties = itemProperties;
 
         properties.forEach(fieldName => {
-            if (fieldName === this.itemPropertiesPropertyName){
+            if (fieldName === this.itemPropertiesPropertyName) {
                 // do not process item properties property
                 return;
             }
 
-            var propertyName;
+            let propertyName;
 
             // resolve value into a different 'property'
             if (itemTyped.resolver) {
@@ -57,7 +57,7 @@ export class MapService {
                 propertyName = fieldName;
             }
 
-            var fieldValue = item[fieldName];
+            const fieldValue = item[fieldName];
 
             if (this.isEntityField(fieldValue)) {
                 // field value is a nested entity type - recursively get object & properties
@@ -67,16 +67,16 @@ export class MapService {
             else {
                 if (Array.isArray(fieldValue)) {
                     // map list of nested entity types
-                    var listItems: any[] = [];
+                    const listItems: any[] = [];
                     fieldValue.forEach(listItem => {
                         if (this.isEntityField(listItem)) {
                             listItems.push(this.mapFields(listItem));
                         }
-                        else{
+                        else {
                             // unknown field type
                             listItems.push(listItem);
                         }
-                    })
+                    });
                     itemTyped[propertyName] = listItems;
                 }
                 else {
@@ -97,7 +97,7 @@ export class MapService {
             throw Error(`Cannot map items`);
         }
 
-        var typedItems: TItem[] = [];
+        const typedItems: TItem[] = [];
 
         items.forEach(item => {
             typedItems.push(this.mapItem<TItem>(item));
@@ -111,7 +111,7 @@ export class MapService {
             throw Error(`Cannot map form fields`);
         }
 
-        var fields: FormField[] = [];
+        const fields: FormField[] = [];
 
         formFields.forEach(field => {
             fields.push(this.mapFormField(field));
@@ -142,7 +142,7 @@ export class MapService {
     }
 
     mapFile(file: IFetchedFile): FetchedFile {
-        if (!file){
+        if (!file) {
             throw Error(`Cannot map file because its not defined`);
         }
 
@@ -158,11 +158,11 @@ export class MapService {
     }
 
     mapFiles(files: IFetchedFile[]): FetchedFile[] {
-        if (!files || !Array.isArray(files)){
+        if (!files || !Array.isArray(files)) {
             return [];
         }
 
-        var mappedFiles: FetchedFile[] = [];
+        const mappedFiles: FetchedFile[] = [];
 
         files.forEach(file => mappedFiles.push(this.mapFile(file)));
 
@@ -174,7 +174,7 @@ export class MapService {
             return [];
         }
 
-        var mappedOptions: DropdownFieldOption[] = [];
+        const mappedOptions: DropdownFieldOption[] = [];
 
         if (!Array.isArray(listOptions)) {
             throw Error(`Cannot map list options because the object is not an array!`);
@@ -191,7 +191,7 @@ export class MapService {
             return [];
         }
 
-        var mappedProperties: PropertyInfo[] = [];
+        const mappedProperties: PropertyInfo[] = [];
 
         if (!Array.isArray(properties)) {
             throw Error(`Cannot map property infos because the object is not an array!`);

@@ -7,13 +7,13 @@ import { AppConfig, ComponentDependencyService } from '../../core';
     selector: 'footer',
     templateUrl: 'footer.component.html'
 })
-export class FooterComponent{
+export class FooterComponent {
     @Input() appName: string;
 
     private year: number;
 
     constructor(private dependencies: ComponentDependencyService) {
-        var date = new Date();
+        let date = new Date();
         this.year = date.getFullYear();
     }
 }

@@ -38,9 +38,9 @@ export class SingleFileQuery extends BaseQuery {
     }
 
     // url
-    protected getFileUrl(): string{
+    protected getFileUrl(): string {
 
-        if (!this._action){
+        if (!this._action) {
             throw new Error('No action was specified for file query');
         }
 

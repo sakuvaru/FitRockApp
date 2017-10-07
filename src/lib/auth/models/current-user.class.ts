@@ -1,4 +1,4 @@
-export class CurrentUser{
+export class CurrentUser {
 
     public codename;
 
@@ -6,7 +6,7 @@ export class CurrentUser{
         public isAuthenticated: boolean,
         public email?: string,
         public nickname?: string
-    ){
+    ) {
         // codename = e-mail
         this.codename = email;
     }

@@ -60,7 +60,7 @@ export class MyExerciseListComponent extends BaseComponent implements OnInit {
         return this.dependencies.itemServices.exerciseCategoyService.getCategoriesWithExercisesCount(searchTerm, false)
           .get()
           .map(response => {
-            var filters: Filter<ExerciseCategoryListWithExercisesCount>[] = [];
+            let filters: Filter<ExerciseCategoryListWithExercisesCount>[] = [];
             response.items.forEach(category => {
               filters.push(new Filter({
                 filterNameKey: category.codename,

@@ -22,13 +22,13 @@ export class ItemCountQuery extends BaseItemCountQuery {
         protected config: RepositoryConfig,
         protected type: string,
     ) {
-        super(authHttp, config, type)
+        super(authHttp, config, type);
         this._action = this.defaultAction;
     }
 
     // execution
     get(): Observable<ResponseCount> {
-        var url = super.getQueryUrl();
+        const url = super.getQueryUrl();
         return super.getCount(url);
     }
 

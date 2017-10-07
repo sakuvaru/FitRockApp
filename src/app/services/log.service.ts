@@ -7,15 +7,15 @@ import { Observable } from 'rxjs/Rx';
 @Injectable()
 export class LogService extends BaseTypeService<Log>{
 
-    constructor(repositoryClient: RepositoryClient) { 
+    constructor(repositoryClient: RepositoryClient) {
         super (repositoryClient, {
             type: 'Log',
             allowDelete: true
-        })
+        });
     }
 
     logError(errorMessage: string, url: string, user: string, stacktrace: string): Observable<ResponseCreate<Log>>{
-        var log = new Log();
+        const log = new Log();
         log.errorMessage = errorMessage;
         log.url = url;
         log.user = user;

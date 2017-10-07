@@ -29,7 +29,7 @@ export class RedirectComponent extends BaseComponent implements OnInit {
         super.ngOnInit();
 
         // get redirect url from 'redirect' query string
-        var url = this.activatedRoute.snapshot.queryParams[AppConfig.RedirectQueryString];
+        let url = this.activatedRoute.snapshot.queryParams[AppConfig.RedirectQueryString];
 
         if (!url) {
             throw Error(`Cannot redirect because '${AppConfig.RedirectQueryString}' query param is missing`);

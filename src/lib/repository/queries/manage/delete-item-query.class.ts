@@ -35,7 +35,7 @@ export class DeleteItemQuery extends BaseQuery {
         protected type: string,
         protected itemId: number
     ) {
-        super(authHttp, config)
+        super(authHttp, config);
         this._action = this.defaultAction;
     }
 
@@ -46,7 +46,7 @@ export class DeleteItemQuery extends BaseQuery {
     }
 
     // url
-    protected getDeleteUrl(): string{
+    protected getDeleteUrl(): string {
         return this.getTypeUrl(this.type, this._action + '/' + this.itemId);
     }
 

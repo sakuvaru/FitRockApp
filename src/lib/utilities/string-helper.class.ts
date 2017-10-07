@@ -2,7 +2,7 @@ export class StringHelper {
 
     /**
      * Converts first char of the text to lowercase
-     * @param text text 
+     * @param text text
      */
     firstCharToLowerCase(text) {
         if (!text) {
@@ -27,7 +27,7 @@ export class StringHelper {
      * @param text text to hash
      */
     getHash(text: string): number {
-        var hash = 0, i, chr;
+        let hash = 0, i, chr;
         if (!text) return hash;
         for (i = 0; i < text.length; i++) {
             chr = text.charCodeAt(i);
@@ -39,7 +39,7 @@ export class StringHelper {
 
     /**
      * Returns true if text contains the other one
-     * @param text text 
+     * @param text text
      * @param contains text to contain
      */
     contains(text: string, contains: string): boolean {
@@ -51,19 +51,19 @@ export class StringHelper {
 
      /**
      * Returns true if text contains one of the given inputs
-     * @param text text 
-     * @param contains text array 
+     * @param text text
+     * @param contains text array
      */
     containsAny(text: string, containsArr: string[]): boolean {
         if (!text || !containsArr || !Array.isArray(containsArr)) {
             return false;
         }
 
-        var result: boolean = false;
+        let result = false;
 
         containsArr.forEach(contains => {
-            var textContainsResult = text.indexOf(contains) !== -1;
-            if (textContainsResult){
+            const textContainsResult = text.indexOf(contains) !== -1;
+            if (textContainsResult) {
                 result = true;
                 return;
             }
@@ -87,7 +87,7 @@ export class StringHelper {
             return text;
         }
 
-        var shortenedText = text.substr(0, chars);
+        let shortenedText = text.substr(0, chars);
 
         if (addDots) {
             shortenedText += '...';
@@ -98,4 +98,4 @@ export class StringHelper {
 
 }
 
-export var stringHelper = new StringHelper();
+export let stringHelper = new StringHelper();

@@ -46,7 +46,7 @@ export class EditClientComponent extends ClientsBaseComponent implements OnInit 
                     .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
                     .onAfterDelete(() => super.navigate([this.getTrainerUrl('clients')]))
                     .onFormLoaded(form => {
-                        var user = form.item;
+                        let user = form.item;
 
                         this.setConfig({
                             menuItems: new ClientMenuItems(user.id).menuItems,

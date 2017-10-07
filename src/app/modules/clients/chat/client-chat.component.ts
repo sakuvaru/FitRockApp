@@ -62,7 +62,7 @@ export class ClientChatComponent extends ClientsBaseComponent implements OnInit 
     }
 
     private getComponentObservables(): Observable<any>[] {
-        var observables: Observable<any>[] = [];
+        let observables: Observable<any>[] = [];
         observables.push(this.getFormObservable());
         observables.push(this.getInitChatMessagesObservable());
         return observables;
@@ -72,7 +72,7 @@ export class ClientChatComponent extends ClientsBaseComponent implements OnInit 
         return this.clientIdChange
             .takeUntil(this.ngUnsubscribe)
             .map(clientId => {
-                var formConfig = this.dependencies.itemServices.chatMessageService.insertForm()
+                let formConfig = this.dependencies.itemServices.chatMessageService.insertForm()
                     .fieldValueResolver((fieldName, value) => {
                         // manually set recipient & sender
                         if (fieldName === 'SenderUserId') {

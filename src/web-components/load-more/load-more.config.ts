@@ -12,22 +12,22 @@ export class LoadMoreConfig<TItem extends IItem> {
     /**
      * Indicates if search is shown
      */
-    public showSearch: boolean = true;
+    public showSearch = true;
 
     /**
      * Key of translation that is shown when no search results are found
      */
-    public searchNoItemsTextKey: string = 'webComponents.loadMore.noSearchResultsText'
+    public searchNoItemsTextKey = 'webComponents.loadMore.noSearchResultsText';
 
     /**
      * Key of translation that is shown when data table contains 0 items
      */
-    public noItemsTextKey: string = 'webComponents.loadMore.noResultsText';
+    public noItemsTextKey = 'webComponents.loadMore.noResultsText';
 
     /**
      * Page size
      */
-    public pageSize: number = 10;
+    public pageSize = 10;
 
     /**
      * Text to be shown in the listing
@@ -38,14 +38,14 @@ export class LoadMoreConfig<TItem extends IItem> {
      * Title to be shown in the listing
      */
     public title?: LoadMoreField<TItem>;
-    
+
     /**
      * Footer text to be shown in the listing
      */
     public footer?: LoadMoreField<TItem>;
 
     /**
-     * Method that is used to get observable out of loadQuery. 
+     * Method that is used to get observable out of loadQuery.
      * Usually this should include 'takeUntil(this.ngUnsubscribe)' to ensure
      * that requests are cancelled if they are not required (e.g. after destroying component)
      */
@@ -67,7 +67,7 @@ export class LoadMoreConfig<TItem extends IItem> {
     public iconResolver?: (item: TItem) => string;
 
     /**
-     * Resolver for icon class 
+     * Resolver for icon class
      */
     public iconClassResolver?: (item: TItem) => string;
 
@@ -89,12 +89,12 @@ export class LoadMoreConfig<TItem extends IItem> {
      /**
      * Loader configuration
      */
-    public loaderConfig?: { start: () => void, stop: () => void }
+    public loaderConfig?: { start: () => void, stop: () => void };
 
     /**
      * Indicates if local loader is enabled
      */
-    public enableLocalLoader: boolean = true;
+    public enableLocalLoader = true;
 
     constructor(
         loadResolver: (query: MultipleItemQuery<TItem>) => Observable<ResponseMultiple<TItem>>,

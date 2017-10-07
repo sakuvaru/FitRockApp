@@ -9,7 +9,7 @@ export class TokenService {
 
     constructor() { }
 
-    getAccessToken(): string | null{
+    getAccessToken(): string | null {
         return localStorage.getItem(this.accessTokenName);
     }
 
@@ -17,12 +17,12 @@ export class TokenService {
         localStorage.setItem(this.accessTokenName, token);
     }
 
-    removeAccessToken(): void{
+    removeAccessToken(): void {
         localStorage.removeItem(this.accessTokenName);
     }
 
-    
-    getIdToken(): string | null{
+
+    getIdToken(): string | null {
         return localStorage.getItem(this.idTokenName);
     }
 
@@ -30,7 +30,7 @@ export class TokenService {
         localStorage.setItem(this.idTokenName, token);
     }
 
-    removeIdToken(): void{
+    removeIdToken(): void {
         localStorage.removeItem(this.idTokenName);
     }
 }

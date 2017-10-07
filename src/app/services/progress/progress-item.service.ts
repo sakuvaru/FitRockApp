@@ -12,36 +12,36 @@ export class ProgressItemService extends BaseTypeService<ProgressItem>{
         super(repositoryClient, {
             type: 'ProgressItem',
             allowDelete: true
-        })
+        });
     }
 
     getSingleSeriesStats(clientId: number, progressItemTypeId: number, from?: Date, to?: Date): PostQuery<SingleSeriesResponse> {
-        var query = this.post<SingleSeriesResponse>('GetSingleSeriesStats')
+        const query = this.post<SingleSeriesResponse>('GetSingleSeriesStats')
             .withJsonOption('ClientId', clientId)
-            .withJsonOption('progressItemTypeId', progressItemTypeId)
+            .withJsonOption('progressItemTypeId', progressItemTypeId);
 
         if (from) {
-            query.withJsonOption('from', from)
+            query.withJsonOption('from', from);
         }
 
         if (to) {
-            query.withJsonOption('to', to)
+            query.withJsonOption('to', to);
         }
 
         return query;
     }
 
     getMultiSeriesStats(clientId: number, progressItemTypeId: number, from?: Date, to?: Date): PostQuery<MultiSeriesResponse> {
-        var query = this.post<MultiSeriesResponse>('GetMultiSeriesStats')
+        const query = this.post<MultiSeriesResponse>('GetMultiSeriesStats')
             .withJsonOption('ClientId', clientId)
-            .withJsonOption('progressItemTypeId', progressItemTypeId)
+            .withJsonOption('progressItemTypeId', progressItemTypeId);
 
         if (from) {
-            query.withJsonOption('from', from)
+            query.withJsonOption('from', from);
         }
 
         if (to) {
-            query.withJsonOption('to', to)
+            query.withJsonOption('to', to);
         }
 
         return query;

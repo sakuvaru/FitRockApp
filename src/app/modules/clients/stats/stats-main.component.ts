@@ -41,7 +41,7 @@ export class StatsMainComponent extends ClientsBaseComponent implements OnInit {
     }
 
     private getComponentObservables(): Observable<any>[] {
-        var observables: Observable<any>[] = [];
+        let observables: Observable<any>[] = [];
         observables.push(this.getClientMenuObservable());
         observables.push(this.getProgressTypesAndInitGraphObservable());
 
@@ -100,7 +100,7 @@ export class StatsMainComponent extends ClientsBaseComponent implements OnInit {
     }
 
     private onSelectType(progressItemType: ProgressItemType): void {
-        var newGraphConfig = this.getGraphConfig(this.clientId, progressItemType.id);
+        let newGraphConfig = this.getGraphConfig(this.clientId, progressItemType.id);
         // reload graph
         this.graph.forceReinitialization(newGraphConfig);
     }

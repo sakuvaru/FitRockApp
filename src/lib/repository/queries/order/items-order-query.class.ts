@@ -31,7 +31,7 @@ export class ItemsOrderQuery<TItem extends IItem> extends BaseQuery {
         private orderedItems: TItem[],
         private distinguishByValue: number
     ) {
-        super(authHttp, config)
+        super(authHttp, config);
         this._action = this.defaultAction;
         this.updateRequest = new UpdateItemsRequest(distinguishByValue, this.getItemsOrderJson(orderedItems));
     }
@@ -65,10 +65,10 @@ export class ItemsOrderQuery<TItem extends IItem> extends BaseQuery {
     /* ------------ Private ---------- */
 
     private getItemsOrderJson<TItem extends IItem>(orderedItems: TItem[]): OrderItem[] {
-        var data: OrderItem[] = [];
+        const data: OrderItem[] = [];
         if (orderedItems) {
-            for (var i = 0; i < orderedItems.length; i++) {
-                var orderItem = orderedItems[i];
+            for (let i = 0; i < orderedItems.length; i++) {
+                const orderItem = orderedItems[i];
                 data.push(new OrderItem(orderItem.id, i));
             }
         }

@@ -39,7 +39,7 @@ export class EditWorkoutPlanExportComponent extends BaseComponent implements OnD
     super(dependencies)
 
      // set handle for dragula
-     var that = this;
+     let that = this;
      this.dragulaService.setOptions(this.dragulaBag, {
       moves: function (el: any, container: any, handle: any): any {
         return stringHelper.contains(el.className, that.dragulaHandle);
@@ -63,7 +63,7 @@ export class EditWorkoutPlanExportComponent extends BaseComponent implements OnD
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    var workoutId = changes.workoutId.currentValue;
+    let workoutId = changes.workoutId.currentValue;
     if (workoutId) {
       super.subscribeToObservable(this.getWorkoutObservable(workoutId));
     }
@@ -109,7 +109,7 @@ export class EditWorkoutPlanExportComponent extends BaseComponent implements OnD
       .set()
       .do(() => this.startGlobalLoader())
       .subscribe(response => {
-        // remove workout exercise from local variable
+        // remove workout exercise from local letiable
         this.sortedWorkoutExercises = _.reject(this.sortedWorkoutExercises, function (item) { return item.id === response.deletedItemId; });
 
         this.showSavedSnackbar();
@@ -123,13 +123,13 @@ export class EditWorkoutPlanExportComponent extends BaseComponent implements OnD
   }
 
   private openWorkoutExerciseDialog(workoutExercise: WorkoutExercise): void {
-    var dialog = this.dependencies.tdServices.dialogService.open(EditWorkoutExerciseDialogComponent, {
+    let dialog = this.dependencies.tdServices.dialogService.open(EditWorkoutExerciseDialogComponent, {
       width: AppConfig.DefaultDialogWidth,
       data: workoutExercise
     });
 
     dialog.afterClosed().subscribe(m => {
-      // update || remove workout exercise from local variable
+      // update || remove workout exercise from local letiable
       if (dialog.componentInstance.workoutExerciseWasDeleted) {
         // remove exercise
         this.sortedWorkoutExercises = _.reject(this.sortedWorkoutExercises, function (item) { return item.id === dialog.componentInstance.idOfDeletedWorkoutExercise; });
@@ -139,7 +139,7 @@ export class EditWorkoutPlanExportComponent extends BaseComponent implements OnD
       }
       else {
         // update exercice with updated data
-        var workoutExerciseToUpdate: WorkoutExercise[] = this.sortedWorkoutExercises.filter(m => m.id === workoutExercise.id);
+        let workoutExerciseToUpdate: WorkoutExercise[] = this.sortedWorkoutExercises.filter(m => m.id === workoutExercise.id);
 
         if (!workoutExerciseToUpdate) {
           throw Error(`Cannot update workout with new values from saved form`);
@@ -153,10 +153,10 @@ export class EditWorkoutPlanExportComponent extends BaseComponent implements OnD
   }
 
   private openSelecExerciseDialog(): void {
-    var data: any = {};
+    let data: any = {};
     data.workoutId = this.workout.id;
 
-    var dialog = this.dependencies.tdServices.dialogService.open(SelectWorkoutExerciseDialogComponent, {
+    let dialog = this.dependencies.tdServices.dialogService.open(SelectWorkoutExerciseDialogComponent, {
       width: AppConfig.DefaultDialogWidth,
       data: data
     });
@@ -174,7 +174,7 @@ export class EditWorkoutPlanExportComponent extends BaseComponent implements OnD
   }
 
   private openAddCustomExerciseDialog(): void {
-    var dialog = this.dependencies.tdServices.dialogService.open(AddCustomExerciseDialogComponent, {
+    let dialog = this.dependencies.tdServices.dialogService.open(AddCustomExerciseDialogComponent, {
       width: AppConfig.DefaultDialogWidth
     });
 
@@ -187,11 +187,11 @@ export class EditWorkoutPlanExportComponent extends BaseComponent implements OnD
   }
 
   private openAddWorkoutExerciseDialog(exercise: Exercise): void {
-    var data: any = {};
+    let data: any = {};
     data.workoutId = this.workout.id;
     data.exercise = exercise;
 
-    var dialog = this.dependencies.tdServices.dialogService.open(AddWorkoutExerciseDialogComponent, {
+    let dialog = this.dependencies.tdServices.dialogService.open(AddWorkoutExerciseDialogComponent, {
       data: data,
       width: AppConfig.DefaultDialogWidth
     });
@@ -212,7 +212,7 @@ export class EditWorkoutPlanExportComponent extends BaseComponent implements OnD
 
   private recalculateOrder(): void {
     if (this.sortedWorkoutExercises) {
-      var order = 0;
+      let order = 0;
       this.sortedWorkoutExercises.forEach(workoutExercise => {
         workoutExercise.order = order;
         order++;

@@ -11,7 +11,7 @@ export class WorkoutService extends BaseTypeService<Workout>{
         super(repositoryClient, {
             type: 'Workout',
             allowDelete: true
-        })
+        });
     }
 
     copyFromWorkout(workoutId: number, clientId: number): PostQuery<Workout> {

@@ -59,7 +59,7 @@ export class EditClientDietComponent extends ClientsBaseComponent implements OnI
     }
 
     private handleLoadDiet(diet: Diet): void {
-        var translationData: any = {};
+        let translationData: any = {};
         translationData.dietName = diet.dietName;
         super.updateComponentTitle({ key: 'module.clients.diet.editPlanWithName', data: translationData });
     }

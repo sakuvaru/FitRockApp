@@ -1,4 +1,4 @@
-// Core 
+// Core
 import { EventEmitter, Component, Input, Output, OnInit, OnChanges, SimpleChanges, ChangeDetectorRef, ElementRef, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material';
@@ -30,7 +30,7 @@ import { observableHelper } from '../../lib/utilities';
 export class DynamicFormComponent extends BaseWebComponent implements OnInit, OnChanges {
 
     /**
-     * Why use subject for on click events? 
+     * Why use subject for on click events?
      * => Because we want to cancel requests if new request comes before the old one returns value (can happen
      * when clicking submit very fast)
      * More info: https://github.com/angular/angular/issues/5876 -> response from 'robwormald commented on Dec 30, 2015'
@@ -39,7 +39,7 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
     private editButtonSubject: Subject<void>;
     private deleteButtonSubject: Subject<void>;
 
-    private localLoaderEnabled: boolean = false;
+    private localLoaderEnabled = false;
 
     private insufficientLicenseError: string;
     private generalErrorMessage: string;
@@ -61,14 +61,14 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
 
     private formErrorLines: string[] = [];
 
-    private isDeleteEnabled: boolean = false;
-    private isEditForm: boolean = false;
-    private isInsertForm: boolean = false;
+    private isDeleteEnabled = false;
+    private isEditForm = false;
+    private isInsertForm = false;
 
     /**
      * Output that indicates if form is valid, typically used when custom button are used
      */
-    @Output() statusChanged = new EventEmitter<DynamicFormStatus>()
+    @Output() statusChanged = new EventEmitter<DynamicFormStatus>();
 
     /**
      * Form configuration
@@ -82,11 +82,11 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
     @Input() customSaveButtonSubject: Subject<void>;
 
     /**
-     * Flag for initialization component, used because ngOngChanges can be called before ngOnInit 
+     * Flag for initialization component, used because ngOngChanges can be called before ngOnInit
      * which would cause component to be initialized twice (happened when component is inside a dialog)
      * Info: https://stackoverflow.com/questions/43111474/how-to-stop-ngonchanges-called-before-ngoninit/43111597
      */
-    private initialized: boolean = false;
+    private initialized = false;
 
     constructor(
         private fieldControlService: FieldControlService,
@@ -94,7 +94,7 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
         private translateService: TranslateService,
         private cdr: ChangeDetectorRef
     ) {
-        super()
+        super();
     }
 
     ngOnInit() {
@@ -104,8 +104,8 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
     }
 
     ngOnChanges(changes: SimpleChanges) {
-        // re-initalize form when questions changes because dynamic form may recieve config with questions 
-        // after the initilization of component 
+        // re-initalize form when questions changes because dynamic form may recieve config with questions
+        // after the initilization of component
         if (changes.config.currentValue) {
             this.initDynamicForm(changes.config.currentValue);
         }
@@ -168,7 +168,7 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
                                 isValid = true;
                             }
 
-                            var formStatus = new DynamicFormStatus(
+                            const formStatus = new DynamicFormStatus(
                                 isValid,
                                 this.isDeleteEnabled,
                                 this.isEditForm,
@@ -181,7 +181,7 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
                         .subscribe();
 
                     // check if form is valid at this moment (e.g. when values from edit form are set)
-                    var formStatus = new DynamicFormStatus(
+                    const formStatus = new DynamicFormStatus(
                         this.form.valid,
                         this.isDeleteEnabled,
                         this.isEditForm,
@@ -199,7 +199,7 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
                     if (config.enableLocalLoader) {
                         this.localLoaderEnabled = false;
                     }
-                })
+                });
         }
 
         // set component as initialized
@@ -215,7 +215,7 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
 
             return config.insertFormDefinition
                 .map(form => {
-                    var fields = form.fields;
+                    const fields = form.fields;
 
                     if (config.fieldValueResolver && fields && fields.length > 0) {
                         // resolve custom field values
@@ -226,14 +226,14 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
                                     console.warn(`Cannot resolve form field value for field '${field.key}'`);
                                     return;
                                 }
-                                var newValue = config.fieldValueResolver(field.key, field.value);
+                                const newValue = config.fieldValueResolver(field.key, field.value);
 
                                 // set value
                                 field.value = this.getFieldValueSetByResolver(newValue);
 
                                 // set also this value as default value because otherwise clearing form would clear these values too
                                 field.defaultValue = newValue;
-                            })
+                            });
                         }
                     }
 
@@ -263,7 +263,7 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
             }
             return config.editFormDefinition
                 .map(form => {
-                    var fields = form.fields;
+                    const fields = form.fields;
 
                     // load fields
                     this.form = this.fieldControlService.toFormGroup(fields);
@@ -283,14 +283,14 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
                                     console.warn(`Cannot resolve form field value for field '${field.key}'`);
                                     return;
                                 }
-                                var newValue = config.fieldValueResolver(field.key, field.value);
+                                const newValue = config.fieldValueResolver(field.key, field.value);
 
                                 // set field value
                                 field.value = this.getFieldValueSetByResolver(newValue);
 
                                 // set also this value as default value because otherwise clearing form would clear these values too
                                 field.defaultValue = newValue;
-                            })
+                            });
                         }
                     }
 
@@ -303,7 +303,7 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
                     if (config.onEditFormLoaded) {
                         config.onEditFormLoaded(form);
                     }
-                })
+                });
         }
         throw Error(`Unsupported form type`);
     }
@@ -313,7 +313,7 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
         // that clicking save will fire multiple times
         this.initButtons();
 
-        // init custom button clicks (useful when default form buttons are hidden (e.g. in dialogs)) and custom 
+        // init custom button clicks (useful when default form buttons are hidden (e.g. in dialogs)) and custom
         // click need to be handled
         if (this.customSaveButtonSubject) {
             if (config.isInsertForm()) {
@@ -376,7 +376,7 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
                 // do not allow nulls to be send
                 this.convertEmptyStringsToNull();
 
-                return config.insertFunction(this.form.value)
+                return config.insertFunction(this.form.value);
             })
             .map(response => {
                 this.response = response;
@@ -417,7 +417,7 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
                 // do not allow nulls to be send
                 this.convertEmptyStringsToNull();
 
-                return config.editFunction(this.form.value)
+                return config.editFunction(this.form.value);
             })
             .map(response => {
                 this.response = response;
@@ -454,7 +454,7 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
 
                 this.convertEmptyStringsToNull();
 
-                return config.deleteFunction(this.form.value)
+                return config.deleteFunction(this.form.value);
             })
             .map(response => {
                 this.response = response;
@@ -486,7 +486,7 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
             return;
         }
 
-        var tempQuestions: FormField[] = [];
+        const tempQuestions: FormField[] = [];
 
         fields.forEach(field => {
             if (this.showField(field.key)) {
@@ -503,7 +503,7 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
      */
     private showField(key: string): boolean {
 
-        var fieldInHiddenFields = this.config.hiddenFields.find(m => m === key);
+        const fieldInHiddenFields = this.config.hiddenFields.find(m => m === key);
 
         if (fieldInHiddenFields) {
             return false;
@@ -512,7 +512,7 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
     }
 
     private getTranslateLabelsObservable(config: FormConfig<any>): Observable<any> {
-        var observables: Observable<any>[] = [];
+        const observables: Observable<any>[] = [];
 
         observables.push(this.translateService.get(config.submitTextKey).map(key => this.submitText = key));
         observables.push(this.translateService.get(config.snackBarTextKey).map(key => this.snackbarText = key));
@@ -604,7 +604,7 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
 
     private convertEmptyStringsToNull(): void {
         this.questions.forEach(question => {
-            var formInput = this.form.controls[question.key];
+            const formInput = this.form.controls[question.key];
 
             if (formInput.value === '') {
                 formInput.setValue(null);
@@ -628,7 +628,7 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
             errorResponse.formValidation.validationResult.forEach(validationResult => {
 
                 this.getFormFieldErrorMessage(validationResult).subscribe(error => {
-                    var fieldWithError = this.form.controls[validationResult.columnName];
+                    const fieldWithError = this.form.controls[validationResult.columnName];
 
                     if (!fieldWithError) {
                         // field can be undefined if its not present in form - e.g. codename might throw error, but is
@@ -640,11 +640,11 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
                         this.form.controls[validationResult.columnName].setErrors({ 'field_error': error });
 
                         // get translated label of the form field
-                        var formField = this.questions.find(m => m.key.toLowerCase() === validationResult.columnName.toLocaleLowerCase());
+                        const formField = this.questions.find(m => m.key.toLowerCase() === validationResult.columnName.toLocaleLowerCase());
 
                         if (formField) {
                             // form error
-                            this.getFormErrorMessage(validationResult, formField.translatedLabel || formField.key).subscribe(error => this.formErrorLines.push(error))
+                            this.getFormErrorMessage(validationResult, formField.translatedLabel || formField.key).subscribe(error => this.formErrorLines.push(error));
                         }
                         else {
                             console.warn(`Form field '${validationResult.columnName}' could not be found in form and therefore error message could not be displayed`);
@@ -667,7 +667,7 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
             this.submissionError = this.unknownErrorMessage;
         }
 
-        // buttons clicks need to be reinitialized because otherwise it was not possible to resubmit the form 
+        // buttons clicks need to be reinitialized because otherwise it was not possible to resubmit the form
         // after it failed because of some error
         this.initButtonSubscriptions(config);
 
@@ -727,7 +727,7 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
      */
     private getFieldValueSetByResolver(value: string | boolean | number): string {
         // boolean field needs to return 'string' with 'false' value otherwise the JSON .NET mapping
-        // does not map the object 
+        // does not map the object
         if (!value) {
             if (typeof (value) === 'boolean') {
                 return 'false';

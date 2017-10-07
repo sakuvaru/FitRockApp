@@ -60,7 +60,7 @@ export class MyFoodsListComponent extends BaseComponent implements OnInit {
         return this.dependencies.itemServices.foodCategoryService.getFoodCategoryWithFoodsCountDto(searchTerm, false)
           .get()
           .map(response => {
-            var filters: Filter<FoodCategoryWithFoodsCountDto>[] = [];
+            let filters: Filter<FoodCategoryWithFoodsCountDto>[] = [];
             response.items.forEach(category => {
               filters.push(new Filter({
                 filterNameKey: category.codename,

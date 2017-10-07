@@ -7,7 +7,7 @@ import { ComponentConfig } from './component.config';
 import { AdminMenu } from './admin-menu';
 import { MenuItem, ResourceKey } from '../models/core.models';
 import { Observable, Subject } from 'rxjs/Rx';
-import { NavigationExtras } from '@angular/router'
+import { NavigationExtras } from '@angular/router';
 import { ComponentSetup } from './component-setup.class';
 
 // moment js
@@ -16,14 +16,6 @@ import * as moment from 'moment';
 @Component({
 })
 export abstract class BaseComponent implements OnInit, OnDestroy {
-
-    /**
-    * Every child component should setup its base config.
-    * This is setup during the component initialization and should serve
-    * different purpose then the ComponentConfig which can be set at any time during the component lifecycle.
-    * If no setup is provided, default setup will be used
-    */
-    abstract setup(): ComponentSetup | null | undefined;
 
     /**
      * Important - used to unsubsribe ALL subscriptions when component is destroyed. This ensures that requests are cancelled
@@ -59,6 +51,14 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
 
     // admin menu
     protected adminMenu: AdminMenu = new AdminMenu();
+
+    /**
+    * Every child component should setup its base config.
+    * This is setup during the component initialization and should serve
+    * different purpose then the ComponentConfig which can be set at any time during the component lifecycle.
+    * If no setup is provided, default setup will be used
+    */
+    abstract setup(): ComponentSetup | null | undefined;
 
     constructor(protected dependencies: ComponentDependencyService) {
     }
@@ -103,8 +103,8 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
      * @param url Url to redirect
      */
     forceRefresh(url: string): void {
-        var redirectHandlerUrl = this.getAppUrl(UrlConfig.Redirect);
-        this.dependencies.router.navigate([redirectHandlerUrl], { queryParams: { 'url': url }, queryParamsHandling: "merge" });
+        const redirectHandlerUrl = this.getAppUrl(UrlConfig.Redirect);
+        this.dependencies.router.navigate([redirectHandlerUrl], { queryParams: { 'url': url }, queryParamsHandling: 'merge' });
     }
 
     navigate(commands: any[], extras?: NavigationExtras): void {
@@ -160,13 +160,12 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
 
         if (error instanceof ErrorResponse) {
             // handle license error
-            if (error.reason == ErrorReasonEnum.LicenseLimitation) {
+            if (error.reason === ErrorReasonEnum.LicenseLimitation) {
                 this.showErrorDialog('errors.invalidLicense');
             }
             // handle unknown ErrorResponse error
             this.showErrorDialog();
-        }
-        else {
+        } else {
             // handle unknown error
             this.showErrorDialog();
         }
@@ -187,7 +186,7 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
     // --------------- Snackbar ------------------- //
 
     showSnackbar(message: string): void {
-        let snackBarRef = this.dependencies.mdServices.snackbarService.open(message, undefined, { duration: this.snackbarDefaultDuration });
+        this.dependencies.mdServices.snackbarService.open(message, undefined, { duration: this.snackbarDefaultDuration });
     }
 
     showSavedSnackbar(): void {
@@ -219,18 +218,18 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
     // --------------- Dialogs ------------------- //
 
     showErrorDialog(key?: string): void {
-        var useKey = !key ? 'errors.dialogDefaultError' : key;
-        var titleKey = 'errors.dialogErrorTitle';
+        const useKey = !key ? 'errors.dialogDefaultError' : key;
+        const titleKey = 'errors.dialogErrorTitle';
 
         this.showDialog(useKey, titleKey);
     }
 
     showDialog(messageKey: string, titleKey?: string): void {
         // reset current translations
-        this.dialogDynamicTranslationMessage;
-        this.dialogDynamicTranslationTitle;
+        this.dialogDynamicTranslationMessage = '';
+        this.dialogDynamicTranslationTitle = '';
 
-        var observables: Observable<any>[] = [];
+        const observables: Observable<any>[] = [];
 
         observables.push(this.translate(messageKey).map(text => this.dialogDynamicTranslationMessage = text));
 
@@ -242,14 +241,14 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
             observables.push(this.translate('shared.close').map(text => this.dialogCloseButton = text));
         }
 
-        var zippedObservable = this.dependencies.helpers.observableHelper.zipObservables(observables)
+        const zippedObservable = this.dependencies.helpers.observableHelper.zipObservables(observables)
             .map(() => {
                 this.dependencies.tdServices.dialogService.openAlert({
                     message: this.dialogDynamicTranslationMessage,
                     title: this.dialogDynamicTranslationTitle,
                     closeButton: this.dialogCloseButton
                 });
-            })
+            });
 
         this.subscribeToObservable(zippedObservable);
     }
@@ -257,7 +256,7 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
     // --------------- Component initialization  ------------------ //
 
     protected setupComponent(): void {
-        var setup = this.setup();
+        const setup = this.setup();
         if (setup) {
             this.dependencies.coreServices.sharedService.setComponentSetup(setup);
         }
@@ -285,16 +284,15 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
     }
 
     protected initializeComponent(initialize: boolean = true): void {
-        var currentSetup = this.setup();
+        let currentSetup = this.setup();
         if (currentSetup) {
             currentSetup.initialized = initialize;
-        }
-        else {
-            currentSetup = { initialized: initialize }
+        } else {
+            currentSetup = { initialized: initialize };
         }
         this.dependencies.coreServices.sharedService.setComponentSetup(currentSetup);
     }
-    
+
     // --------------- Useful aliases ------------------ //
     translate(key: string, data?: any): Observable<string> {
         return this.dependencies.coreServices.translateService.get(key, data);
@@ -316,21 +314,19 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
     }
 
     // -------------- Observable subscriptions -------------- //
-    private completedObservablesCount: number = 0;
 
     protected subscribeToObservables(observables: Observable<any>[], options?: {
         enableLoader?: boolean,
         setComponentAsInitialized?: boolean
     }): void {
 
-        var enableLoader;
-        var setComponentAsInitialized;
+        let enableLoader;
+        let setComponentAsInitialized;
 
         if (!options) {
             enableLoader = true;
             setComponentAsInitialized = true;
-        }
-        else {
+        } else {
             enableLoader = options.enableLoader;
             setComponentAsInitialized = options.setComponentAsInitialized;
         }
@@ -345,7 +341,7 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
                 this.stopAllLoaders();
 
                 if (setComponentAsInitialized) {
-                    this.initializeComponent(true)
+                    this.initializeComponent(true);
                 }
             },
             error => this.handleError(error)
@@ -357,14 +353,13 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
         setComponentAsInitialized?: boolean
     }): void {
 
-        var enableLoader;
-        var setComponentAsInitialized;
+        let enableLoader;
+        let setComponentAsInitialized;
 
         if (!options) {
             enableLoader = true;
             setComponentAsInitialized = true;
-        }
-        else {
+        } else {
             enableLoader = options.enableLoader;
             setComponentAsInitialized = options.setComponentAsInitialized;
         }
@@ -380,7 +375,7 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
 
                 // set component as initialized
                 if (setComponentAsInitialized) {
-                    this.initializeComponent(true)
+                    this.initializeComponent(true);
                 }
             },
             error => this.handleError(error)

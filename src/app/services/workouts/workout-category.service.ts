@@ -10,7 +10,7 @@ export class WorkoutCategoryService extends BaseTypeService<WorkoutCategory>{
         super(repositoryClient, {
             type: 'WorkoutCategory',
             allowDelete: false
-        })
+        });
     }
 
     getCategoryCountForClientWorkouts(workoutName: string): MultipleItemQueryCustom<WorkoutCategoryListWithWorkoutsCount> {

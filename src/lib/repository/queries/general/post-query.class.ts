@@ -22,7 +22,7 @@ export class PostQuery<T extends any> extends BaseQuery {
         protected type: string,
         protected action: string
     ) {
-        super(authHttp, config)
+        super(authHttp, config);
         this._action = this.action;
     }
 
@@ -49,7 +49,7 @@ export class PostQuery<T extends any> extends BaseQuery {
     }
 
     // url
-    protected getPostUrl(): string{
+    protected getPostUrl(): string {
         return this.getTypeUrl(this.type, this._action);
     }
 

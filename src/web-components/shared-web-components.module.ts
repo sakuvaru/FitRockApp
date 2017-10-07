@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import { CovalentModule } from '../lib/covalent';
 
 // Angular meterial
-import { AngularMaterialModule } from '../lib/material'
+import { AngularMaterialModule } from '../lib/material';
 
 // translation
 import { TranslateModule } from '@ngx-translate/core';
@@ -23,7 +23,7 @@ import { DirectivesModule } from '../directives';
     ],
     declarations: [
     ],
-    providers:[
+    providers: [
     ],
     exports: [
         CommonModule,

@@ -6,11 +6,11 @@ import { BaseTypeService } from '../base/base-type.service';
 @Injectable()
 export class ExerciseCategoryService extends BaseTypeService<ExerciseCategory>{
 
-    constructor(repositoryClient: RepositoryClient) { 
+    constructor(repositoryClient: RepositoryClient) {
         super (repositoryClient, {
             type: 'ExerciseCategory',
             allowDelete: false
-        })
+        });
     }
 
     getCategoriesWithExercisesCount(exerciseName: string, takeAllExercises: boolean): MultipleItemQueryCustom<ExerciseCategoryListWithExercisesCount>{

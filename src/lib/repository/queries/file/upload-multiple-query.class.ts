@@ -37,9 +37,9 @@ export class UploadMultipleQuery extends BaseQuery {
     }
 
     // url
-    protected getUploadUrl(): string{
+    protected getUploadUrl(): string {
 
-        if (!this._action){
+        if (!this._action) {
             throw new Error('No action was specified for upload query');
         }
 
@@ -49,8 +49,8 @@ export class UploadMultipleQuery extends BaseQuery {
     // execution
 
     set(): Observable<ResponseUploadMultiple> {
-        if (!this.files || (this.files && this.files.length <= 0)){
-            throw new Error('No files were added to upload query')
+        if (!this.files || (this.files && this.files.length <= 0)) {
+            throw new Error('No files were added to upload query');
         }
 
         return super.uploadMultipleFiles(this.getUploadUrl(), this.files);

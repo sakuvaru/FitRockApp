@@ -20,10 +20,10 @@ import {
 // rxjs
 import { Observable } from 'rxjs/Rx';
 
-export class EditFormQuery<TItem extends IItem> extends BaseFormQuery{
+export class EditFormQuery<TItem extends IItem> extends BaseFormQuery {
 
     private _defaultAction = 'getEditForm';
-    private _disableCache: boolean = false;
+    private _disableCache = false;
 
     constructor(
         protected authHttp: AuthHttp,
@@ -31,12 +31,12 @@ export class EditFormQuery<TItem extends IItem> extends BaseFormQuery{
         protected type: string,
         protected itemId: number
     ) {
-        super(authHttp, config, type)
+        super(authHttp, config, type);
         this._action = this._defaultAction;
     }
 
     // execution
-    disableCache(disable: boolean): this{
+    disableCache(disable: boolean): this {
         this._disableCache = disable;
         return this;
     }

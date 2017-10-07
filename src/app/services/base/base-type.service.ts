@@ -24,7 +24,7 @@ export abstract class BaseTypeService<TItem extends IItem>{
     /* ------------------- Type related queries -------------------- */
 
     items(): MultipleItemQuery<TItem> {
-        return this.repositoryClient.items<TItem>(this.type)
+        return this.repositoryClient.items<TItem>(this.type);
     }
 
     item(): SingleItemQueryInit<TItem> {
@@ -61,7 +61,7 @@ export abstract class BaseTypeService<TItem extends IItem>{
     /* -------------------- Generic queries ----------------------- */
 
     customItems<TAny>(): MultipleItemQueryCustom<TAny> {
-        return this.repositoryClient.customItems<TAny>(this.type)
+        return this.repositoryClient.customItems<TAny>(this.type);
     }
 
     customItem<TAny>(): SingleItemQueryInitCustom<TAny> {
@@ -88,7 +88,7 @@ export abstract class BaseTypeService<TItem extends IItem>{
      */
     insertForm(customQuery?: InsertFormQuery<TItem>): DynamicFormInsertBuilder<TItem> {
         // query used to get form definition from server
-        var query = customQuery ? customQuery : this.insertFormQuery();
+        const query = customQuery ? customQuery : this.insertFormQuery();
 
         return new DynamicFormInsertBuilder<TItem>(
             this.type, query.get(),
@@ -103,9 +103,9 @@ export abstract class BaseTypeService<TItem extends IItem>{
     */
     editForm(itemId: number, customQuery?: EditFormQuery<TItem>): DynamicFormEditBuilder<TItem> {
         // query used to get form definition from server
-        var query = customQuery ? customQuery : this.editFormQuery(itemId);
+        const query = customQuery ? customQuery : this.editFormQuery(itemId);
 
-        var builder = new DynamicFormEditBuilder<TItem>(this.type, query.get(), (item) => this.edit(item).set());
+        const builder = new DynamicFormEditBuilder<TItem>(this.type, query.get(), (item) => this.edit(item).set());
 
         // set default delete function if its enabled
         if (this.config.allowDelete) {

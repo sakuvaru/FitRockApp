@@ -54,7 +54,7 @@ export class FeedsComponent extends BaseComponent implements OnInit {
             query => query.get().takeUntil(this.ngUnsubscribe))
             .text({
                 resolver: item => {
-                    var feedResult = this.getFeedResult(item)
+                    let feedResult = this.getFeedResult(item)
                     if (feedResult) {
                         if (feedResult.shouldBeTranslated() && feedResult.translationKey) {
                             return feedResult.translationKey;
@@ -66,14 +66,14 @@ export class FeedsComponent extends BaseComponent implements OnInit {
                     return '';
                 },
                 translate: item => {
-                    var feedResult = this.getFeedResult(item)
+                    let feedResult = this.getFeedResult(item)
                     if (feedResult) {
                         return feedResult.shouldBeTranslated();
                     }
                     return false;
                 },
                 translationData: item => {
-                    var feedResult = this.getFeedResult(item)
+                    let feedResult = this.getFeedResult(item)
                     if (feedResult) {
                         return feedResult.translationData;
                     }
@@ -94,7 +94,7 @@ export class FeedsComponent extends BaseComponent implements OnInit {
     }
 
     private getFeedResult(feed: Feed): FeedResult | null {
-        var feedResult = this.dependencies.itemServices.feedService.getFeedResult(feed);
+        let feedResult = this.dependencies.itemServices.feedService.getFeedResult(feed);
         return feedResult;
     }
 }

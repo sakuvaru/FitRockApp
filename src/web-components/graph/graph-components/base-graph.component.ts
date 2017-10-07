@@ -47,16 +47,16 @@ export abstract class BaseGraphComponent extends BaseWebComponent implements OnI
     /**
      * Indicates if component is initialized
      */
-    protected initialized: boolean = false;
+    protected initialized = false;
 
     /**
      * Indicates if local loader should be shown
      */
-    protected showLocalLoader: boolean = false;
+    protected showLocalLoader = false;
 
     constructor(
         protected translateService: TranslateService
-    ) { super() }
+    ) { super(); }
 
 
     ngOnInit() {
@@ -135,7 +135,7 @@ export abstract class BaseGraphComponent extends BaseWebComponent implements OnI
     }
 
     private initWrapperStyle(config: GraphConfig<BaseGraph>): void {
-        var style: any = {};
+        const style: any = {};
         style.width = config.width;
         style.height = config.height;
         this.wrapperStyle = style;

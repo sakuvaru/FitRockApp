@@ -59,7 +59,7 @@ export class AdminToolbarComponent extends BaseComponent implements OnInit {
 
         // construct url based on field type
         if (feed.feedType.toLowerCase() == 'message') {
-            var senderUserIdData = feed.data.find(m => m.key === 'SenderUserId');
+            let senderUserIdData = feed.data.find(m => m.key === 'SenderUserId');
 
             return super.getAuthUrl('chat/' + (senderUserIdData ? senderUserIdData.value : ''));
         }
@@ -72,7 +72,7 @@ export class AdminToolbarComponent extends BaseComponent implements OnInit {
     }
 
     private getFeedText(feed: Feed): Observable<string> {
-        var feedResult = this.dependencies.itemServices.feedService.getFeedResult(feed);
+        let feedResult = this.dependencies.itemServices.feedService.getFeedResult(feed);
 
         if (!feedResult) {
             return Observable.of('');
@@ -105,12 +105,12 @@ export class AdminToolbarComponent extends BaseComponent implements OnInit {
                 this.preventFeedChange = false;
                 
                 // there is one less unread feed
-                if (this.feedsCount > 0){
+                if (this.feedsCount > 0) {
                     this.feedsCount--;
                 }
 
                 // go to feed details
-                var feedUrl = this.getFeedUrl(feed);
+                let feedUrl = this.getFeedUrl(feed);
                 if (!feedUrl) {
                     console.warn('Cannot navigate to feed with id = ' + feed.id);
                 }

@@ -51,7 +51,7 @@ export class ClientsOverviewComponent extends ClientsBaseComponent implements On
       ])
       .loadQuery(searchTerm => {
         return this.dependencies.itemServices.userService.clients()
-          .whereLikeMultiple(["FirstName", "LastName"], searchTerm)
+          .whereLikeMultiple(['FirstName', 'LastName'], searchTerm)
       })
       .loadResolver(query => {
         return query

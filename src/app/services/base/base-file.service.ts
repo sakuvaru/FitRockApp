@@ -9,14 +9,14 @@ export abstract class BaseFileService {
     /**
      * Name of the endpoint controller which is used as files endpoint
      */
-    protected controller: string = 'file';
+    protected controller = 'file';
 
     constructor(
         protected repositoryClient: RepositoryClient,
     ) {
     }
 
-    uploadSingleFile(action: string, file: File): UploadSingleQuery{
+    uploadSingleFile(action: string, file: File): UploadSingleQuery {
         return this.repositoryClient.uploadSingleFile(this.controller, action, file);
     }
 
@@ -34,5 +34,5 @@ export abstract class BaseFileService {
 
     deleteFile(action: string, fileUrl: string): DeleteFileQuery {
         return this.repositoryClient.deleteFile(this.controller, action, fileUrl);
-    } 
+    }
 }

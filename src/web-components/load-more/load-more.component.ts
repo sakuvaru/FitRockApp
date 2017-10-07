@@ -18,7 +18,7 @@ export class LoadMoreComponent extends BaseWebComponent implements OnInit, OnCha
     @Input() config: LoadMoreConfig<any>;
 
     /**
-   * Why use subject for on click events? 
+   * Why use subject for on click events?
    * => Because we want to cancel requests if new request comes before the old one returns value
    * More info: https://github.com/angular/angular/issues/5876 -> response from 'robwormald commented on Dec 30, 2015'
    */
@@ -40,7 +40,7 @@ export class LoadMoreComponent extends BaseWebComponent implements OnInit, OnCha
     /**
      * Current page
      */
-    private currentPage: number = 1;
+    private currentPage = 1;
 
     /**
      * Total number of pages with given page size
@@ -50,32 +50,32 @@ export class LoadMoreComponent extends BaseWebComponent implements OnInit, OnCha
     /**
      * Current search term
      */
-    private searchTerm: string = '';
+    private searchTerm = '';
 
     /**
      * Indicates if show more button is displayed
      */
-    private showMoreButton: boolean = false;
+    private showMoreButton = false;
 
     /**
     * Indicates if the load of items is the initial load
     */
-    private isInitialLoad: boolean = true;
+    private isInitialLoad = true;
 
     /**
      * Indicates if component was initialized
      */
-    private initialized: boolean = false;
+    private initialized = false;
 
     /**
      * Indicates if local loader is active
      */
-    private localLoaderLoading: boolean = false;
+    private localLoaderLoading = false;
 
     constructor(
         private translateService: TranslateService
     ) {
-        super()
+        super();
     }
 
     ngOnInit() {
@@ -140,7 +140,7 @@ export class LoadMoreComponent extends BaseWebComponent implements OnInit, OnCha
         }
 
         // prepare item query
-        var query = this.config.loadQuery(this.searchTerm);
+        const query = this.config.loadQuery(this.searchTerm);
 
         // apply page size && page
         query.page(this.currentPage);

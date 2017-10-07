@@ -26,11 +26,11 @@ export abstract class BaseItemCountQuery extends BaseQuery {
         protected config: RepositoryConfig,
         protected type: string,
     ) {
-        super(authHttp, config)
+        super(authHttp, config);
     }
 
     // options
-    addOption(option: IOption): this{
+    addOption(option: IOption): this {
         this._options.push(option);
         return this;
     }

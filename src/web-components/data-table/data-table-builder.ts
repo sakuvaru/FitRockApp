@@ -12,7 +12,7 @@ export class DataTableBuilder<TItem extends IItem> {
         return this;
     }
 
-    enableLocalLoader(enabled: boolean): this{
+    enableLocalLoader(enabled: boolean): this {
         this.config.enableLocalLoader = enabled;
         return this;
     }
@@ -39,7 +39,7 @@ export class DataTableBuilder<TItem extends IItem> {
         return this;
     }
 
-    showAllFilter(show: boolean): this{
+    showAllFilter(show: boolean): this {
         this.config.showAllFilter = show;
         return this;
     }
@@ -59,8 +59,8 @@ export class DataTableBuilder<TItem extends IItem> {
         return this;
     }
 
-    pagerConfig(config: PagerConfig): this{
-        if (config){
+    pagerConfig(config: PagerConfig): this {
+        if (config) {
             this.config.pagerConfig = config;
         }
         return this;
@@ -149,5 +149,4 @@ export class DataTableBuilder<TItem extends IItem> {
     build(): DataTableConfig<TItem> {
         return this.config;
     }
-
 }

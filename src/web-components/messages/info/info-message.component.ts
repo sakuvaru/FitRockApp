@@ -6,11 +6,11 @@ import { BaseWebComponent } from '../../base-web-component.class';
     selector: 'info-message',
     templateUrl: 'info-message.component.html'
 })
-export class InfoMessageComponent extends BaseWebComponent{
+export class InfoMessageComponent extends BaseWebComponent {
     @Input() text: string;
     @Input() title: string;
 
     constructor(
-    ) { super()
+    ) { super();
     }
 }

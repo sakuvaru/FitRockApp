@@ -46,7 +46,7 @@ export class EditAvatarComponent extends BaseComponent implements OnInit {
     }
 
     private initUploader(): void {
-        var userId = this.dependencies.authenticatedUserService.getUserId();
+        let userId = this.dependencies.authenticatedUserService.getUserId();
 
         this.uploaderConfig = this.dependencies.webComponentServices.uploaderService.uploader(
             UploaderModeEnum.SingleFile, 
@@ -54,7 +54,7 @@ export class EditAvatarComponent extends BaseComponent implements OnInit {
             .set())
             .useDefaultImageExtensions(true)
             .onAfterUpload<FetchedFile>((avatar => {
-                if (avatar && avatar.length === 1){
+                if (avatar && avatar.length === 1) {
                     // update src of the avatar
                     this.avatarSrc = avatar[0].absoluteUrl;
                 }

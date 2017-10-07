@@ -7,7 +7,7 @@ export abstract class BaseWebComponent implements OnDestroy {
 
     /**
     * Important - used to unsubsribe ALL subscriptions when component is destroyed. This ensures that requests are cancelled
-    * when navigating away from the component. 
+    * when navigating away from the component.
     * Solution should be official - taken from https://stackoverflow.com/questions/38008334/angular-rxjs-when-should-i-unsubscribe-from-subscription
     * Usage: use 'takeUntl(this.ngUnsubscribe)' for all subscriptions.
     * Example: this.myThingService.getThings()

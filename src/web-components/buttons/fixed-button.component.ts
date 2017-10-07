@@ -6,7 +6,7 @@ import { BaseWebComponent } from '../base-web-component.class';
     selector: 'fixed-button',
     templateUrl: 'fixed-button.component.html'
 })
-export class FixedButtonComponent extends BaseWebComponent{
+export class FixedButtonComponent extends BaseWebComponent {
     @Input() url: string;
     @Input() icon: string;
 
@@ -22,15 +22,15 @@ export class FixedButtonComponent extends BaseWebComponent{
     }
 
     private getPositionClass(): string {
-        if (this.position){
+        if (this.position) {
             return this.position;
         }
 
         return this.default_position;
     }
 
-    private getIcon(): string{
-        if (this.icon){
+    private getIcon(): string {
+        if (this.icon) {
             return this.icon;
         }
 

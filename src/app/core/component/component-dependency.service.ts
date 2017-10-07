@@ -84,7 +84,7 @@ export class ComponentDependencyService {
         this.helpers.observableHelper = observableHelper;
         this.helpers.stringHelper = stringHelper;
 
-        //td services (teradata covalent)
+        // td services (teradata covalent)
         this.tdServices = new TdServices();
         this.tdServices.dialogService = injector.get(TdDialogService);
         this.tdServices.loadingService = injector.get(TdLoadingService);
@@ -135,7 +135,7 @@ export class ComponentDependencyService {
         this.itemServices.feedService = injector.get(FeedService);
 
         // file service
-        this.fileService= injector.get(FileService);
+        this.fileService = injector.get(FileService);
     }
 }
 

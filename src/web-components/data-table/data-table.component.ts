@@ -27,45 +27,45 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
     private items: any[] = [];
 
     // filters
-    private hasFilters: boolean = false;
+    private hasFilters = false;
     private activeFilterGuid: string | null;
     private filters: Filter<any>[] = [];
 
     // pager
     private totalPages: number;
-    private currentPage: number = 1;
+    private currentPage = 1;
 
     // local storage suffixes
-    private localStorageActiveFilter: string = 'data_table_active_filter';
-    private localStoragePage: string = 'data_table_page';
-    private localStorageSearchedData: string = 'data_table_searchedData';
+    private localStorageActiveFilter = 'data_table_active_filter';
+    private localStoragePage = 'data_table_page';
+    private localStorageSearchedData = 'data_table_searchedData';
 
     // keys
-    private allFilterKey: string = 'webComponents.dataTable.allFilterText';
+    private allFilterKey = 'webComponents.dataTable.allFilterText';
 
     // search
-    private searchTerm: string = '';
+    private searchTerm = '';
 
     // local loader
-    private localLoaderLoading: boolean = false;
+    private localLoaderLoading = false;
 
     /**
      * Indicates if the load of items is the initial load
      */
-    private isInitialLoad: boolean = true;
+    private isInitialLoad = true;
 
     /**
-    * Flag for initialization component, used because ngOngChanges can be called before ngOnInit 
+    * Flag for initialization component, used because ngOngChanges can be called before ngOnInit
     * which would cause component to be initialized twice (happened when component is inside a dialog)
     * Info: https://stackoverflow.com/questions/43111474/how-to-stop-ngonchanges-called-before-ngoninit/43111597
     */
-    private initialized: boolean = false;
+    private initialized = false;
 
     constructor(
         private translateService: TranslateService,
         private mediaService: TdMediaService,
     ) {
-        super()
+        super();
     }
 
     ngOnInit() {
@@ -158,8 +158,8 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
                     // add all filter
                     if (this.config.showAllFilter) {
                         // get sum count of all filter's count
-                        var sumCount = _.reduce(this.filters, (memo, filter) => filter.count != null ? memo + filter.count : memo, 0);
-                        var allFilter = new Filter({
+                        const sumCount = _.reduce(this.filters, (memo, filter) => filter.count != null ? memo + filter.count : memo, 0);
+                        const allFilter = new Filter({
                             onFilter: () => query,
                             count: sumCount,
                             filterNameKey: this.allFilterKey
@@ -178,7 +178,7 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
                     }
 
                     // prepare item query
-                    var query = this.config.loadQuery(this.searchTerm);
+                    let query = this.config.loadQuery(this.searchTerm);
 
                     // automatically apply page size + page options
                     query.page(page);
@@ -212,19 +212,19 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
                 });
         }
         else {
-            var query = this.config.loadQuery(this.searchTerm);
+            let query = this.config.loadQuery(this.searchTerm);
 
             // prepare static filters
             this.filters = [];
 
-            // add static filters 
+            // add static filters
             if (this.config.staticFilters && this.config.staticFilters.length > 0) {
                 this.config.staticFilters.forEach(staticFilter => this.filters.push(staticFilter));
             }
 
             // add all filter
             if (this.config.showAllFilter) {
-                var allFilter = new Filter({
+                const allFilter = new Filter({
                     onFilter: (query) => query,
                     filterNameKey: this.allFilterKey,
                 });
@@ -288,26 +288,26 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
     }
 
     private getFilterByGuid(guid: string): Filter<any> | undefined {
-        var filter = this.filters.find(m => m.guid === guid);
+        const filter = this.filters.find(m => m.guid === guid);
         return filter;
     }
 
     private getQueryWithFilters(query: MultipleItemQuery<any>): MultipleItemQuery<any> {
         if (this.hasFilters) {
-            var filter: Filter<any> | undefined;
+            let filter: Filter<any> | undefined;
 
             // try getting the active filter
-            if (this.activeFilterGuid){
+            if (this.activeFilterGuid) {
                 filter = this.getFilterByGuid(this.activeFilterGuid);
             }
 
-            if (!filter){
+            if (!filter) {
                  // if no active filter is found or the filter is invalid, use the first one
                 filter = this.filters[0];
                 this.activeFilterGuid = filter.guid;
             }
 
-            if (!filter){
+            if (!filter) {
                 throw Error(`Data table filter failed due to invalid filter.`);
             }
 
@@ -336,9 +336,9 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
     }
 
     private initLastFilterState(hash: number): void {
-        var filterFormStorage = this.getFilterFromLocalStorage(hash);
-        var pageFromStorage = this.getPageFromLocalStorage(hash);
-        var searchTermFromStorage = this.getSearchedDataFromLocalStorage(hash);
+        const filterFormStorage = this.getFilterFromLocalStorage(hash);
+        const pageFromStorage = this.getPageFromLocalStorage(hash);
+        const searchTermFromStorage = this.getSearchedDataFromLocalStorage(hash);
 
         if (filterFormStorage) {
             this.activeFilterGuid = filterFormStorage;
@@ -358,7 +358,7 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
     }
 
     private getPageFromLocalStorage(hash: number): number | null {
-        var page = localStorage.getItem(this.localStoragePage + '_' + hash);
+        const page = localStorage.getItem(this.localStoragePage + '_' + hash);
 
         if (!page) {
             // use first page if none is was set

@@ -77,7 +77,7 @@ export interface IResponseFormEditRaw extends IResponseBase {
     fromCache: boolean;
     item: IItem;
     model: string;
-    type: string
+    type: string;
 }
 
 export interface IResponsePostRaw extends IResponseBase {

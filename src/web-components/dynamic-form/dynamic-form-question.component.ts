@@ -77,12 +77,12 @@ export class DynamicFormQuestionComponent extends BaseWebComponent implements On
     }
 
     // translations
-    var translationsObservable = this.getReloadTranslationObservable()
+    let translationsObservable = this.getReloadTranslationObservable()
       .takeUntil(this.ngUnsubscribe)
       .subscribe();
 
     // value change observable
-    var changeObservable = this.getSubscribeToChangesObservable()
+    let changeObservable = this.getSubscribeToChangesObservable()
       .takeUntil(this.ngUnsubscribe)
       .subscribe();
 
@@ -120,7 +120,7 @@ export class DynamicFormQuestionComponent extends BaseWebComponent implements On
         this.question.options.listOptions.forEach(option => {
           this.translateService.get(option.name).subscribe(translatedText => {
             if (translatedText && this.question.options && this.question.options.listOptions) {
-              var optionInList = this.question.options.listOptions.find(m => m.value === option.value);
+              let optionInList = this.question.options.listOptions.find(m => m.value === option.value);
               if (!optionInList) {
                 throw Error(`Option '${option.value}' was not found in list`)
               }
@@ -139,7 +139,7 @@ export class DynamicFormQuestionComponent extends BaseWebComponent implements On
       }
       else {
         // set default value of checkbox for insert forms
-        var defaultValue: boolean;
+        let defaultValue: boolean;
         if (this.question.defaultValue) {
           defaultValue = true;
         }
@@ -160,7 +160,7 @@ export class DynamicFormQuestionComponent extends BaseWebComponent implements On
       }
       else {
         // set default value for insert forms
-        var defaultValue: boolean;
+        let defaultValue: boolean;
         if (this.question.defaultValue) {
           defaultValue = true;
         }
@@ -177,7 +177,7 @@ export class DynamicFormQuestionComponent extends BaseWebComponent implements On
       if (this.formConfig.isEditForm()) {
         // set date field starting date (if its set)
 
-        var date = this.getQuestionValue();
+        let date = this.getQuestionValue();
 
         if (this.question.rawValue) {
           // date is set, set it
@@ -198,7 +198,7 @@ export class DynamicFormQuestionComponent extends BaseWebComponent implements On
    * Use this method to check value changes & to determin whether the value is valid or not
    */
   private getSubscribeToChangesObservable(): Observable<any> {
-    var control = this.getQuestionControl();
+    let control = this.getQuestionControl();
     return control.valueChanges
       .takeUntil(this.ngUnsubscribe)
       .map(newValue => {
@@ -208,7 +208,7 @@ export class DynamicFormQuestionComponent extends BaseWebComponent implements On
         }
 
         // check if the field's value is valid
-        var valueValidation = this.getCustomValidationResult(newValue);
+        let valueValidation = this.getCustomValidationResult(newValue);
 
         if (!valueValidation.isValid) {
           this.translateService.get(valueValidation.errorMessageKey, valueValidation.translationData)
@@ -228,9 +228,9 @@ export class DynamicFormQuestionComponent extends BaseWebComponent implements On
   }
 
   private getCustomValidationResult(value: any): ValueValidationResult {
-    var isValid = true;
-    var errorMessageKey: string = 'form.error.unknown';
-    var translationData: any = {};
+    let isValid = true;
+    let errorMessageKey: string = 'form.error.unknown';
+    let translationData: any = {};
 
     // set label
     translationData.label = this.question.translatedLabel;
@@ -249,8 +249,8 @@ export class DynamicFormQuestionComponent extends BaseWebComponent implements On
       }
       else {
         // field is number, but check its min & max values
-        var maxValue = this.getMaxNumberValue();
-        var minValue = this.getMinNumberValue();
+        let maxValue = this.getMaxNumberValue();
+        let minValue = this.getMinNumberValue();
 
         if (value > maxValue && value > 0) {
           isValid = false;
@@ -269,14 +269,14 @@ export class DynamicFormQuestionComponent extends BaseWebComponent implements On
   }
 
   private getQuestionLabelTranslationObservable(): Observable<any> {
-    var labelTranslationKey = this.getQuestionLabelKey();
+    let labelTranslationKey = this.getQuestionLabelKey();
 
-    var extraTranslationData;
+    let extraTranslationData;
     if (this.question.options) {
       extraTranslationData = this.question.options.extraTranslationData;
     }
 
-    var originalTranslationObservable = this.translateService
+    let originalTranslationObservable = this.translateService
       .get(labelTranslationKey, extraTranslationData)
       .map(translatedLabel => this.question.translatedLabel = translatedLabel);
 
@@ -298,7 +298,7 @@ export class DynamicFormQuestionComponent extends BaseWebComponent implements On
   }
 
   private getQuestionHintTranslationObservable(): Observable<any> {
-    var translationKey = this.getQuestionHintKey();
+    let translationKey = this.getQuestionHintKey();
     return this.translateService.get(translationKey).map(translatedText => {
       if (this.translationSuccessful(translatedText)) {
         this.questionHint = translatedText
@@ -340,7 +340,7 @@ export class DynamicFormQuestionComponent extends BaseWebComponent implements On
       return this.maximumNumberValue;
     }
 
-    var definedNumber = this.question.options.maxNumberValue;
+    let definedNumber = this.question.options.maxNumberValue;
     if (definedNumber === 0) {
       return 0;
     }
@@ -358,7 +358,7 @@ export class DynamicFormQuestionComponent extends BaseWebComponent implements On
       return this.miniumNumberValue;
     }
 
-    var definedNumber = this.question.options.minNumberValue;
+    let definedNumber = this.question.options.minNumberValue;
     if (definedNumber === 0) {
       return 0;
     }

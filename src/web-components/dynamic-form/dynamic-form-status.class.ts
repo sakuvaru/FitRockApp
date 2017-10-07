@@ -4,5 +4,5 @@ export class DynamicFormStatus {
         public isDeleteEnabled: boolean,
         public isEditForm: boolean,
         public isInsertForm: boolean,
-    ){}
+    ) {}
 }

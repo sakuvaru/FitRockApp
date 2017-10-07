@@ -24,7 +24,7 @@ constructor(
         protected config: RepositoryConfig,
         protected type: string,
     ) {
-        super(authHttp, config, type)
+        super(authHttp, config, type);
     }
 
     // execution

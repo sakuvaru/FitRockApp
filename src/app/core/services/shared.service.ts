@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import { ComponentConfig } from '../component/component.config';
 import { GlobalLoaderStatus } from '../models/core.models';
-import { ComponentSetup } from '../component/component-setup.class'
+import { ComponentSetup } from '../component/component-setup.class';
 import { Log } from '../../models/';
 
 /// Shared data app
@@ -29,7 +29,7 @@ export class SharedService {
     this.componentConfigSource.next(config);
   }
 
-  setComponentSearch(search: string): void{
+  setComponentSearch(search: string): void {
     this.componentSearchSource.next(search);
   }
 
@@ -41,7 +41,7 @@ export class SharedService {
     this.errorSource.next(log);
   }
 
-  setComponentSetup(setup: ComponentSetup): void{
+  setComponentSetup(setup: ComponentSetup): void {
     this.componentSetupSource.next(setup);
   }
 }

@@ -13,7 +13,7 @@ import { PagerButton } from './models';
 export class DataTableLayoutPager implements OnInit, OnChanges {
     @Input() pagerConfig: PagerConfig;
     @Input() totalPages: number;
-    @Input() currentPage: number = 1; // initial page
+    @Input() currentPage = 1; // initial page
 
     @Output() goToPage = new EventEmitter<number>();
 
@@ -54,9 +54,9 @@ export class DataTableLayoutPager implements OnInit, OnChanges {
     }
 
     private initPagerButtons(): void {
-        var buttons: PagerButton[] = [];
-        var buttonOffsetCount = (this.showPagesCount - 1) / 2;
-        var startingPage: number;
+        const buttons: PagerButton[] = [];
+        const buttonOffsetCount = (this.showPagesCount - 1) / 2;
+        let startingPage: number;
 
         startingPage = this.currentPage - buttonOffsetCount;
         if (startingPage < 1) {
@@ -65,8 +65,8 @@ export class DataTableLayoutPager implements OnInit, OnChanges {
         }
         else if (this.currentPage > this.totalPages - buttonOffsetCount) {
             // display more previous items if current page is approaching maximum number of pages
-            var offset = this.currentPage - this.totalPages + this.showPagesCount - 1;
-            var startingPage = this.currentPage - offset;
+            const offset = this.currentPage - this.totalPages + this.showPagesCount - 1;
+            let startingPage = this.currentPage - offset;
 
             // do not display negative pages
             if (startingPage < 1) {
@@ -81,7 +81,7 @@ export class DataTableLayoutPager implements OnInit, OnChanges {
                 break;
             }
 
-            var isActive = i == this.currentPage;
+            const isActive = i == this.currentPage;
             buttons.push(new PagerButton(i, isActive));
         }
 
@@ -104,7 +104,7 @@ export class DataTableLayoutPager implements OnInit, OnChanges {
 export class DataTableLayoutHeader {
     @Input() config: DataTableConfig<any>;
 
-    private getTextAlignClass(field: DataTableField<any>): string | null{
+    private getTextAlignClass(field: DataTableField<any>): string | null {
         if (field.align === AlignEnum.Center) {
             return 'text-center';
         }
@@ -126,7 +126,7 @@ export class DataTableLayoutHeader {
 export class DataTableLayoutSearch implements OnInit {
     @Input() config: DataTableConfig<any>;
     @Input() searchTerm: string;
-    
+
     @Output() search = new EventEmitter<string>();
 
     private readonly debounceTime = 300;
@@ -149,7 +149,7 @@ export class DataTableLayoutFilters {
     @Input() filters: Filter<any>[] = [];
     @Output() activateFilter = new EventEmitter<string>();
 
-    private selectChip(filter: Filter<any>): void{
+    private selectChip(filter: Filter<any>): void {
         this.activateFilter.emit(filter.guid);
     }
 }
@@ -181,8 +181,8 @@ export class DataTableLayoutItems implements OnInit, OnChanges {
         this.isClickable = this.config.isClickable();
     }
 
-    private translateValue(field: DataTableField<any>): boolean{
-        if (field.translateValue){
+    private translateValue(field: DataTableField<any>): boolean {
+        if (field.translateValue) {
             return field.translateValue;
         }
         return false;
@@ -192,7 +192,7 @@ export class DataTableLayoutItems implements OnInit, OnChanges {
         return field.value(item);
     }
 
-    private getAvatarUrl(item: any): string | null{
+    private getAvatarUrl(item: any): string | null {
         if (!this.config.avatarUrlResolver) {
             return null;
         }
@@ -200,7 +200,7 @@ export class DataTableLayoutItems implements OnInit, OnChanges {
         return this.config.avatarUrlResolver(item);
     }
 
-    private getIcon(item: any): string | null{
+    private getIcon(item: any): string | null {
         if (!this.config.iconResolver) {
             return null;
         }
@@ -221,7 +221,7 @@ export class DataTableLayoutItems implements OnInit, OnChanges {
             throw Error(`Cannot handle checkbox change events when data table is not selectable`);
         }
 
-        var checked = data.checked;
+        const checked = data.checked;
 
         if (checked) {
             this.config.selectableConfig.onSelect(item);
@@ -231,7 +231,7 @@ export class DataTableLayoutItems implements OnInit, OnChanges {
         }
     }
 
-    private getTextAlignClass(field: DataTableField<any>): string | null{
+    private getTextAlignClass(field: DataTableField<any>): string | null {
         if (field.align === AlignEnum.Center) {
             return 'text-center';
         }

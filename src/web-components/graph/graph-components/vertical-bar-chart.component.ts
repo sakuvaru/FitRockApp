@@ -22,7 +22,7 @@ export class VerticalBarGraphComponent extends BaseGraphComponent implements OnI
     @Input() config: GraphConfig<VerticalBarChart>;
 
     /**
-     * X axis label 
+     * X axis label
      */
     private xAxisLabel: string;
 
@@ -33,7 +33,7 @@ export class VerticalBarGraphComponent extends BaseGraphComponent implements OnI
 
     constructor(
         protected translateService: TranslateService
-    ) { super(translateService) }
+    ) { super(translateService); }
 
 
     ngOnInit() {
@@ -49,7 +49,7 @@ export class VerticalBarGraphComponent extends BaseGraphComponent implements OnI
     }
 
     private getLabelsObservable(graph: VerticalBarChart): Observable<VerticalBarChart> {
-        var obs: Observable<any> = Observable.of(true);
+        const obs: Observable<any> = Observable.of(true);
 
         if (graph.xAxisLabel) {
             obs.merge(graph.xAxisLabel

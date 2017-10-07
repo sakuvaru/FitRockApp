@@ -76,7 +76,7 @@ export class GalleryDeleteDialogComponent extends BaseWebComponent implements On
         this.imageDeletionFailed = false;
 
         // get the proper GalleryImage
-        var galleryImage = this.config.images.find(m => m.imageUrl === image.extUrl);
+        let galleryImage = this.config.images.find(m => m.imageUrl === image.extUrl);
         if (!galleryImage) {
             throw Error(`Could not map image '${image.extUrl}' to GalleryImage for deletion`);
         }
@@ -90,7 +90,7 @@ export class GalleryDeleteDialogComponent extends BaseWebComponent implements On
                         this.config.onDelete(galleryImage);
                     }
 
-                    // remove image from local variables
+                    // remove image from local letiables
                     this.removeImage(image);
 
                     // show snackbar message
@@ -107,7 +107,7 @@ export class GalleryDeleteDialogComponent extends BaseWebComponent implements On
             })
     }
 
-    private initTranslations(): void{
+    private initTranslations(): void {
         this.translateService.get('webComponents.gallery.deleted').subscribe(result => this.snackbarDeleteText = result);
     }
 

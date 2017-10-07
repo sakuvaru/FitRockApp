@@ -97,7 +97,7 @@ Note: in order for overrides to work, this css should be loaded after the materi
     margin-top: 5px!important;
 }
 
-.mat-chip:not(.mat-basic-chip){
+.mat-chip:not(.mat-basic-chip) {
      /* changes color of material chips because otherwise
     they have same color as the background */
     background: #C9C9C9;

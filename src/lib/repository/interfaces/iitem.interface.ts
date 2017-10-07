@@ -8,6 +8,6 @@ export interface IItem {
     created: Date;
     updated: Date;
     itemProperties: IPropertyInfo[];
-    
+
     resolver?: ((fieldName: string) => string);
 }

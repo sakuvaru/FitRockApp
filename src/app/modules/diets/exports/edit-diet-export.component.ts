@@ -34,7 +34,7 @@ export class EditDietExportComponent extends BaseComponent implements OnInit, On
       }
 
     ngOnChanges(changes: SimpleChanges) {
-        var dietId = changes.dietId.currentValue;
+        let dietId = changes.dietId.currentValue;
         if (dietId) {
             this.initForm(dietId);
         }
@@ -49,7 +49,7 @@ export class EditDietExportComponent extends BaseComponent implements OnInit, On
             .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
             .onAfterDelete(() => super.navigate([super.getTrainerUrl('diets')]))
             .onFormLoaded(form => {
-                var workout = form.item;
+                let workout = form.item;
 
                 // set loaded workout
                 this.loadDiet.next(workout);

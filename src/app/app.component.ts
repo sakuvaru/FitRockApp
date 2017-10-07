@@ -9,6 +9,9 @@ import { AppConfig, ComponentDependencyService, BaseComponent, UrlConfig, Compon
   styleUrls: ['./app.component.css']
 })
 export class AppComponent extends BaseComponent implements OnInit, OnDestroy {
+
+  private test: string = 'asef';
+  
   constructor(
     protected dependencies: ComponentDependencyService,
   ) {

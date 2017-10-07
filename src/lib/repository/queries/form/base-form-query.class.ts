@@ -37,7 +37,7 @@ export abstract class BaseFormQuery extends BaseQuery {
         protected config: RepositoryConfig,
         protected type: string,
     ) {
-        super(authHttp, config)
+        super(authHttp, config);
     }
 
     public withCustomAction(action: string): this {
@@ -55,12 +55,12 @@ export abstract class BaseFormQuery extends BaseQuery {
     }
 
     protected runEditFormQuery<TItem extends IItem>(itemId: number, disableCache?: boolean): Observable<ResponseFormEdit<TItem>> {
-        var url = this.getFormQueryUrl();
+        const url = this.getFormQueryUrl();
         return super.getEditForm<TItem>(url, itemId, disableCache, this._data);
     }
 
     protected runInsertFormQuery(): Observable<ResponseFormInsert> {
-        var url = this.getFormQueryUrl();
+        const url = this.getFormQueryUrl();
 
         return super.getInsertForm(url, this._data);
     }

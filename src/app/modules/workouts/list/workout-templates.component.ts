@@ -65,7 +65,7 @@ export class WorkoutTemplatesComponent extends BaseComponent implements OnInit {
         return this.dependencies.itemServices.workoutCategoryService.getCategoryCountForWorkoutTemplates(searchTerm)
           .get()
           .map(response => {
-            var filters: Filter<WorkoutCategoryListWithWorkoutsCount>[] = [];
+            let filters: Filter<WorkoutCategoryListWithWorkoutsCount>[] = [];
             response.items.forEach(category => {
               filters.push(new Filter({
                 filterNameKey: category.codename,

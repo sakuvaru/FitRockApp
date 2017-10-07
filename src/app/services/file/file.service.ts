@@ -12,7 +12,7 @@ export class FileService extends BaseFileService {
     constructor(
         protected repositoryClient: RepositoryClient,
     ) {
-        super(repositoryClient)
+        super(repositoryClient);
     }
 
     deleteFile(fileUrl: string): DeleteFileQuery {

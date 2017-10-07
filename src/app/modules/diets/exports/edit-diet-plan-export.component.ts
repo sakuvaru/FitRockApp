@@ -39,7 +39,7 @@ export class EditDietPlanExportComponent extends BaseComponent implements OnDest
     super(dependencies)
 
     // set handle for dragula
-    var that = this;
+    let that = this;
     this.dragulaService.setOptions(this.dragulaBag, {
       moves: function (el: any, container: any, handle: any): any {
         return stringHelper.contains(el.className, that.dragulaHandle);
@@ -64,7 +64,7 @@ export class EditDietPlanExportComponent extends BaseComponent implements OnDest
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    var dietId = changes.dietId.currentValue;
+    let dietId = changes.dietId.currentValue;
     if (dietId) {
       super.subscribeToObservable(this.getDietObservable(dietId));
     }
@@ -111,7 +111,7 @@ export class EditDietPlanExportComponent extends BaseComponent implements OnDest
         .set()
         .do(() => this.startGlobalLoader())
         .map(response => {
-          // remove diet food from local variable
+          // remove diet food from local letiable
           this.sortedDietFoods = _.reject(this.sortedDietFoods, function (item) { return item.id === response.deletedItemId; });
 
           this.showSavedSnackbar();
@@ -125,13 +125,13 @@ export class EditDietPlanExportComponent extends BaseComponent implements OnDest
   }
 
   private openDietFoodDialog(dietFood: DietFood): void {
-    var dialog = this.dependencies.tdServices.dialogService.open(EditDietFoodDialogComponent, {
+    let dialog = this.dependencies.tdServices.dialogService.open(EditDietFoodDialogComponent, {
       width: AppConfig.DefaultDialogWidth,
       data: dietFood
     });
 
     dialog.afterClosed().subscribe(m => {
-      // update || remove diet food from local variable
+      // update || remove diet food from local letiable
       if (dialog.componentInstance.dietFoodWasDeleted) {
         // remove diet food
         this.sortedDietFoods = _.reject(this.sortedDietFoods, function (item) { return item.id === dialog.componentInstance.idOfDeletedDietFood; });
@@ -141,7 +141,7 @@ export class EditDietPlanExportComponent extends BaseComponent implements OnDest
       }
       else {
         // update diet food with updated data
-        var dietFoodToUpdate: DietFood[] = this.sortedDietFoods.filter(m => m.id === dietFood.id);
+        let dietFoodToUpdate: DietFood[] = this.sortedDietFoods.filter(m => m.id === dietFood.id);
 
         if (!dietFoodToUpdate) {
           throw Error(`Cannot update diet with new values from saved form`);
@@ -157,7 +157,7 @@ export class EditDietPlanExportComponent extends BaseComponent implements OnDest
 
   private recalculateOrder(): void {
     if (this.sortedDietFoods) {
-      var order = 0;
+      let order = 0;
       this.sortedDietFoods.forEach(dietFood => {
         dietFood.order = order;
         order++;
@@ -166,10 +166,10 @@ export class EditDietPlanExportComponent extends BaseComponent implements OnDest
   }
 
   private openSelectFoodDialog(): void {
-    var data: any = {};
+    let data: any = {};
     data.dietId = this.diet.id;
 
-    var dialog = this.dependencies.tdServices.dialogService.open(SelectDietFoodDialogComponent, {
+    let dialog = this.dependencies.tdServices.dialogService.open(SelectDietFoodDialogComponent, {
       width: AppConfig.DefaultDialogWidth,
       data: data
     });
@@ -187,7 +187,7 @@ export class EditDietPlanExportComponent extends BaseComponent implements OnDest
   }
 
   private openAddCustomFoodDialog(): void {
-    var dialog = this.dependencies.tdServices.dialogService.open(AddCustomFoodDialogComponent, {
+    let dialog = this.dependencies.tdServices.dialogService.open(AddCustomFoodDialogComponent, {
       width: AppConfig.DefaultDialogWidth
     });
 
@@ -200,11 +200,11 @@ export class EditDietPlanExportComponent extends BaseComponent implements OnDest
   }
 
   private openAddDietFoodDialog(food: Food): void {
-    var data: any = {};
+    let data: any = {};
     data.dietId = this.diet.id;
     data.food = food;
 
-    var dialog = this.dependencies.tdServices.dialogService.open(AddDietFoodDialogComponent, {
+    let dialog = this.dependencies.tdServices.dialogService.open(AddDietFoodDialogComponent, {
       data: data,
       width: AppConfig.DefaultDialogWidth
     });

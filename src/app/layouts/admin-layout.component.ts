@@ -1,6 +1,6 @@
 
 // common
-import { Component, Input, OnDestroy, ChangeDetectorRef, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, ChangeDetectorRef, OnInit, AfterViewInit } from '@angular/core';
 import { TdMediaService } from '@covalent/core';
 import { ComponentDependencyService, BaseComponent, MenuItemType, AppConfig, ComponentSetup } from '../core';
 
@@ -13,7 +13,7 @@ import { FormControl } from '@angular/forms';
 @Component({
     templateUrl: 'admin-layout.component.html'
 })
-export class AdminLayoutComponent extends BaseComponent implements OnDestroy, OnInit {
+export class AdminLayoutComponent extends BaseComponent implements OnDestroy, OnInit, AfterViewInit {
 
     // Setup properties
     private readonly titleCharsLength: number = 22;
@@ -59,7 +59,7 @@ export class AdminLayoutComponent extends BaseComponent implements OnDestroy, On
         protected dependencies: ComponentDependencyService,
         private changeDetectorRef: ChangeDetectorRef,
     ) {
-        super(dependencies)
+        super(dependencies);
 
         // set alias for media
         this.media = this.dependencies.tdServices.mediaService;
@@ -76,7 +76,7 @@ export class AdminLayoutComponent extends BaseComponent implements OnDestroy, On
         this.initComponentSearch();
 
         // init user texts
-        var user = this.dependencies.authenticatedUserService.getUser();
+        const user = this.dependencies.authenticatedUserService.getUser();
         if (user) {
             this.displayUsername = user.firstName + ' ' + user.lastName;
             this.email = user.email;
@@ -106,11 +106,9 @@ export class AdminLayoutComponent extends BaseComponent implements OnDestroy, On
                 this.componentConfig = componentConfig;
                 this.enableComponentSearch = componentConfig.enableSearch;
 
-
                 if (componentConfig.menuAvatarUrl) {
                     this.menuAvatarUrl = componentConfig.menuAvatarUrl;
-                }
-                else {
+                } else {
                     // clear avatar if its not set
                     this.menuAvatarUrl = '';
                 }
@@ -173,18 +171,15 @@ export class AdminLayoutComponent extends BaseComponent implements OnDestroy, On
     }
 
     private getMenuItemUrl(action: string, type: MenuItemType): string {
-        var url;
+        let url;
 
         if (type === MenuItemType.client) {
             url = this.getClientUrl(action);
-        }
-        else if (type === MenuItemType.trainer) {
+        } else if (type === MenuItemType.trainer) {
             url = this.getTrainerUrl(action);
-        }
-        else if (type === MenuItemType.auth) {
+        } else if (type === MenuItemType.auth) {
             url = this.getAuthUrl(action);
-        }
-        else {
+        } else {
             throw Error(`Cannot get menu item url of '${type}' type`);
         }
 
@@ -192,10 +187,10 @@ export class AdminLayoutComponent extends BaseComponent implements OnDestroy, On
     }
 
     private getMenuItemColor(action: string, type: MenuItemType): string | null {
-        var activeColor = 'accent';
+        const activeColor = 'accent';
 
-        var url = this.getMenuItemUrl(action, type);
-        var currentUrl = this.dependencies.router.url;
+        const url = this.getMenuItemUrl(action, type);
+        const currentUrl = this.dependencies.router.url;
 
         if (currentUrl === url) {
             return activeColor;
@@ -209,6 +204,6 @@ export class AdminLayoutComponent extends BaseComponent implements OnDestroy, On
     }
 
     private shortenTitle(text: string): string | null {
-        return stringHelper.shorten(text, this.titleCharsLength, true)
+        return stringHelper.shorten(text, this.titleCharsLength, true);
     }
 }

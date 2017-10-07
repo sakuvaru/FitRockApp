@@ -13,46 +13,46 @@ export class DataTableConfig<TItem extends IItem> {
     /**
      * Indicates if local loader is enabled
      */
-    public enableLocalLoader: boolean = true;
+    public enableLocalLoader = true;
 
     /**
      * Indicates if data table is wrapped in a material design card
      */
-    public wrapInCard: boolean = true;
+    public wrapInCard = true;
 
     /**
      * Indicate if header with columns is shown. All fields need to configure their labels if enabled
      */
-    public showHeader: boolean = false;
+    public showHeader = false;
 
     /**
      * Indicates if search is shown
      */
-    public showSearch: boolean = true;
+    public showSearch = true;
 
     /**
      * Key of translation that is shown when no search results are found
      */
-    public searchNoItemsTextKey: string = 'webComponents.dataTable.noSearchResultsText'
+    public searchNoItemsTextKey = 'webComponents.dataTable.noSearchResultsText';
 
     /**
      * Key of translation that is shown when data table contains 0 items
      */
-    public noItemsTextKey: string = 'webComponents.dataTable.noResultsText';
+    public noItemsTextKey = 'webComponents.dataTable.noResultsText';
 
     /**
      * Indicates if filter with all items is shown
      */
-    public showAllFilter: boolean = false;
+    public showAllFilter = false;
 
     /**
      * Indicates if the last state of data table is stored in local storage
      * Search, page & active filter is stored if this is enabled
      */
-    public saveLastFilter: boolean = true;
+    public saveLastFilter = true;
 
     /**
-     * Method that is used to get observable out of loadQuery. 
+     * Method that is used to get observable out of loadQuery.
      * Usually this should include 'takeUntil(this.ngUnsubscribe)' to ensure
      * that requests are cancelled if they are not required (e.g. after destroying component)
      */
@@ -111,16 +111,16 @@ export class DataTableConfig<TItem extends IItem> {
     /**
      * Loader configuration
      */
-    public loaderConfig?: { start: () => void, stop: () => void }
+    public loaderConfig?: { start: () => void, stop: () => void };
 
     constructor(
         public options?: {
-            // required 
+            // required
             loadResolver: (query: MultipleItemQuery<TItem>) => Observable<ResponseMultiple<TItem>>;
             loadQuery: (searchTerm: string) => MultipleItemQuery<TItem>;
             fields: DataTableField<any>[];
 
-            // optional 
+            // optional
             enableLocalLoader?: boolean,
             wrapInCard?: boolean,
             showHeader?: boolean,
@@ -155,29 +155,29 @@ export class DataTableConfig<TItem extends IItem> {
     /**
      * Gets unique hash of the configuration of data table
      */
-    getHash(): number{
-        var allProperties = Object.getOwnPropertyNames(this);
-        var fullText = '';
+    getHash(): number {
+        const allProperties = Object.getOwnPropertyNames(this);
+        let fullText = '';
         allProperties.forEach(property => {
-            var propertyValue = this[property];
-            if (propertyValue){
+            const propertyValue = this[property];
+            if (propertyValue) {
                 fullText +=  property + '=' + propertyValue;
             }
-        })
+        });
         return stringHelper.getHash(fullText);
     }
 }
 
-export class PagerConfig{
-    public showPager: boolean = true;
-    public pagerSize: number = 6;
-    public showPagerNextPreviousButtons: boolean = true;
-    public showPagerFirstLastButtons: boolean = true;
-    public showPagerNumberButtons: boolean = true;
-    public hidePagerForSinglePage: boolean = true;
+export class PagerConfig {
+    public showPager = true;
+    public pagerSize = 6;
+    public showPagerNextPreviousButtons = true;
+    public showPagerFirstLastButtons = true;
+    public showPagerNumberButtons = true;
+    public hidePagerForSinglePage = true;
 }
 
-export class SelectableConfig<TItem extends IItem>{
+export class SelectableConfig<TItem extends IItem> {
 
     public onSelect: (selectedItem: TItem) => void;
     public onDeselect: (unselectedItem: TItem) => void;
@@ -192,7 +192,7 @@ export class SelectableConfig<TItem extends IItem>{
     }
 }
 
-export class Filter<TItem extends IItem>{
+export class Filter<TItem extends IItem> {
 
     public filterNameKey: string;
     public count?: number;
@@ -208,7 +208,7 @@ export class Filter<TItem extends IItem>{
             count?: number,
             countQuery?: (query: MultipleItemQuery<TItem>) => ItemCountQuery
         }
-    ) { 
+    ) {
         Object.assign(this, options);
         // use filterNameKey as guid
         this.guid = this.filterNameKey;

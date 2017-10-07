@@ -37,9 +37,9 @@ export class UploadSingleQuery extends BaseQuery {
     }
 
     // url
-    protected getUploadUrl(): string{
+    protected getUploadUrl(): string {
 
-        if (!this._action){
+        if (!this._action) {
             throw new Error('No action was specified for upload query');
         }
 
@@ -49,8 +49,8 @@ export class UploadSingleQuery extends BaseQuery {
     // execution
 
     set(): Observable<ResponseUploadSingle> {
-        if (!this.file){
-            throw new Error('No file was added to upload query')
+        if (!this.file) {
+            throw new Error('No file was added to upload query');
         }
 
         return super.uploadSingleFile(this.getUploadUrl(), this.file);

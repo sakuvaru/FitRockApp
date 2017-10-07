@@ -35,7 +35,7 @@ export class EditWorkoutExportComponent extends BaseComponent implements OnInit,
       }
 
     ngOnChanges(changes: SimpleChanges) {
-        var workoutId = changes.workoutId.currentValue;
+        let workoutId = changes.workoutId.currentValue;
         if (workoutId) {
             this.initForm(workoutId);
         }

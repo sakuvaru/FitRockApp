@@ -2,12 +2,12 @@ import { UploaderModeEnum } from './uploader-mode.enum';
 import { Observable } from 'rxjs/Rx';
 
 export class UploaderConfig {
-    
+
     /**
     * List of default file extensions
     */
     public readonly defaultFileExtensions: string[] = ['txt', 'jpg', 'jpeg', 'gif', 'png', 'bmp', 'doc', 'docx', 'xls', 'xlxs'];
-    
+
     /**
     * List of default image extensions
     */
@@ -26,12 +26,12 @@ export class UploaderConfig {
     /**
     * Indicates if List of default extensions are allowed
     */
-    public useDefaultFileExtensions: boolean = false;
+    public useDefaultFileExtensions = false;
 
     /**
     * Indicates if List of default image extensions are allowed
     */
-    public useDefaultImageExtensions: boolean = false;
+    public useDefaultImageExtensions = false;
 
     /**
      * Maximum number of uploaded fiels, only applicable when multiple files mode is used
@@ -41,7 +41,7 @@ export class UploaderConfig {
     /**
      * List of extensions that are accepted.
      * Use extensions without dot '.'
-     * 
+     *
      */
     public allowedExtensions?: string[];
 

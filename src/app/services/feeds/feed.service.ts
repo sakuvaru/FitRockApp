@@ -6,26 +6,26 @@ import { Observable } from 'rxjs/Rx';
 import { stringHelper } from '../../../lib/utilities';
 
 @Injectable()
-export class FeedService extends BaseTypeService<Feed>{
+export class FeedService extends BaseTypeService<Feed> {
 
-    constructor(repositoryClient: RepositoryClient) { 
+    constructor(repositoryClient: RepositoryClient) {
         super (repositoryClient, {
             type: 'Feed',
             allowDelete: false
-        })
+        });
     }
 
     /**
      * Gets anagular material icon for given feed with type
      */
-    getFeedIcon(feedType: string): string{
-        var defaultIcon = "today";
+    getFeedIcon(feedType: string): string {
+        const defaultIcon = 'today';
 
-        if (!feedType){
+        if (!feedType) {
             return defaultIcon;
         }
 
-        if ( feedType.toLowerCase() === 'message'){
+        if ( feedType.toLowerCase() === 'message') {
             return 'mail';
         }
 
@@ -36,17 +36,16 @@ export class FeedService extends BaseTypeService<Feed>{
      * Gets feed result (text, key) based on its type
      */
     getFeedResult(feed: Feed): FeedResult | null {
-        if (!feed){
-            return null
+        if (!feed) {
+            return null;
         }
 
         // message feeds
-        if (feed.feedType.toLowerCase() === 'message'){
+        if (feed.feedType.toLowerCase() === 'message') {
             // prepare translation data
-            var translationData: any = {};
-
-            var chatMessageData = feed.data.find(m => m.key === 'Message');
-            var userData = feed.data.find(m => m.key === 'User');
+            const translationData: any = {};
+            const chatMessageData = feed.data.find(m => m.key === 'Message');
+            const userData = feed.data.find(m => m.key === 'User');
 
             translationData.message = chatMessageData ? stringHelper.shorten(chatMessageData.value, 85, true) : '';
             translationData.user = userData ? userData.value : '';
@@ -55,7 +54,7 @@ export class FeedService extends BaseTypeService<Feed>{
                 data: feed.data,
                 translationKey: 'module.feeds.userSentYouAMessage',
                 translationData: translationData,
-            })
+            });
         }
         return null;
     }
@@ -74,11 +73,11 @@ export class FeedService extends BaseTypeService<Feed>{
     }
 
      getFeedsForUser(userId: number, limit?: number): MultipleItemQuery<Feed> {
-        var query = this.items()
+        const query = this.items()
             .whereEquals('FeedUserId', userId)
             .orderByDesc('Created');
 
-        if (limit){
+        if (limit) {
             query.limit(limit);
         }
 

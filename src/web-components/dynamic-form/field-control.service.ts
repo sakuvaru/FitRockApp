@@ -6,7 +6,7 @@ export class FieldControlService {
   constructor() { }
 
   toFormGroup(fields: FormField[]): FormGroup {
-    let group: any = {};
+    const group: any = {};
 
     if (fields) {
       fields.forEach(question => {

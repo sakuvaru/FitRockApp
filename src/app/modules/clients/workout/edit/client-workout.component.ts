@@ -76,7 +76,7 @@ export class ClientWorkoutComponent extends ClientsBaseComponent implements OnIn
 
     private initDragula(): void {
         // set handle for dragula
-        var that = this;
+        let that = this;
         this.dragulaService.setOptions(this.dragulaBag, {
             moves: function (el: any, container: any, handle: any): any {
                 return stringHelper.contains(el.className, that.dragulaMoveHandle);
@@ -98,9 +98,9 @@ export class ClientWorkoutComponent extends ClientsBaseComponent implements OnIn
     }
 
     private getComponentObservables(): Observable<any>[] {
-        var observables: Observable<any>[] = [];
+        let observables: Observable<any>[] = [];
 
-        var obsClientMenu = this.clientChange
+        let obsClientMenu = this.clientChange
             .takeUntil(this.ngUnsubscribe)
             .map(client => {
                 this.setConfig({
@@ -116,14 +116,14 @@ export class ClientWorkoutComponent extends ClientsBaseComponent implements OnIn
                 });
             });
 
-        var obsExistingExercises = this.existingWorkoutsObservable();
+        let obsExistingExercises = this.existingWorkoutsObservable();
 
-        var varWorkoutTemplates = this.clientIdChange
+        let letWorkoutTemplates = this.clientIdChange
             .takeUntil(this.ngUnsubscribe)
             .switchMap(clientId => this.dependencies.itemServices.workoutService.items()
                 .byCurrentUser()
                 .whereEmpty('ClientId')
-                .orderByAsc("WorkoutName")
+                .orderByAsc('WorkoutName')
                 .get())
             .map(response => {
                 if (!response.isEmpty()) {
@@ -133,7 +133,7 @@ export class ClientWorkoutComponent extends ClientsBaseComponent implements OnIn
 
         observables.push(obsClientMenu);
         observables.push(obsExistingExercises);
-        observables.push(varWorkoutTemplates);
+        observables.push(letWorkoutTemplates);
 
         return observables;
     }
@@ -146,7 +146,7 @@ export class ClientWorkoutComponent extends ClientsBaseComponent implements OnIn
                     .byCurrentUser()
                     .includeMultiple(['WorkoutExercises', 'WorkoutExercises.Exercise'])
                     .whereEquals('ClientId', clientId)
-                    .orderByAsc("Order")
+                    .orderByAsc('Order')
                     .get()
             })
             .map(response => {
@@ -166,7 +166,7 @@ export class ClientWorkoutComponent extends ClientsBaseComponent implements OnIn
             .byCurrentUser()
             .includeMultiple(['WorkoutExercises', 'WorkoutExercises.Exercise'])
             .whereEquals('ClientId', clientId)
-            .orderByAsc("Order")
+            .orderByAsc('Order')
             .get()
             .map(response => {
                 if (!response.isEmpty()) {
@@ -176,7 +176,7 @@ export class ClientWorkoutComponent extends ClientsBaseComponent implements OnIn
     }
 
     private newWorkoutFromTemplate(data: any): void {
-        var selected = data.selected;
+        let selected = data.selected;
 
         if (!selected) {
             super.translate('module.clients.workout.workoutNotSelected').subscribe(text => {
@@ -184,7 +184,7 @@ export class ClientWorkoutComponent extends ClientsBaseComponent implements OnIn
             });
         }
 
-        var selectedWorkout = selected.value as Workout;
+        let selectedWorkout = selected.value as Workout;
 
         // copy data from selected workout to a new workout with assigned client
         super.subscribeToObservable(this.dependencies.itemServices.workoutService.copyFromWorkout(selectedWorkout.id, this.clientId)
@@ -198,7 +198,7 @@ export class ClientWorkoutComponent extends ClientsBaseComponent implements OnIn
         super.subscribeToObservable(this.dependencies.itemServices.workoutService.delete(workout.id)
             .set()
             .map(response => {
-                // remove workout  from local variable
+                // remove workout  from local letiable
                 this.existingWorkouts = _.reject(this.existingWorkouts, function (item) { return item.id === response.deletedItemId; });
                 this.showDeletedSnackbar();
             }));

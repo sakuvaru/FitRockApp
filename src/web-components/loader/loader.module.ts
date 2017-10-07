@@ -11,7 +11,7 @@ import { LoaderComponent } from './loader.component';
 @NgModule({
     imports: [
         CommonModule,
-        SharedWebComponentModule, 
+        SharedWebComponentModule,
         RouterModule, // router needs to be importes so that routerLink can be used within components
     ],
     declarations: [

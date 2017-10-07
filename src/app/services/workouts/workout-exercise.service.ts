@@ -11,7 +11,7 @@ export class WorkoutExerciseService extends BaseTypeService<WorkoutExercise>{
         super(repositoryClient, {
             type: 'WorkoutExercise',
             allowDelete: true
-        })
+        });
     }
 
     addWorkoutExercise(exerciseId: number, workoutId: number): Observable<ResponseCreate<WorkoutExercise>> {
@@ -19,7 +19,7 @@ export class WorkoutExerciseService extends BaseTypeService<WorkoutExercise>{
             throw Error(`Invalid parameters for 'addWorkoutExercise' method`);
         }
 
-        var workoutExercise = new WorkoutExercise();
+        const workoutExercise = new WorkoutExercise();
 
         workoutExercise.workoutId = workoutId;
         workoutExercise.exerciseId = exerciseId;

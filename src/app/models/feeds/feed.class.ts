@@ -36,8 +36,8 @@ export class FeedResult {
     /**
      * Same as text, but shortened
      */
-    public shortenText(): string{
-        if (this.text){
+    public shortenText(): string {
+        if (this.text) {
             return stringHelper.shorten(this.text, 85, true);
         }
 
@@ -47,7 +47,7 @@ export class FeedResult {
      /**
      * Indicates if translation key is present and the feed should be translated
      */
-    public shouldBeTranslated(): boolean{
+    public shouldBeTranslated(): boolean {
         return this.translationKey != null;
     }
 

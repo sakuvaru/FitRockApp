@@ -42,7 +42,7 @@ export class NewTypeComponent extends BaseComponent implements OnInit {
     private initForm(): void {
         this.formConfig = this.dependencies.itemServices.progressItemTypeService.insertForm()
             .fieldValueResolver((fieldName, value) => {
-                if (fieldName === 'TranslateValue'){
+                if (fieldName === 'TranslateValue') {
                     return false;
                 }
                 return value;

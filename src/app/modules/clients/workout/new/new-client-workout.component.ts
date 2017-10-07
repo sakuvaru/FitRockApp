@@ -38,7 +38,7 @@ export class NewClientWorkoutComponent extends ClientsBaseComponent implements O
     }
 
     private getObservables(): Observable<any>[] {
-        var observables: Observable<any>[] = [];
+        let observables: Observable<any>[] = [];
         observables.push(this.getClientObservable());
         observables.push(this.getFormObservable());
         return observables;

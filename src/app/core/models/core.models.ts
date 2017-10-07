@@ -1,4 +1,4 @@
-export interface IMenuItems{
+export interface IMenuItem {
     menuItems: MenuItem[];
 }
 
@@ -47,7 +47,7 @@ export class AuthenticatedUser {
         public firstName: string,
         public lastName: string,
         public trainerId: number,
-    ){}
+    ) {}
 }
 
 export class GlobalLoaderStatus  {
@@ -60,5 +60,5 @@ export class GlobalLoaderStatus  {
          * Indicates if loader should be hidden no matter what
          */
         public forceDisable
-    ){}
+    ) {}
 }

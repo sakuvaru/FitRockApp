@@ -24,8 +24,8 @@ export class AuthenticatedUserService {
      * Gets current user id or 0 if none is found
      */
     public getUserId(): number {
-        var user = this.getUser();
-        if (!user){
+        const user = this.getUser();
+        if (!user) {
             return 0;
         }
         return user.id;
@@ -40,12 +40,12 @@ export class AuthenticatedUserService {
     }
 
     private getUserFromLocalStorage(): AuthenticatedUser | null {
-        var userJson = localStorage.getItem(this.authUserStorageKey);
+        const userJson = localStorage.getItem(this.authUserStorageKey);
         if (!userJson) {
             return null;
         }
 
-        var userAs = JSON.parse(userJson) as AuthenticatedUser;
+        const userAs = JSON.parse(userJson) as AuthenticatedUser;
 
         return new AuthenticatedUser(userAs.id, userAs.email, userAs.firstName, userAs.lastName, userAs.trainerId);
     }

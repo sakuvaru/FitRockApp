@@ -34,7 +34,7 @@ export class AppErrorComponent extends BaseComponent implements OnInit {
     this.showDebugDetails = this.dependencies.coreServices.authService.isAuthenticated();
 
     // get the guid of error from url
-    var logGuid = this.activatedRoute.snapshot.queryParams[UrlConfig.AppErrorLogGuidQueryString];
+    let logGuid = this.activatedRoute.snapshot.queryParams[UrlConfig.AppErrorLogGuidQueryString];
 
     if (this.showDebugDetails && logGuid) {
       // try to get the error with details from service

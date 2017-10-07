@@ -66,11 +66,11 @@ export class AddDietFoodDialogComponent extends BaseComponent implements OnInit 
         return value;
       })
       .fieldLabelResolver((field, originalLabel) => {
-        if (field.key === 'UnitValue'){
+        if (field.key === 'UnitValue') {
           return this.dependencies.itemServices.foodUnitService.item().byId(this.food.foodUnitId)
             .get()
             .flatMap(response => {
-              if (response.isEmpty()){
+              if (response.isEmpty()) {
                 console.warn(`FoodUnit with id '${this.food.foodUnitId}' was not found, this should have not happened here`);
                 return Observable.of(originalLabel);
               }

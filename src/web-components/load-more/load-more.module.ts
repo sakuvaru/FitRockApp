@@ -17,7 +17,7 @@ import { LoadMoreService } from './load-more.service';
 @NgModule({
     imports: [
         CommonModule,
-        SharedWebComponentModule, 
+        SharedWebComponentModule,
         RouterModule, // router needs to be importes so that routerLink can be used within components
         FormsModule, // search control is used in load more
         ReactiveFormsModule,

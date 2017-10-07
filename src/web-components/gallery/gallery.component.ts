@@ -116,7 +116,7 @@ export class GalleryComponent extends BaseWebComponent implements OnInit, OnChan
 
     openImageModal(image: Image) {
         // find image based on its URL
-        var imageToOpen = this.images.find(m => m.extUrl === image.extUrl);
+        let imageToOpen = this.images.find(m => m.extUrl === image.extUrl);
         if (!imageToOpen) {
             console.warn('Could not open image in modal:');
             console.warn(image);
@@ -135,7 +135,7 @@ export class GalleryComponent extends BaseWebComponent implements OnInit, OnChan
     }
 
     private getGalleryGroups(config: GalleryConfig): GalleryGroup[] {
-        var groups: GalleryGroup[] = [];
+        let groups: GalleryGroup[] = [];
 
         // go through each image and assign it to correct group based on the evaluation function
         if (!config || !config.images || !Array.isArray(config.images)) {
@@ -149,10 +149,10 @@ export class GalleryComponent extends BaseWebComponent implements OnInit, OnChan
             }
 
             // get image group
-            var imageGroup = config.groupResolver(image);
+            let imageGroup = config.groupResolver(image);
 
             // create group if not exist
-            var group = groups.find(m => m.groupTitle === imageGroup.groupTitle);
+            let group = groups.find(m => m.groupTitle === imageGroup.groupTitle);
             if (!group) {
                 // group does not exist, create it
                 groups.push(new GalleryGroup(imageGroup.groupTitle, [this.convertToImageType(image)], imageGroup.groupDate));
@@ -173,7 +173,7 @@ export class GalleryComponent extends BaseWebComponent implements OnInit, OnChan
 
     private getButtonsConfig(config: GalleryConfig): any {
         if (config.downloadable) {
-            var buttonsConfig: any = {};
+            let buttonsConfig: any = {};
             buttonsConfig.download = true;
             return buttonsConfig;
         }
@@ -202,8 +202,8 @@ export class GalleryComponent extends BaseWebComponent implements OnInit, OnChan
     }
 
     private getCustomDescription(): Description {
-        var customFullDescription: Description = {
-            // you should build this value programmaticaly with the result of (show)="..()" event
+        let customFullDescription: Description = {
+            // you should build this value programmaticaly with the result of (show)='..()' event
             // if customFullDescription !== undefined, all other fields will be ignored
             imageText: '', // removes the 'Image' string from the gallery
             numberSeparator: '/',
@@ -221,7 +221,7 @@ export class GalleryComponent extends BaseWebComponent implements OnInit, OnChan
 
         dialogRef.afterClosed().subscribe(result => {
             // check if images changed and if so, fire event
-            var executeUpdateImages = false;
+            let executeUpdateImages = false;
             if (this.images.length !== dialogRef.componentInstance.images.length) {
                 // some images were deleted
                 // get gallery image objects of current images
@@ -232,12 +232,12 @@ export class GalleryComponent extends BaseWebComponent implements OnInit, OnChan
             this.groups = dialogRef.componentInstance.groups;
             this.images = dialogRef.componentInstance.images;
 
-            if (executeUpdateImages){
+            if (executeUpdateImages) {
                 // get GalleryImages of current Images
-                var galleryImages: GalleryImage[] = [];
+                let galleryImages: GalleryImage[] = [];
                 this.images.forEach(image => {
-                    var galleryImage = this.config.images.find(m => m.imageUrl === image.extUrl);
-                    if (galleryImage){
+                    let galleryImage = this.config.images.find(m => m.imageUrl === image.extUrl);
+                    if (galleryImage) {
                         galleryImages.push(galleryImage);
                     }
                 });

@@ -1,4 +1,4 @@
-export interface IPropertyInfo{
+export interface IPropertyInfo {
     name: string;
     propertyType: string;
 }

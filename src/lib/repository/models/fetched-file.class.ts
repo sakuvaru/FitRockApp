@@ -4,7 +4,7 @@ export class FetchedFile {
     public absoluteUrl: string;
     public fileNotFound: string;
     public fileSizeInBytes: number;
-    public fileNameWithExtension: string
+    public fileNameWithExtension: string;
     public fileLastModifiedHash: string;
     public fileLastModified: Date;
 

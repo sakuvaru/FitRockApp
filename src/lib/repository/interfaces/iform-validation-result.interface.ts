@@ -2,7 +2,7 @@ import { IColumnValidation } from './icolumn-validation.interface';
 
 export interface IFormValidationResult {
     message: string;
-    validationResult: IColumnValidation[],
+    validationResult: IColumnValidation[];
     isInvalid: boolean;
 
 }

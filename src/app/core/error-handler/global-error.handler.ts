@@ -15,20 +15,19 @@ export class GlobalErrorHandler implements ErrorHandler {
     constructor(private injector: Injector) { }
 
     handleError(error) {
-        console.log('Error handler');
-        var logService = this.injector.get(LogService);
-        var sharedService = this.injector.get(SharedService);
-        var authService = this.injector.get(AuthService);
-        var location = this.injector.get(LocationStrategy);
+        const logService = this.injector.get(LogService);
+        const sharedService = this.injector.get(SharedService);
+        const authService = this.injector.get(AuthService);
+        const location = this.injector.get(LocationStrategy);
 
-        var message = error.message ? error.message : error.toString();
-        var url = location instanceof PathLocationStrategy ? location.path() : '';
+        const message = error.message ? error.message : error.toString();
+        const url = location instanceof PathLocationStrategy ? location.path() : '';
 
-        var userName: string = '';
-        if (authService.isAuthenticated()){
-            var currentUser = authService.getCurrentUser();
-            if (currentUser && currentUser.email){
-                userName = currentUser.email
+        let userName: string = '';
+        if (authService.isAuthenticated()) {
+            const currentUser = authService.getCurrentUser();
+            if (currentUser && currentUser.email) {
+                userName = currentUser.email;
             }
         }
 
@@ -51,9 +50,9 @@ export class GlobalErrorHandler implements ErrorHandler {
                             this.navigateToErrorPage(response.item.guid);
                         }
                     },
-                    (error) => {
+                    (logError) => {
                         // notify shared service about the error
-                        sharedService.setError(new Log().errorMessage = error);
+                        sharedService.setError(new Log().errorMessage = logError);
 
                         if (!AppConfig.DevModeEnabled) {
                             // redirect only if dev mode is disabled
@@ -61,8 +60,7 @@ export class GlobalErrorHandler implements ErrorHandler {
                         }
                     });
             });
-        }
-        catch (error) {
+        } catch (logError) {
             // parsing error failed, log raw error message
             logService.logError(message, url, userName, error)
                 .subscribe((response) => {
@@ -72,10 +70,9 @@ export class GlobalErrorHandler implements ErrorHandler {
                     if (!AppConfig.DevModeEnabled) {
                         this.navigateToErrorPage(response.item.guid);
                     }
-                },
-                (error) => {
+                }, (innerError) => {
                     // notify shared service about the error
-                    sharedService.setError(new Log().errorMessage = error);
+                    sharedService.setError(new Log().errorMessage = innerError);
 
                     if (!AppConfig.DevModeEnabled) {
                         // redirect only if dev mode is disabled
@@ -85,7 +82,6 @@ export class GlobalErrorHandler implements ErrorHandler {
         }
 
         throw error;
-        //console.error(error);
     }
 
     private redirectToErrorPage(): void {
@@ -93,8 +89,8 @@ export class GlobalErrorHandler implements ErrorHandler {
     }
 
     private navigateToErrorPage(logGuid?: string): void {
-        var router = this.injector.get(Router);
-        var param = {};
+        const router = this.injector.get(Router);
+        const param = {};
         param[UrlConfig.AppErrorLogGuidQueryString] = logGuid;
 
         router.navigate([UrlConfig.getAppErrorUrl()], { queryParams: param });

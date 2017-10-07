@@ -5,7 +5,7 @@ import { AppConfig, ComponentDependencyService, BaseComponent, ComponentConfig, 
 
 // required by component
 import { DietsOverviewMenuItems } from '../menu.items';
-import { DataTableConfig, AlignEnum, Filter } from '../../../../web-components/data-table';
+import { DataTableConfig, AlignEnum, Filter, DataTableField } from '../../../../web-components/data-table';
 import { Diet, DietCategoryWithDietsCountDto } from '../../../models';
 
 @Component({
@@ -17,13 +17,13 @@ export class DietTemplatesComponent extends BaseComponent implements OnInit {
 
   constructor(
     protected dependencies: ComponentDependencyService) {
-    super(dependencies)
+    super(dependencies);
   }
 
   setup(): ComponentSetup | null {
     return {
         initialized: true
-    }
+    };
   }
 
   ngOnInit() {
@@ -40,9 +40,10 @@ export class DietTemplatesComponent extends BaseComponent implements OnInit {
   }
 
   private initDataTable(): void {
+    
     this.config = this.dependencies.webComponentServices.dataTableService.dataTable<Diet>()
       .fields([
-        { value: (item) => { return item.dietName }, flex: 40 },
+        { value: (item) => item.dietName , flex: 40 },
         {
           value: (item) => {
             if (item.client) {
@@ -62,18 +63,18 @@ export class DietTemplatesComponent extends BaseComponent implements OnInit {
           .includeMultiple(['DietCategory', 'Client'])
           .byCurrentUser()
           .whereLike('DietName', searchTerm)
-          .whereNull('ClientId')
+          .whereNull('ClientId');
       })
       .loadResolver(query => {
         return query
           .get()
-          .takeUntil(this.ngUnsubscribe)
+          .takeUntil(this.ngUnsubscribe);
       })
       .dynamicFilters((searchTerm) => {
         return this.dependencies.itemServices.dietCategoryService.getCategoryCountForDietTemplates(searchTerm)
           .get()
           .map(response => {
-            var filters: Filter<DietCategoryWithDietsCountDto>[] = [];
+            const filters: Filter<DietCategoryWithDietsCountDto>[] = [];
             response.items.forEach(category => {
               filters.push(new Filter({
                 filterNameKey: category.codename,
@@ -83,7 +84,7 @@ export class DietTemplatesComponent extends BaseComponent implements OnInit {
             });
             return filters;
           })
-          .takeUntil(this.ngUnsubscribe)
+          .takeUntil(this.ngUnsubscribe);
       })
       .showAllFilter(true)
       .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())

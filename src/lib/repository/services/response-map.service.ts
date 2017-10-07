@@ -7,17 +7,17 @@ import { IItem } from '../interfaces/iitem.interface';
 import { RepositoryConfig } from '../repository.config';
 
 // responses
-import { ResponseDeleteFile, ResponseFileMultiple, ResponseFileSingle, ResponseUploadMultiple, 
-    ResponseUploadSingle, ResponseCount, ResponsePost, ResponseFormEdit, ResponseFormInsert, 
+import { ResponseDeleteFile, ResponseFileMultiple, ResponseFileSingle, ResponseUploadMultiple,
+    ResponseUploadSingle, ResponseCount, ResponsePost, ResponseFormEdit, ResponseFormInsert,
     ResponseDelete, ResponseCreate, ResponseEdit, ResponseMultiple, ResponseSingle,
     ErrorResponse, FormErrorResponse, ResponseUpdateItemsOrder
     } from '../models/responses';
 
 // raw responses
-import { IResponseDeleteFile, IResponseFileMultiple, IResponseFileSingle, IResponseUploadMultipleRaw, 
-    IResponseUploadSingleRaw, IResponseCountRaw, IResponsePostRaw, IResponseFormEditRaw, 
+import { IResponseDeleteFile, IResponseFileMultiple, IResponseFileSingle, IResponseUploadMultipleRaw,
+    IResponseUploadSingleRaw, IResponseCountRaw, IResponsePostRaw, IResponseFormEditRaw,
     IResponseFormInsertRaw, IResponseCreateRaw, IResponseDeleteRaw, IResponseEditRaw, IResponseMultipleRaw,
-    IResponseSingleRaw, IErrorResponseRaw, IFormErrorResponseRaw, IResponseUpdateItemsOrder 
+    IResponseSingleRaw, IErrorResponseRaw, IFormErrorResponseRaw, IResponseUpdateItemsOrder
     } from '../interfaces/iraw-responses';
 
 // services
@@ -36,7 +36,7 @@ export class ResponseMapService {
     }
 
     mapMultipleResponseCustom<TModel>(response: Response): ResponseMultiple<TModel> {
-        var responseMultiple = (response.json() || {}) as IResponseMultipleRaw;
+        const responseMultiple = (response.json() || {}) as IResponseMultipleRaw;
 
         return new ResponseMultiple<TModel>({
             fromCache: responseMultiple.fromCache,
@@ -54,9 +54,9 @@ export class ResponseMapService {
     }
 
      mapMultipleResponse<TItem extends IItem>(response: Response): ResponseMultiple<TItem> {
-        var responseMultiple = (response.json() || {}) as IResponseMultipleRaw;
+        const responseMultiple = (response.json() || {}) as IResponseMultipleRaw;
 
-        var items = this.mapService.mapItems<TItem>(responseMultiple.items);
+        const items = this.mapService.mapItems<TItem>(responseMultiple.items);
 
         return new ResponseMultiple<TItem>({
             fromCache: responseMultiple.fromCache,
@@ -74,7 +74,7 @@ export class ResponseMapService {
     }
 
      mapSingleResponseCustom<TModel>(response: Response): ResponseSingle<TModel> {
-        var responseSingle = (response.json() || {}) as IResponseSingleRaw;
+        const responseSingle = (response.json() || {}) as IResponseSingleRaw;
         return new ResponseSingle<TModel>({
             fromCache: responseSingle.fromCache,
             action: responseSingle.action,
@@ -86,7 +86,7 @@ export class ResponseMapService {
     }
 
      mapCountResponse<TItem extends IItem>(response: Response): ResponseCount {
-        var responseCount = (response.json() || {}) as IResponseCountRaw;
+        const responseCount = (response.json() || {}) as IResponseCountRaw;
 
         return new ResponseCount({
             fromCache: responseCount.fromCache,
@@ -99,9 +99,9 @@ export class ResponseMapService {
     }
 
      mapSingleResponse<TItem extends IItem>(response: Response): ResponseSingle<TItem> {
-        var responseSingle = (response.json() || {}) as IResponseSingleRaw;
+        const responseSingle = (response.json() || {}) as IResponseSingleRaw;
 
-        var item = this.mapService.mapItem<TItem>(responseSingle.item);
+        const item = this.mapService.mapItem<TItem>(responseSingle.item);
 
         return new ResponseSingle<TItem>({
             fromCache: responseSingle.fromCache,
@@ -114,9 +114,9 @@ export class ResponseMapService {
     }
 
      mapCreateResponse<TItem extends IItem>(response: Response): ResponseCreate<TItem> {
-        var responseCreate = (response.json() || {}) as IResponseCreateRaw;
+        const responseCreate = (response.json() || {}) as IResponseCreateRaw;
 
-        var item = this.mapService.mapItem<TItem>(responseCreate.item);
+        const item = this.mapService.mapItem<TItem>(responseCreate.item);
 
         return new ResponseCreate<TItem>({
             item: item,
@@ -125,9 +125,9 @@ export class ResponseMapService {
     }
 
      mapEditResponse<TItem extends IItem>(response: Response): ResponseEdit<TItem> {
-        var responseEdit = (response.json() || {}) as IResponseEditRaw;
+        const responseEdit = (response.json() || {}) as IResponseEditRaw;
 
-        var item = this.mapService.mapItem<TItem>(responseEdit.item);
+        const item = this.mapService.mapItem<TItem>(responseEdit.item);
 
         return new ResponseEdit<TItem>({
             item: item,
@@ -136,9 +136,9 @@ export class ResponseMapService {
     }
 
     mapUpdateItemsOrderResponse<TItem extends IItem>(response: Response): ResponseUpdateItemsOrder<TItem> {
-        var responseUpdateItemsOrder = (response.json() || {}) as IResponseUpdateItemsOrder;
+        const responseUpdateItemsOrder = (response.json() || {}) as IResponseUpdateItemsOrder;
 
-        var items = this.mapService.mapItems<TItem>(responseUpdateItemsOrder.orderedItems);
+        const items = this.mapService.mapItems<TItem>(responseUpdateItemsOrder.orderedItems);
 
         return new ResponseUpdateItemsOrder<TItem>({
             orderedItems: items,
@@ -149,7 +149,7 @@ export class ResponseMapService {
     }
 
      mapPostResponse<T extends any>(response: Response): ResponsePost<T> {
-        var responsePost = (response.json() || {}) as IResponsePostRaw;
+        const responsePost = (response.json() || {}) as IResponsePostRaw;
 
         return new ResponsePost<T>({
             data: responsePost.data as T,
@@ -160,7 +160,7 @@ export class ResponseMapService {
     }
 
      mapDeleteResponse(response: Response): ResponseDelete {
-        var responseDelete = (response.json() || {}) as IResponseDeleteRaw;
+        const responseDelete = (response.json() || {}) as IResponseDeleteRaw;
 
         return new ResponseDelete({
             action: responseDelete.action,
@@ -169,10 +169,10 @@ export class ResponseMapService {
     }
 
      mapFormEditResponse<TItem extends IItem>(response: Response): ResponseFormEdit<TItem> {
-        var responseForm = (response.json() || {}) as IResponseFormEditRaw;
+        const responseForm = (response.json() || {}) as IResponseFormEditRaw;
 
-        var formFields = this.mapService.mapFormFields(responseForm.fields);
-        var item = this.mapService.mapItem<TItem>(responseForm.item);
+        const formFields = this.mapService.mapFormFields(responseForm.fields);
+        const item = this.mapService.mapItem<TItem>(responseForm.item);
 
         return new ResponseFormEdit<TItem>({
             fields: formFields,
@@ -186,9 +186,9 @@ export class ResponseMapService {
     }
 
      mapFormInsertResponse(response: Response): ResponseFormInsert {
-        var responseForm = (response.json() || {}) as IResponseFormInsertRaw;
+        const responseForm = (response.json() || {}) as IResponseFormInsertRaw;
 
-        var formFields = this.mapService.mapFormFields(responseForm.fields);
+        const formFields = this.mapService.mapFormFields(responseForm.fields);
 
         return new ResponseFormInsert({
             fields: formFields,
@@ -199,9 +199,9 @@ export class ResponseMapService {
     }
 
      mapSingleUploadResponse(response: Response): ResponseUploadSingle {
-        var responseUpload = (response.json() || {}) as IResponseUploadSingleRaw;
+        const responseUpload = (response.json() || {}) as IResponseUploadSingleRaw;
 
-        var file = this.mapService.mapFile(responseUpload.file);
+        const file = this.mapService.mapFile(responseUpload.file);
 
         return new ResponseUploadSingle({
             file: file,
@@ -210,9 +210,9 @@ export class ResponseMapService {
     }
 
      mapMultipleUploadResponse(response: Response): ResponseUploadMultiple {
-        var responseUpload = (response.json() || {}) as IResponseUploadMultipleRaw;
+        const responseUpload = (response.json() || {}) as IResponseUploadMultipleRaw;
 
-        var files = this.mapService.mapFiles(responseUpload.files);
+        const files = this.mapService.mapFiles(responseUpload.files);
 
         return new ResponseUploadMultiple({
             files: files,
@@ -221,10 +221,10 @@ export class ResponseMapService {
     }
 
      mapSingleFileResponse(response: Response): ResponseFileSingle {
-        var fileResponse = (response.json() || {}) as IResponseFileSingle;
+        const fileResponse = (response.json() || {}) as IResponseFileSingle;
 
-        var file;
-        if (fileResponse.file){
+        let file;
+        if (fileResponse.file) {
             file = this.mapService.mapFile(fileResponse.file);
         }
 
@@ -236,10 +236,10 @@ export class ResponseMapService {
     }
 
      mapMultipleFileResponse(response: Response): ResponseFileMultiple {
-        var filesResponse = (response.json() || {}) as IResponseFileMultiple;
+        const filesResponse = (response.json() || {}) as IResponseFileMultiple;
 
-        var files;
-        if (filesResponse.files){
+        let files;
+        if (filesResponse.files) {
             files = this.mapService.mapFiles(filesResponse.files);
         }
 
@@ -251,7 +251,7 @@ export class ResponseMapService {
     }
 
      mapDeleteFileResponse(response: Response): ResponseDeleteFile {
-        var responseDelete = (response.json() || {}) as IResponseDeleteFile;
+        const responseDelete = (response.json() || {}) as IResponseDeleteFile;
 
         return new ResponseDeleteFile({
             action: responseDelete.action,

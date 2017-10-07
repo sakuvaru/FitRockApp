@@ -4,7 +4,7 @@ export class ComponentSetup {
 
     constructor(config: {
          initialized: boolean
-    }) { 
+    }) {
         Object.assign(this, config);
     }
 }

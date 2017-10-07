@@ -73,7 +73,7 @@ export class ClientDietsComponent extends BaseComponent implements OnInit {
         return this.dependencies.itemServices.dietCategoryService.getCategoryCountForClientDiets(searchTerm)
           .get()
           .map(response => {
-            var filters: Filter<DietCategoryWithDietsCountDto>[] = [];
+            let filters: Filter<DietCategoryWithDietsCountDto>[] = [];
             response.items.forEach(category => {
               filters.push(new Filter({
                 filterNameKey: category.codename,

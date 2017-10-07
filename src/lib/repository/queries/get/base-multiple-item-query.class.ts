@@ -32,14 +32,14 @@ export abstract class BaseMultipleItemQuery extends BaseItemQuery {
         protected config: RepositoryConfig,
         protected type: string,
     ) {
-        super(authHttp, config, type)
+        super(authHttp, config, type);
     }
 
     // execution
     abstract get(): Observable<ResponseMultiple<any>>;
 
-    toCountQuery(): ItemCountQuery{
-        var countQuery = new ItemCountQuery(this.authHttp, this.config, this.type);
+    toCountQuery(): ItemCountQuery {
+        const countQuery = new ItemCountQuery(this.authHttp, this.config, this.type);
 
         this._options.forEach(option => {
             countQuery.addOption(option);

@@ -1,7 +1,7 @@
 import { ControlTypeEnum } from '../models/control-type.enum';
 
 export interface IFormField {
-    
+
     /**
      * Raw value of the field
      */

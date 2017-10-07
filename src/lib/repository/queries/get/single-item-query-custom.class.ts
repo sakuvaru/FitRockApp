@@ -21,13 +21,13 @@ export class SingleItemQueryCustom<TModel> extends BaseSingleItemQuery {
         protected type: string,
         protected action: string
     ) {
-        super(authHttp, config, type)
+        super(authHttp, config, type);
         this._action = action;
     }
 
     // execution
     get(): Observable<ResponseSingle<TModel>> {
-        var url = super.getSingleItemQueryUrl();
+        const url = super.getSingleItemQueryUrl();
         return super.getSingleCustom(url);
     }
 
@@ -46,13 +46,13 @@ export class SingleItemQueryInitCustom<TModel> {
     }
 
     byId(id: number): SingleItemQueryCustom<TModel> {
-        var action = 'getbyid/' + id;
+        const action = 'getbyid/' + id;
 
-        return new SingleItemQueryCustom(this.authHttp, this.config, this.type, action)
+        return new SingleItemQueryCustom(this.authHttp, this.config, this.type, action);
     }
 
     withCustomAction(action: string): SingleItemQueryCustom<TModel> {
-        return new SingleItemQueryCustom(this.authHttp, this.config, this.type, action)
+        return new SingleItemQueryCustom(this.authHttp, this.config, this.type, action);
     }
 }
 

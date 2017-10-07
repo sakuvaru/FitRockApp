@@ -6,11 +6,11 @@ import { BaseTypeService } from '../base/base-type.service';
 @Injectable()
 export class ProgressItemTypeService extends BaseTypeService<ProgressItemType>{
 
-    constructor(repositoryClient: RepositoryClient) { 
+    constructor(repositoryClient: RepositoryClient) {
         super (repositoryClient, {
             type: 'ProgressItemType',
             allowDelete: true
-        })
+        });
     }
 
     /**
@@ -24,12 +24,12 @@ export class ProgressItemTypeService extends BaseTypeService<ProgressItemType>{
     }
 
      getProgressItemTypeWithCountDto(clientId: number, startDate?: Date): MultipleItemQueryCustom<ProgressItemTypeWithCountDto> {
-        var query = this.customItems<ProgressItemTypeWithCountDto>()
+        const query = this.customItems<ProgressItemTypeWithCountDto>()
             .withCustomOption('ClientId', clientId)
             .withCustomAction('GetProgressItemTypeWithCountDto');
 
-        if (startDate){
-            query.withCustomOption('StartDate', startDate)
+        if (startDate) {
+            query.withCustomOption('StartDate', startDate);
         }
 
         return query;

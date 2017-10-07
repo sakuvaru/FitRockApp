@@ -23,10 +23,10 @@ export class ObservableHelper {
             return observables[0];
         }
 
-        var zippedObservable: Observable<any> = observables[0];
+        let zippedObservable: Observable<any> = observables[0];
 
-        for (var i = 1; i < observables.length; i++) {
-            var currentObservable = observables[i];
+        for (let i = 1; i < observables.length; i++) {
+            const currentObservable = observables[i];
             zippedObservable = zippedObservable.zip(currentObservable);
         }
 
@@ -54,4 +54,4 @@ export class ObservableHelper {
     }
 }
 
-export var observableHelper = new ObservableHelper();
+export let observableHelper = new ObservableHelper();

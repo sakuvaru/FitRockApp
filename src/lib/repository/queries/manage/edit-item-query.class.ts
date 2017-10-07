@@ -35,7 +35,7 @@ export class EditItemQuery<TItem extends IItem> extends BaseQuery {
         protected type: string,
         protected item: TItem
     ) {
-        super(authHttp, config)
+        super(authHttp, config);
         this._action = this.defaultAction;
     }
 
@@ -46,7 +46,7 @@ export class EditItemQuery<TItem extends IItem> extends BaseQuery {
     }
 
     // url
-    protected getEditUrl(): string{
+    protected getEditUrl(): string {
         return this.getTypeUrl(this.type, this._action);
     }
 

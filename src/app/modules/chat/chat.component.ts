@@ -37,13 +37,13 @@ export class ChatComponent extends BaseComponent implements OnInit {
         protected activatedRoute: ActivatedRoute,
         protected componentDependencyService: ComponentDependencyService
     ) {
-        super(componentDependencyService)
+        super(componentDependencyService);
     }
 
     setup(): ComponentSetup | null {
         return {
             initialized: false
-        }
+        };
     }
 
     ngOnInit(): void {
@@ -69,7 +69,7 @@ export class ChatComponent extends BaseComponent implements OnInit {
     }
 
     private getComponentObservables(): Observable<any>[] {
-        var observables: Observable<any>[] = [];
+        const observables: Observable<any>[] = [];
         observables.push(this.getSearchAndMenuObservable());
         observables.push(this.getConverstationObservable());
         return observables;
@@ -91,7 +91,7 @@ export class ChatComponent extends BaseComponent implements OnInit {
                     menuItems: new ChatMenuItems(response.items).menuItems,
                     enableSearch: true
                 });
-            })
+            });
     }
 
     private getConverstationObservable(): Observable<any> {
@@ -100,7 +100,7 @@ export class ChatComponent extends BaseComponent implements OnInit {
                 super.startGlobalLoader();
                 this.resetChatUser();
 
-                var userIdParam = +params['id'];
+                const userIdParam = +params['id'];
 
                 if (!userIdParam) {
                     return this.dependencies.itemServices.userService.clients()
@@ -117,10 +117,10 @@ export class ChatComponent extends BaseComponent implements OnInit {
             .switchMap(response => {
                 if (!response || !response.items[0]) {
                     this.setNoUserFound();
-                    return Observable.empty()
+                    return Observable.empty();
                 }
 
-                var activeUser = response.items[0];
+                const activeUser = response.items[0];
 
                 this.activeChatUserId = activeUser.id;
 
@@ -129,7 +129,7 @@ export class ChatComponent extends BaseComponent implements OnInit {
                     componentTitle: { key: activeUser.getFullName() }
                 });
 
-                return Observable.of(response)
+                return Observable.of(response);
             })
             .switchMap(response => {
                 if (!this.activeChatUserId) {
@@ -142,7 +142,7 @@ export class ChatComponent extends BaseComponent implements OnInit {
                 this.initChatForm(this.activeChatUserId);
 
                 super.stopAllLoaders();
-            })
+            });
     }
 
     private resetChatUser(): void {
@@ -167,10 +167,10 @@ export class ChatComponent extends BaseComponent implements OnInit {
             .fieldValueResolver((fieldName, value) => {
                 // manually set recipient & sender
                 if (fieldName === 'SenderUserId') {
-                    return this.dependencies.authenticatedUserService.getUserId()
+                    return this.dependencies.authenticatedUserService.getUserId();
                 }
-                else if (fieldName === 'RecipientUserId') {
-                    return userId
+                if (fieldName === 'RecipientUserId') {
+                    return userId;
                 }
                 return value;
             })
@@ -201,17 +201,14 @@ export class ChatComponent extends BaseComponent implements OnInit {
                     this.allChatMessagesLoaded = false;
                     if (replaceMessages) {
                         this.chatMessages = response.items;
-                    }
-                    else {
+                    } else {
                         if (this.chatMessages) {
                             this.chatMessages = _.union(this.chatMessages, response.items);
-                        }
-                        else {
+                        } else {
                             this.chatMessages = response.items;
                         }
                     }
-                }
-                else {
+                } else {
                     if (replaceMessages) {
                         this.chatMessages = [];
                     }
@@ -225,5 +222,4 @@ export class ChatComponent extends BaseComponent implements OnInit {
         super.subscribeToObservable(this.getChatMessagesObservable(this.activeChatUserId, this.chatMessagesPage, false, this.chatMessagesSearch)
             .takeUntil(this.ngUnsubscribe));
     }
-
 }

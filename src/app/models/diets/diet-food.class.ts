@@ -9,7 +9,7 @@ export class DietFood extends BaseItem {
     public order: number;
     public dietId: number;
     public foodId: number;
-    
+
     public diet: Diet;
     public food: Food;
 }

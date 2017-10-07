@@ -36,10 +36,10 @@ export class DataTableField<T> {
     /**
      * Indicates if field will be hidden on small screens
      */
-    public hideOnSmallScreens?: boolean = false;
+    public hideOnSmallScreens? = false;
 
     /**
      * Indicates if 'value' should be translated using translation services
      */
-    public translateValue?: boolean = false;
-}   
+    public translateValue? = false;
+}

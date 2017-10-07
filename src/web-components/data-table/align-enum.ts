@@ -1,4 +1,4 @@
-export enum AlignEnum{
+export enum AlignEnum {
     Left,
     Right,
     Center

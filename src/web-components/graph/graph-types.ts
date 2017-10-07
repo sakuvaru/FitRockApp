@@ -31,8 +31,8 @@ export class LineChart extends BaseGraph {
             yAxisLabel?: Observable<string>
         }
     ) {
-        super()
-        if (options) Object.assign(this, options)
+        super();
+        if (options) Object.assign(this, options);
     }
 }
 
@@ -60,7 +60,7 @@ export class VerticalBarChart extends BaseGraph {
         }
 
     ) {
-        super()
-        if (options) Object.assign(this, options)
+        super();
+        if (options) Object.assign(this, options);
     }
 }

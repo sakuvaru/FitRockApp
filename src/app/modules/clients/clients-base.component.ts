@@ -70,7 +70,7 @@ export abstract class ClientsBaseComponent extends BaseComponent implements OnIn
         this.activatedRoute.params
             .takeUntil(this.ngUnsubscribe)
             .map(params => {
-                var id = +params['id'];
+                let id = +params['id'];
 
                 // it may happen that id is null if the component does not contain 'id' of client -> e.g. listing of clients
                 if (id) {
@@ -90,11 +90,11 @@ export abstract class ClientsBaseComponent extends BaseComponent implements OnIn
         this.activatedRoute.params
             .takeUntil(this.ngUnsubscribe)
             .switchMap(params => {
-                var id = +params['id'];
+                let id = +params['id'];
                 return this.dependencies.itemServices.userService.item().byId(id).get()
             })
             .map(response => {
-                var user = response.item;
+                let user = response.item;
                 this.clientChange.next(response.item);
                 this.client = user;
                 super.stopGlobalLoader();

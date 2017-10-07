@@ -4,6 +4,6 @@ export class DietCategory extends BaseItem {
     public categoryName: string;
 }
 
-export class DietCategoryWithDietsCountDto extends DietCategory{
+export class DietCategoryWithDietsCountDto extends DietCategory {
     public dietsCount: number;
 }

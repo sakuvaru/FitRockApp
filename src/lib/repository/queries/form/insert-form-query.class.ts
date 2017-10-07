@@ -19,8 +19,8 @@ import {
 // rxjs
 import { Observable } from 'rxjs/Rx';
 
-export class InsertFormQuery<TItem> extends BaseFormQuery{
-    
+export class InsertFormQuery<TItem> extends BaseFormQuery {
+
     private _defaultAction = 'getInsertForm';
 
     constructor(
@@ -28,7 +28,7 @@ export class InsertFormQuery<TItem> extends BaseFormQuery{
         protected config: RepositoryConfig,
         protected type: string,
     ) {
-        super(authHttp, config, type)
+        super(authHttp, config, type);
         this._action = this._defaultAction;
     }
 

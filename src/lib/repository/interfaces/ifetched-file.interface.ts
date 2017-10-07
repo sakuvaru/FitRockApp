@@ -1,4 +1,4 @@
-export interface IFetchedFile{
+export interface IFetchedFile {
     fileName: string;
     absoluteUrl: string;
     fileNotFound: string;

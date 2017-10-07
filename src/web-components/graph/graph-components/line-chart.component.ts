@@ -22,7 +22,7 @@ export class LineChartGraphComponent extends BaseGraphComponent implements OnIni
     @Input() config: GraphConfig<LineChart>;
 
     /**
-     * X axis label 
+     * X axis label
      */
     private xAxisLabel: string;
 
@@ -33,7 +33,7 @@ export class LineChartGraphComponent extends BaseGraphComponent implements OnIni
 
     constructor(
         protected translateService: TranslateService
-    ) { super(translateService) }
+    ) { super(translateService); }
 
 
     ngOnInit() {
@@ -49,7 +49,7 @@ export class LineChartGraphComponent extends BaseGraphComponent implements OnIni
     }
 
     private getLabelsObservable(graph: LineChart): Observable<LineChart> {
-        var obs: Observable<any> = Observable.of(true);
+        let obs: Observable<any> = Observable.of(true);
 
         if (graph.xAxisLabel) {
             obs = graph.xAxisLabel

@@ -9,7 +9,7 @@ export class WorkoutExercise extends BaseItem {
     public notes: string;
     public exercise: Exercise;
     public exerciseId: number;
-    public workout: Workout; 
+    public workout: Workout;
     public order: number;
     public workoutId: number;
 }

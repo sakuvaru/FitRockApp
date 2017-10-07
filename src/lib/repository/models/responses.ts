@@ -9,23 +9,23 @@ import { FetchedFile } from './fetched-file.class';
 export function mapReason(reasonCode: number): ErrorReasonEnum {
     if (reasonCode === 0) {
         return ErrorReasonEnum.Other;
-    };
+    }
     if (reasonCode === 1) {
         return ErrorReasonEnum.FormError;
-    };
+    }
     if (reasonCode === 2) {
         return ErrorReasonEnum.LicenseLimitation;
-    };
+    }
 
     if (reasonCode === 3) {
         return ErrorReasonEnum.NotAuthorized;
-    };
+    }
     if (reasonCode === 4) {
         return ErrorReasonEnum.CoreException;
-    };
+    }
     if (reasonCode === 5) {
         return ErrorReasonEnum.RepositoryException;
-    };
+    }
 
     if (reasonCode === 404) {
         return ErrorReasonEnum.NotFound;
@@ -85,7 +85,7 @@ export class ResponseMultiple<T> extends ResponseGetBase {
             pages?: number,
             items?: T[]
         }) {
-        super()
+        super();
         if (options) Object.assign(this, options);
     }
 
@@ -134,7 +134,7 @@ export class ResponseSingle<T> extends ResponseGetBase {
 
             item?: T
         }) {
-        super()
+        super();
         if (options) Object.assign(this, options);
     }
 

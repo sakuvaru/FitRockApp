@@ -15,11 +15,11 @@ export class UserService extends BaseTypeService<User>{
         super(repositoryClient, {
             type: 'User',
             allowDelete: true
-        })
+        });
     }
 
     myProfileForm(): DynamicFormEditBuilder<User> {
-        var myProfileFormQuery = super.editFormQuery(-1).withCustomAction('GetMyProfileForm');
+        const myProfileFormQuery = super.editFormQuery(-1).withCustomAction('GetMyProfileForm');
 
         // -1 because id is not required for my profile form
         return super.editForm(-1, myProfileFormQuery);
@@ -40,5 +40,5 @@ export class UserService extends BaseTypeService<User>{
     getAuthUser(): Observable<ResponseSingle<User>> {
         return super.item().withCustomAction('getAuthUser').get();
     }
-    
+
 }

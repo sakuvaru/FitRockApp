@@ -6,11 +6,11 @@ import { BaseTypeService } from '../base/base-type.service';
 @Injectable()
 export class FoodCategoryService extends BaseTypeService<FoodCategory>{
 
-    constructor(repositoryClient: RepositoryClient) { 
+    constructor(repositoryClient: RepositoryClient) {
         super (repositoryClient, {
             type: 'FoodCategory',
             allowDelete: false
-        })
+        });
     }
 
     getFoodCategoryWithFoodsCountDto(foodName: string, takeAllFoods: boolean): MultipleItemQueryCustom<FoodCategoryWithFoodsCountDto>{
