@@ -17,6 +17,10 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 // components
 import { GraphComponent } from './graph.component';
 
+// graphs
+import { VerticalBarGraphComponent } from './graph-components/vertical-bar-chart.component';
+import { LineChartGraphComponent } from './graph-components/line-chart.component';
+
 // service
 import { GraphService } from './graph.service';
 
@@ -31,7 +35,9 @@ import { GraphService } from './graph.service';
         NgxChartsModule // ngx
     ],
     declarations: [
-        GraphComponent
+        GraphComponent,
+        VerticalBarGraphComponent,
+        LineChartGraphComponent,
     ],
     exports: [
         GraphComponent

@@ -43,14 +43,17 @@ export class StatsMainComponent extends ClientsBaseComponent implements OnInit {
     }
 
     private getGraphConfig(clientId: number, progressItemId: number): GraphConfig<BaseGraph> {
-        return this.graphConfig = this.dependencies.webComponentServices.graphService.lineChart(
+        return this.dependencies.webComponentServices.graphService.lineChart(
             this.dependencies.itemServices.progressItemService.getMultiSeriesStats(clientId, progressItemId)
                 .set()
                 .map(response => {
                     this.idOfActiveType = progressItemId;
-                    return response.data.items
+                    return new LineChart(response.data.items, {
+                        xAxisLabel: super.translate(response.data.xAxisLabel),
+                        yAxisLabel: super.translate(response.data.yAxisLabel)
+                    })
                 })
-            )
+        )
             .build();
     }
 
@@ -83,7 +86,7 @@ export class StatsMainComponent extends ClientsBaseComponent implements OnInit {
             })
             .map(response => {
                 this.progressItemTypes = response.items;
-                
+
                 if (this.progressItemTypes.length > 0) {
                     this.graphConfig = this.getGraphConfig(this.clientId, this.progressItemTypes[0].id);
                 }

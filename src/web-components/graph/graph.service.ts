@@ -1,24 +1,19 @@
-import { BaseGraph, LineChart, VerticalBarChart } from './graph-types';
+import { LineChart, VerticalBarChart } from './graph-types';
 import { GraphBuilder } from './graph.builder';
-import { MultiSeries, SingleSeries } from './graph-models';
+import { GraphTypeEnum } from './graph-type.enum';
 import { Observable } from 'rxjs/Rx';
 
 export class GraphService {
 
     lineChart(
-        data: Observable<MultiSeries[]>
+        graph: Observable<LineChart>,
     ): GraphBuilder<LineChart> {
-        return new GraphBuilder<LineChart>(new LineChart({
-            data: data,
-
-        }))
+        return new GraphBuilder<LineChart>(graph, GraphTypeEnum.LineChart)
     }
 
     verticalBarChart(
-        data: Observable<SingleSeries[]>
+        graph: Observable<VerticalBarChart>,
     ): GraphBuilder<VerticalBarChart> {
-        return new GraphBuilder<VerticalBarChart>(new VerticalBarChart({
-            data: data
-        }))
+        return new GraphBuilder<VerticalBarChart>(graph, GraphTypeEnum.VerticalBarChart)
     }
 }
