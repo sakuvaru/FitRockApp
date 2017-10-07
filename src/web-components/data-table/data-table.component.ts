@@ -24,7 +24,7 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
     private configHash: number;
 
     // resolved data
-    private items: any[];
+    private items: any[] = [];
 
     // filters
     private hasFilters: boolean = false;
@@ -287,73 +287,31 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
         this.filterItems(1);
     }
 
-    /*Temp filters
-   private calculateStaticFilters(): void {
-       if (this.filters) {
-           var resolvedFilters = 0;
-           var allFilters = this.config.showAllFilter ? this.filters.length - 1 : this.filters;
-           var tempFilters: FilterTemp[] = [];
-
-           // resolve static filter's count
-           this.filters.forEach(filter => {
-               if (filter.countQuery && filter.onFilter) {
-                   // filter has defined a query to get the data
-                   filter.onFilter(this.config.loadQuery(this.searchTerm)).toCountQuery()
-                       .get()
-                       .takeUntil(this.ngUnsubscribe)
-                       .subscribe(result => {
-                           resolvedFilters++;
-                           tempFilters.push(new FilterTemp(result.count, filter.filterNameKey));
-
-                           // set count for all filters all at once
-                           if (resolvedFilters === allFilters) {
-                               this.updateFiltersFromTemp(tempFilters);
-                           }
-                       });
-               }
-           });
-       }
-   }
-
-   private updateFiltersFromTemp(tempFilters: FilterTemp[]): void{
-       var sumCount = 0;
-
-       tempFilters.forEach(tempFilter => {
-           var filter = this.filters.find(m => m.filterNameKey === tempFilter.filterKey);
-           if (!filter){
-               throw Error(`Filter '${tempFilter.filterKey}' was not found`);
-           }
-           sumCount += tempFilter.count;
-           filter.count = tempFilter.count;
-       });
-
-       // set all filter
-       if (this.config.showAllFilter){
-           var allFilter = this.filters.find(m => m.filterNameKey === this.allFilterKey);
-           allFilter.count = sumCount;
-       }
-   }
-   */
-
     private getFilterByGuid(guid: string): Filter<any> | undefined {
         var filter = this.filters.find(m => m.guid === guid);
         return filter;
     }
 
     private getQueryWithFilters(query: MultipleItemQuery<any>): MultipleItemQuery<any> {
-        if (this.hasFilters && this.activeFilterGuid) {
-            var filter = this.getFilterByGuid(this.activeFilterGuid);
+        if (this.hasFilters) {
+            var filter: Filter<any> | undefined;
 
-            // if not filter is found, use the first one
-            if (!filter) {
+            // try getting the active filter
+            if (this.activeFilterGuid){
+                filter = this.getFilterByGuid(this.activeFilterGuid);
+            }
+
+            if (!filter){
+                 // if no active filter is found or the filter is invalid, use the first one
                 filter = this.filters[0];
                 this.activeFilterGuid = filter.guid;
             }
 
-            if (filter) {
-                query = filter.onFilter(query);
+            if (!filter){
+                throw Error(`Data table filter failed due to invalid filter.`);
             }
-            // do not throw exception is filter is not found - if item's result contain 0 items, there could be 0 filters
+
+            query = filter.onFilter(query);
         }
         return query;
     }
