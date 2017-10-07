@@ -16,6 +16,7 @@ export class SelectProgressTypeDialog extends BaseComponent implements OnInit {
 
   private config: DataTableConfig<ProgressItemType>;
   public selectedItem: ProgressItemType;
+  public openAddCustomProgressTypeDialog: boolean = false;
 
   constructor(
     protected dependencies: ComponentDependencyService,
@@ -64,6 +65,11 @@ export class SelectProgressTypeDialog extends BaseComponent implements OnInit {
         this.close();
       })
       .build();
+  }
+
+  private addCustomProgressType(): void {
+    this.openAddCustomProgressTypeDialog = true;
+    this.close();
   }
 
   private close(): void {

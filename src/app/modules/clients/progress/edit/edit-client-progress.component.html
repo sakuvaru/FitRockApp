@@ -12,7 +12,7 @@
         <mat-card>
             <mat-card-content>
                 <button mat-raised-button color="primary" (click)="openSelectTypeDialog()">{{'module.clients.progress.assignProgressItemType' | translate}}</button>
-                <button mat-raised-button color="primary" [routerLink]="[getTrainerUrl('clients/edit/' + clientId + '/new-progress-type')]">{{'module.clients.progress.newProgressItemType' | translate}}</button>
+                <button mat-button class="push-left" (click)="openAddNewProgressItemTypeDialog()">{{'module.clients.progress.newProgressItemType' | translate}}</button>
 
                 <div class="push-top">
                     <mat-chip-list selectable="false">

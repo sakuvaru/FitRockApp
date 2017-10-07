@@ -10,10 +10,10 @@ import { ClientMenuItems } from '../../menu.items';
 import { FormConfig, DynamicFormComponent } from '../../../../../web-components/dynamic-form';
 import { DataTableConfig, AlignEnum, Filter, DataTableComponent } from '../../../../../web-components/data-table';
 import { ProgressItem, User, ProgressItemTypeWithCountDto } from '../../../../models';
-import 'rxjs/add/operator/switchMap';
 import { Observable } from 'rxjs/Rx';
 import { EditProgressItemDialog } from '../dialogs/edit-progress-item-dialog.component';
 import { SelectProgressTypeDialog } from '../dialogs/select-progress-type-dialog.component';
+import { NewClientProgressItemTypeDialogComponent } from '../dialogs/new-client-progress-item-type-dialog.component';
 import * as _ from 'underscore';
 
 @Component({
@@ -146,13 +146,13 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
             .fields([
                 {
                     translateValue: true,
-                    value: (item) =>  'module.progressItemTypes.globalTypes.' + item.progressItemType.codename,
+                    value: (item) => 'module.progressItemTypes.globalTypes.' + item.progressItemType.codename,
                     isSubtle: false,
                     hideOnSmallScreens: false,
                     align: AlignEnum.Left,
                 },
                 {
-                    value: (item) => { return item.value.toString() }, 
+                    value: (item) => { return item.value.toString() },
                     isSubtle: true,
                     hideOnSmallScreens: false,
                     align: AlignEnum.Left,
@@ -170,7 +170,7 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
                     hideOnSmallScreens: true,
                     align: AlignEnum.Right
                 },
-               
+
             ])
             .loadQuery(searchTerm => {
                 return this.dependencies.itemServices.progressItemService.items()
@@ -227,6 +227,22 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
         super.subscribeToObservable(this.getDeleteProgressTypeObservable(progressItemType));
     }
 
+    private openAddNewProgressItemTypeDialog(): void {
+        var dialog = this.dependencies.tdServices.dialogService.open(NewClientProgressItemTypeDialogComponent, {
+            width: AppConfig.DefaultDialogWidth,
+        });
+
+        dialog.afterClosed().subscribe(m => {
+            if (dialog.componentInstance.createdProgressItemType) {
+                // add progress item to types
+                this.progressItemTypes.push(dialog.componentInstance.createdProgressItemType);
+
+                // reload form and progress items
+                super.subscribeToObservable(this.getAddProgressTypeObservable(dialog.componentInstance.createdProgressItemType));
+            }
+        })
+    }
+
     private openEditProgressItemDialog(progressItem: ProgressItem): void {
         var dialog = this.dependencies.tdServices.dialogService.open(EditProgressItemDialog, {
             width: AppConfig.DefaultDialogWidth,
@@ -247,7 +263,10 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
         });
 
         dialog.afterClosed().subscribe(m => {
-            if (dialog.componentInstance.selectedItem) {
+            if (dialog.componentInstance.openAddCustomProgressTypeDialog) {
+                this.openAddNewProgressItemTypeDialog();
+            }
+            else if (dialog.componentInstance.selectedItem) {
                 // item was selected, add it
                 super.subscribeToObservable(this.getAddProgressTypeObservable(dialog.componentInstance.selectedItem));
             }
