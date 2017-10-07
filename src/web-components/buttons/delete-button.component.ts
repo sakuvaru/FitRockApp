@@ -20,7 +20,8 @@ export class DeleteButtonComponent extends BaseWebComponent implements OnInit {
         private dialogService: TdDialogService,
         private viewContainerRef: ViewContainerRef,
         private translateService: TranslateService
-    ) { super()
+    ) {
+        super()
     }
 
     @Input() color: 'none' | 'warn' | 'accent' | 'primary' = 'none';

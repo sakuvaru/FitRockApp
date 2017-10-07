@@ -6,7 +6,7 @@ import { AppConfig, ComponentDependencyService, BaseComponent } from '../../../.
 // required by component
 import { MAT_DIALOG_DATA } from '@angular/material';
 import { ClientsBaseComponent } from '../../clients-base.component';
-import { FormConfig } from '../../../../../web-components/dynamic-form';
+import { FormConfig, DynamicFormStatus } from '../../../../../web-components/dynamic-form';
 import { NewClientProgressItemTypeMenuItems } from '../../menu.items';
 import { ProgressItemType } from '../../../../models';
 import { Observable, Subject } from 'rxjs/Rx';
@@ -20,7 +20,7 @@ export class NewClientProgressItemTypeDialogComponent extends ClientsBaseCompone
 
     private customSaveButtonSubject: Subject<void> = new Subject<void>();
     private customDeleteButtonSubject: Subject<void> = new Subject<void>();
-    private formIsValid: boolean = false;
+    private formStatus: DynamicFormStatus | undefined;
 
     public createdProgressItemType?: ProgressItemType;
 
@@ -57,9 +57,9 @@ export class NewClientProgressItemTypeDialogComponent extends ClientsBaseCompone
             .build();
     }
 
-    private onStatusChanged(valid: boolean): void {
-        this.formIsValid = valid;
-    }
+    private onStatusChanged(status: DynamicFormStatus): void {
+        this.formStatus = status;
+      }
 
     private close(): void {
         this.dependencies.tdServices.dialogService.closeAll();

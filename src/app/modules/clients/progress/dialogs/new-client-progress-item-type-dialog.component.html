@@ -12,7 +12,7 @@
 </mat-dialog-content>
 
 <mat-dialog-actions>
-    <dialog-button [disabled]="!formIsValid" color="accent" (handleClick)="customSaveButtonSubject.next()">{{ 'shared.create' | translate }}</dialog-button>
+    <dialog-button [disabled]="!formStatus || (formStatus && !formStatus.isValid)" color="accent" (handleClick)="customSaveButtonSubject.next()">{{ 'shared.create' | translate }}</dialog-button>
     <span flex></span>
-    <delete-button (confirm)="customDeleteButtonSubject.next()"></delete-button>
+    <delete-button *ngIf="!formStatus || (formStatus && !formStatus.isDeleteEnabled)" (confirm)="customDeleteButtonSubject.next()"></delete-button>
 </mat-dialog-actions>

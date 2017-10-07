@@ -6,6 +6,7 @@ import { Observable, Subject } from 'rxjs/Rx';
 
 // models
 import { FormConfig } from './form-config.class';
+import { DynamicFormStatus } from './dynamic-form-status.class';
 
 import { BaseWebComponent } from '../base-web-component.class';
 import {
@@ -67,7 +68,7 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
     /**
      * Output that indicates if form is valid, typically used when custom button are used
      */
-    @Output() statusChanged = new EventEmitter<boolean>()
+    @Output() statusChanged = new EventEmitter<DynamicFormStatus>()
 
     /**
      * Form configuration
@@ -162,18 +163,32 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
                     // subscribe to form status changes so that it can be emitted
                     this.form.statusChanges
                         .map(status => {
+                            let isValid = false;
                             if (status === 'VALID') {
-                                this.statusChanged.next(true);
+                                isValid = true;
                             }
-                            else {
-                                this.statusChanged.next(false);
-                            }
+
+                            var formStatus = new DynamicFormStatus(
+                                isValid,
+                                this.isDeleteEnabled,
+                                this.isEditForm,
+                                this.isInsertForm
+                            );
+
+                            this.statusChanged.next(formStatus);
                         })
                         .takeUntil(this.ngUnsubscribe)
                         .subscribe();
 
                     // check if form is valid at this moment (e.g. when values from edit form are set)
-                    this.statusChanged.next(this.form.valid)
+                    var formStatus = new DynamicFormStatus(
+                        this.form.valid,
+                        this.isDeleteEnabled,
+                        this.isEditForm,
+                        this.isInsertForm
+                    );
+
+                    this.statusChanged.next(formStatus);
 
                     // stop loader
                     if (config.loaderConfig) {

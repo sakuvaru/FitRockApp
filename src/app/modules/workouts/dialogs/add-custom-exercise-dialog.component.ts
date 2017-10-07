@@ -7,7 +7,7 @@ import { AppConfig, ComponentDependencyService, BaseComponent, ComponentConfig }
 import { DataTableConfig, AlignEnum } from '../../../../web-components/data-table';
 import { Exercise } from '../../../models';
 import { MAT_DIALOG_DATA } from '@angular/material';
-import { FormConfig } from '../../../../web-components/dynamic-form';
+import { FormConfig, DynamicFormStatus } from '../../../../web-components/dynamic-form';
 import { Observable, Subject } from 'rxjs/Rx';
 
 @Component({
@@ -24,7 +24,7 @@ export class AddCustomExerciseDialogComponent extends BaseComponent implements O
 
   private customSaveButtonSubject: Subject<void> = new Subject<void>();
   private customDeleteButtonSubject: Subject<void> = new Subject<void>();
-  private formIsValid: boolean = false;
+  private formStatus: DynamicFormStatus | undefined;
 
   constructor(
     protected dependencies: ComponentDependencyService,
@@ -49,8 +49,8 @@ export class AddCustomExerciseDialogComponent extends BaseComponent implements O
       .build();
   }
 
-  private onStatusChanged(valid: boolean): void {
-    this.formIsValid = valid;
+  private onStatusChanged(status: DynamicFormStatus): void {
+    this.formStatus = status;
   }
 
   private close(): void {
