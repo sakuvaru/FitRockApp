@@ -13,11 +13,10 @@ import {
     MATERIAL_COMPATIBILITY_MODE,
     MatDatepickerModule, MatSnackBarModule, MatNativeDateModule, MatAutocompleteModule,
     MatButtonModule, MatButtonToggleModule, MatCardModule, MatCheckboxModule, MatChipsModule,
-    CompatibilityModule, MatCommonModule, A11yModule, MatDialogModule, MatGridListModule,
+    CompatibilityModule, MatCommonModule, MatDialogModule, MatGridListModule,
     MatIconModule, MatInputModule, MatLineModule, MatListModule, MatMenuModule, MatOptionModule, MatProgressBarModule,
     MatProgressSpinnerModule, MatRadioModule, MatRippleModule, MatSelectModule, MatSidenavModule,
-    MatSliderModule, MatSlideToggleModule, MatTabsModule, MatToolbarModule, MatTooltipModule, NativeDateModule,
-    PortalModule, StyleModule, MatTableModule,
+    MatSliderModule, MatSlideToggleModule, MatTabsModule, MatToolbarModule, MatTooltipModule, NativeDateModule, MatTableModule,
     MatExpansionModule, MatPaginatorModule, MatSortModule
 } from '@angular/material';
 
@@ -28,11 +27,11 @@ import { PlatformModule } from '@angular/cdk/platform';
     imports: [
         MatDatepickerModule, MatSnackBarModule, MatNativeDateModule, MatAutocompleteModule,
         MatButtonModule, MatButtonToggleModule, MatCardModule, MatCheckboxModule, MatChipsModule,
-        CompatibilityModule, MatCommonModule, A11yModule, MatDialogModule, MatGridListModule,
+        CompatibilityModule, MatCommonModule, MatDialogModule, MatGridListModule,
         MatIconModule, MatInputModule, MatLineModule, MatListModule, MatMenuModule, MatOptionModule, MatProgressBarModule,
         MatProgressSpinnerModule, MatRadioModule, MatRippleModule, MatSelectModule, MatSidenavModule,
         MatSliderModule, MatSlideToggleModule, MatTabsModule, MatToolbarModule, MatTooltipModule, NativeDateModule,
-        PlatformModule, PortalModule, StyleModule, MatTableModule,
+        PlatformModule, MatTableModule,
         MatExpansionModule, MatPaginatorModule, MatSortModule,
         OverlayModule
     ],
@@ -45,11 +44,11 @@ import { PlatformModule } from '@angular/cdk/platform';
     exports: [
         MatDatepickerModule, MatSnackBarModule, MatNativeDateModule, MatAutocompleteModule,
         MatButtonModule, MatButtonToggleModule, MatCardModule, MatCheckboxModule, MatChipsModule,
-        CompatibilityModule, MatCommonModule, A11yModule, MatDialogModule, MatGridListModule,
+        CompatibilityModule, MatCommonModule, MatDialogModule, MatGridListModule,
         MatIconModule, MatInputModule, MatLineModule, MatListModule, MatMenuModule, MatOptionModule, MatProgressBarModule,
         MatProgressSpinnerModule, MatRadioModule, MatRippleModule, MatSelectModule, MatSidenavModule,
         MatSliderModule, MatSlideToggleModule, MatTabsModule, MatToolbarModule, MatTooltipModule, NativeDateModule,
-        OverlayModule, PlatformModule, PortalModule, StyleModule, MatTableModule,
+        OverlayModule, PlatformModule, MatTableModule,
         MatExpansionModule, MatPaginatorModule, MatSortModule
     ]
 })

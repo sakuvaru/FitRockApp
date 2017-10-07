@@ -111,11 +111,6 @@ export class DropdownFieldOption implements IDropdownFieldOption {
 export class FormFieldOptions implements IFormFieldOptions {
 
     /**
-     * Width of the field. Applied for dropdown list
-     */
-    public width?: number;
-
-    /**
      * Maximum length of field (characters)
      */
     public maxLength?: number;
@@ -170,7 +165,6 @@ export class FormFieldOptions implements IFormFieldOptions {
         minLength?: number,
         maxAutosizeRows?: number,
         minAutosizeRows?: number,
-        width?: number,
         listOptions?: DropdownFieldOption[],
         trueOptionLabel?: string,
         falseOptionLabel?: string,

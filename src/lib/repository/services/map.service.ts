@@ -135,7 +135,6 @@ export class MapService {
                 maxLength: formField.options.maxLength,
                 minAutosizeRows: formField.options.minAutosizeRows,
                 minLength: formField.options.minLength,
-                width: formField.options.width,
                 maxNumberValue: formField.options.maxNumberValue,
                 minNumberValue: formField.options.minNumberValue
             }) : undefined

@@ -375,13 +375,6 @@ export class DynamicFormQuestionComponent extends BaseWebComponent implements On
     this.showRequiredLabels = false;
   }
 
-  private getWidthStyle(): string | null {
-    if (!this.question.options || !this.question.options.width) {
-      return null;
-    }
-    return `${this.question.options.width}px`;
-  }
-
   private getQuestionControl(): AbstractControl {
     return this.form.controls[this.question.key];
   }

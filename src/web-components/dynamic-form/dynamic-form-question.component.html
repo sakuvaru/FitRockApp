@@ -1,9 +1,10 @@
 <div *ngIf="question" layout="row" layout-margin [formGroup]="form">
+     
   <!-- Question types -->
-  <mat-form-field *ngIf="isTextField()" flex [hintLabel]="questionHint">
-    <input matInput [attr.maxLength]="question.options.maxLength > 0 ? question.options.maxLength : null"
-      [required]="question.required" [placeholder]="question.translatedLabel" [formControlName]="question.key" [id]="question.key"
-      [type]="question.type" #elem>
+  <mat-form-field *ngIf="isTextField()" [hintLabel]="questionHint" flex>
+    <input matInput [attr.maxLength]="question.options.maxLength > 0 ? question.options.maxLength : null" [required]="question.required"
+      [placeholder]="question.translatedLabel" [formControlName]="question.key" [id]="question.key" [type]="question.type"
+      #elem>
     <mat-hint *ngIf="showLengthHint()" [ngClass]="{'tc-red-600': elem.value.length > question.options.maxLength}" align="end">{{elem.value.length}} / {{question.options.maxLength}}</mat-hint>
     <mat-error>{{customError}}</mat-error>
   </mat-form-field>
@@ -23,13 +24,13 @@
     </mat-radio-group>
   </div>
 
-  <div *ngIf="isDateField()" flex>
-      <mat-form-field>
-          <input matInput [matDatepicker]="datepicker" [formControlName]="question.key" [id]="question.key" [required]="question.required" [placeholder]="question.translatedLabel">
-          <mat-datepicker-toggle matSuffix [for]="datepicker"></mat-datepicker-toggle>
-          <mat-datepicker #datepicker ></mat-datepicker>
-      </mat-form-field>
-  </div>
+  <mat-form-field *ngIf="isDateField()" flex>
+    <input matInput [matDatepicker]="datepicker" [formControlName]="question.key" [id]="question.key" [required]="question.required"
+      [placeholder]="question.translatedLabel">
+    <mat-datepicker-toggle matSuffix [for]="datepicker"></mat-datepicker-toggle>
+    <mat-datepicker #datepicker></mat-datepicker>
+    <mat-error>{{customError}}</mat-error>
+  </mat-form-field>
 
   <mat-form-field *ngIf="isTextAreaField()" flex [hintLabel]="questionHint">
     <textarea matTextareaAutosize matInput [matAutosizeMinRows]="question.options.minAutosizeRows" [matAutosizeMaxRows]="question.options.maxAutosizeRows"
@@ -41,23 +42,20 @@
     <mat-error>{{customError}}</mat-error>
   </mat-form-field>
 
-  <div *ngIf="isHiddenField()">
-    <input type="hidden" [formControlName]="question.key">
-  </div>
+  <input *ngIf="isHiddenField()" type="hidden" [formControlName]="question.key">
 
-  <div *ngIf="isDropdownField()" flex>
-    <div>
-      <mat-select [style.width]="getWidthStyle()" [id]="question.key" [formControlName]="question.key" [required]="question.required"
-        [placeholder]="question.translatedLabel">
-        <mat-option *ngFor="let option of question.options.listOptions" [value]="option.value">{{option.name}}</mat-option>
-      </mat-select>
-    </div>
-  </div>
+  <mat-form-field *ngIf="isDropdownField()" flex>
+    <mat-select [id]="question.key" [formControlName]="question.key" [required]="question.required"
+      [placeholder]="question.translatedLabel">
+      <mat-option *ngFor="let option of question.options.listOptions" [value]="option.value">{{option.name}}</mat-option>
+    </mat-select>
+    <mat-error>{{customError}}</mat-error>
+  </mat-form-field>
 
   <mat-form-field *ngIf="isNumberField()" flex [hintLabel]="questionHint">
-    <input matInput [attr.maxLength]="question.options.maxLength > 0 ? question.options.maxLength : null"
-      [required]="question.required" [placeholder]="question.translatedLabel" [formControlName]="question.key" [id]="question.key"
-      type="number" [attr.min]="getMinNumberValue()" [attr.max]="getMaxNumberValue()" #elem>
+    <input matInput [attr.maxLength]="question.options.maxLength > 0 ? question.options.maxLength : null" [required]="question.required"
+      [placeholder]="question.translatedLabel" [formControlName]="question.key" [id]="question.key" type="number" [attr.min]="getMinNumberValue()"
+      [attr.max]="getMaxNumberValue()" #elem>
     <mat-hint *ngIf="showLengthHint()" [ngClass]="{'tc-red-600': elem.value.length > question.options.maxLength}" align="end">{{elem.value.length}} / {{question.options.maxLength}}</mat-hint>
     <mat-error>{{customError}}</mat-error>
   </mat-form-field>

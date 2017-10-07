@@ -66,10 +66,6 @@ export interface IDropdownFieldOption {
 }
 
 export interface IFormFieldOptions {
-    /**
-      * Width of the field. Applied for dropdown list
-      */
-    width?: number;
 
     /**
      * Maximum length of field (characters)
