@@ -20,13 +20,13 @@ export class NewClientComponent extends ClientsBaseComponent implements OnInit {
         protected activatedRoute: ActivatedRoute,
         protected componentDependencyService: ComponentDependencyService,
     ) {
-        super(componentDependencyService, activatedRoute)
+        super(componentDependencyService, activatedRoute);
     }
 
     setup(): ComponentSetup | null {
         return {
             initialized: true
-        }
+        };
     }
 
     ngOnInit(): void {
@@ -46,7 +46,7 @@ export class NewClientComponent extends ClientsBaseComponent implements OnInit {
             .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
             .onAfterInsert((response) => {
                 // redirect to view client page
-                super.navigate([super.getTrainerUrl('clients/edit'), response.item.id])
+                super.navigate([super.getTrainerUrl('clients/edit'), response.item.id]);
             })
             .build();
     }

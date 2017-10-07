@@ -30,7 +30,9 @@ export class MenuItem {
             imageUrl?: string
         }
     ) {
-        if (options) Object.assign(this, options);
+        if (options) { 
+             Object.assign(this, options);
+        }
     }
 }
 

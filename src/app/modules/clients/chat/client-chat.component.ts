@@ -32,14 +32,14 @@ export class ClientChatComponent extends ClientsBaseComponent implements OnInit 
         protected activatedRoute: ActivatedRoute,
         protected componentDependencyService: ComponentDependencyService
     ) {
-        super(componentDependencyService, activatedRoute, { subscribeToClient: true })
+        super(componentDependencyService, activatedRoute, { subscribeToClient: true });
 
     }
 
     setup(): ComponentSetup | null {
         return {
             initialized: false
-        }
+        };
     }
 
     ngOnInit(): void {
@@ -62,7 +62,7 @@ export class ClientChatComponent extends ClientsBaseComponent implements OnInit 
     }
 
     private getComponentObservables(): Observable<any>[] {
-        let observables: Observable<any>[] = [];
+        const observables: Observable<any>[] = [];
         observables.push(this.getFormObservable());
         observables.push(this.getInitChatMessagesObservable());
         return observables;
@@ -72,14 +72,13 @@ export class ClientChatComponent extends ClientsBaseComponent implements OnInit 
         return this.clientIdChange
             .takeUntil(this.ngUnsubscribe)
             .map(clientId => {
-                let formConfig = this.dependencies.itemServices.chatMessageService.insertForm()
+                const formConfig = this.dependencies.itemServices.chatMessageService.insertForm()
                     .fieldValueResolver((fieldName, value) => {
                         // manually set recipient & sender
                         if (fieldName === 'SenderUserId') {
-                            return this.dependencies.authenticatedUserService.getUserId()
-                        }
-                        else if (fieldName === 'RecipientUserId') {
-                            return this.clientId
+                            return this.dependencies.authenticatedUserService.getUserId();
+                        } else if (fieldName === 'RecipientUserId') {
+                            return this.clientId;
                         }
                         return value;
                     })
@@ -89,7 +88,7 @@ export class ClientChatComponent extends ClientsBaseComponent implements OnInit 
                     .onAfterInsert((response) => {
                         // reload messages
                         super.subscribeToObservable(this.getChatMessagesObservable(this.clientId, 1, true, this.chatMessagesSearch)
-                            .takeUntil(this.ngUnsubscribe))
+                            .takeUntil(this.ngUnsubscribe));
                     })
                     .build();
 
@@ -133,12 +132,10 @@ export class ClientChatComponent extends ClientsBaseComponent implements OnInit 
                     this.allChatMessagesLoaded = false;
                     if (replaceMessages) {
                         this.chatMessages = response.items;
-                    }
-                    else {
+                    } else {
                         this.chatMessages = _.union(this.chatMessages, response.items);
                     }
-                }
-                else {
+                } else {
                     if (replaceMessages) {
                         this.chatMessages = [];
                     }

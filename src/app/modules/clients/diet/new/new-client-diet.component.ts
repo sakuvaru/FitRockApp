@@ -21,13 +21,13 @@ export class NewClientDietComponent extends ClientsBaseComponent implements OnIn
         protected activatedRoute: ActivatedRoute,
         protected componentDependencyService: ComponentDependencyService,
     ) {
-        super(componentDependencyService, activatedRoute, { subscribeToClient: true })
+        super(componentDependencyService, activatedRoute, { subscribeToClient: true });
     }
 
     setup(): ComponentSetup | null {
         return {
             initialized: false
-        }
+        };
     }
 
     ngOnInit() {
@@ -38,7 +38,7 @@ export class NewClientDietComponent extends ClientsBaseComponent implements OnIn
     }
 
     private getObservables(): Observable<any>[] {
-        let observables: Observable<any>[] = [];
+        const observables: Observable<any>[] = [];
         observables.push(this.getClientObservable());
         observables.push(this.getFormObservable());
         return observables;
@@ -74,6 +74,6 @@ export class NewClientDietComponent extends ClientsBaseComponent implements OnIn
                     .onAfterInsert((response) => super.navigate([super.getTrainerUrl('clients/edit/' + this.clientId + '/diet/' + response.item.id + '/diet-plan')]))
                     .build();
             },
-            error => super.handleError(error))
+            error => super.handleError(error));
     }
 }

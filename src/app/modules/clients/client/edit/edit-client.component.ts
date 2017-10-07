@@ -21,13 +21,13 @@ export class EditClientComponent extends ClientsBaseComponent implements OnInit 
         protected activatedRoute: ActivatedRoute,
         protected componentDependencyService: ComponentDependencyService
     ) {
-        super(componentDependencyService, activatedRoute, { subscribeToClient: false })
+        super(componentDependencyService, activatedRoute, { subscribeToClient: false });
     }
 
     setup(): ComponentSetup | null {
         return {
             initialized: false
-        }
+        };
     }
 
     ngOnInit(): void {
@@ -46,7 +46,7 @@ export class EditClientComponent extends ClientsBaseComponent implements OnInit 
                     .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
                     .onAfterDelete(() => super.navigate([this.getTrainerUrl('clients')]))
                     .onFormLoaded(form => {
-                        let user = form.item;
+                        const user = form.item;
 
                         this.setConfig({
                             menuItems: new ClientMenuItems(user.id).menuItems,
@@ -60,7 +60,7 @@ export class EditClientComponent extends ClientsBaseComponent implements OnInit 
                             menuAvatarUrl: user.avatarUrl
                         });
                     })
-                    .build()
+                    .build();
             });
     }
 }

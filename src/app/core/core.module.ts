@@ -48,7 +48,7 @@ import { DragulaModule } from 'ng2-dragula';
     ],
     declarations: [
     ],
-    providers:[
+    providers: [
         SharedService,
         ComponentDependencyService
     ],

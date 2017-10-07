@@ -13,7 +13,7 @@ export class FooterComponent {
     private year: number;
 
     constructor(private dependencies: ComponentDependencyService) {
-        let date = new Date();
+        const date = new Date();
         this.year = date.getFullYear();
     }
 }

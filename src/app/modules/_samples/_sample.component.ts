@@ -10,7 +10,7 @@ import { AppConfig, ComponentDependencyService, BaseComponent, ComponentSetup } 
 export class SampleComponent extends BaseComponent {
     constructor(
         protected dependencies: ComponentDependencyService) {
-        super(dependencies)
+        super(dependencies);
     }
 
     setup(): ComponentSetup | null {

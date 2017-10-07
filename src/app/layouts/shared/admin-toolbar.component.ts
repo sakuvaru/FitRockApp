@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { ComponentDependencyService, BaseComponent, MenuItemType, AppConfig,ComponentSetup } from '../../core';
+import { ComponentDependencyService, BaseComponent, MenuItemType, AppConfig, ComponentSetup } from '../../core';
 
 import { StringHelper } from '../../../lib/utilities';
 import { Feed, FeedResult } from '../../models';
@@ -23,7 +23,7 @@ export class AdminToolbarComponent extends BaseComponent implements OnInit {
     private preventFeedChange: boolean = false;
 
     constructor(protected dependencies: ComponentDependencyService) {
-        super(dependencies)
+        super(dependencies);
     }
 
     setup(): ComponentSetup | null {
@@ -58,8 +58,8 @@ export class AdminToolbarComponent extends BaseComponent implements OnInit {
         }
 
         // construct url based on field type
-        if (feed.feedType.toLowerCase() == 'message') {
-            let senderUserIdData = feed.data.find(m => m.key === 'SenderUserId');
+        if (feed.feedType.toLowerCase() === 'message') {
+            const senderUserIdData = feed.data.find(m => m.key === 'SenderUserId');
 
             return super.getAuthUrl('chat/' + (senderUserIdData ? senderUserIdData.value : ''));
         }
@@ -72,7 +72,7 @@ export class AdminToolbarComponent extends BaseComponent implements OnInit {
     }
 
     private getFeedText(feed: Feed): Observable<string> {
-        let feedResult = this.dependencies.itemServices.feedService.getFeedResult(feed);
+        const feedResult = this.dependencies.itemServices.feedService.getFeedResult(feed);
 
         if (!feedResult) {
             return Observable.of('');
@@ -110,15 +110,14 @@ export class AdminToolbarComponent extends BaseComponent implements OnInit {
                 }
 
                 // go to feed details
-                let feedUrl = this.getFeedUrl(feed);
+                const feedUrl = this.getFeedUrl(feed);
                 if (!feedUrl) {
                     console.warn('Cannot navigate to feed with id = ' + feed.id);
                 }
 
                 super.navigate([feedUrl]);
             });
-        }
-        else {
+        } else {
             console.warn('Cannot click on invalid feed');
         }
     }

@@ -47,13 +47,13 @@ export class ClientDietComponent extends ClientsBaseComponent implements OnInit,
         protected componentDependencyService: ComponentDependencyService,
         private dragulaService: DragulaService,
     ) {
-        super(componentDependencyService, activatedRoute)
+        super(componentDependencyService, activatedRoute);
     }
 
     setup(): ComponentSetup | null {
         return {
             initialized: false
-        }
+        };
     }
 
     ngOnInit(): void {
@@ -75,7 +75,7 @@ export class ClientDietComponent extends ClientsBaseComponent implements OnInit,
 
     private initDragula(): void {
         // set handle for dragula
-        let that = this;
+        const that = this;
         this.dragulaService.setOptions(this.dragulaBag, {
             moves: function (el: any, container: any, handle: any): any {
                 return stringHelper.contains(el.className, that.dragulaMoveHandle);
@@ -98,9 +98,9 @@ export class ClientDietComponent extends ClientsBaseComponent implements OnInit,
     }
 
     private getComponentObservables(): Observable<any>[] {
-        let observables: Observable<any>[] = [];
+        const observables: Observable<any>[] = [];
 
-        let obsClientMenu = this.clientChange
+        const obsClientMenu = this.clientChange
             .takeUntil(this.ngUnsubscribe)
             .map(client => {
                 this.setConfig({
@@ -116,7 +116,7 @@ export class ClientDietComponent extends ClientsBaseComponent implements OnInit,
                 });
             });
 
-        let obsDietTemplates = this.clientIdChange
+            const obsDietTemplates = this.clientIdChange
             .takeUntil(this.ngUnsubscribe)
             .switchMap(clientId => this.dependencies.itemServices.dietService.items()
                 .byCurrentUser()
@@ -129,7 +129,7 @@ export class ClientDietComponent extends ClientsBaseComponent implements OnInit,
                 }
             });
 
-        let obsExistingDiets = this.existingDietsObservable();
+            const obsExistingDiets = this.existingDietsObservable();
 
         observables.push(obsClientMenu);
         observables.push(obsDietTemplates);
@@ -153,8 +153,8 @@ export class ClientDietComponent extends ClientsBaseComponent implements OnInit,
 
                     // order diet foods
                     this.existingDiets.forEach(diet => {
-                        diet.dietFoods = _.sortBy(diet.dietFoods, m => m.order)
-                    })
+                        diet.dietFoods = _.sortBy(diet.dietFoods, m => m.order);
+                    });
                 }
             });
     }
@@ -174,15 +174,15 @@ export class ClientDietComponent extends ClientsBaseComponent implements OnInit,
     }
 
     private newDietFromTemplate(data: any): void {
-        let selected = data.selected;
+        const selected = data.selected;
 
         if (!selected) {
             super.translate('module.clients.diet.dietNotSelected').subscribe(text => {
-                super.showErrorDialog(text)
+                super.showErrorDialog(text);
             });
         }
 
-        let selectedDiet = selected.value as Diet;
+        const selectedDiet = selected.value as Diet;
 
         // copy data from selected diet to a new diet with assigned client
         super.subscribeToObservable(this.dependencies.itemServices.dietService.copyFromDiet(selectedDiet.id, this.clientId)
@@ -211,8 +211,7 @@ export class ClientDietComponent extends ClientsBaseComponent implements OnInit,
     private expandDiet(diet: Diet): void {
         if (this.expandedDietId === diet.id) {
             this.expandedDietId = null;
-        }
-        else {
+        } else {
             this.expandedDietId = diet.id;
         }
     }

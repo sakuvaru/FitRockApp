@@ -21,13 +21,13 @@ export class ClientsOverviewComponent extends ClientsBaseComponent implements On
     protected activatedRoute: ActivatedRoute,
     protected componentDependencyService: ComponentDependencyService,
   ) {
-    super(componentDependencyService, activatedRoute)
+    super(componentDependencyService, activatedRoute);
   }
 
   setup(): ComponentSetup | null {
     return {
         initialized: true
-    }
+    };
 }
 
   ngOnInit(): void {
@@ -46,17 +46,17 @@ export class ClientsOverviewComponent extends ClientsBaseComponent implements On
 
     this.config = this.dependencies.webComponentServices.dataTableService.dataTable<User>()
       .fields([
-        { label: 'Klient', value: (item) => { return item.getFullName() }, flex: 40 },
-        { label: 'E-mail', value: (item) => { return item.email }, isSubtle: true, align: AlignEnum.Right, hideOnSmallScreens: true },
+        { label: 'Klient', value: (item) => item.getFullName() , flex: 40 },
+        { label: 'E-mail', value: (item) =>  item.email , isSubtle: true, align: AlignEnum.Right, hideOnSmallScreens: true },
       ])
       .loadQuery(searchTerm => {
         return this.dependencies.itemServices.userService.clients()
-          .whereLikeMultiple(['FirstName', 'LastName'], searchTerm)
+          .whereLikeMultiple(['FirstName', 'LastName'], searchTerm);
       })
       .loadResolver(query => {
         return query
           .get()
-          .takeUntil(this.ngUnsubscribe)
+          .takeUntil(this.ngUnsubscribe);
       })
       .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
       .showAllFilter(true)

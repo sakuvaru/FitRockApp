@@ -18,10 +18,10 @@ import {
 
 export function RepositoryClientFactory(authHttp: AuthHttp) {
 
-    let apiUrl = AppConfig.RepositoryApiEndpoint;
-    let typeEndpoint = AppConfig.RepositoryTypeEndpoint;
+    const apiUrl = AppConfig.RepositoryApiEndpoint;
+    const typeEndpoint = AppConfig.RepositoryTypeEndpoint;
 
-    let typeResolvers: TypeResolver[] = [
+    const typeResolvers: TypeResolver[] = [
         new TypeResolver('User', () => new User()),
         new TypeResolver('Log', () => new Log()),
         new TypeResolver('Workout', () => new Workout()),
@@ -48,15 +48,14 @@ export function RepositoryClientFactory(authHttp: AuthHttp) {
         new RepositoryConfig(apiUrl, typeEndpoint, typeResolvers, {
             logErrorsToConsole: AppConfig.DevModeEnabled
         })
-    )
-};
+    );
+}
 
-export let RepositoryClientProvider =
-    {
-        provide: RepositoryClient,
-        useFactory: RepositoryClientFactory,
-        deps: [AuthHttp]
-    };
+export let RepositoryClientProvider = {
+    provide: RepositoryClient,
+    useFactory: RepositoryClientFactory,
+    deps: [AuthHttp]
+};
 
 @NgModule({
     imports: [

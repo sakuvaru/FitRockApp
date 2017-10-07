@@ -20,13 +20,13 @@ export class EditClientDietComponent extends ClientsBaseComponent implements OnI
         protected activatedRoute: ActivatedRoute,
         protected componentDependencyService: ComponentDependencyService,
     ) {
-        super(componentDependencyService, activatedRoute)
+        super(componentDependencyService, activatedRoute);
     }
 
     setup(): ComponentSetup | null {
         return {
             initialized: false
-        }
+        };
     }
 
     ngOnInit() {
@@ -54,12 +54,12 @@ export class EditClientDietComponent extends ClientsBaseComponent implements OnI
                     data: { 'fullName': client.getFullName() }
                 },
                 menuAvatarUrl: client.avatarUrl
-            })
-        })
+            });
+        });
     }
 
     private handleLoadDiet(diet: Diet): void {
-        let translationData: any = {};
+        const translationData: any = {};
         translationData.dietName = diet.dietName;
         super.updateComponentTitle({ key: 'module.clients.diet.editPlanWithName', data: translationData });
     }
