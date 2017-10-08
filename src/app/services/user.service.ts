@@ -9,7 +9,7 @@ import { EditFormQuery, RepositoryClient, MultipleItemQuery, CreateItemQuery, Re
 import { DynamicFormEditBuilder } from '../../web-components/dynamic-form';
 
 @Injectable()
-export class UserService extends BaseTypeService<User>{
+export class UserService extends BaseTypeService<User> {
 
     constructor(repositoryClient: RepositoryClient) {
         super(repositoryClient, {

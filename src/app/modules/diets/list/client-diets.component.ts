@@ -17,13 +17,13 @@ export class ClientDietsComponent extends BaseComponent implements OnInit {
 
   constructor(
     protected dependencies: ComponentDependencyService) {
-    super(dependencies)
+    super(dependencies);
   }
 
   setup(): ComponentSetup | null {
     return {
         initialized: true
-    }
+    };
   }
 
   ngOnInit() {
@@ -42,7 +42,7 @@ export class ClientDietsComponent extends BaseComponent implements OnInit {
   private initDataTable(): void {
     this.config = this.dependencies.webComponentServices.dataTableService.dataTable<Diet>()
       .fields([
-        { value: (item) => { return item.dietName }, flex: 40 },
+        { value: (item) => item.dietName, flex: 40 },
         {
           value: (item) => {
             if (item.client) {
@@ -62,18 +62,18 @@ export class ClientDietsComponent extends BaseComponent implements OnInit {
           .includeMultiple(['DietCategory', 'Client'])
           .byCurrentUser()
           .whereLike('DietName', searchTerm)
-          .whereNotNull('ClientId')
+          .whereNotNull('ClientId');
       })
       .loadResolver(query => {
         return query
           .get()
-          .takeUntil(this.ngUnsubscribe)
+          .takeUntil(this.ngUnsubscribe);
       })
       .dynamicFilters((searchTerm) => {
         return this.dependencies.itemServices.dietCategoryService.getCategoryCountForClientDiets(searchTerm)
           .get()
           .map(response => {
-            let filters: Filter<DietCategoryWithDietsCountDto>[] = [];
+            const filters: Filter<DietCategoryWithDietsCountDto>[] = [];
             response.items.forEach(category => {
               filters.push(new Filter({
                 filterNameKey: category.codename,
@@ -83,7 +83,7 @@ export class ClientDietsComponent extends BaseComponent implements OnInit {
             });
             return filters;
           })
-          .takeUntil(this.ngUnsubscribe)
+          .takeUntil(this.ngUnsubscribe);
       })
       .showAllFilter(true)
       .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())

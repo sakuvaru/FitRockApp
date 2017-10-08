@@ -13,7 +13,7 @@ import { Observable, Subject } from 'rxjs/Rx';
 @Component({
   templateUrl: 'edit-progress-item-dialog.component.html'
 })
-export class EditProgressItemDialog extends BaseComponent implements OnInit {
+export class EditProgressItemDialogComponent extends BaseComponent implements OnInit {
 
   private formConfig: FormConfig<ProgressItem>;
 
@@ -30,7 +30,7 @@ export class EditProgressItemDialog extends BaseComponent implements OnInit {
     protected dependencies: ComponentDependencyService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    super(dependencies)
+    super(dependencies);
     this.item = data;
 
   }
@@ -38,7 +38,7 @@ export class EditProgressItemDialog extends BaseComponent implements OnInit {
   setup(): ComponentSetup | null {
     return {
         initialized: true
-    }
+    };
 }
 
   ngOnInit() {

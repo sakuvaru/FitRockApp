@@ -4,7 +4,7 @@ import { RepositoryClient, MultipleItemQueryCustom, MultipleItemQuery } from '..
 import { BaseTypeService } from '../base/base-type.service';
 
 @Injectable()
-export class ProgressItemTypeService extends BaseTypeService<ProgressItemType>{
+export class ProgressItemTypeService extends BaseTypeService<ProgressItemType> {
 
     constructor(repositoryClient: RepositoryClient) {
         super (repositoryClient, {
@@ -17,7 +17,7 @@ export class ProgressItemTypeService extends BaseTypeService<ProgressItemType>{
      * Gets types that are global || are created by given user && client id is not set for them
      * @param createdByUserId Id of user who created the type
      */
-    getProgressItemTypesSelection(createdByUserId: number): MultipleItemQuery<ProgressItemType>{
+    getProgressItemTypesSelection(createdByUserId: number): MultipleItemQuery<ProgressItemType> {
         return this.items()
             .withCustomOption('createdByUserId', createdByUserId)
             .withCustomAction('getProgressItemTypesSelection');

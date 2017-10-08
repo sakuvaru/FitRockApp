@@ -17,13 +17,13 @@ export class AllExerciseListComponent extends BaseComponent implements OnInit {
 
   constructor(
     protected dependencies: ComponentDependencyService) {
-    super(dependencies)
+    super(dependencies);
   }
 
   setup(): ComponentSetup | null {
     return {
         initialized: true
-    }
+    };
   }
 
   ngOnInit() {
@@ -42,7 +42,7 @@ export class AllExerciseListComponent extends BaseComponent implements OnInit {
   private initDataTable(): void {
     this.config = this.dependencies.webComponentServices.dataTableService.dataTable<Exercise>()
       .fields([
-        { label: 'module.workouts.exerciseName', value: (item) => { return item.exerciseName }, flex: 40 },
+        { label: 'module.workouts.exerciseName', value: (item) =>  item.exerciseName, flex: 40 },
         {
           label: 'shared.updated', value: (item) => {
             return item.exerciseCategory.categoryName;
@@ -52,18 +52,18 @@ export class AllExerciseListComponent extends BaseComponent implements OnInit {
       .loadQuery(searchTerm => {
         return this.dependencies.itemServices.exerciseService.items()
           .include('ExerciseCategory')
-          .whereLike('ExerciseName', searchTerm)
+          .whereLike('ExerciseName', searchTerm);
       })
       .loadResolver(query => {
         return query
           .get()
-          .takeUntil(this.ngUnsubscribe)
+          .takeUntil(this.ngUnsubscribe);
       })
       .dynamicFilters((searchTerm) => {
         return this.dependencies.itemServices.exerciseCategoyService.getCategoriesWithExercisesCount(searchTerm, true)
           .get()
           .map(response => {
-            let filters: Filter<ExerciseCategoryListWithExercisesCount>[] = [];
+            const filters: Filter<ExerciseCategoryListWithExercisesCount>[] = [];
             response.items.forEach(category => {
               filters.push(new Filter({
                 filterNameKey: category.codename,
@@ -73,7 +73,7 @@ export class AllExerciseListComponent extends BaseComponent implements OnInit {
             });
             return filters;
           })
-          .takeUntil(this.ngUnsubscribe)
+          .takeUntil(this.ngUnsubscribe);
       })
       .showAllFilter(true)
       .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())

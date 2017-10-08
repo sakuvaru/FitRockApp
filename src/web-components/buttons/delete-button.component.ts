@@ -21,7 +21,7 @@ export class DeleteButtonComponent extends BaseWebComponent implements OnInit {
         private viewContainerRef: ViewContainerRef,
         private translateService: TranslateService
     ) {
-        super()
+        super();
     }
 
     @Input() color: 'none' | 'warn' | 'accent' | 'primary' = 'none';
@@ -44,10 +44,10 @@ export class DeleteButtonComponent extends BaseWebComponent implements OnInit {
         this.dialogService.openConfirm({
             message: this.messageText,
             disableClose: false, // defaults to false
-            viewContainerRef: this.viewContainerRef, //OPTIONAL
-            title: this.titleText, //OPTIONAL, hides if not provided
-            cancelButton: this.cancelText, //OPTIONAL, defaults to 'CANCEL'
-            acceptButton: this.confirmText, //OPTIONAL, defaults to 'ACCEPT'
+            viewContainerRef: this.viewContainerRef, // OPTIONAL
+            title: this.titleText, // OPTIONAL, hides if not provided
+            cancelButton: this.cancelText, // OPTIONAL, defaults to 'CANCEL'
+            acceptButton: this.confirmText, // OPTIONAL, defaults to 'ACCEPT'
         }).afterClosed().subscribe((accept: boolean) => {
             if (accept) {
                 this.confirm.emit();

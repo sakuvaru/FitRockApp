@@ -17,13 +17,13 @@ export class WorkoutTemplatesComponent extends BaseComponent implements OnInit {
 
   constructor(
     protected dependencies: ComponentDependencyService) {
-    super(dependencies)
+    super(dependencies);
   }
 
   setup(): ComponentSetup | null {
     return {
         initialized: true
-    }
+    };
   }
 
   ngOnInit() {
@@ -42,7 +42,7 @@ export class WorkoutTemplatesComponent extends BaseComponent implements OnInit {
   private initDataTable(): void {
     this.config = this.dependencies.webComponentServices.dataTableService.dataTable<Workout>()
       .fields([
-        { label: 'module.workouts.workoutName', value: (item) => { return item.workoutName }, flex: 40 },
+        { label: 'module.workouts.workoutName', value: (item) => item.workoutName, flex: 40 },
         {
           label: 'shared.updated', value: (item) => {
             return item.workoutCategory.categoryName;
@@ -54,18 +54,18 @@ export class WorkoutTemplatesComponent extends BaseComponent implements OnInit {
           .include('WorkoutCategory')
           .byCurrentUser()
           .whereLike('WorkoutName', searchTerm)
-          .whereNull('ClientId')
+          .whereNull('ClientId');
       })
       .loadResolver(query => {
         return query
           .get()
-          .takeUntil(this.ngUnsubscribe)
+          .takeUntil(this.ngUnsubscribe);
       })
       .dynamicFilters((searchTerm) => {
         return this.dependencies.itemServices.workoutCategoryService.getCategoryCountForWorkoutTemplates(searchTerm)
           .get()
           .map(response => {
-            let filters: Filter<WorkoutCategoryListWithWorkoutsCount>[] = [];
+            const filters: Filter<WorkoutCategoryListWithWorkoutsCount>[] = [];
             response.items.forEach(category => {
               filters.push(new Filter({
                 filterNameKey: category.codename,
@@ -75,7 +75,7 @@ export class WorkoutTemplatesComponent extends BaseComponent implements OnInit {
             });
             return filters;
           })
-          .takeUntil(this.ngUnsubscribe)
+          .takeUntil(this.ngUnsubscribe);
       })
       .showAllFilter(true)
       .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())

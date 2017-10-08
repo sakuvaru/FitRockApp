@@ -29,14 +29,14 @@ export class AddCustomExerciseDialogComponent extends BaseComponent implements O
   constructor(
     protected dependencies: ComponentDependencyService,
   ) {
-    super(dependencies)
+    super(dependencies);
     
   }
 
   setup(): ComponentSetup | null {
     return {
         initialized: true
-    }
+    };
   }
 
   ngOnInit() {

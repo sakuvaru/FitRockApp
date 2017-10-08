@@ -10,12 +10,12 @@ export class Global404Component extends BaseComponent {
   constructor(
     private activatedRoute: ActivatedRoute,
     protected dependencies: ComponentDependencyService) {
-    super(dependencies)
+    super(dependencies);
   }
 
   setup(): ComponentSetup | null {
     return {
         initialized: true
-    }
+    };
   }
 }

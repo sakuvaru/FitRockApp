@@ -9,7 +9,6 @@ import { BaseWebComponent } from '../base-web-component.class';
 export class CloseButtonComponent extends BaseWebComponent {
 
     constructor(
-    ) { super()
+    ) { super();
     }
-
 }

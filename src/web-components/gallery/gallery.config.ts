@@ -59,5 +59,4 @@ export class GalleryConfig {
     ) {
         Object.assign(this, options);
     }
-
 }

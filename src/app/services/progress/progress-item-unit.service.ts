@@ -4,7 +4,7 @@ import { RepositoryClient, MultipleItemQueryCustom } from '../../../lib/reposito
 import { BaseTypeService } from '../base/base-type.service';
 
 @Injectable()
-export class ProgressItemUnitService extends BaseTypeService<ProgressItemUnit>{
+export class ProgressItemUnitService extends BaseTypeService<ProgressItemUnit> {
 
     constructor(repositoryClient: RepositoryClient) {
         super (repositoryClient, {

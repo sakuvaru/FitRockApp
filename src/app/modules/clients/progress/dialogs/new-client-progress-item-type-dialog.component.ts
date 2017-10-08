@@ -34,7 +34,7 @@ export class NewClientProgressItemTypeDialogComponent extends ClientsBaseCompone
     setup(): ComponentSetup | null {
         return {
             initialized: true
-        }
+        };
     }
 
     ngOnInit() {
@@ -49,9 +49,8 @@ export class NewClientProgressItemTypeDialogComponent extends ClientsBaseCompone
             .fieldValueResolver((fieldName, value) => {
                 if (fieldName === 'ClientId') {
                     return this.clientId;
-                }
-                else if (fieldName === 'TranslateValue') {
-                    return false
+                } else if (fieldName === 'TranslateValue') {
+                    return false;
                 }
                 return value;
             })

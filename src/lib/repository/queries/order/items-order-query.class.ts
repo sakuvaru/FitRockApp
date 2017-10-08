@@ -64,7 +64,7 @@ export class ItemsOrderQuery<TItem extends IItem> extends BaseQuery {
 
     /* ------------ Private ---------- */
 
-    private getItemsOrderJson<TItem extends IItem>(orderedItems: TItem[]): OrderItem[] {
+    private getItemsOrderJson(orderedItems: TItem[]): OrderItem[] {
         const data: OrderItem[] = [];
         if (orderedItems) {
             for (let i = 0; i < orderedItems.length; i++) {

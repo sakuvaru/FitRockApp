@@ -9,7 +9,7 @@ import { Food, DietFood } from '../../../models';
 import { MAT_DIALOG_DATA } from '@angular/material';
 import { FormConfig, DynamicFormStatus } from '../../../../web-components/dynamic-form';
 import { Observable, Subject } from 'rxjs/Rx';
-import { stringHelper } from '../../../../lib/utilities'
+import { stringHelper } from '../../../../lib/utilities';
 
 @Component({
   templateUrl: 'add-diet-food-dialog.component.html'
@@ -35,7 +35,7 @@ export class AddDietFoodDialogComponent extends BaseComponent implements OnInit 
     protected dependencies: ComponentDependencyService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    super(dependencies)
+    super(dependencies);
     
 
     this.dietId = data.dietId;
@@ -45,7 +45,7 @@ export class AddDietFoodDialogComponent extends BaseComponent implements OnInit 
   setup(): ComponentSetup | null {
     return {
         initialized: true
-    }
+    };
   }
 
   ngOnInit() {
@@ -59,8 +59,7 @@ export class AddDietFoodDialogComponent extends BaseComponent implements OnInit 
       .fieldValueResolver((fieldName, value) => {
         if (fieldName === 'FoodId') {
           return this.food.id;
-        }
-        else if (fieldName === 'DietId') {
+        } else if (fieldName === 'DietId') {
           return this.dietId;
         }
         return value;
@@ -76,7 +75,7 @@ export class AddDietFoodDialogComponent extends BaseComponent implements OnInit 
               }
               return super.translate('module.foodUnits.' + response.item.unitCode)
                 .map(unitTranslation => originalLabel + ' (' + unitTranslation + ')');
-            })
+            });
         }
         return Observable.of(originalLabel);
       })

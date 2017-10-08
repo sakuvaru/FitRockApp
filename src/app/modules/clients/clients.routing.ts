@@ -30,8 +30,6 @@ import { NewClientDietComponent } from './diet/new/new-client-diet.component';
 
 // progress components
 import { EditClientProgressComponent } from './progress/edit/edit-client-progress.component';
-import { EditProgressItemDialog } from './progress/dialogs/edit-progress-item-dialog.component';
-import { SelectProgressTypeDialog } from './progress/dialogs/select-progress-type-dialog.component';
 
 // stats components
 import { StatsMainComponent } from './stats/stats-main.component';

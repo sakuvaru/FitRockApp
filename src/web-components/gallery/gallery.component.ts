@@ -69,7 +69,7 @@ export class GalleryComponent extends BaseWebComponent implements OnInit, OnChan
         public dialog: MatDialog,
         public snackBarService: MatSnackBar
     ) {
-        super()
+        super();
     }
 
     ngOnInit() {
@@ -116,12 +116,11 @@ export class GalleryComponent extends BaseWebComponent implements OnInit, OnChan
 
     openImageModal(image: Image) {
         // find image based on its URL
-        let imageToOpen = this.images.find(m => m.extUrl === image.extUrl);
+        const imageToOpen = this.images.find(m => m.extUrl === image.extUrl);
         if (!imageToOpen) {
             console.warn('Could not open image in modal:');
             console.warn(image);
-        }
-        else {
+        } else {
             this.imagePointer = this.images.indexOf(imageToOpen);
             this.openModalWindow = true;
         }
@@ -149,15 +148,14 @@ export class GalleryComponent extends BaseWebComponent implements OnInit, OnChan
             }
 
             // get image group
-            let imageGroup = config.groupResolver(image);
+            const imageGroup = config.groupResolver(image);
 
             // create group if not exist
-            let group = groups.find(m => m.groupTitle === imageGroup.groupTitle);
+            const group = groups.find(m => m.groupTitle === imageGroup.groupTitle);
             if (!group) {
                 // group does not exist, create it
                 groups.push(new GalleryGroup(imageGroup.groupTitle, [this.convertToImageType(image)], imageGroup.groupDate));
-            }
-            else {
+            } else {
                 // group exists, push the image
                 group.images.push(this.convertToImageType(image));
             }
@@ -173,7 +171,7 @@ export class GalleryComponent extends BaseWebComponent implements OnInit, OnChan
 
     private getButtonsConfig(config: GalleryConfig): any {
         if (config.downloadable) {
-            let buttonsConfig: any = {};
+            const buttonsConfig: any = {};
             buttonsConfig.download = true;
             return buttonsConfig;
         }
@@ -182,7 +180,7 @@ export class GalleryComponent extends BaseWebComponent implements OnInit, OnChan
 
     private convertToImageType(image: GalleryImage): Image {
         if (!image) {
-            throw Error(`Could not convert 'GalleryImage' to 'Image'`)
+            throw Error(`Could not convert 'GalleryImage' to 'Image'`);
         }
 
         return new Image(
@@ -202,7 +200,7 @@ export class GalleryComponent extends BaseWebComponent implements OnInit, OnChan
     }
 
     private getCustomDescription(): Description {
-        let customFullDescription: Description = {
+        const customFullDescription: Description = {
             // you should build this value programmaticaly with the result of (show)='..()' event
             // if customFullDescription !== undefined, all other fields will be ignored
             imageText: '', // removes the 'Image' string from the gallery
@@ -214,7 +212,7 @@ export class GalleryComponent extends BaseWebComponent implements OnInit, OnChan
     }
 
     private openDeleteDialog(): void {
-        let dialogRef = this.dialog.open(GalleryDeleteDialogComponent, {
+        const dialogRef = this.dialog.open(GalleryDeleteDialogComponent, {
             width: this.config.dialogWidth,
             data: { groups: this.groups, images: this.images, config: this.config, snackBarService: this.snackBarService }
         });
@@ -234,9 +232,9 @@ export class GalleryComponent extends BaseWebComponent implements OnInit, OnChan
 
             if (executeUpdateImages) {
                 // get GalleryImages of current Images
-                let galleryImages: GalleryImage[] = [];
+                const galleryImages: GalleryImage[] = [];
                 this.images.forEach(image => {
-                    let galleryImage = this.config.images.find(m => m.imageUrl === image.extUrl);
+                    const galleryImage = this.config.images.find(m => m.imageUrl === image.extUrl);
                     if (galleryImage) {
                         galleryImages.push(galleryImage);
                     }

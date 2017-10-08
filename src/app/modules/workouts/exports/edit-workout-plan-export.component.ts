@@ -36,10 +36,10 @@ export class EditWorkoutPlanExportComponent extends BaseComponent implements OnD
     private activatedRoute: ActivatedRoute,
     private dragulaService: DragulaService,
     protected dependencies: ComponentDependencyService) {
-    super(dependencies)
+    super(dependencies);
 
      // set handle for dragula
-     let that = this;
+     const that = this;
      this.dragulaService.setOptions(this.dragulaBag, {
       moves: function (el: any, container: any, handle: any): any {
         return stringHelper.contains(el.className, that.dragulaHandle);
@@ -52,7 +52,7 @@ export class EditWorkoutPlanExportComponent extends BaseComponent implements OnD
   setup(): ComponentSetup | null {
     return {
         initialized: false
-    }
+    };
   }
 
   ngOnDestroy() {
@@ -63,7 +63,7 @@ export class EditWorkoutPlanExportComponent extends BaseComponent implements OnD
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    let workoutId = changes.workoutId.currentValue;
+    const workoutId = changes.workoutId.currentValue;
     if (workoutId) {
       super.subscribeToObservable(this.getWorkoutObservable(workoutId));
     }
@@ -123,7 +123,7 @@ export class EditWorkoutPlanExportComponent extends BaseComponent implements OnD
   }
 
   private openWorkoutExerciseDialog(workoutExercise: WorkoutExercise): void {
-    let dialog = this.dependencies.tdServices.dialogService.open(EditWorkoutExerciseDialogComponent, {
+    const dialog = this.dependencies.tdServices.dialogService.open(EditWorkoutExerciseDialogComponent, {
       width: AppConfig.DefaultDialogWidth,
       data: workoutExercise
     });
@@ -136,10 +136,9 @@ export class EditWorkoutPlanExportComponent extends BaseComponent implements OnD
 
         // recalculate local order
         this.recalculateOrder();
-      }
-      else {
+      } else {
         // update exercice with updated data
-        let workoutExerciseToUpdate: WorkoutExercise[] = this.sortedWorkoutExercises.filter(m => m.id === workoutExercise.id);
+        const workoutExerciseToUpdate: WorkoutExercise[] = this.sortedWorkoutExercises.filter(s => s.id === workoutExercise.id);
 
         if (!workoutExerciseToUpdate) {
           throw Error(`Cannot update workout with new values from saved form`);
@@ -149,14 +148,14 @@ export class EditWorkoutPlanExportComponent extends BaseComponent implements OnD
         workoutExerciseToUpdate[0].reps = dialog.componentInstance.workoutExercise.reps;
         workoutExerciseToUpdate[0].sets = dialog.componentInstance.workoutExercise.sets;
       }
-    })
+    });
   }
 
   private openSelecExerciseDialog(): void {
-    let data: any = {};
+    const data: any = {};
     data.workoutId = this.workout.id;
 
-    let dialog = this.dependencies.tdServices.dialogService.open(SelectWorkoutExerciseDialogComponent, {
+    const dialog = this.dependencies.tdServices.dialogService.open(SelectWorkoutExerciseDialogComponent, {
       width: AppConfig.DefaultDialogWidth,
       data: data
     });
@@ -165,16 +164,15 @@ export class EditWorkoutPlanExportComponent extends BaseComponent implements OnD
       // open new add workout dialog if some exercise was selected
       if (dialog.componentInstance.selectedExercise) {
         this.openAddWorkoutExerciseDialog(dialog.componentInstance.selectedExercise);
-      }
-      // or open new custom exercise dialog
-      else if (dialog.componentInstance.openAddCustomExerciseDialog) {
+      } else if (dialog.componentInstance.openAddCustomExerciseDialog) {
+        // or open new custom exercise dialog
         this.openAddCustomExerciseDialog();
       }
-    })
+    });
   }
 
   private openAddCustomExerciseDialog(): void {
-    let dialog = this.dependencies.tdServices.dialogService.open(AddCustomExerciseDialogComponent, {
+    const dialog = this.dependencies.tdServices.dialogService.open(AddCustomExerciseDialogComponent, {
       width: AppConfig.DefaultDialogWidth
     });
 
@@ -183,15 +181,15 @@ export class EditWorkoutPlanExportComponent extends BaseComponent implements OnD
       if (dialog.componentInstance.newExercise) {
         this.openAddWorkoutExerciseDialog(dialog.componentInstance.newExercise);
       }
-    })
+    });
   }
 
   private openAddWorkoutExerciseDialog(exercise: Exercise): void {
-    let data: any = {};
+    const data: any = {};
     data.workoutId = this.workout.id;
     data.exercise = exercise;
 
-    let dialog = this.dependencies.tdServices.dialogService.open(AddWorkoutExerciseDialogComponent, {
+    const dialog = this.dependencies.tdServices.dialogService.open(AddWorkoutExerciseDialogComponent, {
       data: data,
       width: AppConfig.DefaultDialogWidth
     });
@@ -205,9 +203,9 @@ export class EditWorkoutPlanExportComponent extends BaseComponent implements OnD
           .get()
           .subscribe(response => {
             this.sortedWorkoutExercises.push(response.item);
-          })
+          });
       }
-    })
+    });
   }
 
   private recalculateOrder(): void {
@@ -216,7 +214,7 @@ export class EditWorkoutPlanExportComponent extends BaseComponent implements OnD
       this.sortedWorkoutExercises.forEach(workoutExercise => {
         workoutExercise.order = order;
         order++;
-      })
+      });
     }
   }
 }

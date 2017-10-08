@@ -11,7 +11,7 @@ import { DietTemplatesComponent } from './list/diet-templates.component';
 import { NewDietTemplateComponent } from './new/new-diet-template.component';
 import { EditDietComponent } from './edit/edit-diet.component';
 import { DietPlanComponent } from './list/diet-plan.component';
-import { EditDietPlan } from './edit/edit-diet-plan.component';
+import { EditDietPlanComponent } from './edit/edit-diet-plan.component';
 
 // dialogs
 import { AddDietFoodDialogComponent} from './dialogs/add-diet-food-dialog.component';
@@ -36,7 +36,7 @@ import { SharedModule} from '../shared/shared.module';
         DietsRouter,
         SharedModule
     ],
-    entryComponents:[
+    entryComponents: [
         AddCustomFoodDialogComponent, 
         AddDietFoodDialogComponent,
         SelectDietFoodDialogComponent,
@@ -49,7 +49,7 @@ import { SharedModule} from '../shared/shared.module';
         NewDietTemplateComponent,
         EditDietComponent,
         DietPlanComponent,
-        EditDietPlan,
+        EditDietPlanComponent,
         AddDietFoodDialogComponent,
         SelectDietFoodDialogComponent,
         EditDietFoodDialogComponent,

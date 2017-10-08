@@ -10,7 +10,7 @@ export class LoginPageComponent extends BaseComponent {
 
     constructor(
         protected dependencies: ComponentDependencyService) {
-        super(dependencies)
+        super(dependencies);
 
         // go to dashboard if user is already logged
         if (this.dependencies.coreServices.authService.isAuthenticated()) {
@@ -21,6 +21,6 @@ export class LoginPageComponent extends BaseComponent {
     setup(): ComponentSetup | null {
         return {
             initialized: false
-        }
+        };
       }
 }

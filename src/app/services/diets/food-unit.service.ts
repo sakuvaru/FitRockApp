@@ -4,7 +4,7 @@ import { RepositoryClient } from '../../../lib/repository';
 import { BaseTypeService } from '../base/base-type.service';
 
 @Injectable()
-export class FoodUnitService extends BaseTypeService<FoodUnit>{
+export class FoodUnitService extends BaseTypeService<FoodUnit> {
 
     constructor(repositoryClient: RepositoryClient) {
         super (repositoryClient, {

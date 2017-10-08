@@ -22,8 +22,6 @@ import { Observable } from 'rxjs/Rx';
 
 export abstract class BaseFormQuery extends BaseQuery {
 
-    abstract get(): Observable<any>;
-
     protected _options: IOption[] = [];
     protected _action: string;
 
@@ -31,6 +29,9 @@ export abstract class BaseFormQuery extends BaseQuery {
     * Extra data send to server
     */
     protected _data: any = {};
+
+    abstract get(): Observable<any>;
+    
 
     constructor(
         protected authHttp: AuthHttp,

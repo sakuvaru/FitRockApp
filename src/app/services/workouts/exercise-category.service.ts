@@ -4,7 +4,7 @@ import { RepositoryClient, MultipleItemQueryCustom } from '../../../lib/reposito
 import { BaseTypeService } from '../base/base-type.service';
 
 @Injectable()
-export class ExerciseCategoryService extends BaseTypeService<ExerciseCategory>{
+export class ExerciseCategoryService extends BaseTypeService<ExerciseCategory> {
 
     constructor(repositoryClient: RepositoryClient) {
         super (repositoryClient, {
@@ -13,7 +13,7 @@ export class ExerciseCategoryService extends BaseTypeService<ExerciseCategory>{
         });
     }
 
-    getCategoriesWithExercisesCount(exerciseName: string, takeAllExercises: boolean): MultipleItemQueryCustom<ExerciseCategoryListWithExercisesCount>{
+    getCategoriesWithExercisesCount(exerciseName: string, takeAllExercises: boolean): MultipleItemQueryCustom<ExerciseCategoryListWithExercisesCount> {
         return this.customItems<ExerciseCategoryListWithExercisesCount>()
             .withCustomOption('exerciseName', exerciseName)
             .withCustomOption('takeAllExercises', takeAllExercises)

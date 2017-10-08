@@ -22,13 +22,13 @@ export class FeedsComponent extends BaseComponent implements OnInit {
 
     constructor(
         protected dependencies: ComponentDependencyService) {
-        super(dependencies)
+        super(dependencies);
     }
 
     setup(): ComponentSetup | null {
         return {
             initialized: true
-        }
+        };
       }
 
     ngOnInit() {
@@ -54,7 +54,7 @@ export class FeedsComponent extends BaseComponent implements OnInit {
             query => query.get().takeUntil(this.ngUnsubscribe))
             .text({
                 resolver: item => {
-                    let feedResult = this.getFeedResult(item)
+                    const feedResult = this.getFeedResult(item);
                     if (feedResult) {
                         if (feedResult.shouldBeTranslated() && feedResult.translationKey) {
                             return feedResult.translationKey;
@@ -66,14 +66,14 @@ export class FeedsComponent extends BaseComponent implements OnInit {
                     return '';
                 },
                 translate: item => {
-                    let feedResult = this.getFeedResult(item)
+                    const feedResult = this.getFeedResult(item);
                     if (feedResult) {
                         return feedResult.shouldBeTranslated();
                     }
                     return false;
                 },
                 translationData: item => {
-                    let feedResult = this.getFeedResult(item)
+                    const feedResult = this.getFeedResult(item);
                     if (feedResult) {
                         return feedResult.translationData;
                     }
@@ -94,7 +94,7 @@ export class FeedsComponent extends BaseComponent implements OnInit {
     }
 
     private getFeedResult(feed: Feed): FeedResult | null {
-        let feedResult = this.dependencies.itemServices.feedService.getFeedResult(feed);
+        const feedResult = this.dependencies.itemServices.feedService.getFeedResult(feed);
         return feedResult;
     }
 }

@@ -15,7 +15,7 @@ export class AppComponent extends BaseComponent implements OnInit, OnDestroy {
   constructor(
     protected dependencies: ComponentDependencyService,
   ) {
-    super(dependencies)
+    super(dependencies);
   }
 
   setup(): ComponentSetup | null {

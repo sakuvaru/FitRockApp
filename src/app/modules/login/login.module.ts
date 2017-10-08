@@ -25,7 +25,7 @@ import { LogoutComponent } from './logout.component';
         LoginFormComponent,
         LogoutComponent
     ],
-    exports:[
+    exports: [
         LoginFormComponent
     ]
 })

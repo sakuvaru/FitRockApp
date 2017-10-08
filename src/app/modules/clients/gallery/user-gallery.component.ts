@@ -29,13 +29,13 @@ export class UserGalleryComponent extends ClientsBaseComponent implements OnInit
     constructor(
         protected componentDependencyService: ComponentDependencyService,
         protected activatedRoute: ActivatedRoute) {
-        super(componentDependencyService, activatedRoute)
+        super(componentDependencyService, activatedRoute);
     }
 
     setup(): ComponentSetup | null {
         return {
             initialized: false
-        }
+        };
     }
 
     ngOnInit() {
@@ -72,10 +72,10 @@ export class UserGalleryComponent extends ClientsBaseComponent implements OnInit
     }
 
     private getComponentObservables(): Observable<any>[] {
-        let observables: Observable<any>[] = [];
+        const observables: Observable<any>[] = [];
         observables.push(this.getUserGalleryFilesObservable());
         observables.push(this.getClientMenuObservable());
-        observables.push(this.getInitUploaderObservable())
+        observables.push(this.getInitUploaderObservable());
         return observables;
     }
 
@@ -85,7 +85,7 @@ export class UserGalleryComponent extends ClientsBaseComponent implements OnInit
             .switchMap(clientId => this.dependencies.fileService.getGalleryFiles(clientId).set())
             .map(response => {
                 if (response.files) {
-                    let galleryImages = response.files.map(m => new GalleryImage({
+                    const galleryImages = response.files.map(m => new GalleryImage({
                         imageUrl: m.absoluteUrl,
                         imageDate: m.fileLastModified
                         // used for testing the gallery grouping -> imageDate: super.moment(m.fileLastModified).add(Math.floor(Math.random() * 20), 'days').toDate()
@@ -94,7 +94,7 @@ export class UserGalleryComponent extends ClientsBaseComponent implements OnInit
                     this.currentImages = galleryImages;
                     this.galleryConfig = this.getGalleryConfig(galleryImages);
                 }
-            })
+            });
     }
 
     private getClientMenuObservable(): Observable<any> {
@@ -128,7 +128,7 @@ export class UserGalleryComponent extends ClientsBaseComponent implements OnInit
         .deleteFunction((image: GalleryImage) => {
             return this.dependencies.fileService.deleteFile(image.imageUrl)
                 .set()
-                .map(response => response.fileDeleted)
+                .map(response => response.fileDeleted);
         })
         .build();
     }

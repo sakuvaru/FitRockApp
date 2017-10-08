@@ -46,7 +46,7 @@ export class CreateItemQuery<TItem extends IItem> extends BaseQuery {
     }
 
     // option
-    withOption(fieldName: string, value: number | string | boolean): this{
+    withOption(fieldName: string, value: number | string | boolean): this {
         this.item[fieldName] = value;
         return this;
     }

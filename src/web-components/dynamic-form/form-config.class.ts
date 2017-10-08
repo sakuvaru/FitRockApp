@@ -2,7 +2,7 @@ import { Observable } from 'rxjs/RX';
 import { FormGroup } from '@angular/forms';
 import { ResponseFormInsert, ResponseFormEdit, FormField, IItem, ResponseCreate, ResponseEdit, FormErrorResponse, ErrorResponse, ResponseDelete } from '../../lib/repository';
 
-export class FormConfig<TItem extends IItem>{
+export class FormConfig<TItem extends IItem> {
 
      /**
      * Edit form definition query

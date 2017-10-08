@@ -11,7 +11,6 @@ export class AddButtonComponent extends BaseWebComponent {
     @Input() tooltip: string;
 
     constructor(
-    ) { super()
+    ) { super();
     }
-
 }

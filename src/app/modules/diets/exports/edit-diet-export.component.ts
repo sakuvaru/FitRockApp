@@ -24,17 +24,17 @@ export class EditDietExportComponent extends BaseComponent implements OnInit, On
         private activatedRoute: ActivatedRoute,
         protected componentDependencyService: ComponentDependencyService,
     ) {
-        super(componentDependencyService)
+        super(componentDependencyService);
     }
 
     setup(): ComponentSetup | null {
         return {
             initialized: true
-        }
+        };
       }
 
     ngOnChanges(changes: SimpleChanges) {
-        let dietId = changes.dietId.currentValue;
+        const dietId = changes.dietId.currentValue;
         if (dietId) {
             this.initForm(dietId);
         }
@@ -49,7 +49,7 @@ export class EditDietExportComponent extends BaseComponent implements OnInit, On
             .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
             .onAfterDelete(() => super.navigate([super.getTrainerUrl('diets')]))
             .onFormLoaded(form => {
-                let workout = form.item;
+                const workout = form.item;
 
                 // set loaded workout
                 this.loadDiet.next(workout);

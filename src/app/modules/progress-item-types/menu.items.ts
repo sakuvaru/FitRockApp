@@ -18,7 +18,7 @@ export class NewProgressItemTypeMenuItems {
     
         constructor() {
             this.menuItems = [
-                new MenuItem({ key: 'menu.shared.back' },MenuItemType.trainer, 'progress-item-types', { icon: 'arrow_back' }),
+                new MenuItem({ key: 'menu.shared.back' }, MenuItemType.trainer, 'progress-item-types', { icon: 'arrow_back' }),
                 new MenuItem({ key: 'module.progressItemTypes.submenu.new' }, MenuItemType.trainer, 'progress-item-types/new', { icon: 'create' }),
             ];
         }

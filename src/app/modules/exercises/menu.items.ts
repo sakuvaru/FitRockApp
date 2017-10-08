@@ -30,7 +30,7 @@ export class ExerciseMenuItems {
 
     constructor(id: number) {
         this.menuItems = [
-            new MenuItem({ key: 'menu.shared.back' },MenuItemType.trainer, 'exercises', { icon: 'arrow_back' }),
+            new MenuItem({ key: 'menu.shared.back' }, MenuItemType.trainer, 'exercises', { icon: 'arrow_back' }),
             new MenuItem({ key: 'module.exercises.preview' }, MenuItemType.trainer, 'exercises/preview/' + id, { icon: 'pageview' }),
             new MenuItem({ key: 'module.exercises.edit' }, MenuItemType.trainer, 'exercises/edit/' + id, { icon: 'edit' })
         ];

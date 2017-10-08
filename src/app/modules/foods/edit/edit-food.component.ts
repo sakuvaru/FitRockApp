@@ -13,7 +13,7 @@ import { Observable } from 'rxjs/Rx';
 @Component({
     templateUrl: 'edit-food.component.html'
 })
-export class EditFoodCompoent extends BaseComponent implements OnInit {
+export class EditFoodComponent extends BaseComponent implements OnInit {
 
     private formConfig: FormConfig<Food>;
 
@@ -21,13 +21,13 @@ export class EditFoodCompoent extends BaseComponent implements OnInit {
         private activatedRoute: ActivatedRoute,
         protected componentDependencyService: ComponentDependencyService,
     ) {
-        super(componentDependencyService)
+        super(componentDependencyService);
     }
 
     setup(): ComponentSetup | null {
         return {
             initialized: true
-        }
+        };
       }
 
     ngOnInit(): void {

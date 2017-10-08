@@ -10,7 +10,7 @@ export class LogoutComponent extends BaseComponent {
 
     constructor(
         protected dependencies: ComponentDependencyService) {
-        super(dependencies)
+        super(dependencies);
 
         // logout user
         this.dependencies.coreServices.authService.logout();
@@ -22,6 +22,6 @@ export class LogoutComponent extends BaseComponent {
     setup(): ComponentSetup | null {
         return {
             initialized: false
-        }
+        };
       }
 }

@@ -9,7 +9,7 @@ import { BaseWebComponent } from '../base-web-component.class';
 export class DialogButtonComponent extends BaseWebComponent {
 
     constructor(
-    ) { super()
+    ) { super();
     }
 
     @Output() handleClick = new EventEmitter();
@@ -27,5 +27,4 @@ export class DialogButtonComponent extends BaseWebComponent {
             this.handleClick.next();
         }
     }
-    
 }

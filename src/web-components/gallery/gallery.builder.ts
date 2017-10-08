@@ -13,7 +13,7 @@ export class GalleryBuilder {
     }) {
         this.config = new GalleryConfig({
             images: options.images
-        })
+        });
     }
 
     /**
@@ -64,7 +64,7 @@ export class GalleryBuilder {
     /**
     * Callback for deleting an image. Can be used to display snackbar to user
     */
-    onDelete(callback: (image: GalleryImage) => void) : this {
+    onDelete(callback: (image: GalleryImage) => void): this {
         this.config.onDelete = callback;
         return this;
     }

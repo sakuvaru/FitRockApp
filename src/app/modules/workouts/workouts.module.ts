@@ -36,7 +36,7 @@ import { SharedModule} from '../shared/shared.module';
         WorkoutsRouter,
         SharedModule
     ],
-    entryComponents:[
+    entryComponents: [
         AddCustomExerciseDialogComponent,
         EditWorkoutExerciseDialogComponent,
         SelectWorkoutExerciseDialogComponent,

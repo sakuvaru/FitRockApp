@@ -4,7 +4,7 @@ import { RepositoryClient, MultipleItemQuery } from '../../../lib/repository';
 import { BaseTypeService } from '../base/base-type.service';
 
 @Injectable()
-export class ChatMessageService extends BaseTypeService<ChatMessage>{
+export class ChatMessageService extends BaseTypeService<ChatMessage> {
 
     constructor(repositoryClient: RepositoryClient) {
         super (repositoryClient, {

@@ -76,7 +76,7 @@ export class GalleryDeleteDialogComponent extends BaseWebComponent implements On
         this.imageDeletionFailed = false;
 
         // get the proper GalleryImage
-        let galleryImage = this.config.images.find(m => m.imageUrl === image.extUrl);
+        const galleryImage = this.config.images.find(m => m.imageUrl === image.extUrl);
         if (!galleryImage) {
             throw Error(`Could not map image '${image.extUrl}' to GalleryImage for deletion`);
         }
@@ -95,8 +95,7 @@ export class GalleryDeleteDialogComponent extends BaseWebComponent implements On
 
                     // show snackbar message
                     this.snackBarService.open(this.snackbarDeleteText, undefined,  { duration: this.snackbarDefaultDuration});
-                }
-                else {
+                } else {
                     // image deletion failed
                     this.imageDeletionFailed = true;
                 }
@@ -104,7 +103,7 @@ export class GalleryDeleteDialogComponent extends BaseWebComponent implements On
             error => {
                 // image deletion faield
                 this.imageDeletionFailed = true;
-            })
+            });
     }
 
     private initTranslations(): void {
@@ -124,7 +123,7 @@ export class GalleryDeleteDialogComponent extends BaseWebComponent implements On
                 if (group.images.length === 0) {
                     this.groups = _.reject(this.groups, function (item) { return item.groupTitle === group.groupTitle; });
                 }
-            })
+            });
         }
 
         // if there are no images left, close dialog automatically

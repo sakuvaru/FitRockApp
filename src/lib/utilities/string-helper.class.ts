@@ -28,7 +28,10 @@ export class StringHelper {
      */
     getHash(text: string): number {
         let hash = 0, i, chr;
-        if (!text) return hash;
+        if (!text) {
+            return hash;
+        }
+        
         for (i = 0; i < text.length; i++) {
             chr = text.charCodeAt(i);
             hash = ((hash << 5) - hash) + chr;

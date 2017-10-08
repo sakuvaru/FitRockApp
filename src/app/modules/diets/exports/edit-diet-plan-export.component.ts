@@ -36,10 +36,10 @@ export class EditDietPlanExportComponent extends BaseComponent implements OnDest
     private activatedRoute: ActivatedRoute,
     private dragulaService: DragulaService,
     protected dependencies: ComponentDependencyService) {
-    super(dependencies)
+    super(dependencies);
 
     // set handle for dragula
-    let that = this;
+    const that = this;
     this.dragulaService.setOptions(this.dragulaBag, {
       moves: function (el: any, container: any, handle: any): any {
         return stringHelper.contains(el.className, that.dragulaHandle);
@@ -53,7 +53,7 @@ export class EditDietPlanExportComponent extends BaseComponent implements OnDest
   setup(): ComponentSetup | null {
     return {
         initialized: true
-    }
+    };
   }
 
   ngOnDestroy() {
@@ -64,7 +64,7 @@ export class EditDietPlanExportComponent extends BaseComponent implements OnDest
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    let dietId = changes.dietId.currentValue;
+    const dietId = changes.dietId.currentValue;
     if (dietId) {
       super.subscribeToObservable(this.getDietObservable(dietId));
     }
@@ -83,7 +83,7 @@ export class EditDietPlanExportComponent extends BaseComponent implements OnDest
       .map(() => {
         super.stopGlobalLoader();
         super.showSavedSnackbar();
-      })
+      });
   }
 
   private getDietObservable(dietId: number): Observable<any> {
@@ -125,7 +125,7 @@ export class EditDietPlanExportComponent extends BaseComponent implements OnDest
   }
 
   private openDietFoodDialog(dietFood: DietFood): void {
-    let dialog = this.dependencies.tdServices.dialogService.open(EditDietFoodDialogComponent, {
+    const dialog = this.dependencies.tdServices.dialogService.open(EditDietFoodDialogComponent, {
       width: AppConfig.DefaultDialogWidth,
       data: dietFood
     });
@@ -138,10 +138,9 @@ export class EditDietPlanExportComponent extends BaseComponent implements OnDest
 
         // recalculate order
         this.recalculateOrder();
-      }
-      else {
+      } else {
         // update diet food with updated data
-        let dietFoodToUpdate: DietFood[] = this.sortedDietFoods.filter(m => m.id === dietFood.id);
+        const dietFoodToUpdate: DietFood[] = this.sortedDietFoods.filter(s => s.id === dietFood.id);
 
         if (!dietFoodToUpdate) {
           throw Error(`Cannot update diet with new values from saved form`);
@@ -152,7 +151,7 @@ export class EditDietPlanExportComponent extends BaseComponent implements OnDest
         dietFoodToUpdate[0].eatTime = dialog.componentInstance.dietFood.eatTime;
         dietFoodToUpdate[0].notes = dialog.componentInstance.dietFood.notes;
       }
-    })
+    });
   }
 
   private recalculateOrder(): void {
@@ -161,15 +160,15 @@ export class EditDietPlanExportComponent extends BaseComponent implements OnDest
       this.sortedDietFoods.forEach(dietFood => {
         dietFood.order = order;
         order++;
-      })
+      });
     }
   }
 
   private openSelectFoodDialog(): void {
-    let data: any = {};
+    const data: any = {};
     data.dietId = this.diet.id;
 
-    let dialog = this.dependencies.tdServices.dialogService.open(SelectDietFoodDialogComponent, {
+    const dialog = this.dependencies.tdServices.dialogService.open(SelectDietFoodDialogComponent, {
       width: AppConfig.DefaultDialogWidth,
       data: data
     });
@@ -178,16 +177,14 @@ export class EditDietPlanExportComponent extends BaseComponent implements OnDest
       // open new add diet food dialog if some food was selected
       if (dialog.componentInstance.selectedFood) {
         this.openAddDietFoodDialog(dialog.componentInstance.selectedFood);
-      }
-      // or open new custom food dialog
-      else if (dialog.componentInstance.openAddCustomFoodDialog) {
+      } else if (dialog.componentInstance.openAddCustomFoodDialog) {
         this.openAddCustomFoodDialog();
       }
-    })
+    });
   }
 
   private openAddCustomFoodDialog(): void {
-    let dialog = this.dependencies.tdServices.dialogService.open(AddCustomFoodDialogComponent, {
+    const dialog = this.dependencies.tdServices.dialogService.open(AddCustomFoodDialogComponent, {
       width: AppConfig.DefaultDialogWidth
     });
 
@@ -196,15 +193,15 @@ export class EditDietPlanExportComponent extends BaseComponent implements OnDest
       if (dialog.componentInstance.newFood) {
         this.openAddDietFoodDialog(dialog.componentInstance.newFood);
       }
-    })
+    });
   }
 
   private openAddDietFoodDialog(food: Food): void {
-    let data: any = {};
+    const data: any = {};
     data.dietId = this.diet.id;
     data.food = food;
 
-    let dialog = this.dependencies.tdServices.dialogService.open(AddDietFoodDialogComponent, {
+    const dialog = this.dependencies.tdServices.dialogService.open(AddDietFoodDialogComponent, {
       data: data,
       width: AppConfig.DefaultDialogWidth
     });
@@ -218,8 +215,8 @@ export class EditDietPlanExportComponent extends BaseComponent implements OnDest
           .get()
           .subscribe(response => {
             this.sortedDietFoods.push(response.item);
-          })
+          });
       }
-    })
+    });
   }
 }

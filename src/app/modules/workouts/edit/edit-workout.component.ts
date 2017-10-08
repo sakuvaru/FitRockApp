@@ -19,13 +19,13 @@ export class EditWorkoutComponent extends BaseComponent implements OnInit {
         private activatedRoute: ActivatedRoute,
         protected componentDependencyService: ComponentDependencyService,
     ) {
-        super(componentDependencyService)
+        super(componentDependencyService);
     }
 
     setup(): ComponentSetup | null {
         return {
             initialized: true
-        }
+        };
       }
 
     ngOnInit() {

@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/Rx';
 import { TranslateService } from '@ngx-translate/core';
 import { TdMediaService } from '@covalent/core';
 import { BaseWebComponent } from '../base-web-component.class';
-import { DataTableLayoutSearch } from './layouts/layouts.components';
+import { DataTableLayoutSearchComponent } from './layouts/layouts.components';
 import * as _ from 'underscore';
 
 @Component({
@@ -15,7 +15,7 @@ import * as _ from 'underscore';
 export class DataTableComponent extends BaseWebComponent implements OnInit, OnChanges {
 
     // search component
-    @ViewChild(DataTableLayoutSearch) searchInput: DataTableLayoutSearch;
+    @ViewChild(DataTableLayoutSearchComponent) searchInput: DataTableLayoutSearchComponent;
 
     // data table config
     @Input() config: DataTableConfig<any>;
@@ -172,8 +172,7 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
                     // set filters flag
                     if (this.filters && this.filters.length > 0) {
                         this.hasFilters = true;
-                    }
-                    else {
+                    } else {
                         this.hasFilters = false;
                     }
 
@@ -210,8 +209,7 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
                     this.items = response.items;
                     this.totalPages = response.pages;
                 });
-        }
-        else {
+        } else {
             let query = this.config.loadQuery(this.searchTerm);
 
             // prepare static filters
@@ -225,7 +223,7 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
             // add all filter
             if (this.config.showAllFilter) {
                 const allFilter = new Filter({
-                    onFilter: (query) => query,
+                    onFilter: (onFilterQuery) => query,
                     filterNameKey: this.allFilterKey,
                 });
 
@@ -236,8 +234,7 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
             // set filters flag
             if (this.filters && this.filters.length > 0) {
                 this.hasFilters = true;
-            }
-            else {
+            } else {
                 this.hasFilters = false;
             }
 

@@ -17,13 +17,13 @@ export class GlobalTypesListComponent extends BaseComponent implements OnInit {
 
   constructor(
     protected dependencies: ComponentDependencyService) {
-    super(dependencies)
+    super(dependencies);
   }
 
   setup(): ComponentSetup | null {
     return {
         initialized: true
-    }
+    };
   }
 
   ngOnInit() {
@@ -40,7 +40,7 @@ export class GlobalTypesListComponent extends BaseComponent implements OnInit {
       .fields([
         { 
           translateValue: true,
-          value: (item) => { return 'module.progressItemTypes.globalTypes.' + item.typeName }, flex: 40 },
+          value: (item) => 'module.progressItemTypes.globalTypes.' + item.typeName, flex: 40 },
         {
           translateValue: true,
           value: (item) => {
@@ -51,12 +51,12 @@ export class GlobalTypesListComponent extends BaseComponent implements OnInit {
       .loadQuery(searchTerm => {
         return this.dependencies.itemServices.progressItemTypeService.items()
           .whereEquals('IsGlobal', true)
-          .include('ProgressItemUnit')
+          .include('ProgressItemUnit');
       })
       .loadResolver(query => {
         return query
           .get()
-          .takeUntil(this.ngUnsubscribe)
+          .takeUntil(this.ngUnsubscribe);
       })
       .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
       .showPager(true)

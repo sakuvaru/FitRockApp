@@ -21,14 +21,14 @@ export class EditClientWorkoutPlanComponent extends ClientsBaseComponent impleme
     protected activatedRoute: ActivatedRoute,
     protected componentDependencyService: ComponentDependencyService,
   ) {
-    super(componentDependencyService, activatedRoute)
+    super(componentDependencyService, activatedRoute);
   }
 
   setup(): ComponentSetup | null {
     return {
-        initialized: false
-    }
-}
+      initialized: false
+    };
+  }
 
   ngOnInit() {
     super.ngOnInit();
@@ -55,12 +55,12 @@ export class EditClientWorkoutPlanComponent extends ClientsBaseComponent impleme
           data: { 'fullName': client.getFullName() }
         },
         menuAvatarUrl: client.avatarUrl
-      })
-    })
+      });
+    });
   }
 
   private handleLoadWorkout(workout: Workout): void {
-    let translationData: any = {};
+    const translationData: any = {};
     translationData.workoutName = workout.workoutName;
     super.updateComponentTitle({ key: 'module.clients.workout.editWorkoutWithName', data: translationData });
   }

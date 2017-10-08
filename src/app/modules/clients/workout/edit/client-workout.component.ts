@@ -48,13 +48,13 @@ export class ClientWorkoutComponent extends ClientsBaseComponent implements OnIn
         protected activatedRoute: ActivatedRoute,
         private dragulaService: DragulaService
     ) {
-        super(componentDependencyService, activatedRoute)
+        super(componentDependencyService, activatedRoute);
     }
 
     setup(): ComponentSetup | null {
         return {
             initialized: false
-        }
+        };
     }
 
     ngOnInit(): void {
@@ -76,7 +76,7 @@ export class ClientWorkoutComponent extends ClientsBaseComponent implements OnIn
 
     private initDragula(): void {
         // set handle for dragula
-        let that = this;
+        const that = this;
         this.dragulaService.setOptions(this.dragulaBag, {
             moves: function (el: any, container: any, handle: any): any {
                 return stringHelper.contains(el.className, that.dragulaMoveHandle);
@@ -98,9 +98,9 @@ export class ClientWorkoutComponent extends ClientsBaseComponent implements OnIn
     }
 
     private getComponentObservables(): Observable<any>[] {
-        let observables: Observable<any>[] = [];
+        const observables: Observable<any>[] = [];
 
-        let obsClientMenu = this.clientChange
+        const obsClientMenu = this.clientChange
             .takeUntil(this.ngUnsubscribe)
             .map(client => {
                 this.setConfig({
@@ -116,9 +116,9 @@ export class ClientWorkoutComponent extends ClientsBaseComponent implements OnIn
                 });
             });
 
-        let obsExistingExercises = this.existingWorkoutsObservable();
+        const obsExistingExercises = this.existingWorkoutsObservable();
 
-        let letWorkoutTemplates = this.clientIdChange
+        const letWorkoutTemplates = this.clientIdChange
             .takeUntil(this.ngUnsubscribe)
             .switchMap(clientId => this.dependencies.itemServices.workoutService.items()
                 .byCurrentUser()
@@ -147,7 +147,7 @@ export class ClientWorkoutComponent extends ClientsBaseComponent implements OnIn
                     .includeMultiple(['WorkoutExercises', 'WorkoutExercises.Exercise'])
                     .whereEquals('ClientId', clientId)
                     .orderByAsc('Order')
-                    .get()
+                    .get();
             })
             .map(response => {
                 if (!response.isEmpty()) {
@@ -155,8 +155,8 @@ export class ClientWorkoutComponent extends ClientsBaseComponent implements OnIn
 
                     // order workout exercises
                     this.existingWorkouts.forEach(workout => {
-                        workout.workoutExercises = _.sortBy(workout.workoutExercises, m => m.order)
-                    })
+                        workout.workoutExercises = _.sortBy(workout.workoutExercises, m => m.order);
+                    });
                 }
             });
     }
@@ -176,15 +176,15 @@ export class ClientWorkoutComponent extends ClientsBaseComponent implements OnIn
     }
 
     private newWorkoutFromTemplate(data: any): void {
-        let selected = data.selected;
+        const selected = data.selected;
 
         if (!selected) {
             super.translate('module.clients.workout.workoutNotSelected').subscribe(text => {
-                super.showErrorDialog(text)
+                super.showErrorDialog(text);
             });
         }
 
-        let selectedWorkout = selected.value as Workout;
+        const selectedWorkout = selected.value as Workout;
 
         // copy data from selected workout to a new workout with assigned client
         super.subscribeToObservable(this.dependencies.itemServices.workoutService.copyFromWorkout(selectedWorkout.id, this.clientId)
@@ -211,8 +211,7 @@ export class ClientWorkoutComponent extends ClientsBaseComponent implements OnIn
     private expandWorkout(workout: Workout): void {
         if (this.expandedWorkoutId === workout.id) {
             this.expandedWorkoutId = null;
-        }
-        else {
+        } else {
             this.expandedWorkoutId = workout.id;
         }
     }

@@ -5,7 +5,7 @@ import { BaseTypeService } from './base/base-type.service';
 import { Observable } from 'rxjs/Rx';
 
 @Injectable()
-export class LogService extends BaseTypeService<Log>{
+export class LogService extends BaseTypeService<Log> {
 
     constructor(repositoryClient: RepositoryClient) {
         super (repositoryClient, {
@@ -14,7 +14,7 @@ export class LogService extends BaseTypeService<Log>{
         });
     }
 
-    logError(errorMessage: string, url: string, user: string, stacktrace: string): Observable<ResponseCreate<Log>>{
+    logError(errorMessage: string, url: string, user: string, stacktrace: string): Observable<ResponseCreate<Log>> {
         const log = new Log();
         log.errorMessage = errorMessage;
         log.url = url;
@@ -24,7 +24,7 @@ export class LogService extends BaseTypeService<Log>{
         return super.create(log).set();
     }
 
-    getLogByGuid(guid: string): Observable<ResponseMultiple<Log>>{
+    getLogByGuid(guid: string): Observable<ResponseMultiple<Log>> {
         return super.items().withCustomAction('GetLogByGuid/' + guid).get();
     }
 }

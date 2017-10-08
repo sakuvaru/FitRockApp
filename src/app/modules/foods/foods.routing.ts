@@ -14,7 +14,7 @@ import { AdminLayoutComponent } from '../../layouts/admin-layout.component';
 // components
 import { MyFoodsListComponent} from './list/my-foods-list.component';
 import { AllFoodsListComponent } from './list/all-foods-list.component';
-import { EditFoodCompoent } from './edit/edit-food.component';
+import { EditFoodComponent } from './edit/edit-food.component';
 import { NewFoodComponent } from './new/new-food.component';
 import { PreviewFoodComponent } from './view/preview-food.component';
 
@@ -32,7 +32,7 @@ const routes: Routes = [
                 path: 'foods/new', component: NewFoodComponent
             },
             {
-                path: 'foods/edit/:id', component: EditFoodCompoent
+                path: 'foods/edit/:id', component: EditFoodComponent
             },
             {
                 path: 'foods/preview/:id', component: PreviewFoodComponent

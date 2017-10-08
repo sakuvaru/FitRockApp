@@ -63,7 +63,7 @@ export class UploaderConfig {
      /**
      * Loader configuration
      */
-    public loaderConfig?: { start: () => void, stop: () => void }
+    public loaderConfig?: { start: () => void, stop: () => void };
 
     constructor(
         options: {

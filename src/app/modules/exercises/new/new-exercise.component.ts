@@ -18,13 +18,13 @@ export class NewExerciseComponent extends BaseComponent implements OnInit {
 
     constructor(
         protected componentDependencyService: ComponentDependencyService) {
-        super(componentDependencyService)
+        super(componentDependencyService);
     }
 
     setup(): ComponentSetup | null {
         return {
             initialized: true
-        }
+        };
       }
 
     ngOnInit() {

@@ -31,7 +31,7 @@ export class EditDietFoodDialogComponent extends BaseComponent implements OnInit
     protected dependencies: ComponentDependencyService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    super(dependencies)
+    super(dependencies);
     
 
     this.dietFood = data;
@@ -40,7 +40,7 @@ export class EditDietFoodDialogComponent extends BaseComponent implements OnInit
   setup(): ComponentSetup | null {
     return {
         initialized: true
-    }
+    };
   }
 
   ngOnInit() {

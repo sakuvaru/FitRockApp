@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormGroup } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms'
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { SharedWebComponentModule } from '../shared-web-components.module';
 
@@ -12,8 +12,8 @@ import { DataTableService } from './data-table-service';
 // components
 import { DataTableComponent } from './data-table.component';
 import {
-    DataTableLayoutItems, DataTableLayoutHeader,
-    DataTableLayoutFilters, DataTableLayoutPager, DataTableLayoutSearch
+    DataTableLayoutItemsComponent, DataTableLayoutHeaderComponent,
+    DataTableLayoutFiltersComponent, DataTableLayoutPagerComponent, DataTableLayoutSearchComponent
 } from './layouts/layouts.components';
 
 // loader
@@ -30,11 +30,11 @@ import { LoaderModule } from '../loader/loader.module';
     ],
     declarations: [
         DataTableComponent,
-        DataTableLayoutItems,
-        DataTableLayoutFilters,
-        DataTableLayoutPager,
-        DataTableLayoutSearch,
-        DataTableLayoutHeader
+        DataTableLayoutItemsComponent,
+        DataTableLayoutFiltersComponent,
+        DataTableLayoutPagerComponent,
+        DataTableLayoutSearchComponent,
+        DataTableLayoutHeaderComponent
     ],
     exports: [
         DataTableComponent

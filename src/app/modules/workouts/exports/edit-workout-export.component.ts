@@ -25,17 +25,17 @@ export class EditWorkoutExportComponent extends BaseComponent implements OnInit,
         private activatedRoute: ActivatedRoute,
         protected componentDependencyService: ComponentDependencyService,
     ) {
-        super(componentDependencyService)
+        super(componentDependencyService);
     }
 
     setup(): ComponentSetup | null {
         return {
             initialized: false
-        }
+        };
       }
 
     ngOnChanges(changes: SimpleChanges) {
-        let workoutId = changes.workoutId.currentValue;
+        const workoutId = changes.workoutId.currentValue;
         if (workoutId) {
             this.initForm(workoutId);
         }

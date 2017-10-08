@@ -24,13 +24,13 @@ export class StatsMainComponent extends ClientsBaseComponent implements OnInit {
     constructor(
         protected componentDependencyService: ComponentDependencyService,
         protected activatedRoute: ActivatedRoute) {
-        super(componentDependencyService, activatedRoute)
+        super(componentDependencyService, activatedRoute);
     }
 
     setup(): ComponentSetup | null {
         return {
             initialized: false
-        }
+        };
     }
 
     ngOnInit() {
@@ -41,7 +41,7 @@ export class StatsMainComponent extends ClientsBaseComponent implements OnInit {
     }
 
     private getComponentObservables(): Observable<any>[] {
-        let observables: Observable<any>[] = [];
+        const observables: Observable<any>[] = [];
         observables.push(this.getClientMenuObservable());
         observables.push(this.getProgressTypesAndInitGraphObservable());
 
@@ -57,7 +57,7 @@ export class StatsMainComponent extends ClientsBaseComponent implements OnInit {
                     return new LineChart(response.data.items, {
                         xAxisLabel: super.translate(response.data.xAxisLabel),
                         yAxisLabel: super.translate(response.data.yAxisLabel)
-                    })
+                    });
                 })
         )
             .build();
@@ -88,7 +88,7 @@ export class StatsMainComponent extends ClientsBaseComponent implements OnInit {
                 return this.dependencies.itemServices.progressItemTypeService.items()
                     .byCurrentUser()
                     .whereEquals('ClientId', clientId)
-                    .get()
+                    .get();
             })
             .map(response => {
                 this.progressItemTypes = response.items;
@@ -100,7 +100,7 @@ export class StatsMainComponent extends ClientsBaseComponent implements OnInit {
     }
 
     private onSelectType(progressItemType: ProgressItemType): void {
-        let newGraphConfig = this.getGraphConfig(this.clientId, progressItemType.id);
+        const newGraphConfig = this.getGraphConfig(this.clientId, progressItemType.id);
         // reload graph
         this.graph.forceReinitialization(newGraphConfig);
     }

@@ -18,7 +18,7 @@ export class FixedButtonComponent extends BaseWebComponent {
     private default_icon = 'add';
     
     constructor() {
-        super()
+        super();
     }
 
     private getPositionClass(): string {

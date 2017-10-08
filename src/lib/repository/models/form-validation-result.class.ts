@@ -6,6 +6,6 @@ export class FormValidationResult implements IFormValidationResult {
         public message: string,
         public isInvalid: boolean,
         public validationResult: IColumnValidation[],
-    )
-    { }
+    ) {
+    }
 }

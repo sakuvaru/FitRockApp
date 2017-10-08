@@ -1,6 +1,6 @@
 import { IItem } from '../../lib/repository';
 
-export class LoadMoreField<TItem extends IItem>{
+export class LoadMoreField<TItem extends IItem> {
 
     public resolver?: (item: TItem) => string;
     public translate?: (item: TItem) => boolean;

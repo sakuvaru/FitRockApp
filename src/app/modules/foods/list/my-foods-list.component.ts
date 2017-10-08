@@ -17,13 +17,13 @@ export class MyFoodsListComponent extends BaseComponent implements OnInit {
 
   constructor(
     protected dependencies: ComponentDependencyService) {
-    super(dependencies)
+    super(dependencies);
   }
 
   setup(): ComponentSetup | null {
     return {
         initialized: true
-    }
+    };
   }
 
   ngOnInit() {
@@ -38,7 +38,7 @@ export class MyFoodsListComponent extends BaseComponent implements OnInit {
 
     this.config = this.dependencies.webComponentServices.dataTableService.dataTable<Food>()
       .fields([
-        { value: (item) => { return item.foodName }, flex: 40 },
+        { value: (item) => item.foodName, flex: 40 },
         {
           value: (item) => {
             return item.foodCategory.categoryName;
@@ -49,18 +49,18 @@ export class MyFoodsListComponent extends BaseComponent implements OnInit {
         return this.dependencies.itemServices.foodService.items()
           .include('FoodCategory')
           .byCurrentUser()
-          .whereLike('FoodName', searchTerm)
+          .whereLike('FoodName', searchTerm);
       })
       .loadResolver(query => {
         return query
           .get()
-          .takeUntil(this.ngUnsubscribe)
+          .takeUntil(this.ngUnsubscribe);
       })
       .dynamicFilters((searchTerm) => {
         return this.dependencies.itemServices.foodCategoryService.getFoodCategoryWithFoodsCountDto(searchTerm, false)
           .get()
           .map(response => {
-            let filters: Filter<FoodCategoryWithFoodsCountDto>[] = [];
+            const filters: Filter<FoodCategoryWithFoodsCountDto>[] = [];
             response.items.forEach(category => {
               filters.push(new Filter({
                 filterNameKey: category.codename,
@@ -70,7 +70,7 @@ export class MyFoodsListComponent extends BaseComponent implements OnInit {
             });
             return filters;
           })
-          .takeUntil(this.ngUnsubscribe)
+          .takeUntil(this.ngUnsubscribe);
       })
       .showAllFilter(true)
       .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())

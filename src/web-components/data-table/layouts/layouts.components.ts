@@ -10,7 +10,7 @@ import { PagerButton } from './models';
     selector: 'data-table-layout-pager',
     templateUrl: 'data-table-layout-pager.component.html'
 })
-export class DataTableLayoutPager implements OnInit, OnChanges {
+export class DataTableLayoutPagerComponent implements OnInit, OnChanges {
     @Input() pagerConfig: PagerConfig;
     @Input() totalPages: number;
     @Input() currentPage = 1; // initial page
@@ -62,11 +62,10 @@ export class DataTableLayoutPager implements OnInit, OnChanges {
         if (startingPage < 1) {
             // starting page has to be at least 1
             startingPage = 1;
-        }
-        else if (this.currentPage > this.totalPages - buttonOffsetCount) {
+        } else if (this.currentPage > this.totalPages - buttonOffsetCount) {
             // display more previous items if current page is approaching maximum number of pages
             const offset = this.currentPage - this.totalPages + this.showPagesCount - 1;
-            let startingPage = this.currentPage - offset;
+            startingPage = this.currentPage - offset;
 
             // do not display negative pages
             if (startingPage < 1) {
@@ -81,7 +80,7 @@ export class DataTableLayoutPager implements OnInit, OnChanges {
                 break;
             }
 
-            const isActive = i == this.currentPage;
+            const isActive = i === this.currentPage;
             buttons.push(new PagerButton(i, isActive));
         }
 
@@ -101,20 +100,17 @@ export class DataTableLayoutPager implements OnInit, OnChanges {
     selector: 'data-table-layout-header',
     templateUrl: 'data-table-layout-header.component.html'
 })
-export class DataTableLayoutHeader {
+export class DataTableLayoutHeaderComponent {
     @Input() config: DataTableConfig<any>;
 
     private getTextAlignClass(field: DataTableField<any>): string | null {
         if (field.align === AlignEnum.Center) {
             return 'text-center';
-        }
-        else if (field.align === AlignEnum.Left) {
+        } else if (field.align === AlignEnum.Left) {
             return 'text-left';
-        }
-        else if (field.align === AlignEnum.Right) {
+        } else if (field.align === AlignEnum.Right) {
             return 'text-right';
         }
-
         return null;
     }
 }
@@ -123,7 +119,7 @@ export class DataTableLayoutHeader {
     selector: 'data-table-layout-search',
     templateUrl: 'data-table-layout-search.component.html'
 })
-export class DataTableLayoutSearch implements OnInit {
+export class DataTableLayoutSearchComponent implements OnInit {
     @Input() config: DataTableConfig<any>;
     @Input() searchTerm: string;
 
@@ -143,7 +139,7 @@ export class DataTableLayoutSearch implements OnInit {
     selector: 'data-table-layout-filters',
     templateUrl: 'data-table-layout-filters.component.html'
 })
-export class DataTableLayoutFilters {
+export class DataTableLayoutFiltersComponent {
 
     @Input() activeFilterGuid: string;
     @Input() filters: Filter<any>[] = [];
@@ -158,7 +154,7 @@ export class DataTableLayoutFilters {
     selector: 'data-table-layout-items',
     templateUrl: 'data-table-layout-items.component.html'
 })
-export class DataTableLayoutItems implements OnInit, OnChanges {
+export class DataTableLayoutItemsComponent implements OnInit, OnChanges {
     @Input() config: DataTableConfig<any>;
     @Input() items: any[];
 
@@ -225,8 +221,7 @@ export class DataTableLayoutItems implements OnInit, OnChanges {
 
         if (checked) {
             this.config.selectableConfig.onSelect(item);
-        }
-        else {
+        } else {
             this.config.selectableConfig.onDeselect(item);
         }
     }
@@ -234,11 +229,9 @@ export class DataTableLayoutItems implements OnInit, OnChanges {
     private getTextAlignClass(field: DataTableField<any>): string | null {
         if (field.align === AlignEnum.Center) {
             return 'text-center';
-        }
-        else if (field.align === AlignEnum.Left) {
+        } else if (field.align === AlignEnum.Left) {
             return 'text-left';
-        }
-        else if (field.align === AlignEnum.Right) {
+        } else if (field.align === AlignEnum.Right) {
             return 'text-right';
         }
 

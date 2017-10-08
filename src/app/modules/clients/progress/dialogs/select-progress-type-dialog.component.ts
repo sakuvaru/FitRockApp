@@ -12,7 +12,7 @@ import { FormConfig } from '../../../../../web-components/dynamic-form';
 @Component({
   templateUrl: 'select-progress-type-dialog.component.html'
 })
-export class SelectProgressTypeDialog extends BaseComponent implements OnInit {
+export class SelectProgressTypeDialogComponent extends BaseComponent implements OnInit {
 
   private config: DataTableConfig<ProgressItemType>;
   public selectedItem: ProgressItemType;
@@ -22,14 +22,14 @@ export class SelectProgressTypeDialog extends BaseComponent implements OnInit {
     protected dependencies: ComponentDependencyService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    super(dependencies)
+    super(dependencies);
     
   }
 
   setup(): ComponentSetup | null {
     return {
         initialized: true
-    }
+    };
 }
 
   ngOnInit() {
@@ -43,7 +43,7 @@ export class SelectProgressTypeDialog extends BaseComponent implements OnInit {
       .fields([
         {
           translateValue: true,
-          value: (item) => { return item.isGlobal ? 'module.progressItemTypes.globalTypes.' + item.typeName : item.typeName }, flex: 40
+          value: (item) =>  item.isGlobal ? 'module.progressItemTypes.globalTypes.' + item.typeName : item.typeName, flex: 40
         },
         {
           translateValue: true,
@@ -54,12 +54,12 @@ export class SelectProgressTypeDialog extends BaseComponent implements OnInit {
       ])
       .loadQuery(searchTerm => {
         return this.dependencies.itemServices.progressItemTypeService.getProgressItemTypesSelection(this.dependencies.authenticatedUserService.getUserId())
-          .include('ProgressItemUnit')
+          .include('ProgressItemUnit');
       })
       .loadResolver(query => {
         return query
           .get()
-          .takeUntil(this.ngUnsubscribe)
+          .takeUntil(this.ngUnsubscribe);
       })
       .wrapInCard(false)
       .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())

@@ -20,13 +20,13 @@ export class PreviewExerciseComponent extends BaseComponent implements OnInit {
         private activatedRoute: ActivatedRoute,
         protected componentDependencyService: ComponentDependencyService,
     ) {
-        super(componentDependencyService)
+        super(componentDependencyService);
     }
 
     setup(): ComponentSetup | null {
         return {
             initialized: true
-        }
+        };
       }
 
     ngOnInit(): void {
@@ -55,8 +55,7 @@ export class PreviewExerciseComponent extends BaseComponent implements OnInit {
                             'key': 'module.exercises.preview'
                         }
                     });
-                }
-                else {
+                } else {
                     this.setConfig({
                         menuItems: new ExercisePreviewMenuItems(response.item.id).menuItems,
                         menuTitle: {
@@ -67,6 +66,6 @@ export class PreviewExerciseComponent extends BaseComponent implements OnInit {
                         }
                     });
                 }
-            })
+            });
     }
 }

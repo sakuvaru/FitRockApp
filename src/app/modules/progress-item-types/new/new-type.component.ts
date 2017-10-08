@@ -18,13 +18,13 @@ export class NewTypeComponent extends BaseComponent implements OnInit {
 
     constructor(
         protected componentDependencyService: ComponentDependencyService) {
-        super(componentDependencyService)
+        super(componentDependencyService);
     }
 
     setup(): ComponentSetup | null {
         return {
             initialized: true
-        }
+        };
       }
 
     ngOnInit() {
@@ -49,6 +49,6 @@ export class NewTypeComponent extends BaseComponent implements OnInit {
             })
             .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
             .onAfterInsert((response) => this.navigate([this.getTrainerUrl('progress-item-types/edit'), response.item.id]))
-            .build()
+            .build();
     }
 }

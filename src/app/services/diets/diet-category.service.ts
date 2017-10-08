@@ -4,7 +4,7 @@ import { RepositoryClient, MultipleItemQueryCustom } from '../../../lib/reposito
 import { BaseTypeService } from '../base/base-type.service';
 
 @Injectable()
-export class DietCategoryService extends BaseTypeService<DietCategory>{
+export class DietCategoryService extends BaseTypeService<DietCategory> {
 
     constructor(repositoryClient: RepositoryClient) {
         super (repositoryClient, {
@@ -13,13 +13,13 @@ export class DietCategoryService extends BaseTypeService<DietCategory>{
         });
     }
 
-    getCategoryCountForDietTemplates(dietName: string): MultipleItemQueryCustom<DietCategoryWithDietsCountDto>{
+    getCategoryCountForDietTemplates(dietName: string): MultipleItemQueryCustom<DietCategoryWithDietsCountDto> {
         return this.customItems<DietCategoryWithDietsCountDto>()
             .withCustomOption('dietName', dietName)
             .withCustomAction('GetCategoryCountForDietTemplates');
     }
 
-    getCategoryCountForClientDiets(dietName: string): MultipleItemQueryCustom<DietCategoryWithDietsCountDto>{
+    getCategoryCountForClientDiets(dietName: string): MultipleItemQueryCustom<DietCategoryWithDietsCountDto> {
         return this.customItems<DietCategoryWithDietsCountDto>()
             .withCustomOption('dietName', dietName)
             .withCustomAction('GetCategoryCountForClientDiets');

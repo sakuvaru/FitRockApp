@@ -4,8 +4,8 @@ import { RepositoryClient } from '../../../lib/repository';
 import { BaseTypeService } from '../base/base-type.service';
 
 @Injectable()
-export class ExerciseService extends BaseTypeService<Exercise>{
-
+export class ExerciseService extends BaseTypeService<Exercise> {
+ 
     constructor(repositoryClient: RepositoryClient) {
         super (repositoryClient, {
             type: 'Exercise',

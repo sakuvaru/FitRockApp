@@ -61,6 +61,8 @@ export class VerticalBarChart extends BaseGraph {
 
     ) {
         super();
-        if (options) Object.assign(this, options);
+        if (options) {
+            Object.assign(this, options);
+        }
     }
 }

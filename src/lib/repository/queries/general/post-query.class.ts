@@ -43,7 +43,7 @@ export class PostQuery<T extends any> extends BaseQuery {
      * @param field Name of the field in JSON body
      * @param value Value of the field
      */
-    withJsonOption(field: string, value: any): this{
+    withJsonOption(field: string, value: any): this {
         this._data[field] = value;
         return this;
     }

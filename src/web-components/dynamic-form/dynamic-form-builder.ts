@@ -2,7 +2,7 @@ import { FormConfig } from './form-config.class';
 import { Observable } from 'rxjs/RX';
 import { ResponseFormInsert, ResponseFormEdit, FormField, IItem, ResponseCreate, ResponseEdit, FormErrorResponse, ErrorResponse, ResponseDelete } from '../../lib/repository';
 
-class BaseDynamicFormBuilder<TItem extends IItem>{
+class BaseDynamicFormBuilder<TItem extends IItem> {
 
     protected config: FormConfig<TItem> = new FormConfig<TItem>();
 
@@ -155,7 +155,7 @@ class BaseDynamicFormBuilder<TItem extends IItem>{
     }
 }
 
-export class DynamicFormInsertBuilder<TItem extends IItem> extends BaseDynamicFormBuilder<TItem>{
+export class DynamicFormInsertBuilder<TItem extends IItem> extends BaseDynamicFormBuilder<TItem> {
 
     constructor(
         /**
@@ -196,7 +196,7 @@ export class DynamicFormInsertBuilder<TItem extends IItem> extends BaseDynamicFo
     }
 }
 
-export class DynamicFormEditBuilder<TItem extends IItem> extends BaseDynamicFormBuilder<TItem>{
+export class DynamicFormEditBuilder<TItem extends IItem> extends BaseDynamicFormBuilder<TItem> {
 
     constructor(
         /**

@@ -15,16 +15,6 @@ import { Observable } from 'rxjs/Rx';
 export abstract class BaseGraphComponent extends BaseWebComponent implements OnInit, OnChanges {
 
     /**
-     * Graph configuration
-     */
-    @Input() abstract config: GraphConfig<BaseGraph>;
-
-    /**
-     * Initialization required for each specific graph
-     */
-    abstract specializedGraphInit(graph: BaseGraph): Observable<BaseGraph>;
-
-    /**
      * This will contain graph data
      */
     protected graphData: SingleSeries[] | MultiSeries[];
@@ -53,6 +43,16 @@ export abstract class BaseGraphComponent extends BaseWebComponent implements OnI
      * Indicates if local loader should be shown
      */
     protected showLocalLoader = false;
+
+    /**
+     * Graph configuration
+     */
+    @Input() abstract config: GraphConfig<BaseGraph>;
+
+    /**
+     * Initialization required for each specific graph
+     */
+    abstract specializedGraphInit(graph: BaseGraph): Observable<BaseGraph>;
 
     constructor(
         protected translateService: TranslateService
@@ -127,7 +127,7 @@ export abstract class BaseGraphComponent extends BaseWebComponent implements OnI
                     this.showLocalLoader = false;
                 }
 
-                //set graph as initialized
+                // set graph as initialized
                 this.initialized = true;
             })
             .takeUntil(this.ngUnsubscribe)

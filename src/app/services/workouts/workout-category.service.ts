@@ -4,7 +4,7 @@ import { RepositoryClient, MultipleItemQueryCustom } from '../../../lib/reposito
 import { BaseTypeService } from '../base/base-type.service';
 
 @Injectable()
-export class WorkoutCategoryService extends BaseTypeService<WorkoutCategory>{
+export class WorkoutCategoryService extends BaseTypeService<WorkoutCategory> {
 
     constructor(repositoryClient: RepositoryClient) {
         super(repositoryClient, {

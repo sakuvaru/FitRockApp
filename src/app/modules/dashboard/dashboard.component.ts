@@ -8,7 +8,6 @@ import { Log } from '../../models';
 import { CurrentUser } from '../../../lib/auth';
 
 @Component({
-    selector: 'dashboard',
     templateUrl: 'dashboard.component.html'
 })
 export class DashboardComponent extends BaseComponent implements OnInit {
@@ -19,13 +18,13 @@ export class DashboardComponent extends BaseComponent implements OnInit {
 
     constructor(
         protected dependencies: ComponentDependencyService) {
-        super(dependencies)
+        super(dependencies);
     }
 
     setup(): ComponentSetup | null {
         return {
             initialized: false
-        }
+        };
     }
 
     ngOnInit(): void {

@@ -18,7 +18,7 @@ export class NewDietMenuItems {
     
         constructor() {
             this.menuItems = [
-                new MenuItem({ key: 'menu.shared.back' },MenuItemType.trainer, 'diets', { icon: 'arrow_back' }),
+                new MenuItem({ key: 'menu.shared.back' }, MenuItemType.trainer, 'diets', { icon: 'arrow_back' }),
                 new MenuItem({ key: 'module.diets.submenu.new' }, MenuItemType.trainer, 'diets/new', { icon: 'create' }),
             ];
         }

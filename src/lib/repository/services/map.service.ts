@@ -63,23 +63,20 @@ export class MapService {
                 // field value is a nested entity type - recursively get object & properties
                 // map single object
                 itemTyped[propertyName] = this.mapFields(fieldValue);
-            }
-            else {
+            } else {
                 if (Array.isArray(fieldValue)) {
                     // map list of nested entity types
                     const listItems: any[] = [];
                     fieldValue.forEach(listItem => {
                         if (this.isEntityField(listItem)) {
                             listItems.push(this.mapFields(listItem));
-                        }
-                        else {
+                        } else {
                             // unknown field type
                             listItems.push(listItem);
                         }
                     });
                     itemTyped[propertyName] = listItems;
-                }
-                else {
+                } else {
                     itemTyped[propertyName] = fieldValue;
                 }
             }
@@ -169,7 +166,7 @@ export class MapService {
         return mappedFiles;
     }
 
-    private mapListOptions(listOptions: IDropdownFieldOption[] | undefined): DropdownFieldOption[]{
+    private mapListOptions(listOptions: IDropdownFieldOption[] | undefined): DropdownFieldOption[] {
         if (!listOptions) {
             return [];
         }
@@ -186,7 +183,7 @@ export class MapService {
         return mappedOptions;
     }
 
-    private mapListOfItemProperties(properties: IPropertyInfo[]): PropertyInfo[]{
+    private mapListOfItemProperties(properties: IPropertyInfo[]): PropertyInfo[] {
          if (!properties) {
             return [];
         }

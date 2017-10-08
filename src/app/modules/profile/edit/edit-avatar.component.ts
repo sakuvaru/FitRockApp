@@ -20,13 +20,13 @@ export class EditAvatarComponent extends BaseComponent implements OnInit {
 
     constructor(
         protected dependencies: ComponentDependencyService) {
-        super(dependencies)
+        super(dependencies);
     }
 
     setup(): ComponentSetup | null {
         return {
             initialized: false
-        }
+        };
       }
 
     ngOnInit() {
@@ -46,7 +46,7 @@ export class EditAvatarComponent extends BaseComponent implements OnInit {
     }
 
     private initUploader(): void {
-        let userId = this.dependencies.authenticatedUserService.getUserId();
+        const userId = this.dependencies.authenticatedUserService.getUserId();
 
         this.uploaderConfig = this.dependencies.webComponentServices.uploaderService.uploader(
             UploaderModeEnum.SingleFile, 
@@ -71,5 +71,4 @@ export class EditAvatarComponent extends BaseComponent implements OnInit {
                 this.avatarSrc = response.item.avatarUrl;
             });
     }
-
 }

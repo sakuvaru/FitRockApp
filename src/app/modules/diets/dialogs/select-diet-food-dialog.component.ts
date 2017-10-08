@@ -23,14 +23,14 @@ export class SelectDietFoodDialogComponent extends BaseComponent implements OnIn
     protected dependencies: ComponentDependencyService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    super(dependencies)
+    super(dependencies);
     
   }
 
   setup(): ComponentSetup | null {
     return {
         initialized: true
-    }
+    };
   }
 
   ngOnInit() {
@@ -39,11 +39,11 @@ export class SelectDietFoodDialogComponent extends BaseComponent implements OnIn
     this.config = this.dependencies.webComponentServices.dataTableService.dataTable<Food>()
       .fields([
         {
-          value: (item) => { return item.foodName },
+          value: (item) => item.foodName,
           flex: 60
         },
         {
-          value: (item) => { return 'module.foodCategories.' + item.foodCategory.codename },
+          value: (item) => 'module.foodCategories.' + item.foodCategory.codename,
           translateValue: true,
           flex: 40,
           isSubtle: true,
@@ -54,12 +54,12 @@ export class SelectDietFoodDialogComponent extends BaseComponent implements OnIn
       .loadQuery(searchTerm => {
         return this.dependencies.itemServices.foodService.items()
           .include('FoodCategory')
-          .whereLike('FoodName', searchTerm)
+          .whereLike('FoodName', searchTerm);
       })
       .loadResolver(query => {
         return query
           .get()
-          .takeUntil(this.ngUnsubscribe)
+          .takeUntil(this.ngUnsubscribe);
       })
       .filter(new Filter({ filterNameKey: 'module.diets.allFoods', onFilter: query => query }))
       .filter(new Filter({ filterNameKey: 'module.diets.myFoods', onFilter: query => query.byCurrentUser().whereEquals('IsGlobal', false) }))

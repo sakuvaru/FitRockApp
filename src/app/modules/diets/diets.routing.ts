@@ -17,7 +17,7 @@ import { DietTemplatesComponent } from './list/diet-templates.component';
 import { NewDietTemplateComponent } from './new/new-diet-template.component';
 import { EditDietComponent } from './edit/edit-diet.component';
 import { DietPlanComponent } from './list/diet-plan.component';
-import { EditDietPlan } from './edit/edit-diet-plan.component';
+import { EditDietPlanComponent } from './edit/edit-diet-plan.component';
 
 // dialogs
 import { AddDietFoodDialogComponent} from './dialogs/add-diet-food-dialog.component';
@@ -45,7 +45,7 @@ const routes: Routes = [
                 path: 'diets/view/:id', component: DietPlanComponent
             },
             {
-                path: 'diets/edit-plan/:id', component: EditDietPlan
+                path: 'diets/edit-plan/:id', component: EditDietPlanComponent
             },
         ],
     },

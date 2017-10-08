@@ -35,7 +35,7 @@ export class AddWorkoutExerciseDialogComponent extends BaseComponent implements 
     protected dependencies: ComponentDependencyService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    super(dependencies)
+    super(dependencies);
     
 
     this.workoutId = data.workoutId;
@@ -45,7 +45,7 @@ export class AddWorkoutExerciseDialogComponent extends BaseComponent implements 
   setup(): ComponentSetup | null {
     return {
         initialized: true
-    }
+    };
   }
 
   ngOnInit() {
@@ -59,8 +59,7 @@ export class AddWorkoutExerciseDialogComponent extends BaseComponent implements 
       .fieldValueResolver((fieldName, value) => {
         if (fieldName === 'ExerciseId') {
           return this.exercise.id;
-        }
-        else if (fieldName === 'WorkoutId') {
+        } else if (fieldName === 'WorkoutId') {
           return this.workoutId;
         }
         return value;

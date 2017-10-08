@@ -20,7 +20,7 @@ export class EntryPointComponent extends BaseComponent {
   constructor(
     protected dependencies: ComponentDependencyService,
   ) {
-    super(dependencies)
+    super(dependencies);
 
     if (!this.dependencies.coreServices.authService.isAuthenticated()) {
       this.navigate([UrlConfig.getLoginUrl()]);
@@ -35,21 +35,20 @@ export class EntryPointComponent extends BaseComponent {
       .subscribe(response => {
         super.stopGlobalLoader();
 
-        let user = response.item;
-        let authUser = new AuthenticatedUser(user.id, user.email, user.firstName, user.lastName, user.trainerUserId);
+        const user = response.item;
+        const authUser = new AuthenticatedUser(user.id, user.email, user.firstName, user.lastName, user.trainerUserId);
 
         // store user in authenticated user
         this.dependencies.authenticatedUserService.setUser(authUser);
 
         if (!response.item.isClient) {
           this.navigate([UrlConfig.TrainerMasterPath]);
-        }
-        else {
+        } else {
           this.navigate([UrlConfig.ClientMasterPath]);
         }
       },
       (error) => {
         this.navigateToError();
-      })
+      });
   }
 }

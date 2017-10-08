@@ -14,7 +14,7 @@ export class UnauthorizedComponent extends BaseComponent {
   constructor(
     private activatedRoute: ActivatedRoute,
     protected dependencies: ComponentDependencyService) {
-    super(dependencies)
+    super(dependencies);
 
     this.loginUrl = '/' + UrlConfig.getLoginUrl();
   }
@@ -22,6 +22,6 @@ export class UnauthorizedComponent extends BaseComponent {
   setup(): ComponentSetup | null {
     return {
         initialized: true
-    }
+    };
   }
 }

@@ -11,8 +11,8 @@ import { FormConfig, DynamicFormComponent } from '../../../../../web-components/
 import { DataTableConfig, AlignEnum, Filter, DataTableComponent } from '../../../../../web-components/data-table';
 import { ProgressItem, User, ProgressItemTypeWithCountDto } from '../../../../models';
 import { Observable } from 'rxjs/Rx';
-import { EditProgressItemDialog } from '../dialogs/edit-progress-item-dialog.component';
-import { SelectProgressTypeDialog } from '../dialogs/select-progress-type-dialog.component';
+import { EditProgressItemDialogComponent } from '../dialogs/edit-progress-item-dialog.component';
+import { SelectProgressTypeDialogComponent } from '../dialogs/select-progress-type-dialog.component';
 import { NewClientProgressItemTypeDialogComponent } from '../dialogs/new-client-progress-item-type-dialog.component';
 import * as _ from 'underscore';
 
@@ -32,13 +32,13 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
         protected activatedRoute: ActivatedRoute,
         protected componentDependencyService: ComponentDependencyService,
     ) {
-        super(componentDependencyService, activatedRoute)
+        super(componentDependencyService, activatedRoute);
     }
 
     setup(): ComponentSetup | null {
         return {
             initialized: false
-        }
+        };
     }
 
     ngOnInit(): void {
@@ -49,9 +49,9 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
     }
 
     private getComponentObservables(): Observable<any>[] {
-        let observables: Observable<any>[] = [];
+        const observables: Observable<any>[] = [];
 
-        let obsClientMenu = this.clientChange
+        const obsClientMenu = this.clientChange
             .takeUntil(this.ngUnsubscribe)
             .map(client => {
                 this.setConfig({
@@ -100,9 +100,9 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
             // set extra translation value for measurement value based on currently selected type
             .onFieldValueChange((config, changedField, newValue) => {
                 // get measurement value field
-                let measurementValueField = config.fields.find(m => m.key === 'Value');
+                const measurementValueField = config.fields.find(m => m.key === 'Value');
                 if (!measurementValueField) {
-                    return
+                    return;
                 }
 
                 // get option with the value === newValue 
@@ -110,24 +110,23 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
                     return;
                 }
 
-                let listOption = changedField.options.listOptions.find(m => m.value === newValue);
+                const listOption = changedField.options.listOptions.find(m => m.value === newValue);
                 if (!listOption) {
                     return;
                 }
 
                 // set new custom translation label
-                let translationData: any = {};
-                let unitCode = listOption.extraDataJson.unit;
+                const translationData: any = {};
+                const unitCode = listOption.extraDataJson.unit;
                 super.translate('module.progressItemUnits.' + unitCode).subscribe(unitTranslation => {
-                    let translationData: any = {};
                     translationData.unit = unitTranslation;
                     super.translate('form.progressItem.valueWithUnit', translationData).subscribe(translation => {
-                        let field = config.fields.find(m => m.key === 'Value');
+                        const field = config.fields.find(m => m.key === 'Value');
                         if (field) {
                             field.translatedLabel = translation;
                         }
-                    })
-                })
+                    });
+                });
             })
             .build();
     }
@@ -140,11 +139,11 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
                     .byCurrentUser()
                     .whereEquals('ClientId', clientId)
                     .get()
-                    .takeUntil(this.ngUnsubscribe)
+                    .takeUntil(this.ngUnsubscribe);
             })
             .map((response) => {
                 this.progressItemTypes = response.items;
-            })
+            });
     }
 
     private initDataTable(clientId: number): void {
@@ -158,20 +157,20 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
                     align: AlignEnum.Left,
                 },
                 {
-                    value: (item) => { return item.value.toString() },
+                    value: (item) => item.value.toString(),
                     isSubtle: true,
                     hideOnSmallScreens: false,
                     align: AlignEnum.Left,
                 },
                 {
-                    value: (item) => { return super.moment(item.measurementDate).format('MMMM DD') },
+                    value: (item) =>  super.moment(item.measurementDate).format('MMMM DD'),
                     isSubtle: true,
                     hideOnSmallScreens: false,
                     align: AlignEnum.Left,
                 },
                 {
                     translateValue: true,
-                    value: (item) => { return 'module.progressItemUnits.' + item.progressItemType.progressItemUnit.unitCode },
+                    value: (item) => 'module.progressItemUnits.' + item.progressItemType.progressItemUnit.unitCode,
                     isSubtle: true,
                     hideOnSmallScreens: true,
                     align: AlignEnum.Right
@@ -182,24 +181,23 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
                 return this.dependencies.itemServices.progressItemService.items()
                     .includeMultiple(['ProgressItemType', 'ProgressItemType.ProgressItemUnit'])
                     .whereEquals('ClientId', clientId)
-                    .orderByDescending('MeasurementDate')
+                    .orderByDescending('MeasurementDate');
             })
             .loadResolver(query => {
                 return query
                     .get()
-                    .takeUntil(this.ngUnsubscribe)
+                    .takeUntil(this.ngUnsubscribe);
             })
             .dynamicFilters((searchTerm) => {
                 return this.dependencies.itemServices.progressItemTypeService.getProgressItemTypeWithCountDto(this.clientId, undefined)
                     .get()
                     .map(response => {
-                        let filters: Filter<ProgressItemTypeWithCountDto>[] = [];
+                        const filters: Filter<ProgressItemTypeWithCountDto>[] = [];
                         response.items.forEach(type => {
                             let typeKey;
                             if (type.translateValue) {
                                 typeKey = 'module.progressItemTypes.globalTypes.' + type.codename;
-                            }
-                            else {
+                            } else {
                                 typeKey = type.typeName;
                             }
 
@@ -211,7 +209,7 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
                         });
                         return filters;
                     })
-                    .takeUntil(this.ngUnsubscribe)
+                    .takeUntil(this.ngUnsubscribe);
             })
             .wrapInCard(true)
             .showAllFilter(true)
@@ -225,8 +223,8 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
         return this.clientIdChange
             .takeUntil(this.ngUnsubscribe)
             .map(clientId => {
-                this.initDataTable(clientId)
-            })
+                this.initDataTable(clientId);
+            });
     }
 
     private handleDeleteType(progressItemType: ProgressItemType): void {
@@ -234,7 +232,7 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
     }
 
     private openAddNewProgressItemTypeDialog(): void {
-        let dialog = this.dependencies.tdServices.dialogService.open(NewClientProgressItemTypeDialogComponent, {
+        const dialog = this.dependencies.tdServices.dialogService.open(NewClientProgressItemTypeDialogComponent, {
             width: AppConfig.DefaultDialogWidth,
         });
 
@@ -246,11 +244,11 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
                 // reload form and progress items
                 super.subscribeToObservable(this.getAddProgressTypeObservable(dialog.componentInstance.createdProgressItemType));
             }
-        })
+        });
     }
 
     private openEditProgressItemDialog(progressItem: ProgressItem): void {
-        let dialog = this.dependencies.tdServices.dialogService.open(EditProgressItemDialog, {
+        const dialog = this.dependencies.tdServices.dialogService.open(EditProgressItemDialogComponent, {
             width: AppConfig.DefaultDialogWidth,
             data: progressItem
         });
@@ -260,23 +258,22 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
                 // reload data table
                 this.reloadDataTable();
             }
-        })
+        });
     }
 
     private openSelectTypeDialog(): void {
-        let dialog = this.dependencies.tdServices.dialogService.open(SelectProgressTypeDialog, {
+        const dialog = this.dependencies.tdServices.dialogService.open(SelectProgressTypeDialogComponent, {
             width: AppConfig.DefaultDialogWidth,
         });
 
         dialog.afterClosed().subscribe(m => {
             if (dialog.componentInstance.openAddCustomProgressTypeDialog) {
                 this.openAddNewProgressItemTypeDialog();
-            }
-            else if (dialog.componentInstance.selectedItem) {
+            } else if (dialog.componentInstance.selectedItem) {
                 // item was selected, add it
                 super.subscribeToObservable(this.getAddProgressTypeObservable(dialog.componentInstance.selectedItem));
             }
-        })
+        });
     }
 
     private getAddProgressTypeObservable(progressItemType: ProgressItemType): Observable<any> {

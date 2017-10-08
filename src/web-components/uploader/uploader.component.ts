@@ -74,7 +74,7 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
         private translateService: TranslateService,
         private snackBarService: MatSnackBar,
     ) {
-        super()
+        super();
     }
 
     @Input() config: UploaderConfig;
@@ -192,7 +192,7 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
             this.config.uploadFunction(file)
                 .takeUntil(this.ngUnsubscribe)
                 .subscribe(response => {
-                    let uploadedFile: any[] = response.file ? [response.file] : [];
+                    const uploadedFile: any[] = response.file ? [response.file] : [];
 
                     if (this.config.onAfterUpload) {
                         this.config.onAfterUpload(uploadedFile);
@@ -205,8 +205,7 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
                 error => {
                     this.uploadFailed = true;
                 });
-        }
-        catch (error) {
+        } catch (error) {
             this.uploadFailed = true;
 
             if (this.config.onFailedUpload) {
@@ -222,13 +221,12 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
             this.noFilesSelected = true;
             return;
         }
-        let files: File[] = [];
+        const files: File[] = [];
 
         // if multiple selection is used, but only 1 file is selected, it is returned directly
         if (file instanceof File) {
             files.push(file);
-        }
-        else {
+        } else {
             // this means multiple files were selected
             for (let i = 0; i < this.maxFiles; i++) {
                 if (file[i]) {
@@ -279,8 +277,7 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
                         this.config.loaderConfig.stop();
                     }
                 });
-        }
-        catch (error) {
+        } catch (error) {
             this.uploadFailed = true;
 
             if (this.config.onFailedUpload) {
@@ -306,8 +303,8 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
         let notAllowedExtensions: string = '';
 
         for (let i = 0; i < files.length; i++) {
-            let file = files[i];
-            let fileAllowed = this.fileIsAllowed(file);
+            const file = files[i];
+            const fileAllowed = this.fileIsAllowed(file);
             if (!fileAllowed) {
                 notAllowedExtensions += this.getFileExtension(file.name);
 
@@ -329,7 +326,7 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
         }
 
         files.forEach(file => {
-            let fileAllowed = this.fileIsAllowed(file);
+            const fileAllowed = this.fileIsAllowed(file);
             if (!fileAllowed) {
                 return false;
             }
@@ -349,7 +346,7 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
 
         fileExtension = fileExtension.toLowerCase();
 
-        let isAllowedExtension = this.acceptedExtensions.find(m => m.toLowerCase() === fileExtension);
+        const isAllowedExtension = this.acceptedExtensions.find(m => m.toLowerCase() === fileExtension);
 
         if (isAllowedExtension) {
             return true;
@@ -358,9 +355,9 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
     }
 
     private getFileExtension(fileName: string): string | null {
-        let re = /(?:\.([^.]+))?$/;
+        const re = /(?:\.([^.]+))?$/;
 
-        let result = re.exec(fileName);
+        const result = re.exec(fileName);
 
         if (result && result[1]) {
             return result[1];

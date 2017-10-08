@@ -79,8 +79,7 @@ export class QueryService {
             options.forEach(filter => {
                 if (url.indexOf('?') > -1) {
                     url = url + '&' + filter.GetParam() + '=' + filter.GetParamValue();
-                }
-                else {
+                } else {
                     url = url + '?' + filter.GetParam() + '=' + filter.GetParamValue();
                 }
             });

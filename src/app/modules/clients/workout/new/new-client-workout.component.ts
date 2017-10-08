@@ -21,13 +21,13 @@ export class NewClientWorkoutComponent extends ClientsBaseComponent implements O
         protected activatedRoute: ActivatedRoute,
         protected componentDependencyService: ComponentDependencyService,
     ) {
-        super(componentDependencyService, activatedRoute, { subscribeToClient: true })
+        super(componentDependencyService, activatedRoute, { subscribeToClient: true });
     }
 
     setup(): ComponentSetup | null {
         return {
             initialized: false
-        }
+        };
     }
 
     ngOnInit() {
@@ -38,7 +38,7 @@ export class NewClientWorkoutComponent extends ClientsBaseComponent implements O
     }
 
     private getObservables(): Observable<any>[] {
-        let observables: Observable<any>[] = [];
+        const observables: Observable<any>[] = [];
         observables.push(this.getClientObservable());
         observables.push(this.getFormObservable());
         return observables;
@@ -79,6 +79,6 @@ export class NewClientWorkoutComponent extends ClientsBaseComponent implements O
                     .build();
 
             },
-            error => super.handleError(error))
+            error => super.handleError(error));
     }
 }

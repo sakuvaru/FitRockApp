@@ -7,7 +7,6 @@ import { AppConfig, ComponentDependencyService, BaseComponent, ComponentSetup } 
 import { ExerciseMenuItems } from '../menu.items';
 import { FormConfig } from '../../../../web-components/dynamic-form';
 import { Exercise } from '../../../models';
-import 'rxjs/add/operator/switchMap';
 import { Observable } from 'rxjs/Rx';
 
 @Component({
@@ -21,13 +20,13 @@ export class EditExerciseComponent extends BaseComponent implements OnInit {
         private activatedRoute: ActivatedRoute,
         protected componentDependencyService: ComponentDependencyService,
     ) {
-        super(componentDependencyService)
+        super(componentDependencyService);
     }
 
     setup(): ComponentSetup | null {
         return {
             initialized: true
-        }
+        };
       }
 
     ngOnInit(): void {

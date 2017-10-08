@@ -19,13 +19,13 @@ export class DietPlanComponent extends BaseComponent implements OnInit {
   constructor(
     private activatedRoute: ActivatedRoute,
     protected dependencies: ComponentDependencyService) {
-    super(dependencies)
+    super(dependencies);
   }
 
   setup(): ComponentSetup | null {
     return {
         initialized: true
-    }
+    };
   }
 
   ngOnInit() {

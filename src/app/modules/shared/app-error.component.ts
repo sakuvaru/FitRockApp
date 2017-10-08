@@ -19,13 +19,13 @@ export class AppErrorComponent extends BaseComponent implements OnInit {
   constructor(
     private activatedRoute: ActivatedRoute,
     protected dependencies: ComponentDependencyService) {
-    super(dependencies)
+    super(dependencies);
   }
 
   setup(): ComponentSetup | null {
     return {
         initialized: true
-    }
+    };
   }
 
   ngOnInit() {
@@ -34,7 +34,7 @@ export class AppErrorComponent extends BaseComponent implements OnInit {
     this.showDebugDetails = this.dependencies.coreServices.authService.isAuthenticated();
 
     // get the guid of error from url
-    let logGuid = this.activatedRoute.snapshot.queryParams[UrlConfig.AppErrorLogGuidQueryString];
+    const logGuid = this.activatedRoute.snapshot.queryParams[UrlConfig.AppErrorLogGuidQueryString];
 
     if (this.showDebugDetails && logGuid) {
       // try to get the error with details from service
@@ -45,8 +45,7 @@ export class AppErrorComponent extends BaseComponent implements OnInit {
         .subscribe(response => {
           if (response.isEmpty()) {
             this.isCriticalError = true;
-          }
-          else {
+          } else {
             this.log = response.firstItem();
             this.translateParams = { 'guid': this.log ? this.log.guid : '' };
           }
@@ -55,9 +54,8 @@ export class AppErrorComponent extends BaseComponent implements OnInit {
         (error) => {
           this.isCriticalError = true;
           super.stopGlobalLoader();
-        })
-    }
-    else {
+        });
+    } else {
       // show critical error
       this.isCriticalError = true;
     }

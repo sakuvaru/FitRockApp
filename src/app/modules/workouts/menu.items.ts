@@ -18,7 +18,7 @@ export class NewWorkoutMenuItems {
     
         constructor() {
             this.menuItems = [
-                new MenuItem({ key: 'menu.shared.back' },MenuItemType.trainer, 'workouts', { icon: 'arrow_back' }),
+                new MenuItem({ key: 'menu.shared.back' }, MenuItemType.trainer, 'workouts', { icon: 'arrow_back' }),
                 new MenuItem({ key: 'module.workouts.submenu.new' }, MenuItemType.trainer, 'workouts/new', { icon: 'create' }),
             ];
         }

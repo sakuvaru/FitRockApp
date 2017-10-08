@@ -10,7 +10,7 @@ import {
 
 import { DynamicFormEditBuilder, DynamicFormInsertBuilder } from '../../../web-components/dynamic-form';
 
-export abstract class BaseTypeService<TItem extends IItem>{
+export abstract class BaseTypeService<TItem extends IItem> {
 
     public type: string;
 

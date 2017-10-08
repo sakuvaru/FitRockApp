@@ -8,7 +8,7 @@ import { AppConfig, ComponentDependencyService, BaseComponent, ComponentSetup } 
     selector: 'login-form',
     templateUrl: 'login-form.component.html'
 })
-export class LoginFormComponent extends BaseComponent {
+export class LoginFormComponent extends BaseComponent implements OnInit {
 
     // event outputs
     @Output() onLoginFailedEvent = new EventEmitter();
@@ -24,13 +24,13 @@ export class LoginFormComponent extends BaseComponent {
     constructor(
         private activatedRoute: ActivatedRoute,
         protected dependencies: ComponentDependencyService) {
-        super(dependencies)
+        super(dependencies);
     }
 
     setup(): ComponentSetup | null {
         return {
             initialized: false
-        }
+        };
       }
 
     ngOnInit() {
@@ -41,21 +41,20 @@ export class LoginFormComponent extends BaseComponent {
         this.activatedRoute.fragment
             .takeUntil(this.ngUnsubscribe)
             .subscribe((fragment: string) => {
-                this.processFailedLogonRedirect()
+                this.processFailedLogonRedirect();
             }
             ,
             error => super.handleError(error));
     }
 
     private processFailedLogonRedirect() {
-        let result = this.activatedRoute.snapshot.queryParams['result'];
+        const result = this.activatedRoute.snapshot.queryParams['result'];
 
         // auth service will redirect back to logon page with query param 'result=error' and radnom fragment (hash) if login fails
         if (result === 'error') {
             this.loginFailed = true;
             this.onLoginFailedEvent.emit();
-        }
-        else {
+        } else {
             this.loginFailed = false;
         }
 
@@ -67,7 +66,7 @@ export class LoginFormComponent extends BaseComponent {
     onLogin() {
         this.startGlobalLoader();
         this.onLoginEvent.emit();
-        let success = this.dependencies.coreServices.authService.authenticate(this.username, this.password);
+        const success = this.dependencies.coreServices.authService.authenticate(this.username, this.password);
     }
 
     onLogout() {

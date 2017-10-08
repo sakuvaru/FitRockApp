@@ -11,20 +11,15 @@ export class ColumnValidation implements IColumnValidation {
     ) {
         if (result === 1) {
             this.errorType = FieldErrorEnum.NotUnique;
-        }
-        else if (result === 2) {
+        } else if (result === 2) {
             this.errorType = FieldErrorEnum.InvalidCodename;
-        }
-        else if (result === 3) {
+        } else if (result === 3) {
             this.errorType = FieldErrorEnum.InvalidEmail;
-        }
-        else if (result === 4) {
+        } else if (result === 4) {
             this.errorType = FieldErrorEnum.NotEditable;
-        }
-        else if (result === 50) {
+        } else if (result === 50) {
             this.errorType = FieldErrorEnum.Other;
-        }
-        else {
+        } else {
             this.errorType = FieldErrorEnum.Unknown;
         }
     }

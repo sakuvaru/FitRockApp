@@ -29,14 +29,14 @@ export class AddCustomFoodDialogComponent extends BaseComponent implements OnIni
   constructor(
     protected dependencies: ComponentDependencyService,
   ) {
-    super(dependencies)
+    super(dependencies);
     
   }
 
   setup(): ComponentSetup | null {
     return {
         initialized: true
-    }
+    };
   }
 
   ngOnInit() {

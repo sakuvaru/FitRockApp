@@ -32,7 +32,7 @@ export class EditWorkoutExerciseDialogComponent extends BaseComponent implements
     protected dependencies: ComponentDependencyService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    super(dependencies)
+    super(dependencies);
     
     this.workoutExercise = data;
   }
@@ -40,7 +40,7 @@ export class EditWorkoutExerciseDialogComponent extends BaseComponent implements
   setup(): ComponentSetup | null {
     return {
         initialized: true
-    }
+    };
   }
 
   ngOnInit() {

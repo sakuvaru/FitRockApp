@@ -25,8 +25,8 @@ import { NewClientDietComponent } from './diet/new/new-client-diet.component';
 // progress components
 import { EditClientProgressComponent } from './progress/edit/edit-client-progress.component';
 import { NewClientProgressItemTypeDialogComponent } from './progress/dialogs/new-client-progress-item-type-dialog.component';
-import { EditProgressItemDialog } from './progress/dialogs/edit-progress-item-dialog.component';
-import { SelectProgressTypeDialog } from './progress/dialogs/select-progress-type-dialog.component';
+import { EditProgressItemDialogComponent } from './progress/dialogs/edit-progress-item-dialog.component';
+import { SelectProgressTypeDialogComponent } from './progress/dialogs/select-progress-type-dialog.component';
 
 // stats components
 import { StatsMainComponent } from './stats/stats-main.component';
@@ -55,8 +55,8 @@ import { DietsModule} from '../diets/diets.module';
         DietsModule
     ],
     entryComponents: [
-        EditProgressItemDialog,
-        SelectProgressTypeDialog,
+        EditProgressItemDialogComponent,
+        SelectProgressTypeDialogComponent,
         NewClientProgressItemTypeDialogComponent
     ],
     declarations: [
@@ -77,16 +77,15 @@ import { DietsModule} from '../diets/diets.module';
         // progress
         EditClientProgressComponent,
         NewClientProgressItemTypeDialogComponent,
-        EditProgressItemDialog,
-        SelectProgressTypeDialog,
+        EditProgressItemDialogComponent,
+        SelectProgressTypeDialogComponent,
         // stats
         StatsMainComponent,
         // chat
         ClientChatComponent,
         // gallery
         UserGalleryComponent
-    ],
-    exports:[
     ]
+    
 })
 export class ClientsModule { }

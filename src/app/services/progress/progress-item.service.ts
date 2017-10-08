@@ -6,7 +6,7 @@ import { BaseTypeService } from '../base/base-type.service';
 import { MultiSeriesResponse, SingleSeriesResponse} from './progress-models';
 
 @Injectable()
-export class ProgressItemService extends BaseTypeService<ProgressItem>{
+export class ProgressItemService extends BaseTypeService<ProgressItem> {
 
     constructor(repositoryClient: RepositoryClient) {
         super(repositoryClient, {

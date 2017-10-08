@@ -155,16 +155,14 @@ export class LoadMoreComponent extends BaseWebComponent implements OnInit, OnCha
                 if (!response.isEmpty()) {
                     if (appendItems) {
                         this.items = _.union(this.items, response.items);
-                    }
-                    else {
+                    } else {
                         this.items = response.items;
                     }
                 }
 
-                if (response.pages == response.page) {
+                if (response.pages === response.page) {
                     this.showMoreButton = false;
-                }
-                else {
+                } else {
                     this.showMoreButton = true;
                 }
 

@@ -10,20 +10,20 @@ import { Diet } from '../../../models';
 @Component({
   templateUrl: 'edit-diet-plan.component.html'
 })
-export class EditDietPlan extends BaseComponent implements OnInit, OnDestroy {
+export class EditDietPlanComponent extends BaseComponent implements OnInit, OnDestroy {
 
   private dietId: number;
 
   constructor(
     private activatedRoute: ActivatedRoute,
     protected dependencies: ComponentDependencyService) {
-    super(dependencies)
+    super(dependencies);
   }
 
   setup(): ComponentSetup | null {
     return {
         initialized: true
-    }
+    };
   }
 
   ngOnInit() {

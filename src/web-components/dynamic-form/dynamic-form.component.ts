@@ -18,7 +18,7 @@ import {
 import { TranslateService } from '@ngx-translate/core';
 import { FieldControlService } from './field-control.service';
 
-//helpers
+// helpers
 import { observableHelper } from '../../lib/utilities';
 
 // NOTE: see https://angular.io/docs/ts/latest/cookbook/dynamic-form.html for more details about dynamic forms
@@ -160,6 +160,8 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
             this.getInitFormObservable(config)
                 .takeUntil(this.ngUnsubscribe)
                 .subscribe(() => {
+                    let formStatus: DynamicFormStatus;
+
                     // subscribe to form status changes so that it can be emitted
                     this.form.statusChanges
                         .map(status => {
@@ -168,7 +170,7 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
                                 isValid = true;
                             }
 
-                            const formStatus = new DynamicFormStatus(
+                            formStatus = new DynamicFormStatus(
                                 isValid,
                                 this.isDeleteEnabled,
                                 this.isEditForm,
@@ -181,7 +183,7 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
                         .subscribe();
 
                     // check if form is valid at this moment (e.g. when values from edit form are set)
-                    const formStatus = new DynamicFormStatus(
+                    formStatus = new DynamicFormStatus(
                         this.form.valid,
                         this.isDeleteEnabled,
                         this.isEditForm,
@@ -256,8 +258,7 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
                         config.onInsertFormLoaded(form);
                     }
                 });
-        }
-        else if (config.isEditForm()) {
+        } else if (config.isEditForm()) {
             if (!config.editFormDefinition) {
                 throw Error(`Cannot init 'edit' form because no form definition was provided`);
             }
@@ -320,8 +321,7 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
                 this.getInsertButtonObservable(this.customSaveButtonSubject, config)
                     .takeUntil(this.ngUnsubscribe)
                     .subscribe();
-            }
-            else if (config.isEditForm()) {
+            } else if (config.isEditForm()) {
                 this.getEditButtonObservable(this.customSaveButtonSubject, config)
                     .takeUntil(this.ngUnsubscribe)
                     .subscribe();
@@ -341,8 +341,7 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
                 this.getInsertButtonObservable(this.insertButtonSubject, config)
                     .takeUntil(this.ngUnsubscribe)
                     .subscribe();
-            }
-            else if (config.isEditForm()) {
+            } else if (config.isEditForm()) {
                 this.getEditButtonObservable(this.editButtonSubject, config)
                     .takeUntil(this.ngUnsubscribe)
                     .subscribe();
@@ -634,8 +633,7 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
                         // field can be undefined if its not present in form - e.g. codename might throw error, but is
                         // typically not in the form
                         this.formErrorLines.push(error);
-                    }
-                    else {
+                    } else {
                         // set field error
                         this.form.controls[validationResult.columnName].setErrors({ 'field_error': error });
 
@@ -644,26 +642,23 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
 
                         if (formField) {
                             // form error
-                            this.getFormErrorMessage(validationResult, formField.translatedLabel || formField.key).subscribe(error => this.formErrorLines.push(error));
-                        }
-                        else {
+                            this.getFormErrorMessage(validationResult, formField.translatedLabel || formField.key)
+                                .subscribe(formError => this.formErrorLines.push(formError));
+                        } else {
                             console.warn(`Form field '${validationResult.columnName}' could not be found in form and therefore error message could not be displayed`);
                         }
                     }
                 });
             });
             this.submissionError = this.formErrorLines.join(', ');
-        }
-        else if (errorResponse instanceof ErrorResponse) {
+        } else if (errorResponse instanceof ErrorResponse) {
             // handle license errors differently
             if (errorResponse.reason === ErrorReasonEnum.LicenseLimitation) {
                 this.submissionError = this.insufficientLicenseError;
-            }
-            else {
+            } else {
                 this.submissionError = this.generalErrorMessage;
             }
-        }
-        else {
+        } else {
             this.submissionError = this.unknownErrorMessage;
         }
 

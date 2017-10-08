@@ -16,10 +16,10 @@ import { Observable } from 'rxjs/Rx';
 
 export abstract class BaseItemCountQuery extends BaseQuery {
 
-    abstract get(): any;
-
     protected _options: IOption[] = [];
     protected _action: string;
+
+    abstract get(): any;
 
     constructor(
         protected authHttp: AuthHttp,

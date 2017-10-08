@@ -18,7 +18,7 @@ export class EditMyProfileComponent extends BaseComponent implements OnInit {
 
     constructor(
         protected dependencies: ComponentDependencyService) {
-        super(dependencies)
+        super(dependencies);
     }
 
     setup(): ComponentSetup {

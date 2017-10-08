@@ -8,7 +8,7 @@ import { CoreModule } from '../../core';
 // components
 import { MyFoodsListComponent} from './list/my-foods-list.component';
 import { AllFoodsListComponent } from './list/all-foods-list.component';
-import { EditFoodCompoent } from './edit/edit-food.component';
+import { EditFoodComponent } from './edit/edit-food.component';
 import { NewFoodComponent } from './new/new-food.component';
 import { PreviewFoodComponent } from './view/preview-food.component';
 
@@ -28,7 +28,7 @@ import { SharedModule} from '../shared/shared.module';
     declarations: [
         MyFoodsListComponent,
         AllFoodsListComponent,
-        EditFoodCompoent,
+        EditFoodComponent,
         NewFoodComponent,
         PreviewFoodComponent
     ]

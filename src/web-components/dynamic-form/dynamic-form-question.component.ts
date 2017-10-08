@@ -77,12 +77,12 @@ export class DynamicFormQuestionComponent extends BaseWebComponent implements On
     }
 
     // translations
-    let translationsObservable = this.getReloadTranslationObservable()
+    const translationsObservable = this.getReloadTranslationObservable()
       .takeUntil(this.ngUnsubscribe)
       .subscribe();
 
     // value change observable
-    let changeObservable = this.getSubscribeToChangesObservable()
+    const changeObservable = this.getSubscribeToChangesObservable()
       .takeUntil(this.ngUnsubscribe)
       .subscribe();
 
@@ -101,14 +101,14 @@ export class DynamicFormQuestionComponent extends BaseWebComponent implements On
       if (this.question.options && this.question.options.trueOptionLabel) {
         this.translateService.get(this.question.options.trueOptionLabel).subscribe(translatedText => {
           if (translatedText && this.question.options) {
-            this.question.options.trueOptionLabel = translatedText
+            this.question.options.trueOptionLabel = translatedText;
           }
         });
       }
       if (this.question.options && this.question.options.falseOptionLabel) {
         this.translateService.get(this.question.options.falseOptionLabel).subscribe(translatedText => {
           if (translatedText && this.question.options) {
-            this.question.options.falseOptionLabel = translatedText
+            this.question.options.falseOptionLabel = translatedText;
           }
         });
       }
@@ -120,9 +120,9 @@ export class DynamicFormQuestionComponent extends BaseWebComponent implements On
         this.question.options.listOptions.forEach(option => {
           this.translateService.get(option.name).subscribe(translatedText => {
             if (translatedText && this.question.options && this.question.options.listOptions) {
-              let optionInList = this.question.options.listOptions.find(m => m.value === option.value);
+              const optionInList = this.question.options.listOptions.find(m => m.value === option.value);
               if (!optionInList) {
-                throw Error(`Option '${option.value}' was not found in list`)
+                throw Error(`Option '${option.value}' was not found in list`);
               }
               optionInList.name = translatedText;
             }
@@ -136,14 +136,12 @@ export class DynamicFormQuestionComponent extends BaseWebComponent implements On
       if (this.formConfig.isEditForm()) {
         this.form.controls[this.question.key].setValue(this.question.value);
         this.checkBoxIsChecked = this.question.value;
-      }
-      else {
+      } else {
         // set default value of checkbox for insert forms
         let defaultValue: boolean;
         if (this.question.defaultValue) {
           defaultValue = true;
-        }
-        else {
+        } else {
           defaultValue = false;
         }
         this.form.controls[this.question.key].setValue(defaultValue);
@@ -157,14 +155,12 @@ export class DynamicFormQuestionComponent extends BaseWebComponent implements On
         this.form.controls[this.question.key].setValue(this.question.value);
         this.radioCheckboxTrueChecked = this.question.value;
         this.radioCheckboxFalseChecked = !this.question.value;
-      }
-      else {
+      } else {
         // set default value for insert forms
         let defaultValue: boolean;
         if (this.question.defaultValue) {
           defaultValue = true;
-        }
-        else {
+        } else {
           defaultValue = false;
         }
         this.form.controls[this.question.key].setValue(defaultValue);
@@ -177,14 +173,13 @@ export class DynamicFormQuestionComponent extends BaseWebComponent implements On
       if (this.formConfig.isEditForm()) {
         // set date field starting date (if its set)
 
-        let date = this.getQuestionValue();
+        const date = this.getQuestionValue();
 
         if (this.question.rawValue) {
           // date is set, set it
           this.form.controls[this.question.key].setValue(new Date(date));
         }
-      }
-      else if (this.formConfig.isInsertForm()) {
+      } else if (this.formConfig.isInsertForm()) {
         this.form.controls[this.question.key].setValue(new Date());
       }
     }
@@ -198,7 +193,7 @@ export class DynamicFormQuestionComponent extends BaseWebComponent implements On
    * Use this method to check value changes & to determin whether the value is valid or not
    */
   private getSubscribeToChangesObservable(): Observable<any> {
-    let control = this.getQuestionControl();
+    const control = this.getQuestionControl();
     return control.valueChanges
       .takeUntil(this.ngUnsubscribe)
       .map(newValue => {
@@ -208,7 +203,7 @@ export class DynamicFormQuestionComponent extends BaseWebComponent implements On
         }
 
         // check if the field's value is valid
-        let valueValidation = this.getCustomValidationResult(newValue);
+        const valueValidation = this.getCustomValidationResult(newValue);
 
         if (!valueValidation.isValid) {
           this.translateService.get(valueValidation.errorMessageKey, valueValidation.translationData)
@@ -218,19 +213,18 @@ export class DynamicFormQuestionComponent extends BaseWebComponent implements On
               control.setErrors({
                 'customError': translatedErrorMessage
               });
-            })
-        }
-        else {
+            });
+        } else {
           // remove custom error
           this.customError = '';
         }
-      })
+      });
   }
 
   private getCustomValidationResult(value: any): ValueValidationResult {
     let isValid = true;
     let errorMessageKey: string = 'form.error.unknown';
-    let translationData: any = {};
+    const translationData: any = {};
 
     // set label
     translationData.label = this.question.translatedLabel;
@@ -239,18 +233,16 @@ export class DynamicFormQuestionComponent extends BaseWebComponent implements On
     if (this.isNumberField()) {
       if (!numberHelper.isNumber(this.getQuestionValue())) {
         // if min value = 0 && number is 0, its all good
-        if (this.getMinNumberValue() == 0 && value === 0) {
+        if (this.getMinNumberValue() === 0 && value === 0) {
           isValid = true;
-        }
-        else {
+        } else {
           isValid = false;
-          errorMessageKey = 'form.error.valueIsNotANumber'
+          errorMessageKey = 'form.error.valueIsNotANumber';
         }
-      }
-      else {
+      } else {
         // field is number, but check its min & max values
-        let maxValue = this.getMaxNumberValue();
-        let minValue = this.getMinNumberValue();
+        const maxValue = this.getMaxNumberValue();
+        const minValue = this.getMinNumberValue();
 
         if (value > maxValue && value > 0) {
           isValid = false;
@@ -269,14 +261,14 @@ export class DynamicFormQuestionComponent extends BaseWebComponent implements On
   }
 
   private getQuestionLabelTranslationObservable(): Observable<any> {
-    let labelTranslationKey = this.getQuestionLabelKey();
+    const labelTranslationKey = this.getQuestionLabelKey();
 
     let extraTranslationData;
     if (this.question.options) {
       extraTranslationData = this.question.options.extraTranslationData;
     }
 
-    let originalTranslationObservable = this.translateService
+    const originalTranslationObservable = this.translateService
       .get(labelTranslationKey, extraTranslationData)
       .map(translatedLabel => this.question.translatedLabel = translatedLabel);
 
@@ -291,17 +283,17 @@ export class DynamicFormQuestionComponent extends BaseWebComponent implements On
         return Observable.of(fieldLabel);
       }
       return this.formConfig.fieldLabelResolver(this.question, fieldLabel)
-        .map(fieldLabel => {
-          this.question.translatedLabel = fieldLabel;
+        .map(mappedFieldLabel => {
+          this.question.translatedLabel = mappedFieldLabel;
         });
-    })
+    });
   }
 
   private getQuestionHintTranslationObservable(): Observable<any> {
-    let translationKey = this.getQuestionHintKey();
+    const translationKey = this.getQuestionHintKey();
     return this.translateService.get(translationKey).map(translatedText => {
       if (this.translationSuccessful(translatedText)) {
-        this.questionHint = translatedText
+        this.questionHint = translatedText;
       }
     });
   }
@@ -340,7 +332,7 @@ export class DynamicFormQuestionComponent extends BaseWebComponent implements On
       return this.maximumNumberValue;
     }
 
-    let definedNumber = this.question.options.maxNumberValue;
+    const definedNumber = this.question.options.maxNumberValue;
     if (definedNumber === 0) {
       return 0;
     }
@@ -358,7 +350,7 @@ export class DynamicFormQuestionComponent extends BaseWebComponent implements On
       return this.miniumNumberValue;
     }
 
-    let definedNumber = this.question.options.minNumberValue;
+    const definedNumber = this.question.options.minNumberValue;
     if (definedNumber === 0) {
       return 0;
     }
@@ -385,35 +377,35 @@ export class DynamicFormQuestionComponent extends BaseWebComponent implements On
 
   // field types
   private isDropdownField(): boolean {
-    return this.question.controlTypeEnum == ControlTypeEnum.Dropdown;
+    return this.question.controlTypeEnum === ControlTypeEnum.Dropdown;
   }
 
   private isDateField(): boolean {
-    return this.question.controlTypeEnum == ControlTypeEnum.Date;
+    return this.question.controlTypeEnum === ControlTypeEnum.Date;
   }
 
   private isBooleanField(): boolean {
-    return this.question.controlTypeEnum == ControlTypeEnum.Boolean;
+    return this.question.controlTypeEnum === ControlTypeEnum.Boolean;
   }
 
   private isRadioBooleanField(): boolean {
-    return this.question.controlTypeEnum == ControlTypeEnum.RadioBoolean;
+    return this.question.controlTypeEnum === ControlTypeEnum.RadioBoolean;
   }
 
   private isTextField(): boolean {
-    return this.question.controlTypeEnum == ControlTypeEnum.Text;
+    return this.question.controlTypeEnum === ControlTypeEnum.Text;
   }
 
   private isTextAreaField(): boolean {
-    return this.question.controlTypeEnum == ControlTypeEnum.TextArea;
+    return this.question.controlTypeEnum === ControlTypeEnum.TextArea;
   }
 
   private isHiddenField(): boolean {
-    return this.question.controlTypeEnum == ControlTypeEnum.Hidden;
+    return this.question.controlTypeEnum === ControlTypeEnum.Hidden;
   }
 
   private isNumberField(): boolean {
-    return this.question.controlTypeEnum == ControlTypeEnum.Number;
+    return this.question.controlTypeEnum === ControlTypeEnum.Number;
   }
 
 }

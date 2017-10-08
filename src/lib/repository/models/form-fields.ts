@@ -70,30 +70,22 @@ export class FormField implements IFormField {
 
         if (controlType === 'None') {
             this.controlTypeEnum = ControlTypeEnum.None;
-        }
-        else if (controlType === 'Dropdown') {
+        } else if (controlType === 'Dropdown') {
             this.controlTypeEnum = ControlTypeEnum.Dropdown;
-        }
-        else if (controlType === 'Date') {
+        } else if (controlType === 'Date') {
             this.controlTypeEnum = ControlTypeEnum.Date;
             this.value = new Date(rawValue);
-        }
-        else if (controlType === 'Boolean') {
+        } else if (controlType === 'Boolean') {
             this.controlTypeEnum = ControlTypeEnum.Boolean;
-        }
-        else if (controlType === 'RadioBoolean') {
+        } else if (controlType === 'RadioBoolean') {
             this.controlTypeEnum = ControlTypeEnum.RadioBoolean;
-        }
-        else if (controlType === 'Text') {
+        } else if (controlType === 'Text') {
             this.controlTypeEnum = ControlTypeEnum.Text;
-        }
-        else if (controlType === 'TextArea') {
+        } else if (controlType === 'TextArea') {
             this.controlTypeEnum = ControlTypeEnum.TextArea;
-        }
-        else if (controlType === 'Hidden') {
+        } else if (controlType === 'Hidden') {
             this.controlTypeEnum = ControlTypeEnum.Hidden;
-        }
-        else if (controlType === 'Number') {
+        } else if (controlType === 'Number') {
             this.controlTypeEnum = ControlTypeEnum.Number;
             this.value = +rawValue;
         }

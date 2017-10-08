@@ -5,7 +5,7 @@ import { BaseTypeService } from '../base/base-type.service';
 import { Observable } from 'rxjs/RX';
 
 @Injectable()
-export class WorkoutExerciseService extends BaseTypeService<WorkoutExercise>{
+export class WorkoutExerciseService extends BaseTypeService<WorkoutExercise> {
 
     constructor(repositoryClient: RepositoryClient) {
         super(repositoryClient, {

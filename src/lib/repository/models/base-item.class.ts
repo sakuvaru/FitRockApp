@@ -22,6 +22,8 @@ export abstract class BaseItem implements IItem {
         public options?: {
             resolver?: ((fieldName: string) => string)
         }) {
-        if (options) Object.assign(this, options);
+        if (options) {
+            Object.assign(this, options);
+        }
     }
 }
