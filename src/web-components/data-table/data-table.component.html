@@ -10,7 +10,7 @@
         <mat-card-title layout>
           <data-table-layout-search #searchInput *ngIf="config.showSearch" [config]="config" [searchTerm]="searchTerm" (search)="handleSearch($event)"></data-table-layout-search>
         </mat-card-title>
-        <data-table-layout-items [config]="config" [items]="items"></data-table-layout-items>
+        <data-table-layout-items [config]="config" [items]="items" [localLoaderLoading]="localLoaderLoading"></data-table-layout-items>
         <mat-card-actions>
           <data-table-layout-pager [pagerConfig]="config.pagerConfig" [totalPages]="totalPages" [currentPage]="currentPage" (goToPage)="filterItems($event)"></data-table-layout-pager>
         </mat-card-actions>
@@ -27,7 +27,7 @@
       <div layout>
         <data-table-layout-search #searchInput *ngIf="config.showSearch" [config]="config" [searchTerm]="searchTerm" (search)="handleSearch($event)"></data-table-layout-search>
       </div>
-      <data-table-layout-items [config]="config" [items]="items"></data-table-layout-items>
+      <data-table-layout-items [config]="config" [items]="items" [localLoaderLoading]="localLoaderLoading"></data-table-layout-items>
       <mat-card-actions>
         <data-table-layout-pager [pagerConfig]="config.pagerConfig" [totalPages]="totalPages" [currentPage]="currentPage" (goToPage)="filterItems($event)"></data-table-layout-pager>
       </mat-card-actions>

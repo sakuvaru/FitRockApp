@@ -157,6 +157,7 @@ export class DataTableLayoutFiltersComponent {
 export class DataTableLayoutItemsComponent implements OnInit, OnChanges {
     @Input() config: DataTableConfig<any>;
     @Input() items: any[];
+    @Input() localLoaderLoading: boolean = false;
 
     private isClickable: boolean;
     private isSelectable: boolean;

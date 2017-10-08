@@ -19,11 +19,11 @@
             </span>
         </mat-list-item>
     </div>
-    <div *ngIf="items != null && items.length == 0" layout="row" layout-align="center">
-        <div *ngIf="items != null && items.length == 0 && searchTerm" layout="row" layout-align="center">
+    <div *ngIf="!localLoaderLoading && items && items.length === 0" layout="row" layout-align="center">
+        <div *ngIf="!localLoaderLoading && items && items.length === 0 && searchTerm" layout="row" layout-align="center">
             <h3>{{config.searchNoItemsTextKey | translate}}</h3>
         </div>
-        <div *ngIf="items != null && items.length == 0 && !searchTerm" layout="row" layout-align="center">
+        <div *ngIf="!localLoaderLoading && items && items.length === 0 && !searchTerm" layout="row" layout-align="center">
             <h3>{{config.noItemsTextKey | translate}}</h3>
         </div>
     </div>
@@ -50,10 +50,10 @@
             </span>
         </mat-list-item>
     </div>
-    <div *ngIf="items != null && items.length == 0 && searchTerm" layout="row" layout-align="center">
+    <div *ngIf="!localLoaderLoading && items && items.length === 0 && searchTerm" layout="row" layout-align="center">
         <h3>{{config.searchNoItemsTextKey | translate}}</h3>
     </div>
-    <div *ngIf="items != null && items.length == 0 && !searchTerm" layout="row" layout-align="center">
+    <div *ngIf="!localLoaderLoading && items && items.length === 0 && !searchTerm" layout="row" layout-align="center">
         <h3>{{config.noItemsTextKey | translate}}</h3>
     </div>
 </mat-list>
