@@ -109,21 +109,23 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
         if (changes.config.currentValue) {
             this.initDynamicForm(changes.config.currentValue);
         }
-
-        if (changes.forceReload) {
-            if (changes.forceReload.currentValue === true) {
-                this.forceReinitialization(this.config);
-            }
-        }
     }
 
     /**
-     * Reloads form
+     * Reloads form using new config
      * @param config Form config
      */
     forceReinitialization(config: FormConfig<any>): void {
         this.initialized = false;
         this.initDynamicForm(config);
+    }
+
+    /**
+     * Reloads form using current config
+     */
+    reloadData(): void {
+        this.initialized = false;
+        this.initDynamicForm(this.config);
     }
 
     private initDynamicForm(config: FormConfig<any>): void {

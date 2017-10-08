@@ -84,6 +84,11 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
         }
     }
 
+    reloadData(): void {
+        this.initialized = false;
+        this.initDataTable();
+    }
+
     /**
      * Reloads data table
      * @param config Data table config
