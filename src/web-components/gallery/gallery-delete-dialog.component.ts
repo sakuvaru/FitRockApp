@@ -25,6 +25,7 @@ import { TranslateService } from '@ngx-translate/core';
 export class GalleryDeleteDialogComponent extends BaseWebComponent implements OnInit {
 
     public groups: GalleryGroup[];
+    public imagesRaw: GalleryImage[];
     public images: Image[];
     private config: GalleryConfig;
     private snackBarService: MatSnackBar;
@@ -54,6 +55,7 @@ export class GalleryDeleteDialogComponent extends BaseWebComponent implements On
         this.images = data.images;
         this.config = data.config;
         this.snackBarService = data.snackBarService;
+        this.imagesRaw = data.imagesRaw;
 
         if (!this.config) {
             throw Error(`Gallery delete dialog needs to receive 'GalleryConfig'`);
@@ -76,7 +78,7 @@ export class GalleryDeleteDialogComponent extends BaseWebComponent implements On
         this.imageDeletionFailed = false;
 
         // get the proper GalleryImage
-        const galleryImage = this.config.images.find(m => m.imageUrl === image.extUrl);
+        const galleryImage = this.imagesRaw.find(m => m.imageUrl === image.extUrl);
         if (!galleryImage) {
             throw Error(`Could not map image '${image.extUrl}' to GalleryImage for deletion`);
         }
@@ -132,7 +134,7 @@ export class GalleryDeleteDialogComponent extends BaseWebComponent implements On
         }
     }
 
-    onClose(): void {
+    close(): void {
         this.dialogRef.close();
     }
 }

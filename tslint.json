@@ -120,11 +120,12 @@
       "app",
       "camelCase"
     ],
+    /* This rule is edited as this project uses different component names, revisit this rule later*/
     "component-selector": [
       true,
       "element",
       "",
-      "kebab-case"
+      ""
     ],
     "use-input-property-decorator": true,
     "use-output-property-decorator": true,

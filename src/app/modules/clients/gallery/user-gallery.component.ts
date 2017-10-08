@@ -1,5 +1,5 @@
 // common
-import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
+import { Component, Input, Output, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { AppConfig, ComponentDependencyService, BaseComponent, ComponentSetup } from '../../../core';
 
@@ -10,7 +10,7 @@ import { ClientMenuItems } from '../menu.items';
 import { UploaderConfig, UploaderModeEnum } from '../../../../web-components/uploader';
 import { FileRecord } from '../../../models';
 import { FetchedFile } from '../../../../lib/repository';
-import { GalleryConfig, GalleryImage, GalleryGroup, ImageGroupResult } from '../../../../web-components/gallery';
+import { GalleryConfig, GalleryImage, GalleryGroup, ImageGroupResult, GalleryComponent } from '../../../../web-components/gallery';
 import * as _ from 'underscore';
 
 @Component({
@@ -26,6 +26,8 @@ export class UserGalleryComponent extends ClientsBaseComponent implements OnInit
     private uploaderConfig: UploaderConfig;
     private galleryConfig: GalleryConfig;
 
+    @ViewChild(GalleryComponent) galleryComponent: GalleryComponent;
+
     constructor(
         protected componentDependencyService: ComponentDependencyService,
         protected activatedRoute: ActivatedRoute) {
@@ -34,7 +36,7 @@ export class UserGalleryComponent extends ClientsBaseComponent implements OnInit
 
     setup(): ComponentSetup | null {
         return {
-            initialized: false
+            initialized: true
         };
     }
 
@@ -62,8 +64,8 @@ export class UserGalleryComponent extends ClientsBaseComponent implements OnInit
                                 imageDate: m.fileLastModified
                             })));
 
-                            // refresh gallery
-                            this.galleryConfig = this.getGalleryConfig(this.currentImages);
+                            // reload gallery
+                            this.galleryComponent.reloadData();
                         }
                     }))
                     .loaderConfig({ start: () => super.startGlobalLoader(), stop: () => super.stopGlobalLoader() })
@@ -71,33 +73,39 @@ export class UserGalleryComponent extends ClientsBaseComponent implements OnInit
             });
     }
 
-    private getComponentObservables(): Observable<any>[] {
-        const observables: Observable<any>[] = [];
-        observables.push(this.getUserGalleryFilesObservable());
+    private getComponentObservables(): Observable<void>[] {
+        const observables: Observable<void>[] = [];
+        observables.push(this.getInitGalleryObservable());
         observables.push(this.getClientMenuObservable());
         observables.push(this.getInitUploaderObservable());
         return observables;
     }
 
-    private getUserGalleryFilesObservable(): Observable<any> {
+    private getInitGalleryObservable(): Observable<void> {
         return this.clientIdChange
-            .takeUntil(this.ngUnsubscribe)
-            .switchMap(clientId => this.dependencies.fileService.getGalleryFiles(clientId).set())
-            .map(response => {
-                if (response.files) {
-                    const galleryImages = response.files.map(m => new GalleryImage({
-                        imageUrl: m.absoluteUrl,
-                        imageDate: m.fileLastModified
-                        // used for testing the gallery grouping -> imageDate: super.moment(m.fileLastModified).add(Math.floor(Math.random() * 20), 'days').toDate()
-                    }));
-
-                    this.currentImages = galleryImages;
-                    this.galleryConfig = this.getGalleryConfig(galleryImages);
-                }
-            });
+        .takeUntil(this.ngUnsubscribe)
+        .map(clientId => {
+            this.galleryConfig = this.getGalleryConfig(clientId);
+        });
     }
 
-    private getClientMenuObservable(): Observable<any> {
+    private getGalleryImagesObservable(clientId: number): Observable<GalleryImage[]> {
+        return this.dependencies.fileService.getGalleryFiles(clientId).set()
+        .map(response => {
+            if (response.files) {
+                const galleryImages = response.files.map(m => new GalleryImage({
+                    imageUrl: m.absoluteUrl,
+                    imageDate: m.fileLastModified
+                    // used for testing the gallery grouping -> imageDate: super.moment(m.fileLastModified).add(Math.floor(Math.random() * 20), 'days').toDate()
+                }));
+
+                return galleryImages;
+            }
+            return [];
+        });
+    }
+
+    private getClientMenuObservable(): Observable<void> {
         return this.clientChange
             .takeUntil(this.ngUnsubscribe)
             .map(client => {
@@ -115,10 +123,10 @@ export class UserGalleryComponent extends ClientsBaseComponent implements OnInit
             });
     }
 
-    private getGalleryConfig(images: GalleryImage[]): GalleryConfig {
-        return this.dependencies.webComponentServices.galleryService.gallery({
-            images: images
-        })
+    private getGalleryConfig(clientId: number): GalleryConfig {
+        return this.dependencies.webComponentServices.galleryService.gallery(
+            this.getGalleryImagesObservable(clientId)
+        )
         .isDownlodable(true)
         .groupResolver((galleryImage: GalleryImage) => {
             // group images by day
@@ -129,6 +137,9 @@ export class UserGalleryComponent extends ClientsBaseComponent implements OnInit
             return this.dependencies.fileService.deleteFile(image.imageUrl)
                 .set()
                 .map(response => response.fileDeleted);
+        })
+        .onImagesLoaded(images => {
+            this.currentImages = images;
         })
         .build();
     }

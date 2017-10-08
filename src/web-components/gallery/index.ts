@@ -5,3 +5,4 @@ export * from './gallery.service';
 export * from './gallery.builder';
 export * from './gallery-group.class';
 export * from './image-group-result.class';
+export * from './gallery.component';

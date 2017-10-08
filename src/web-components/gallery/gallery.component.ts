@@ -1,6 +1,7 @@
 // common
 import { Component, Input, OnInit, Output, OnChanges, SimpleChanges, EventEmitter } from '@angular/core';
 import { BaseWebComponent } from '../base-web-component.class';
+import { Observable } from 'rxjs/Rx';
 
 // gallery classes
 import { Image, Description, ImageModalEvent } from 'angular-modal-gallery';
@@ -30,10 +31,10 @@ export class GalleryComponent extends BaseWebComponent implements OnInit, OnChan
     @Input() config: GalleryConfig;
 
     /**
-     * Executed when the images array changes
+     * Executed when the images change
      */
     @Output() imagesUpdated: EventEmitter<GalleryImage[]> = new EventEmitter<GalleryImage[]>();
-    
+
     /**
      * Component initiliazed flag
      */
@@ -43,6 +44,11 @@ export class GalleryComponent extends BaseWebComponent implements OnInit, OnChan
      * Gallery images
      */
     private images: Image[];
+
+    /**
+     * Gallery images with their initial format
+     */
+    private imagesRaw: GalleryImage[];
 
     /**
      * Groups with images
@@ -58,6 +64,11 @@ export class GalleryComponent extends BaseWebComponent implements OnInit, OnChan
      * Full description
      */
     private customFullDescription: Description;
+
+    /**
+     * Indicates if local loader should be enabled
+     */
+    private localLoaderEnabled: boolean = false;
 
     /**
      * This is required for the image pointer feature
@@ -84,20 +95,32 @@ export class GalleryComponent extends BaseWebComponent implements OnInit, OnChan
         }
     }
 
+    public reloadData(): void {
+        this.initialized = false;
+        this.initGallery(this.config);
+    }
+
     private initGallery(config: GalleryConfig) {
         if (!config) {
             console.warn('Gallery could not be initialized');
             return;
         }
 
-        // flag component as not yet initalized
-        this.initialized = false;
-
+        // don't initialize multiple times
+        if (this.initialized) {
+            return;
+        }
+        
         // make sure config is assigned
         this.config = config;
 
-        // assign gallery images
-        this.images = this.convertArrayToImageType(config.images);
+        if (this.config.enableLocalLoader) {
+            this.localLoaderEnabled = true;
+        }
+
+        if (this.config.loaderConfig) {
+            this.config.loaderConfig.start();
+        }
 
         // init buttons config
         this.buttonsConfig = this.getButtonsConfig(config);
@@ -105,16 +128,45 @@ export class GalleryComponent extends BaseWebComponent implements OnInit, OnChan
         // init custom description
         this.customFullDescription = this.getCustomDescription();
 
-        // init gallery groups if configured
-        if (config.groupResolver) {
-            this.groups = this.getGalleryGroups(config);
-        }
 
-        // finally mark component as initialized
-        this.initialized = true;
+        // init gallery with images & groups
+        this.getGalleryInitObservable(config)
+            .takeUntil(this.ngUnsubscribe)
+            .subscribe(() => {
+                // finally mark component as initialized
+                this.initialized = true;
+
+                if (this.config.enableLocalLoader) {
+                    this.localLoaderEnabled = false;
+                }
+
+                if (this.config.loaderConfig) {
+                    this.config.loaderConfig.stop();
+                }
+            });
     }
 
-    openImageModal(image: Image) {
+    private getGalleryInitObservable(config: GalleryConfig): Observable<void> {
+        return this.config.images.map(images => {
+            // init gallery groups if configured
+            if (config.groupResolver) {
+                this.groups = this.getGalleryGroups(config, images);
+            }
+
+            // assign Images
+            this.images = this.convertArrayToImageType(images);
+
+            // assign GalleryImages
+            this.imagesRaw = images;
+
+            // images loaded callback
+            if (config.onImagesLoaded) {
+                this.config.onImagesLoaded(images);
+            }
+        });
+    }
+
+    private openImageModal(image: Image) {
         // find image based on its URL
         const imageToOpen = this.images.find(m => m.extUrl === image.extUrl);
         if (!imageToOpen) {
@@ -126,22 +178,22 @@ export class GalleryComponent extends BaseWebComponent implements OnInit, OnChan
         }
     }
 
-    onShowImageModal(event: ImageModalEvent) {
+    private onShowImageModal(event: ImageModalEvent) {
     }
 
-    onCloseImageModal(event: ImageModalEvent) {
+    private onCloseImageModal(event: ImageModalEvent) {
         this.openModalWindow = false;
     }
 
-    private getGalleryGroups(config: GalleryConfig): GalleryGroup[] {
+    private getGalleryGroups(config: GalleryConfig, images: GalleryImage[]): GalleryGroup[] {
         let groups: GalleryGroup[] = [];
 
         // go through each image and assign it to correct group based on the evaluation function
-        if (!config || !config.images || !Array.isArray(config.images)) {
+        if (!config || !images || !Array.isArray(images)) {
             throw Error(`Could not evaluate gallery groups`);
         }
 
-        config.images.forEach(image => {
+        images.forEach(image => {
 
             if (!config.groupResolver) {
                 throw Error(`Could not evaluate gallery groups because no resolver is defined`);
@@ -214,7 +266,13 @@ export class GalleryComponent extends BaseWebComponent implements OnInit, OnChan
     private openDeleteDialog(): void {
         const dialogRef = this.dialog.open(GalleryDeleteDialogComponent, {
             width: this.config.dialogWidth,
-            data: { groups: this.groups, images: this.images, config: this.config, snackBarService: this.snackBarService }
+            data: { 
+                groups: this.groups, 
+                images: this.images, 
+                config: this.config, 
+                snackBarService: this.snackBarService,
+                imagesRaw: this.imagesRaw 
+            }
         });
 
         dialogRef.afterClosed().subscribe(result => {
@@ -234,7 +292,7 @@ export class GalleryComponent extends BaseWebComponent implements OnInit, OnChan
                 // get GalleryImages of current Images
                 const galleryImages: GalleryImage[] = [];
                 this.images.forEach(image => {
-                    const galleryImage = this.config.images.find(m => m.imageUrl === image.extUrl);
+                    const galleryImage = this.imagesRaw.find(m => m.imageUrl === image.extUrl);
                     if (galleryImage) {
                         galleryImages.push(galleryImage);
                     }

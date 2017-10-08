@@ -8,12 +8,10 @@ export class GalleryBuilder {
 
     private config: GalleryConfig;
 
-    constructor(options: {
-        images: GalleryImage[]
-    }) {
-        this.config = new GalleryConfig({
-            images: options.images
-        });
+    constructor(
+        images: Observable<GalleryImage[]>
+    ) {
+        this.config = new GalleryConfig(images);
     }
 
     /**
@@ -66,6 +64,33 @@ export class GalleryBuilder {
     */
     onDelete(callback: (image: GalleryImage) => void): this {
         this.config.onDelete = callback;
+        return this;
+    }
+
+    /**
+     * Global loader for the component
+     * @param start Start function
+     * @param stop Stop function
+     */
+    loaderConfig(start: () => void, stop: () => void): this {
+        this.config.loaderConfig = { start: start, stop: stop };
+        return this;
+    }
+
+    /**
+     * Indicates if local loader is enabled
+     * @param enable Enable or disable
+     */
+    enableLocalLoader(enable: boolean): this {
+        this.config.enableLocalLoader = enable;
+        return this;
+    }
+
+    /**
+     * Callback for when images are loaded
+     */
+    onImagesLoaded(callback: (images: GalleryImage[]) => void): this {
+        this.config.onImagesLoaded = callback;
         return this;
     }
 

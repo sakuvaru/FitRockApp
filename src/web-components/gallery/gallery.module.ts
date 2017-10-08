@@ -10,6 +10,9 @@ import { ModalGalleryModule } from 'angular-modal-gallery';
 import 'hammerjs'; // Mandatory for angular-modal-gallery 3.x.x or greater (`npm i --save hammerjs`)
 import 'mousetrap'; // Mandatory for angular-modal-gallery 3.x.x or greater (`npm i --save mousetrap`)
 
+// loader module
+import { LoaderModule } from '../loader/loader.module';
+
 // dialogs
 import { GalleryDeleteDialogComponent } from './gallery-delete-dialog.component';
 
@@ -32,7 +35,8 @@ import { MessagesModule } from '../messages/messages.module';
         RouterModule, // router needs to be importes so that routerLink can be used within components
         ModalGalleryModule,
         ButtonsModule,
-        MessagesModule
+        MessagesModule,
+        LoaderModule
     ],
     declarations: [
         GalleryComponent,

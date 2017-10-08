@@ -397,7 +397,8 @@
 			"close": "Zavřít",
 			"imageDeletionFailed": "Smazaní fotografie selhalo",
 			"imageSuccessfullyDeleted": "Fotografie smazána",
-			"deleted": "Smazáno"
+			"deleted": "Smazáno",
+			"deleteImagesDialogTitle": "Smazat fotografie"
 		}
 	}
 }

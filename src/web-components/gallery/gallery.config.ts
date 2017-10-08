@@ -6,11 +6,6 @@ import { Observable } from 'rxjs/Rx';
 export class GalleryConfig {
 
     /**
-     * Gallery images
-     */
-    public images: GalleryImage[];
-
-    /**
      * Indicates if image can be easily downloaded
      */
     public downloadable: boolean = true;
@@ -43,20 +38,25 @@ export class GalleryConfig {
      */
     public onDelete?: (image: GalleryImage) => void;
 
-    constructor(
-        options: {
-            // required
-            images: GalleryImage[],
+    /**
+     * Indicates if local loader is enabled
+     */
+    public enableLocalLoader: boolean = true;
 
-            // optional
-            downloadable?: boolean,
-            groupResolver?: (image: GalleryImage) => ImageGroupResult,
-            groupsOrder?: (groups: GalleryGroup[]) => GalleryGroup[],
-            dialogWidth?: string,
-            deleteFunction?: (image: GalleryImage) => Observable<boolean>,
-            onDelete?: (image: GalleryImage) => void
-        }
-    ) {
-        Object.assign(this, options);
-    }
+    /**
+     * Loader configuration
+     */
+    public loaderConfig?: { start: () => void, stop: () => void };
+
+    /**
+     * Callback for when images are loaded
+     */
+    public onImagesLoaded: (images: GalleryImage[]) => void;
+
+    constructor(
+        /**
+         * Function to get gallery images
+         */
+        public images: Observable<GalleryImage[]>
+    ) { }
 }
