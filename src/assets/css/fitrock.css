@@ -40,6 +40,15 @@
     cursor: move;
 }
 
+/**
+This is a fix for angular material issue where the sidenav is always visible if some child elements trigger Fullscreen
+More info at: https://github.com/angular/material2/issues/7636
+Revisit later to see if this is fixed and this can be removed.
+**/
+.mat-drawer.mat-drawer-side {
+    z-index: -2!important;
+}
+
 /* Custom chip */
 .w-chip {
     /* This code is taken out of the angular material chip */
