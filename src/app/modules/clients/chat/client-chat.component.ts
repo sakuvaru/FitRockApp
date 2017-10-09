@@ -38,7 +38,7 @@ export class ClientChatComponent extends ClientsBaseComponent implements OnInit 
 
     setup(): ComponentSetup | null {
         return {
-            initialized: false
+            initialized: true
         };
     }
 

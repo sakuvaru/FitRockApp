@@ -1,6 +1,9 @@
 // common
-import { Component, Inject, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Inject, Input, OnInit, ViewContainerRef } from '@angular/core';
 import { BaseWebComponent } from '../base-web-component.class';
+
+// covalent
+import { TdDialogService } from '@covalent/core';
 
 // material
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
@@ -44,10 +47,23 @@ export class GalleryDeleteDialogComponent extends BaseWebComponent implements On
      */
     private snackbarDeleteTextKey: string = 'webComponents.gallery.deleted';
 
+    /**
+     * Indicates if delete is in progress
+     */
+    private deleteInProgress: boolean = false;
+
+    private titleText: string;
+    private messageText: string;
+    private cancelText: string;
+    private confirmText: string;
+    private tooltipText: string;
+
     constructor(
         public dialogRef: MatDialogRef<GalleryDeleteDialogComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any,
         private translateService: TranslateService,
+        private dialogService: TdDialogService,
+        private viewContainerRef: ViewContainerRef,
     ) {
         super();
 
@@ -64,6 +80,15 @@ export class GalleryDeleteDialogComponent extends BaseWebComponent implements On
         if (!this.config.deleteFunction) {
             throw Error(`Gallery delete dialod requires delete function to be defined`);
         }
+
+        // init translations
+        this.translateService.get('webComponents.gallery.dialogDelete.message').map(text => this.messageText = text)
+            .zip(this.translateService.get('webComponents.gallery.dialogDelete.title').map(text => this.titleText = text))
+            .zip(this.translateService.get('webComponents.gallery.dialogDelete.cancel').map(text => this.cancelText = text))
+            .zip(this.translateService.get('webComponents.gallery.dialogDelete.confirm').map(text => this.confirmText = text))
+            .zip(this.translateService.get('webComponents.gallery.dialogDelete.tooltip').map(text => this.tooltipText = text))
+            .takeUntil(this.ngUnsubscribe)
+            .subscribe();
     }
 
     ngOnInit() {
@@ -71,6 +96,28 @@ export class GalleryDeleteDialogComponent extends BaseWebComponent implements On
     }
 
     onDelete(image: Image): void {
+        this.dialogService.openConfirm({
+            message: this.messageText,
+            disableClose: false, // defaults to false
+            viewContainerRef: this.viewContainerRef, // OPTIONAL
+            title: this.titleText, // OPTIONAL, hides if not provided
+            cancelButton: this.cancelText, // OPTIONAL, defaults to 'CANCEL'
+            acceptButton: this.confirmText, // OPTIONAL, defaults to 'ACCEPT'
+        }).afterClosed().subscribe((accept: boolean) => {
+            if (accept) {
+                // do the delete
+                this.deleteImage(image);
+            } else {
+                // user did not accepted delete
+            }
+        });
+    }
+
+    /**
+     * Call after the delete was confirmed
+     * @param image Image to delete
+     */
+    private deleteImage(image: Image): void {
         if (!this.config.deleteFunction) {
             throw Error(`Gallery delete dialod requires delete function to be defined`);
         }
@@ -82,6 +129,13 @@ export class GalleryDeleteDialogComponent extends BaseWebComponent implements On
         if (!galleryImage) {
             throw Error(`Could not map image '${image.extUrl}' to GalleryImage for deletion`);
         }
+
+        // start loader
+        if (this.config.loaderConfig) {
+            this.config.loaderConfig.start();
+        }
+
+        this.deleteInProgress = true;
 
         this.config.deleteFunction(galleryImage)
             .takeUntil(this.ngUnsubscribe)
@@ -96,15 +150,29 @@ export class GalleryDeleteDialogComponent extends BaseWebComponent implements On
                     this.removeImage(image);
 
                     // show snackbar message
-                    this.snackBarService.open(this.snackbarDeleteText, undefined,  { duration: this.snackbarDefaultDuration});
+                    this.snackBarService.open(this.snackbarDeleteText, undefined, { duration: this.snackbarDefaultDuration });
                 } else {
                     // image deletion failed
                     this.imageDeletionFailed = true;
                 }
+
+                // stop loader
+                if (this.config.loaderConfig) {
+                    this.config.loaderConfig.stop();
+                }
+
+                this.deleteInProgress = false;
             },
             error => {
                 // image deletion faield
                 this.imageDeletionFailed = true;
+
+                // stop loader
+                if (this.config.loaderConfig) {
+                    this.config.loaderConfig.stop();
+                }
+
+                this.deleteInProgress = false;
             });
     }
 

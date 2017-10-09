@@ -76,6 +76,17 @@ export class GalleryComponent extends BaseWebComponent implements OnInit, OnChan
     private openModalWindow: boolean = false;
     private imagePointer: number = 0;
 
+    /**
+     * This indicates number of loaded images in all 'src' tags. 
+     * https://stackoverflow.com/questions/39257687/detect-when-image-has-loaded-in-img-tag
+     */
+    private numberOfLoadedImages: number = 0;
+
+    /**
+     * Indicates total number of images
+     */
+    private totalImages: number = -1;
+
     constructor(
         public dialog: MatDialog,
         public snackBarService: MatSnackBar
@@ -122,12 +133,17 @@ export class GalleryComponent extends BaseWebComponent implements OnInit, OnChan
             this.config.loaderConfig.start();
         }
 
+        // reset total images
+        this.totalImages = -1;
+
+        // reset number of loaded images
+        this.numberOfLoadedImages = 0;
+
         // init buttons config
         this.buttonsConfig = this.getButtonsConfig(config);
 
         // init custom description
         this.customFullDescription = this.getCustomDescription();
-
 
         // init gallery with images & groups
         this.getGalleryInitObservable(config)
@@ -148,6 +164,7 @@ export class GalleryComponent extends BaseWebComponent implements OnInit, OnChan
 
     private getGalleryInitObservable(config: GalleryConfig): Observable<void> {
         return this.config.images.map(images => {
+
             // init gallery groups if configured
             if (config.groupResolver) {
                 this.groups = this.getGalleryGroups(config, images);
@@ -158,6 +175,9 @@ export class GalleryComponent extends BaseWebComponent implements OnInit, OnChan
 
             // assign GalleryImages
             this.imagesRaw = images;
+
+            // set number of total images
+            this.totalImages = images.length;
 
             // images loaded callback
             if (config.onImagesLoaded) {
@@ -300,5 +320,9 @@ export class GalleryComponent extends BaseWebComponent implements OnInit, OnChan
                 this.imagesUpdated.next(galleryImages);
             }
         });
+    }
+
+    private loadImage(): void {
+        this.numberOfLoadedImages++;
     }
 }

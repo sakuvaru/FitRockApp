@@ -68,7 +68,7 @@ export class UserGalleryComponent extends ClientsBaseComponent implements OnInit
                             this.galleryComponent.reloadData();
                         }
                     }))
-                    .loaderConfig({ start: () => super.startGlobalLoader(), stop: () => super.stopGlobalLoader() })
+                    .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
                     .build();
             });
     }
@@ -141,6 +141,7 @@ export class UserGalleryComponent extends ClientsBaseComponent implements OnInit
         .onImagesLoaded(images => {
             this.currentImages = images;
         })
+        .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
         .build();
     }
 

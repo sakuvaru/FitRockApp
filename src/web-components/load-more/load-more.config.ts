@@ -95,7 +95,7 @@ export class LoadMoreConfig<TItem extends IItem> {
      * Indicates if local loader is enabled
      */
     public enableLocalLoader = true;
-
+    
     constructor(
         loadResolver: (query: MultipleItemQuery<TItem>) => Observable<ResponseMultiple<TItem>>,
         loadQuery: (searchTerm: string) => MultipleItemQuery<TItem>) {

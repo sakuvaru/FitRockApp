@@ -31,11 +31,13 @@ export class DeleteButtonComponent extends BaseWebComponent implements OnInit {
     @Output() confirm = new EventEmitter();
 
     ngOnInit() {
-        this.translateService.get('webComponents.buttons.deleteButton.message').subscribe(text => this.messageText = text);
-        this.translateService.get('webComponents.buttons.deleteButton.title').subscribe(text => this.titleText = text);
-        this.translateService.get('webComponents.buttons.deleteButton.cancel').subscribe(text => this.cancelText = text);
-        this.translateService.get('webComponents.buttons.deleteButton.confirm').subscribe(text => this.confirmText = text);
-        this.translateService.get('webComponents.buttons.deleteButton.tooltip').subscribe(text => this.tooltipText = text);
+        this.translateService.get('webComponents.buttons.deleteButton.message').map(text => this.messageText = text)
+            .zip(this.translateService.get('webComponents.buttons.deleteButton.title').map(text => this.titleText = text))
+            .zip(this.translateService.get('webComponents.buttons.deleteButton.cancel').map(text => this.cancelText = text))
+            .zip(this.translateService.get('webComponents.buttons.deleteButton.confirm').map(text => this.confirmText = text))
+            .zip(this.translateService.get('webComponents.buttons.deleteButton.tooltip').map(text => this.tooltipText = text))
+            .takeUntil(this.ngUnsubscribe)
+            .subscribe();
     }
 
     private handleClick(event: any): void {

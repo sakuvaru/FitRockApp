@@ -1,44 +1,46 @@
 <ng-container *ngIf="config">
-    <ng-template tdLoading [tdLoadingUntil]="!localLoaderEnabled" tdLoadingStrategy="overlay">
 
-        <ng-container *ngIf="images && images.length === 0">
-            <info-message title="{{ 'webComponents.gallery.noImages' | translate }}"></info-message>
-        </ng-container>
+    <ng-container *ngIf="images && images.length === 0">
+        <info-message title="{{ 'webComponents.gallery.noImages' | translate }}"></info-message>
+    </ng-container>
 
-        <div *ngIf="images && images.length > 0" class="w-gallery-wrapper">
+    <div class="w-gallery-wrapper">
 
-            <button *ngIf="config.deleteFunction" (click)="openDeleteDialog()" mat-raised-button color="accent">{{ 'webComponents.gallery.deleteImages' | translate }}</button>
+        <button *ngIf="config.deleteFunction && (images && images.length > 0)" (click)="openDeleteDialog()" mat-raised-button color="accent">{{ 'webComponents.gallery.deleteImages' | translate }}</button>
 
-            <ng-container *ngIf="!groups">
-                <div *ngFor="let img of images; let i = index">
-                    <img *ngIf="img.thumb" class="w-gallery-thumb" src="{{img.thumb}}" (click)="openImageModal(img)" alt='{{img.description}}'
-                    />
-                    <img *ngIf="!img.thumb" class="w-gallery-thumb" src="{{img.img}}" (click)="openImageModal(img)" alt='{{img.description}}'
-                    />
-                </div>
-            </ng-container>
-
-            <ng-container *ngIf="groups">
-                <div *ngFor="let group of groups">
-                    <h4>{{group.groupTitle}}</h4>
-                    <div *ngFor="let img of group.images; let i = index">
-                        <img *ngIf="img.thumb" class="w-gallery-thumb" src="{{img.thumb}}" (click)="openImageModal(img)" alt='{{img.description}}'
-                        />
-                        <img *ngIf="!img.thumb" class="w-gallery-thumb" src="{{img.img}}" (click)="openImageModal(img)" alt='{{img.description}}'
-                        />
-                    </div>
-                    <div style="clear: both"></div>
-                </div>
-            </ng-container>
-
-            <div *ngIf="openModalWindow">
-                <modal-gallery [modalImages]="images" [imagePointer]="imagePointer" (show)="onShowImageModal($event)" (close)="onCloseImageModal($event)"
-                    [downloadable]="config.downloadable" [buttonsConfig]="buttonsConfig" enableClose="true" enableCloseOutside="true"
-                    [description]="customFullDescription">
-                </modal-gallery>
-            </div>
+        <div class="push-bottom">
+            &nbsp;<ng-template tdLoading [tdLoadingUntil]="!localLoaderEnabled && (numberOfLoadedImages === totalImages)" tdLoadingType="linear" tdLoadingStrategy="overlay"> </ng-template>
         </div>
 
-    </ng-template>
+        <ng-container *ngIf="!groups">
+            <div *ngFor="let img of images; let i = index">
+                <img (load)="loadImage()" *ngIf="img.thumb" class="w-gallery-thumb" src="{{img.thumb}}" (click)="openImageModal(img)" alt='{{img.description}}'
+                />
+                <img (load)="loadImage()" *ngIf="!img.thumb" class="w-gallery-thumb" src="{{img.img}}" (click)="openImageModal(img)" alt='{{img.description}}'
+                />
+            </div>
+        </ng-container>
+
+        <ng-container *ngIf="groups">
+
+            <div *ngFor="let group of groups">
+                <h4>{{group.groupTitle}}</h4>
+                <div *ngFor="let img of group.images; let i = index">
+                    <img (load)="loadImage()" *ngIf="img.thumb" class="w-gallery-thumb" src="{{img.thumb}}" (click)="openImageModal(img)" alt='{{img.description}}'
+                    />
+                    <img (load)="loadImage()" *ngIf="!img.thumb" class="w-gallery-thumb" src="{{img.img}}" (click)="openImageModal(img)" alt='{{img.description}}'
+                    />
+                </div>
+                <div style="clear: both"></div>
+            </div>
+        </ng-container>
+
+        <div *ngIf="openModalWindow">
+            <modal-gallery [modalImages]="images" [imagePointer]="imagePointer" (show)="onShowImageModal($event)" (close)="onCloseImageModal($event)"
+                [downloadable]="config.downloadable" [buttonsConfig]="buttonsConfig" enableClose="true" enableCloseOutside="true"
+                [description]="customFullDescription">
+            </modal-gallery>
+        </div>
+    </div>
 
 </ng-container>

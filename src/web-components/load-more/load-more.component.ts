@@ -174,7 +174,7 @@ export class LoadMoreComponent extends BaseWebComponent implements OnInit, OnCha
                     this.config.loaderConfig.stop();
                 }
             }, (err) => {
-                console.error(err);
+                throw new Error(err);
             });
     }
 

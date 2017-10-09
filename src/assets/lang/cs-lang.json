@@ -398,7 +398,14 @@
 			"imageDeletionFailed": "Smazaní fotografie selhalo",
 			"imageSuccessfullyDeleted": "Fotografie smazána",
 			"deleted": "Smazáno",
-			"deleteImagesDialogTitle": "Smazat fotografie"
+			"deleteImagesDialogTitle": "Smazat fotografie",
+			"dialogDelete": {
+				"message": "Opravdu smazat fotografii?",
+				"title": "Potvrzení",
+				"confirm": "Smazat",
+				"cancel": "Zrušit",
+				"tooltip": "Smazat"
+			}
 		}
 	}
 }

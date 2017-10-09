@@ -79,13 +79,14 @@ export class UploaderBuilder {
         this.config.onSelectFiles = callback;
         return this;
     }
-
+   
     /**
-     * Loader configuration
-     * @param loaderConfig Configuration
+     * Global loader for the component
+     * @param start Start function
+     * @param stop Stop function
      */
-    loaderConfig(loaderConfig: { start: () => void, stop: () => void }): this {
-        this.config.loaderConfig = loaderConfig;
+    loaderConfig(start: () => void, stop: () => void): this {
+        this.config.loaderConfig = { start: start, stop: stop };
         return this;
     }
 

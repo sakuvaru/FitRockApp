@@ -40,15 +40,6 @@
     cursor: move;
 }
 
-/**
-This is a fix for angular material issue where the sidenav is always visible if some child elements trigger Fullscreen
-More info at: https://github.com/angular/material2/issues/7636
-Revisit later to see if this is fixed and this can be removed.
-**/
-.mat-drawer.mat-drawer-side {
-    z-index: -2!important;
-}
-
 /* Custom chip */
 .w-chip {
     /* This code is taken out of the angular material chip */
@@ -80,28 +71,25 @@ Revisit later to see if this is fixed and this can be removed.
     margin: 3px 3px 0 0;
 }
 
-
 .w-gallery-dialog-wrapper img.ng-thumb {
-    height: 50px!important;
-    margin: 3px 3px 0 0!important;
+    height: 70px!important;
+    margin: 5px 5px 0 0!important;
 }
 
 .w-gallery-dialog-wrapper .w-gallery-thumb {
-    height: 50px;
+    height: 70px;
     float: left;
-    cursor: default;
-    margin: 3px 3px 0 0;
+    cursor: pointer;
+    margin: 5px 5px 0 0;
 }
 
 .w-gallery-dialog-wrapper .w-gallery-image-wrapper {
     float: left;
 }
 
-
 /* Overrides 
 Note: in order for overrides to work, this css should be loaded after the material's css
 */
-
 .mat-chip{
     margin-top: 5px!important;
 }
@@ -114,5 +102,14 @@ Note: in order for overrides to work, this css should be loaded after the materi
 
 .mat-chip.w-cursor-pointer{
    cursor: pointer!important;
+}
+
+/**
+This is a fix for angular material issue where the sidenav is always visible if some child elements trigger Fullscreen
+More info at: https://github.com/angular/material2/issues/7636
+Revisit later to see if this is fixed and this can be removed.
+**/
+.mat-drawer.mat-drawer-side {
+    z-index: -2!important;
 }
 
