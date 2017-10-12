@@ -125,7 +125,7 @@ export class DataTableLayoutSearchComponent implements OnInit {
 
     @Output() search = new EventEmitter<string>();
 
-    private readonly debounceTime = 300;
+    private readonly debounceTime = 500;
     private searchControl = new FormControl();
 
     ngOnInit() {
@@ -206,7 +206,7 @@ export class DataTableLayoutItemsComponent implements OnInit, OnChanges {
     }
 
     private onItemClick(item: any): void {
-        if (!this.isClickable) {
+        if (!this.isClickable || !this.config.onClick) {
             throw Error(`Cannot process item clicks because no callback is defined`);
         }
 

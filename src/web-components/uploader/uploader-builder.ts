@@ -16,10 +16,10 @@ export class UploaderBuilder {
          */
         uploadFunction: (files: File[] | File) => Observable<any>
     ) {
-        this.config = new UploaderConfig({
-            mode: this.mode,
-            uploadFunction: uploadFunction
-        });
+        this.config = new UploaderConfig(
+            uploadFunction,
+            mode
+        );
     }
 
     /**
@@ -79,7 +79,7 @@ export class UploaderBuilder {
         this.config.onSelectFiles = callback;
         return this;
     }
-   
+
     /**
      * Global loader for the component
      * @param start Start function

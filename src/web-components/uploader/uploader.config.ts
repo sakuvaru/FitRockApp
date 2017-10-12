@@ -14,16 +14,6 @@ export class UploaderConfig {
     public readonly defaultImageExtensions: string[] = ['jpg', 'jpeg', 'gif', 'png'];
 
     /**
-    * Function responsible for uploading files
-    */
-    public uploadFunction: (files: File[] | File) => Observable<any>;
-
-    /**
-     * Mode of the uploader
-     */
-    public mode: UploaderModeEnum;
-
-    /**
     * Indicates if List of default extensions are allowed
     */
     public useDefaultFileExtensions = false;
@@ -66,21 +56,14 @@ export class UploaderConfig {
     public loaderConfig?: { start: () => void, stop: () => void };
 
     constructor(
-        options: {
-            // required
-            mode: UploaderModeEnum,
-            uploadFunction: (files: File[] | File) => Observable<any>,
-
-            // optional
-            useDefaultFileExtensions?: boolean,
-            useDefaultImageExtensions?: boolean,
-            onAfterUpload?: <T>(uploadedItems: T[] | T) => void,
-            onFailedUpload?: () => void,
-            onSelectFiles?: (files: FileList | File) => void,
-            maxUploadedFiles?: number,
-            loaderConfig?: { start: () => void, stop: () => void }
-        }
+        /**
+        * Function responsible for uploading files
+        */
+        public uploadFunction: (files: File[] | File) => Observable<any>,
+        /**
+         * Mode of the uploader
+         */
+        public mode: UploaderModeEnum
     ) {
-        Object.assign(this, options);
     }
 }

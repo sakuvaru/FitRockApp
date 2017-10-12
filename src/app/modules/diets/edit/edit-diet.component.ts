@@ -47,7 +47,6 @@ export class EditDietComponent extends BaseComponent implements OnInit {
             componentTitle: {
                 'key': 'module.diets.editDiet'
             },
-            autoInitComponent: true
         });
     }
 }

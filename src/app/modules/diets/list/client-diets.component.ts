@@ -22,7 +22,7 @@ export class ClientDietsComponent extends BaseComponent implements OnInit {
 
   setup(): ComponentSetup | null {
     return {
-        initialized: true
+      initialized: true
     };
   }
 
@@ -30,7 +30,6 @@ export class ClientDietsComponent extends BaseComponent implements OnInit {
     super.ngOnInit();
 
     this.setConfig({
-      autoInitComponent: true,
       menuTitle: { key: 'menu.diets' },
       menuItems: new DietsOverviewMenuItems().menuItems,
       componentTitle: { key: 'module.diets.submenu.clientDiets' },
@@ -40,8 +39,20 @@ export class ClientDietsComponent extends BaseComponent implements OnInit {
   }
 
   private initDataTable(): void {
-    this.config = this.dependencies.webComponentServices.dataTableService.dataTable<Diet>()
-      .fields([
+    this.config = this.dependencies.webComponentServices.dataTableService.dataTable<Diet>(
+      query => {
+        return query
+          .get()
+          .takeUntil(this.ngUnsubscribe);
+      },
+      searchTerm => {
+        return this.dependencies.itemServices.dietService.items()
+          .includeMultiple(['DietCategory', 'Client'])
+          .byCurrentUser()
+          .whereLike('DietName', searchTerm)
+          .whereNotNull('ClientId');
+      },
+      [
         { value: (item) => item.dietName, flex: 40 },
         {
           value: (item) => {
@@ -56,19 +67,8 @@ export class ClientDietsComponent extends BaseComponent implements OnInit {
             return item.dietCategory.categoryName;
           }, isSubtle: true, align: AlignEnum.Right, hideOnSmallScreens: true
         },
-      ])
-      .loadQuery(searchTerm => {
-        return this.dependencies.itemServices.dietService.items()
-          .includeMultiple(['DietCategory', 'Client'])
-          .byCurrentUser()
-          .whereLike('DietName', searchTerm)
-          .whereNotNull('ClientId');
-      })
-      .loadResolver(query => {
-        return query
-          .get()
-          .takeUntil(this.ngUnsubscribe);
-      })
+      ]
+    )
       .dynamicFilters((searchTerm) => {
         return this.dependencies.itemServices.dietCategoryService.getCategoryCountForClientDiets(searchTerm)
           .get()

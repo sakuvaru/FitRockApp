@@ -22,7 +22,7 @@ export class MyFoodsListComponent extends BaseComponent implements OnInit {
 
   setup(): ComponentSetup | null {
     return {
-        initialized: true
+      initialized: true
     };
   }
 
@@ -30,32 +30,32 @@ export class MyFoodsListComponent extends BaseComponent implements OnInit {
     super.ngOnInit();
 
     this.setConfig({
-      autoInitComponent: true,
       menuTitle: { key: 'module.foods.submenu.myFoods' },
       menuItems: new FoodOverviewItems().menuItems,
       componentTitle: { key: 'module.foods.submenu.overview' },
     });
 
-    this.config = this.dependencies.webComponentServices.dataTableService.dataTable<Food>()
-      .fields([
+    this.config = this.dependencies.webComponentServices.dataTableService.dataTable<Food>(
+      query => {
+        return query
+          .get()
+          .takeUntil(this.ngUnsubscribe);
+      },
+      searchTerm => {
+        return this.dependencies.itemServices.foodService.items()
+          .include('FoodCategory')
+          .byCurrentUser()
+          .whereLike('FoodName', searchTerm);
+      },
+      [
         { value: (item) => item.foodName, flex: 40 },
         {
           value: (item) => {
             return item.foodCategory.categoryName;
           }, isSubtle: true, align: AlignEnum.Right, hideOnSmallScreens: true
         },
-      ])
-      .loadQuery(searchTerm => {
-        return this.dependencies.itemServices.foodService.items()
-          .include('FoodCategory')
-          .byCurrentUser()
-          .whereLike('FoodName', searchTerm);
-      })
-      .loadResolver(query => {
-        return query
-          .get()
-          .takeUntil(this.ngUnsubscribe);
-      })
+      ]
+    )
       .dynamicFilters((searchTerm) => {
         return this.dependencies.itemServices.foodCategoryService.getFoodCategoryWithFoodsCountDto(searchTerm, false)
           .get()

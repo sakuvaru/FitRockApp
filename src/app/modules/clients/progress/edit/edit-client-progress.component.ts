@@ -147,8 +147,19 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
     }
 
     private initDataTable(clientId: number): void {
-        this.dataTableConfig = this.dependencies.webComponentServices.dataTableService.dataTable<ProgressItem>()
-            .fields([
+        this.dataTableConfig = this.dependencies.webComponentServices.dataTableService.dataTable<ProgressItem>(
+            query => {
+                return query
+                    .get()
+                    .takeUntil(this.ngUnsubscribe);
+            },
+            searchTerm => {
+                return this.dependencies.itemServices.progressItemService.items()
+                    .includeMultiple(['ProgressItemType', 'ProgressItemType.ProgressItemUnit'])
+                    .whereEquals('ClientId', clientId)
+                    .orderByDescending('MeasurementDate');
+            },
+            [
                 {
                     translateValue: true,
                     value: (item) => 'module.progressItemTypes.globalTypes.' + item.progressItemType.codename,
@@ -163,7 +174,7 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
                     align: AlignEnum.Left,
                 },
                 {
-                    value: (item) =>  super.moment(item.measurementDate).format('MMMM DD'),
+                    value: (item) => super.moment(item.measurementDate).format('MMMM DD'),
                     isSubtle: true,
                     hideOnSmallScreens: false,
                     align: AlignEnum.Left,
@@ -176,18 +187,8 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
                     align: AlignEnum.Right
                 },
 
-            ])
-            .loadQuery(searchTerm => {
-                return this.dependencies.itemServices.progressItemService.items()
-                    .includeMultiple(['ProgressItemType', 'ProgressItemType.ProgressItemUnit'])
-                    .whereEquals('ClientId', clientId)
-                    .orderByDescending('MeasurementDate');
-            })
-            .loadResolver(query => {
-                return query
-                    .get()
-                    .takeUntil(this.ngUnsubscribe);
-            })
+            ]
+        )
             .dynamicFilters((searchTerm) => {
                 return this.dependencies.itemServices.progressItemTypeService.getProgressItemTypeWithCountDto(this.clientId, undefined)
                     .get()
@@ -238,9 +239,6 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
 
         dialog.afterClosed().subscribe(m => {
             if (dialog.componentInstance.createdProgressItemType) {
-                // add progress item to types
-                this.progressItemTypes.push(dialog.componentInstance.createdProgressItemType);
-
                 // reload form and progress items
                 super.subscribeToObservable(this.getAddProgressTypeObservable(dialog.componentInstance.createdProgressItemType));
             }

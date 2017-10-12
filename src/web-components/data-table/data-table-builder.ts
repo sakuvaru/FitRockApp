@@ -1,14 +1,36 @@
 import { DataTableConfig, SelectableConfig, Filter, PagerConfig } from './data-table.config';
 import { DataTableField } from './data-table-field.class';
 import { Observable } from 'rxjs/RX';
-import { ResponseMultiple, IItem, MultipleItemQuery } from '../../lib/repository';
+import { ResponseMultiple, IItem, MultipleItemQuery, ErrorResponse } from '../../lib/repository';
 
 export class DataTableBuilder<TItem extends IItem> {
 
-    private config: DataTableConfig<TItem> = new DataTableConfig<TItem>();
+    private config: DataTableConfig<TItem>;
 
-    fields(fields: DataTableField<TItem>[]): this {
-        this.config.fields = fields;
+    constructor(
+        /**
+        * Method that is used to get observable out of loadQuery.
+        * Usually this should include 'takeUntil(this.ngUnsubscribe)' to ensure
+        * that requests are cancelled if they are not required (e.g. after destroying component)
+        */
+        loadResolver: (query: MultipleItemQuery<TItem>) => Observable<ResponseMultiple<TItem>>,
+        /**
+        * Used to specify query that loads items
+        */
+        loadQuery: (searchTerm: string) => MultipleItemQuery<TItem>,
+        /**
+        * Fields in the data table
+        */
+        fields: DataTableField<any>[]
+    ) {
+        this.config = new DataTableConfig<TItem>(loadResolver, loadQuery, fields);
+    }
+
+    /**
+    * Indicates if last used filter will be used on the next load of given data table
+    */
+    saveLastFilter(save: boolean): this {
+        this.config.saveLastFilter = save;
         return this;
     }
 
@@ -17,13 +39,11 @@ export class DataTableBuilder<TItem extends IItem> {
         return this;
     }
 
-    loadQuery(loadQuery: (searchTerm: string) => MultipleItemQuery<TItem>): this {
-        this.config.loadQuery = loadQuery;
-        return this;
-    }
-
-    loadResolver(loadFunction: (query: MultipleItemQuery<TItem>) => Observable<ResponseMultiple<TItem>>): this {
-        this.config.loadResolver = loadFunction;
+    /**
+    * Callback for handling errors
+    */
+    onError(callback: (response: ErrorResponse | any) => void): this {
+        this.config.onError = callback;
         return this;
     }
 

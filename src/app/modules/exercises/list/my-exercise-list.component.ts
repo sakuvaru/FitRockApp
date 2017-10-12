@@ -22,7 +22,7 @@ export class MyExerciseListComponent extends BaseComponent implements OnInit {
 
   setup(): ComponentSetup | null {
     return {
-        initialized: true
+      initialized: true
     };
   }
 
@@ -30,32 +30,32 @@ export class MyExerciseListComponent extends BaseComponent implements OnInit {
     super.ngOnInit();
 
     this.setConfig({
-      autoInitComponent: true,
       menuTitle: { key: 'module.exercises.myExercises' },
       menuItems: new ExercisesOverviewMenuItem().menuItems,
       componentTitle: { key: 'module.exercises.overview' },
     });
 
-    this.config = this.dependencies.webComponentServices.dataTableService.dataTable<Exercise>()
-      .fields([
-        { label: 'module.workouts.exerciseName', value: (item) =>  item.exerciseName, flex: 40 },
+    this.config = this.dependencies.webComponentServices.dataTableService.dataTable<Exercise>(
+      query => {
+        return query
+          .get()
+          .takeUntil(this.ngUnsubscribe);
+      },
+      searchTerm => {
+        return this.dependencies.itemServices.exerciseService.items()
+          .include('ExerciseCategory')
+          .byCurrentUser()
+          .whereLike('ExerciseName', searchTerm);
+      },
+      [
+        { label: 'module.workouts.exerciseName', value: (item) => item.exerciseName, flex: 40 },
         {
           label: 'shared.updated', value: (item) => {
             return item.exerciseCategory.categoryName;
           }, isSubtle: true, align: AlignEnum.Right, hideOnSmallScreens: true
         },
-      ])
-      .loadQuery(searchTerm => {
-        return this.dependencies.itemServices.exerciseService.items()
-          .include('ExerciseCategory')
-          .byCurrentUser()
-          .whereLike('ExerciseName', searchTerm);
-      })
-      .loadResolver(query => {
-        return query
-          .get()
-          .takeUntil(this.ngUnsubscribe);
-      })
+      ]
+    )
       .dynamicFilters((searchTerm) => {
         return this.dependencies.itemServices.exerciseCategoyService.getCategoriesWithExercisesCount(searchTerm, false)
           .get()

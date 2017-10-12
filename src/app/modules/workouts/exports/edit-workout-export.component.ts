@@ -15,7 +15,7 @@ import { Observable } from 'rxjs/Rx';
 })
 export class EditWorkoutExportComponent extends BaseComponent implements OnInit, OnChanges {
 
-    @Output() loadWorkout = new EventEmitter();
+    @Output() loadWorkout = new EventEmitter<Workout>();
 
     @Input() workoutId: number;
 
@@ -29,9 +29,7 @@ export class EditWorkoutExportComponent extends BaseComponent implements OnInit,
     }
 
     setup(): ComponentSetup | null {
-        return {
-            initialized: false
-        };
+        return null;
       }
 
     ngOnChanges(changes: SimpleChanges) {
@@ -49,7 +47,9 @@ export class EditWorkoutExportComponent extends BaseComponent implements OnInit,
         this.formConfig = this.dependencies.itemServices.workoutService.editForm(workoutId)
             .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
             .onAfterDelete(() => super.navigate([super.getTrainerUrl('workouts')]))
-            .onFormLoaded(form => this.loadWorkout.next(form.item))
+            .onFormLoaded(form => {
+                this.loadWorkout.next(form.item);
+            })
             .build();
     }
 }

@@ -45,18 +45,6 @@ export class LoadMoreConfig<TItem extends IItem> {
     public footer?: LoadMoreField<TItem>;
 
     /**
-     * Method that is used to get observable out of loadQuery.
-     * Usually this should include 'takeUntil(this.ngUnsubscribe)' to ensure
-     * that requests are cancelled if they are not required (e.g. after destroying component)
-     */
-    public loadResolver: (query: MultipleItemQuery<TItem>) => Observable<ResponseMultiple<TItem>>;
-
-    /**
-     * Used to specify query that loads items
-     */
-    public loadQuery: (searchTerm: string) => MultipleItemQuery<TItem>;
-
-    /**
      * On click handled
      */
     public onClick?: (item: TItem) => void;
@@ -97,10 +85,16 @@ export class LoadMoreConfig<TItem extends IItem> {
     public enableLocalLoader = true;
     
     constructor(
-        loadResolver: (query: MultipleItemQuery<TItem>) => Observable<ResponseMultiple<TItem>>,
-        loadQuery: (searchTerm: string) => MultipleItemQuery<TItem>) {
-        this.loadQuery = loadQuery;
-        this.loadResolver = loadResolver;
+        /**
+        * Method that is used to get observable out of loadQuery.
+        * Usually this should include 'takeUntil(this.ngUnsubscribe)' to ensure
+        * that requests are cancelled if they are not required (e.g. after destroying component)
+        */
+        public loadResolver: (query: MultipleItemQuery<TItem>) => Observable<ResponseMultiple<TItem>>,
+        /**
+        * Used to specify query that loads items
+        */
+        public loadQuery: (searchTerm: string) => MultipleItemQuery<TItem>) {
     }
 
     isClickable(): boolean {

@@ -8,8 +8,8 @@ export class LoadMoreBuilder<TItem extends IItem> {
     private config: LoadMoreConfig<TItem>;
 
     constructor(
-        public loadQuery: (searchTerm: string) => MultipleItemQuery<TItem>,
-        public loadResolver: (query: MultipleItemQuery<TItem>) => Observable<ResponseMultiple<TItem>>,
+        loadQuery: (searchTerm: string) => MultipleItemQuery<TItem>,
+        loadResolver: (query: MultipleItemQuery<TItem>) => Observable<ResponseMultiple<TItem>>,
     ) {
         this.config = new LoadMoreConfig(loadResolver, loadQuery);
     }
@@ -43,7 +43,6 @@ export class LoadMoreBuilder<TItem extends IItem> {
         this.config.iconResolver = resolver;
         return this;
     }
-
 
     iconClassResolver(resolver: (item: TItem) => string): this {
         this.config.iconClassResolver = resolver;

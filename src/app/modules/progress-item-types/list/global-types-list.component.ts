@@ -22,7 +22,7 @@ export class GlobalTypesListComponent extends BaseComponent implements OnInit {
 
   setup(): ComponentSetup | null {
     return {
-        initialized: true
+      initialized: true
     };
   }
 
@@ -30,34 +30,35 @@ export class GlobalTypesListComponent extends BaseComponent implements OnInit {
     super.ngOnInit();
 
     this.setConfig({
-      autoInitComponent: true,
       componentTitle: { key: 'module.progressItemTypes.submenu.globalTypes' },
       menuItems: new ProgressItemTypesOverviewMenuItem().menuItems,
       menuTitle: { key: 'module.progressItemTypes.submenu.overview' },
     });
 
-    this.config = this.dependencies.webComponentServices.dataTableService.dataTable<ProgressItemType>()
-      .fields([
-        { 
+    this.config = this.dependencies.webComponentServices.dataTableService.dataTable<ProgressItemType>(
+      query => {
+        return query
+          .get()
+          .takeUntil(this.ngUnsubscribe);
+      },
+      searchTerm => {
+        return this.dependencies.itemServices.progressItemTypeService.items()
+          .whereEquals('IsGlobal', true)
+          .include('ProgressItemUnit');
+      },
+      [
+        {
           translateValue: true,
-          value: (item) => 'module.progressItemTypes.globalTypes.' + item.typeName, flex: 40 },
+          value: (item) => 'module.progressItemTypes.globalTypes.' + item.typeName, flex: 40
+        },
         {
           translateValue: true,
           value: (item) => {
             return 'module.progressItemUnits.' + item.progressItemUnit.unitCode.toString();
           }, isSubtle: true, align: AlignEnum.Right, hideOnSmallScreens: true
         },
-      ])
-      .loadQuery(searchTerm => {
-        return this.dependencies.itemServices.progressItemTypeService.items()
-          .whereEquals('IsGlobal', true)
-          .include('ProgressItemUnit');
-      })
-      .loadResolver(query => {
-        return query
-          .get()
-          .takeUntil(this.ngUnsubscribe);
-      })
+      ]
+    )
       .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
       .showPager(true)
       .showSearch(false)

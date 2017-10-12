@@ -1,5 +1,5 @@
 import { Component, Input, Output, OnInit, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
-import { MultipleItemQuery } from '../../lib/repository';
+import { MultipleItemQuery, ErrorResponse } from '../../lib/repository';
 import { DataTableConfig, Filter } from './data-table.config';
 import { Observable } from 'rxjs/Rx';
 import { TranslateService } from '@ngx-translate/core';
@@ -213,7 +213,8 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
                     this.currentPage = page;
                     this.items = response.items;
                     this.totalPages = response.pages;
-                });
+                },
+                err => this.handleLoadError(this.config, err));
         } else {
             let query = this.config.loadQuery(this.searchTerm);
 
@@ -273,7 +274,8 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
                     this.currentPage = page;
                     this.items = response.items;
                     this.totalPages = response.pages;
-                });
+                },
+                err => this.handleLoadError(this.config, err));
         }
     }
 
@@ -304,7 +306,7 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
             }
 
             if (!filter) {
-                 // if no active filter is found or the filter is invalid, use the first one
+                // if no active filter is found or the filter is invalid, use the first one
                 filter = this.filters[0];
                 this.activeFilterGuid = filter.guid;
             }
@@ -384,6 +386,12 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
 
     private saveSearchedDataToLocalStorage(hash: number, search: string) {
         localStorage.setItem(this.localStorageSearchedData + '_' + hash, search);
+    }
+
+    private handleLoadError(config: DataTableConfig<any>, errorResponse: ErrorResponse | any): void {
+        if (this.config.onError) {
+            this.config.onError(errorResponse);
+        }
     }
 
 }

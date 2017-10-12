@@ -24,20 +24,30 @@ export class SelectDietFoodDialogComponent extends BaseComponent implements OnIn
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     super(dependencies);
-    
+
   }
 
   setup(): ComponentSetup | null {
     return {
-        initialized: true
+      initialized: true
     };
   }
 
   ngOnInit() {
     super.ngOnInit();
 
-    this.config = this.dependencies.webComponentServices.dataTableService.dataTable<Food>()
-      .fields([
+    this.config = this.dependencies.webComponentServices.dataTableService.dataTable<Food>(
+      query => {
+        return query
+          .get()
+          .takeUntil(this.ngUnsubscribe);
+      },
+      searchTerm => {
+        return this.dependencies.itemServices.foodService.items()
+          .include('FoodCategory')
+          .whereLike('FoodName', searchTerm);
+      },
+      [
         {
           value: (item) => item.foodName,
           flex: 60
@@ -50,17 +60,8 @@ export class SelectDietFoodDialogComponent extends BaseComponent implements OnIn
           align: AlignEnum.Right,
           hideOnSmallScreens: true
         },
-      ])
-      .loadQuery(searchTerm => {
-        return this.dependencies.itemServices.foodService.items()
-          .include('FoodCategory')
-          .whereLike('FoodName', searchTerm);
-      })
-      .loadResolver(query => {
-        return query
-          .get()
-          .takeUntil(this.ngUnsubscribe);
-      })
+      ]
+    )
       .filter(new Filter({ filterNameKey: 'module.diets.allFoods', onFilter: query => query }))
       .filter(new Filter({ filterNameKey: 'module.diets.myFoods', onFilter: query => query.byCurrentUser().whereEquals('IsGlobal', false) }))
       .pagerSize(5)

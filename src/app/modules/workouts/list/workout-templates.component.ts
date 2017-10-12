@@ -22,7 +22,7 @@ export class WorkoutTemplatesComponent extends BaseComponent implements OnInit {
 
   setup(): ComponentSetup | null {
     return {
-        initialized: true
+      initialized: true
     };
   }
 
@@ -30,7 +30,6 @@ export class WorkoutTemplatesComponent extends BaseComponent implements OnInit {
     super.ngOnInit();
 
     this.setConfig({
-      autoInitComponent: true,
       menuTitle: { key: 'menu.workouts' },
       menuItems: new WorkoutsOverviewMenuItems().menuItems,
       componentTitle: { key: 'module.workouts.submenu.workoutTemplates' },
@@ -40,27 +39,28 @@ export class WorkoutTemplatesComponent extends BaseComponent implements OnInit {
   }
 
   private initDataTable(): void {
-    this.config = this.dependencies.webComponentServices.dataTableService.dataTable<Workout>()
-      .fields([
+    this.config = this.dependencies.webComponentServices.dataTableService.dataTable<Workout>(
+      query => {
+        return query
+          .get()
+          .takeUntil(this.ngUnsubscribe);
+      },
+      searchTerm => {
+        return this.dependencies.itemServices.workoutService.items()
+          .include('WorkoutCategory')
+          .byCurrentUser()
+          .whereLike('WorkoutName', searchTerm)
+          .whereNull('ClientId');
+      },
+      [
         { label: 'module.workouts.workoutName', value: (item) => item.workoutName, flex: 40 },
         {
           label: 'shared.updated', value: (item) => {
             return item.workoutCategory.categoryName;
           }, isSubtle: true, align: AlignEnum.Right, hideOnSmallScreens: true
         },
-      ])
-      .loadQuery(searchTerm => {
-        return this.dependencies.itemServices.workoutService.items()
-          .include('WorkoutCategory')
-          .byCurrentUser()
-          .whereLike('WorkoutName', searchTerm)
-          .whereNull('ClientId');
-      })
-      .loadResolver(query => {
-        return query
-          .get()
-          .takeUntil(this.ngUnsubscribe);
-      })
+      ]
+    )
       .dynamicFilters((searchTerm) => {
         return this.dependencies.itemServices.workoutCategoryService.getCategoryCountForWorkoutTemplates(searchTerm)
           .get()

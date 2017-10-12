@@ -140,7 +140,6 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
             appName?: string,
             menuTitle?: ResourceKey,
             enableSearch?: boolean,
-            autoInitComponent?: boolean,
             menuAvatarUrl?: string
         }): void {
         if (options) {
@@ -153,15 +152,25 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
     // --------------------- Error handlers -------------- // 
 
     protected handleError(error: any): void {
+        // force stop all loaders
+        this.stopAllLoaders(true);
+
         if (AppConfig.DevModeEnabled) {
             // log errors to console in dev mode
             console.error(error);
         }
 
         if (error instanceof ErrorResponse) {
+            // handle server not running error
+            if (error.reason === ErrorReasonEnum.ServerNotRunning) {
+                this.dependencies.router.navigate([UrlConfig.getServerDown()]);
+                return;
+            }
+
             // handle license error
             if (error.reason === ErrorReasonEnum.LicenseLimitation) {
                 this.showErrorDialog('errors.invalidLicense');
+                return;
             }
             // handle unknown ErrorResponse error
             this.showErrorDialog();
@@ -169,9 +178,6 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
             // handle unknown error
             this.showErrorDialog();
         }
-
-        // force stop all loaders
-        this.stopAllLoaders(true);
     }
 
     /**

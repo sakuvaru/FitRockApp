@@ -51,9 +51,7 @@ export class EditDietPlanExportComponent extends BaseComponent implements OnDest
   }
 
   setup(): ComponentSetup | null {
-    return {
-        initialized: true
-    };
+    return null;
   }
 
   ngOnDestroy() {

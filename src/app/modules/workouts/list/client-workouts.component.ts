@@ -22,7 +22,7 @@ export class ClientWorkoutsComponent extends BaseComponent implements OnInit {
 
   setup(): ComponentSetup | null {
     return {
-        initialized: true
+      initialized: true
     };
   }
 
@@ -30,7 +30,6 @@ export class ClientWorkoutsComponent extends BaseComponent implements OnInit {
     super.ngOnInit();
 
     this.setConfig({
-      autoInitComponent: true,
       menuTitle: { key: 'menu.workouts' },
       menuItems: new WorkoutsOverviewMenuItems().menuItems,
       componentTitle: { key: 'module.workouts.submenu.clientWorkouts' },
@@ -40,8 +39,20 @@ export class ClientWorkoutsComponent extends BaseComponent implements OnInit {
   }
 
   private initDataTable(): void {
-    this.config = this.dependencies.webComponentServices.dataTableService.dataTable<Workout>()
-      .fields([
+    this.config = this.dependencies.webComponentServices.dataTableService.dataTable<Workout>(
+      (query => {
+        return query
+          .get()
+          .takeUntil(this.ngUnsubscribe);
+      }),
+      searchTerm => {
+        return this.dependencies.itemServices.workoutService.items()
+          .includeMultiple(['WorkoutCategory', 'Client'])
+          .byCurrentUser()
+          .whereLike('WorkoutName', searchTerm)
+          .whereNotNull('ClientId');
+      },
+      [
         { label: 'module.workouts.workoutName', value: (item) => item.workoutName, flex: 40 },
         {
           label: '-', value: (item) => {
@@ -57,18 +68,6 @@ export class ClientWorkoutsComponent extends BaseComponent implements OnInit {
           }, isSubtle: true, align: AlignEnum.Right, hideOnSmallScreens: true
         },
       ])
-      .loadQuery(searchTerm => {
-        return this.dependencies.itemServices.workoutService.items()
-          .includeMultiple(['WorkoutCategory', 'Client'])
-          .byCurrentUser()
-          .whereLike('WorkoutName', searchTerm)
-          .whereNotNull('ClientId');
-      })
-      .loadResolver(query => {
-        return query
-          .get()
-          .takeUntil(this.ngUnsubscribe);
-      })
       .dynamicFilters((searchTerm) => {
         return this.dependencies.itemServices.workoutCategoryService.getCategoryCountForClientWorkouts(searchTerm)
           .get()

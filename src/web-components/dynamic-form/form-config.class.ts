@@ -165,41 +165,7 @@ export class FormConfig<TItem extends IItem> {
     public fieldLabelResolver?: (field: FormField, originalLabel: string) => Observable<string>;
 
     constructor(
-        config?: {
-            // required
-            fields: FormField[],
-
-            // optional
-            fieldLabelResolver?: (field: FormField, originalLabel: string) => Observable<string>,
-            enableLocalLoader?: boolean,
-            fieldValueResolver?: (fieldName: string, value: any) => string | boolean | number,
-            onEditFormLoaded?: (form: ResponseFormEdit<TItem>) => void,
-            onInsertFormLoaded?: (form: ResponseFormInsert) => void,
-            editFormDefinition?: Observable<ResponseFormEdit<TItem>>,
-            insertFormDefinition?: () => Observable<ResponseFormInsert>,
-            submitTextKey?: string,
-            showSnackBar?: boolean,
-            snackBarTextKey?: string,
-            insertFunction?: (item: any) => Observable<ResponseCreate<TItem>>, // insert or edit function needs to be provided
-            editFunction?: (item: any) => Observable<ResponseEdit<TItem>>, // insert or edit function needs to be provided
-            deleteFunction?: (item: any) => Observable<ResponseDelete>,
-            type?: string,
-            item?: TItem,
-            hiddenFields?: string[],
-            onBeforeFormInit?: () => void,
-            onFormLoaded?: () => void,
-            onAfterInsert?: (response: ResponseCreate<TItem>) => void,
-            onAfterUpdate?: (response: ResponseEdit<TItem>) => void,
-            onError?: (response: ErrorResponse | FormErrorResponse | any) => void,
-            onBeforeSave?: () => void,
-            OnAfterSave?: () => void,
-            onBeforeDelete?: (item: any) => void
-            onAfterDelete?: (response: ResponseDelete) => void,
-            onFieldValueChange?: (config: FormConfig<TItem>, changedField: FormField, newValue: any) => void,
-            loaderConfig?: { start: () => void, stop: () => void }
-        }
     ) {
-        Object.assign(this, config);
     }
 
     /**

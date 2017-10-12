@@ -7,6 +7,9 @@ import { FormField } from './form-fields';
 import { FetchedFile } from './fetched-file.class';
 
 export function mapReason(reasonCode: number): ErrorReasonEnum {
+    if (reasonCode === -1) {
+        return ErrorReasonEnum.ServerNotRunning;
+    }
     if (reasonCode === 0) {
         return ErrorReasonEnum.Other;
     }
@@ -86,7 +89,9 @@ export class ResponseMultiple<T> extends ResponseGetBase {
             items?: T[]
         }) {
         super();
-        if (options) Object.assign(this, options);
+        if (options) {
+            Object.assign(this, options);
+        }
     }
 
     isEmpty(): boolean {
@@ -116,7 +121,9 @@ export class ResponseCount {
 
             count?: number
         }) {
-        if (options) Object.assign(this, options);
+        if (options) {
+            Object.assign(this, options);
+        }
     }
 }
 
@@ -135,7 +142,9 @@ export class ResponseSingle<T> extends ResponseGetBase {
             item?: T
         }) {
         super();
-        if (options) Object.assign(this, options);
+        if (options) {
+            Object.assign(this, options);
+        }
     }
 
     isEmpty(): boolean {
@@ -154,7 +163,9 @@ export class ResponseCreate<T extends IItem> {
             result?: number;
             model?: string,
         }) {
-        if (options) Object.assign(this, options);
+        if (options) {
+            Object.assign(this, options);
+        }
     }
 }
 
@@ -169,7 +180,9 @@ export class ResponseDelete {
             action: string
         }
     ) {
-        if (options) Object.assign(this, options);
+        if (options) {
+            Object.assign(this, options);
+        }
     }
 }
 
@@ -183,7 +196,9 @@ export class ResponseEdit<T extends IItem> {
             item?: T,
             model?: string,
         }) {
-        if (options) Object.assign(this, options);
+        if (options) {
+            Object.assign(this, options);
+        }
     }
 }
 
@@ -202,7 +217,9 @@ export class ResponseFormInsert {
             model?: string,
 
         }) {
-        if (options) Object.assign(this, options);
+        if (options) {
+            Object.assign(this, options);
+        }
     }
 }
 
@@ -226,11 +243,13 @@ export class ResponseFormEdit<T extends IItem>  {
             item: T;
             model?: string,
         }) {
-        if (options) Object.assign(this, options);
+        if (options) {
+            Object.assign(this, options);
+        }
     }
 }
 
-export class ResponsePost<T extends any>{
+export class ResponsePost<T extends any> {
     public data: T;
     public action: string;
     public message: string;
@@ -244,7 +263,9 @@ export class ResponsePost<T extends any>{
             model?: string,
         }
     ) {
-        if (options) Object.assign(this, options);
+        if (options) {
+            Object.assign(this, options);
+        }
     }
 }
 
@@ -268,7 +289,9 @@ export class ResponseUploadMultiple {
 
             files?: FetchedFile[]
         }) {
-        if (options) Object.assign(this, options);
+        if (options) {
+            Object.assign(this, options);
+        }
     }
 
     isEmpty(): boolean {
@@ -302,7 +325,9 @@ export class ResponseUploadSingle {
 
             file?: FetchedFile
         }) {
-        if (options) Object.assign(this, options);
+        if (options) {
+            Object.assign(this, options);
+        }
     }
 }
 
@@ -370,7 +395,9 @@ export class ResponseUpdateItemsOrder<T> {
             type: string,
             action: string
         }) {
-        if (options) Object.assign(this, options);
+        if (options) {
+            Object.assign(this, options);
+        }
     }
 }
 

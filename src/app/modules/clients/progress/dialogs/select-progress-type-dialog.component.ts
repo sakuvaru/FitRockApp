@@ -39,8 +39,17 @@ export class SelectProgressTypeDialogComponent extends BaseComponent implements 
   }
 
   private initDataTable(): void {
-    this.config = this.dependencies.webComponentServices.dataTableService.dataTable<ProgressItemType>()
-      .fields([
+    this.config = this.dependencies.webComponentServices.dataTableService.dataTable<ProgressItemType>(
+      (query) => {
+        return query
+          .get()
+          .takeUntil(this.ngUnsubscribe);
+      },
+      (searchTerm) => {
+        return this.dependencies.itemServices.progressItemTypeService.getProgressItemTypesSelection(this.dependencies.authenticatedUserService.getUserId())
+          .include('ProgressItemUnit');
+      },
+      [
         {
           translateValue: true,
           value: (item) =>  item.isGlobal ? 'module.progressItemTypes.globalTypes.' + item.typeName : item.typeName, flex: 40
@@ -52,15 +61,6 @@ export class SelectProgressTypeDialogComponent extends BaseComponent implements 
           }, isSubtle: true, align: AlignEnum.Right, hideOnSmallScreens: true
         },
       ])
-      .loadQuery(searchTerm => {
-        return this.dependencies.itemServices.progressItemTypeService.getProgressItemTypesSelection(this.dependencies.authenticatedUserService.getUserId())
-          .include('ProgressItemUnit');
-      })
-      .loadResolver(query => {
-        return query
-          .get()
-          .takeUntil(this.ngUnsubscribe);
-      })
       .wrapInCard(false)
       .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
       .showPager(true)

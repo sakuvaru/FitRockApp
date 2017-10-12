@@ -18,6 +18,7 @@ export class UrlConfig {
     public static Logout = 'logout';
     public static Item404 = '404';
     public static Global404 = '404';
+    public static ServerDown = 'server-down';
     public static Redirect = 'redirect';
     public static RedirectAfterLogout = UrlConfig.Login;
     public static Default = 'login';
@@ -30,6 +31,10 @@ export class UrlConfig {
 
     public static getGlobal404(): string {
         return '/' + UrlConfig.Global404;
+    }
+
+    public static getServerDown(): string {
+        return '/' + UrlConfig.ServerDown;
     }
 
     public static getLoginUrl(): string {

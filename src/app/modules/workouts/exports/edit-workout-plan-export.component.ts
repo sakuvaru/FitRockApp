@@ -50,9 +50,7 @@ export class EditWorkoutPlanExportComponent extends BaseComponent implements OnD
   }
 
   setup(): ComponentSetup | null {
-    return {
-        initialized: false
-    };
+    return null;
   }
 
   ngOnDestroy() {

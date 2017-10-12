@@ -28,7 +28,7 @@ export class AdminToolbarComponent extends BaseComponent implements OnInit {
 
     setup(): ComponentSetup | null {
         return null;
-      }
+    }
 
     ngOnInit() {
         this.subscribeToFeedObservables();
@@ -36,20 +36,19 @@ export class AdminToolbarComponent extends BaseComponent implements OnInit {
 
     private subscribeToFeedObservables(): void {
         // do not run it through super.subscribeToObservable
-        // as it causes some issues
+        // as it causes some issues with rendering of the layout template (e.g. the icons are not resolved, the media queries do not work...)
 
         this.dependencies.itemServices.feedService.getCountOfUnreadNotifications(this.dependencies.authenticatedUserService.getUserId())
             .takeUntil(this.ngUnsubscribe)
-            .map(count => this.feedsCount = count)
-            .subscribe();
+            .subscribe(count => this.feedsCount = count, error => super.handleError(error));
 
         this.dependencies.itemServices.feedService.getFeedsForUser(this.dependencies.authenticatedUserService.getUserId(), this.limitFeedsCount)
             .get()
             .takeUntil(this.ngUnsubscribe)
-            .map(response => {
+            .subscribe(response => {
                 return this.feeds = response.items;
-            })
-            .subscribe();
+            },
+            error => super.handleError(error));
     }
 
     private getFeedUrl(feed: Feed): string | null {
@@ -103,7 +102,7 @@ export class AdminToolbarComponent extends BaseComponent implements OnInit {
             // mark feed as read upon clicking
             this.getMarkAsReadObservable(feed).subscribe(response => {
                 this.preventFeedChange = false;
-                
+
                 // there is one less unread feed
                 if (this.feedsCount > 0) {
                     this.feedsCount--;

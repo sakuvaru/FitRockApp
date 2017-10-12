@@ -203,6 +203,9 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
                     if (config.enableLocalLoader) {
                         this.localLoaderEnabled = false;
                     }
+                },
+                err => {
+                    this.handleSaveError(config, err);
                 });
         }
 
@@ -219,6 +222,7 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
 
             return config.insertFormDefinition
                 .map(form => {
+                    // get fields
                     const fields = form.fields;
 
                     if (config.fieldValueResolver && fields && fields.length > 0) {
@@ -322,18 +326,18 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
             if (config.isInsertForm()) {
                 this.getInsertButtonObservable(this.customSaveButtonSubject, config)
                     .takeUntil(this.ngUnsubscribe)
-                    .subscribe();
+                    .subscribe(() => {}, err => this.handleSaveError(config, err));
             } else if (config.isEditForm()) {
                 this.getEditButtonObservable(this.customSaveButtonSubject, config)
                     .takeUntil(this.ngUnsubscribe)
-                    .subscribe();
+                    .subscribe(() => {}, err => this.handleSaveError(config, err));
             }
         }
         if (this.customDeleteButtonSubject) {
             if (this.deleteIsEnabled(config)) {
                 this.getDeleteButtonObservable(this.customDeleteButtonSubject, config)
                     .takeUntil(this.ngUnsubscribe)
-                    .subscribe();
+                    .subscribe(() => {}, err => this.handleSaveError(config, err));
             }
         }
 
@@ -342,16 +346,16 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
             if (config.isInsertForm()) {
                 this.getInsertButtonObservable(this.insertButtonSubject, config)
                     .takeUntil(this.ngUnsubscribe)
-                    .subscribe();
+                    .subscribe(() => {}, err => this.handleSaveError(config, err));
             } else if (config.isEditForm()) {
                 this.getEditButtonObservable(this.editButtonSubject, config)
                     .takeUntil(this.ngUnsubscribe)
-                    .subscribe();
+                    .subscribe(() => {}, err => this.handleSaveError(config, err));
 
                 if (this.deleteIsEnabled(config)) {
                     this.getDeleteButtonObservable(this.deleteButtonSubject, config)
                         .takeUntil(this.ngUnsubscribe)
-                        .subscribe();
+                        .subscribe(() => {}, err => this.handleSaveError(config, err));
                 }
             }
         }
@@ -393,9 +397,6 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
 
                 // stop loader
                 this.stopLoader(config);
-            },
-            (err) => {
-                this.handleError(config, err);
             });
     }
 
@@ -431,9 +432,6 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
 
                 // stop loader
                 this.stopLoader(config);
-            },
-            (err) => {
-                this.handleError(config, err);
             });
     }
 
@@ -463,9 +461,6 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
 
                 // stop loader
                 this.stopLoader(config);
-            },
-            (err) => {
-                this.handleError(config, err);
             });
     }
 
@@ -597,6 +592,9 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
         if (this.config.clearFormAfterSave && this.config.isInsertForm()) {
             this.clearForm();
         }
+
+         // stop loader on error in case the request is pending
+         this.stopLoader(config);
     }
 
     private clearForm(): void {
@@ -613,28 +611,40 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
         });
     }
 
-    private handleError(config: FormConfig<any>, errorResponse: ErrorResponse | FormErrorResponse | any): void {
+    private handleLoadError(config: FormConfig<any>, error: ErrorResponse | FormErrorResponse | any): void {
+        // log error because there is no guarantee that master component will handle it (in which case no error would be shown at all)
+        console.error(error);
+        
         if (this.config.onError) {
-            this.config.onError(errorResponse);
+            this.config.onError(error);
+        }
+    }
+
+    private handleSaveError(config: FormConfig<any>, error: ErrorResponse | FormErrorResponse | any): void {
+        // log error because there is no guarantee that master component will handle it (in which case no error would be shown at all)
+        console.error(error);
+        
+        if (this.config.onError) {
+            this.config.onError(error);
         }
 
-        if (errorResponse instanceof FormErrorResponse) {
+        if (error instanceof FormErrorResponse) {
             // handle form errors without validation result
-            if (!errorResponse.formValidation.validationResult || errorResponse.formValidation.validationResult.length === 0) {
+            if (!error.formValidation.validationResult || error.formValidation.validationResult.length === 0) {
                 this.submissionError = this.unknownErrorMessage;
                 return;
             }
 
             // handle invalid field errors
-            errorResponse.formValidation.validationResult.forEach(validationResult => {
+            error.formValidation.validationResult.forEach(validationResult => {
 
-                this.getFormFieldErrorMessage(validationResult).subscribe(error => {
+                this.getFormFieldErrorMessage(validationResult).subscribe(fieldErrorMessage => {
                     const fieldWithError = this.form.controls[validationResult.columnName];
 
                     if (!fieldWithError) {
                         // field can be undefined if its not present in form - e.g. codename might throw error, but is
                         // typically not in the form
-                        this.formErrorLines.push(error);
+                        this.formErrorLines.push(fieldErrorMessage);
                     } else {
                         // set field error
                         this.form.controls[validationResult.columnName].setErrors({ 'field_error': error });
@@ -653,9 +663,9 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
                 });
             });
             this.submissionError = this.formErrorLines.join(', ');
-        } else if (errorResponse instanceof ErrorResponse) {
+        } else if (error instanceof ErrorResponse) {
             // handle license errors differently
-            if (errorResponse.reason === ErrorReasonEnum.LicenseLimitation) {
+            if (error.reason === ErrorReasonEnum.LicenseLimitation) {
                 this.submissionError = this.insufficientLicenseError;
             } else {
                 this.submissionError = this.generalErrorMessage;

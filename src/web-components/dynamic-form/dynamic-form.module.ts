@@ -21,6 +21,9 @@ import { LoaderModule } from '../loader/loader.module';
 // buttons
 import { ButtonsModule} from '../buttons/buttons.module';
 
+// messages
+import { MessagesModule } from '../messages/messages.module';
+
 @NgModule({
     imports: [
         CommonModule,
@@ -29,7 +32,8 @@ import { ButtonsModule} from '../buttons/buttons.module';
         FormsModule,
         ReactiveFormsModule, // required by dynamic forms feature
         LoaderModule,
-        ButtonsModule
+        ButtonsModule,
+        MessagesModule
     ],
     declarations: [
         DynamicFormQuestionComponent,

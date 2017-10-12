@@ -20,7 +20,7 @@ export class LoginPageComponent extends BaseComponent {
 
     setup(): ComponentSetup | null {
         return {
-            initialized: false
+            initialized: true
         };
       }
 }

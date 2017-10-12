@@ -14,7 +14,7 @@ import { Observable } from 'rxjs/Rx';
 })
 export class EditDietExportComponent extends BaseComponent implements OnInit, OnChanges {
 
-    @Output() loadDiet = new EventEmitter();
+    @Output() loadDiet = new EventEmitter<Diet>();
 
     @Input() dietId: number;
 
@@ -28,9 +28,7 @@ export class EditDietExportComponent extends BaseComponent implements OnInit, On
     }
 
     setup(): ComponentSetup | null {
-        return {
-            initialized: true
-        };
+        return null;
       }
 
     ngOnChanges(changes: SimpleChanges) {
@@ -49,10 +47,10 @@ export class EditDietExportComponent extends BaseComponent implements OnInit, On
             .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
             .onAfterDelete(() => super.navigate([super.getTrainerUrl('diets')]))
             .onFormLoaded(form => {
-                const workout = form.item;
+                const diet = form.item;
 
                 // set loaded workout
-                this.loadDiet.next(workout);
+                this.loadDiet.next(diet);
             })
             .build();
     }

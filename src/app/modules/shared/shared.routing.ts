@@ -14,11 +14,14 @@ import { Item404Component } from './item-404.component';
 import { UnauthorizedComponent } from './unauthorized.component';
 import { AppErrorComponent } from './app-error.component';
 import { RedirectComponent } from './redirect.component';
-
+import { ServerDownComponent } from './server-down.component';
 
 export const routes: Routes = [
     {
         path: UrlConfig.Global404, component: Global404Component
+    },
+    {
+        path: UrlConfig.ServerDown, component: ServerDownComponent
     },
     {
         path: UrlConfig.AuthMasterPath, component: SimpleLayoutComponent, children: [

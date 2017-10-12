@@ -41,7 +41,6 @@ export class FeedsComponent extends BaseComponent implements OnInit {
     private initMenu(): void {
 
         this.setConfig({
-            autoInitComponent: true,
             componentTitle: { key: 'module.profile.submenu.feeds' },
             menuItems: new MyProfileMenuItems().menuItems,
             menuTitle: { key: 'module.profile.submenu.myProfile' },

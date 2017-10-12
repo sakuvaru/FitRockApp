@@ -48,7 +48,7 @@ export class EntryPointComponent extends BaseComponent {
         }
       },
       (error) => {
-        this.navigateToError();
+        super.handleError(error);
       });
   }
 }

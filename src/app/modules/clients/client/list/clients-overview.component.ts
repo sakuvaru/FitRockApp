@@ -26,9 +26,9 @@ export class ClientsOverviewComponent extends ClientsBaseComponent implements On
 
   setup(): ComponentSetup | null {
     return {
-        initialized: true
+      initialized: true
     };
-}
+  }
 
   ngOnInit(): void {
     super.ngOnInit();
@@ -38,26 +38,26 @@ export class ClientsOverviewComponent extends ClientsBaseComponent implements On
 
   private initDataTable(): void {
     this.setConfig({
-      autoInitComponent: true,
       menuTitle: { key: 'menu.clients' },
       menuItems: new ClientOverviewMenuItems().menuItems,
       componentTitle: { key: 'module.clients.allClients' },
     });
 
-    this.config = this.dependencies.webComponentServices.dataTableService.dataTable<User>()
-      .fields([
-        { label: 'Klient', value: (item) => item.getFullName() , flex: 40 },
-        { label: 'E-mail', value: (item) =>  item.email , isSubtle: true, align: AlignEnum.Right, hideOnSmallScreens: true },
-      ])
-      .loadQuery(searchTerm => {
-        return this.dependencies.itemServices.userService.clients()
-          .whereLikeMultiple(['FirstName', 'LastName'], searchTerm);
-      })
-      .loadResolver(query => {
+    this.config = this.dependencies.webComponentServices.dataTableService.dataTable<User>(
+      query => {
         return query
           .get()
           .takeUntil(this.ngUnsubscribe);
-      })
+      },
+      searchTerm => {
+        return this.dependencies.itemServices.userService.clients()
+          .whereLikeMultiple(['FirstName', 'LastName'], searchTerm);
+      },
+      [
+        { label: 'Klient', value: (item) => item.getFullName(), flex: 40 },
+        { label: 'E-mail', value: (item) => item.email, isSubtle: true, align: AlignEnum.Right, hideOnSmallScreens: true },
+      ]
+    )
       .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
       .showAllFilter(true)
       .filter(new Filter({

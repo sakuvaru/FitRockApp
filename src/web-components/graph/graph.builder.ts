@@ -12,10 +12,10 @@ export class GraphBuilder<TGraph extends BaseGraph> {
         public graph: Observable<TGraph>,
         public graphType: GraphTypeEnum
     ) {
-        this.config = new GraphConfig<TGraph>({
+        this.config = new GraphConfig<TGraph> (
             graph,
             graphType
-        });
+        );
     }
 
     /**

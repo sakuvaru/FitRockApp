@@ -1,14 +1,14 @@
 import { Observable } from 'rxjs/Observable';
-import { MultipleItemQuery, IItem, ResponseMultiple, ItemCountQuery } from '../../lib/repository';
+import { MultipleItemQuery, IItem, ResponseMultiple, ItemCountQuery, ErrorResponse } from '../../lib/repository';
 import { DataTableField } from './data-table-field.class';
 import { guidHelper, stringHelper } from '../../lib/utilities';
 
 export class DataTableConfig<TItem extends IItem> {
 
     /**
-     * Fields in the data table
+     * Indicates if last used filter will be used on the next load of given data table
      */
-    public fields: DataTableField<any>[];
+    public saveLastFilter: boolean = true;
 
     /**
      * Indicates if local loader is enabled
@@ -46,52 +46,39 @@ export class DataTableConfig<TItem extends IItem> {
     public showAllFilter = false;
 
     /**
-     * Indicates if the last state of data table is stored in local storage
-     * Search, page & active filter is stored if this is enabled
+     * Callback for handling errors
      */
-    public saveLastFilter = true;
-
-    /**
-     * Method that is used to get observable out of loadQuery.
-     * Usually this should include 'takeUntil(this.ngUnsubscribe)' to ensure
-     * that requests are cancelled if they are not required (e.g. after destroying component)
-     */
-    public loadResolver: (query: MultipleItemQuery<TItem>) => Observable<ResponseMultiple<TItem>>;
-
-    /**
-     * Used to specify query that loads items
-     */
-    public loadQuery: (searchTerm: string) => MultipleItemQuery<TItem>;
+    public onError?: (response: ErrorResponse | any) => void;
 
     /**
      * On click handled
      */
-    public onClick: (item: TItem) => void;
+    public onClick?: (item: TItem) => void;
 
     /**
      * If set, icon with with given function will be resolved, return name of the icon
      */
-    public iconResolver: (item: TItem) => string;
+    public iconResolver?: (item: TItem) => string;
 
     /**
      * If set, avatar with given fucntion will be resolved - return URL of the image
      */
-    public avatarUrlResolver: (item: TItem) => string;
+    public avatarUrlResolver?: (item: TItem) => string;
 
     /**
      * Handler executed after items are loaded
      */
-    public onAfterLoad: (isInitialLaod: boolean) => void;
+    public onAfterLoad?: (isInitialLaod: boolean) => void;
 
     /**
      * Handler executed before items are loaded
      */
-    public onBeforeLoad: (isInitialLoad: boolean) => void;
+    public onBeforeLoad?: (isInitialLoad: boolean) => void;
 
     /**
      * Set of dynamic filters (do not combine with static filters)
      */
-    public dynamicFilters: <TFilter extends Filter<IItem>>(searchTerm: string) => Observable<Filter<IItem>[]>;
+    public dynamicFilters?: <TFilter extends Filter<IItem>>(searchTerm: string) => Observable<Filter<IItem>[]>;
 
     /**
      * Set of static filters (do not combine with dynamic filters)
@@ -114,35 +101,21 @@ export class DataTableConfig<TItem extends IItem> {
     public loaderConfig?: { start: () => void, stop: () => void };
 
     constructor(
-        public options?: {
-            // required
-            loadResolver: (query: MultipleItemQuery<TItem>) => Observable<ResponseMultiple<TItem>>;
-            loadQuery: (searchTerm: string) => MultipleItemQuery<TItem>;
-            fields: DataTableField<any>[];
-
-            // optional
-            enableLocalLoader?: boolean,
-            wrapInCard?: boolean,
-            showHeader?: boolean,
-            showPager?: boolean,
-            showSearch?: boolean,
-            iconResolver?: (item: TItem) => string,
-            avatarUrlResolver?: (item: TItem) => string,
-            searchNoItemsTextKey?: string,
-            noItemsText?: string,
-            onAfterLoad?: (isInitialLoad) => void,
-            onBeforeLoad?: (isInitialLoad) => void,
-            onClick?: (item: TItem) => void,
-            staticFilters: Filter<TItem>[],
-            selectableConfig?: SelectableConfig<TItem>,
-            pagerConfig?: PagerConfig,
-            showAllFilter: boolean,
-            saveLastFilter: boolean,
-            dynamicFilters?: <TFilter extends Filter<IItem>>(searchTerm: string) => Observable<Filter<IItem>[]>,
-            loaderConfig?: { start: () => void, stop: () => void }
-        }) {
-        Object.assign(this, options);
-    }
+        /**
+        * Method that is used to get observable out of loadQuery.
+        * Usually this should include 'takeUntil(this.ngUnsubscribe)' to ensure
+        * that requests are cancelled if they are not required (e.g. after destroying component)
+        */
+        public loadResolver: (query: MultipleItemQuery<TItem>) => Observable<ResponseMultiple<TItem>>,
+        /**
+        * Used to specify query that loads items
+        */
+        public loadQuery: (searchTerm: string) => MultipleItemQuery<TItem>,
+        /**
+        * Fields in the data table
+        */
+        public fields: DataTableField<any>[]
+    ) { }
 
     isSelectable(): boolean {
         return !(!this.selectableConfig);

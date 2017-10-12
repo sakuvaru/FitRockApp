@@ -2,17 +2,7 @@ import { BaseGraph } from './graph-types';
 import { Observable } from 'rxjs/Rx';
 import { GraphTypeEnum } from './graph-type.enum';
 
-export class GraphConfig<TGraph extends BaseGraph>{
-
-    /**
-     * Graph
-     */
-    public graph: Observable<TGraph>;
-
-    /**
-     * Graph type
-     */
-    public graphType: GraphTypeEnum;
+export class GraphConfig<TGraph extends BaseGraph> {
 
     /**
      * Indicates if local loader is enabled
@@ -53,20 +43,14 @@ export class GraphConfig<TGraph extends BaseGraph>{
     };
 
     constructor(
-        config: {
-            // required
-            graph: Observable<TGraph>,
-            graphType: GraphTypeEnum,
-
-            // optional
-            enableLocalLoader?: boolean,
-            width?: any,
-            height?: any,
-            showLegend?: boolean,
-            legendTitleKey?: string,
-            scheme?: any
-        }
+        /**
+         * Graph to use
+         */
+        public graph: Observable<TGraph>,
+        /**
+         * Corresponding graph type
+         */
+        public graphType: GraphTypeEnum,
     ) {
-        Object.assign(this, config);
     }
 }

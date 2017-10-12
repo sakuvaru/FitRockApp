@@ -109,6 +109,12 @@ export class QueryService {
         }
 
         if (response instanceof Response) {
+            // Server not running error
+            if (response.status === 0) {
+                 // return error response
+                return new ErrorResponse('Server is not running, please try again later', ErrorReasonEnum.ServerNotRunning, response);
+            }
+
             // 404 error
             if (response.status === 404) {
                 // return error response

@@ -24,20 +24,30 @@ export class SelectWorkoutExerciseDialogComponent extends BaseComponent implemen
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     super(dependencies);
-    
+
   }
 
   setup(): ComponentSetup | null {
     return {
-        initialized: true
+      initialized: true
     };
   }
 
   ngOnInit() {
     super.ngOnInit();
 
-    this.config = this.dependencies.webComponentServices.dataTableService.dataTable<Exercise>()
-      .fields([
+    this.config = this.dependencies.webComponentServices.dataTableService.dataTable<Exercise>(
+      query => {
+        return query
+          .get()
+          .takeUntil(this.ngUnsubscribe);
+      },
+      searchTerm => {
+        return this.dependencies.itemServices.exerciseService.items()
+          .include('ExerciseCategory')
+          .whereLike('ExerciseName', searchTerm);
+      },
+      [
         {
           label: 'module.workouts.exerciseName',
           value: (item) => item.exerciseName,
@@ -51,17 +61,8 @@ export class SelectWorkoutExerciseDialogComponent extends BaseComponent implemen
           align: AlignEnum.Right,
           hideOnSmallScreens: true
         },
-      ])
-      .loadQuery(searchTerm => {
-        return this.dependencies.itemServices.exerciseService.items()
-          .include('ExerciseCategory')
-          .whereLike('ExerciseName', searchTerm);
-      })
-      .loadResolver(query => {
-        return query
-          .get()
-          .takeUntil(this.ngUnsubscribe);
-      })
+      ]
+    )
       .filter(new Filter({ filterNameKey: 'module.workouts.allExercises', onFilter: query => query }))
       .filter(new Filter({ filterNameKey: 'module.workouts.myExercises', onFilter: query => query.byCurrentUser().whereEquals('IsGlobal', false) }))
       .pagerSize(5)

@@ -86,7 +86,7 @@ export class RepositoryClient {
         return new EditFormQuery<TItem>(this.authHttp, this.config, type, itemId);
     }
 
-    /* ------------ File queroes ---------- */
+    /* ------------ File queries ---------- */
 
     singleFile(controller: string, action: string): SingleFileQuery {
         return new SingleFileQuery(this.authHttp, this.config, controller, action);
