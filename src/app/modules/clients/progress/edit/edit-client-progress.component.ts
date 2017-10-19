@@ -8,7 +8,7 @@ import { ProgressItemType } from '../../../../models';
 import { ClientsBaseComponent } from '../../clients-base.component';
 import { ClientMenuItems } from '../../menu.items';
 import { FormConfig, DynamicFormComponent } from '../../../../../web-components/dynamic-form';
-import { DataTableConfig, AlignEnum, Filter, DataTableComponent } from '../../../../../web-components/data-table';
+import { DataTableConfig, AlignEnum, Filter, DataTableComponent, DataTableField } from '../../../../../web-components/data-table';
 import { ProgressItem, User, ProgressItemTypeWithCountDto } from '../../../../models';
 import { Observable } from 'rxjs/Rx';
 import { EditProgressItemDialogComponent } from '../dialogs/edit-progress-item-dialog.component';
@@ -161,8 +161,11 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
             },
             [
                 {
-                    translateValue: true,
-                    value: (item) => 'module.progressItemTypes.globalTypes.' + item.progressItemType.codename,
+                    value: (item: ProgressItem) => 
+                        item.progressItemType.translateValue 
+                            ? super.translate( 'module.progressItemTypes.globalTypes.' + item.progressItemType.codename)
+                            : item.progressItemType.typeName
+                    ,
                     isSubtle: false,
                     hideOnSmallScreens: false,
                     align: AlignEnum.Left,
@@ -180,8 +183,7 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
                     align: AlignEnum.Left,
                 },
                 {
-                    translateValue: true,
-                    value: (item) => 'module.progressItemUnits.' + item.progressItemType.progressItemUnit.unitCode,
+                    value: (item: ProgressItem) => super.translate('module.progressItemUnits.' + item.progressItemType.progressItemUnit.unitCode),
                     isSubtle: true,
                     hideOnSmallScreens: true,
                     align: AlignEnum.Right

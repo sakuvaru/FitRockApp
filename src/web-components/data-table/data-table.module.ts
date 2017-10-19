@@ -12,7 +12,7 @@ import { DataTableService } from './data-table-service';
 // components
 import { DataTableComponent } from './data-table.component';
 import {
-    DataTableLayoutItemsComponent, DataTableLayoutHeaderComponent,
+    DataTableLayoutItemsComponent, DataTableLayoutHeaderComponent, DataTableLayoutFieldComponent,
     DataTableLayoutFiltersComponent, DataTableLayoutPagerComponent, DataTableLayoutSearchComponent
 } from './layouts/layouts.components';
 
@@ -34,7 +34,8 @@ import { LoaderModule } from '../loader/loader.module';
         DataTableLayoutFiltersComponent,
         DataTableLayoutPagerComponent,
         DataTableLayoutSearchComponent,
-        DataTableLayoutHeaderComponent
+        DataTableLayoutHeaderComponent,
+        DataTableLayoutFieldComponent
     ],
     exports: [
         DataTableComponent

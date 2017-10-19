@@ -48,14 +48,12 @@ export class GlobalTypesListComponent extends BaseComponent implements OnInit {
       },
       [
         {
-          translateValue: true,
-          value: (item) => 'module.progressItemTypes.globalTypes.' + item.typeName, flex: 40
+          value: (item) => super.translate('module.progressItemTypes.globalTypes.' + item.typeName), flex: 40
         },
         {
-          translateValue: true,
-          value: (item) => {
-            return 'module.progressItemUnits.' + item.progressItemUnit.unitCode.toString();
-          }, isSubtle: true, align: AlignEnum.Right, hideOnSmallScreens: true
+          value: (item) =>
+            super.translate('module.progressItemUnits.' + item.progressItemUnit.unitCode.toString())
+          , isSubtle: true, align: AlignEnum.Right, hideOnSmallScreens: true
         },
       ]
     )

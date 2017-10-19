@@ -51,14 +51,14 @@ export class SelectProgressTypeDialogComponent extends BaseComponent implements 
       },
       [
         {
-          translateValue: true,
-          value: (item) =>  item.isGlobal ? 'module.progressItemTypes.globalTypes.' + item.typeName : item.typeName, flex: 40
+          value: (item: ProgressItemType) =>  item.isGlobal ? super.translate('module.progressItemTypes.globalTypes.' + item.typeName) : item.typeName, 
+          flex: 40
         },
         {
-          translateValue: true,
-          value: (item) => {
-            return 'module.progressItemUnits.' + item.progressItemUnit.unitCode.toString();
-          }, isSubtle: true, align: AlignEnum.Right, hideOnSmallScreens: true
+          value: (item) => super.translate( 'module.progressItemUnits.' + item.progressItemUnit.unitCode.toString()),
+          isSubtle: true, 
+          align: AlignEnum.Right, 
+          hideOnSmallScreens: true
         },
       ])
       .wrapInCard(false)

@@ -9,12 +9,7 @@
             <mat-icon *ngIf="config.iconResolver" mat-list-icon>{{getIcon(item)}}</mat-icon>
             <span hideOnMobile [enabled]="field.hideOnSmallScreens" *ngFor="let field of config.fields" flex="field.flex" class="{{getTextAlignClass(field)}}">
                 <span [class.md-caption]="field.isSubtle" [class.tc-grey-500]="field.isSubtle">
-                    <ng-container *ngIf="!translateValue(field)">
-                        {{getFieldValue(field, item)}}
-                    </ng-container>
-                    <ng-container *ngIf="translateValue(field)">
-                        {{getFieldValue(field, item) | translate}}
-                    </ng-container>
+                    <data-table-layout-field [item]="item" [field]="field"></data-table-layout-field>
                 </span>
             </span>
         </mat-list-item>
@@ -40,12 +35,7 @@
             <mat-icon *ngIf="config.iconResolver" mat-list-icon>{{getIcon(item)}}</mat-icon>
             <span hideOnMobile [enabled]="field.hideOnSmallScreens" *ngFor="let field of config.fields" flex="field.flex" class="{{getTextAlignClass(field)}}">
                 <span [class.md-caption]="field.isSubtle" [class.tc-grey-500]="field.isSubtle">
-                    <ng-container *ngIf="!translateValue(field)">
-                        {{getFieldValue(field, item)}}
-                    </ng-container>
-                    <ng-container *ngIf="translateValue(field)">
-                        {{getFieldValue(field, item) | translate}}
-                    </ng-container>
+                    <data-table-layout-field [item]="item" [field]="field"></data-table-layout-field>
                 </span>
             </span>
         </mat-list-item>

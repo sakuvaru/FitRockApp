@@ -1,11 +1,12 @@
 import { AlignEnum } from './align-enum';
+import { Observable } from 'rxjs/Observable';
 
 export class DataTableField<T> {
 
     /**
      * Value of the field
      */
-    public value: (item: T) => string;
+    public value: (item: T) => string | Observable<string>;
 
     // optional properties
     /**
@@ -38,8 +39,4 @@ export class DataTableField<T> {
      */
     public hideOnSmallScreens? = false;
 
-    /**
-     * Indicates if 'value' should be translated using translation services
-     */
-    public translateValue? = false;
 }

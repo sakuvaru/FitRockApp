@@ -5,6 +5,7 @@ import { DataTableConfig, Filter, PagerConfig, } from '../data-table.config';
 import { AlignEnum } from '../align-enum';
 import { Observable } from 'rxjs/Rx';
 import { PagerButton } from './models';
+import { BaseWebComponent } from '../../base-web-component.class';
 
 @Component({
     selector: 'data-table-layout-pager',
@@ -150,6 +151,40 @@ export class DataTableLayoutFiltersComponent {
     }
 }
 
+
+@Component({
+    selector: 'data-table-layout-field',
+    templateUrl: 'data-table-layout-field.component.html'
+})
+export class DataTableLayoutFieldComponent extends BaseWebComponent implements OnInit, OnChanges {
+
+    @Input() item: any;
+    @Input() field: DataTableField<any>;
+
+    public fieldValue: string;
+
+    ngOnInit(): void {
+       this.initField(this.item, this.field);
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        this.initField(this.item, this.field);
+    }
+
+    private initField(item: any, field: DataTableField<any>): void {
+        if (!this.fieldValue && item && field) {
+            const valueFunc = field.value(item);
+            if (valueFunc instanceof Observable) {
+                valueFunc.takeUntil(this.ngUnsubscribe)
+                    .map(value => this.fieldValue = value)
+                    .subscribe();
+            } else {
+                this.fieldValue = field.value(item) as string;
+            }
+        }
+    }
+}
+
 @Component({
     selector: 'data-table-layout-items',
     templateUrl: 'data-table-layout-items.component.html'
@@ -159,8 +194,10 @@ export class DataTableLayoutItemsComponent implements OnInit, OnChanges {
     @Input() items: any[];
     @Input() localLoaderLoading: boolean = false;
 
-    private isClickable: boolean;
-    private isSelectable: boolean;
+    public isClickable: boolean;
+    public isSelectable: boolean;
+
+    public fieldValue: string;
 
     ngOnInit() {
         this.initProperties();
@@ -176,17 +213,6 @@ export class DataTableLayoutItemsComponent implements OnInit, OnChanges {
 
         // init clickable
         this.isClickable = this.config.isClickable();
-    }
-
-    private translateValue(field: DataTableField<any>): boolean {
-        if (field.translateValue) {
-            return field.translateValue;
-        }
-        return false;
-    }
-
-    private getFieldValue(field: DataTableField<any>, item: any): string {
-        return field.value(item);
     }
 
     private getAvatarUrl(item: any): string | null {

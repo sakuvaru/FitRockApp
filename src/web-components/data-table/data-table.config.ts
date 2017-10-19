@@ -114,7 +114,7 @@ export class DataTableConfig<TItem extends IItem> {
         /**
         * Fields in the data table
         */
-        public fields: DataTableField<any>[]
+        public fields: DataTableField<TItem>[]
     ) { }
 
     isSelectable(): boolean {

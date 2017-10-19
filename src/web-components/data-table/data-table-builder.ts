@@ -21,7 +21,7 @@ export class DataTableBuilder<TItem extends IItem> {
         /**
         * Fields in the data table
         */
-        fields: DataTableField<any>[]
+        fields: DataTableField<TItem>[]
     ) {
         this.config = new DataTableConfig<TItem>(loadResolver, loadQuery, fields);
     }
