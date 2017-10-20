@@ -189,7 +189,10 @@ export class ClientWorkoutComponent extends ClientsBaseComponent implements OnIn
         // copy data from selected workout to a new workout with assigned client
         super.subscribeToObservable(this.dependencies.itemServices.workoutService.copyFromWorkout(selectedWorkout.id, this.clientId)
             .set()
-            .flatMap(response => this.reloadExistingWorkoutsObservable(this.clientId))
+            .flatMap(response => {
+                super.showSavedSnackbar();
+                return this.reloadExistingWorkoutsObservable(this.clientId);
+            })
         );
 
     }

@@ -189,6 +189,7 @@ export class ClientDietComponent extends ClientsBaseComponent implements OnInit,
             .set()
             .takeUntil(this.ngUnsubscribe)
             .flatMap(response => {
+                super.showSavedSnackbar();
                 return this.reloadExistingDietsObservable(this.clientId);
             }));
     }

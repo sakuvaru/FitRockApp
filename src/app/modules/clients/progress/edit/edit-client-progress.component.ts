@@ -171,13 +171,7 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
                     align: AlignEnum.Left,
                 },
                 {
-                    value: (item) => item.value.toString(),
-                    isSubtle: true,
-                    hideOnSmallScreens: false,
-                    align: AlignEnum.Left,
-                },
-                {
-                    value: (item) => super.moment(item.measurementDate).format('MMMM DD'),
+                    value: (item: ProgressItem) => item.value.toString(),
                     isSubtle: true,
                     hideOnSmallScreens: false,
                     align: AlignEnum.Left,
@@ -186,9 +180,14 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
                     value: (item: ProgressItem) => super.translate('module.progressItemUnits.' + item.progressItemType.progressItemUnit.unitCode),
                     isSubtle: true,
                     hideOnSmallScreens: true,
-                    align: AlignEnum.Right
+                    align: AlignEnum.Left
                 },
-
+                {
+                    value: (item) => super.moment(item.measurementDate).format('MMMM DD'),
+                    isSubtle: true,
+                    hideOnSmallScreens: false,
+                    align: AlignEnum.Right,
+                },
             ]
         )
             .dynamicFilters((searchTerm) => {
