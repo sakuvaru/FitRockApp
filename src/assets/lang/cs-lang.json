@@ -260,7 +260,9 @@
 			"insufficientLicense": "Pro tuto akci nemáš dostatečnou licenci",
 			"valueIsNotANumber": "Pole musí obsahovat číslo",
 			"invalidMaxNumberValue": "Maximální povolená hodnota je '{{number}}'",
-			"invalidMinNumberValue": "Minimiální povolená hodnota je '{{number}}'"
+			"invalidMinNumberValue": "Minimiální povolená hodnota je '{{number}}'",
+			"oneRecordPerDayLabel": "Záznam s těmito daty může existovat pouze jedenkrát za den. Můžeš upravit existující záznam nebo změnit datum.",
+			"oneRecordPerDay": "Záznam s těmito daty může existovat pouze jedenkrát za den. Můžeš upravit existující záznam nebo změnit datum."
 		},
 		"shared": {
 			"save": "Uložit",

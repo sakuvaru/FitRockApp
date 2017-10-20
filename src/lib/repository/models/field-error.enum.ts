@@ -4,5 +4,6 @@ export enum FieldErrorEnum {
     InvalidEmail,
     Other,
     NotEditable,
+    OneRecordPerDay,
     Unknown
 }
