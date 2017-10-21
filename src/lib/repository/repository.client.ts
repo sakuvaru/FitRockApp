@@ -1,26 +1,34 @@
+// models
 import { IItem } from './interfaces/iitem.interface';
-import { AuthHttp } from 'angular2-jwt';
 import { RepositoryConfig } from './repository.config';
-import { SingleItemQueryInit } from './queries/get/single-item-query.class';
-import { SingleItemQueryInitCustom } from './queries/get/single-item-query-custom.class';
-import { MultipleItemQuery } from './queries/get/multiple-item-query.class';
-import { MultipleItemQueryCustom } from './queries/get/multiple-item-query-custom.class';
+import { CacheKeyType } from './models/cache-key-type';
+import { ControllerModel } from './models/controller-model.class';
+
+// services
+import { AuthHttp } from 'angular2-jwt';
+
+// queries
+import { SingleItemQueryInit } from './queries/item/single-item-query.class';
+import { SingleItemQueryInitCustom } from './queries/item/single-item-query-custom.class';
+import { MultipleItemQuery } from './queries/item/multiple-item-query.class';
+import { MultipleItemQueryCustom } from './queries/item/multiple-item-query-custom.class';
 import { CreateItemQuery } from './queries/manage/create-item-query.class';
 import { EditItemQuery } from './queries/manage/edit-item-query.class';
 import { DeleteItemQuery } from './queries/manage/delete-item-query.class';
 import { ItemCountQuery } from './queries/count/item-count-query.class';
 import { ErrorResponse } from './models/responses';
-import { CacheKeyType } from './models/cache-key-type';
 import { InsertFormQuery } from './queries/form/insert-form-query.class';
 import { EditFormQuery } from './queries/form/edit-form-query.class';
-import { PostQuery } from './queries/general/post-query.class';
-import { TouchKeyQuery } from './queries/general/touch-key-query.class';
+import { PostQuery } from './queries/generic/post-query.class';
+import { TouchKeyQuery } from './queries/misc/touch-key-query.class';
 import { UploadSingleQuery } from './queries/file/upload-single-query.class';
 import { UploadMultipleQuery } from './queries/file/upload-multiple-query.class';
 import { MultipleFileQuery } from './queries/file/multiple-file-query.class';
 import { SingleFileQuery } from './queries/file/single-file-query.class';
 import { DeleteFileQuery } from './queries/file/delete-file-query.class';
 import { ItemsOrderQuery } from './queries/order/items-order-query.class';
+import { GetQuery } from './queries/generic/get-query.class';
+
 
 export class RepositoryClient {
 
@@ -64,7 +72,19 @@ export class RepositoryClient {
         return new ItemsOrderQuery(this.authHttp, this.config, type, orderedItems, distinguishByValue);
     }
 
-    post<T extends any>(type: string, action: string): PostQuery<T> {
+    get<TAny>(controller: ControllerModel): GetQuery<TAny>;
+    get<TAny>(controller: string, action: string): GetQuery<TAny>;
+    get<TAny>(controllerOrName: string | ControllerModel, action?: string): GetQuery<TAny> {
+        if (controllerOrName instanceof String && action) {
+            return new GetQuery(this.authHttp, this.config, controllerOrName, action);
+        }
+        if (controllerOrName instanceof ControllerModel) {
+            return new GetQuery(this.authHttp, this.config, controllerOrName.controller, controllerOrName.action);
+        }
+        throw Error(`Unsupported overload`);
+    }
+
+    post<TAny>(type: string, action: string): PostQuery<TAny> {
         return new PostQuery(this.authHttp, this.config, type, action);
     }
 

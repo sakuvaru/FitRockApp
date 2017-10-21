@@ -7,7 +7,6 @@ import { AppConfig, ComponentDependencyService, BaseComponent, ComponentSetup } 
 import { FormConfig } from '../../../../web-components/dynamic-form';
 import { NewFoodMenuItems } from '../menu.items';
 import { Food } from '../../../models';
-import { Observable } from 'rxjs/Rx';
 
 @Component({
     templateUrl: 'new-food.component.html'

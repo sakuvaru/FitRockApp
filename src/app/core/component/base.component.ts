@@ -115,6 +115,20 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
         this.dependencies.router.navigate([UrlConfig.getItem404()]);
     }
 
+    navigateToLogonPage(): void {
+        this.dependencies.router.navigate([UrlConfig.getLoginUrl()]);
+    }
+
+    navigateToMainPage(): void {
+        const currentUser = this.dependencies.authenticatedUserService.getUser();
+        if (currentUser == null) {
+            // user is not authenticated, redirect him to login page
+            this.navigateToLogonPage();
+            return;
+        }
+        this.dependencies.router.navigate([UrlConfig.getEntryPointUrl()]);
+    }
+
     navigateToError(): void {
         this.dependencies.router.navigate([UrlConfig.getAppErrorUrl()]);
     }

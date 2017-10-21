@@ -1,4 +1,5 @@
 import { UrlConfig } from './url.config';
+import { ControllerModel } from '../../../lib/repository';
 
 export class AppConfig {
     // dev
@@ -11,8 +12,9 @@ export class AppConfig {
     public static RedirectQueryString = 'url';
 
     // web api config
-    public static RepositoryApiEndpoint = 'http://localhost:61466';
+    public static RepositoryUrl = 'http://localhost:61466';
     public static RepositoryTypeEndpoint = 'type';
+    public static RepositoryApiEndpoint = 'api';
 
     // auth0 config
     public static Auth0_Domain = 'fitrock.eu.auth0.com'; // domain for Auth0 authentication
@@ -26,6 +28,9 @@ export class AppConfig {
     public static Auth0_AccessTokenStorageName = 'access_token';
     public static Auth0_IdTokenStorageName = 'id_token';
     public static Auth0_NoJwtError = true;
+
+    // server check controller
+    public static ServerCheckerController = new ControllerModel('Server', 'IsRunning');
 
     // components settings
     public static HideComponentWhenLoaderIsEnabled = true;

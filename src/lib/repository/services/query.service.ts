@@ -94,7 +94,7 @@ export class QueryService {
     }
 
     protected getGenericUrl(controller: string, action: string, options?: IOption[]): string {
-        const url = this.config.apiUrl + '/' + controller + '/' + action;
+        const url = this.config.apiUrl + '/' + this.config.apiEndPoint + '/' + controller + '/' + action;
 
         return this.addOptionsToUrl(url, options);
     }
@@ -145,6 +145,13 @@ export class QueryService {
 
         // return ErrorResponse for unknown error
         return new ErrorResponse(this.genericErrorMessage, ErrorReasonEnum.RepositoryException, response);
+    }
+
+    protected get<TAny>(url: string): Observable<TAny> {
+        return this.getResponse(url)
+            .map(response => {
+                return response.json() as TAny;
+            });
     }
 
     protected getMultipleCustom<TModel>(url: string): Observable<ResponseMultiple<TModel>> {

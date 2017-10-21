@@ -18,8 +18,9 @@ import {
 
 export function RepositoryClientFactory(authHttp: AuthHttp) {
 
-    const apiUrl = AppConfig.RepositoryApiEndpoint;
+    const apiUrl = AppConfig.RepositoryUrl;
     const typeEndpoint = AppConfig.RepositoryTypeEndpoint;
+    const apiEndpoint = AppConfig.RepositoryApiEndpoint;
 
     const typeResolvers: TypeResolver[] = [
         new TypeResolver('User', () => new User()),
@@ -47,7 +48,7 @@ export function RepositoryClientFactory(authHttp: AuthHttp) {
 
     return new RepositoryClient(
         authHttp,
-        new RepositoryConfig(apiUrl, typeEndpoint, typeResolvers, {
+        new RepositoryConfig(apiUrl, typeEndpoint, apiEndpoint, typeResolvers, {
             logErrorsToConsole: AppConfig.DevModeEnabled
         })
     );

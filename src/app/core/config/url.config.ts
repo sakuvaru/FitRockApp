@@ -25,6 +25,10 @@ export class UrlConfig {
 
     public static AppErrorLogGuidQueryString = 'q';
 
+    public static getEntryPointUrl(): string {
+        return UrlConfig.EntryPoint;
+    }
+
     public static getUnAuthorizedUrl(): string {
         return UrlConfig.getAuthUrl(UrlConfig.Unauthorized);
     }
