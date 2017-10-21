@@ -30,3 +30,9 @@ export * from './feeds/feed.service';
 
 // files
 export * from './file/file.service';
+
+// appointments
+export * from './appointments/appointment.service';
+
+// locations
+export * from './locations/location.service';

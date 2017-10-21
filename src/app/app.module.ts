@@ -61,6 +61,7 @@ import { FoodsModule } from './modules/foods/foods.module';
 import { ProgressItemTypesModule } from './modules/progress-item-types/progress-item-types.module';
 import { ProfileModule } from './modules/profile/profile.module';
 import { ChatModule } from './modules/chat/chat.module';
+import { LocationModule } from './modules/locations/location.module';
 
 @NgModule({
   declarations: [
@@ -113,6 +114,7 @@ import { ChatModule } from './modules/chat/chat.module';
     ProgressItemTypesModule,
     ProfileModule,
     ChatModule,
+    LocationModule,
 
     // translation
     TranslateModule.forRoot({

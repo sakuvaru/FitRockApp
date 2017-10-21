@@ -29,3 +29,9 @@ export * from './feeds/feed.class';
 
 // file record
 export * from './file-records/file-record.class';
+
+// locations
+export * from './locations/location.class';
+
+// appointments
+export * from './appointments/appointment.class';

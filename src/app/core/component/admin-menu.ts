@@ -13,7 +13,7 @@ export class AdminMenu {
         new MenuItem({ key: 'menu.diets' }, MenuItemType.trainer, 'diets', { icon: 'restaurant' }),
         new MenuItem({ key: 'menu.foods' }, MenuItemType.trainer, 'foods', { icon: 'free_breakfast' }),
         new MenuItem({ key: 'menu.progressItemTypes' }, MenuItemType.trainer, 'progress-item-types', { icon: 'timeline' }),
-        new MenuItem({ key: 'menu.locations' }, MenuItemType.trainer, 'todo', { icon: 'place' }),
+        new MenuItem({ key: 'menu.locations' }, MenuItemType.trainer, 'locations', { icon: 'place' }),
     ];
 
     private readonly userMenu: MenuItem[] = [

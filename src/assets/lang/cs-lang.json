@@ -12,7 +12,7 @@
 		"diets": "Jídelníčky",
 		"foods": "Potraviny",
 		"progressItemTypes": "Sledované hodnoty",
-		"locations": "Místa",
+		"locations": "Lokace",
 		"forms": "Formulář",
 		"editProfile": "Profil",
 		"feeds": "Notifikace",
@@ -274,6 +274,15 @@
 		"feeds":{
 			"userSentYouAMessage": "<strong>{{user}}</strong>, {{message}}"
 		},
+		"locations": {
+			"submenu": {
+				"overview": "Lokace",
+				"myLocations": "Moje lokace",
+				"preview": "Náhled",
+				"new": "Nová lokace",
+				"edit": "Upravit"
+			}
+		},
 		"shared": {
 			"errors": {
 				"errorPageTitle": "Nastala neočekáváná chyba",
@@ -390,6 +399,17 @@
 		},
 		"chatMessage":{
 			"message": "Zpráva"
+		},
+		"location": {
+			"locationName": "Název lokace",
+			"locationName.hint": "Např. 'Brno Fitko' , 'Outdoor', 'Kancelář' apod.",
+			"address": "Adresa",
+			"city": "Město",
+			"lat": "Zeměpisná šířka",
+			"lat.hint": "Nepovinné, lze použít pro zpřesnění lokace",
+			"lng": "Zeměpisná délka",
+			"lng.hint": "Nepovinné, lze použít pro zpřesnění lokace",
+			"locationType": "Typ lokace"
 		}
 	},
 	"webComponents": {

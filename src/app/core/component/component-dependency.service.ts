@@ -17,7 +17,8 @@ import { guidHelper, numberHelper, observableHelper, stringHelper, GuidHelper, N
 import { UserService, ExerciseCategoryService, ExerciseService, LogService, WorkoutCategoryService,
      WorkoutExerciseService, WorkoutService, DietCategoryService, DietFoodService, DietService,
     FoodCategoryService, FoodService, FoodUnitService, ProgressItemService, ProgressItemTypeService,
-   ChatMessageService, FeedService, FileService } from '../../services';
+   ChatMessageService, FeedService, FileService, AppointmentService, LocationService, ProgressItemUnitService
+ } from '../../services';
 
 // Angular material
 import { MatSnackBar, MatDialog } from '@angular/material';
@@ -127,6 +128,7 @@ export class ComponentDependencyService {
         // progress services
         this.itemServices.progressItemService = injector.get(ProgressItemService);
         this.itemServices.progressItemTypeService = injector.get(ProgressItemTypeService);
+        this.itemServices.progressItemUnitService = injector.get(ProgressItemUnitService);
 
         // chat services
         this.itemServices.chatMessageService = injector.get(ChatMessageService);
@@ -136,6 +138,12 @@ export class ComponentDependencyService {
 
         // file service
         this.fileService = injector.get(FileService);
+
+        // appointments
+        this.itemServices.appointmentService = injector.get(AppointmentService);
+
+        // locations
+        this.itemServices.locationService = injector.get(LocationService);
     }
 }
 
@@ -191,12 +199,19 @@ export class ItemServices {
     // progress
     public progressItemService: ProgressItemService;
     public progressItemTypeService: ProgressItemTypeService;
+    public progressItemUnitService: ProgressItemUnitService;
 
     // chat
     public chatMessageService: ChatMessageService;
 
     // feed
     public feedService: FeedService;
+
+    // appointments
+    public appointmentService: AppointmentService;
+
+    // locations
+    public locationService: LocationService;
 }
 
 export class Helpers {
