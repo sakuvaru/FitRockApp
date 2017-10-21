@@ -74,7 +74,10 @@
 				"editPlan": "Upravit jídelníček",
 				"editPlanWithName": "Upravit jídelníček - {{dietName}}",
 				"editDiet": "Základní údaje",
-				"dietNotSelected": "Vyber jídelníček"
+				"dietNotSelected": "Vyber jídelníček",
+				"oneFood": "jídlo",
+				"twoFoods": "jídla",
+				"fiveFoods": "jídel"
 			},
 			"progress":{
 				"newProgressItem": "Nová sledovaná hodnota",

@@ -21,6 +21,7 @@
             <mat-list-item class="w-sort-list-item dragula-move-handle">
                 <span class="tc-red-700">{{i + 1}}. &nbsp;</span>
                 <span>{{diet.dietName}}</span>
+                <span class="md-caption">&nbsp;(<plural [count]="diet.dietFoods.length" m0="module.clients.diet.fiveFoods" m1="module.clients.diet.oneFood" m2="module.clients.diet.twoFoods" m5="module.clients.diet.fiveFoods"></plural>) </span>
                 <span flex></span>
                 <mat-icon class="w-cursor-pointer" (click)="expandDiet(diet)">list</mat-icon>
                 <edit-button (editAction)="goToEditDiet(diet)"></edit-button>
