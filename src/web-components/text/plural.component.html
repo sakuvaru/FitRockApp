@@ -1,0 +1,16 @@
+<ng-container *ngIf="showNumber">
+    {{ count }}
+</ng-container>
+
+<ng-container *ngIf="count === 0">
+    {{ m0 | translate }}
+</ng-container>
+<ng-container *ngIf="count === 1">
+    {{ m1 | translate }}
+</ng-container>
+<ng-container *ngIf="count >= 2 && count < 5">
+    {{ m2 | translate }}
+</ng-container>
+<ng-container *ngIf="count >= 5">
+    {{ m5 | translate }}
+</ng-container>

@@ -62,7 +62,10 @@
 				"newWorkout": "Nový trénink",
 				"editWorkout": "Upravit trénink",
 				"editWorkoutWithName": "Upravit trénink - {{workoutName}}",
-				"editPlan": "Upravit plán"
+				"editPlan": "Upravit plán",
+				"oneExercise": "cvik",
+				"twoExercises": "cviky",
+				"fiveExercises": "cviků"
 			},
 			"diet": {
 				"newDietFormTemplate": "Nový jídelníček ze šablony",

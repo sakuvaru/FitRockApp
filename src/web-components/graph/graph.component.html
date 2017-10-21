@@ -1,27 +1,3 @@
-        <!--
-
-<ng-template tdLoading [tdLoadingUntil]="!showLocalLoader" tdLoadingStrategy="overlay">
-  <div style="min-height: 150px">
-    <ng-container *ngIf="config && config.graph && wrapperStyle && graphData">
-      <div [ngStyle]="wrapperStyle">
-        <ngx-charts-line-chart *ngIf="graph.type === 0" [results]="graphData" [view]="graph.view" [scheme]="graph.scheme" [gradient]="graph.gradient"
-          [xAxis]="graph.showXAxis" [yAxis]="graph.showYAxis" [legend]="graph.showLegend" [showXAxisLabel]="graph.showXAxisLabel"
-          [showYAxisLabel]="graph.showYAxisLabel" [xAxisLabel]="graph.xAxisLabel" [yAxisLabel]="graph.yAxisLabel" [autoScale]="graph.autoScale"
-          [legendTitle]="legendTitle" (select)="onSelect($event)">
-        </ngx-charts-line-chart>
-
-        <ngx-charts-bar-vertical *ngIf="graph.type === 1" [results]="graphData" [view]="graph.view" [scheme]="graph.scheme" [gradient]="graph.gradient"
-          [xAxis]="graph.showXAxis" [yAxis]="graph.showYAxis" [legend]="graph.showLegend" [showXAxisLabel]="graph.showXAxisLabel"
-          [showYAxisLabel]="graph.showYAxisLabel" [xAxisLabel]="graph.xAxisLabel" [yAxisLabel]="graph.yAxisLabel" [legendTitle]="legendTitle"
-          (select)="onSelect($event)">
-        </ngx-charts-bar-vertical>
-      
-      </div>
-    </ng-container>
-  </div>
-</ng-template>
--->
-
 <ng-container *ngIf="config">
 
   <line-chart #graphComponent *ngIf="config.graphType === 0" [config]="config"></line-chart>
