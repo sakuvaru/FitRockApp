@@ -65,7 +65,8 @@
 				"editPlan": "Upravit plán",
 				"oneExercise": "cvik",
 				"twoExercises": "cviky",
-				"fiveExercises": "cviků"
+				"fiveExercises": "cviků",
+				"workoutList": "Přehled cviků"
 			},
 			"diet": {
 				"newDietFormTemplate": "Nový jídelníček ze šablony",
@@ -77,7 +78,8 @@
 				"dietNotSelected": "Vyber jídelníček",
 				"oneFood": "jídlo",
 				"twoFoods": "jídla",
-				"fiveFoods": "jídel"
+				"fiveFoods": "jídel",
+				"foodList": "Přehled jídel"
 			},
 			"progress":{
 				"newProgressItem": "Nová sledovaná hodnota",
@@ -175,20 +177,52 @@
 			}
 		},
 		"foodUnits": {
-			"mg": "mg",
-			"unit": "ks",
+			"mg": "miligram",
+			"unit": "kus",
 			"teaspoon": "čajová lžička",
 			"pound": "libra",
-			"kg": "kg",
-			"grams": "g",
-			"ml": "ml",
-			"l": "l",
-			"dl": "dl",
+			"kg": "kilogram",
+			"grams": "gram",
+			"ml": "mililitr",
+			"l": "litr",
+			"dl": "decilitr",
 			"pint": "pinta",
 			"cup": "hrnek",
 			"oz": "unce",
 			"tablespoon": "lžíce",
-			"gallon": "galon"
+			"gallon": "galon",
+			"pluralTwo": {
+				"mg": "miligramy",
+			"unit": "kusy",
+			"teaspoon": "čajové lžičky",
+			"pound": "libry",
+			"kg": "kilogramy",
+			"grams": "gramy",
+			"ml": "mililitry",
+			"l": "litry",
+			"dl": "decilitry",
+			"pint": "pinty",
+			"cup": "hrnky",
+			"oz": "unce",
+			"tablespoon": "lžíce",
+			"gallon": "galony"
+			},
+			"pluralFive": {
+				"mg": "miligramů",
+			"unit": "kusů",
+			"teaspoon": "čajových lžiček",
+			"pound": "liber",
+			"kg": "kilogramů",
+			"grams": "gramů",
+			"ml": "mililitrů",
+			"l": "litrů",
+			"dl": "decilitrů",
+			"pint": "pint",
+			"cup": "hrnků",
+			"oz": "uncí",
+			"tablespoon": "lžíc",
+			"gallon": "galonů"
+			}
 		},
 		"foodCategories": {
 			"fruits": "Ovoce",

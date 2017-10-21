@@ -1,0 +1,20 @@
+<mat-dialog-actions>
+    <span class="md-title">{{'module.clients.diet.foodList' | translate }}</span>
+    <span flex></span>
+    <close-button (click)="close()"></close-button>
+</mat-dialog-actions>
+
+<mat-dialog-content>
+    <ng-container *ngIf="dietFoods">
+        <mat-list>
+            <mat-list-item *ngFor="let dietFood of dietFoods">
+                <strong>
+                    <span *ngIf="dietFood.eatTime">{{dietFood.eatTime}}:</span> {{dietFood.food.foodName}}</strong>
+                &nbsp;-&nbsp;
+                <span class="md-caption">
+                    <plural-food-units [count]="dietFood.unitValue" [unitCode]="dietFood.food.foodUnit.unitCode"></plural-food-units>
+                </span>
+            </mat-list-item>
+        </mat-list>
+    </ng-container>
+</mat-dialog-content>

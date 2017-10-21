@@ -8,6 +8,9 @@ import { SharedWebComponentModule } from '../shared-web-components.module';
 // components
 import { PluralComponent } from './plural.component';
 
+// diet
+import { PluralFoodUnitsComponent } from './diet/plural-food-units.component';
+
 @NgModule({
     imports: [
         CommonModule,
@@ -16,9 +19,11 @@ import { PluralComponent } from './plural.component';
     ],
     declarations: [
         PluralComponent,
+        PluralFoodUnitsComponent
     ],
     exports: [
-        PluralComponent
+        PluralComponent,
+        PluralFoodUnitsComponent
     ]
 })
 export class TextModule { }

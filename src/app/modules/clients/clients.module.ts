@@ -15,12 +15,14 @@ import { EditClientWorkoutComponent } from './workout/edit/edit-client-workout.c
 import { ClientWorkoutComponent } from './workout/edit/client-workout.component';
 import { EditClientWorkoutPlanComponent } from './workout/edit/edit-client-workout-plan.component';
 import { NewClientWorkoutComponent } from './workout/new/new-client-workout.component';
+import { WorkoutListDialogComponent } from './workout/dialogs/workout-list-dialog.component';
 
 // diet components
 import { EditClientDietComponent } from './diet/edit/edit-client-diet.component';
 import { ClientDietComponent } from './diet/edit/client-diet.component';
 import { EditClientDietPlanComponent } from './diet/edit/edit-client-diet-plan.component';
 import { NewClientDietComponent } from './diet/new/new-client-diet.component';
+import { FoodListDialogComponent } from './diet/dialogs/food-list-dialog.component';
 
 // progress components
 import { EditClientProgressComponent } from './progress/edit/edit-client-progress.component';
@@ -57,7 +59,9 @@ import { DietsModule} from '../diets/diets.module';
     entryComponents: [
         EditProgressItemDialogComponent,
         SelectProgressTypeDialogComponent,
-        NewClientProgressItemTypeDialogComponent
+        NewClientProgressItemTypeDialogComponent,
+        FoodListDialogComponent,
+        WorkoutListDialogComponent
     ],
     declarations: [
         // user
@@ -69,11 +73,13 @@ import { DietsModule} from '../diets/diets.module';
         ClientWorkoutComponent,
         EditClientWorkoutPlanComponent,
         NewClientWorkoutComponent,
+        WorkoutListDialogComponent,
         // diet
         EditClientDietComponent,
         ClientDietComponent,
         EditClientDietPlanComponent,
         NewClientDietComponent,
+        FoodListDialogComponent,
         // progress
         EditClientProgressComponent,
         NewClientProgressItemTypeDialogComponent,

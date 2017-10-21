@@ -1,0 +1,20 @@
+<mat-dialog-actions>
+    <span class="md-title">{{'module.clients.workout.workoutList' | translate }}</span>
+    <span flex></span>
+    <close-button (click)="close()"></close-button>
+</mat-dialog-actions>
+
+<mat-dialog-content>
+    <ng-container *ngIf="workoutExercises">
+        <mat-list>
+            <mat-list-item *ngFor="let workoutExercise of workoutExercises">
+                <strong>{{ workoutExercise.exercise.exerciseName }}</strong>
+                <span class="md-caption" *ngIf="workoutExercise.sets && workoutExercise.reps">
+                    &nbsp;
+                    <span matTooltip="{{'module.workouts.sets' | translate}}">{{workoutExercise.sets}}</span>x
+                    <span matTooltip="{{'module.workouts.reps' | translate}}">{{workoutExercise.reps}}</span>
+                </span>
+            </mat-list-item>
+        </mat-list>
+    </ng-container>
+</mat-dialog-content>

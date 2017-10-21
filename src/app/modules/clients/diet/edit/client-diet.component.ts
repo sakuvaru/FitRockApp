@@ -8,10 +8,10 @@ import { ClientsBaseComponent } from '../../clients-base.component';
 import { ClientMenuItems } from '../../menu.items';
 import { User, Diet, DietFood } from '../../../../models';
 import { DragulaService } from 'ng2-dragula';
-import 'rxjs/add/operator/switchMap';
 import { Observable, Subscription } from 'rxjs/Rx';
 import * as _ from 'underscore';
 import { stringHelper } from '../../../../../lib/utilities';
+import { FoodListDialogComponent } from '../dialogs/food-list-dialog.component';
 
 @Component({
     templateUrl: 'client-diet.component.html'
@@ -36,11 +36,6 @@ export class ClientDietComponent extends ClientsBaseComponent implements OnInit,
      * Drop subscription for dragula - Unsubscribe on destroy!
      */
     private dropSubscription: Subscription;
-
-    /**
-     * Indicates which diet is expanded
-     */
-    private expandedDietId: number | null = null;
 
     constructor(
         protected activatedRoute: ActivatedRoute,
@@ -208,13 +203,15 @@ export class ClientDietComponent extends ClientsBaseComponent implements OnInit,
     private goToEditDiet(diet: Diet): void {
         super.navigate([this.getTrainerUrl('clients/edit/' + this.clientId + '/diet/' + diet.id + '/diet-plan')]);
     }
+    
+    private openFoodListDialog(dietFoods: DietFood[]): void {
+        const data: any = {};
+        data.dietFoods = dietFoods;
 
-    private expandDiet(diet: Diet): void {
-        if (this.expandedDietId === diet.id) {
-            this.expandedDietId = null;
-        } else {
-            this.expandedDietId = diet.id;
-        }
+        const dialog = this.dependencies.tdServices.dialogService.open(FoodListDialogComponent, {
+            width: AppConfig.DefaultDialogWidth,
+            data: data
+        });
     }
 }
 

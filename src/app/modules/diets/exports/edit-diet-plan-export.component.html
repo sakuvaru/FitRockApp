@@ -16,6 +16,7 @@
           <mat-list-item class="w-sort-list-item dragula-move-handle">
             <span class="tc-red-700">{{i + 1}}. &nbsp;</span>
             <span>{{dietFood.food.foodName}}</span>
+            <span class="md-caption">&nbsp;( <plural-food-units [count]="dietFood.unitValue" [unitCode]="dietFood.food.foodUnit.unitCode"></plural-food-units>)</span>
             <span flex></span>
             <edit-button color="none" (editAction)="openDietFoodDialog(dietFood)"></edit-button>
             <delete-button color="none" (confirm)="deleteDietFood(dietFood)"></delete-button>

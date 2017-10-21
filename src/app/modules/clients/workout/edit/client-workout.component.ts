@@ -13,6 +13,7 @@ import 'rxjs/add/operator/switchMap';
 import { Observable, Subscription } from 'rxjs/Rx';
 import * as _ from 'underscore';
 import { stringHelper, observableHelper } from '../../../../../lib/utilities';
+import { WorkoutListDialogComponent } from '../dialogs/workout-list-dialog.component';
 
 @Component({
     templateUrl: 'client-workout.component.html'
@@ -211,12 +212,14 @@ export class ClientWorkoutComponent extends ClientsBaseComponent implements OnIn
         super.navigate([this.getTrainerUrl('clients/edit/' + this.clientId + '/workout/' + workout.id + '/workout-plan')]);
     }
 
-    private expandWorkout(workout: Workout): void {
-        if (this.expandedWorkoutId === workout.id) {
-            this.expandedWorkoutId = null;
-        } else {
-            this.expandedWorkoutId = workout.id;
-        }
+    private openWorkoutListDialog(workoutExercises: WorkoutExercise[]): void {
+        const data: any = {};
+        data.workoutExercises = workoutExercises;
+
+        const dialog = this.dependencies.tdServices.dialogService.open(WorkoutListDialogComponent, {
+            width: AppConfig.DefaultDialogWidth,
+            data: data
+        });
     }
 }
 
