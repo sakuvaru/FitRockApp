@@ -1,5 +1,21 @@
-<mat-card class="push">
-    <mat-card-content *ngIf="location">
-        {{location.locationName}} -> todo
+<mat-card *ngIf="location" class="push">
+    <mat-card-title>{{location.locationName}}
+        <span class="md-caption"> {{ 'module.locations.type.' + location.locationTypeAsString | translate }}</span>
+    </mat-card-title>
+    <mat-card-content>
+        <span class="md-caption push-bottom" *ngIf="location.lng && location.lat">
+            {{location.lng}}, {{location.lat}}
+        </span>
+        <p>
+            {{location.address}}
+        </p>
+        <p>
+            {{location.city}}
+        </p>
     </mat-card-content>
 </mat-card>
+
+<div *ngIf="location && (location.address || (location.lng && location.lat))" class="push">
+    <map [apiKey]="googleApiKey" [address]="location.address" [lat]="location.lat" [lng]="location.lng"></map>
+</div>
+

@@ -7,6 +7,7 @@ import { AppConfig, ComponentDependencyService, BaseComponent, ComponentConfig, 
 import { FormConfig } from '../../../../web-components/dynamic-form';
 import { NewLocationsMenuItems } from '../menu.items';
 import { Location } from '../../../models';
+import { Observable } from 'rxjs/Rx';
 
 @Component({
     templateUrl: 'new-location.component.html'
@@ -42,6 +43,12 @@ export class NewLocationComponent extends BaseComponent implements OnInit {
         this.formConfig = this.dependencies.itemServices.locationService.insertForm()
             .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
             .onAfterInsert((response) => this.navigate([this.getTrainerUrl('locations/edit'), response.item.id]))
+            .optionLabelResolver((field, optionLabel) => {
+                if (field.key === 'LocationType') {
+                    return super.translate('module.locations.type.' + optionLabel);
+                }
+                return Observable.of(optionLabel);
+            })
             .build();
     }
 }

@@ -281,6 +281,12 @@
 				"preview": "Náhled",
 				"new": "Nová lokace",
 				"edit": "Upravit"
+			},
+			"type": {
+				"FitnessCenter": "Fitness centrum",
+				"Office": "Kancelář",
+				"Outdoors": "Venkovní posilovna",
+				"Others": "Jiné"
 			}
 		},
 		"shared": {

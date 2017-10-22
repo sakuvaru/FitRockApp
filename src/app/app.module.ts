@@ -45,6 +45,9 @@ import { WebComponentsModule } from '../web-components';
 import { HttpLoaderFactory, CustomMissingTranslationHandler } from './core/providers/translate-loader.provider';
 import { TranslateModule, TranslateLoader, MissingTranslationHandler } from '@ngx-translate/core';
 
+// google map
+import { AgmCoreModule } from '@agm/core';
+
 // custom modules
 import { CoreModule } from './core';
 
@@ -87,7 +90,7 @@ import { LocationModule } from './modules/locations/location.module';
         path: '',
         redirectTo: UrlConfig.EntryPoint, pathMatch: 'full'
       },
-       {
+      {
         path: UrlConfig.EntryPoint,
         component: EntryPointComponent
       },
@@ -118,7 +121,7 @@ import { LocationModule } from './modules/locations/location.module';
 
     // translation
     TranslateModule.forRoot({
-      missingTranslationHandler: {provide: MissingTranslationHandler, useClass: CustomMissingTranslationHandler},
+      missingTranslationHandler: { provide: MissingTranslationHandler, useClass: CustomMissingTranslationHandler },
       loader: {
         provide: TranslateLoader,
         useFactory: HttpLoaderFactory,
@@ -130,12 +133,17 @@ import { LocationModule } from './modules/locations/location.module';
     WebComponentsModule,
 
     // gallery module
-    ModalGalleryModule.forRoot()
+    ModalGalleryModule.forRoot(),
+
+    // google map module
+    AgmCoreModule.forRoot({
+      apiKey: AppConfig.GoogleApiKey
+    })
   ],
   providers: [
     RepositoryClientProvider,
-     {
-      provide: ErrorHandler, 
+    {
+      provide: ErrorHandler,
       useClass: GlobalErrorHandler
     }
   ],

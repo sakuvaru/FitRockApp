@@ -53,6 +53,12 @@ export class EditLocationComponent extends BaseComponent implements OnInit {
                             }
                         });
                     })
+                    .optionLabelResolver((field, optionLabel) => {
+                        if (field.key === 'LocationType') {
+                            return super.translate('module.locations.type.' + optionLabel);
+                        }
+                        return Observable.of(optionLabel);
+                    })
                     .build();
             })
             .subscribe();

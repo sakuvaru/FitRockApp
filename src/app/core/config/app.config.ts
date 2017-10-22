@@ -29,6 +29,9 @@ export class AppConfig {
     public static Auth0_IdTokenStorageName = 'id_token';
     public static Auth0_NoJwtError = true;
 
+    // google 
+    public static GoogleApiKey = 'AIzaSyAK2PNZZv81SJcys-szVyNr-yc-CPPf00s';
+
     // server check controller
     public static ServerCheckerController = new ControllerModel('Server', 'IsRunning');
 

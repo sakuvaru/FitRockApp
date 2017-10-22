@@ -15,6 +15,8 @@ export class PreviewLocationComponent extends BaseComponent implements OnInit {
 
     private location: Location;
 
+    private googleApiKey: string = AppConfig.GoogleApiKey;
+
     constructor(
         private activatedRoute: ActivatedRoute,
         protected componentDependencyService: ComponentDependencyService,
