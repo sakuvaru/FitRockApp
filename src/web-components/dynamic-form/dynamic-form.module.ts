@@ -15,6 +15,16 @@ import { DynamicFormService } from './dynamic-form.service';
 import { DynamicFormQuestionComponent } from './dynamic-form-question.component';
 import { DynamicFormComponent } from './dynamic-form.component';
 
+// form controls
+import { TextComponent } from './form-controls/text.component';
+import { BooleanComponent } from './form-controls/boolean.component';
+import { RadioBooleanComponent } from './form-controls/radio-boolean.component';
+import { DateComponent } from './form-controls/date.component';
+import { TextAreaComponent } from './form-controls/text-area.component';
+import { DropdownComponent } from './form-controls/dropdown.component';
+import { HiddenComponent } from './form-controls/hidden.component';
+import { NumberComponent } from './form-controls/number.component';
+
 // loader
 import { LoaderModule } from '../loader/loader.module';
 
@@ -37,7 +47,15 @@ import { MessagesModule } from '../messages/messages.module';
     ],
     declarations: [
         DynamicFormQuestionComponent,
-        DynamicFormComponent
+        DynamicFormComponent,
+        TextComponent,
+        BooleanComponent,
+        RadioBooleanComponent,
+        DateComponent,
+        TextAreaComponent,
+        DropdownComponent,
+        HiddenComponent,
+        NumberComponent
     ],
     providers: [
         DynamicFormService

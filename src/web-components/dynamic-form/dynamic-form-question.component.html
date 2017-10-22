@@ -1,63 +1,31 @@
-<div *ngIf="question" layout="row" layout-margin [formGroup]="form">
-     
-  <!-- Question types -->
-  <mat-form-field *ngIf="isTextField()" [hintLabel]="questionHint" flex>
-    <input matInput [attr.maxLength]="question.options.maxLength > 0 ? question.options.maxLength : null" [required]="question.required"
-      [placeholder]="question.translatedLabel" [formControlName]="question.key" [id]="question.key" [type]="question.type"
-      #elem>
-    <mat-hint *ngIf="showLengthHint()" [ngClass]="{'tc-red-600': elem.value.length > question.options.maxLength}" align="end">{{elem.value.length}} / {{question.options.maxLength}}</mat-hint>
-    <mat-error>{{customError}}</mat-error>
-  </mat-form-field>
+<ng-container *ngIf="isTextField()">
+  <df-text [question]="question" [form]="form" [formConfig]="formConfig"></df-text>
+</ng-container>
 
-  <div *ngIf="isBooleanField()" flex>
-    <mat-checkbox [checked]="checkBoxIsChecked" [formControlName]="question.key" [id]="question.key" [required]="question.required"
-      #elem>&nbsp;{{question.translatedLabel}} <span class="md-caption">({{questionHint}})</span>
-    </mat-checkbox>
-    <span *ngIf="question.required && !elem.checked" class="tc-grey-500 md-caption"> ({{ 'form.shared.required' | translate }})</span>
-  </div>
+<ng-container *ngIf="isBooleanField()">
+  <df-boolean [question]="question" [form]="form" [formConfig]="formConfig"></df-boolean>
+</ng-container>
 
-  <div *ngIf="isRadioBooleanField()" flex>
-    <mat-radio-group [formControlName]="question.key" [id]="question.key" [required]="question.required" (change)="handleRadioButtonChange($event)"
-      #elem>
-      <mat-radio-button [checked]="radioCheckboxTrueChecked" value="true" class="push-right">{{question.options.trueOptionLabel}}</mat-radio-button>
-      <mat-radio-button [checked]="radioCheckboxFalseChecked" value="false">{{question.options.falseOptionLabel}}</mat-radio-button>
-    </mat-radio-group>
-  </div>
+<ng-container *ngIf="isRadioBooleanField()">
+  <df-radio-boolean [question]="question" [form]="form" [formConfig]="formConfig"></df-radio-boolean>
+</ng-container>
 
-  <mat-form-field *ngIf="isDateField()" flex>
-    <input matInput [matDatepicker]="datepicker" [formControlName]="question.key" [id]="question.key" [required]="question.required"
-      [placeholder]="question.translatedLabel">
-    <mat-datepicker-toggle matSuffix [for]="datepicker"></mat-datepicker-toggle>
-    <mat-datepicker #datepicker></mat-datepicker>
-    <mat-error>{{customError}}</mat-error>
-  </mat-form-field>
+<ng-container *ngIf="isDateField()">
+  <df-date [question]="question" [form]="form" [formConfig]="formConfig"></df-date>
+</ng-container>
 
-  <mat-form-field *ngIf="isTextAreaField()" flex [hintLabel]="questionHint">
-    <textarea matTextareaAutosize matInput [matAutosizeMinRows]="question.options.minAutosizeRows" [matAutosizeMaxRows]="question.options.maxAutosizeRows"
-      [attr.maxLength]="question.options.maxLength > 0 ? question.options.maxLength : null" [required]="question.required"
-      [placeholder]="question.translatedLabel" [formControlName]="question.key" [id]="question.key" [type]="question.type"
-      #elem>
-    </textarea>
-    <mat-hint *ngIf="showLengthHint()" [ngClass]="{'tc-red-600': elem.value.length > question.options.maxLength}" align="end">{{elem.value.length}} / {{question.options.maxLength}}</mat-hint>
-    <mat-error>{{customError}}</mat-error>
-  </mat-form-field>
+<ng-container *ngIf="isTextAreaField()">
+  <df-text-area [question]="question" [form]="form" [formConfig]="formConfig"></df-text-area>
+</ng-container>
 
-  <input *ngIf="isHiddenField()" type="hidden" [formControlName]="question.key">
+<ng-container *ngIf="isHiddenField()">
+  <df-hidden [question]="question" [form]="form" [formConfig]="formConfig"></df-hidden>
+</ng-container>
 
-  <mat-form-field *ngIf="isDropdownField()" flex>
-    <mat-select [id]="question.key" [formControlName]="question.key" [required]="question.required"
-      [placeholder]="question.translatedLabel">
-      <mat-option *ngFor="let option of question.options.listOptions" [value]="option.value">{{option.name}}</mat-option>
-    </mat-select>
-    <mat-error>{{customError}}</mat-error>
-  </mat-form-field>
+<ng-container *ngIf="isDropdownField()">
+  <df-dropdown [question]="question" [form]="form" [formConfig]="formConfig"></df-dropdown>
+</ng-container>
 
-  <mat-form-field *ngIf="isNumberField()" flex [hintLabel]="questionHint">
-    <input matInput [attr.maxLength]="question.options.maxLength > 0 ? question.options.maxLength : null" [required]="question.required"
-      [placeholder]="question.translatedLabel" [formControlName]="question.key" [id]="question.key" type="number" [attr.min]="getMinNumberValue()"
-      [attr.max]="getMaxNumberValue()" #elem>
-    <mat-hint *ngIf="showLengthHint()" [ngClass]="{'tc-red-600': elem.value.length > question.options.maxLength}" align="end">{{elem.value.length}} / {{question.options.maxLength}}</mat-hint>
-    <mat-error>{{customError}}</mat-error>
-  </mat-form-field>
-
-</div>
+<ng-container *ngIf="isNumberField()">
+  <df-number [question]="question" [form]="form" [formConfig]="formConfig"></df-number>
+</ng-container>
