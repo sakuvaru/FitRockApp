@@ -8,12 +8,19 @@
     <ng-container *ngIf="workoutExercises">
         <mat-list>
             <mat-list-item *ngFor="let workoutExercise of workoutExercises">
-                <strong>{{ workoutExercise.exercise.exerciseName }}</strong>
-                <span class="md-caption" *ngIf="workoutExercise.sets && workoutExercise.reps">
-                    &nbsp;
-                    <span matTooltip="{{'module.workouts.sets' | translate}}">{{workoutExercise.sets}}</span>x
-                    <span matTooltip="{{'module.workouts.reps' | translate}}">{{workoutExercise.reps}}</span>
-                </span>
+                <div matLine>
+                    <strong>{{ workoutExercise.exercise.exerciseName }}</strong>
+                    <span class="md-caption" *ngIf="workoutExercise.sets && workoutExercise.reps">
+                        &nbsp;
+                        <span matTooltip="{{'module.workouts.sets' | translate}}">{{workoutExercise.sets}}</span> x
+                        <span matTooltip="{{'module.workouts.reps' | translate}}">{{workoutExercise.reps}}</span>
+                    </span>
+                </div>
+                <div matLine *ngIf="workoutExercise.notes">
+                    <div class="md-caption pad-top-xs tc-grey-600">
+                        {{ workoutExercise.notes }}
+                    </div>
+                </div>
             </mat-list-item>
         </mat-list>
     </ng-container>
