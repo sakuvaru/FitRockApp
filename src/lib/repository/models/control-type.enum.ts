@@ -1,4 +1,5 @@
 export enum ControlTypeEnum {
+    Unknown = -1,
     None = 0,
     Dropdown = 1,
     Date = 2,
@@ -7,5 +8,6 @@ export enum ControlTypeEnum {
     Text = 5,
     TextArea = 6,
     Hidden = 7,
-    Number = 8
+    Number = 8,
+    PhoneNumber = 9
 }

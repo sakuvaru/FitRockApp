@@ -13,7 +13,19 @@ import { BaseWebComponent } from '../base-web-component.class';
 
 export class DynamicFormQuestionComponent extends BaseWebComponent {
 
-  @Input() question: FormField;
+  private _question: FormField;
+
+  @Input('question')
+  set question(value: FormField) {
+    if (value.controlTypeEnum === ControlTypeEnum.Unknown) {
+      console.warn(`Field '${value.key}' is using unsupported field type`);
+    }
+    this._question = value;
+  }
+  get question() {
+    return this._question;
+  }
+
   @Input() form: FormGroup;
   @Input() formConfig: FormConfig<any>;
 
@@ -54,6 +66,10 @@ export class DynamicFormQuestionComponent extends BaseWebComponent {
 
   private isNumberField(): boolean {
     return this.question.controlTypeEnum === ControlTypeEnum.Number;
+  }
+
+  private isPhoneNumberField(): boolean {
+    return this.question.controlTypeEnum === ControlTypeEnum.PhoneNumber;
   }
 
 }

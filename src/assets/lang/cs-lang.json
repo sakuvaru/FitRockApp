@@ -337,6 +337,7 @@
 			"address": "Adresa",
 			"level": "Úroveň",
 			"city": "Město",
+			"phoneNumber": "Telefon",
 			"medicalCondition": "Zdravotní stav",
 			"goal": "Cíl",
 			"trainerPrivateNotes": "Soukromé poznámky",

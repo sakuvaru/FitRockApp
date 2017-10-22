@@ -29,3 +29,7 @@
 <ng-container *ngIf="isNumberField()">
   <df-number [question]="question" [form]="form" [formConfig]="formConfig"></df-number>
 </ng-container>
+
+<ng-container *ngIf="isPhoneNumberField()">
+  <df-phone-number [question]="question" [form]="form" [formConfig]="formConfig"></df-phone-number>
+</ng-container>

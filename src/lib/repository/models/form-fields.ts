@@ -88,6 +88,10 @@ export class FormField implements IFormField {
         } else if (controlType === 'Number') {
             this.controlTypeEnum = ControlTypeEnum.Number;
             this.value = +rawValue;
+        } else if (controlType === 'PhoneNumber') {
+            this.controlTypeEnum = ControlTypeEnum.PhoneNumber;
+        } else {
+            this.controlTypeEnum = ControlTypeEnum.Unknown;
         }
     }
 }

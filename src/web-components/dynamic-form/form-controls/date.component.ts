@@ -24,8 +24,11 @@ export class DateComponent extends BaseFormControlComponent implements OnInit, O
     super.ngOnChanges(changes);
   }
 
-  protected getInsertValue(): Date {
-    return new Date();
+  protected getInsertValue(): Date | string {
+    if (this.question.defaultValue) {
+      return new Date(this.question.defaultValue);
+    }
+    return '';
   }
 
   protected getEditValue(): Date | string {

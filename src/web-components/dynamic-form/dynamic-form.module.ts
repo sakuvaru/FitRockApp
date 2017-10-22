@@ -5,15 +5,20 @@ import { FormGroup } from '@angular/forms';
 import { Component, Input } from '@angular/core';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
+// Shared web components
 import { SharedWebComponentModule } from '../shared-web-components.module';
 
-// services
+// Services
 import { DynamicFormService } from './dynamic-form.service';
 
-// components
-// NOTE: see https://angular.io/docs/ts/latest/cookbook/dynamic-form.html for more details
+// Dynamic form
+// see https://angular.io/docs/ts/latest/cookbook/dynamic-form.html for more details
 import { DynamicFormQuestionComponent } from './dynamic-form-question.component';
 import { DynamicFormComponent } from './dynamic-form.component';
+
+// Angular input mask
+// see https://github.com/text-mask/text-mask/tree/master/angular2#readme 
+import { TextMaskModule } from 'angular2-text-mask';
 
 // form controls
 import { TextComponent } from './form-controls/text.component';
@@ -24,6 +29,7 @@ import { TextAreaComponent } from './form-controls/text-area.component';
 import { DropdownComponent } from './form-controls/dropdown.component';
 import { HiddenComponent } from './form-controls/hidden.component';
 import { NumberComponent } from './form-controls/number.component';
+import { PhoneNumberComponent } from './form-controls/phone-number.component';
 
 // loader
 import { LoaderModule } from '../loader/loader.module';
@@ -43,7 +49,8 @@ import { MessagesModule } from '../messages/messages.module';
         ReactiveFormsModule, // required by dynamic forms feature
         LoaderModule,
         ButtonsModule,
-        MessagesModule
+        MessagesModule,
+        TextMaskModule
     ],
     declarations: [
         DynamicFormQuestionComponent,
@@ -55,7 +62,8 @@ import { MessagesModule } from '../messages/messages.module';
         TextAreaComponent,
         DropdownComponent,
         HiddenComponent,
-        NumberComponent
+        NumberComponent,
+        PhoneNumberComponent
     ],
     providers: [
         DynamicFormService

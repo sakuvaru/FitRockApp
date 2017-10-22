@@ -238,9 +238,6 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
 
                                 // set value
                                 field.value = this.getFieldValueSetByResolver(newValue);
-
-                                // set also this value as default value because otherwise clearing form would clear these values too
-                                field.defaultValue = newValue;
                             });
                         }
                     }
@@ -294,9 +291,6 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
 
                                 // set field value
                                 field.value = this.getFieldValueSetByResolver(newValue);
-
-                                // set also this value as default value because otherwise clearing form would clear these values too
-                                field.defaultValue = newValue;
                             });
                         }
                     }
