@@ -145,6 +145,14 @@ class BaseDynamicFormBuilder<TItem extends IItem> {
     }
 
     /**
+     * Can be used to get custom option labels (e.g. in dropdown lists)
+     */
+    optionLabelResolver(resolver: (field: FormField, optionLabel: string) => Observable<string>): this {
+        this.config.optionLabelResolver = resolver;
+        return this;
+    }
+
+    /**
      * Build form config from the form builder query
      */
     build(): FormConfig<TItem> {

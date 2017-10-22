@@ -164,6 +164,11 @@ export class FormConfig<TItem extends IItem> {
      */
     public fieldLabelResolver?: (field: FormField, originalLabel: string) => Observable<string>;
 
+     /**
+     * Can be used to get custom option labels (e.g. in dropdown lists)
+     */
+    public optionLabelResolver?: (field: FormField, optionLabel: string) => Observable<string>;
+
     constructor(
     ) {
     }

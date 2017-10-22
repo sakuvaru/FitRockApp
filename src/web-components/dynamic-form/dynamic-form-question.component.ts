@@ -1,6 +1,6 @@
 import { Component, Input, AfterViewInit, ChangeDetectorRef, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { FormGroup, AbstractControl } from '@angular/forms';
-import { FormField, ControlTypeEnum } from '../../lib/repository';
+import { FormField, ControlTypeEnum, DropdownFieldOption } from '../../lib/repository';
 import { TranslateService } from '@ngx-translate/core';
 import { FormConfig } from './form-config.class';
 import { stringHelper, numberHelper } from '../../lib/utilities';
@@ -38,6 +38,13 @@ export class DynamicFormQuestionComponent extends BaseWebComponent implements On
   private radioCheckboxFalseChecked: boolean;
 
   private customError: string = '';
+
+  /**
+   * Indicates if list options were already resolved.
+   * This prevents an issue where an already translated item would be translated twice
+   * and therefore shown improper labels
+   */
+  private listOptionsResolved: boolean = false;
 
   /**
    * Maximum value for numbers (assuming the number is represented by Int32)
@@ -99,18 +106,22 @@ export class DynamicFormQuestionComponent extends BaseWebComponent implements On
     // translate labels for radio boolean
     if (this.question.controlTypeEnum === ControlTypeEnum.RadioBoolean) {
       if (this.question.options && this.question.options.trueOptionLabel) {
-        this.translateService.get(this.question.options.trueOptionLabel).subscribe(translatedText => {
-          if (translatedText && this.question.options) {
-            this.question.options.trueOptionLabel = translatedText;
-          }
-        });
+        this.translateService.get(this.question.options.trueOptionLabel)
+          .takeUntil(this.ngUnsubscribe)
+          .subscribe(translatedText => {
+            if (translatedText && this.question.options) {
+              this.question.options.trueOptionLabel = translatedText;
+            }
+          });
       }
       if (this.question.options && this.question.options.falseOptionLabel) {
-        this.translateService.get(this.question.options.falseOptionLabel).subscribe(translatedText => {
-          if (translatedText && this.question.options) {
-            this.question.options.falseOptionLabel = translatedText;
-          }
-        });
+        this.translateService.get(this.question.options.falseOptionLabel)
+          .takeUntil(this.ngUnsubscribe)
+          .subscribe(translatedText => {
+            if (translatedText && this.question.options) {
+              this.question.options.falseOptionLabel = translatedText;
+            }
+          });
       }
     }
 
@@ -118,16 +129,42 @@ export class DynamicFormQuestionComponent extends BaseWebComponent implements On
     if (this.question.controlTypeEnum === ControlTypeEnum.Dropdown) {
       if (this.question.options && this.question.options.listOptions) {
         this.question.options.listOptions.forEach(option => {
-          this.translateService.get(option.name).subscribe(translatedText => {
-            if (translatedText && this.question.options && this.question.options.listOptions) {
-              const optionInList = this.question.options.listOptions.find(m => m.value === option.value);
-              if (!optionInList) {
-                throw Error(`Option '${option.value}' was not found in list`);
-              }
-              optionInList.name = translatedText;
-            }
-          });
+
+          if (this.listOptionsResolved) {
+            return;
+          }
+
+          let optionInList: DropdownFieldOption | undefined;
+          if (this.question && this.question.options && this.question.options.listOptions) {
+            optionInList = this.question.options.listOptions.find(m => m.value === option.value);
+          }
+
+          if (!optionInList) {
+            console.warn(`Could not find option '${option.value}' in dropdown list of field '${this.question.key}'`);
+            return;
+          }
+          
+          if (this.formConfig.optionLabelResolver) {
+            // resolve option label using custom function if available
+            this.formConfig.optionLabelResolver(this.question, option.name)
+              .takeUntil(this.ngUnsubscribe)
+              .subscribe(resolvedName => {
+                if (optionInList) {
+                  optionInList.name = resolvedName;
+                }
+              });
+          } else {
+            // or try resolve label using the default translations
+            this.translateService.get(option.name)
+              .takeUntil(this.ngUnsubscribe)
+              .subscribe(translatedText => {
+                  if (optionInList) {
+                    optionInList.name = translatedText;
+                  }
+              });
+          }
         });
+        this.listOptionsResolved = true;
       }
     }
 
