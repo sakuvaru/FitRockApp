@@ -3,7 +3,7 @@ import { RepositoryConfig } from '../../repository.config';
 
 // services
 import { AuthHttp } from 'angular2-jwt';
-import { BaseQuery } from '../common/base-query.class';
+import { BaseQuery } from '../base-query.class';
 
 // models
 import { OrderItem, UpdateItemsRequest } from '../../models/update-items-request.class';
@@ -47,13 +47,13 @@ export class ItemsOrderQuery<TItem extends IItem> extends BaseQuery {
 
     // url
     protected getUpdateOrderUrl(): string {
-        return super.getTypeUrl(this.type, this._action);
+        return this.queryService.getTypeUrl(this.type, this._action);
     }
 
     // execution
 
     set(): Observable<ResponseUpdateItemsOrder<TItem>> {
-        return super.updateItemsOrder(this.getUpdateOrderUrl(), this.updateRequest);
+        return this.queryService.updateItemsOrder(this.getUpdateOrderUrl(), this.updateRequest);
     }
 
     // debug

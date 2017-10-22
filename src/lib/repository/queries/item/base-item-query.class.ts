@@ -5,7 +5,7 @@ import { RepositoryConfig } from '../../repository.config';
 import { AuthHttp } from 'angular2-jwt';
 
 // models
-import { BaseQuery } from '../common/base-query.class';
+import { BaseQuery } from '../base-query.class';
 import { IItem } from '../../interfaces/iitem.interface';
 import { IOption } from '../../interfaces/ioption.interface';
 
@@ -106,10 +106,10 @@ export abstract class BaseItemQuery extends BaseQuery {
     }
 
     protected getSingleItemQueryUrl(): string {
-        return this.getTypeUrl(this.type, this._action, this._options);
+        return this.queryService.getTypeUrl(this.type, this._action, this._options);
     }
 
     protected getMultipleItemsQueryUrl(): string {
-        return this.getTypeUrl(this.type, this._action, this._options);
+        return this.queryService.getTypeUrl(this.type, this._action, this._options);
     }
 }

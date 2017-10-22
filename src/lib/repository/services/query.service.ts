@@ -87,20 +87,217 @@ export class QueryService {
         return url;
     }
 
-    protected getTypeUrl(type: string, action: string, options?: IOption[]): string {
+    /* ------------------------- public methods ------------------ */
+
+    getTypeUrl(type: string, action: string, options?: IOption[]): string {
         const url = this.config.apiUrl + '/' + this.config.typeEndpoint + '/' + type + '/' + action;
 
         return this.addOptionsToUrl(url, options);
     }
 
-    protected getGenericUrl(controller: string, action: string, options?: IOption[]): string {
+    getGenericUrl(controller: string, action: string, options?: IOption[]): string {
         const url = this.config.apiUrl + '/' + this.config.apiEndPoint + '/' + controller + '/' + action;
 
         return this.addOptionsToUrl(url, options);
     }
 
-    // error handling
-    private handleError(response: Response | any): IErrorResponseRaw | IFormErrorResponseRaw {
+    get<TAny>(url: string): Observable<TAny> {
+        return this.getResponse(url)
+            .map(response => {
+                return response.json() as TAny;
+            });
+    }
+
+    getMultipleCustom<TModel>(url: string): Observable<ResponseMultiple<TModel>> {
+        return this.getResponse(url)
+            .map(response => {
+                return this.responseMapService.mapMultipleResponseCustom(response);
+            });
+    }
+
+    getMultiple<TItem extends IItem>(url: string): Observable<ResponseMultiple<TItem>> {
+        return this.getResponse(url)
+            .map(response => {
+                return this.responseMapService.mapMultipleResponse(response);
+            });
+    }
+
+    getCount<TItem extends IItem>(url: string): Observable<ResponseCount> {
+        return this.getResponse(url)
+            .map(response => {
+                return this.responseMapService.mapCountResponse(response);
+            });
+    }
+
+    getSingle<TItem extends IItem>(url: string): Observable<ResponseSingle<TItem>> {
+        return this.getResponse(url)
+            .map(response => {
+                return this.responseMapService.mapSingleResponse(response);
+            });
+    }
+
+    getSingleCustom<TModel>(url: string): Observable<ResponseSingle<TModel>> {
+        return this.getResponse(url)
+            .map(response => {
+                return this.responseMapService.mapSingleResponseCustom(response);
+            });
+    }
+
+    create<TItem extends IItem>(url: string, body: any): Observable<ResponseCreate<TItem>> {
+        const headers = new Headers({ 'Content-Type': 'application/json' });
+        const headerOptions = new RequestOptions({ headers: headers });
+
+        return this.getPostResponse(url, body, headerOptions)
+            .map(response => {
+                return this.responseMapService.mapCreateResponse(response);
+            });
+    }
+
+    edit<TItem extends IItem>(url: string, body: any): Observable<ResponseEdit<TItem>> {
+        const headers = new Headers({ 'Content-Type': 'application/json' });
+        const headerOptions = new RequestOptions({ headers: headers });
+
+        return this.getPostResponse(url, body, headerOptions)
+            .map(response => {
+                return this.responseMapService.mapEditResponse(response);
+            });
+    }
+
+    updateItemsOrder<TItem extends IItem>(url: string, updateOrderRequest: UpdateItemsRequest): Observable<ResponseUpdateItemsOrder<TItem>> {
+        const headers = new Headers({ 'Content-Type': 'application/json' });
+        const headerOptions = new RequestOptions({ headers: headers });
+
+        return this.getPostResponse(url, updateOrderRequest, headerOptions)
+            .map(response => {
+                return this.responseMapService.mapUpdateItemsOrderResponse(response);
+            });
+    }
+
+    post<T extends any>(url: string, body: any): Observable<ResponsePost<T>> {
+        const headers = new Headers({ 'Content-Type': 'application/json' });
+        const headerOptions = new RequestOptions({ headers: headers });
+
+        return this.getPostResponse(url, body, headerOptions)
+            .map(response => {
+                return this.responseMapService.mapPostResponse(response);
+            });
+    }
+
+    touchKey<T extends any>(url: string, cacheKeyType: string, itemId?: number): Observable<ResponsePost<T>> {
+        const headers = new Headers({ 'Content-Type': 'application/json' });
+        const headerOptions = new RequestOptions({ headers: headers });
+
+        const body = {
+            'cacheKeyType': cacheKeyType,
+            'itemId': itemId
+        };
+
+        return this.getPostResponse(url, body, headerOptions)
+            .map(response => {
+                return this.responseMapService.mapPostResponse(response);
+            });
+    }
+
+    delete(url: string): Observable<ResponseDelete> {
+        const headers = new Headers({ 'Content-Type': 'application/json' });
+        const headerOptions = new RequestOptions({ headers: headers });
+
+        return this.getDeleteResponse(url, headerOptions)
+            .map(response => {
+                return this.responseMapService.mapDeleteResponse(response);
+            });
+    }
+
+    getEditForm<TItem extends IItem>(url: string, itemId: number, disableCache?: boolean, data?: any): Observable<ResponseFormEdit<TItem>> {
+        const body: any = {};
+        body.id = itemId;
+        body.disableCache = disableCache;
+        body.data = data;
+
+        return this.getPostResponse(url, body)
+            .map(response => {
+                return this.responseMapService.mapFormEditResponse<TItem>(response);
+            });
+    }
+
+    getInsertForm(url: string, data?: any): Observable<ResponseFormInsert> {
+        const body: any = {};
+        body.data = data;
+
+        return this.getPostResponse(url, body)
+            .map(response => {
+                return this.responseMapService.mapFormInsertResponse(response);
+            });
+    }
+
+    uploadSingleFile(url: string, file: File): Observable<ResponseUploadSingle> {
+        // do not set 'Content-Type', it messes up the request headers
+        const headers = new Headers({ 'Accept': 'application/json' });
+        const headerOptions = new RequestOptions({ headers: headers });
+
+        const formData: FormData = new FormData();
+        formData.append('file', file, file.name);
+
+        return this.getPostResponse(url, formData, headerOptions)
+            .map(response => {
+                return this.responseMapService.mapSingleUploadResponse(response);
+            });
+    }
+
+    uploadMultipleFiles(url: string, files: File[]): Observable<ResponseUploadMultiple> {
+        // do not set 'Content-Type', it messes up the request headers
+        const headers = new Headers({ 'Accept': 'application/json' });
+        const headerOptions = new RequestOptions({ headers: headers });
+
+        const formData: FormData = new FormData();
+
+        if (files && Array.isArray(files)) {
+            files.forEach(file => {
+                formData.append('files', file, file.name);
+            });
+        }
+
+        return this.getPostResponse(url, formData, headerOptions)
+            .map(response => {
+                return this.responseMapService.mapMultipleUploadResponse(response);
+            });
+    }
+
+    getSingleFile(url: string): Observable<ResponseFileSingle> {
+        return this.authHttp.get(url)
+            .map(response => {
+                return this.responseMapService.mapSingleFileResponse(response);
+            })
+            .catch(response => {
+                return Observable.throw(this.handleError(response));
+            })
+            ._finally(() => {
+                this.finishRequest();
+            });
+    }
+
+    getMultipleFiles(url: string): Observable<ResponseFileMultiple> {
+        return this.getResponse(url)
+            .map(response => {
+                return this.responseMapService.mapMultipleFileResponse(response);
+            });
+    }
+
+    deleteFile(url: string, fileUrl: string): Observable<ResponseDeleteFile> {
+        const body: any = {};
+        body.fileUrl = fileUrl; // fileUrl property is required by the API Server
+
+        return this.getPostResponse(url, body)
+            .map(response => {
+                return this.responseMapService.mapDeleteFileResponse(response);
+            });
+
+    }
+
+    /*--------------------- Error handling -------------------- */
+
+     // error handling
+     private handleError(response: Response | any): IErrorResponseRaw | IFormErrorResponseRaw {
         // raise error
         this.raiseError(response);
 
@@ -145,199 +342,6 @@ export class QueryService {
 
         // return ErrorResponse for unknown error
         return new ErrorResponse(this.genericErrorMessage, ErrorReasonEnum.RepositoryException, response);
-    }
-
-    protected get<TAny>(url: string): Observable<TAny> {
-        return this.getResponse(url)
-            .map(response => {
-                return response.json() as TAny;
-            });
-    }
-
-    protected getMultipleCustom<TModel>(url: string): Observable<ResponseMultiple<TModel>> {
-        return this.getResponse(url)
-            .map(response => {
-                return this.responseMapService.mapMultipleResponseCustom(response);
-            });
-    }
-
-    protected getMultiple<TItem extends IItem>(url: string): Observable<ResponseMultiple<TItem>> {
-        return this.getResponse(url)
-            .map(response => {
-                return this.responseMapService.mapMultipleResponse(response);
-            });
-    }
-
-    protected getCount<TItem extends IItem>(url: string): Observable<ResponseCount> {
-        return this.getResponse(url)
-            .map(response => {
-                return this.responseMapService.mapCountResponse(response);
-            });
-    }
-
-    protected getSingle<TItem extends IItem>(url: string): Observable<ResponseSingle<TItem>> {
-        return this.getResponse(url)
-            .map(response => {
-                return this.responseMapService.mapSingleResponse(response);
-            });
-    }
-
-    protected getSingleCustom<TModel>(url: string): Observable<ResponseSingle<TModel>> {
-        return this.getResponse(url)
-            .map(response => {
-                return this.responseMapService.mapSingleResponseCustom(response);
-            });
-    }
-
-    protected create<TItem extends IItem>(url: string, body: any): Observable<ResponseCreate<TItem>> {
-        const headers = new Headers({ 'Content-Type': 'application/json' });
-        const headerOptions = new RequestOptions({ headers: headers });
-
-        return this.getPostResponse(url, body, headerOptions)
-            .map(response => {
-                return this.responseMapService.mapCreateResponse(response);
-            });
-    }
-
-    protected edit<TItem extends IItem>(url: string, body: any): Observable<ResponseEdit<TItem>> {
-        const headers = new Headers({ 'Content-Type': 'application/json' });
-        const headerOptions = new RequestOptions({ headers: headers });
-
-        return this.getPostResponse(url, body, headerOptions)
-            .map(response => {
-                return this.responseMapService.mapEditResponse(response);
-            });
-    }
-
-    protected updateItemsOrder<TItem extends IItem>(url: string, updateOrderRequest: UpdateItemsRequest): Observable<ResponseUpdateItemsOrder<TItem>> {
-        const headers = new Headers({ 'Content-Type': 'application/json' });
-        const headerOptions = new RequestOptions({ headers: headers });
-
-        return this.getPostResponse(url, updateOrderRequest, headerOptions)
-            .map(response => {
-                return this.responseMapService.mapUpdateItemsOrderResponse(response);
-            });
-    }
-
-    protected post<T extends any>(url: string, body: any): Observable<ResponsePost<T>> {
-        const headers = new Headers({ 'Content-Type': 'application/json' });
-        const headerOptions = new RequestOptions({ headers: headers });
-
-        return this.getPostResponse(url, body, headerOptions)
-            .map(response => {
-                return this.responseMapService.mapPostResponse(response);
-            });
-    }
-
-    protected touchKey<T extends any>(url: string, cacheKeyType: string, itemId?: number): Observable<ResponsePost<T>> {
-        const headers = new Headers({ 'Content-Type': 'application/json' });
-        const headerOptions = new RequestOptions({ headers: headers });
-
-        const body = {
-            'cacheKeyType': cacheKeyType,
-            'itemId': itemId
-        };
-
-        return this.getPostResponse(url, body, headerOptions)
-            .map(response => {
-                return this.responseMapService.mapPostResponse(response);
-            });
-    }
-
-    protected delete(url: string): Observable<ResponseDelete> {
-        const headers = new Headers({ 'Content-Type': 'application/json' });
-        const headerOptions = new RequestOptions({ headers: headers });
-
-        return this.getDeleteResponse(url, headerOptions)
-            .map(response => {
-                return this.responseMapService.mapDeleteResponse(response);
-            });
-    }
-
-    protected getEditForm<TItem extends IItem>(url: string, itemId: number, disableCache?: boolean, data?: any): Observable<ResponseFormEdit<TItem>> {
-        const body: any = {};
-        body.id = itemId;
-        body.disableCache = disableCache;
-        body.data = data;
-
-        return this.getPostResponse(url, body)
-            .map(response => {
-                return this.responseMapService.mapFormEditResponse<TItem>(response);
-            });
-    }
-
-    protected getInsertForm(url: string, data?: any): Observable<ResponseFormInsert> {
-        const body: any = {};
-        body.data = data;
-
-        return this.getPostResponse(url, body)
-            .map(response => {
-                return this.responseMapService.mapFormInsertResponse(response);
-            });
-    }
-
-    protected uploadSingleFile(url: string, file: File): Observable<ResponseUploadSingle> {
-        // do not set 'Content-Type', it messes up the request headers
-        const headers = new Headers({ 'Accept': 'application/json' });
-        const headerOptions = new RequestOptions({ headers: headers });
-
-        const formData: FormData = new FormData();
-        formData.append('file', file, file.name);
-
-        return this.getPostResponse(url, formData, headerOptions)
-            .map(response => {
-                return this.responseMapService.mapSingleUploadResponse(response);
-            });
-    }
-
-    protected uploadMultipleFiles(url: string, files: File[]): Observable<ResponseUploadMultiple> {
-        // do not set 'Content-Type', it messes up the request headers
-        const headers = new Headers({ 'Accept': 'application/json' });
-        const headerOptions = new RequestOptions({ headers: headers });
-
-        const formData: FormData = new FormData();
-
-        if (files && Array.isArray(files)) {
-            files.forEach(file => {
-                formData.append('files', file, file.name);
-            });
-        }
-
-        return this.getPostResponse(url, formData, headerOptions)
-            .map(response => {
-                return this.responseMapService.mapMultipleUploadResponse(response);
-            });
-    }
-
-    protected getSingleFile(url: string): Observable<ResponseFileSingle> {
-        return this.authHttp.get(url)
-            .map(response => {
-                return this.responseMapService.mapSingleFileResponse(response);
-            })
-            .catch(response => {
-                return Observable.throw(this.handleError(response));
-            })
-            ._finally(() => {
-                this.finishRequest();
-            });
-    }
-
-    protected getMultipleFiles(url: string): Observable<ResponseFileMultiple> {
-        return this.getResponse(url)
-            .map(response => {
-                return this.responseMapService.mapMultipleFileResponse(response);
-            });
-    }
-
-    protected deleteFile(url: string, fileUrl: string): Observable<ResponseDeleteFile> {
-        const body: any = {};
-        body.fileUrl = fileUrl; // fileUrl property is required by the API Server
-
-        return this.getPostResponse(url, body)
-            .map(response => {
-                return this.responseMapService.mapDeleteFileResponse(response);
-            });
-
     }
 
     /* -------------------- Response methods ------------------ */

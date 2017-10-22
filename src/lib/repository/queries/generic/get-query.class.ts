@@ -3,7 +3,7 @@ import { RepositoryConfig } from '../../repository.config';
 
 // services
 import { AuthHttp } from 'angular2-jwt';
-import { BaseQuery } from '../common/base-query.class';
+import { BaseQuery } from '../base-query.class';
 
 // models
 import { IOption } from '../../interfaces/ioption.interface';
@@ -35,13 +35,13 @@ export class GetQuery<T extends any> extends BaseQuery {
 
     // url
     protected getGetUrl(): string {
-        return this.getGenericUrl(this.controller, this.action, this.options);
+        return this.queryService.getGenericUrl(this.controller, this.action, this.options);
     }
 
     // execution
 
     set(): Observable<T> {
-        return super.get(this.getGetUrl());
+        return this.queryService.get(this.getGetUrl());
     }
 
     // debug

@@ -3,7 +3,7 @@ import { RepositoryConfig } from '../../repository.config';
 
 // services
 import { AuthHttp } from 'angular2-jwt';
-import { BaseQuery } from '../common/base-query.class';
+import { BaseQuery } from '../base-query.class';
 
 // models
 import { IItem } from '../../interfaces/iitem.interface';
@@ -53,13 +53,13 @@ export class CreateItemQuery<TItem extends IItem> extends BaseQuery {
 
     // url
     protected getCreateUrl(): string {
-        return this.getTypeUrl(this.type, this._action);
+        return this.queryService.getTypeUrl(this.type, this._action);
     }
 
     // execution
 
     set(): Observable<ResponseCreate<TItem>> {
-        return super.create(this.getCreateUrl(), this.item);
+        return this.queryService.create(this.getCreateUrl(), this.item);
     }
 
     // debug

@@ -35,7 +35,7 @@ export class MultipleItemQueryCustom<TModel> extends BaseMultipleItemQuery {
 
     get(): Observable<ResponseMultiple<TModel>> {
         const url = this.getMultipleItemsQueryUrl();
-        return super.getMultipleCustom(url);
+        return this.queryService.getMultipleCustom(url);
     }
 
     // debug

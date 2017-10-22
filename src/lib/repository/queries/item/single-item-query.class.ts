@@ -30,7 +30,7 @@ export class SingleItemQuery<TItem extends IItem> extends BaseSingleItemQuery {
 
     get(): Observable<ResponseSingle<TItem>> {
         const url = super.getSingleItemQueryUrl();
-        return super.getSingle(url);
+        return this.queryService.getSingle(url);
     }
 
     // debug

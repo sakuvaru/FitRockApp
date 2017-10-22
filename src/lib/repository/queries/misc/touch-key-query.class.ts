@@ -3,7 +3,7 @@ import { RepositoryConfig } from '../../repository.config';
 
 // services
 import { AuthHttp } from 'angular2-jwt';
-import { BaseQuery } from '../common/base-query.class';
+import { BaseQuery } from '../base-query.class';
 
 // responses
 import { ResponsePost } from '../../models/responses';
@@ -33,13 +33,13 @@ export class TouchKeyQuery extends BaseQuery {
 
     // url
     protected getPostUrl(): string {
-        return this.getTypeUrl(this.type, this._action);
+        return this.queryService.getTypeUrl(this.type, this._action);
     }
 
     // execution
 
     set(): Observable<ResponsePost<any>> {
-        return super.touchKey(this.getPostUrl(), this.cacheKeyType.toString(), this.itemId);
+        return this.queryService.touchKey(this.getPostUrl(), this.cacheKeyType.toString(), this.itemId);
     }
 
     // debug

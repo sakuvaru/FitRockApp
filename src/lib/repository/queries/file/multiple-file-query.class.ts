@@ -3,7 +3,7 @@ import { RepositoryConfig } from '../../repository.config';
 
 // services
 import { AuthHttp } from 'angular2-jwt';
-import { BaseQuery } from '../common/base-query.class';
+import { BaseQuery } from '../base-query.class';
 
 // models
 import { FetchedFile } from '../../models/fetched-file.class';
@@ -44,13 +44,13 @@ export class MultipleFileQuery extends BaseQuery {
             throw new Error('No action was specified for files query');
         }
 
-        return super.getGenericUrl(this.controller, this._action);
+        return this.queryService.getGenericUrl(this.controller, this._action);
     }
 
     // execution
 
     set(): Observable<ResponseFileMultiple> {
-        return super.getMultipleFiles(this.getFileUrl());
+        return this.queryService.getMultipleFiles(this.getFileUrl());
     }
 
     // debug

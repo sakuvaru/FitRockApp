@@ -3,7 +3,7 @@ import { RepositoryConfig } from '../../repository.config';
 
 // services
 import { AuthHttp } from 'angular2-jwt';
-import { BaseQuery } from '../common/base-query.class';
+import { BaseQuery } from '../base-query.class';
 
 // models
 import { IItem } from '../../interfaces/iitem.interface';
@@ -47,13 +47,13 @@ export class DeleteItemQuery extends BaseQuery {
 
     // url
     protected getDeleteUrl(): string {
-        return this.getTypeUrl(this.type, this._action + '/' + this.itemId);
+        return this.queryService.getTypeUrl(this.type, this._action + '/' + this.itemId);
     }
 
     // execution
 
     set(): Observable<ResponseDelete> {
-        return super.delete(this.getDeleteUrl());
+        return this.queryService.delete(this.getDeleteUrl());
     }
 
     // debug

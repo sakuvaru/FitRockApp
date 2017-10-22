@@ -3,7 +3,7 @@ import { RepositoryConfig } from '../../repository.config';
 
 // services
 import { AuthHttp } from 'angular2-jwt';
-import { BaseQuery } from '../common/base-query.class';
+import { BaseQuery } from '../base-query.class';
 
 // models
 import { IItem } from '../../interfaces/iitem.interface';
@@ -47,13 +47,13 @@ export class EditItemQuery<TItem extends IItem> extends BaseQuery {
 
     // url
     protected getEditUrl(): string {
-        return this.getTypeUrl(this.type, this._action);
+        return this.queryService.getTypeUrl(this.type, this._action);
     }
 
     // execution
 
     set(): Observable<ResponseEdit<TItem>> {
-        return super.edit(this.getEditUrl(), this.item);
+        return this.queryService.edit(this.getEditUrl(), this.item);
     }
 
     // debug

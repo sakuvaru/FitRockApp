@@ -5,7 +5,7 @@ import { RepositoryConfig } from '../../repository.config';
 import { AuthHttp } from 'angular2-jwt';
 
 // models
-import { BaseQuery } from '../common/base-query.class';
+import { BaseQuery } from '../base-query.class';
 import { IOption } from '../../interfaces/ioption.interface';
 
 // filters
@@ -61,6 +61,6 @@ export abstract class BaseItemCountQuery extends BaseQuery {
     }
 
     protected getQueryUrl(): string {
-        return this.getTypeUrl(this.type, this._action, this._options);
+        return this.queryService.getTypeUrl(this.type, this._action, this._options);
     }
 }

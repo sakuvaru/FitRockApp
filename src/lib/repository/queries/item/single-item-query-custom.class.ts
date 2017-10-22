@@ -28,7 +28,7 @@ export class SingleItemQueryCustom<TModel> extends BaseSingleItemQuery {
     // execution
     get(): Observable<ResponseSingle<TModel>> {
         const url = super.getSingleItemQueryUrl();
-        return super.getSingleCustom(url);
+        return this.queryService.getSingleCustom(url);
     }
 
     // debug

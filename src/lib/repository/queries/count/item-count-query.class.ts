@@ -29,7 +29,7 @@ export class ItemCountQuery extends BaseItemCountQuery {
     // execution
     get(): Observable<ResponseCount> {
         const url = super.getQueryUrl();
-        return super.getCount(url);
+        return this.queryService.getCount(url);
     }
 
     // debug

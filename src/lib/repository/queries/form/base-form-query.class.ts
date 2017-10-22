@@ -6,7 +6,7 @@ import { AuthHttp } from 'angular2-jwt';
 
 // models
 import { IItem } from '../../interfaces/iitem.interface';
-import { BaseQuery } from '../common/base-query.class';
+import { BaseQuery } from '../base-query.class';
 import { IOption } from '../../interfaces/ioption.interface';
 
 // filters
@@ -52,17 +52,17 @@ export abstract class BaseFormQuery extends BaseQuery {
     }
 
     protected getFormQueryUrl(): string {
-        return this.getTypeUrl(this.type, this._action, this._options);
+        return this.queryService.getTypeUrl(this.type, this._action, this._options);
     }
 
     protected runEditFormQuery<TItem extends IItem>(itemId: number, disableCache?: boolean): Observable<ResponseFormEdit<TItem>> {
         const url = this.getFormQueryUrl();
-        return super.getEditForm<TItem>(url, itemId, disableCache, this._data);
+        return this.queryService.getEditForm<TItem>(url, itemId, disableCache, this._data);
     }
 
     protected runInsertFormQuery(): Observable<ResponseFormInsert> {
         const url = this.getFormQueryUrl();
 
-        return super.getInsertForm(url, this._data);
+        return this.queryService.getInsertForm(url, this._data);
     }
 }

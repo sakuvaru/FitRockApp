@@ -3,7 +3,7 @@ import { RepositoryConfig } from '../../repository.config';
 
 // services
 import { AuthHttp } from 'angular2-jwt';
-import { BaseQuery } from '../common/base-query.class';
+import { BaseQuery } from '../base-query.class';
 
 // responses
 import { ResponseDeleteFile } from '../../models/responses';
@@ -41,7 +41,7 @@ export class DeleteFileQuery extends BaseQuery {
             throw Error(`No action was specified for delete file query`);
         }
 
-        return super.getGenericUrl(this.controller, this._action);
+        return this.queryService.getGenericUrl(this.controller, this._action);
     }
 
     // execution
@@ -51,7 +51,7 @@ export class DeleteFileQuery extends BaseQuery {
             throw Error(`File url has to be specified when deleting file`);
         }
 
-        return super.deleteFile(this.getDeleteUrl(), this.fileUrl);
+        return this.queryService.deleteFile(this.getDeleteUrl(), this.fileUrl);
     }
 
     // debug

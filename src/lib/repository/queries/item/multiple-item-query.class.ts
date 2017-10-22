@@ -34,7 +34,7 @@ export class MultipleItemQuery<TItem extends IItem> extends BaseMultipleItemQuer
     // execution
     get(): Observable<ResponseMultiple<TItem>> {
         const url = this.getMultipleItemsQueryUrl();
-        return super.getMultiple(url);
+        return this.queryService.getMultiple(url);
     }
 
     // debug
