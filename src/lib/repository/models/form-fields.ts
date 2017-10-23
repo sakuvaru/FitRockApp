@@ -44,9 +44,14 @@ export class FormField implements IFormField {
     public options?: IFormFieldOptions;
 
     /**
-     * Translated field name label
+     * Label of the field
      */
-    public translatedLabel?: string;
+    public label: string;
+
+    /**
+    * Hint of the fiend
+    */
+    public hint?: string;
 
     constructor(constructorOptions: {
         // required
@@ -57,11 +62,25 @@ export class FormField implements IFormField {
         rawValue?: any,
         defaultValue?: any,
         required?: boolean,
-        options?: IFormFieldOptions
+        options?: IFormFieldOptions,
+        hint?: string
     }) {
         Object.assign(this, constructorOptions);
 
         this.mapFormField(this.controlType, constructorOptions.rawValue);
+    }
+
+    showLengthHint(): boolean {
+        if (!this.options) {
+            return false;
+        }
+        if (!this.options.maxLength) {
+            return false;
+        }
+        if (this.options.maxLength > 0) {
+            return true;
+        }
+        return false;
     }
 
     private mapFormField(controlType: string, rawValue?: any): void {
@@ -166,7 +185,7 @@ export class FormFieldOptions implements IFormFieldOptions {
         falseOptionLabel?: string,
         maxNumberValue?: number,
         minNumberValue?: number,
-        extraTranslationData?: any
+        extraTranslationData?: any,
     }) {
         Object.assign(this, options);
     }

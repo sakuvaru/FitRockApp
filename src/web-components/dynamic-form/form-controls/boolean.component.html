@@ -1,9 +1,9 @@
 <div *ngIf="initialized" layout="row" layout-margin [formGroup]="form">
 
   <div flex>
-    <mat-checkbox [checked]="checkBoxIsChecked" [formControlName]="controlName" [id]="controlName" [required]="required"
-      #elem>&nbsp;{{label}}
-      <span class="md-caption">({{hint}})</span>
+    <mat-checkbox [checked]="checkBoxIsChecked" [formControlName]="question.key" [id]="question.key" [required]="question.required"
+      #elem>&nbsp;{{question.label}}
+      <span class="md-caption">({{question.hint}})</span>
     </mat-checkbox>
     <span *ngIf="required && !elem.checked" class="tc-grey-500 md-caption"> ({{ 'form.shared.required' | translate }})</span>
   </div>

@@ -1,7 +1,7 @@
 <div *ngIf="initialized" layout="row" layout-margin [formGroup]="form">
 
-  <mat-form-field flex>
-    <mat-select [id]="controlName" [formControlName]="controlName" [required]="required" [placeholder]="label">
+  <mat-form-field [hintLabel]="question.hint" flex>
+    <mat-select [id]="question.key" [formControlName]="question.key" [required]="question.required" [placeholder]="question.label">
       <mat-option *ngFor="let option of question.options.listOptions" [value]="option.value">{{option.name}}</mat-option>
     </mat-select>
     <mat-error>{{customError}}</mat-error>

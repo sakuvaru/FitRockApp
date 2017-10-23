@@ -669,7 +669,7 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
 
                             if (formField) {
                                 // form error
-                                this.getFormErrorMessage(validationResult, formField.translatedLabel || formField.key)
+                                this.getFormErrorMessage(validationResult, formField.label || formField.key)
                                     .takeUntil(this.ngUnsubscribe)
                                     .subscribe(formError => this.formErrorLines.push(formError));
                             } else {

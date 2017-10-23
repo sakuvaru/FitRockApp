@@ -15,14 +15,6 @@ export abstract class BaseFormControlComponent extends BaseWebComponent implemen
     @Input() form: FormGroup;
     @Input() formConfig: FormConfig<any>;
 
-    
-    protected controlName: string;
-    protected label: string;
-    protected value: string | boolean | number | Date;
-    protected hint: string;
-    protected required: boolean;
-    protected showLengthHint: boolean;
-
     /**
      * Holds error message
      */
@@ -38,7 +30,7 @@ export abstract class BaseFormControlComponent extends BaseWebComponent implemen
      * Has to be set before calling ngOnInit && ngOnChanges
      */
     protected customValidator: (value: any) => ValueValidationResult;
-    
+
     /**
      * Return value used for insert forms
      */
@@ -69,10 +61,6 @@ export abstract class BaseFormControlComponent extends BaseWebComponent implemen
             return;
         }
 
-        // main properties
-        this.controlName = this.question.key;
-        this.required = this.question.required;
-
         // translations
         this.getReloadTranslationObservable()
             .takeUntil(this.ngUnsubscribe)
@@ -87,24 +75,31 @@ export abstract class BaseFormControlComponent extends BaseWebComponent implemen
         if (this.formConfig.isInsertForm()) {
             const insertValue = this.getInsertValue();
             this.form.controls[this.question.key].setValue(insertValue);
-            this.value = insertValue;
+            this.question.value = insertValue;
         }
-        
+
         if (this.formConfig.isEditForm()) {
             const editValue = this.getEditValue();
             this.form.controls[this.question.key].setValue(editValue);
-            this.value = editValue;
+            this.question.value = editValue;
         }
-
-        this.showLengthHint = this.getShowLengthHint();
 
         // set question as initialized
         this.initialized = true;
     }
 
     private getReloadTranslationObservable(): Observable<any> {
-        return this.getQuestionHintTranslationObservable()
-            .zip(this.getQuestionLabelTranslationObservable());
+        return this.getQuestionHintObservable()
+            .map(hint => {
+                // set hint only if the translation was successful 
+                if (this.hintTranslationSuccessful(hint)) {
+                    this.question.hint = hint;
+                }
+            })
+            .zip(this.getQuestionLabelObservable()
+                .map(label => {
+                    this.question.label = label;
+                }));
     }
 
     /**
@@ -149,12 +144,25 @@ export abstract class BaseFormControlComponent extends BaseWebComponent implemen
         const translationData: any = {};
 
         // set label
-        translationData.label = this.label;
+        translationData.label = this.question.label;
 
         return new ValueValidationResult(isValid, errorMessageKey, translationData);
     }
 
-    private getQuestionLabelTranslationObservable(): Observable<any> {
+    private hintTranslationSuccessful(translatedText: string): boolean {
+        if (!translatedText) {
+            return false;
+        }
+
+        return !translatedText.startsWith('form.');
+    }
+
+    private getQuestionLabelObservable(): Observable<string> {
+        // if the label is already set, use it (it could be set manually)
+        if (this.question.label) {
+            return Observable.of(this.question.label);
+        }
+
         const labelTranslationKey = this.getQuestionLabelKey();
 
         let extraTranslationData;
@@ -163,8 +171,7 @@ export abstract class BaseFormControlComponent extends BaseWebComponent implemen
         }
 
         const originalTranslationObservable = this.translateService
-            .get(labelTranslationKey, extraTranslationData)
-            .map(translatedLabel => this.label = translatedLabel);
+            .get(labelTranslationKey, extraTranslationData);
 
         // no field label resolver is defined so we can return original translation
         if (!this.formConfig.fieldLabelResolver) {
@@ -177,27 +184,15 @@ export abstract class BaseFormControlComponent extends BaseWebComponent implemen
                 return Observable.of(fieldLabel);
             }
             return this.formConfig.fieldLabelResolver(this.question, fieldLabel)
-                .map(mappedFieldLabel => {
-                    this.question.translatedLabel = mappedFieldLabel;
+                .flatMap(mappedFieldLabel => {
+                    return mappedFieldLabel;
                 });
         });
     }
 
-    private getQuestionHintTranslationObservable(): Observable<any> {
+    private getQuestionHintObservable(): Observable<string> {
         const translationKey = this.getQuestionHintKey();
-        return this.translateService.get(translationKey).map(translatedText => {
-            if (this.translationSuccessful(translatedText)) {
-                this.hint = translatedText;
-            }
-        });
-    }
-
-    private translationSuccessful(translatedText: string): boolean {
-        if (!translatedText) {
-            return false;
-        }
-
-        return !translatedText.startsWith('form.');
+        return this.translateService.get(translationKey);
     }
 
     private getQuestionLabelKey(): string {
@@ -208,18 +203,7 @@ export abstract class BaseFormControlComponent extends BaseWebComponent implemen
         return this.getQuestionLabelKey() + '.hint';
     }
 
-    private getShowLengthHint(): boolean {
-        if (!this.question.options) {
-            return false;
-        }
-        if (!this.question.options.maxLength) {
-            return false;
-        }
-        if (this.question.options.maxLength > 0) {
-            return true;
-        }
-        return false;
-    }
+   
 
     private getQuestionControl(): AbstractControl {
         return this.form.controls[this.question.key];

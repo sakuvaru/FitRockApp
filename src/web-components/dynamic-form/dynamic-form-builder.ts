@@ -101,7 +101,8 @@ class BaseDynamicFormBuilder<TItem extends IItem> {
     }
 
     /**
-    * Called when a value in a field changes
+    * Called when a value in a field changes.
+    * Can also be used to dynamically change other fields in form
     */
     onFieldValueChange(callback: (config: FormConfig<TItem>, changedField: FormField, newValue: any) => void): this {
         this.config.onFieldValueChange = callback;

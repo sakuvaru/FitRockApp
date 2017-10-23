@@ -391,7 +391,7 @@
 		},
 		"progressItem":{
 			"progressItemTypeId": "Typ",
-			"valueWithUnit": "Hodnota ({{unit}})",
+			"valueWithUnit": "{{unit}}",
 			"value": "Hodnota měření",
 			"measurementDate": "Datum měření"
 		},

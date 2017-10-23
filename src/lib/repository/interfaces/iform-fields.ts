@@ -42,10 +42,20 @@ export interface IFormField {
      */
     options?: IFormFieldOptions;
 
-    /**
-     * Translated field name label
+     /**
+     * Resolved label of the field
      */
-    translatedLabel?: string;
+     label: string;
+
+     /**
+      * Hint of the fiend
+      */
+      hint?: string;
+
+     /**
+      * Indicates if length hint should be shown
+      */
+     showLengthHint(): boolean;
 }
 
 export interface IDropdownFieldOption {

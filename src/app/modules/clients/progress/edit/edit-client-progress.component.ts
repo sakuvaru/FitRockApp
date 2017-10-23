@@ -15,6 +15,7 @@ import { EditProgressItemDialogComponent } from '../dialogs/edit-progress-item-d
 import { SelectProgressTypeDialogComponent } from '../dialogs/select-progress-type-dialog.component';
 import { NewClientProgressItemTypeDialogComponent } from '../dialogs/new-client-progress-item-type-dialog.component';
 import * as _ from 'underscore';
+import { stringHelper } from '../../../../../lib/utilities';
 
 @Component({
     templateUrl: 'edit-client-progress.component.html'
@@ -97,11 +98,10 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
                 this.reloadDataTable();
             })
             .clearFormAfterSave(true)
-            // set extra translation value for measurement value based on currently selected type
             .onFieldValueChange((config, changedField, newValue) => {
-                // get measurement value field
-                const measurementValueField = config.fields.find(m => m.key === 'Value');
-                if (!measurementValueField) {
+                // set extra translation value for measurement value based on currently selected type
+                // process for changing the measurement type
+                if (changedField.key !== 'ProgressItemTypeId') {
                     return;
                 }
 
@@ -111,22 +111,34 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
                 }
 
                 const listOption = changedField.options.listOptions.find(m => m.value === newValue);
-                if (!listOption) {
+                const measurementValueField = config.fields.find(m => m.key === 'Value');
+
+                if (!measurementValueField) {
                     return;
                 }
 
-                // set new custom translation label
-                const translationData: any = {};
-                const unitCode = listOption.extraDataJson.unit;
-                super.translate('module.progressItemUnits.' + unitCode).subscribe(unitTranslation => {
-                    translationData.unit = unitTranslation;
-                    super.translate('form.progressItem.valueWithUnit', translationData).subscribe(translation => {
-                        const field = config.fields.find(m => m.key === 'Value');
-                        if (field) {
-                            field.translatedLabel = translation;
-                        }
-                    });
-                });
+                if (!listOption) {
+                    // option is not in the list, use the default label
+                    super.translate('form.progressItem.value')
+                        .takeUntil(this.ngUnsubscribe)
+                        .subscribe(translation => {
+                            measurementValueField.label = translation;
+                        });
+                } else {
+                    // set new custom translation label
+                    const translationData: any = {};
+                    const unitCode = listOption.extraDataJson.unit;
+                    super.translate('module.progressItemUnits.' + unitCode)
+                        .flatMap(unitTranslation => {
+                            translationData.unit = unitTranslation;
+                            return super.translate('form.progressItem.valueWithUnit', translationData)
+                                .map(translation => {
+                                    measurementValueField.label = stringHelper.capitalizeText(translation);
+                                });
+                        })
+                        .takeUntil(this.ngUnsubscribe)
+                        .subscribe();
+                }
             })
             .build();
     }
@@ -161,9 +173,9 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
             },
             [
                 {
-                    value: (item: ProgressItem) => 
-                        item.progressItemType.translateValue 
-                            ? super.translate( 'module.progressItemTypes.globalTypes.' + item.progressItemType.codename)
+                    value: (item: ProgressItem) =>
+                        item.progressItemType.translateValue
+                            ? super.translate('module.progressItemTypes.globalTypes.' + item.progressItemType.codename)
                             : item.progressItemType.typeName
                     ,
                     isSubtle: false,
