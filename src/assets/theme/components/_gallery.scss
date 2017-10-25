@@ -1,0 +1,27 @@
+    .w-gallery-wrapper img.ng-thumb {
+        height: 120px!important;
+        margin: 3px 3px 0 0!important;
+    }
+    
+    .w-gallery-wrapper .w-gallery-thumb {
+        height: 120px;
+        float: left;
+        cursor: pointer;
+        margin: 3px 3px 0 0;
+    }
+    
+    .w-gallery-dialog-wrapper img.ng-thumb {
+        height: 70px!important;
+        margin: 5px 5px 0 0!important;
+    }
+    
+    .w-gallery-dialog-wrapper .w-gallery-thumb {
+        height: 70px;
+        float: left;
+        cursor: pointer;
+        margin: 5px 5px 0 0;
+    }
+    
+    .w-gallery-dialog-wrapper .w-gallery-image-wrapper {
+        float: left;
+    }

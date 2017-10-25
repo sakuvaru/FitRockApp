@@ -1,3 +1,4 @@
+<!--
 <div *ngIf="pagerConfig && pagerConfig.showPager && !(pagerConfig.hidePagerForSinglePage && totalPages == 1)">
     <button hideOnMobile *ngIf="pagerConfig.showPagerFirstLastButtons" [disabled]="!hasPreviousPage()" mat-button (click)="onGoToPage(1)"><<</button>
     <button *ngIf="pagerConfig.showPagerNextPreviousButtons" [disabled]="!hasPreviousPage()" mat-button (click)="onGoToPreviousPage()"><</button>
@@ -7,4 +8,28 @@
     </span>
     <button *ngIf="pagerConfig.showPagerNextPreviousButtons" [disabled]="!hasNextPage()" mat-button (click)="onGoToNextPage()">></button>
     <button hideOnMobile *ngIf="pagerConfig.showPagerFirstLastButtons" [disabled]="!hasNextPage()" mat-button (click)="onGoToPage(totalPages)">>></button>
+</div>
+-->
+<div *ngIf="pagerConfig && pagerConfig.showPager && !(pagerConfig.hidePagerForSinglePage && totalPages == 1)" class="w-data-table-pager pager-test">
+    <!-- First page -->
+    <span hideOnMobile *ngIf="pagerConfig.showPagerFirstLastButtons && !hasPreviousPage()" class="tc-grey-500"><<</span>
+    <span hideOnMobile *ngIf="pagerConfig.showPagerFirstLastButtons && hasPreviousPage()" (click)="onGoToPage(1)"><<</span>
+
+    <!-- Previous page -->
+    <span *ngIf="pagerConfig.showPagerNextPreviousButtons && !hasPreviousPage()" class="tc-grey-500"><</span>
+    <span *ngIf="pagerConfig.showPagerNextPreviousButtons && hasPreviousPage()" (click)="onGoToPreviousPage()"><</span>
+     
+    <!-- Particular pages -->
+    <span hideOnMobile *ngFor="let button of pagerButtons">
+      <span *ngIf="pagerConfig.showPagerNumberButtons && !button.isActive" (click)="onGoToPage(button.page)">{{button.page}}</span>
+      <span *ngIf="pagerConfig.showPagerNumberButtons && button.isActive" color="primary" (click)="onGoToPage(button.page)">{{button.page}}</span>
+    </span>
+
+    <!-- Next page -->
+    <span *ngIf="pagerConfig.showPagerNextPreviousButtons && !hasNextPage()" class="tc-grey-500">></span>
+    <span *ngIf="pagerConfig.showPagerNextPreviousButtons && hasNextPage()" (click)="onGoToNextPage()">></span>
+    
+    <!-- Last page -->
+    <span hideOnMobile *ngIf="pagerConfig.showPagerFirstLastButtons && !hasNextPage()" class="tc-grey-500">>></span>
+    <span hideOnMobile *ngIf="pagerConfig.showPagerFirstLastButtons && hasNextPage()" (click)="onGoToPage(totalPages)">>></span>
 </div>

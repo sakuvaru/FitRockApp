@@ -1,0 +1,53 @@
+/* ----------------------- Common styles ---------------------- /*
+
+    /* fixes overflow when using vertical scroll on mobile devices */
+    .w-table-container{
+        display: block; 
+        max-width: 100%; 
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .w-cursor-move{
+        cursor: move;
+    }
+    
+    .w-cursor-pointer{
+        cursor: pointer;
+    }
+    
+    .w-hidden{
+        display: none;
+    }
+    
+    .w-tc-white {
+        color: #FFFFFF;
+    }
+    
+    .w-component-avatar {
+        height: 40px;
+        width: 40px;
+        border-radius: 50%;
+        flex-shrink: 0;
+    }
+    
+    .w-clear {
+        clear: both;
+    }
+    
+    .w-sort-list-item {
+        box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+        background-color: white;
+        cursor: move;
+    }
+    
+ 
+    
+    
+    
+    
+    
+ 
+    
+ 
+    

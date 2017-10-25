@@ -1,0 +1,10 @@
+// Import theming functions
+@import '~@angular/material/theming';
+
+// Import your custom theme
+@import '../../material/material-theme.scss';
+
+/* Define properties */
+
+$primary: mat-color($app-primary);
+$accent: mat-color($app-accent, A400);
