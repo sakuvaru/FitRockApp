@@ -148,6 +148,10 @@ export class PagerConfig {
     public showPagerFirstLastButtons = true;
     public showPagerNumberButtons = true;
     public hidePagerForSinglePage = true;
+    /**
+     * If enabled, material buttons will be used for paging
+     */
+    public usePagerButtons: boolean = true;
 }
 
 export class SelectableConfig<TItem extends IItem> {
