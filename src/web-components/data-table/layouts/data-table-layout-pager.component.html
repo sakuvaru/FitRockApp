@@ -10,28 +10,39 @@
     <button hideOnMobile *ngIf="pagerConfig.showPagerFirstLastButtons" [disabled]="!hasNextPage()" mat-button (click)="onGoToPage(totalPages)">>></button>
 </div>
 -->
+
 <div *ngIf="pagerConfig && pagerConfig.showPager && !(pagerConfig.hidePagerForSinglePage && totalPages == 1)" class="w-data-table-pager">
-    <!-- First page -->
-    <span hideOnMobile *ngIf="pagerConfig.showPagerFirstLastButtons && !hasPreviousPage() && totalPages > 15" class="w-page-disabled"><<</span>
-    <span hideOnMobile *ngIf="pagerConfig.showPagerFirstLastButtons && hasPreviousPage() && totalPages > 15" class="w-page" (click)="onGoToPage(1)"><<</span>
+    
+    <!-- Large version -->
+    <div hideOnMobile>
+         <!-- First page -->
+        <span *ngIf="pagerConfig.showPagerFirstLastButtons && !hasPreviousPage() && totalPages > 15" class="w-page-disabled"><<</span>
+        <span *ngIf="pagerConfig.showPagerFirstLastButtons && hasPreviousPage() && totalPages > 15" class="w-page" (click)="onGoToPage(1)"><<</span>
 
-    <!-- Previous page -->
-    <span hideOnMobile *ngIf="pagerConfig.showPagerNextPreviousButtons && !hasPreviousPage()" class="w-page-disabled"><</span>
-    <span hideOnMobile *ngIf="pagerConfig.showPagerNextPreviousButtons && hasPreviousPage()" class="w-page" (click)="onGoToPreviousPage()"><</span>
-    <button showOnMobile *ngIf="pagerConfig.showPagerNextPreviousButtons" color="primary" [disabled]="!hasPreviousPage()" mat-raised-button (click)="onGoToPreviousPage()"><</button>
+        <!-- Previous page -->
+        <span *ngIf="pagerConfig.showPagerNextPreviousButtons && !hasPreviousPage() && totalPages > 0" class="w-page-disabled"><</span>
+        <span *ngIf="pagerConfig.showPagerNextPreviousButtons && hasPreviousPage() && totalPages > 0" class="w-page" (click)="onGoToPreviousPage()"><</span>
      
-    <!-- Particular pages -->
-    <span hideOnMobile *ngFor="let button of pagerButtons">
-      <span *ngIf="pagerConfig.showPagerNumberButtons && !button.isActive" class="w-page" (click)="onGoToPage(button.page)">{{button.page}}</span>
-      <span *ngIf="pagerConfig.showPagerNumberButtons && button.isActive" class="w-page-active" (click)="onGoToPage(button.page)">{{button.page}}</span>
-    </span>
+        <!-- Particular pages -->
+        <span *ngFor="let button of pagerButtons">
+        <span *ngIf="pagerConfig.showPagerNumberButtons && !button.isActive" class="w-page" (click)="onGoToPage(button.page)">{{button.page}}</span>
+        <span *ngIf="pagerConfig.showPagerNumberButtons && button.isActive" class="w-page-active" (click)="onGoToPage(button.page)">{{button.page}}</span>
+        </span>
 
-    <!-- Next page -->
-    <span hideOnMobile *ngIf="pagerConfig.showPagerNextPreviousButtons && !hasNextPage()" class="w-page-disabled">></span>
-    <span hideOnMobile *ngIf="pagerConfig.showPagerNextPreviousButtons && hasNextPage()" class="w-page" (click)="onGoToNextPage()">></span>
-    <button showOnMobile *ngIf="pagerConfig.showPagerNextPreviousButtons" color="primary" [disabled]="!hasNextPage()" mat-raised-button (click)="onGoToNextPage()">></button>
+        <!-- Next page -->
+        <span *ngIf="pagerConfig.showPagerNextPreviousButtons && !hasNextPage() && totalPages > 0" class="w-page-disabled">></span>
+        <span *ngIf="pagerConfig.showPagerNextPreviousButtons && hasNextPage() && totalPages > 0" class="w-page" (click)="onGoToNextPage()">></span>
 
-    <!-- Last page -->
-    <span hideOnMobile *ngIf="pagerConfig.showPagerFirstLastButtons && !hasNextPage() && totalPages > 15" class="w-page-disabled">>></span>
-    <span hideOnMobile *ngIf="pagerConfig.showPagerFirstLastButtons && hasNextPage() && totalPages > 15" class="w-page" (click)="onGoToPage(totalPages)">>></span>
+        <!-- Last page -->
+        <span *ngIf="pagerConfig.showPagerFirstLastButtons && !hasNextPage() && totalPages > 15" class="w-page-disabled">>></span>
+        <span *ngIf="pagerConfig.showPagerFirstLastButtons && hasNextPage() && totalPages > 15" class="w-page" (click)="onGoToPage(totalPages)">>></span>
+    </div>
+
+    <!-- Mobile version -->
+    <div showOnMobile>
+        <button *ngIf="pagerConfig.showPagerNextPreviousButtons" color="primary" [disabled]="!hasPreviousPage()" mat-raised-button (click)="onGoToPreviousPage()"><</button>
+        <button *ngIf="pagerConfig.showPagerNextPreviousButtons" color="primary" [disabled]="!hasNextPage()" mat-raised-button (click)="onGoToNextPage()">></button>
+    
+    </div>
+   
 </div>
