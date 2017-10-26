@@ -12,7 +12,8 @@ export class AppConfig {
     public static RedirectQueryString = 'url';
 
     // web api config
-    public static RepositoryUrl = 'http://localhost:61466';
+    public static ServerUrl = 'http://localhost:61466';
+    public static RepositoryUrl = AppConfig.ServerUrl;
     public static RepositoryTypeEndpoint = 'type';
     public static RepositoryApiEndpoint = 'api';
 
@@ -29,15 +30,28 @@ export class AppConfig {
     public static Auth0_IdTokenStorageName = 'id_token';
     public static Auth0_NoJwtError = true;
 
-    // google 
+    /**
+     * Api key for goole project
+     */ 
     public static GoogleApiKey = 'AIzaSyAK2PNZZv81SJcys-szVyNr-yc-CPPf00s';
 
-    // server check controller
+    /**
+     * Path to controller & action that is used to verify if server is running or not
+     */
     public static ServerCheckerController = new ControllerModel('Server', 'IsRunning');
 
-    // components settings
+    /**
+     * Indicates if the content page is hidden while components are still initializing
+     */
     public static HideComponentWhenLoaderIsEnabled = true;
 
-    // design defaults
+    /**
+     * Default width of dialog 
+     */
     public static DefaultDialogWidth = '70%';
+
+    /**
+     * Default url to image used as avatar
+     */
+    public static DefaultUserAvatarUrl = AppConfig.ServerUrl + '/system/images/default_avatar.png';
 }

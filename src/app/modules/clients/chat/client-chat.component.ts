@@ -28,6 +28,8 @@ export class ClientChatComponent extends ClientsBaseComponent implements OnInit 
     private readonly debounceTime = 300;
     private searchControl = new FormControl();
 
+    private readonly defaultAvatarUrl: string = AppConfig.DefaultUserAvatarUrl;
+
     constructor(
         protected activatedRoute: ActivatedRoute,
         protected componentDependencyService: ComponentDependencyService

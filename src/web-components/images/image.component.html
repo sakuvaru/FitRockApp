@@ -1,0 +1,3 @@
+<img *ngIf="!avatarMode" [alt]="alt" [src]="url ? url : defaultUrl" />
+
+<img *ngIf="avatarMode" [alt]="alt" [src]="url ? url : defaultUrl" matCardAvatar/>

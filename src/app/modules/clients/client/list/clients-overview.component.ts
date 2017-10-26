@@ -74,12 +74,7 @@ export class ClientsOverviewComponent extends ClientsBaseComponent implements On
       .showSearch(true)
       .pagerSize(7)
       .onClick((item) => super.navigate([super.getTrainerUrl('clients/edit/') + item.id]))
-      .avatarUrlResolver((item) => {
-        if (item.avatarUrl) {
-          return item.avatarUrl;
-        }
-        return this.defaultImageSrc;
-      })
+      .avatarUrlResolver((item) => item.avatarUrl ? item.avatarUrl : AppConfig.DefaultUserAvatarUrl)
       .build();
   }
 }

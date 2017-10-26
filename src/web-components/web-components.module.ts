@@ -17,6 +17,7 @@ import { UploaderModule } from './uploader/uploader.module';
 import { GalleryModule } from './gallery/gallery.module';
 import { TextModule } from './text/text.module';
 import { MapModule } from './map/map.module';
+import { ImagesModule } from './images/images.module';
 
 @NgModule({
     imports: [
@@ -35,7 +36,8 @@ import { MapModule } from './map/map.module';
         UploaderModule,
         GalleryModule,
         TextModule,
-        MapModule
+        MapModule,
+        ImagesModule
     ]
 })
 export class WebComponentsModule { }

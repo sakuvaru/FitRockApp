@@ -12,7 +12,7 @@
     <mat-divider></mat-divider>
     <ng-container *ngFor="let chatMessage of chatMessages">
         <mat-card-header>
-            <img matCardAvatar alt="avatar" [src]="chatMessage.sender.avatarUrl" />
+            <img matCardAvatar alt="avatar" [src]="chatMessage.sender.avatarUrl ? chatMessage.sender.avatarUrl : defaultAvatarUrl" />
             <mat-card-title>{{ chatMessage.sender.getFullName() }}</mat-card-title>
             <mat-card-subtitle><span class="md-caption">{{ formatDate(chatMessage.created)}}</span></mat-card-subtitle>
         </mat-card-header>

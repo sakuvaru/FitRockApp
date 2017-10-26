@@ -46,9 +46,6 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
     // component config
     protected componentConfig: ComponentConfig = new ComponentConfig();
 
-    // image used when no image is found
-    protected readonly defaultImageSrc: string = 'https://semantic-ui.com/images/avatar/large/elliot.jpg';
-
     // admin menu
     protected adminMenu: AdminMenu = new AdminMenu();
 

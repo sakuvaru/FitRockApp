@@ -33,6 +33,8 @@ export class ChatComponent extends BaseComponent implements OnInit {
 
     private readonly clientsPageSize: number = 200;
 
+    private readonly defaultAvatarUrl: string = AppConfig.DefaultUserAvatarUrl;
+
     constructor(
         protected activatedRoute: ActivatedRoute,
         protected componentDependencyService: ComponentDependencyService
