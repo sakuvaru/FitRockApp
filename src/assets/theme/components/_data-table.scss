@@ -1,10 +1,32 @@
 /* Data table */
-.w-data-table-pager {
+.w-data-table {
+
+    .w-data-table-pager {
+
+        margin-top: 10px;
+        margin-bottom: 15px;
+
+        .w-page {
+            margin: 0 4px;
+            padding: 6px 10px;
+            font-size: 13px;
+            cursor: pointer;
+            color: $primary;
+        }
+
+        .w-page-active {
+            @extend .w-page;
+            @include border-radius(3px); 
+            background-color: $primary;
+            color: $primary-contrast;
+        }
+
+        .w-page-disabled {
+            @extend .w-page;
+            cursor: not-allowed;
+            color: lighten($text-color, 25%);
+        }
+    }
     
 }
     
-.pager-test {
-    font-size: 20px;
-    background-color: $primary;
-    border: solid 1px $accent;
-}

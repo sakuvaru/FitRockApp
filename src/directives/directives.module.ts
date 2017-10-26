@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 
 // directives
 import { HideOnMobileDirective } from './hide-on-mobile.directive';
+import { ShowOnMobileDirective } from './show-on-mobile.directive';
 
 @NgModule({
     imports: [
@@ -12,9 +13,11 @@ import { HideOnMobileDirective } from './hide-on-mobile.directive';
     ],
     declarations: [
         HideOnMobileDirective,
+        ShowOnMobileDirective
     ],
     exports: [
         HideOnMobileDirective,
+        ShowOnMobileDirective
     ],
 })
 export class DirectivesModule { }

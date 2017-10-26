@@ -6,5 +6,10 @@
 
 /* Define properties */
 
+$text-color: rgba(0, 0, 0, 0.87);
+
 $primary: mat-color($app-primary);
 $accent: mat-color($app-accent, A400);
+
+$primary-contrast: #ffffff;
+$accent-contrast: #ffffff;

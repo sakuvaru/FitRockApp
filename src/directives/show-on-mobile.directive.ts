@@ -2,8 +2,8 @@ import { Directive, ElementRef, Input, OnInit, OnDestroy, NgZone, AfterViewInit 
 import { TdMediaService } from '@covalent/core';
 import { Subscription } from 'rxjs/Rx';
 
-@Directive({ selector: '[hideOnMobile]' })
-export class HideOnMobileDirective implements OnInit, OnDestroy, AfterViewInit {
+@Directive({ selector: '[showOnMobile]' })
+export class ShowOnMobileDirective implements OnInit, OnDestroy, AfterViewInit {
 
     /**
      * For query options, see
@@ -62,7 +62,7 @@ export class HideOnMobileDirective implements OnInit, OnDestroy, AfterViewInit {
             return;
         }
 
-        if (isSmallScreen) {
+        if (!isSmallScreen) {
             this.el.nativeElement.style.display = 'none';
         } else {
             this.el.nativeElement.style.display = 'inline';
