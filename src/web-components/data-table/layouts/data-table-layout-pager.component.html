@@ -1,4 +1,4 @@
-<div *ngIf="pagerConfig.showPager && !(pagerConfig.hidePagerForSinglePage && totalPages == 1)" class="w-data-table-pager">
+<div *ngIf="pagerConfig.showPager && totalPages > 0 && !(pagerConfig.hidePagerForSinglePage && totalPages == 1)" class="w-data-table-pager">
 
     <!-- Version with buttons -->
     <ng-container *ngIf="pagerConfig.usePagerButtons">

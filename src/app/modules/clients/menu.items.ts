@@ -32,7 +32,7 @@ export class ClientMenuItems implements IMenuItem {
             new MenuItem({ key: 'menu.shared.back' }, MenuItemType.trainer, 'clients', { icon: 'arrow_back' }),
             new MenuItem({ key: 'Profil' }, MenuItemType.trainer, 'profile', { icon: 'person' }),
             new MenuItem({ key: 'module.clients.submenu.chat' }, MenuItemType.trainer, 'clients/edit/' + id + '/chat', { icon: 'mail' }),
-            new MenuItem({ key: 'Schůzky' }, MenuItemType.trainer, 'appointments', { icon: 'schedule' }),
+            new MenuItem({ key: 'module.clients.submenu.appointments' }, MenuItemType.trainer, 'clients/edit/' + id + '/appointments', { icon: 'schedule' }),
             new MenuItem({ key: 'module.clients.submenu.workout' }, MenuItemType.trainer, 'clients/edit/' + id + '/workout', { icon: 'fitness_center' }),
             new MenuItem({ key: 'module.clients.submenu.diet' }, MenuItemType.trainer, 'clients/edit/' + id + '/diet', { icon: 'restaurant' }),
             new MenuItem({ key: 'module.clients.submenu.progress' }, MenuItemType.trainer, 'clients/edit/' + id + '/progress', { icon: 'timeline' }),
@@ -55,6 +55,19 @@ export class ClientEditWorkoutMenuItems implements IMenuItem {
         ];
     }
 }
+
+export class ClientEditAppointmentMenuItems implements IMenuItem {
+    
+        menuItems: MenuItem[];
+    
+        constructor(clientId: number, appointmentId: number) {
+            this.menuItems = [
+                new MenuItem({ key: 'menu.shared.back' }, MenuItemType.trainer, 'clients/edit/' + clientId + '/appointments', { icon: 'arrow_back' }),
+                new MenuItem({ key: 'module.clients.appointments.viewAppointment' }, MenuItemType.trainer, 'clients/edit/' + clientId + '/appointments/' + appointmentId + '/view', { icon: 'remove_red_eye' }),
+                new MenuItem({ key: 'module.clients.appointments.editAppointment' }, MenuItemType.trainer, 'clients/edit/' + clientId + '/appointments/' + appointmentId, { icon: 'edit' }),
+            ];
+        }
+    }
 
 export class NewClientWorkoutMenuItems implements IMenuItem {
 

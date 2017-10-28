@@ -105,6 +105,16 @@ export abstract class BaseItemQuery extends BaseQuery {
         return this;
     }
 
+    whereGreaterThan(field: string, value: number | Date): this {
+        this._options.push(new Options.WhereGreaterThan(field, value));
+        return this;
+    }
+
+    whereLessThen(field: string, value: number | Date): this {
+        this._options.push(new Options.WhereLessThan(field, value));
+        return this;
+    }
+
     protected getSingleItemQueryUrl(): string {
         return this.queryService.getTypeUrl(this.type, this._action, this._options);
     }

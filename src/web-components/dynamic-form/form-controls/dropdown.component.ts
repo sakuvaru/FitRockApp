@@ -12,6 +12,16 @@ export class DropdownComponent extends BaseFormControlComponent implements OnIni
 
   private listOptionsResolved: boolean = false;
 
+  /**
+   * This field identifies a dropdown value which should be empty
+   */
+  private readonly optionNoValueName: string = 'optionNoValue';
+
+  /**
+   * Key used to translate no option field
+   */
+  private readonly optionNoValueTranslationKey: string = 'form.shared.noValue';
+
   constructor(
     protected cdr: ChangeDetectorRef,
     protected translateService: TranslateService
@@ -56,13 +66,22 @@ export class DropdownComponent extends BaseFormControlComponent implements OnIni
                 optionInList.name = resolvedName;
               }
             });
+        }  else if (option.name === this.optionNoValueName) {
+           // check if the value represents 'noValue' option
+           this.translateService.get(this.optionNoValueTranslationKey)
+           .takeUntil(this.ngUnsubscribe)
+           .subscribe(translatedText => {
+             if (optionInList) {        
+                 optionInList.name = translatedText;
+             }
+           });
         } else {
           // or try resolve label using the default translations
           this.translateService.get(option.name)
             .takeUntil(this.ngUnsubscribe)
             .subscribe(translatedText => {
-              if (optionInList) {
-                optionInList.name = translatedText;
+              if (optionInList) {        
+                  optionInList.name = translatedText;
               }
             });
         }

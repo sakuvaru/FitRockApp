@@ -337,6 +337,51 @@ export class WhereNotNullMultiple implements IOption {
     }
 }
 
+export class WhereGreaterThan implements IOption {
+    constructor(
+        public field: string,
+        public value: number | Date
+    ) {
+        if (!field) {
+            throw Error(`Field cannot be null in 'WhereGreaterThan' otion`);
+        }
+    }
+
+    public GetParam(): string {
+        return 'wheregreaterthan.' + this.field.trim();
+    }
+
+    public GetParamValue(): string {
+        if (this.value instanceof Date) {
+            return processParamValue(this.value.toUTCString());
+        }
+        return processParamValue(this.value);
+    }
+}
+
+export class WhereLessThan implements IOption {
+    constructor(
+        public field: string,
+        public value: number | Date
+    ) {
+        if (!field) {
+            throw Error(`Field cannot be null in 'WhereLessThan' otion`);
+        }
+    }
+
+    public GetParam(): string {
+        if (this.value instanceof Date) {
+            return processParamValue(this.value.toUTCString());
+        }
+        return 'wherelessthan.' + this.field.trim();
+    }
+
+    public GetParamValue(): string {
+        return processParamValue(this.value);
+    }
+}
+
+
 /**
  * Gets proper 'string' value of string, number or boolean value
  * @param value Value to be processed

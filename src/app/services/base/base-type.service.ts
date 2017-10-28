@@ -74,10 +74,17 @@ export abstract class BaseTypeService<TItem extends IItem> {
 
     /* --------------------- Form queries ------------------------- */
 
+    /**
+     * Query used to save new item
+     */
     insertFormQuery(): InsertFormQuery<TItem> {
         return this.repositoryClient.insertForm(this.type);
     }
 
+    /**
+     * Query used to edit existing item with given id
+     * @param itemId Id of the item
+     */
     editFormQuery(itemId: number): EditFormQuery<TItem> {
         return this.repositoryClient.editForm(this.type, itemId);
     }
@@ -98,12 +105,28 @@ export abstract class BaseTypeService<TItem extends IItem> {
 
     /**
     * Gets edit form builder
-    * @param itemId Id of the item to edit
-    * @param customQuery Query used to get form definition from server, if none is provided a default one is used
+    * @param customQuery Query used to get form definition from server
     */
-    editForm(itemId: number, customQuery?: EditFormQuery<TItem>): DynamicFormEditBuilder<TItem> {
+    editForm(customQuery: EditFormQuery<TItem>): DynamicFormEditBuilder<TItem>;
+     /**
+    * Gets edit form builder
+    * @param itemId Id of the item to edit
+    */
+    editForm(itemId: number): DynamicFormEditBuilder<TItem>;
+    editForm(x: EditFormQuery<TItem> | number, customQuery?: EditFormQuery<TItem>): DynamicFormEditBuilder<TItem> {
         // query used to get form definition from server
-        const query = customQuery ? customQuery : this.editFormQuery(itemId);
+        let query;
+        if (x instanceof EditFormQuery) {
+            query = x;
+        }   
+        
+        if (x instanceof Number) {
+            query = this.editFormQuery(x);
+        }
+
+        if (!query) {
+            throw Error('Could not get edit query for edit form');
+        }
 
         const builder = new DynamicFormEditBuilder<TItem>(this.type, query.get(), (item) => this.edit(item).set());
 

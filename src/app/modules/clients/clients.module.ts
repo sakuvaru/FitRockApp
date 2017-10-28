@@ -39,6 +39,11 @@ import { ClientChatComponent } from './chat/client-chat.component';
 // gallery
 import { UserGalleryComponent } from './gallery/user-gallery.component';
 
+// appointments
+import { EditClientAppointmentComponent } from './appointment/edit/edit-client-appointment.component';
+import { ClientAppointmentListComponent } from './appointment/list/client-appointment-list.component';
+import { NewClientAppointmentComponent } from './appointment/new/new-client-appointment.component';
+
 // router
 import { ClientsRouter } from './clients.routing';
 
@@ -90,7 +95,11 @@ import { DietsModule} from '../diets/diets.module';
         // chat
         ClientChatComponent,
         // gallery
-        UserGalleryComponent
+        UserGalleryComponent,
+        // appointment
+        EditClientAppointmentComponent,
+        ClientAppointmentListComponent,
+        NewClientAppointmentComponent
     ]
     
 })

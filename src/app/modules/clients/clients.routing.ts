@@ -40,6 +40,11 @@ import { ClientChatComponent } from './chat/client-chat.component';
 // gallery
 import { UserGalleryComponent } from './gallery/user-gallery.component';
 
+// appointments
+import { EditClientAppointmentComponent } from './appointment/edit/edit-client-appointment.component';
+import { ClientAppointmentListComponent } from './appointment/list/client-appointment-list.component';
+import { NewClientAppointmentComponent } from './appointment/new/new-client-appointment.component';
+
 const routes: Routes = [
     {
         path: UrlConfig.TrainerMasterPath, component: AdminLayoutComponent, canActivate: [AuthGuardService], children: [
@@ -94,6 +99,16 @@ const routes: Routes = [
             // gallery
             {
                 path: 'clients/edit/:id/gallery', component: UserGalleryComponent
+            },
+            // appointment
+            {
+                path: 'clients/edit/:id/appointments', component: ClientAppointmentListComponent
+            },
+            {
+                path: 'clients/edit/:id/appointments/:appointmentId', component: EditClientAppointmentComponent
+            },
+            {
+                path: 'clients/edit/:id/appointments/new', component: NewClientAppointmentComponent
             },
         ]
     }

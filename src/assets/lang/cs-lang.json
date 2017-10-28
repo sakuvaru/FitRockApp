@@ -53,7 +53,8 @@
 				"newClient": "Nový klient",
 				"chat": "Zprávy",
 				"gallery": "Galerie",
-				"editProfile": "Upravit profil"
+				"editProfile": "Upravit profil",
+				"appointments": "Schůzky"
 			},
 			"workout": {
 				"copyWorkoutLabel": "Šablona tréninkového plánu",
@@ -94,6 +95,13 @@
 				"submit": "Odeslat",
 				"snackbarSaved": "Odesláno",
 				"allMessagesLoaded": "Všechny zprávy načteny"
+			},
+			"appointments": {
+				"upcomingAppointments": "Nadcházející schůzky",
+				"oldAppointments": "Staré schůzky",
+				"editAppointmentWithName": "Upravit schůzku - {{appointmentName}}",
+				"editAppointment": "Upravit schůzku",
+				"viewAppointment": "Detail schůzky"
 			},
 			"viewClientSubtitle": "{{fullName}}",
 			"clients": "Klienti",
@@ -325,7 +333,8 @@
 			"insert": "Vytvořit",
 			"required": "povinné",
 			"delete": "Smazat",
-			"deleted": "Smazáno"
+			"deleted": "Smazáno",
+			"noValue": "Prázdné ..."
 		},
 		"user": {
 			"email": "E-mail",
@@ -417,6 +426,15 @@
 			"lng": "Zeměpisná délka",
 			"lng.hint": "Nepovinné, lze použít pro zpřesnění lokace",
 			"locationType": "Typ lokace"
+		},
+		"appointment": {
+			"appointmentName": "Název schůzky",
+			"appointmentName.hint": "Trénink, konzultace, měření apod.",
+			"appointmentDate": "Datum a čas schůzky",
+			"notes": "Poznámky ke schůzce",
+			"notes.hint": "Co si vzít s sebou, upřesnění lokace apod.",
+			"workoutId" : "Trénink",
+			"workoutId.hint": "Volitelné: trénink, který se bude cvičit"
 		}
 	},
 	"webComponents": {

@@ -104,7 +104,7 @@
       }
     ],
     "typeof-compare": true,
-    "unified-signatures": true,
+    "unified-signatures": false, /* this was changed to allow better overload methods */
     "variable-name": false,
     "whitespace": [
       true,
