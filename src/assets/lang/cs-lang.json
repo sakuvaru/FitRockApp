@@ -434,7 +434,8 @@
 			"notes": "Poznámky ke schůzce",
 			"notes.hint": "Co si vzít s sebou, upřesnění lokace apod.",
 			"workoutId" : "Trénink",
-			"workoutId.hint": "Volitelné: trénink, který se bude cvičit"
+			"workoutId.hint": "Volitelné: trénink, který se bude cvičit",
+			"dateCannotBeInPast": "Datum schůzky musí být v budoucnosti. Nevěříme na cestovaní v čase do minulosti, jen budoucnosti :)"
 		}
 	},
 	"webComponents": {

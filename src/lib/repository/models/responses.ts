@@ -1,7 +1,6 @@
 import { ResponseGetBase } from './response-get-base.class';
 import { IItem } from '../interfaces/iitem.interface';
-import { IErrorResponseRaw, IFormErrorResponseRaw } from '../interfaces/iraw-responses';
-import { IFormValidationResult } from '../interfaces/iform-validation-result.interface';
+import { FormValidationResult } from '../models/form-validation-result.class';
 import { ErrorReasonEnum } from './error-reason.enum';
 import { FormField } from './form-fields';
 import { FetchedFile } from './fetched-file.class';
@@ -37,28 +36,28 @@ export function mapReason(reasonCode: number): ErrorReasonEnum {
     return ErrorReasonEnum.Other;
 }
 
-export class ErrorResponse implements IErrorResponseRaw {
+export class ErrorResponse {
 
     public reason: ErrorReasonEnum;
 
     constructor(
         public error: string,
         public reasonCode: number,
-        public internalError?: any
+        public response?: any
     ) {
         this.reason = mapReason(reasonCode);
     }
 }
 
-export class FormErrorResponse implements IFormErrorResponseRaw {
+export class FormErrorResponse {
 
     public reason: ErrorReasonEnum;
 
     constructor(
+        private reasonCode: number,
         public error: string,
-        public reasonCode: number,
-        public formValidation: IFormValidationResult,
-        public internalError?: any
+        public formValidation: FormValidationResult,
+        public response?: any
     ) {
         this.reason = mapReason(reasonCode);
     }

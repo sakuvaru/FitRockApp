@@ -23,8 +23,6 @@ import {
 } from '../models/responses';
 
 // form validation models
-import { ColumnValidation } from '../models/column-validation.class';
-import { IColumnValidation } from '../interfaces/icolumn-validation.interface';
 import { FormValidationResult } from '../models/form-validation-result.class';
 import { IFormValidationResult } from '../interfaces/iform-validation-result.interface';
 
@@ -325,17 +323,17 @@ export class QueryService {
             // form validation error because 'formValidation' property exists
             if (iFormErrorResponse.formValidation) {
                 const iformValidation = iFormErrorResponse.formValidation as IFormValidationResult;
-                const icolumnValidations = iformValidation.validationResult as IColumnValidation[];
 
-                const columnValidations: ColumnValidation[] = [];
-                icolumnValidations.forEach(validation => {
-                    columnValidations.push(new ColumnValidation(validation.columnName, validation.result));
-                });
-
-                const formValidation = new FormValidationResult(iformValidation.message, iformValidation.isInvalid, columnValidations);
+                const formValidation = new FormValidationResult(
+                    iformValidation.validationResult, 
+                    iformValidation.message,
+                    iformValidation.isInvalid,
+                    iformValidation.messageKey,
+                    iformValidation.column
+                );
 
                 // return form validation error
-                return new FormErrorResponse(iFormErrorResponse.error, iFormErrorResponse.reason, formValidation, response);
+                return new FormErrorResponse(iFormErrorResponse.reason, iFormErrorResponse.error, formValidation, response);
             }
             return new ErrorResponse(iErrorResponse.error, iErrorResponse.reason, response);
         }

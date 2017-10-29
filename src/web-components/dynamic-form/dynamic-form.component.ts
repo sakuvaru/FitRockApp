@@ -10,8 +10,8 @@ import { DynamicFormStatus } from './dynamic-form-status.class';
 
 import { BaseWebComponent } from '../base-web-component.class';
 import {
-    ColumnValidation, FieldErrorEnum, ResponseCreate, ResponseEdit, FormErrorResponse,
-    ErrorResponse, ErrorReasonEnum, FormField, ResponseDelete
+    FormValidationResultEnum, ResponseCreate, ResponseEdit, FormErrorResponse,
+    ErrorResponse, ErrorReasonEnum, FormField, ResponseDelete, FormValidationResult
 } from '../../lib/repository';
 
 // services
@@ -642,43 +642,50 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
         }
 
         if (error instanceof FormErrorResponse) {
-            // handle form errors without validation result
-            if (!error.formValidation.validationResult || error.formValidation.validationResult.length === 0) {
+            // handle unknown errors
+            if (error.formValidation.validationResult === FormValidationResultEnum.Other) {
                 this.submissionError = this.unknownErrorMessage;
                 return;
             }
 
-            // handle invalid field errors
-            error.formValidation.validationResult.forEach(validationResult => {
+            this.getFormFieldErrorMessage(error.formValidation)
+                .takeUntil(this.ngUnsubscribe)
+                .subscribe(fieldErrorMessage => {
+                    // handle situations where field name is known
+                    const column = error.formValidation.column;
+                    if (column) {
+                        const fieldWithError = this.form.controls[column];
 
-                this.getFormFieldErrorMessage(validationResult)
-                    .takeUntil(this.ngUnsubscribe)
-                    .subscribe(fieldErrorMessage => {
-                        const fieldWithError = this.form.controls[validationResult.columnName];
-
-                        if (!fieldWithError) {
-                            // field can be undefined if its not present in form - e.g. codename might throw error, but is
-                            // typically not in the form
-                            this.formErrorLines.push(fieldErrorMessage);
-                        } else {
-                            // set field error
-                            this.form.controls[validationResult.columnName].setErrors({ 'field_error': error });
+                        // field is found within form = add error message to that particular field
+                        if (fieldWithError) {
+                            fieldWithError.setErrors({ 'field_error': error });
 
                             // get translated label of the form field
-                            const formField = this.questions.find(m => m.key.toLowerCase() === validationResult.columnName.toLocaleLowerCase());
+                            const formField = this.questions.find(m => m.key.toLowerCase() === column.toLocaleLowerCase());
 
                             if (formField) {
                                 // form error
-                                this.getFormErrorMessage(validationResult, formField.label || formField.key)
+                                this.getFormErrorMessage(error.formValidation, formField.label || formField.key)
                                     .takeUntil(this.ngUnsubscribe)
                                     .subscribe(formError => this.formErrorLines.push(formError));
                             } else {
-                                console.warn(`Form field '${validationResult.columnName}' could not be found in form and therefore error message could not be displayed`);
+                                console.warn(`Form field '${column}' could not be found in form and therefore error message could not be displayed`);
                             }
                         }
-                    });
-            });
+
+                        // field is NOT found within form = add error message to form as a whole
+                        if (!fieldWithError) {
+                            this.formErrorLines.push(fieldErrorMessage);
+                        }
+                    } else {
+                        // field is not known = add error message to form as a whole
+                        this.formErrorLines.push(fieldErrorMessage);
+                    }
+                });
+
+            // set submission error
             this.submissionError = this.formErrorLines.join(', ');
+
         } else if (error instanceof ErrorResponse) {
             // handle license errors differently
             if (error.reason === ErrorReasonEnum.LicenseLimitation) {
@@ -691,50 +698,59 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
         }
     }
 
-    private getFormErrorMessage(columnValidation: ColumnValidation, fieldLabel: string): Observable<string> {
-        return this.getFormFieldErrorMessage(columnValidation, fieldLabel);
+    private getFormErrorMessage(validation: FormValidationResult, fieldLabel: string): Observable<string> {
+        return this.getFormFieldErrorMessage(validation, fieldLabel);
     }
 
-    private getFormFieldErrorMessage(columnValidation: ColumnValidation, fieldLabel?: string): Observable<string> {
-        if (columnValidation.errorType === FieldErrorEnum.InvalidCodename) {
+    private getFormFieldErrorMessage(validation: FormValidationResult, fieldLabel?: string): Observable<string> {
+        if (validation.validationResult === FormValidationResultEnum.InvalidCodename) {
             if (fieldLabel) {
                 return this.translateService.get('form.error.invalidCodenameWithLabel', { label: fieldLabel });
             }
             return this.translateService.get('form.error.invalidCodename');
         }
 
-        if (columnValidation.errorType === FieldErrorEnum.InvalidEmail) {
+        if (validation.validationResult === FormValidationResultEnum.InvalidEmail) {
             if (fieldLabel) {
                 return this.translateService.get('form.error.invalidEmailWithLabel', { label: fieldLabel });
             }
             return this.translateService.get('form.error.invalidEmail');
         }
 
-        if (columnValidation.errorType === FieldErrorEnum.NotUnique) {
+        if (validation.validationResult === FormValidationResultEnum.NotUnique) {
             if (fieldLabel) {
                 return this.translateService.get('form.error.notUniqueWithLabel', { label: fieldLabel });
             }
             return this.translateService.get('form.error.notUnique');
         }
 
-        if (columnValidation.errorType === FieldErrorEnum.NotEditable) {
+        if (validation.validationResult === FormValidationResultEnum.NotEditable) {
             if (fieldLabel) {
                 return this.translateService.get('form.error.notEditableWithLabel', { label: fieldLabel });
             }
             return this.translateService.get('form.error.notEditable');
         }
 
-        if (columnValidation.errorType === FieldErrorEnum.Other) {
+        if (validation.validationResult === FormValidationResultEnum.Other) {
             if (fieldLabel) {
                 return this.translateService.get('form.error.otherWithLabel', { label: fieldLabel });
             }
             return this.translateService.get('form.error.other');
         }
-        if (columnValidation.errorType === FieldErrorEnum.OneRecordPerDay) {
+
+        if (validation.validationResult === FormValidationResultEnum.OneRecordPerDay) {
             if (fieldLabel) {
                 return this.translateService.get('form.error.oneRecordPerDayLabel', { label: fieldLabel });
             }
             return this.translateService.get('form.error.oneRecordPerDay');
+        }
+
+        if (validation.validationResult === FormValidationResultEnum.CustomWithMessageKey) {
+            const translationKey = `form.${this.config.type.toLowerCase()}.${validation.messageKey}`;
+            if (fieldLabel) {
+                return this.translateService.get(translationKey, { label: fieldLabel });
+            }
+            return this.translateService.get(translationKey);
         }
 
         return this.translateService.get('form.error.unknown');

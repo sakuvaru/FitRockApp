@@ -1,9 +1,10 @@
-export enum FieldErrorEnum {
+export enum FormValidationResultEnum {
+    Valid,
     NotUnique,
     InvalidCodename,
     InvalidEmail,
     Other,
     NotEditable,
     OneRecordPerDay,
-    Unknown
+    CustomWithMessageKey,
 }
