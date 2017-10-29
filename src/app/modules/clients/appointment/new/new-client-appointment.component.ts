@@ -6,8 +6,8 @@ import { AppConfig, ComponentDependencyService, BaseComponent, ComponentSetup } 
 // required by component
 import { ClientsBaseComponent } from '../../clients-base.component';
 import { FormConfig } from '../../../../../web-components/dynamic-form';
-import { NewClientWorkoutMenuItems } from '../../menu.items';
-import { Workout } from '../../../../models';
+import { NewClientAppointmentMenuItems } from '../../menu.items';
+import { Appointment } from '../../../../models';
 import { Observable } from 'rxjs/Rx';
 
 @Component({
@@ -15,7 +15,7 @@ import { Observable } from 'rxjs/Rx';
 })
 export class NewClientAppointmentComponent extends ClientsBaseComponent implements OnInit {
 
-    private formConfig: FormConfig<Workout>;
+    private formConfig: FormConfig<Appointment>;
 
     constructor(
         protected activatedRoute: ActivatedRoute,
@@ -26,7 +26,7 @@ export class NewClientAppointmentComponent extends ClientsBaseComponent implemen
 
     setup(): ComponentSetup | null {
         return {
-            initialized: false
+            initialized: true
         };
     }
 
@@ -47,8 +47,8 @@ export class NewClientAppointmentComponent extends ClientsBaseComponent implemen
     private getClientObservable(): Observable<any> {
         return this.clientChange.map(client => {
             this.setConfig({
-                componentTitle: { key: 'module.clients.submenu.newClient' },
-                menuItems: new NewClientWorkoutMenuItems(client.id).menuItems,
+                componentTitle: { key: 'module.clients.appointments.newAppointment' },
+                menuItems: new NewClientAppointmentMenuItems(client.id).menuItems,
                 menuTitle: {
                     key: 'module.clients.viewClientSubtitle',
                     data: { 'fullName': client.getFullName() }
@@ -59,23 +59,18 @@ export class NewClientAppointmentComponent extends ClientsBaseComponent implemen
 
     private getFormObservable(): Observable<any> {
         return this.clientIdChange
-            .takeUntil(this.ngUnsubscribe)
-            .map(params => {
-                this.formConfig = this.dependencies.itemServices.workoutService.insertForm()
+            .map(clientId => {
+                this.formConfig = this.dependencies.itemServices.appointmentService.insertForm(
+                    this.dependencies.itemServices.appointmentService.insertFormQuery().withData('clientId', clientId)
+                )
                     .fieldValueResolver((fieldName, value) => {
                         if (fieldName === 'ClientId') {
-                            return this.clientId;
+                            return clientId;
                         }
                         return value;
                     })
                     .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
-                    .onAfterInsert((response) => super.navigate([super.getTrainerUrl('clients/edit/' + this.clientId + '/workout/' + response.item.id + '/workout-plan')]))
-                    .onFormLoaded(form => {
-                        this.setConfig({
-                            componentTitle: { key: 'module.clients.workout.newWorkout' },
-                            menuItems: new NewClientWorkoutMenuItems(this.clientId).menuItems
-                        });
-                    })
+                    .onAfterInsert((response) => super.navigate([super.getTrainerUrl('clients/edit/' + clientId + '/appointments/edit/' + response.item.id)]))
                     .build();
 
             },

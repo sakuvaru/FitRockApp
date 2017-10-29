@@ -19,7 +19,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { FieldControlService } from './field-control.service';
 
 // helpers
-import { observableHelper } from '../../lib/utilities';
+import { observableHelper, stringHelper } from '../../lib/utilities';
 
 // NOTE: see https://angular.io/docs/ts/latest/cookbook/dynamic-form.html for more details about dynamic forms
 @Component({
@@ -751,6 +751,24 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
                 return this.translateService.get(translationKey, { label: fieldLabel });
             }
             return this.translateService.get(translationKey);
+        }
+
+        if (validation.validationResult === FormValidationResultEnum.ConstraintConflict) {
+            const messageKey = validation.messageKey;
+            if (messageKey) {
+                // we know what type is causing this issue
+                const affectedTypeTranslationKey = `type.${stringHelper.toCamelCase(messageKey)}`;
+                const constraintConflictTranslationKey = `form.error.constraintConflict`;
+                
+                return this.translateService.get(affectedTypeTranslationKey).switchMap(translatedType => {
+                    const data: any = {'dependentType': translatedType};
+                    return this.translateService.get(constraintConflictTranslationKey, data);
+                });
+            } else {
+                // we don't know what type is causing the issue
+                const genericConstraintErrorKey = 'form.error.genericConstraintConflict';
+                return this.translateService.get(genericConstraintErrorKey);
+            }
         }
 
         return this.translateService.get('form.error.unknown');

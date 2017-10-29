@@ -26,6 +26,8 @@ export class FormValidationResult {
             this.validationResult = FormValidationResultEnum.OneRecordPerDay;
         } else if (resultKey === 'CustomWithMessageKey') {
             this.validationResult = FormValidationResultEnum.CustomWithMessageKey;
+        } else if (resultKey === 'ConstraintConflict') {
+            this.validationResult = FormValidationResultEnum.ConstraintConflict;
         } else if (resultKey === 'Other') {
             this.validationResult = FormValidationResultEnum.Other;
         } else {

@@ -11,6 +11,14 @@ export class StringHelper {
         return text.charAt(0).toLowerCase() + text.slice(1);
     }
 
+     /**
+     * Converts string to camel case
+     * @param text text
+     */
+    toCamelCase(text) {
+        return this.firstCharToLowerCase(text);
+    }
+
     /**
      * capitalizeTxt('this is a test'); // returns 'This is a test'
      * @param text text to capitalize

@@ -105,7 +105,7 @@ const routes: Routes = [
                 path: 'clients/edit/:id/appointments', component: ClientAppointmentListComponent
             },
             {
-                path: 'clients/edit/:id/appointments/:appointmentId', component: EditClientAppointmentComponent
+                path: 'clients/edit/:id/appointments/edit/:appointmentId', component: EditClientAppointmentComponent
             },
             {
                 path: 'clients/edit/:id/appointments/new', component: NewClientAppointmentComponent

@@ -54,7 +54,7 @@ export class EditClientAppointmentComponent extends ClientsBaseComponent impleme
   private initForm(appointmentId: number): void {
     this.formConfig = this.dependencies.itemServices.appointmentService.editForm(
         this.dependencies.itemServices.appointmentService.editFormQuery(appointmentId).withData('clientId', this.clientId))
-      .enableDelete(false)
+      .enableDelete(true)
       .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
       .onAfterDelete(() => super.navigate([this.getTrainerUrl('clients/edit/' + this.clientId + '/appointments')]))
       .onFormLoaded(form => {

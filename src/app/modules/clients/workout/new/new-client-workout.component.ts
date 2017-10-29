@@ -47,7 +47,6 @@ export class NewClientWorkoutComponent extends ClientsBaseComponent implements O
     private getClientObservable(): Observable<any> {
         return this.clientChange.map(client => {
             this.setConfig({
-                componentTitle: { key: 'module.clients.submenu.newClient' },
                 menuItems: new NewClientWorkoutMenuItems(client.id).menuItems,
                 menuTitle: {
                     key: 'module.clients.viewClientSubtitle',

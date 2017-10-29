@@ -36,7 +36,7 @@ export class ClientMenuItems implements IMenuItem {
             new MenuItem({ key: 'module.clients.submenu.workout' }, MenuItemType.trainer, 'clients/edit/' + id + '/workout', { icon: 'fitness_center' }),
             new MenuItem({ key: 'module.clients.submenu.diet' }, MenuItemType.trainer, 'clients/edit/' + id + '/diet', { icon: 'restaurant' }),
             new MenuItem({ key: 'module.clients.submenu.progress' }, MenuItemType.trainer, 'clients/edit/' + id + '/progress', { icon: 'timeline' }),
-            new MenuItem({ key: 'module.clients.submenu.stats' },  MenuItemType.trainer, 'clients/edit/' + id + '/stats', { icon: 'show_chart' }),
+            new MenuItem({ key: 'module.clients.submenu.stats' }, MenuItemType.trainer, 'clients/edit/' + id + '/stats', { icon: 'show_chart' }),
             new MenuItem({ key: 'module.clients.submenu.gallery' }, MenuItemType.trainer, 'clients/edit/' + id + '/gallery', { icon: 'camera' }),
             new MenuItem({ key: 'module.clients.submenu.editProfile' }, MenuItemType.trainer, 'clients/edit/' + id, { icon: 'edit' })
         ];
@@ -57,17 +57,29 @@ export class ClientEditWorkoutMenuItems implements IMenuItem {
 }
 
 export class ClientEditAppointmentMenuItems implements IMenuItem {
-    
-        menuItems: MenuItem[];
-    
-        constructor(clientId: number, appointmentId: number) {
-            this.menuItems = [
-                new MenuItem({ key: 'menu.shared.back' }, MenuItemType.trainer, 'clients/edit/' + clientId + '/appointments', { icon: 'arrow_back' }),
-                new MenuItem({ key: 'module.clients.appointments.viewAppointment' }, MenuItemType.trainer, 'clients/edit/' + clientId + '/appointments/' + appointmentId + '/view', { icon: 'remove_red_eye' }),
-                new MenuItem({ key: 'module.clients.appointments.editAppointment' }, MenuItemType.trainer, 'clients/edit/' + clientId + '/appointments/' + appointmentId, { icon: 'edit' }),
-            ];
-        }
+
+    menuItems: MenuItem[];
+
+    constructor(clientId: number, appointmentId: number) {
+        this.menuItems = [
+            new MenuItem({ key: 'menu.shared.back' }, MenuItemType.trainer, 'clients/edit/' + clientId + '/appointments', { icon: 'arrow_back' }),
+            new MenuItem({ key: 'module.clients.appointments.viewAppointment' }, MenuItemType.trainer, 'clients/edit/' + clientId + '/appointments/edit/' + appointmentId + '/view', { icon: 'remove_red_eye' }),
+            new MenuItem({ key: 'module.clients.appointments.editAppointment' }, MenuItemType.trainer, 'clients/edit/' + clientId + '/appointments/edit/' + appointmentId, { icon: 'edit' }),
+        ];
     }
+}
+
+export class NewClientAppointmentMenuItems implements IMenuItem {
+
+    menuItems: MenuItem[];
+
+    constructor(clientId: number) {
+        this.menuItems = [
+            new MenuItem({ key: 'menu.shared.back' }, MenuItemType.trainer, 'clients/edit/' + clientId + '/appointments', { icon: 'arrow_back' }),
+            new MenuItem({ key: 'module.clients.appointments.newAppointment' }, MenuItemType.trainer, 'clients/edit/' + clientId + '/appointments/new', { icon: 'create' }),
+        ];
+    }
+}
 
 export class NewClientWorkoutMenuItems implements IMenuItem {
 
@@ -106,17 +118,16 @@ export class NewClientDietMenuItems implements IMenuItem {
     }
 }
 
-
 export class NewClientProgressItemTypeMenuItems implements IMenuItem {
-    
-        menuItems: MenuItem[];
-    
-        constructor(clientId: number) {
-            this.menuItems = [
-                new MenuItem({ key: 'menu.shared.back' }, MenuItemType.trainer, 'clients/edit/' + clientId + '/diet', { icon: 'arrow_back' }),
-                new MenuItem({ key: 'module.clients.progress.newProgressItemType' }, MenuItemType.trainer, 'clients/edit/' + clientId + '/new-progress-type', { icon: 'create' }),
-            ];
-        }
+
+    menuItems: MenuItem[];
+
+    constructor(clientId: number) {
+        this.menuItems = [
+            new MenuItem({ key: 'menu.shared.back' }, MenuItemType.trainer, 'clients/edit/' + clientId + '/diet', { icon: 'arrow_back' }),
+            new MenuItem({ key: 'module.clients.progress.newProgressItemType' }, MenuItemType.trainer, 'clients/edit/' + clientId + '/new-progress-type', { icon: 'create' }),
+        ];
     }
+}
 
 

@@ -1,4 +1,27 @@
 {
+	"type": {
+		"user": "Uživatel",
+		"log": "Log",
+		"workout": "Trénink",
+		"workoutCategory": "Kategorie tréninků",
+		"workoutExercise": "Záznam cviku v tréninku",
+		"exercise": "Cvik",
+		"exerciseCategory": "Kategorie cviků",
+		"diet": "Jídelníček",
+		"dietCategory": "Kategorie jídelníčku",
+		"dietFood": "Záznam jídla v jídelníčku",
+		"food": "Jídlo",
+		"foodCategory": "Kategorie jídla",
+		"foodUnit": "Jednotka jídla",
+		"progressItem": "Záznam vývoje v čase",
+		"progressItemType": "Typ vývoje v čase",
+		"progressItemUnit": "Jednotka vývoje v čase",
+		"chatMessage": "Zpráva",
+		"feed": "Notifikace",
+		"fileRecord": "Soubor",
+		"appointment": "Schůzka",
+		"location": "Lokace"
+	},
 	"menu": {
 		"shared": {
 			"back": "Zpět"
@@ -101,7 +124,8 @@
 				"oldAppointments": "Staré schůzky",
 				"editAppointmentWithName": "Upravit schůzku - {{appointmentName}}",
 				"editAppointment": "Upravit schůzku",
-				"viewAppointment": "Detail schůzky"
+				"viewAppointment": "Detail schůzky",
+				"newAppointment": "Nová schůzka"
 			},
 			"viewClientSubtitle": "{{fullName}}",
 			"clients": "Klienti",
@@ -307,6 +331,8 @@
 	},
 	"form": {
 		"error": {
+			"constraintConflict": "Záznam nelze smazat, protože existují záznamy typu '{{dependentType}}', které na tento záznam odkazují. Prvně musíš smazat tyto záznamy.",
+			"genericConstraintConflict": "Záznam nelze smazat, protože by došlo k narušení integrity databáze. Prosím kontaktuj nás pokud vidíš tuto chybu.",
 			"invalidCodenameWithLabel": "Pole '{{label}}' může obsahovat pouze písmena a číslice (bez mezer a speciálních znaků)",
 			"invalidCodename": "Pole může obsahovat pouze písmena a číslice (bez mezer a speciálních znaků)",
 			"invalidEmailWithLabel": "Pole '{{label}}' neobsahuje validní e-mail",
@@ -435,6 +461,7 @@
 			"notes.hint": "Co si vzít s sebou, upřesnění lokace apod.",
 			"workoutId" : "Trénink",
 			"workoutId.hint": "Volitelné: trénink, který se bude cvičit",
+			"locationId": "Místo setkání",
 			"dateCannotBeInPast": "Datum schůzky musí být v budoucnosti. Nevěříme na cestovaní v čase do minulosti, jen budoucnosti :)"
 		}
 	},

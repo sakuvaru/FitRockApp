@@ -1,3 +1,7 @@
+
+/**
+ * Change also 'form-validation-result.class' when modifying this enum
+ */
 export enum FormValidationResultEnum {
     Valid,
     NotUnique,
@@ -7,4 +11,5 @@ export enum FormValidationResultEnum {
     NotEditable,
     OneRecordPerDay,
     CustomWithMessageKey,
+    ConstraintConflict
 }
