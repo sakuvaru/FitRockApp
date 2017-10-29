@@ -1,5 +1,6 @@
 import { Component, Input, Output, OnInit, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
 import { MultipleItemQuery, ErrorResponse } from '../../lib/repository';
+import { observableHelper } from '../../lib/utilities';
 import { DataTableConfig, Filter } from './data-table.config';
 import { Observable } from 'rxjs/Rx';
 import { TranslateService } from '@ngx-translate/core';
@@ -30,6 +31,7 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
     private hasFilters = false;
     private activeFilterGuid: string | null;
     private filters: Filter<any>[] = [];
+    private allFilter: Filter<any> | undefined;
 
     // pager
     private totalPages: number;
@@ -147,39 +149,8 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
             this.config.dynamicFilters(this.searchTerm)
                 .takeUntil(this.ngUnsubscribe)
                 .switchMap((dynamicFilters) => {
-                    // reset filters so that they are not added multiple times across requests
-                    this.filters = [];
-
-                    // add static filters first
-                    if (this.config.staticFilters && this.config.staticFilters.length > 0) {
-                        this.config.staticFilters.forEach(staticFilter => this.filters.push(staticFilter));
-                    }
-
                     // add dynamic filters
-                    if (dynamicFilters && dynamicFilters.length > 0) {
-                        dynamicFilters.forEach(dynamicFilter => this.filters.push(dynamicFilter));
-                    }
-
-                    // add all filter
-                    if (this.config.showAllFilter) {
-                        // get sum count of all filter's count
-                        const sumCount = _.reduce(this.filters, (memo, filter) => filter.count != null ? memo + filter.count : memo, 0);
-                        const allFilter = new Filter({
-                            onFilter: () => query,
-                            count: sumCount,
-                            filterNameKey: this.allFilterKey
-                        });
-
-                        // add all filter at the beginning of filters array
-                        this.filters = [allFilter, ...this.filters];
-                    }
-
-                    // set filters flag
-                    if (this.filters && this.filters.length > 0) {
-                        this.hasFilters = true;
-                    } else {
-                        this.hasFilters = false;
-                    }
+                    this.resolveDynamicFilters(dynamicFilters);
 
                     // prepare item query
                     let query = this.config.loadQuery(this.searchTerm);
@@ -216,33 +187,11 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
                 },
                 err => this.handleLoadError(this.config, err));
         } else {
+            // add & resolve static filters
+            this.resolveStaticFilters();
+
+            // prepare query
             let query = this.config.loadQuery(this.searchTerm);
-
-            // prepare static filters
-            this.filters = [];
-
-            // add static filters
-            if (this.config.staticFilters && this.config.staticFilters.length > 0) {
-                this.config.staticFilters.forEach(staticFilter => this.filters.push(staticFilter));
-            }
-
-            // add all filter
-            if (this.config.showAllFilter) {
-                const allFilter = new Filter({
-                    onFilter: (onFilterQuery) => query,
-                    filterNameKey: this.allFilterKey,
-                });
-
-                // add all filter at the beginning of filters array
-                this.filters = [allFilter, ...this.filters];
-            }
-
-            // set filters flag
-            if (this.filters && this.filters.length > 0) {
-                this.hasFilters = true;
-            } else {
-                this.hasFilters = false;
-            }
 
             // automatically apply page size + page options
             query.page(page);
@@ -318,6 +267,107 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
             query = filter.onFilter(query);
         }
         return query;
+    }
+
+    private resolveDynamicFilters(dynamicFilters: Filter<any>[]): void {
+        this.prepareFilters();
+
+        let sumCount = 0;
+
+        if (dynamicFilters && dynamicFilters.length > 0) {
+            dynamicFilters.forEach(dynamicFilter => {
+                this.filters.push(dynamicFilter);
+                if (dynamicFilter.count) {
+                    sumCount += dynamicFilter.count;
+                }
+            });
+
+            if (this.allFilter) {
+                this.allFilter.count = sumCount;
+            }
+        }
+
+        this.resolveCommonFilterLogic();
+    }
+
+    private resolveStaticFilters(): void {
+        this.prepareFilters();
+
+        if (this.config.staticFilters && this.config.staticFilters.length > 0) {
+
+            // prepare observable for all filters
+            const staticFilterCountObservables: Observable<any>[] = [];
+
+            this.config.staticFilters.forEach(staticFilter => {
+
+                // prepare filter count query
+                let filterCountQuery = this.config.loadQuery(this.searchTerm);
+                filterCountQuery = staticFilter.onFilter(filterCountQuery);
+
+                this.filters.push(staticFilter);
+                // use count query to get the number of records of given filter
+                if (staticFilter.countQuery) {
+                    staticFilterCountObservables.push(staticFilter.countQuery(filterCountQuery).get()
+                        .map(responseCount => staticFilter.count = responseCount.count));
+                }
+            });
+
+            // resolve static filters count
+            observableHelper.zipObservables(staticFilterCountObservables)
+                .map(() => {
+                    // update count of all filter if its present
+                    if (this.allFilter) {
+                        // go through all filters and sum up the count
+                        let sumCount = 0;
+                        this.filters.forEach(filter => {
+                            if (filter.count) {
+                                sumCount += filter.count;
+                            }
+                        });
+
+                        // if the all filter is used and has count > 0, subtract it from the total sum
+                        if (this.allFilter.count && this.allFilter.count > 0) {
+                            sumCount -= this.allFilter.count;
+                        }
+
+                        // update total count
+                        this.allFilter.count = sumCount;
+                    }
+                })
+                .takeUntil(this.ngUnsubscribe)
+                .subscribe();
+        }
+
+        this.resolveCommonFilterLogic();
+    }
+
+    private prepareFilters(): void {
+        this.filters = [];
+
+        // add all filter
+        if (this.config.showAllFilter) {
+            if (this.allFilter) {
+                  // do nothing
+            } else {
+                this.allFilter = new Filter({
+                    onFilter: (onFilterQuery) => this.config.loadQuery(this.searchTerm),
+                    filterNameKey: this.allFilterKey,
+                });
+            }
+
+            // add existing all filter if available (prevents flickering)
+            this.filters.push(this.allFilter);
+        }
+    }
+
+    private resolveCommonFilterLogic(): void {
+        // set filters flag
+        if (this.filters && this.filters.length > 0) {
+            this.hasFilters = true;
+        } else {
+            this.hasFilters = false;
+        }
+
     }
 
     // search
