@@ -47,7 +47,7 @@ export class EditTypeComponent extends BaseComponent implements OnInit {
                                 key: form.item.typeName
                             },
                             componentTitle: {
-                                'key': 'module.progressItemTypes.edit'
+                                'key': 'module.progressItemTypes.submenu.edit'
                             }
                         });
                     })
