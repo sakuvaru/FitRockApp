@@ -8,6 +8,7 @@ import {
     DeleteFileQuery, ItemsOrderQuery
 } from '../../../lib/repository';
 
+import { numberHelper } from '../../../lib/utilities';
 import { DynamicFormEditBuilder, DynamicFormInsertBuilder } from '../../../web-components/dynamic-form';
 
 export abstract class BaseTypeService<TItem extends IItem> {
@@ -113,15 +114,15 @@ export abstract class BaseTypeService<TItem extends IItem> {
     * @param itemId Id of the item to edit
     */
     editForm(itemId: number): DynamicFormEditBuilder<TItem>;
-    editForm(x: EditFormQuery<TItem> | number, customQuery?: EditFormQuery<TItem>): DynamicFormEditBuilder<TItem> {
+    editForm(x: EditFormQuery<TItem> | number): DynamicFormEditBuilder<TItem> {
         // query used to get form definition from server
         let query;
         if (x instanceof EditFormQuery) {
             query = x;
         }   
         
-        if (x instanceof Number) {
-            query = this.editFormQuery(x);
+        if (numberHelper.isNumber(x)) {
+            query = this.editFormQuery(+x);
         }
 
         if (!query) {
