@@ -6,7 +6,7 @@ export class LocationOverviewItems {
 
     constructor() {
         this.menuItems = [
-            new MenuItem({ key: 'module.locations.submenu.myLocations' }, MenuItemType.trainer, 'locations', { icon: 'free_breakfast' }),
+            new MenuItem({ key: 'module.locations.submenu.myLocations' }, MenuItemType.trainer, 'locations', { icon: 'location_on' }),
         ];
     }
 }

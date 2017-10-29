@@ -67,6 +67,8 @@ export class ClientAppointmentListComponent extends ClientsBaseComponent impleme
       },
       searchTerm => {
         return this.dependencies.itemServices.appointmentService.items()
+          .byCurrentUser()
+          .whereEquals('ClientId', clientId)
           .include('Location');
       },
       [

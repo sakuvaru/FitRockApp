@@ -28,10 +28,6 @@ export class UserService extends BaseTypeService<User> {
         return super.items().withCustomAction('getClients');
     }
 
-    clientsCount(): MultipleItemQuery<User> {
-        return super.items().withCustomAction('getClients');
-    }
-
     createClient(item: User): CreateItemQuery<User> {
         return super.create(item).withCustomAction('createClient');
     }
