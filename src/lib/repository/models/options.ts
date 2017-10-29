@@ -370,13 +370,13 @@ export class WhereLessThan implements IOption {
     }
 
     public GetParam(): string {
-        if (this.value instanceof Date) {
-            return processParamValue(this.value.toUTCString());
-        }
         return 'wherelessthan.' + this.field.trim();
     }
 
     public GetParamValue(): string {
+        if (this.value instanceof Date) {
+            return processParamValue(this.value.toUTCString());
+        }
         return processParamValue(this.value);
     }
 }
