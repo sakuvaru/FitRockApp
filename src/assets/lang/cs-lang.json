@@ -304,7 +304,7 @@
 			}
 		},
 		"feeds":{
-			"userSentYouAMessage": "<strong>{{user}}</strong>, {{message}}"
+			"userSentYouAMessage": "<span>{{user}}</span>: {{message}}"
 		},
 		"locations": {
 			"submenu": {

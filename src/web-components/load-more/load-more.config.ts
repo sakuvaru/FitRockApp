@@ -1,6 +1,5 @@
 import { Observable } from 'rxjs/Observable';
 import { MultipleItemQuery, IItem, ResponseMultiple } from '../../lib/repository';
-import { LoadMoreField } from './load-more-field.class';
 
 export class LoadMoreConfig<TItem extends IItem> {
 
@@ -30,19 +29,19 @@ export class LoadMoreConfig<TItem extends IItem> {
     public pageSize = 10;
 
     /**
-     * Text to be shown in the listing
+     * Text to be shown in the listing, can include HTML
      */
-    public text?: LoadMoreField<TItem>;
+    public text?: (item: TItem) => Observable<string>;
 
     /**
-     * Title to be shown in the listing
+     * Title to be shown in the listing, can include HTML
      */
-    public title?: LoadMoreField<TItem>;
+    public title?: (item: TItem) => Observable<string>;
 
     /**
-     * Footer text to be shown in the listing
+     * Footer text to be shown in the listing, can include HTML
      */
-    public footer?: LoadMoreField<TItem>;
+    public footer?: (item: TItem) => Observable<string>;
 
     /**
      * On click handled

@@ -1,7 +1,6 @@
 import { LoadMoreConfig } from './load-more.config';
 import { Observable } from 'rxjs/RX';
 import { ResponseMultiple, IItem, MultipleItemQuery } from '../../lib/repository';
-import { LoadMoreField } from './load-more-field.class';
 
 export class LoadMoreBuilder<TItem extends IItem> {
 
@@ -70,26 +69,26 @@ export class LoadMoreBuilder<TItem extends IItem> {
     }
 
     /**
-    * Text to be shown in the listing
+    * Text to be shown in the listing. Can include HTML.
     */
-    text(field: LoadMoreField<TItem>): this {
-        this.config.text = field;
+    text(resolver: (item: TItem) => Observable<string>): this {
+        this.config.text = resolver;
         return this;
     }
 
     /**
-    * Title to be shown in the listing
+    * Title to be shown in the listing. Can include HTML.
     */
-    title(field: LoadMoreField<TItem>): this {
-        this.config.title = field;
+    title(resolver: (item: TItem) => Observable<string>): this {
+        this.config.title = resolver;
         return this;
     }
 
     /**
-    * Footer text to be shown in the listing
+    * Footer text to be shown in the listing. Can include HTML.
     */
-    footer(field: LoadMoreField<TItem>): this {
-        this.config.footer = field;
+    footer(resolver: (item: TItem) => Observable<string>): this {
+        this.config.footer = resolver;
         return this;
     }
 

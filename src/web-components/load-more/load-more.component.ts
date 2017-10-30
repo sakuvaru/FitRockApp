@@ -7,7 +7,6 @@ import { ResponseMultiple } from '../../lib/repository';
 import * as _ from 'underscore';
 import { Observable, Subject } from 'rxjs/Rx';
 import { FormControl } from '@angular/forms';
-import { LoadMoreField } from './load-more-field.class';
 
 @Component({
     selector: 'load-more',
@@ -195,27 +194,6 @@ export class LoadMoreComponent extends BaseWebComponent implements OnInit, OnCha
                 // set initial load flag
                 this.isInitialLoad = false;
             });
-    }
-
-    private getItemTextField(): LoadMoreField<any> | null {
-        if (this.config.text) {
-            return this.config.text;
-        }
-        return null;
-    }
-
-    private getItemTitleField(): LoadMoreField<any> | null {
-        if (this.config.title) {
-            return this.config.title;
-        }
-        return null;
-    }
-
-    private getItemFooterField(): LoadMoreField<any> | null {
-        if (this.config.footer) {
-            return this.config.footer;
-        }
-        return null;
     }
 
     private getInitSearchObservable(): Observable<any> {

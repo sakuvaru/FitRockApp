@@ -51,35 +51,19 @@ export class FeedsComponent extends BaseComponent implements OnInit {
         this.loadMoreConfig = this.dependencies.webComponentServices.loadMoreService.loadMore<Feed>(
             search => this.dependencies.itemServices.feedService.getFeedsForUser(this.dependencies.authenticatedUserService.getUserId()),
             query => query.get().takeUntil(this.ngUnsubscribe))
-            .text({
-                resolver: item => {
-                    const feedResult = this.getFeedResult(item);
-                    if (feedResult) {
-                        if (feedResult.shouldBeTranslated() && feedResult.translationKey) {
-                            return feedResult.translationKey;
-                        }
-                        if (feedResult.text) {
-                            return feedResult.text;
-                        }
+            .text((item: Feed) => {
+                const feedResult = this.getFeedResult(item);
+                if (feedResult) {
+                    if (feedResult.shouldBeTranslated() && feedResult.translationKey) {
+                        return super.translate(feedResult.translationKey, feedResult.translationData);
                     }
-                    return '';
-                },
-                translate: item => {
-                    const feedResult = this.getFeedResult(item);
-                    if (feedResult) {
-                        return feedResult.shouldBeTranslated();
+                    if (feedResult.text) {
+                        return Observable.of(feedResult.text);
                     }
-                    return false;
-                },
-                translationData: item => {
-                    const feedResult = this.getFeedResult(item);
-                    if (feedResult) {
-                        return feedResult.translationData;
-                    }
-                    return false;
                 }
+                return Observable.of('');
             })
-            .footer({ resolver: item => super.fromNow(item.created) })
+            .footer((item: Feed) => Observable.of(super.fromNow(item.created)))
             .iconResolver(item => this.getFeedIcon(item))
             .iconClassResolver(item => !item.markedAsRead ? 'tc-red-500' : '')
             .pageSize(15)
