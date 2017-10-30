@@ -9,5 +9,6 @@ export enum ControlTypeEnum {
     TextArea = 6,
     Hidden = 7,
     Number = 8,
-    PhoneNumber = 9
+    PhoneNumber = 9,
+    DateTime = 10
 }

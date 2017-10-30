@@ -16,6 +16,12 @@ import { DynamicFormService } from './dynamic-form.service';
 import { DynamicFormQuestionComponent } from './dynamic-form-question.component';
 import { DynamicFormComponent } from './dynamic-form.component';
 
+// Date time picker
+// see https://www.npmjs.com/package/ng-pick-datetime
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DateTimePickerModule } from 'ng-pick-datetime';
+
 // Angular input mask
 // see https://github.com/text-mask/text-mask/tree/master/angular2#readme 
 import { TextMaskModule } from 'angular2-text-mask';
@@ -30,6 +36,7 @@ import { DropdownComponent } from './form-controls/dropdown.component';
 import { HiddenComponent } from './form-controls/hidden.component';
 import { NumberComponent } from './form-controls/number.component';
 import { PhoneNumberComponent } from './form-controls/phone-number.component';
+import { DateTimeComponent } from './form-controls/date-time.component';
 
 // loader
 import { LoaderModule } from '../loader/loader.module';
@@ -50,7 +57,8 @@ import { MessagesModule } from '../messages/messages.module';
         LoaderModule,
         ButtonsModule,
         MessagesModule,
-        TextMaskModule
+        TextMaskModule,
+        DateTimePickerModule
     ],
     declarations: [
         DynamicFormQuestionComponent,
@@ -63,7 +71,8 @@ import { MessagesModule } from '../messages/messages.module';
         DropdownComponent,
         HiddenComponent,
         NumberComponent,
-        PhoneNumberComponent
+        PhoneNumberComponent,
+        DateTimeComponent
     ],
     providers: [
         DynamicFormService

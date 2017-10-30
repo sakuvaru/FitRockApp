@@ -109,6 +109,9 @@ export class FormField implements IFormField {
             this.value = +rawValue;
         } else if (controlType === 'PhoneNumber') {
             this.controlTypeEnum = ControlTypeEnum.PhoneNumber;
+        } else if (controlType === 'DateTime') {
+            this.controlTypeEnum = ControlTypeEnum.DateTime;
+            this.value = new Date(rawValue);
         } else {
             this.controlTypeEnum = ControlTypeEnum.Unknown;
         }

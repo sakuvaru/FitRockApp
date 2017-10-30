@@ -72,6 +72,10 @@ export class DynamicFormQuestionComponent extends BaseWebComponent {
     return this.question.controlTypeEnum === ControlTypeEnum.PhoneNumber;
   }
 
+  private isDateTime(): boolean {
+    return this.question.controlTypeEnum === ControlTypeEnum.DateTime;
+  }
+
 }
 
 

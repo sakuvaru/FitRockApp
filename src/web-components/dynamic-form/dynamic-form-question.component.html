@@ -33,3 +33,7 @@
 <ng-container *ngIf="isPhoneNumberField()">
   <df-phone-number [question]="question" [form]="form" [formConfig]="formConfig"></df-phone-number>
 </ng-container>
+
+<ng-container *ngIf="isDateTime()">
+  <df-date-time [question]="question" [form]="form" [formConfig]="formConfig"></df-date-time>
+</ng-container>
