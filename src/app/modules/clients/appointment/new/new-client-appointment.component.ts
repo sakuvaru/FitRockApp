@@ -60,9 +60,9 @@ export class NewClientAppointmentComponent extends ClientsBaseComponent implemen
     private getFormObservable(): Observable<any> {
         return this.clientIdChange
             .map(clientId => {
-                this.formConfig = this.dependencies.itemServices.appointmentService.insertForm(
-                    this.dependencies.itemServices.appointmentService.insertFormQuery().withData('clientId', clientId)
-                )
+                this.formConfig = this.dependencies.itemServices.appointmentService.insertForm({
+                    customFormDefinitionQuery: this.dependencies.itemServices.appointmentService.insertFormQuery().withData('clientId', clientId)
+                })
                     .fieldValueResolver((fieldName, value) => {
                         if (fieldName === 'ClientId') {
                             return clientId;

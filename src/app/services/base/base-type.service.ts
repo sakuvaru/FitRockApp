@@ -94,13 +94,17 @@ export abstract class BaseTypeService<TItem extends IItem> {
      * Gets insert form builder
      * @param customQuery Query used to get form definition from server, if none is provided a default one is used
      */
-    insertForm(customQuery?: InsertFormQuery<TItem>): DynamicFormInsertBuilder<TItem> {
+    insertForm(options?: {
+        customFormDefinitionQuery?: InsertFormQuery<TItem>,
+        customInsertQuery?:  (item: TItem) => CreateItemQuery<TItem> 
+    }): DynamicFormInsertBuilder<TItem> {
         // query used to get form definition from server
-        const query = customQuery ? customQuery : this.insertFormQuery();
+        const formDefinitionQuery = options && options.customFormDefinitionQuery ? options.customFormDefinitionQuery : this.insertFormQuery();
+        const createQuery = options && options.customInsertQuery ? options.customInsertQuery : (item: TItem) => this.create(item);
 
         return new DynamicFormInsertBuilder<TItem>(
-            this.type, query.get(),
-            (item) => this.create(item).set())
+            this.type, formDefinitionQuery.get(),
+            (item) => createQuery(item).set())
             .submitTextKey('form.shared.insert');
     }
 
@@ -108,13 +112,24 @@ export abstract class BaseTypeService<TItem extends IItem> {
     * Gets edit form builder
     * @param customQuery Query used to get form definition from server
     */
-    editForm(customQuery: EditFormQuery<TItem>): DynamicFormEditBuilder<TItem>;
+    editForm(customFormDefinitionQuery: EditFormQuery<TItem>, options?: {
+        customEditQuery?: (item: TItem) => EditItemQuery<TItem>,
+        customDeleteQuery?: (item: TItem) => DeleteItemQuery
+    }): DynamicFormEditBuilder<TItem>;
+
      /**
     * Gets edit form builder
     * @param itemId Id of the item to edit
     */
-    editForm(itemId: number): DynamicFormEditBuilder<TItem>;
-    editForm(x: EditFormQuery<TItem> | number): DynamicFormEditBuilder<TItem> {
+    editForm(itemId: number, options?: {
+            customEditQuery?: (item: TItem) => EditItemQuery<TItem>,
+            customDeleteQuery?: (item: TItem) => DeleteItemQuery
+        }): DynamicFormEditBuilder<TItem>;
+
+    editForm(x: EditFormQuery<TItem> | number, options?: {
+        customEditQuery?: (item: TItem) => EditItemQuery<TItem>,
+        customDeleteQuery?: (item: TItem) => DeleteItemQuery
+    }): DynamicFormEditBuilder<TItem> {
         // query used to get form definition from server
         let query;
         if (x instanceof EditFormQuery) {
@@ -129,11 +144,14 @@ export abstract class BaseTypeService<TItem extends IItem> {
             throw Error('Could not get edit query for edit form');
         }
 
-        const builder = new DynamicFormEditBuilder<TItem>(this.type, query.get(), (item) => this.edit(item).set());
+        const editQuery = options && options.customEditQuery ? options.customEditQuery : (item: TItem) => this.edit(item);
+        const deleteQuery = options && options.customDeleteQuery ? options.customDeleteQuery : (item: TItem) => this.delete(item.id);
+        
+        const builder = new DynamicFormEditBuilder<TItem>(this.type, query.get(), (item) => editQuery(item).set());
 
         // set default delete function if its enabled
         if (this.config.allowDelete) {
-            builder.deleteFunction((item) => this.delete(item.Id).set());
+            builder.deleteFunction((item) => deleteQuery(item.Id).set());
         }
 
         // set default button text for update

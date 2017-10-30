@@ -42,7 +42,9 @@ export class NewClientComponent extends ClientsBaseComponent implements OnInit {
     }
 
     private initForm(): void {
-        this.formConfig = this.dependencies.itemServices.userService.insertForm()
+        this.formConfig = this.dependencies.itemServices.userService.insertForm({
+            customInsertQuery: (item: User) => this.dependencies.itemServices.userService.createClient(item)
+        })
             .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
             .onAfterInsert((response) => {
                 // redirect to view client page
