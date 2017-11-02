@@ -8,16 +8,10 @@ export class DataTableField<T> {
      */
     public value: (item: T) => string | Observable<string>;
 
-    // optional properties
     /**
      * translated value of 'labelKey' (if provided) is stored here
      */
-    public label?: string;
-
-    /**
-     * Label key -> used to translate label
-     */
-    public labelKey?: string;
+    public label?: string  | Observable<string>;
 
     /**
      * Flex width

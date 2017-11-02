@@ -102,15 +102,6 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
 
     private initDataTable(): void {
         if (this.config && !this.initialized) {
-            // translate all labels (which have 'labelKey' set)
-            this.config.fields.forEach(field => {
-                if (field.labelKey) {
-                    this.translateService.get(field.labelKey).subscribe(text => {
-                        field.labelKey = text;
-                    });
-                }
-            });
-
             // init hash
             this.configHash = this.config.getHash();
 

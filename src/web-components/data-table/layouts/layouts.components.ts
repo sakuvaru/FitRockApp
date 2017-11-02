@@ -114,6 +114,10 @@ export class DataTableLayoutHeaderComponent {
         }
         return null;
     }
+
+    private isObservable(field: DataTableField<any>): boolean {
+        return field.label instanceof Observable;
+    }
 }
 
 @Component({

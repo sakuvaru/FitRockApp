@@ -54,8 +54,8 @@ export class ClientsOverviewComponent extends ClientsBaseComponent implements On
           .whereLikeMultiple(['FirstName', 'LastName'], searchTerm);
       },
       [
-        { label: 'Klient', value: (item) => item.getFullName(), flex: 40 },
-        { label: 'E-mail', value: (item) => item.email, isSubtle: true, align: AlignEnum.Right, hideOnSmallScreens: true },
+        { value: (item) => item.getFullName(), flex: 40 },
+        { value: (item) => item.email, isSubtle: true, align: AlignEnum.Right, hideOnSmallScreens: true },
       ]
     )
       .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
