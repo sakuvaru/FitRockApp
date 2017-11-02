@@ -132,6 +132,9 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
         // save page to local storage
         this.savePageToLocalStorage(this.configHash, page);
 
+        // update current page
+        this.currentPage = page;
+
         // enable local loader
         if (this.config.enableLocalLoader) {
             this.localLoaderLoading = true;
@@ -181,7 +184,6 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
 
                 })
                 .subscribe(response => {
-                    this.currentPage = page;
                     this.items = response.items;
                     this.totalPages = response.pages;
                 },
@@ -220,7 +222,6 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
 
                 })
                 .subscribe(response => {
-                    this.currentPage = page;
                     this.items = response.items;
                     this.totalPages = response.pages;
                 },
@@ -276,6 +277,7 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
 
         if (dynamicFilters && dynamicFilters.length > 0) {
             dynamicFilters.forEach(dynamicFilter => {
+
                 this.filters.push(dynamicFilter);
                 if (dynamicFilter.count) {
                     sumCount += dynamicFilter.count;
@@ -300,14 +302,19 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
 
             this.config.staticFilters.forEach(staticFilter => {
 
-                // prepare filter count query
-                let filterCountQuery = this.config.loadQuery(this.searchTerm);
-                filterCountQuery = staticFilter.onFilter(filterCountQuery);
+                // prepare filter query
+                let filterQuery = this.config.loadQuery(this.searchTerm);
+                
+                        // apply page and page size
+                        filterQuery = filterQuery.page(this.currentPage);
+                        filterQuery.pageSize(this.config.pagerConfig.pagerSize);
 
+                filterQuery = staticFilter.onFilter(filterQuery);
+                
                 this.filters.push(staticFilter);
                 // use count query to get the number of records of given filter
                 if (staticFilter.countQuery) {
-                    staticFilterCountObservables.push(staticFilter.countQuery(filterCountQuery).get()
+                    staticFilterCountObservables.push(staticFilter.countQuery(filterQuery).get()
                         .map(responseCount => staticFilter.count = responseCount.count));
                 }
             });
@@ -344,13 +351,16 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
     private prepareFilters(): void {
         this.filters = [];
 
+        const allFilterQuery = (onFilterQuery) => this.config.loadQuery(this.searchTerm).page(this.currentPage).pageSize(this.config.pagerConfig.pagerSize);
         // add all filter
         if (this.config.showAllFilter) {
             if (this.allFilter) {
-                  // do nothing
+                  // update query with current data
+                  this.allFilter.onFilter = allFilterQuery;
+
             } else {
                 this.allFilter = new Filter({
-                    onFilter: (onFilterQuery) => this.config.loadQuery(this.searchTerm),
+                    onFilter: allFilterQuery,
                     filterNameKey: this.allFilterKey,
                 });
             }

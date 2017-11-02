@@ -63,12 +63,12 @@ export class ClientsOverviewComponent extends ClientsBaseComponent implements On
       .filter(new Filter({
         filterNameKey: 'module.clients.activeClients',
         onFilter: query => query.whereEquals('IsActive', true),
-        countQuery: (query) => query.toCountQuery().withCustomAction('GetClientsCount')
+        countQuery: (query) => query.toCountQuery()
       }))
       .filter(new Filter({
         filterNameKey: 'module.clients.inactiveClients',
         onFilter: query => query.whereEquals('IsActive', false),
-        countQuery: (query) => query.toCountQuery().withCustomAction('GetClientsCount')
+        countQuery: (query) => query.toCountQuery()
       }))
       .showPager(true)
       .showSearch(true)
