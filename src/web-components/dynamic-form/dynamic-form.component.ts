@@ -160,7 +160,6 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
 
             // init fields
             this.getInitFormObservable(config)
-                .takeUntil(this.ngUnsubscribe)
                 .subscribe(() => {
                     let formStatus: DynamicFormStatus;
 
@@ -358,7 +357,6 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
 
     private getInsertButtonObservable(buttonSubject: Subject<void>, config: FormConfig<any>): Observable<any> {
         return buttonSubject
-            .takeUntil(this.ngUnsubscribe)
             .switchMap(event => {
                 if (!config.insertFunction) {
                     throw new Error('Insert function is not defined');
@@ -399,7 +397,6 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
 
     private getEditButtonObservable(buttonSubject: Subject<void>, config: FormConfig<any>): Observable<any> {
         return buttonSubject
-            .takeUntil(this.ngUnsubscribe)
             .switchMap(event => {
                 if (!config.editFunction) {
                     throw new Error('Edit function is not defined');
@@ -437,7 +434,6 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
 
     private getDeleteButtonObservable(buttonSubject: Subject<void>, config: FormConfig<any>): Observable<any> {
         return buttonSubject
-            .takeUntil(this.ngUnsubscribe)
             .switchMap(response => {
                 if (!config.deleteFunction) {
                     throw new Error('Delete function is not defined');

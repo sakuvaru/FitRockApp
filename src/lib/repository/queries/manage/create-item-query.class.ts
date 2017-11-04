@@ -33,7 +33,7 @@ export class CreateItemQuery<TItem extends IItem> extends BaseQuery {
         protected authHttp: AuthHttp,
         protected config: RepositoryConfig,
         protected type: string,
-        protected item: TItem
+        protected formData: Object
     ) {
         super(authHttp, config);
         this._action = this.defaultAction;
@@ -47,7 +47,7 @@ export class CreateItemQuery<TItem extends IItem> extends BaseQuery {
 
     // option
     withOption(fieldName: string, value: number | string | boolean): this {
-        this.item[fieldName] = value;
+        this.formData[fieldName] = value;
         return this;
     }
 
@@ -59,7 +59,7 @@ export class CreateItemQuery<TItem extends IItem> extends BaseQuery {
     // execution
 
     set(): Observable<ResponseCreate<TItem>> {
-        return this.queryService.create(this.getCreateUrl(), this.item);
+        return this.queryService.create(this.getCreateUrl(), this.formData);
     }
 
     // debug

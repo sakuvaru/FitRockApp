@@ -36,12 +36,12 @@ export abstract class BaseTypeService<TItem extends IItem> {
         return this.repositoryClient.count(this.type);
     }
 
-    create(item: TItem): CreateItemQuery<TItem> {
-        return this.repositoryClient.create<TItem>(this.type, item);
+    create(formData: Object): CreateItemQuery<TItem> {
+        return this.repositoryClient.create<TItem>(this.type, formData);
     }
 
-    edit(item: TItem): EditItemQuery<TItem> {
-        return this.repositoryClient.edit<TItem>(this.type, item);
+    edit(formData: Object): EditItemQuery<TItem> {
+        return this.repositoryClient.edit<TItem>(this.type, formData);
     }
 
     delete(itemId: number): DeleteItemQuery {
@@ -96,7 +96,7 @@ export abstract class BaseTypeService<TItem extends IItem> {
      */
     insertForm(options?: {
         customFormDefinitionQuery?: InsertFormQuery<TItem>,
-        customInsertQuery?:  (item: TItem) => CreateItemQuery<TItem> 
+        customInsertQuery?:  (formData: Object) => CreateItemQuery<TItem> 
     }): DynamicFormInsertBuilder<TItem> {
         // query used to get form definition from server
         const formDefinitionQuery = options && options.customFormDefinitionQuery ? options.customFormDefinitionQuery : this.insertFormQuery();
@@ -113,8 +113,8 @@ export abstract class BaseTypeService<TItem extends IItem> {
     * @param customQuery Query used to get form definition from server
     */
     editForm(customFormDefinitionQuery: EditFormQuery<TItem>, options?: {
-        customEditQuery?: (item: TItem) => EditItemQuery<TItem>,
-        customDeleteQuery?: (item: TItem) => DeleteItemQuery
+        customEditQuery?: (formData: Object) => EditItemQuery<TItem>,
+        customDeleteQuery?: (formData: Object) => DeleteItemQuery
     }): DynamicFormEditBuilder<TItem>;
 
      /**
@@ -122,36 +122,36 @@ export abstract class BaseTypeService<TItem extends IItem> {
     * @param itemId Id of the item to edit
     */
     editForm(itemId: number, options?: {
-            customEditQuery?: (item: TItem) => EditItemQuery<TItem>,
-            customDeleteQuery?: (item: TItem) => DeleteItemQuery
+            customEditQuery?: (formData: Object) => EditItemQuery<TItem>,
+            customDeleteQuery?: (formData: Object) => DeleteItemQuery
         }): DynamicFormEditBuilder<TItem>;
 
     editForm(x: EditFormQuery<TItem> | number, options?: {
-        customEditQuery?: (item: TItem) => EditItemQuery<TItem>,
-        customDeleteQuery?: (item: TItem) => DeleteItemQuery
+        customEditQuery?: (formData: Object) => EditItemQuery<TItem>,
+        customDeleteQuery?: (formData: Object) => DeleteItemQuery
     }): DynamicFormEditBuilder<TItem> {
         // query used to get form definition from server
-        let query;
+        let formQuery;
         if (x instanceof EditFormQuery) {
-            query = x;
+            formQuery = x;
         }   
         
         if (numberHelper.isNumber(x)) {
-            query = this.editFormQuery(+x);
+            formQuery = this.editFormQuery(+x);
         }
 
-        if (!query) {
+        if (!formQuery) {
             throw Error('Could not get edit query for edit form');
         }
 
-        const editQuery = options && options.customEditQuery ? options.customEditQuery : (item: TItem) => this.edit(item);
-        const deleteQuery = options && options.customDeleteQuery ? options.customDeleteQuery : (item: TItem) => this.delete(item.id);
+        const editQuery = options && options.customEditQuery ? options.customEditQuery : (item: Object) => this.edit(item);
+        const deleteQuery = options && options.customDeleteQuery ? options.customDeleteQuery : (item: Object) => this.delete(item['Id']);
         
-        const builder = new DynamicFormEditBuilder<TItem>(this.type, query.get(), (item) => editQuery(item).set());
+        const builder = new DynamicFormEditBuilder<TItem>(this.type, formQuery.get(), (item) => editQuery(item).set());
 
         // set default delete function if its enabled
         if (this.config.allowDelete) {
-            builder.deleteFunction((item) => deleteQuery(item.Id).set());
+            builder.deleteFunction((item) => deleteQuery(item).set());
         }
 
         // set default button text for update

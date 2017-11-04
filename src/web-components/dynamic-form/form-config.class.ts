@@ -33,17 +33,17 @@ export class FormConfig<TItem extends IItem> {
     /**
      * Function to be executed on insert of new item in the form
      */
-    public insertFunction?: (item: any) => Observable<ResponseCreate<TItem>>;
+    public insertFunction?: (formData: Object) => Observable<ResponseCreate<TItem>>;
 
     /**
      * Function to be executed on edit/update action og existing item in the form
      */
-    public editFunction?: (item: any) => Observable<ResponseEdit<TItem>>;
+    public editFunction?: (formData: Object) => Observable<ResponseEdit<TItem>>;
 
     /**
      * Function to be executed when deleting an existing item in the form
      */
-    public deleteFunction?: (item: any) => Observable<ResponseDelete>;
+    public deleteFunction?: (formData: Object) => Observable<ResponseDelete>;
 
     /**
      * Indicates if snackbar is shown after save
@@ -135,7 +135,7 @@ export class FormConfig<TItem extends IItem> {
     /**
      * Callback before deleting an item
      */
-    public onBeforeDelete?: (item: any) => void;
+    public onBeforeDelete?: (formData: Object) => void;
 
      /**
      * Called when a value in a field changes

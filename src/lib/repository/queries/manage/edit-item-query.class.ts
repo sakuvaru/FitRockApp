@@ -33,7 +33,7 @@ export class EditItemQuery<TItem extends IItem> extends BaseQuery {
         protected authHttp: AuthHttp,
         protected config: RepositoryConfig,
         protected type: string,
-        protected item: TItem
+        protected formData: Object
     ) {
         super(authHttp, config);
         this._action = this.defaultAction;
@@ -53,7 +53,7 @@ export class EditItemQuery<TItem extends IItem> extends BaseQuery {
     // execution
 
     set(): Observable<ResponseEdit<TItem>> {
-        return this.queryService.edit(this.getEditUrl(), this.item);
+        return this.queryService.edit(this.getEditUrl(), this.formData);
     }
 
     // debug

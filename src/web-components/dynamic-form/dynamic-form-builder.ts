@@ -178,7 +178,7 @@ export class DynamicFormInsertBuilder<TItem extends IItem> extends BaseDynamicFo
         /**
          * Function used to insert a new object
          */
-        protected insertFunction: (item: any) => Observable<ResponseCreate<TItem>>
+        protected insertFunction: (formData: Object) => Observable<ResponseCreate<TItem>>
     ) {
         super();
 
@@ -219,7 +219,7 @@ export class DynamicFormEditBuilder<TItem extends IItem> extends BaseDynamicForm
         /**
          * Function used to edit given object
          */
-        protected editFunction: (item: any) => Observable<ResponseEdit<TItem>>
+        protected editFunction: (formData: Object) => Observable<ResponseEdit<TItem>>
     ) {
         super();
 
@@ -248,7 +248,7 @@ export class DynamicFormEditBuilder<TItem extends IItem> extends BaseDynamicForm
     /**
    * Function to be executed when deleting an existing item in the form
    */
-    deleteFunction(callback: (item: any) => Observable<ResponseDelete>): this {
+    deleteFunction(callback: (formData: Object) => Observable<ResponseDelete>): this {
         this.config.deleteFunction = callback;
         return this;
     }
@@ -256,7 +256,7 @@ export class DynamicFormEditBuilder<TItem extends IItem> extends BaseDynamicForm
     /**
     * Callback before deleting an item
     */
-    onBeforeDelete(callback: (item: any) => void): this {
+    onBeforeDelete(callback: (formData: Object) => void): this {
         this.config.onBeforeDelete = callback;
         return this;
     }

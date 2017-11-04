@@ -56,12 +56,12 @@ export class RepositoryClient {
         return new SingleItemQueryInitCustom<TAny>(this.authHttp, this.config, type);
     }
 
-    create<TItem extends IItem>(type: string, item: TItem): CreateItemQuery<TItem> {
-        return new CreateItemQuery(this.authHttp, this.config, type, item);
+    create<TItem extends IItem>(type: string, formData: Object): CreateItemQuery<TItem> {
+        return new CreateItemQuery(this.authHttp, this.config, type, formData);
     }
 
-    edit<TItem extends IItem>(type: string, item: TItem): EditItemQuery<TItem> {
-        return new EditItemQuery(this.authHttp, this.config, type, item);
+    edit<TItem extends IItem>(type: string, formData: Object): EditItemQuery<TItem> {
+        return new EditItemQuery(this.authHttp, this.config, type, formData);
     }
 
     count<TItem extends IItem>(type: string): ItemCountQuery {
