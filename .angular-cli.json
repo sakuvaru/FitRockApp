@@ -17,7 +17,7 @@
       "test": "test.ts",
       "tsconfig": "tsconfig.app.json",
       "testTsconfig": "tsconfig.spec.json",
-      "prefix": "app",
+      "prefix": "",
       "styles": [
         "../node_modules/@covalent/core/common/platform.scss",
         "../node_modules/font-awesome/css/font-awesome.css",
@@ -26,7 +26,9 @@
         "assets/material/material-theme.scss",
         "assets/theme/main.scss"
       ],
-      "scripts": [],
+      "scripts": [
+        "assets/external/auth0/auth0.min.js"
+      ],
       "environmentSource": "environments/environment.ts",
       "environments": {
         "dev": "environments/environment.ts",
