@@ -144,8 +144,8 @@ export abstract class BaseTypeService<TItem extends IItem> {
             throw Error('Could not get edit query for edit form');
         }
 
-        const editQuery = options && options.customEditQuery ? options.customEditQuery : (item: Object) => this.edit(item);
-        const deleteQuery = options && options.customDeleteQuery ? options.customDeleteQuery : (item: Object) => this.delete(item['Id']);
+        const editQuery = options && options.customEditQuery ? options.customEditQuery : (formData: Object) => this.edit(formData);
+        const deleteQuery = options && options.customDeleteQuery ? options.customDeleteQuery : (formData: Object) => this.delete(formData['Id']);
         
         const builder = new DynamicFormEditBuilder<TItem>(this.type, formQuery.get(), (item) => editQuery(item).set());
 
