@@ -1,14 +1,8 @@
-<ng-template tdLoading [tdLoadingUntil]="!showLocalLoader" tdLoadingStrategy="overlay">
-    <div style="min-height: 150px">
-        <ng-container *ngIf="config && graph && wrapperStyle && graphData">
-            <div [ngStyle]="wrapperStyle">
-                <ngx-charts-bar-vertical [results]="graphData" [view]="graph.view" [scheme]="config.scheme" [gradient]="graph.gradient"
-                    [xAxis]="graph.showXAxis" [yAxis]="graph.showYAxis" [legend]="config.showLegend" [showXAxisLabel]="graph.showXAxisLabel"
-                    [showYAxisLabel]="graph.showYAxisLabel" [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel" [legendTitle]="legendTitle"
-                    (select)="onSelect($event)">
-                </ngx-charts-bar-vertical>
-
-            </div>
-        </ng-container>
+<ng-container *ngIf="config && graph && wrapperStyle && graphData">
+    <div [ngStyle]="wrapperStyle">
+        <ngx-charts-bar-vertical [results]="graphData" [view]="graph.view" [scheme]="config.scheme" [gradient]="graph.gradient" [xAxis]="graph.showXAxis"
+            [yAxis]="graph.showYAxis" [legend]="config.showLegend" [showXAxisLabel]="graph.showXAxisLabel" [showYAxisLabel]="graph.showYAxisLabel"
+            [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel" [legendTitle]="legendTitle" (select)="onSelect($event)">
+        </ngx-charts-bar-vertical>
     </div>
-</ng-template>
+</ng-container>

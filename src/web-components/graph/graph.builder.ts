@@ -18,6 +18,15 @@ export class GraphBuilder<TGraph extends BaseGraph> {
         );
     }
 
+    
+    /**
+     * Indicates if graph is wrapped in card
+     */
+    wrapInCard(wrap: boolean): this {
+        this.config.wrapInCard = wrap;
+        return this;
+    }
+
     /**
      * Enables or disables local loader
      * @param enable Enable or Disable local loader

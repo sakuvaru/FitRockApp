@@ -1,7 +1,21 @@
-<ng-container *ngIf="config">
+<ng-container *ngIf="config && config.wrapInCard">
 
-  <line-chart #graphComponent *ngIf="config.graphType === 0" [config]="config"></line-chart>
-  <vertical-bar-chart #graphComponent *ngIf="config.graphType === 1" [config]="config"></vertical-bar-chart>
+  <mat-card class="push">
+    <loader [enabled]="loaderEnabled" type="linear"></loader>
+    <mat-card-content class="pad-top-sm">
+      <line-chart #graphComponent *ngIf="config.graphType === 0" [config]="config" (loaderChanged)="onLoaderChanged($event)"></line-chart>
+      <vertical-bar-chart #graphComponent *ngIf="config.graphType === 1" [config]="config" (loaderChanged)="onLoaderChanged($event)"></vertical-bar-chart>
+    </mat-card-content>
+  </mat-card>
 
 </ng-container>
 
+<ng-container *ngIf="config && !config.wrapInCard">
+
+  <loader [enabled]="loaderEnabled" type="linear"></loader>
+  <div class="push-top-sm">
+    <line-chart #graphComponent *ngIf="config.graphType === 0" [config]="config" (loaderChanged)="onLoaderChanged($event)"></line-chart>
+    <vertical-bar-chart #graphComponent *ngIf="config.graphType === 1" [config]="config" (loaderChanged)="onLoaderChanged($event)"></vertical-bar-chart>
+  </div>
+
+</ng-container>

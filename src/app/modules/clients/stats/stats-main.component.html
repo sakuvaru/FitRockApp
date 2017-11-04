@@ -13,14 +13,9 @@
         </mat-chip-list>
     </div>
 
-    <mat-card class="push">
-        <mat-card-content>
-            <graph #graph [config]="graphConfig"></graph>
-        </mat-card-content>
-    </mat-card>
+    <graph #graph [config]="graphConfig"></graph>
 
 </ng-container>
-
 
 <div class="push">
     <no-data-message *ngIf="progressItemTypes && progressItemTypes.length <= 0"></no-data-message>

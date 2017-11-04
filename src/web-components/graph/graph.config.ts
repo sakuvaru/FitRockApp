@@ -5,6 +5,11 @@ import { GraphTypeEnum } from './graph-type.enum';
 export class GraphConfig<TGraph extends BaseGraph> {
 
     /**
+     * Indicates if graph is wrapped in card
+     */
+    public wrapInCard: boolean = true;
+
+    /**
      * Indicates if local loader is enabled
      */
     public enableLocalLoader = true;

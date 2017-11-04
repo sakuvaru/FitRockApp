@@ -8,11 +8,21 @@ import { MultiSeries, SingleSeries } from '../graph-models';
 import { BaseGraph } from '../graph-types';
 import { GraphConfig } from '../graph.config';
 import { GraphTypeEnum } from '../graph-type.enum';
-import { Observable } from 'rxjs/Rx';
+import { Observable, Subject } from 'rxjs/Rx';
 
 @Component({
 })
 export abstract class BaseGraphComponent extends BaseWebComponent implements OnInit, OnChanges {
+
+    /**
+     * Graph configuration
+     */
+    @Input() abstract config: GraphConfig<BaseGraph>;
+
+    /**
+     * Loader change 
+     */
+    @Output() loaderChanged = new EventEmitter<boolean>();
 
     /**
      * This will contain graph data
@@ -38,16 +48,6 @@ export abstract class BaseGraphComponent extends BaseWebComponent implements OnI
      * Indicates if component is initialized
      */
     protected initialized = false;
-
-    /**
-     * Indicates if local loader should be shown
-     */
-    protected showLocalLoader = false;
-
-    /**
-     * Graph configuration
-     */
-    @Input() abstract config: GraphConfig<BaseGraph>;
 
     /**
      * Initialization required for each specific graph
@@ -98,7 +98,7 @@ export abstract class BaseGraphComponent extends BaseWebComponent implements OnI
 
         // loader
         if (this.config.enableLocalLoader) {
-            this.showLocalLoader = true;
+            this.loaderChanged.next(true);
         }
 
         // init wrapper styles
@@ -124,7 +124,7 @@ export abstract class BaseGraphComponent extends BaseWebComponent implements OnI
             .map(graph => {
                 // loader
                 if (this.config.enableLocalLoader) {
-                    this.showLocalLoader = false;
+                    this.loaderChanged.next(false);
                 }
 
                 // set graph as initialized

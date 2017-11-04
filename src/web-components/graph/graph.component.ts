@@ -23,6 +23,11 @@ export class GraphComponent extends BaseWebComponent {
      */
     @Input() public config: GraphConfig<BaseGraph>;
 
+    /**
+     * Indicates if loader is enabled
+     */
+    private loaderEnabled: boolean = true;
+
     @ViewChild('graphComponent') graphComponent: BaseGraphComponent;
 
     constructor(
@@ -46,6 +51,10 @@ export class GraphComponent extends BaseWebComponent {
         if (this.graphComponent) {
             this.graphComponent.reloadData();
         }
+    }
+
+    private onLoaderChanged(enabled: boolean): void {
+        this.loaderEnabled = enabled;
     }
 
 }
