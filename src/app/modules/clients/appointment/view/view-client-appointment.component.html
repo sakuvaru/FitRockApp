@@ -1,0 +1,32 @@
+<div class="container" fxLayout fxLayout.sm="column" class="push">
+    <div fxFlex="40%">
+        <mat-card>
+            <mat-card-content *ngIf="appointment">
+                <p class="md-headline">{{ appointment.appointmentName }}</p>
+                <p>
+                    <span class="md-caption">{{ 'module.clients.appointments.when' | translate }}:</span> {{ formatDate(appointment.appointmentDate)
+                    }}
+                </p>
+                <p>
+                    <span class="md-caption">{{ 'module.clients.appointments.where' | translate }}:</span> {{ appointment.location.address }}
+                </p>
+                <p *ngIf="appointment.workout">
+                    <span class="md-caption">{{ 'module.clients.appointments.workout' | translate }}:</span> {{ appointment.workout.workoutName }}
+                </p>
+                <p *ngIf="appointment.notes">
+                    <span class="md-caption">{{ 'module.clients.appointments.notes' | translate }}:</span>
+                </p>
+                <p *ngIf="appointment.notes" class="md-caption">
+                    {{ appointment.notes }}
+                </p>
+            </mat-card-content>
+        </mat-card>
+    </div>
+    <div fxFlex="60%">
+        <mat-card>
+            <mat-card-content *ngIf="appointment">
+                <map [apiKey]="googleApiKey" [address]="appointment.location.address" [lat]="appointment.location.lat" [lng]="appointment.location.lng"></map>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

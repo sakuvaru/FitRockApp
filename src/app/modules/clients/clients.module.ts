@@ -43,6 +43,7 @@ import { UserGalleryComponent } from './gallery/user-gallery.component';
 import { EditClientAppointmentComponent } from './appointment/edit/edit-client-appointment.component';
 import { ClientAppointmentListComponent } from './appointment/list/client-appointment-list.component';
 import { NewClientAppointmentComponent } from './appointment/new/new-client-appointment.component';
+import { ViewClientAppointmentComponent } from './appointment/view/view-client-appointment.component';
 
 // router
 import { ClientsRouter } from './clients.routing';
@@ -99,7 +100,8 @@ import { DietsModule} from '../diets/diets.module';
         // appointment
         EditClientAppointmentComponent,
         ClientAppointmentListComponent,
-        NewClientAppointmentComponent
+        NewClientAppointmentComponent,
+        ViewClientAppointmentComponent
     ]
     
 })

@@ -123,9 +123,14 @@
 				"upcomingAppointments": "Nadcházející schůzky",
 				"oldAppointments": "Staré schůzky",
 				"editAppointmentWithName": "Upravit schůzku - {{appointmentName}}",
+				"viewAppointmentWithName": "{{appointmentName}}",
 				"editAppointment": "Upravit schůzku",
 				"viewAppointment": "Detail schůzky",
-				"newAppointment": "Nová schůzka"
+				"newAppointment": "Nová schůzka",
+				"where": "Kde",
+				"when": "Kdy",
+				"notes": "Poznámky",
+				"workout": "Trénink"
 			},
 			"viewClientSubtitle": "{{fullName}}",
 			"clients": "Klienti",

@@ -41,7 +41,6 @@ export class EditClientAppointmentComponent extends ClientsBaseComponent impleme
     return this.clientChange
       .switchMap(client => {
         return this.activatedRoute.params
-          .takeUntil(this.ngUnsubscribe)
           .map(params => {
             return +params['appointmentId'];
           });

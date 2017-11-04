@@ -63,7 +63,7 @@ export class ClientEditAppointmentMenuItems implements IMenuItem {
     constructor(clientId: number, appointmentId: number) {
         this.menuItems = [
             new MenuItem({ key: 'menu.shared.back' }, MenuItemType.trainer, 'clients/edit/' + clientId + '/appointments', { icon: 'arrow_back' }),
-            new MenuItem({ key: 'module.clients.appointments.viewAppointment' }, MenuItemType.trainer, 'clients/edit/' + clientId + '/appointments/edit/' + appointmentId + '/view', { icon: 'remove_red_eye' }),
+            new MenuItem({ key: 'module.clients.appointments.viewAppointment' }, MenuItemType.trainer, 'clients/edit/' + clientId + '/appointments/view/' + appointmentId, { icon: 'remove_red_eye' }),
             new MenuItem({ key: 'module.clients.appointments.editAppointment' }, MenuItemType.trainer, 'clients/edit/' + clientId + '/appointments/edit/' + appointmentId, { icon: 'edit' }),
         ];
     }

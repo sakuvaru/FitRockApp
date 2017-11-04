@@ -105,7 +105,7 @@ export class ClientAppointmentListComponent extends ClientsBaseComponent impleme
       }))
       .showPager(true)
       .pagerSize(7)
-      .onClick((item) => super.navigate([super.getTrainerUrl('clients/edit/') + this.clientId + '/appointments/edit/' + item.id]))
+      .onClick((item) => super.navigate([super.getTrainerUrl('clients/edit/') + this.clientId + '/appointments/view/' + item.id]))
       .build();
   }
 }

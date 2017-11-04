@@ -44,6 +44,7 @@ import { UserGalleryComponent } from './gallery/user-gallery.component';
 import { EditClientAppointmentComponent } from './appointment/edit/edit-client-appointment.component';
 import { ClientAppointmentListComponent } from './appointment/list/client-appointment-list.component';
 import { NewClientAppointmentComponent } from './appointment/new/new-client-appointment.component';
+import { ViewClientAppointmentComponent } from './appointment/view/view-client-appointment.component';
 
 const routes: Routes = [
     {
@@ -106,6 +107,9 @@ const routes: Routes = [
             },
             {
                 path: 'clients/edit/:id/appointments/edit/:appointmentId', component: EditClientAppointmentComponent
+            },
+            {
+                path: 'clients/edit/:id/appointments/view/:appointmentId', component: ViewClientAppointmentComponent
             },
             {
                 path: 'clients/edit/:id/appointments/new', component: NewClientAppointmentComponent
