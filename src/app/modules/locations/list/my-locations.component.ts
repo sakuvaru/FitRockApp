@@ -44,22 +44,17 @@ export class MyLocationsComponent extends BaseComponent implements OnInit {
       searchTerm => {
         return this.dependencies.itemServices.locationService.items()
           .byCurrentUser()
-          .whereLikeMultiple(['LocationName', 'Address', 'City'], searchTerm);
+          .whereLikeMultiple(['LocationName', 'Address'], searchTerm);
       },
       [
         { value: (item: Location) => item.locationName, flex: 60 },
-        {
-          value: (item: Location) => {
-            return item.city;
-          }, isSubtle: true, align: AlignEnum.Right, hideOnSmallScreens: true
-        },
       ]
     )
       .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
       .showPager(true)
       .showSearch(true)
       .pagerSize(7)
-      .onClick((item) => super.navigate([super.getTrainerUrl('locations/edit/') + item.id]))
+      .onClick((item) => super.navigate([super.getTrainerUrl('locations/view/') + item.id]))
       .build();
   }
 }

@@ -315,7 +315,7 @@
 			"submenu": {
 				"overview": "Lokace",
 				"myLocations": "Moje lokace",
-				"preview": "Náhled",
+				"view": "Náhled",
 				"new": "Nová lokace",
 				"edit": "Upravit"
 			},
@@ -324,7 +324,10 @@
 				"Office": "Kancelář",
 				"Outdoors": "Venkovní posilovna",
 				"Others": "Jiné"
-			}
+			},
+			"address": "Adresa",
+			"lng": "Zem. délka",
+			"lat": "Zem. šířka"
 		},
 		"shared": {
 			"errors": {
@@ -451,7 +454,6 @@
 			"locationName": "Název lokace",
 			"locationName.hint": "Např. 'Brno Fitko' , 'Outdoor', 'Kancelář' apod.",
 			"address": "Adresa",
-			"city": "Město",
 			"lat": "Zeměpisná šířka",
 			"lat.hint": "Nepovinné, lze použít pro zpřesnění lokace",
 			"lng": "Zeměpisná délka",

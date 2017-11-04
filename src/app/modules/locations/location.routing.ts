@@ -30,7 +30,7 @@ const routes: Routes = [
                 path: 'locations/edit/:id', component: EditLocationComponent
             },
             {
-                path: 'locations/preview/:id', component: PreviewLocationComponent
+                path: 'locations/view/:id', component: PreviewLocationComponent
             }
         ]
     }
