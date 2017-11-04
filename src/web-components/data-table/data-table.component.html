@@ -22,7 +22,7 @@
 
     <ng-container *ngIf="!config.wrapInCard">
       <loader [enabled]="localLoaderLoading" type="linear">
-        <div *ngIf="hasFilters" class="push-bottom" flex="95">
+        <div *ngIf="hasFilters" class="push-bottom pad-top-sm" flex="95">
           <!-- Flex is used so that chips don't jump to second row because of overflow (happens if there are many chips & items in data table cause vertical scroller to appear) -->
           <data-table-layout-filters [filters]="filters" [activeFilterGuid]="activeFilterGuid" (activateFilter)="applyFilter($event)"></data-table-layout-filters>
         </div>

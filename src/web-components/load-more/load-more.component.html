@@ -11,9 +11,6 @@
   <ng-container *ngIf="config.wrapInCard">
     <mat-card class="push">
       <loader [enabled]="localLoaderLoading" type="linear">
-        <div *ngIf="!items && !initialized" style="min-height: 150px">
-          &nbsp;
-        </div>
         <div *ngIf="items && items.length > 0">
           <ng-container *ngFor="let item of items; let last = last">
             <mat-list>

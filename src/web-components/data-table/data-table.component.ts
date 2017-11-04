@@ -1,5 +1,5 @@
 import { Component, Input, Output, OnInit, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
-import { MultipleItemQuery, ErrorResponse } from '../../lib/repository';
+import { MultipleItemQuery, ErrorResponse, ItemCountQuery } from '../../lib/repository';
 import { observableHelper } from '../../lib/utilities';
 import { DataTableConfig, Filter } from './data-table.config';
 import { Observable } from 'rxjs/Rx';
@@ -141,7 +141,6 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
 
         if (this.config.dynamicFilters) {
             this.config.dynamicFilters(this.searchTerm)
-                .takeUntil(this.ngUnsubscribe)
                 .switchMap((dynamicFilters) => {
                     // add dynamic filters
                     this.resolveDynamicFilters(dynamicFilters);
@@ -174,6 +173,7 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
                     }
 
                 })
+                .takeUntil(this.ngUnsubscribe)
                 .subscribe(response => {
                     this.items = response.items;
                     this.totalPages = response.pages;
@@ -194,7 +194,6 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
             query = this.getQueryWithFilters(query);
 
             this.config.loadResolver(query)
-                .takeUntil(this.ngUnsubscribe)
                 .finally(() => {
                     if (this.config.onAfterLoad) {
                         this.config.onAfterLoad(this.isInitialLoad);
@@ -212,6 +211,7 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
                     }
 
                 })
+                .takeUntil(this.ngUnsubscribe)
                 .subscribe(response => {
                     this.items = response.items;
                     this.totalPages = response.pages;
@@ -284,57 +284,60 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
     }
 
     private resolveStaticFilters(): void {
+        if (!this.config.staticFilters || this.config.staticFilters.length === 0) {
+            return;
+        }
+
         this.prepareFilters();
 
-        if (this.config.staticFilters && this.config.staticFilters.length > 0) {
 
-            // prepare observable for all filters
-            const staticFilterCountObservables: Observable<any>[] = [];
+        // prepare observable for all filters
+        const staticFilterCountObservables: Observable<any>[] = [];
 
-            this.config.staticFilters.forEach(staticFilter => {
+        this.config.staticFilters.forEach(staticFilter => {
 
-                // prepare filter query
-                let filterQuery = this.config.loadQuery(this.searchTerm);
-                
-                        // apply page and page size
-                        filterQuery = filterQuery.page(this.currentPage);
-                        filterQuery.pageSize(this.config.pagerConfig.pagerSize);
+            // prepare filter query
+            let filterQuery = this.config.loadQuery(this.searchTerm);
 
-                filterQuery = staticFilter.onFilter(filterQuery);
-                
-                this.filters.push(staticFilter);
-                // use count query to get the number of records of given filter
-                if (staticFilter.countQuery) {
-                    staticFilterCountObservables.push(staticFilter.countQuery(filterQuery).get()
-                        .map(responseCount => staticFilter.count = responseCount.count));
-                }
-            });
+            // apply page and page size
+            filterQuery = filterQuery.page(this.currentPage);
+            filterQuery.pageSize(this.config.pagerConfig.pagerSize);
 
-            // resolve static filters count
-            observableHelper.zipObservables(staticFilterCountObservables)
-                .map(() => {
-                    // update count of all filter if its present
-                    if (this.allFilter) {
-                        // go through all filters and sum up the count
-                        let sumCount = 0;
-                        this.filters.forEach(filter => {
-                            if (filter.count) {
-                                sumCount += filter.count;
-                            }
-                        });
+            filterQuery = staticFilter.onFilter(filterQuery);
 
-                        // if the all filter is used and has count > 0, subtract it from the total sum
-                        if (this.allFilter.count && this.allFilter.count > 0) {
-                            sumCount -= this.allFilter.count;
+            // prepare count query
+            const filterCountQuery: ItemCountQuery = staticFilter.countQuery ? staticFilter.countQuery(filterQuery) : filterQuery.toCountQuery();
+
+            this.filters.push(staticFilter);
+            // use count query to get the number of records of given filter
+            staticFilterCountObservables.push(filterCountQuery.get()
+                .map(responseCount => staticFilter.count = responseCount.count));
+        });
+
+        // resolve static filters count
+        observableHelper.zipObservables(staticFilterCountObservables)
+            .map(() => {
+                // update count of all filter if its present
+                if (this.allFilter) {
+                    // go through all filters and sum up the count
+                    let sumCount = 0;
+                    this.filters.forEach(filter => {
+                        if (filter.count) {
+                            sumCount += filter.count;
                         }
+                    });
 
-                        // update total count
-                        this.allFilter.count = sumCount;
+                    // if the all filter is used and has count > 0, subtract it from the total sum
+                    if (this.allFilter.count && this.allFilter.count > 0) {
+                        sumCount -= this.allFilter.count;
                     }
-                })
-                .takeUntil(this.ngUnsubscribe)
-                .subscribe();
-        }
+
+                    // update total count
+                    this.allFilter.count = sumCount;
+                }
+            })
+            .takeUntil(this.ngUnsubscribe)
+            .subscribe();
 
         this.resolveCommonFilterLogic();
     }
@@ -346,8 +349,8 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
         // add all filter
         if (this.config.showAllFilter) {
             if (this.allFilter) {
-                  // update query with current data
-                  this.allFilter.onFilter = allFilterQuery;
+                // update query with current data
+                this.allFilter.onFilter = allFilterQuery;
 
             } else {
                 this.allFilter = new Filter({

@@ -29,7 +29,7 @@
 
 <ng-container *ngIf="config && !config.wrapInCard">
   <loader [enabled]="localLoaderEnabled">
-    <div style="padding-top: 5px">
+    <div class="pad-top-sm">
       <ng-container *ngIf="form">
         <form [formGroup]="form" autocomplete="off">
           <div *ngFor="let question of questions">
