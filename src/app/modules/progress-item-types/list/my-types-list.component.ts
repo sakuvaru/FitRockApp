@@ -44,6 +44,7 @@ export class MyTypesListComponent extends BaseComponent implements OnInit {
       searchTerm => {
         return this.dependencies.itemServices.progressItemTypeService.items()
           .byCurrentUser()
+          .whereEquals('IsGlobal', false)
           .include('ProgressItemUnit');
       },
       [
