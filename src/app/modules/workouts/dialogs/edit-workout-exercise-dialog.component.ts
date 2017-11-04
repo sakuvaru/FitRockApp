@@ -51,11 +51,11 @@ export class EditWorkoutExerciseDialogComponent extends BaseComponent implements
 
   private initForm(): void {
     this.workoutExerciseForm = this.dependencies.itemServices.workoutExerciseService.editForm(this.workoutExercise.id)
+      .wrapInCard(false)
       .onAfterUpdate((response) => {
         this.workoutExercise = response.item;
         this.close();
       })
-      .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
       .onAfterDelete((response) => {
         this.idOfDeletedWorkoutExercise = response.deletedItemId;
         this.workoutExerciseWasDeleted = true;

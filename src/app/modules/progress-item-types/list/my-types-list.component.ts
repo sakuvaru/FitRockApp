@@ -57,7 +57,6 @@ export class MyTypesListComponent extends BaseComponent implements OnInit {
         },
       ]
     )
-      .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
       .showPager(true)
       .showSearch(false)
       .pagerSize(7)

@@ -72,7 +72,6 @@ export class AllFoodsListComponent extends BaseComponent implements OnInit {
           .takeUntil(this.ngUnsubscribe);
       })
       .showAllFilter(true)
-      .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
       .showPager(true)
       .showSearch(true)
       .pagerSize(7)

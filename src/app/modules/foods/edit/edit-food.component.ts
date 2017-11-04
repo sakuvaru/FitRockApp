@@ -41,7 +41,6 @@ export class EditFoodComponent extends BaseComponent implements OnInit {
             .takeUntil(this.ngUnsubscribe)
             .map((params: Params) => {
                 this.formConfig = this.dependencies.itemServices.foodService.editForm(+params['id'])
-                    .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
                     .onAfterDelete(() => super.navigate([this.getTrainerUrl('foods')]))
                     .onFormLoaded(form => {
                         this.setConfig({

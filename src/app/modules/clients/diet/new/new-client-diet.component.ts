@@ -70,7 +70,6 @@ export class NewClientDietComponent extends ClientsBaseComponent implements OnIn
                         }
                         return value;
                     })
-                    .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
                     .onAfterInsert((response) => super.navigate([super.getTrainerUrl('clients/edit/' + this.clientId + '/diet/' + response.item.id + '/diet-plan')]))
                     .build();
             },

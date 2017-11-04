@@ -69,7 +69,6 @@ export class NewClientAppointmentComponent extends ClientsBaseComponent implemen
                         }
                         return value;
                     })
-                    .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
                     .onAfterInsert((response) => super.navigate([super.getTrainerUrl('clients/edit/' + clientId + '/appointments/edit/' + response.item.id)]))
                     .build();
 

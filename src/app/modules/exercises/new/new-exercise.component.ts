@@ -40,7 +40,6 @@ export class NewExerciseComponent extends BaseComponent implements OnInit {
 
     private initForm(): void {
         this.formConfig = this.dependencies.itemServices.exerciseService.insertForm()
-            .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
             .onAfterInsert((response) => this.navigate([this.getTrainerUrl('exercises/edit'), response.item.id]))
             .build();
     }

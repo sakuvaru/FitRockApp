@@ -86,7 +86,6 @@ export class ClientDietsComponent extends BaseComponent implements OnInit {
           .takeUntil(this.ngUnsubscribe);
       })
       .showAllFilter(true)
-      .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
       .onClick((item) => super.navigate([super.getTrainerUrl('diets/edit-plan/') + item.id]))
       .build();
   }

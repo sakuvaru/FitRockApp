@@ -85,7 +85,6 @@ export class ClientWorkoutsComponent extends BaseComponent implements OnInit {
           .takeUntil(this.ngUnsubscribe);
       })
       .showAllFilter(true)
-      .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
       .onClick((item) => super.navigate([super.getTrainerUrl('workouts/edit-plan/') + item.id]))
       .build();
   }

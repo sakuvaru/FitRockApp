@@ -176,7 +176,7 @@ export class ChatComponent extends BaseComponent implements OnInit {
                 }
                 return value;
             })
-            .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
+            .wrapInCard(false)
             .snackBarTextKey('module.clients.chat.snackbarSaved')
             .submitTextKey('module.clients.chat.submit')
             .onAfterInsert((response) => {

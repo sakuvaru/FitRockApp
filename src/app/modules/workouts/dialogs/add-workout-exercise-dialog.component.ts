@@ -64,7 +64,7 @@ export class AddWorkoutExerciseDialogComponent extends BaseComponent implements 
         }
         return value;
       })
-      .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
+      .wrapInCard(false)
       .onAfterInsert((response => {
         this.newWorkoutExercise = response.item;
         this.close();

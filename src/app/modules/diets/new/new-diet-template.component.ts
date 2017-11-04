@@ -40,7 +40,6 @@ export class NewDietTemplateComponent extends BaseComponent implements OnInit {
 
     private initForm(): void {
         this.formConfig = this.dependencies.itemServices.dietService.insertForm()
-            .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
             .onAfterInsert((response) => this.navigate([this.getTrainerUrl('diets/edit-plan'), response.item.id]))
             .build();
     }

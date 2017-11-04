@@ -62,7 +62,6 @@ export class SelectProgressTypeDialogComponent extends BaseComponent implements 
         },
       ])
       .wrapInCard(false)
-      .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
       .showPager(true)
       .showSearch(false)
       .pagerSize(5)

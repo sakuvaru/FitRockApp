@@ -66,7 +66,6 @@ export class SelectWorkoutExerciseDialogComponent extends BaseComponent implemen
       .filter(new Filter({ filterNameKey: 'module.workouts.allExercises', onFilter: query => query }))
       .filter(new Filter({ filterNameKey: 'module.workouts.myExercises', onFilter: query => query.byCurrentUser().whereEquals('IsGlobal', false) }))
       .pagerSize(5)
-      .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
       .showPager(true)
       .showSearch(true)
       .wrapInCard(false)

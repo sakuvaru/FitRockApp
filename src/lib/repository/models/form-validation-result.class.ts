@@ -28,6 +28,8 @@ export class FormValidationResult {
             this.validationResult = FormValidationResultEnum.CustomWithMessageKey;
         } else if (resultKey === 'ConstraintConflict') {
             this.validationResult = FormValidationResultEnum.ConstraintConflict;
+        } else if (resultKey === 'FormLoadingError') {
+            this.validationResult = FormValidationResultEnum.FormLoadingError;
         } else if (resultKey === 'Other') {
             this.validationResult = FormValidationResultEnum.Other;
         } else {

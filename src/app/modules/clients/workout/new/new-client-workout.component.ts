@@ -67,7 +67,6 @@ export class NewClientWorkoutComponent extends ClientsBaseComponent implements O
                         }
                         return value;
                     })
-                    .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
                     .onAfterInsert((response) => super.navigate([super.getTrainerUrl('clients/edit/' + this.clientId + '/workout/' + response.item.id + '/workout-plan')]))
                     .onFormLoaded(form => {
                         this.setConfig({

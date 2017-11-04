@@ -44,6 +44,7 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
     private insufficientLicenseError: string;
     private generalErrorMessage: string;
     private unknownErrorMessage: string;
+    private formLoadingErrorMessage: string;
 
     private questions: FormField[] = [];
 
@@ -57,7 +58,7 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
 
     private form: FormGroup;
 
-    private submissionError: string;
+    private formError: string;
 
     private formErrorLines: string[] = [];
 
@@ -204,7 +205,7 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
                     }
                 },
                 err => {
-                    this.handleSaveError(config, err);
+                    this.handleLoadError(config, err);
                 });
         }
 
@@ -509,14 +510,15 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
     private getTranslateLabelsObservable(config: FormConfig<any>): Observable<any> {
         const observables: Observable<any>[] = [];
 
-        observables.push(this.translateService.get(config.submitTextKey).map(key => this.submitText = key));
-        observables.push(this.translateService.get(config.snackBarTextKey).map(key => this.snackbarText = key));
-        observables.push(this.translateService.get(config.deleteSnackBarTextKey).map(key => this.deleteSnackbarText = key));
-        observables.push(this.translateService.get(config.deleteTextKey).map(key => this.deleteText = key));
+        observables.push(this.translateService.get(config.submitTextKey).map(translation => this.submitText = translation));
+        observables.push(this.translateService.get(config.snackBarTextKey).map(translation => this.snackbarText = translation));
+        observables.push(this.translateService.get(config.deleteSnackBarTextKey).map(translation => this.deleteSnackbarText = translation));
+        observables.push(this.translateService.get(config.deleteTextKey).map(translation => this.deleteText = translation));
 
-        observables.push(this.translateService.get('form.error.insufficientLicense').map(key => this.insufficientLicenseError = key));
-        observables.push(this.translateService.get('form.error.saveFailed').map(key => this.generalErrorMessage = key));
-        observables.push(this.translateService.get('form.error.unknownFormErrorMessage').map(key => this.unknownErrorMessage = key));
+        observables.push(this.translateService.get('form.error.insufficientLicense').map(translation => this.insufficientLicenseError = translation));
+        observables.push(this.translateService.get('form.error.saveFailed').map(translation => this.generalErrorMessage =translation));
+        observables.push(this.translateService.get('form.error.unknownFormErrorMessage').map(translation => this.unknownErrorMessage = translation));
+        observables.push(this.translateService.get('form.error.formLoadingError').map(translation => this.formLoadingErrorMessage = translation));
 
         return observableHelper.zipObservables(observables);
     }
@@ -543,7 +545,7 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
 
     private handleFormChange(): void {
         // remove error message when any input in form changes
-        this.submissionError = '';
+        this.formError = '';
         this.formErrorLines = [];
 
         // detect changes manually when changing values used in template!
@@ -617,10 +619,24 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
         if (this.config.onError) {
             this.config.onError(error);
         }
+
+        if (error instanceof ErrorResponse) {
+            if (error.reason === ErrorReasonEnum.LicenseLimitation) {
+                this.formError = this.insufficientLicenseError;
+            } else {
+                this.formError = this.formLoadingErrorMessage;
+            }
+        } else {
+            console.log('asef');
+            console.log(this.formLoadingErrorMessage);
+            this.formError = this.formLoadingErrorMessage;
+        }
+
+        this.stopLoader(config);
     }
 
     private handleSaveError(config: FormConfig<any>, error: ErrorResponse | FormErrorResponse | any): void {
-        // log error because there is no guarantee that master component will handle it (in which case no error would be shown at all)
+        // log error because there is no guarantee that master component will handle it (in which case no error would not be shown at all)
         console.error(error);
 
         // clear existing errors
@@ -640,7 +656,7 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
         if (error instanceof FormErrorResponse) {
             // handle unknown errors
             if (error.formValidation.validationResult === FormValidationResultEnum.Other) {
-                this.submissionError = this.unknownErrorMessage;
+                this.formError = this.unknownErrorMessage;
                 return;
             }
 
@@ -680,17 +696,17 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
                 });
 
             // set submission error
-            this.submissionError = this.formErrorLines.join(', ');
+            this.formError = this.formErrorLines.join(', ');
 
         } else if (error instanceof ErrorResponse) {
             // handle license errors differently
             if (error.reason === ErrorReasonEnum.LicenseLimitation) {
-                this.submissionError = this.insufficientLicenseError;
+                this.formError = this.insufficientLicenseError;
             } else {
-                this.submissionError = this.generalErrorMessage;
+                this.formError = this.generalErrorMessage;
             }
         } else {
-            this.submissionError = this.unknownErrorMessage;
+            this.formError = this.unknownErrorMessage;
         }
     }
 
@@ -772,7 +788,7 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
 
     private clearErrorMessages(): void {
         this.formErrorLines = [];
-        this.submissionError = '';
+        this.formError = '';
     }
 
     /**

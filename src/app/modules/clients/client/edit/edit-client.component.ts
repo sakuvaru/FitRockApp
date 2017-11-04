@@ -43,7 +43,6 @@ export class EditClientComponent extends ClientsBaseComponent implements OnInit 
             .map(clientId => {
                 this.formConfig = this.dependencies.itemServices.userService.editForm(clientId)
                     .enableDelete(false)
-                    .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
                     .onAfterDelete(() => super.navigate([this.getTrainerUrl('clients')]))
                     .onFormLoaded(form => {
                         const user = form.item;

@@ -47,7 +47,7 @@ export class AddCustomExerciseDialogComponent extends BaseComponent implements O
 
   private initForm(): void {
     this.workoutExerciseForm = this.dependencies.itemServices.exerciseService.insertForm()
-      .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
+      .wrapInCard(false)
       .onAfterInsert((response => {
         this.newExercise = response.item;
         this.close();

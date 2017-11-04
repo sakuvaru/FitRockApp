@@ -4,6 +4,11 @@ import { ResponseFormInsert, ResponseFormEdit, FormField, IItem, ResponseCreate,
 
 export class FormConfig<TItem extends IItem> {
 
+    /**
+     * Indicates if form is wrapped in card
+     */
+    public wrapInCard: boolean = true;
+
      /**
      * Edit form definition query
      */

@@ -54,7 +54,6 @@ export class EditClientAppointmentComponent extends ClientsBaseComponent impleme
     this.formConfig = this.dependencies.itemServices.appointmentService.editForm(
         this.dependencies.itemServices.appointmentService.editFormQuery(appointmentId).withData('clientId', this.clientId))
       .enableDelete(true)
-      .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
       .onAfterDelete(() => super.navigate([this.getTrainerUrl('clients/edit/' + this.clientId + '/appointments')]))
       .onFormLoaded(form => {
         const appointment = form.item;

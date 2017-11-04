@@ -85,15 +85,16 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
     }
 
     private initProgressItemsForm(clientId: number): void {
-        this.formConfig = this.dependencies.itemServices.progressItemService.insertForm(
-            this.dependencies.itemServices.progressItemService.insertFormQuery().withData('clientId', clientId))
+        this.formConfig = this.dependencies.itemServices.progressItemService.insertForm({
+            customFormDefinitionQuery: this.dependencies.itemServices.progressItemService.insertFormQuery().withData('clientId', clientId)
+        })
+            .wrapInCard(false)
             .fieldValueResolver((fieldName, value) => {
                 if (fieldName === 'ClientId') {
                     return this.clientId;
                 }
                 return value;
             })
-            .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
             .onAfterSave(() => {
                 this.reloadDataTable();
             })
@@ -228,7 +229,6 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
             .wrapInCard(true)
             .showAllFilter(true)
             .showSearch(false)
-            .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
             .onClick((item) => this.openEditProgressItemDialog(item))
             .build();
     }

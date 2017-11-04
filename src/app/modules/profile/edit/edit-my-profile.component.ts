@@ -44,7 +44,6 @@ export class EditMyProfileComponent extends BaseComponent implements OnInit {
     private initForm(): void {
         this.formConfig = this.dependencies.itemServices.userService.myProfileForm()
             .enableDelete(false)
-            .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
             .build();
     }
 }

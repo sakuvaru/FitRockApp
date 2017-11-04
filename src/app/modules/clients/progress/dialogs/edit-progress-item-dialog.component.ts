@@ -49,11 +49,11 @@ export class EditProgressItemDialogComponent extends BaseComponent implements On
 
   private initForm(): void {
     this.formConfig = this.dependencies.itemServices.progressItemService.editForm(this.item.id)
+      .wrapInCard(false)
       .onAfterUpdate((response) => {
         this.itemWasUpdated = true;
         this.close();
       })
-      .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
       .onAfterDelete((response) => {
         this.idOfDeletedItem = response.deletedItemId;
         this.itemWasDeleted = true;

@@ -59,7 +59,6 @@ export class EditAvatarComponent extends BaseComponent implements OnInit {
                     this.avatarSrc = avatar[0].absoluteUrl;
                 }
             }))
-            .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
             .build();
     }
 

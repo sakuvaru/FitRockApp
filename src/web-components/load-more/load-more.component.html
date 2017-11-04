@@ -10,7 +10,7 @@
 
   <ng-container *ngIf="config.wrapInCard">
     <mat-card class="push">
-      <ng-template tdLoading [tdLoadingUntil]="!localLoaderLoading" tdLoadingStrategy="overlay">
+      <loader [enabled]="localLoaderLoading" type="linear">
         <div *ngIf="!items && !initialized" style="min-height: 150px">
           &nbsp;
         </div>
@@ -40,7 +40,7 @@
             </mat-list>
           </ng-container>
         </div>
-      </ng-template>
+      </loader>
     </mat-card>
   </ng-container>
 

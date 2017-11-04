@@ -24,7 +24,7 @@ import { LoaderModule } from '../loader/loader.module';
         CommonModule,
         SharedWebComponentModule,
         RouterModule, // router needs to be importes so that routerLink can be used within components,
-        LoaderModule, // module is usinig loader,,
+        LoaderModule, // loader
         FormsModule, // search component is using forms module
         ReactiveFormsModule
     ],

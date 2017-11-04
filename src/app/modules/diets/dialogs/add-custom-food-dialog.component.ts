@@ -47,7 +47,7 @@ export class AddCustomFoodDialogComponent extends BaseComponent implements OnIni
 
   private initForm(): void {
     this.foodForm = this.dependencies.itemServices.foodService.insertForm()
-      .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
+      .wrapInCard(false)
       .onAfterInsert((response => {
         this.newFood = response.item;
         this.close();

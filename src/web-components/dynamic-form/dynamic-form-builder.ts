@@ -7,6 +7,15 @@ class BaseDynamicFormBuilder<TItem extends IItem> {
     protected config: FormConfig<TItem> = new FormConfig<TItem>();
 
     /**
+     * Indicates if form is wrapped in card
+     * @param wrap Wrap or not warp
+     */
+    wrapInCard(wrap: boolean): this {
+        this.config.wrapInCard = wrap;
+        return this;
+    }
+
+    /**
     * Key of delete text button
     */
     deleteTextKey(key: string): this {

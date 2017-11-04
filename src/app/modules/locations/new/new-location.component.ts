@@ -41,7 +41,6 @@ export class NewLocationComponent extends BaseComponent implements OnInit {
 
     private initForm(): void {
         this.formConfig = this.dependencies.itemServices.locationService.insertForm()
-            .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
             .onAfterInsert((response) => this.navigate([this.getTrainerUrl('locations/edit'), response.item.id]))
             .optionLabelResolver((field, optionLabel) => {
                 if (field.key === 'LocationType') {

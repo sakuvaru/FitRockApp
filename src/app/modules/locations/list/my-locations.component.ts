@@ -50,7 +50,6 @@ export class MyLocationsComponent extends BaseComponent implements OnInit {
         { value: (item: Location) => item.locationName, flex: 60 },
       ]
     )
-      .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
       .showPager(true)
       .showSearch(true)
       .pagerSize(7)

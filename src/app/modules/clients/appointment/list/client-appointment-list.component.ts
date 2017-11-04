@@ -90,7 +90,6 @@ export class ClientAppointmentListComponent extends ClientsBaseComponent impleme
           },
       ]
     )
-      .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
       .showAllFilter(false)
       .showSearch(false)
       .filter(new Filter({

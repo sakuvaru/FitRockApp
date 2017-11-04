@@ -84,9 +84,9 @@ export class ClientChatComponent extends ClientsBaseComponent implements OnInit 
                         }
                         return value;
                     })
+                    .wrapInCard(false)
                     .snackBarTextKey('module.clients.chat.snackbarSaved')
                     .submitTextKey('module.clients.chat.submit')
-                    .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
                     .onAfterInsert((response) => {
                         // reload messages
                         super.subscribeToObservable(this.getChatMessagesObservable(this.clientId, 1, true, this.chatMessagesSearch)

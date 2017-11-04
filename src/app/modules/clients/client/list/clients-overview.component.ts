@@ -58,7 +58,6 @@ export class ClientsOverviewComponent extends ClientsBaseComponent implements On
         { value: (item) => item.email, isSubtle: true, align: AlignEnum.Right, hideOnSmallScreens: true },
       ]
     )
-      .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
       .showAllFilter(true)
       .filter(new Filter({
         filterNameKey: 'module.clients.activeClients',

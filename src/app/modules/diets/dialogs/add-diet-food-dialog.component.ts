@@ -79,7 +79,7 @@ export class AddDietFoodDialogComponent extends BaseComponent implements OnInit 
         }
         return Observable.of(originalLabel);
       })
-      .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
+      .wrapInCard(false)
       .onAfterInsert((response => {
         this.newDietFood = response.item;
         this.close();

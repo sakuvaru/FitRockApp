@@ -46,6 +46,7 @@ export class NewClientProgressItemTypeDialogComponent extends ClientsBaseCompone
 
     private initForm(): void {
         this.formConfig = this.dependencies.itemServices.progressItemTypeService.insertForm()
+            .wrapInCard(false)
             .fieldValueResolver((fieldName, value) => {
                 if (fieldName === 'ClientId') {
                     return this.clientId;
@@ -54,7 +55,6 @@ export class NewClientProgressItemTypeDialogComponent extends ClientsBaseCompone
                 }
                 return value;
             })
-            .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
             .onAfterInsert((response) => {
                 this.createdProgressItemType = response.item;
                 this.close();

@@ -15,8 +15,6 @@
     &copy; {{year}} {{componentConfig.appName}}
   </div>
 
-  <loader [enabled]="showLoading"></loader>
-
   <td-layout-nav>
       <div td-toolbar-content flex>
         <admin-toolbar></admin-toolbar>           
@@ -60,6 +58,8 @@
           <button mat-icon-button [routerLink]="getAuthUrl('logout')"><mat-icon>exit_to_app</mat-icon></button>
         </div>
       </mat-toolbar>
+      
+    <loader [enabled]="showLoading" type="linear"></loader>
       <!-- ngClass with hidden styles is used because *ngIf would cause the router to not be executed at all -->
       <div [ngClass]="{'w-hidden': !showComponent}">
         <router-outlet></router-outlet>

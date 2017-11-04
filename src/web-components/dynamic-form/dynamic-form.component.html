@@ -1,21 +1,55 @@
-<ng-template tdLoading [tdLoadingUntil]="!localLoaderEnabled" tdLoadingStrategy="overlay">
-  <div style="min-height: 150px">
-    <ng-container *ngIf="form">
-      <form [formGroup]="form" autocomplete="off">
-        <div *ngFor="let question of questions">
-          <df-question [question]="question" [form]="form" [formConfig]="config"></df-question>
-        </div>
-        <div *ngIf="!customDeleteButtonSubject && !customDeleteButtonSubject" layout="row" layout-margin>
-          <div flex>
-            <button *ngIf="isInsertForm" mat-raised-button color="accent" (click)="insertButtonSubject.next()" [disabled]="!form.valid">{{submitText}}</button>
-            <button *ngIf="isEditForm" mat-raised-button color="accent" (click)="editButtonSubject.next()" [disabled]="!form.valid">{{submitText}}</button>
+<ng-container *ngIf="config && config.wrapInCard">
+  <mat-card class="push">
+    <loader [enabled]="localLoaderEnabled" type="linear">
+      <mat-card-content>
+        <ng-container *ngIf="form">
+          <form [formGroup]="form" autocomplete="off">
+            <div *ngFor="let question of questions">
+              <df-question [question]="question" [form]="form" [formConfig]="config"></df-question>
+            </div>
+            <div *ngIf="!customDeleteButtonSubject && !customDeleteButtonSubject" layout="row" layout-margin>
+              <div flex>
+                <button *ngIf="isInsertForm" mat-raised-button color="accent" (click)="insertButtonSubject.next()" [disabled]="!form.valid">{{submitText}}</button>
+                <button *ngIf="isEditForm" mat-raised-button color="accent" (click)="editButtonSubject.next()" [disabled]="!form.valid">{{submitText}}</button>
+              </div>
+              <div *ngIf="isDeleteEnabled" flex class="text-right">
+                <delete-button (confirm)="deleteButtonSubject.next()"></delete-button>
+              </div>
+            </div>
+            <td-message *ngIf="formError" [label]="formError" color="red" icon="error"></td-message>
+          </form>
+        </ng-container>
+        <ng-container *ngIf="!form">
+          <td-message *ngIf="formError" [label]="formError" color="red" icon="error"></td-message>
+        </ng-container>
+      </mat-card-content>
+    </loader>
+  </mat-card>
+</ng-container>
+
+<ng-container *ngIf="config && !config.wrapInCard">
+  <loader [enabled]="localLoaderEnabled">
+    <div style="padding-top: 5px">
+      <ng-container *ngIf="form">
+        <form [formGroup]="form" autocomplete="off">
+          <div *ngFor="let question of questions">
+            <df-question [question]="question" [form]="form" [formConfig]="config"></df-question>
           </div>
-          <div *ngIf="isDeleteEnabled" flex class="text-right">
-            <delete-button (confirm)="deleteButtonSubject.next()"></delete-button>
+          <div *ngIf="!customDeleteButtonSubject && !customDeleteButtonSubject" layout="row" layout-margin>
+            <div flex>
+              <button *ngIf="isInsertForm" mat-raised-button color="accent" (click)="insertButtonSubject.next()" [disabled]="!form.valid">{{submitText}}</button>
+              <button *ngIf="isEditForm" mat-raised-button color="accent" (click)="editButtonSubject.next()" [disabled]="!form.valid">{{submitText}}</button>
+            </div>
+            <div *ngIf="isDeleteEnabled" flex class="text-right">
+              <delete-button (confirm)="deleteButtonSubject.next()"></delete-button>
+            </div>
           </div>
-        </div>
-        <td-message *ngIf="submissionError" [label]="submissionError" color="red" icon="error"></td-message>
-      </form>
-    </ng-container>
-  </div>
-</ng-template>
+          <td-message *ngIf="formError" [label]="formError" color="red" icon="error"></td-message>
+        </form>
+      </ng-container>
+      <ng-container *ngIf="!form">
+        <td-message *ngIf="formError" [label]="formError" color="red" icon="error"></td-message>
+      </ng-container>
+    </div>
+  </loader>
+</ng-container>

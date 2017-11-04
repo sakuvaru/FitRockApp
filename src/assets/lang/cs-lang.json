@@ -339,6 +339,7 @@
 	},
 	"form": {
 		"error": {
+			"formLoadingError": "Při nahrávání formuláře došlo k chybě. Pokud se chyba opakuje, kontaktuj nás.",
 			"constraintConflict": "Záznam nelze uložit/smazat, protože existují záznamy typu '{{dependentType}}', které na tento záznam odkazují. Prvně musíš smazat tyto záznamy.",
 			"genericConstraintConflict": "Záznam nelze uložit/smazat, protože by došlo k narušení integrity databáze. Prosím kontaktuj nás pokud vidíš tuto chybu.",
 			"invalidCodenameWithLabel": "Pole '{{label}}' může obsahovat pouze písmena a číslice (bez mezer a speciálních znaků)",

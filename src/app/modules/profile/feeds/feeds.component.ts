@@ -67,7 +67,6 @@ export class FeedsComponent extends BaseComponent implements OnInit {
             .iconResolver(item => this.getFeedIcon(item))
             .iconClassResolver(item => !item.markedAsRead ? 'tc-red-500' : '')
             .pageSize(15)
-            .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
             .showSearch(false)
             .build();
     }

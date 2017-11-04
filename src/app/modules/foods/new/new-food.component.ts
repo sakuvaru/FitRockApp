@@ -39,7 +39,6 @@ export class NewFoodComponent extends BaseComponent implements OnInit {
 
     private initForm(): void {
         this.formConfig = this.dependencies.itemServices.foodService.insertForm()
-            .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
             .onAfterInsert((response) => this.navigate([this.getTrainerUrl('foods/edit'), response.item.id]))
             .build();
     }

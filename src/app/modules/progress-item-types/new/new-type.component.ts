@@ -47,7 +47,6 @@ export class NewTypeComponent extends BaseComponent implements OnInit {
                 }
                 return value;
             })
-            .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
             .onAfterInsert((response) => this.navigate([this.getTrainerUrl('progress-item-types/edit'), response.item.id]))
             .build();
     }

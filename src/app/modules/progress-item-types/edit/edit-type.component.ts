@@ -38,7 +38,6 @@ export class EditTypeComponent extends BaseComponent implements OnInit {
             .takeUntil(this.ngUnsubscribe)
             .map((params: Params) => {
                 this.formConfig = this.dependencies.itemServices.progressItemTypeService.editForm(+params['id'])
-                    .loaderConfig(() => super.startGlobalLoader(), () => super.stopGlobalLoader())
                     .onAfterDelete(() => super.navigate([this.getTrainerUrl('progress-item-types')]))
                     .onFormLoaded(form => {
                         this.setConfig({
