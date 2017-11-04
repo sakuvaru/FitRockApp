@@ -6,6 +6,9 @@
     <error-message *ngIf="extensionNotAllowed" title="{{ 'webComponents.uploader.extensionNotAllowed' | translate:extensionsNotAllowedParam }}"></error-message>
   </div>
 
+  <loader [enabled]="loaderEnabled" type="linear" class="push-bottom-sm"></loader>
+  <div class="push-top-sm">&nbsp;</div>
+
   <ng-container *ngIf="config.mode === 0">
     <td-file-upload #fileUpload defaultColor="primary" activeColor="primary" cancelColor="warn" (select)="selectEvent($event)"
       (upload)="uploadSingle($event)" (cancel)="cancelEvent()" [accept]="acceptedExtensionsString" [disabled]="disabled">

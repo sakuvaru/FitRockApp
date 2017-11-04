@@ -5,6 +5,9 @@ import { RouterModule } from '@angular/router';
 
 import { SharedWebComponentModule } from '../shared-web-components.module';
 
+// loader
+import { LoaderModule } from '../loader/loader.module';
+
 // messages module
 import { MessagesModule } from '../messages';
 
@@ -19,7 +22,8 @@ import { UploaderService } from './uploader.service';
         CommonModule,
         SharedWebComponentModule, 
         RouterModule, // router needs to be importes so that routerLink can be used within components
-        MessagesModule
+        MessagesModule,
+        LoaderModule
     ],
     declarations: [
         UploaderComponent,

@@ -70,6 +70,11 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
      */
     private readonly snackbarDefaultDuration: number = 2500;
 
+    /**
+     * Indicates if loader is enabled
+     */
+    private loaderEnabled: boolean = false;
+
     constructor(
         private translateService: TranslateService,
         private snackBarService: MatSnackBar,
@@ -189,6 +194,11 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
         }
 
         try {
+            this.loaderEnabled = true;
+            if (this.config.loaderConfig) {
+                this.config.loaderConfig.start();
+            }
+
             this.config.uploadFunction(file)
                 .takeUntil(this.ngUnsubscribe)
                 .subscribe(response => {
@@ -200,10 +210,21 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
 
                     this.clearSelectedFiles();
 
-                    this.snackBarService.open(this.snackbarUploadedText, undefined,  { duration: this.snackbarDefaultDuration});
+                    this.loaderEnabled = false;
+
+                    this.snackBarService.open(this.snackbarUploadedText, undefined, { duration: this.snackbarDefaultDuration });
                 },
                 error => {
                     this.uploadFailed = true;
+
+                    this.loaderEnabled = false;
+                    if (this.config.loaderConfig) {
+                        this.config.loaderConfig.stop();
+                    }
+
+                    if (this.config.onFailedUpload) {
+                        this.config.onFailedUpload(error);
+                    }
                 });
         } catch (error) {
             this.uploadFailed = true;
@@ -247,6 +268,7 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
         }
 
         try {
+            this.loaderEnabled = true;
             if (this.config.loaderConfig) {
                 this.config.loaderConfig.start();
             }
@@ -264,7 +286,9 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
                         this.config.loaderConfig.stop();
                     }
 
-                    this.snackBarService.open(this.snackbarUploadedText, undefined,  { duration: this.snackbarDefaultDuration});
+                    this.loaderEnabled = false;
+
+                    this.snackBarService.open(this.snackbarUploadedText, undefined, { duration: this.snackbarDefaultDuration });
                 },
                 error => {
                     this.uploadFailed = true;
@@ -273,6 +297,7 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
                         this.config.onFailedUpload(error);
                     }
 
+                    this.loaderEnabled = false;
                     if (this.config.loaderConfig) {
                         this.config.loaderConfig.stop();
                     }
@@ -283,6 +308,8 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
             if (this.config.onFailedUpload) {
                 this.config.onFailedUpload(error);
             }
+
+            this.loaderEnabled = false;
 
             if (this.config.loaderConfig) {
                 this.config.loaderConfig.stop();
