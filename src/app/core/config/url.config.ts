@@ -1,13 +1,13 @@
 
 export class UrlConfig {
 
-    public static AppBase = '/app';
+    public static AppBase = 'app';
 
-    public static AuthRedirect = 'entry';
+    public static EntryPath = UrlConfig.AppBase + '/entry';
 
-    public static TrainerMasterPath = 'trainer';
-    public static ClientMasterPath = 'client';
-    public static AuthMasterPath = 'auth';
+    public static TrainerMasterPath = UrlConfig.AppBase + '/trainer';
+    public static ClientMasterPath = UrlConfig.AppBase + '/client';
+    public static AuthMasterPath = UrlConfig.AppBase + '/auth';
 
     public static Login = 'login';
     public static AppError = 'error';
@@ -32,6 +32,10 @@ export class UrlConfig {
 
     public static getServerDown(): string {
         return '/' + UrlConfig.ServerDown;
+    }
+
+    public static getEntryUrl(): string {
+        return '/' + UrlConfig.EntryPath;
     }
 
     public static getLoginUrl(): string {

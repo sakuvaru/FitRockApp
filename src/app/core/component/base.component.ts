@@ -123,7 +123,7 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
             this.navigateToLogonPage();
             return;
         }
-        this.dependencies.router.navigate([UrlConfig.getAppUrl('')]);
+        this.dependencies.router.navigate([UrlConfig.getEntryUrl()]);
     }
 
     navigateToError(): void {

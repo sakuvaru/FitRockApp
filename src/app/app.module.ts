@@ -9,7 +9,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { APP_BASE_HREF } from '@angular/common';
 
 // Auth redirect component
-import { AuthRedirectComponent } from './auth-redirect.component';
+import { EntryComponent } from './entry.component';
 
 // required by material angular + gallery
 // Info: https://material.angular.io/guide/getting-started and https://ks89.github.io/angular-modal-gallery.github.io/gettingStarted
@@ -71,7 +71,7 @@ import { LocationModule } from './modules/locations/location.module';
   declarations: [
     AppComponent,
     Global404Component,
-    AuthRedirectComponent
+    EntryComponent
   ],
   imports: [
     // angular modules
@@ -89,11 +89,11 @@ import { LocationModule } from './modules/locations/location.module';
     RouterModule.forRoot([
       {
         path: '',
-        component: AppComponent, pathMatch: 'full'
+        redirectTo: UrlConfig.EntryPath, pathMatch: 'full'
       },
       {
-        path: UrlConfig.AuthRedirect,
-        component: AuthRedirectComponent, pathMatch: 'full'
+        path: UrlConfig.EntryPath,
+        component: EntryComponent
       },
       {
         path: '**',
@@ -146,10 +146,6 @@ import { LocationModule } from './modules/locations/location.module';
     {
       provide: ErrorHandler,
       useClass: GlobalErrorHandler
-    },
-    {
-      provide: APP_BASE_HREF,
-      useValue: UrlConfig.AppBase
     }
   ],
   exports: [

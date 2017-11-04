@@ -29,7 +29,7 @@ export const routes: Routes = [
         ]
     },
     {
-        path: '', component: SimpleLayoutComponent, children: [
+        path: UrlConfig.AppBase, component: SimpleLayoutComponent, children: [
             { path: UrlConfig.Item404, component: Item404Component },
             { path: UrlConfig.AppError, component: AppErrorComponent },
             { path: UrlConfig.Redirect, component: RedirectComponent },
