@@ -5,7 +5,7 @@ import { UserService, LogService, ExerciseCategoryService, ExerciseService,
     WorkoutCategoryService, WorkoutExerciseService, WorkoutService, DietCategoryService,
     DietFoodService, DietService, FoodCategoryService, FoodService, FoodUnitService,
     ProgressItemService, ProgressItemTypeService, ChatMessageService, FeedService, FileService,
-    LocationService, AppointmentService, ProgressItemUnitService
+    LocationService, AppointmentService, ProgressItemUnitService, ServerService
  } from './index';
 
 @NgModule({
@@ -34,7 +34,8 @@ import { UserService, LogService, ExerciseCategoryService, ExerciseService,
         FileService,
         ProgressItemUnitService,
         LocationService,
-        AppointmentService
+        AppointmentService,
+        ServerService
     ]
 })
 export class ServicesModule { }

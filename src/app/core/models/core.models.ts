@@ -49,6 +49,7 @@ export class AuthenticatedUser {
         public firstName: string,
         public lastName: string,
         public trainerId: number,
+        public isClient: boolean
     ) {}
 }
 

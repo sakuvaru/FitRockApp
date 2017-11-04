@@ -6,6 +6,10 @@ import { HttpModule } from '@angular/http';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { APP_BASE_HREF } from '@angular/common';
+
+// Auth redirect component
+import { AuthRedirectComponent } from './auth-redirect.component';
 
 // required by material angular + gallery
 // Info: https://material.angular.io/guide/getting-started and https://ks89.github.io/angular-modal-gallery.github.io/gettingStarted
@@ -15,9 +19,6 @@ import 'hammerjs';
 // Info: https://ks89.github.io/angular-modal-gallery.github.io/gettingStarted
 import 'mousetrap';
 import { ModalGalleryModule } from 'angular-modal-gallery';
-
-// entry point to application (redirection from Auth0)
-import { EntryPointComponent } from './entry-point.component';
 
 // 404
 import { Global404Component } from './modules/shared/404.component';
@@ -70,7 +71,7 @@ import { LocationModule } from './modules/locations/location.module';
   declarations: [
     AppComponent,
     Global404Component,
-    EntryPointComponent
+    AuthRedirectComponent
   ],
   imports: [
     // angular modules
@@ -88,11 +89,11 @@ import { LocationModule } from './modules/locations/location.module';
     RouterModule.forRoot([
       {
         path: '',
-        redirectTo: UrlConfig.EntryPoint, pathMatch: 'full'
+        component: AppComponent, pathMatch: 'full'
       },
       {
-        path: UrlConfig.EntryPoint,
-        component: EntryPointComponent
+        path: UrlConfig.AuthRedirect,
+        component: AuthRedirectComponent, pathMatch: 'full'
       },
       {
         path: '**',
@@ -145,6 +146,10 @@ import { LocationModule } from './modules/locations/location.module';
     {
       provide: ErrorHandler,
       useClass: GlobalErrorHandler
+    },
+    {
+      provide: APP_BASE_HREF,
+      useValue: UrlConfig.AppBase
     }
   ],
   exports: [

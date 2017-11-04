@@ -29,7 +29,7 @@ export class LoginFormComponent extends BaseComponent implements OnInit {
 
     setup(): ComponentSetup | null {
         return {
-            initialized: false
+            initialized: true
         };
       }
 
@@ -42,8 +42,7 @@ export class LoginFormComponent extends BaseComponent implements OnInit {
             .takeUntil(this.ngUnsubscribe)
             .subscribe((fragment: string) => {
                 this.processFailedLogonRedirect();
-            }
-            ,
+            },
             error => super.handleError(error));
     }
 

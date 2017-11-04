@@ -47,6 +47,6 @@ export class AuthenticatedUserService {
 
         const userAs = JSON.parse(userJson) as AuthenticatedUser;
 
-        return new AuthenticatedUser(userAs.id, userAs.email, userAs.firstName, userAs.lastName, userAs.trainerId);
+        return new AuthenticatedUser(userAs.id, userAs.email, userAs.firstName, userAs.lastName, userAs.trainerId, userAs.isClient);
     }
 }

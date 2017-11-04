@@ -17,7 +17,8 @@ import { guidHelper, numberHelper, observableHelper, stringHelper, GuidHelper, N
 import { UserService, ExerciseCategoryService, ExerciseService, LogService, WorkoutCategoryService,
      WorkoutExerciseService, WorkoutService, DietCategoryService, DietFoodService, DietService,
     FoodCategoryService, FoodService, FoodUnitService, ProgressItemService, ProgressItemTypeService,
-   ChatMessageService, FeedService, FileService, AppointmentService, LocationService, ProgressItemUnitService
+   ChatMessageService, FeedService, FileService, AppointmentService, LocationService, ProgressItemUnitService,
+   ServerService
  } from '../../services';
 
 // Angular material
@@ -71,6 +72,7 @@ export class ComponentDependencyService {
 
         // core services
         this.coreServices = new CoreServices();
+        this.coreServices.serverService = injector.get(ServerService);
         this.coreServices.authService = injector.get(AuthService);
         this.coreServices.repositoryClient = injector.get(RepositoryClient);
         this.coreServices.translateService = injector.get(TranslateService);
@@ -157,6 +159,7 @@ export class WebComponentServices {
 }
 
 export class CoreServices {
+    public serverService: ServerService;
     public repositoryClient: RepositoryClient;
     public authService: AuthService;
     public sharedService: SharedService;

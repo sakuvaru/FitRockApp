@@ -36,3 +36,6 @@ export * from './appointments/appointment.service';
 
 // locations
 export * from './locations/location.service';
+
+// server 
+export * from './server/server.service';

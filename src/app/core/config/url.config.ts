@@ -1,16 +1,13 @@
 
 export class UrlConfig {
 
-    public static AppUrl = 'app';
+    public static AppBase = '/app';
 
-    /**
-    * Entry point to application after redirecting from Auth0
-    */
-    public static EntryPoint = UrlConfig.AppUrl + '/entry';
+    public static AuthRedirect = 'entry';
 
-    public static TrainerMasterPath = UrlConfig.AppUrl + '/trainer';
-    public static ClientMasterPath = UrlConfig.AppUrl + '/client';
-    public static AuthMasterPath = UrlConfig.AppUrl + '/auth';
+    public static TrainerMasterPath = 'trainer';
+    public static ClientMasterPath = 'client';
+    public static AuthMasterPath = 'auth';
 
     public static Login = 'login';
     public static AppError = 'error';
@@ -24,10 +21,6 @@ export class UrlConfig {
     public static Default = 'login';
 
     public static AppErrorLogGuidQueryString = 'q';
-
-    public static getEntryPointUrl(): string {
-        return UrlConfig.EntryPoint;
-    }
 
     public static getUnAuthorizedUrl(): string {
         return UrlConfig.getAuthUrl(UrlConfig.Unauthorized);
@@ -58,7 +51,7 @@ export class UrlConfig {
     }
 
     public static getAppUrl(action: string): string {
-        return UrlConfig.AppUrl + '/' + action;
+        return action;
     }
 
     public static getTrainerUrl(action?: string): string {
