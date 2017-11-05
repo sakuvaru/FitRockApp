@@ -9,7 +9,7 @@
         <button *ngIf="config.deleteFunction && (images && images.length > 0)" (click)="openDeleteDialog()" mat-raised-button color="accent">{{ 'webComponents.gallery.deleteImages' | translate }}</button>
 
         <div class="push-bottom">
-            &nbsp;<ng-template tdLoading [tdLoadingUntil]="!localLoaderEnabled && (numberOfLoadedImages === totalImages)" tdLoadingType="linear" tdLoadingStrategy="overlay"> </ng-template>
+            <loader [enabled]="localLoaderEnabled && (numberOfLoadedImages !== totalImages)" type="linear"></loader>
         </div>
 
         <ng-container *ngIf="!groups">

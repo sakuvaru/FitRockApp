@@ -6,35 +6,36 @@
 
 <error-message *ngIf="imageDeletionFailed" title="{{ 'webComponents.gallery.imageDeletionFailed' | translate }}"></error-message>
 
-<ng-template tdLoading [tdLoadingUntil]="!deleteInProgress" tdLoadingStrategy="overlay">
-    
+<div class="push-bottom-sm">
+    <loader [enabled]="deleteInProgress" type="linear"></loader>
+</div>
+
 <mat-dialog-content>
-        <div class="w-gallery-dialog-wrapper">
-            <ng-container *ngIf="!groups">
-                <mat-list>
-                    <mat-list-item *ngFor="let img of group.images; let i = index">
-                        <img matListAvatar *ngIf="img.thumb" class="w-gallery-thumb" src="{{img.thumb}}" alt='{{img.description}}' />
-                        <img matListAvatar *ngIf="!img.thumb" class="w-gallery-thumb" src="{{img.img}}" alt='{{img.description}}' />
-                        <span flex></span>
-                        <delete-button (confirm)="onDelete(img)"></delete-button>
-                    </mat-list-item>
-                </mat-list>
-                <div style="clear: both"></div>
-            </ng-container>
+    <div class="w-gallery-dialog-wrapper">
+        <ng-container *ngIf="!groups">
+            <mat-list>
+                <mat-list-item *ngFor="let img of group.images; let i = index">
+                    <img matListAvatar *ngIf="img.thumb" class="w-gallery-thumb" src="{{img.thumb}}" alt='{{img.description}}' />
+                    <img matListAvatar *ngIf="!img.thumb" class="w-gallery-thumb" src="{{img.img}}" alt='{{img.description}}' />
+                    <span flex></span>
+                    <delete-button (confirm)="onDelete(img)"></delete-button>
+                </mat-list-item>
+            </mat-list>
+            <div style="clear: both"></div>
+        </ng-container>
 
-            <ng-container *ngIf="groups">
-                <div *ngFor="let group of groups">
-                    <h4>{{group.groupTitle}}</h4>
-                    <div *ngFor="let img of group.images; let i = index">
-                        <img (click)="onDelete(img)" matListAvatar *ngIf="img.thumb" class="w-gallery-thumb" src="{{img.thumb}}" alt='{{img.description}}'
-                        />
-                        <img (click)="onDelete(img)" matListAvatar *ngIf="!img.thumb" class="w-gallery-thumb" src="{{img.img}}" alt='{{img.description}}'
-                        />
-                    </div>
-                    <div style="clear: both"></div>
+        <ng-container *ngIf="groups">
+            <div *ngFor="let group of groups">
+                <h4>{{group.groupTitle}}</h4>
+                <div *ngFor="let img of group.images; let i = index">
+                    <img (click)="onDelete(img)" matListAvatar *ngIf="img.thumb" class="w-gallery-thumb" src="{{img.thumb}}" alt='{{img.description}}'
+                    />
+                    <img (click)="onDelete(img)" matListAvatar *ngIf="!img.thumb" class="w-gallery-thumb" src="{{img.img}}" alt='{{img.description}}'
+                    />
                 </div>
-            </ng-container>
+                <div style="clear: both"></div>
+            </div>
+        </ng-container>
 
-        </div>
+    </div>
 </mat-dialog-content>
-</ng-template>
