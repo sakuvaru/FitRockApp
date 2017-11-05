@@ -18,5 +18,5 @@
 </ng-container>
 
 <div class="push">
-    <no-data-message *ngIf="progressItemTypes && progressItemTypes.length <= 0"></no-data-message>
+    <info-message *ngIf="progressItemTypes && progressItemTypes.length <= 0" text="{{ 'module.clients.stats.noStats' | translate }}"></info-message>
 </div>

@@ -17,6 +17,7 @@ export class User extends BaseItem {
     public medicalCondition: string;
     public goal: string;
     public trainerPublicNotes: string;
+    public trainerPrivateNotes: string;
     public trainer: User;
     public isActive: boolean;
     public avatarUrl: string;

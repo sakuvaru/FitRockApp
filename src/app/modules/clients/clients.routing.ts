@@ -46,6 +46,9 @@ import { ClientAppointmentListComponent } from './appointment/list/client-appoin
 import { NewClientAppointmentComponent } from './appointment/new/new-client-appointment.component';
 import { ViewClientAppointmentComponent } from './appointment/view/view-client-appointment.component';
 
+// dashboard
+import { ClientDashboardComponent } from './dashboard/client-dashboard.component';
+
 const routes: Routes = [
     {
         path: UrlConfig.TrainerMasterPath, component: AdminLayoutComponent, canActivate: [AuthGuardService], children: [
@@ -113,6 +116,10 @@ const routes: Routes = [
             },
             {
                 path: 'clients/edit/:id/appointments/new', component: NewClientAppointmentComponent
+            },
+            // dashboard
+            {
+                path: 'clients/edit/:id/dashboard', component: ClientDashboardComponent
             },
         ]
     }

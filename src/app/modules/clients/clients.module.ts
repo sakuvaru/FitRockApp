@@ -45,6 +45,9 @@ import { ClientAppointmentListComponent } from './appointment/list/client-appoin
 import { NewClientAppointmentComponent } from './appointment/new/new-client-appointment.component';
 import { ViewClientAppointmentComponent } from './appointment/view/view-client-appointment.component';
 
+// dashboard
+import { ClientDashboardComponent } from './dashboard/client-dashboard.component';
+
 // router
 import { ClientsRouter } from './clients.routing';
 
@@ -101,7 +104,9 @@ import { DietsModule} from '../diets/diets.module';
         EditClientAppointmentComponent,
         ClientAppointmentListComponent,
         NewClientAppointmentComponent,
-        ViewClientAppointmentComponent
+        ViewClientAppointmentComponent,
+        // dashboard
+        ClientDashboardComponent
     ]
     
 })

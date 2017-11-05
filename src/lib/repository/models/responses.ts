@@ -97,9 +97,9 @@ export class ResponseMultiple<T> extends ResponseGetBase {
         return !this.items || this.items.length <= 0;
     }
 
-    firstItem(): T | null {
+    firstItem(): T | undefined {
         if (this.isEmpty()) {
-            return null;
+            return undefined;
         }
         return this.items[0];
     }
@@ -297,9 +297,9 @@ export class ResponseUploadMultiple {
         return !this.files || this.files.length <= 0;
     }
 
-    firstItem(): FetchedFile | null {
+    firstItem(): FetchedFile | undefined {
         if (this.isEmpty()) {
-            return null;
+            return undefined;
         }
         return this.files[0];
     }

@@ -13,7 +13,7 @@ export class AppErrorComponent extends BaseComponent implements OnInit {
 
   private isCriticalError: boolean = false;
   private showDebugDetails: boolean = false;
-  private log: Log | null;
+  private log?: Log;
   private translateParams: any;
 
   constructor(

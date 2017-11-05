@@ -11,6 +11,7 @@ import { GraphConfig, MultiSeries, BaseGraph, SingleSeries, LineChart, VerticalB
 import { Observable } from 'rxjs/Rx';
 
 @Component({
+    selector: 'stats-main',
     templateUrl: 'stats-main.component.html'
 })
 export class StatsMainComponent extends ClientsBaseComponent implements OnInit {

@@ -7,6 +7,7 @@ import { BaseWebComponent } from '../../base-web-component.class';
     templateUrl: 'info-message.component.html'
 })
 export class InfoMessageComponent extends BaseWebComponent {
+    
     @Input() text: string;
     @Input() title: string;
 

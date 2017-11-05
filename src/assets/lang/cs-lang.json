@@ -68,6 +68,7 @@
 	"module": {
 		"clients": {
 			"submenu": {
+				"dashboard": "Přehled",
 				"workout": "Trénink",
 				"newWorkout": "Nový trénink",
 				"diet": "Jídelníček",
@@ -78,6 +79,26 @@
 				"gallery": "Galerie",
 				"editProfile": "Upravit profil",
 				"appointments": "Schůzky"
+			},
+			"dashboard": {
+				"nextAppointment": "Příští schůzka",
+				"noAppointment": "Žádná schůzka není naplánovaná",
+				"latestStats": "Vývoj",
+				"noStats": "Žádné statistiky nebyly dosud zaznamenány",
+				"nextAppointmentMap": "Mapa",
+				"diets": "Jídelníčky",
+				"workouts": "Tréninkové plány",
+				"latestMessages": "Poslední zprávy",
+				"noDiets": "Žádné jídelníčky nebyly vytvořeny",
+				"noWorkouts": "Žádné tréninkové plány nebyly vytvořeny",
+				"noChatMessages": "Nemáš žádné zprávy",
+				"latestMessages": "Nejnovější zprávy",
+				"privateNotes": "Soukromé poznámky",
+				"privateNotesHint": "klient je neuvidí",
+				"publicNotes": "Poznámky pro klienta"
+			},
+			"stats": {
+				"noStats": "Žádné statistiky ještě nebyly zalogovány"
 			},
 			"workout": {
 				"copyWorkoutLabel": "Šablona tréninkového plánu",

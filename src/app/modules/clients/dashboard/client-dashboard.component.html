@@ -1,0 +1,145 @@
+<div class="push">
+    <div fxFlexFill fxLayout fxLayout.sm="column">
+        <div fxFlex="33%">
+            <mat-card fxFlex>
+                <mat-card-content>
+                    <p class="md-title primary">
+                        {{ 'module.clients.dashboard.nextAppointment' | translate }}
+                    </p>
+
+                    <ng-container *ngIf="appointment">
+                        <p class="md-subhead">{{ appointment.appointmentName }}</p>
+                        <p>
+                            <span class="md-caption">{{ 'module.clients.appointments.when' | translate }}:</span> {{ formatDate(appointment.appointmentDate)
+                            }}
+                        </p>
+                        <p>
+                            <span class="md-caption">{{ 'module.clients.appointments.where' | translate }}:</span> {{ appointment.location.address
+                            }}
+                        </p>
+                        <p *ngIf="appointment.workout">
+                            <span class="md-caption">{{ 'module.clients.appointments.workout' | translate }}:</span> {{ appointment.workout.workoutName
+                            }}
+                        </p>
+                        <p *ngIf="appointment.notes">
+                            <span class="md-caption">{{ 'module.clients.appointments.notes' | translate }}:</span>
+                        </p>
+                        <p *ngIf="appointment.notes" class="md-caption">
+                            {{ appointment.notes }}
+                        </p>
+                    </ng-container>
+
+                    <info-message *ngIf="!appointment" text="{{ 'module.clients.dashboard.noAppointment' | translate }}"></info-message>
+                </mat-card-content>
+                <mat-card-content *ngIf="appointment">
+
+                    <p class="md-title primary">
+                        {{ 'module.clients.dashboard.nextAppointmentMap' | translate }}
+                    </p>
+
+                    <map [apiKey]="googleApiKey" [address]="appointment.location.address" [lat]="appointment.location.lat" [lng]="appointment.location.lng"></map>
+
+                </mat-card-content>
+            </mat-card>
+        </div>
+        <div fxFlex="66%">
+
+            <mat-card *ngIf="client && client.trainerPrivateNotes">
+                <mat-card-content>
+
+                    <p class="md-title primary">
+                        {{ 'module.clients.dashboard.privateNotes' | translate }}
+                        <span class="md-caption">({{ 'module.clients.dashboard.privateNotesHint' | translate }} )</span>
+                    </p>
+
+                    <p>
+                        {{ client.trainerPrivateNotes }}
+                    </p>
+
+                </mat-card-content>
+            </mat-card>
+
+            <mat-card *ngIf="client && client.trainerPublicNotes">
+                <mat-card-content>
+
+                    <p class="md-title primary">
+                        {{ 'module.clients.dashboard.publicNotes' | translate }}
+                    </p>
+
+                    <p>
+                        {{ client.trainerPublicNotes }}
+                    </p>
+
+                </mat-card-content>
+            </mat-card>
+
+            <mat-card>
+                <mat-card-content>
+
+                    <p class="md-title primary">
+                        {{ 'module.clients.dashboard.latestMessages' | translate }}
+                    </p>
+
+                    <mat-nav-list *ngIf="chatMessages && chatMessages.length > 0">
+                        <mat-list-item *ngFor="let chatMessage of chatMessages" [routerLink]="getChatMessageUrl()">
+                            <img matListAvatar [src]="chatMessage.sender.avatarUrl ? chatMessage.sender.avatarUrl : defaultAvatarUrl" alt="avatar for {{ chatMessage.sender.getFullName() }}">
+                            <div matLine style="font-size: 14px!important"> {{ chatMessage.message }}</div>
+                        </mat-list-item>
+                    </mat-nav-list>
+
+                    <info-message *ngIf="!chatMessages || chatMessages.length === 0" text="{{ 'module.clients.dashboard.noChatMessages' | translate }}"></info-message>
+
+                </mat-card-content>
+            </mat-card>
+
+        </div>
+    </div>
+
+    <div fxFlexFill fxLayout fxLayout.sm="column" class="push">
+        <div fxFlex="50%">
+            <mat-card fxFlex>
+                <mat-card-content>
+
+                    <p class="md-title primary">
+                        {{ 'module.clients.dashboard.diets' | translate }}
+                    </p>
+
+                    <mat-nav-list *ngIf="diets && diets.length > 0">
+                        <a mat-list-item *ngFor="let diet of diets" [routerLink]="getDietUrl(diet)">
+                            {{ diet.dietName }}
+                        </a>
+                    </mat-nav-list>
+
+                    <info-message *ngIf="!diets || diets.length === 0" text="{{ 'module.clients.dashboard.noDiets' | translate }}"></info-message>
+
+                </mat-card-content>
+            </mat-card>
+        </div>
+        <div fxFlex="50%">
+            <mat-card fxFlex>
+                <mat-card-content>
+
+                    <p class="md-title primary">
+                        {{ 'module.clients.dashboard.workouts' | translate }}
+                    </p>
+
+                    <mat-nav-list *ngIf="workouts && workouts.length > 0">
+                        <a mat-list-item *ngFor="let workout of workouts" [routerLink]="getDietUrl(workout)">
+                            {{ workout.workoutName }}
+                        </a>
+                    </mat-nav-list>
+
+                    <info-message *ngIf="!workouts || workouts.length === 0" text="{{ 'module.clients.dashboard.noWorkouts' | translate }}"></info-message>
+
+                </mat-card-content>
+            </mat-card>
+        </div>
+
+    </div>
+
+    <div fxLayout fxLayout.sm="column">
+        <div fxFlex="100%">
+            <stats-main></stats-main>
+        </div>
+    </div>
+</div>
