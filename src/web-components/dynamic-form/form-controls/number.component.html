@@ -3,7 +3,7 @@
   <mat-form-field [hintLabel]="question.hint" flex>
     <input matInput [attr.maxLength]="question.options.maxLength > 0 ? question.options.maxLength : null" [required]="question.required"
       [placeholder]="question.label" [formControlName]="question.key" [id]="question.key" type="number" #elem>
-    <mat-hint *ngIf="showLengthHint" [ngClass]="{'tc-red-600': elem.value.length > question.options.maxLength}" align="end">{{elem.value.length}} / {{question.options.maxLength}}</mat-hint>
+    <mat-hint *ngIf="question.showLengthHint()" [ngClass]="{'tc-red-600': elem.value.length > question.options.maxLength}" align="end">{{elem.value.length}} / {{question.options.maxLength}}</mat-hint>
     <mat-error>{{customError}}</mat-error>
   </mat-form-field>
 

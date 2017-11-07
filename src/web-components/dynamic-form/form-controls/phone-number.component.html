@@ -6,7 +6,7 @@
       [placeholder]="question.label" [formControlName]="question.key" [id]="question.key" type="tel" #elem>
     <mat-icon matSuffix>phone</mat-icon>
     <!-- Don't show length hint for phone
-      <mat-hint *ngIf="showLengthHint" [ngClass]="{'tc-red-600': elem.value.length > question.options.maxLength}" align="end">{{elem.value.length}} / {{question.options.maxLength}}</mat-hint>
+      <mat-hint *ngIf="question.showLengthHint()" [ngClass]="{'tc-red-600': elem.value.length > question.options.maxLength}" align="end">{{elem.value.length}} / {{question.options.maxLength}}</mat-hint>
      -->
     <mat-error>{{customError}}</mat-error>
   </mat-form-field>
