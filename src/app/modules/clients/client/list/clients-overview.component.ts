@@ -72,7 +72,7 @@ export class ClientsOverviewComponent extends ClientsBaseComponent implements On
       .showPager(true)
       .showSearch(true)
       .pagerSize(7)
-      .onClick((item) => super.navigate([super.getTrainerUrl('clients/edit/') + item.id]))
+      .onClick((item) => super.navigate([super.getTrainerUrl('clients/edit/' + item.id + '/dashboard')]))
       .avatarUrlResolver((item) => item.avatarUrl ? item.avatarUrl : AppConfig.DefaultUserAvatarUrl)
       .build();
   }

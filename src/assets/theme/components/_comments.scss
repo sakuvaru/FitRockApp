@@ -1,0 +1,28 @@
+.w-comment{
+
+    min-height: 150px;
+
+    .w-comments-image {
+        width: 80px;
+        height: auto;
+        border-radius: 50%;
+        -webkit-box-shadow: 0 8px 17px 0 rgba(0,0,0,.2), 0 6px 20px 0 rgba(0,0,0,.19);
+        box-shadow: 0 8px 17px 0 rgba(0,0,0,.2), 0 6px 20px 0 rgba(0,0,0,.19);
+        vertical-align: middle;
+        border-style: none;
+        box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+    }
+    
+    .w-comment-date {
+        display: inline-flex;
+        vertical-align: middle;
+        align-items: center;
+        font-size: 12px;
+    }
+
+    .w-comment-date .mat-icon {
+        font-size: 12px;
+    }
+}
+    

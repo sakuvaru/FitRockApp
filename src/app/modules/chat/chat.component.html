@@ -2,8 +2,11 @@
 
     <div class="push-left push-right push-top">
         <mat-form-field flex>
-            <input matInput placeholder="{{'shared.search' | translate}}" [formControl]="searchControl" [value]="chatMessagesSearch" />
-            <span matPrefix><mat-icon>search</mat-icon></span>
+            <input matInput placeholder="{{'shared.search' | translate}}" [formControl]="searchControl" [value]="chatMessagesSearch"
+            />
+            <span matPrefix>
+                <mat-icon>search</mat-icon>
+            </span>
         </mat-form-field>
     </div>
 
@@ -11,20 +14,13 @@
         <mat-card-content>
             <dynamic-form [config]="formConfig"></dynamic-form>
         </mat-card-content>
-        <mat-divider></mat-divider>
-        <ng-container *ngFor="let chatMessage of chatMessages">
-            <mat-card-header>
-                    <img matCardAvatar alt="avatar" [src]="chatMessage.sender.avatarUrl ? chatMessage.sender.avatarUrl : defaultAvatarUrl" />
-                <mat-card-title>{{ chatMessage.sender.getFullName() }}</mat-card-title>
-                <mat-card-subtitle><span class="md-caption">{{ formatDate(chatMessage.created)}}</span></mat-card-subtitle>
-            </mat-card-header>
-            <mat-card-content>
-                <p>
-                    {{ chatMessage.message }}
-                </p>
-            </mat-card-content>
-            <mat-divider></mat-divider>
-        </ng-container>
+        <mat-divider class="push-bottom-md"></mat-divider>
+        <mat-card-content>
+            <ng-container *ngFor="let chatMessage of chatMessages">
+                <comment [text]="chatMessage.message" [date]="formatDate(chatMessage.created)" [name]="chatMessage.sender.getFullName()"
+                    [avatarUrl]="chatMessage.sender.avatarUrl ? chatMessage.sender.avatarUrl : defaultAvatarUrl"></comment>
+            </ng-container>
+        </mat-card-content>
     </mat-card>
 
     <div class="text-center push">
