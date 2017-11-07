@@ -1,6 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+// Flex layout for angular - https://www.npmjs.com/package/%40angular%2Fflex-layout
+import { FlexLayoutModule, MediaQueriesModule } from '@angular/flex-layout';
+
 // Covalent modules for Angular2 - include here so all components can reference them in templates
 import { CovalentModule } from '../lib/covalent';
 
@@ -19,7 +22,9 @@ import { DirectivesModule } from '../directives';
         CovalentModule,
         AngularMaterialModule,
         TranslateModule,
-        DirectivesModule
+        DirectivesModule,
+        FlexLayoutModule,
+        MediaQueriesModule
     ],
     declarations: [
     ],
@@ -30,7 +35,9 @@ import { DirectivesModule } from '../directives';
         CovalentModule,
         AngularMaterialModule,
         TranslateModule,
-        DirectivesModule
+        DirectivesModule,
+        FlexLayoutModule,
+        MediaQueriesModule
     ]
 })
 export class SharedWebComponentModule { }
