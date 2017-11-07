@@ -537,7 +537,7 @@
 		},
 		"gallery": {
 			"noImages": "Žádné fotografie nebyly nahrány",
-			"deleteImages": "Smazat fotografie",
+			"deleteImages": "Vyber fotografie ke smazání",
 			"close": "Zavřít",
 			"imageDeletionFailed": "Smazaní fotografie selhalo",
 			"imageSuccessfullyDeleted": "Fotografie smazána",

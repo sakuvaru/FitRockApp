@@ -361,7 +361,10 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
                     this.initializeComponent(true);
                 }
             },
-            error => this.handleError(error)
+            error => {
+                this.stopAllLoaders();
+                this.handleError(error);
+                }
             );
     }
 
@@ -395,7 +398,10 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
                     this.initializeComponent(true);
                 }
             },
-            error => this.handleError(error)
+            error => {
+                this.stopAllLoaders();
+                this.handleError(error);
+                }
             );
     }
 }

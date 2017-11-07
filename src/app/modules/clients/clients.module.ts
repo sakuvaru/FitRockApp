@@ -32,6 +32,7 @@ import { SelectProgressTypeDialogComponent } from './progress/dialogs/select-pro
 
 // stats components
 import { StatsMainComponent } from './stats/stats-main.component';
+import { UserStatsComponent } from './stats/export/user-stats.component';
 
 // chat components
 import { ClientChatComponent } from './chat/client-chat.component';
@@ -96,6 +97,7 @@ import { DietsModule} from '../diets/diets.module';
         SelectProgressTypeDialogComponent,
         // stats
         StatsMainComponent,
+        UserStatsComponent,
         // chat
         ClientChatComponent,
         // gallery
