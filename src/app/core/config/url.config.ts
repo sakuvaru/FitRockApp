@@ -1,13 +1,12 @@
 
 export class UrlConfig {
 
-    public static AppBase = 'app';
+    public static EntryPath = 'entry';
 
-    public static EntryPath = UrlConfig.AppBase + '/entry';
-
-    public static TrainerMasterPath = UrlConfig.AppBase + '/trainer';
-    public static ClientMasterPath = UrlConfig.AppBase + '/client';
-    public static AuthMasterPath = UrlConfig.AppBase + '/auth';
+    public static TrainerMasterPath = 'trainer';
+    public static ClientMasterPath = 'client';
+    public static AuthMasterPath = 'auth';
+    public static SharedMasterPath = 'shared';
 
     public static Login = 'login';
     public static AppError = 'error';
