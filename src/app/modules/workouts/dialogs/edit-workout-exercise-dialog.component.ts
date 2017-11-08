@@ -4,7 +4,7 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { AppConfig, ComponentDependencyService, BaseComponent, ComponentConfig, ComponentSetup } from '../../../core';
 
 // required by component
-import { DataTableConfig, AlignEnum } from '../../../../web-components/data-table';
+import { DataListConfig, AlignEnum } from '../../../../web-components/data-list';
 import { Exercise } from '../../../models';
 import { MAT_DIALOG_DATA } from '@angular/material';
 import { WorkoutExercise } from '../../../models';

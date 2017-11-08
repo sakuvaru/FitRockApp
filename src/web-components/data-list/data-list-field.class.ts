@@ -1,7 +1,7 @@
 import { AlignEnum } from './align-enum';
 import { Observable } from 'rxjs/Observable';
 
-export class DataTableField<T> {
+export class DataListField<T> {
 
     /**
      * Value of the field

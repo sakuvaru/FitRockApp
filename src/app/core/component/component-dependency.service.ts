@@ -31,7 +31,7 @@ import { TranslateService } from '@ngx-translate/core';
 import * as moment from 'moment';
 
 // Web component services
-import { DataTableService } from '../../../web-components/data-table';
+import { DataListService } from '../../../web-components/data-list';
 import { DynamicFormService } from '../../../web-components/dynamic-form';
 import { LoadMoreService } from '../../../web-components/load-more';
 import { UploaderService } from '../../../web-components/uploader';
@@ -100,7 +100,7 @@ export class ComponentDependencyService {
 
         // web component services
         this.webComponentServices = new WebComponentServices();
-        this.webComponentServices.dataTableService = injector.get(DataTableService);
+        this.webComponentServices.dataListService = injector.get(DataListService);
         this.webComponentServices.dynamicFormService = injector.get(DynamicFormService);
         this.webComponentServices.loadMoreService = injector.get(LoadMoreService);
         this.webComponentServices.uploaderService = injector.get(UploaderService);
@@ -150,7 +150,7 @@ export class ComponentDependencyService {
 }
 
 export class WebComponentServices {
-    public dataTableService: DataTableService;
+    public dataListService: DataListService;
     public dynamicFormService: DynamicFormService;
     public loadMoreService: LoadMoreService;
     public uploaderService: UploaderService;

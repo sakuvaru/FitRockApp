@@ -4,7 +4,7 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { AppConfig, ComponentDependencyService, BaseComponent, ComponentConfig, ComponentSetup } from '../../../core';
 
 // required by component
-import { DataTableConfig, AlignEnum } from '../../../../web-components/data-table';
+import { DataListConfig, AlignEnum } from '../../../../web-components/data-list';
 import { Food, DietFood } from '../../../models';
 import { MAT_DIALOG_DATA } from '@angular/material';
 import { FormConfig, DynamicFormStatus } from '../../../../web-components/dynamic-form';
@@ -16,7 +16,7 @@ import { stringHelper } from '../../../../lib/utilities';
 })
 export class AddDietFoodDialogComponent extends BaseComponent implements OnInit {
 
-  private config: DataTableConfig<DietFood>;
+  private config: DataListConfig<DietFood>;
   private dietId: number;
   private food: Food;
 

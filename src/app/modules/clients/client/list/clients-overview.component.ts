@@ -6,7 +6,7 @@ import { AppConfig, ComponentDependencyService, BaseComponent, ComponentConfig, 
 // required by component
 import { ClientsBaseComponent } from '../../clients-base.component';
 import { ClientOverviewMenuItems } from '../../menu.items';
-import { DataTableConfig, AlignEnum, Filter } from '../../../../../web-components/data-table';
+import { DataListConfig, AlignEnum, Filter } from '../../../../../web-components/data-list';
 import { User, UserFilterWithCount } from '../../../../models';
 import { MultipleItemQuery } from '../../../../../lib/repository';
 
@@ -15,7 +15,7 @@ import { MultipleItemQuery } from '../../../../../lib/repository';
 })
 export class ClientsOverviewComponent extends ClientsBaseComponent implements OnInit {
 
-  private config: DataTableConfig<User>;
+  private config: DataListConfig<User>;
 
   constructor(
     protected activatedRoute: ActivatedRoute,
@@ -32,18 +32,18 @@ export class ClientsOverviewComponent extends ClientsBaseComponent implements On
 
   ngOnInit(): void {
     super.ngOnInit();
-    this.initDataTable();
+    this.initDataList();
     super.initClientSubscriptions();
   }
 
-  private initDataTable(): void {
+  private initDataList(): void {
     this.setConfig({
       menuTitle: { key: 'menu.clients' },
       menuItems: new ClientOverviewMenuItems().menuItems,
       componentTitle: { key: 'module.clients.allClients' },
     });
 
-    this.config = this.dependencies.webComponentServices.dataTableService.dataTable<User>(
+    this.config = this.dependencies.webComponentServices.dataListService.dataList<User>(
       query => {
         return query
           .get()

@@ -6,14 +6,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { SharedWebComponentModule } from '../shared-web-components.module';
 
-// data table service
-import { DataTableService } from './data-table-service';
+// data list service
+import { DataListService } from './data-list-service';
 
 // components
-import { DataTableComponent } from './data-table.component';
+import { DataListComponent } from './data-list.component';
 import {
-    DataTableLayoutItemsComponent, DataTableLayoutHeaderComponent, DataTableLayoutFieldComponent,
-    DataTableLayoutFiltersComponent, DataTableLayoutPagerComponent, DataTableLayoutSearchComponent
+    DataListLayoutItemsComponent, DataListLayoutHeaderComponent, DataListLayoutFieldComponent,
+    DataListLayoutFiltersComponent, DataListLayoutPagerComponent, DataListLayoutSearchComponent
 } from './layouts/layouts.components';
 
 // loader
@@ -29,19 +29,19 @@ import { LoaderModule } from '../loader/loader.module';
         ReactiveFormsModule
     ],
     declarations: [
-        DataTableComponent,
-        DataTableLayoutItemsComponent,
-        DataTableLayoutFiltersComponent,
-        DataTableLayoutPagerComponent,
-        DataTableLayoutSearchComponent,
-        DataTableLayoutHeaderComponent,
-        DataTableLayoutFieldComponent
+        DataListComponent,
+        DataListLayoutItemsComponent,
+        DataListLayoutFiltersComponent,
+        DataListLayoutPagerComponent,
+        DataListLayoutSearchComponent,
+        DataListLayoutHeaderComponent,
+        DataListLayoutFieldComponent
     ],
     exports: [
-        DataTableComponent
+        DataListComponent
     ],
     providers: [
-        DataTableService
+        DataListService
     ]
 })
-export class DataTableModule { }
+export class DataListModule { }

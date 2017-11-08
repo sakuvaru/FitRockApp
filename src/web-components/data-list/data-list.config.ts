@@ -1,12 +1,12 @@
 import { Observable } from 'rxjs/Observable';
 import { MultipleItemQuery, IItem, ResponseMultiple, ItemCountQuery, ErrorResponse } from '../../lib/repository';
-import { DataTableField } from './data-table-field.class';
+import { DataListField } from './data-list-field.class';
 import { guidHelper, stringHelper } from '../../lib/utilities';
 
-export class DataTableConfig<TItem extends IItem> {
+export class DataListConfig<TItem extends IItem> {
 
     /**
-     * Indicates if last used filter will be used on the next load of given data table
+     * Indicates if last used filter will be used on the next load of given data list
      */
     public saveLastFilter: boolean = true;
 
@@ -16,7 +16,7 @@ export class DataTableConfig<TItem extends IItem> {
     public enableLocalLoader = true;
 
     /**
-     * Indicates if data table is wrapped in a material design card
+     * Indicates if data list is wrapped in a material design card
      */
     public wrapInCard = true;
 
@@ -33,12 +33,12 @@ export class DataTableConfig<TItem extends IItem> {
     /**
      * Key of translation that is shown when no search results are found
      */
-    public searchNoItemsTextKey = 'webComponents.dataTable.noSearchResultsText';
+    public searchNoItemsTextKey = 'webComponents.dataList.noSearchResultsText';
 
     /**
-     * Key of translation that is shown when data table contains 0 items
+     * Key of translation that is shown when data list contains 0 items
      */
-    public noItemsTextKey = 'webComponents.dataTable.noResultsText';
+    public noItemsTextKey = 'webComponents.dataList.noResultsText';
 
     /**
      * Indicates if filter with all items is shown
@@ -91,7 +91,7 @@ export class DataTableConfig<TItem extends IItem> {
     public pagerConfig: PagerConfig = new PagerConfig();
 
     /**
-     * Configuration of selectable data table
+     * Configuration of selectable data list
      */
     public selectableConfig: SelectableConfig<TItem>;
 
@@ -112,9 +112,9 @@ export class DataTableConfig<TItem extends IItem> {
         */
         public loadQuery: (searchTerm: string) => MultipleItemQuery<TItem>,
         /**
-        * Fields in the data table
+        * Fields in the data list
         */
-        public fields: DataTableField<TItem>[]
+        public fields: DataListField<TItem>[]
     ) { }
 
     isSelectable(): boolean {
@@ -126,7 +126,7 @@ export class DataTableConfig<TItem extends IItem> {
     }
 
     /**
-     * Gets unique hash of the configuration of data table
+     * Gets unique hash of the configuration of data list
      */
     getHash(): number {
         const allProperties = Object.getOwnPropertyNames(this);

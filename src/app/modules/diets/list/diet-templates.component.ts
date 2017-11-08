@@ -5,7 +5,7 @@ import { AppConfig, ComponentDependencyService, BaseComponent, ComponentConfig, 
 
 // required by component
 import { DietsOverviewMenuItems } from '../menu.items';
-import { DataTableConfig, AlignEnum, Filter, DataTableField } from '../../../../web-components/data-table';
+import { DataListConfig, AlignEnum, Filter } from '../../../../web-components/data-list';
 import { Diet, DietCategoryWithDietsCountDto } from '../../../models';
 
 @Component({
@@ -13,7 +13,7 @@ import { Diet, DietCategoryWithDietsCountDto } from '../../../models';
 })
 export class DietTemplatesComponent extends BaseComponent implements OnInit {
 
-  private config: DataTableConfig<Diet>;
+  private config: DataListConfig<Diet>;
 
   constructor(
     protected dependencies: ComponentDependencyService) {
@@ -35,12 +35,12 @@ export class DietTemplatesComponent extends BaseComponent implements OnInit {
       componentTitle: { key: 'module.diets.submenu.dietTemplates' },
     });
 
-    this.initDataTable();
+    this.initDataList();
   }
 
-  private initDataTable(): void {
+  private initDataList(): void {
 
-    this.config = this.dependencies.webComponentServices.dataTableService.dataTable<Diet>(
+    this.config = this.dependencies.webComponentServices.dataListService.dataList<Diet>(
       query => {
         return query
           .get()

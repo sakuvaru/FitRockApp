@@ -5,7 +5,7 @@ import { AppConfig, ComponentDependencyService, BaseComponent, ComponentConfig, 
 
 // required by component
 import { ExercisesOverviewMenuItem } from '../menu.items';
-import { DataTableConfig, AlignEnum, Filter } from '../../../../web-components/data-table';
+import { DataListConfig, AlignEnum, Filter } from '../../../../web-components/data-list';
 import { Exercise, ExerciseCategoryListWithExercisesCount } from '../../../models';
 
 @Component({
@@ -13,7 +13,7 @@ import { Exercise, ExerciseCategoryListWithExercisesCount } from '../../../model
 })
 export class MyExerciseListComponent extends BaseComponent implements OnInit {
 
-  private config: DataTableConfig<Exercise>;
+  private config: DataListConfig<Exercise>;
 
   constructor(
     protected dependencies: ComponentDependencyService) {
@@ -35,7 +35,7 @@ export class MyExerciseListComponent extends BaseComponent implements OnInit {
       componentTitle: { key: 'module.exercises.overview' },
     });
 
-    this.config = this.dependencies.webComponentServices.dataTableService.dataTable<Exercise>(
+    this.config = this.dependencies.webComponentServices.dataListService.dataList<Exercise>(
       query => {
         return query
           .get()

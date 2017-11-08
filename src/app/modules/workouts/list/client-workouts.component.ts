@@ -5,7 +5,7 @@ import { AppConfig, ComponentDependencyService, BaseComponent, ComponentConfig, 
 
 // required by component
 import { WorkoutsOverviewMenuItems } from '../menu.items';
-import { DataTableConfig, AlignEnum, Filter } from '../../../../web-components/data-table';
+import { DataListConfig, AlignEnum, Filter } from '../../../../web-components/data-list';
 import { Workout, WorkoutCategoryListWithWorkoutsCount } from '../../../models';
 
 @Component({
@@ -13,7 +13,7 @@ import { Workout, WorkoutCategoryListWithWorkoutsCount } from '../../../models';
 })
 export class ClientWorkoutsComponent extends BaseComponent implements OnInit {
 
-  private config: DataTableConfig<Workout>;
+  private config: DataListConfig<Workout>;
 
   constructor(
     protected dependencies: ComponentDependencyService) {
@@ -35,11 +35,11 @@ export class ClientWorkoutsComponent extends BaseComponent implements OnInit {
       componentTitle: { key: 'module.workouts.submenu.clientWorkouts' },
     });
 
-    this.initDataTable();
+    this.initDataList();
   }
 
-  private initDataTable(): void {
-    this.config = this.dependencies.webComponentServices.dataTableService.dataTable<Workout>(
+  private initDataList(): void {
+    this.config = this.dependencies.webComponentServices.dataListService.dataList<Workout>(
       (query => {
         return query
           .get()

@@ -1,27 +1,27 @@
 import { Component, Input, Output, OnInit, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
 import { MultipleItemQuery, ErrorResponse, ItemCountQuery } from '../../lib/repository';
 import { observableHelper } from '../../lib/utilities';
-import { DataTableConfig, Filter } from './data-table.config';
+import { DataListConfig, Filter } from './data-list.config';
 import { Observable } from 'rxjs/Rx';
 import { TranslateService } from '@ngx-translate/core';
 import { TdMediaService } from '@covalent/core';
 import { BaseWebComponent } from '../base-web-component.class';
-import { DataTableLayoutSearchComponent } from './layouts/layouts.components';
+import { DataListLayoutSearchComponent } from './layouts/layouts.components';
 import * as _ from 'underscore';
 
 @Component({
-    selector: 'data-table',
-    templateUrl: 'data-table.component.html'
+    selector: 'data-list',
+    templateUrl: 'data-list.component.html'
 })
-export class DataTableComponent extends BaseWebComponent implements OnInit, OnChanges {
+export class DataListComponent extends BaseWebComponent implements OnInit, OnChanges {
 
     // search component
-    @ViewChild(DataTableLayoutSearchComponent) searchInput: DataTableLayoutSearchComponent;
+    @ViewChild(DataListLayoutSearchComponent) searchInput: DataListLayoutSearchComponent;
 
-    // data table config
-    @Input() config: DataTableConfig<any>;
+    // data list config
+    @Input() config: DataListConfig<any>;
 
-    // hash of current data table config
+    // hash of current data list config
     private configHash: number;
 
     // resolved data
@@ -38,12 +38,12 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
     private currentPage = 1;
 
     // local storage suffixes
-    private localStorageActiveFilter = 'data_table_active_filter';
-    private localStoragePage = 'data_table_page';
-    private localStorageSearchedData = 'data_table_searchedData';
+    private localStorageActiveFilter = 'data_list_active_filter';
+    private localStoragePage = 'data_list_page';
+    private localStorageSearchedData = 'data_list_searchedData';
 
     // keys
-    private allFilterKey = 'webComponents.dataTable.allFilterText';
+    private allFilterKey = 'webComponents.dataList.allFilterText';
 
     // search
     private searchTerm = '';
@@ -72,7 +72,7 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
 
     ngOnInit() {
         if (this.config) {
-            this.initDataTable();
+            this.init();
         }
     }
 
@@ -81,26 +81,26 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
             // set config after changes
             this.config = changes.config.currentValue;
 
-            // reinit data table
-            this.initDataTable();
+            // reinit
+            this.init();
         }
     }
 
     reloadData(): void {
         this.initialized = false;
-        this.initDataTable();
+        this.init();
     }
 
     /**
-     * Reloads data table
-     * @param config Data table config
+     * Reloads data list
+     * @param config Data list config
      */
-    forceReinitialization(config: DataTableConfig<any>): void {
+    forceReinitialization(config: DataListConfig<any>): void {
         this.initialized = false;
-        this.initDataTable();
+        this.init();
     }
 
-    private initDataTable(): void {
+    private init(): void {
         if (this.config && !this.initialized) {
             // init hash
             this.configHash = this.config.getHash();
@@ -253,7 +253,7 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
             }
 
             if (!filter) {
-                throw Error(`Data table filter failed due to invalid filter.`);
+                throw Error(`Data list filter failed due to invalid filter.`);
             }
 
             query = filter.onFilter(query);
@@ -442,7 +442,7 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
         localStorage.setItem(this.localStorageSearchedData + '_' + hash, search);
     }
 
-    private handleLoadError(config: DataTableConfig<any>, errorResponse: ErrorResponse | any): void {
+    private handleLoadError(config: DataListConfig<any>, errorResponse: ErrorResponse | any): void {
         if (this.config.onError) {
             this.config.onError(errorResponse);
         }

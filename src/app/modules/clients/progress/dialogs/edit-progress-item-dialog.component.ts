@@ -4,7 +4,7 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { AppConfig, ComponentDependencyService, BaseComponent, ComponentConfig, ComponentSetup } from '../../../../core';
 
 // required by component
-import { DataTableConfig, AlignEnum } from '../../../../../web-components/data-table';
+import { DataListConfig, AlignEnum } from '../../../../../web-components/data-list';
 import { MAT_DIALOG_DATA } from '@angular/material';
 import { ProgressItem } from '../../../../models';
 import { FormConfig, DynamicFormStatus } from '../../../../../web-components/dynamic-form';

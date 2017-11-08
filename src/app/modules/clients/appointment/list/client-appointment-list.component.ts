@@ -6,7 +6,7 @@ import { AppConfig, ComponentDependencyService, BaseComponent, ComponentConfig, 
 // required by component
 import { ClientsBaseComponent } from '../../clients-base.component';
 import { ClientMenuItems } from '../../menu.items';
-import { DataTableConfig, AlignEnum, Filter } from '../../../../../web-components/data-table';
+import { DataListConfig, AlignEnum, Filter } from '../../../../../web-components/data-list';
 import { Appointment } from '../../../../models';
 import { MultipleItemQuery } from '../../../../../lib/repository';
 import { Observable } from 'rxjs/Rx';
@@ -16,7 +16,7 @@ import { Observable } from 'rxjs/Rx';
 })
 export class ClientAppointmentListComponent extends ClientsBaseComponent implements OnInit {
 
-  private config: DataTableConfig<Appointment>;
+  private config: DataListConfig<Appointment>;
 
   constructor(
     protected activatedRoute: ActivatedRoute,
@@ -53,13 +53,12 @@ export class ClientAppointmentListComponent extends ClientsBaseComponent impleme
         menuAvatarUrl: client.avatarUrl
       });
 
-      // data table init
-      this.initDataTable(client.id);
+      this.initList(client.id);
     });
   }
 
-  private initDataTable(clientId: number): void {
-    this.config = this.dependencies.webComponentServices.dataTableService.dataTable<Appointment>(
+  private initList(clientId: number): void {
+    this.config = this.dependencies.webComponentServices.dataListService.dataList<Appointment>(
       query => {
         return query
           .get()

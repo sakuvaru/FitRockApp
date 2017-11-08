@@ -4,7 +4,7 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { AppConfig, ComponentDependencyService, BaseComponent, ComponentConfig, ComponentSetup } from '../../../../core';
 
 // required by component
-import { DataTableConfig, AlignEnum } from '../../../../../web-components/data-table';
+import { DataListConfig, AlignEnum } from '../../../../../web-components/data-list';
 import { MAT_DIALOG_DATA } from '@angular/material';
 import { ProgressItemType } from '../../../../models';
 import { FormConfig } from '../../../../../web-components/dynamic-form';
@@ -14,7 +14,7 @@ import { FormConfig } from '../../../../../web-components/dynamic-form';
 })
 export class SelectProgressTypeDialogComponent extends BaseComponent implements OnInit {
 
-  private config: DataTableConfig<ProgressItemType>;
+  private config: DataListConfig<ProgressItemType>;
   public selectedItem: ProgressItemType;
   public openAddCustomProgressTypeDialog: boolean = false;
 
@@ -35,11 +35,11 @@ export class SelectProgressTypeDialogComponent extends BaseComponent implements 
   ngOnInit() {
     super.ngOnInit();
 
-    this.initDataTable();
+    this.initDataList();
   }
 
-  private initDataTable(): void {
-    this.config = this.dependencies.webComponentServices.dataTableService.dataTable<ProgressItemType>(
+  private initDataList(): void {
+    this.config = this.dependencies.webComponentServices.dataListService.dataList<ProgressItemType>(
       (query) => {
         return query
           .get()

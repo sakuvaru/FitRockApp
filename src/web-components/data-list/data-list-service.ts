@@ -1,11 +1,11 @@
-import { DataTableBuilder } from './data-table-builder';
-import { DataTableField } from './data-table-field.class';
+import { DataListBuilder } from './data-list-builder';
+import { DataListField } from './data-list-field.class';
 import { IItem, MultipleItemQuery, ResponseMultiple } from '../../lib/repository';
 import { Observable } from 'rxjs/Observable';
 
-export class DataTableService {
+export class DataListService {
 
-    dataTable<TItem extends IItem>(
+    dataList<TItem extends IItem>(
         /**
         * Method that is used to get observable out of loadQuery.
         * Usually this should include 'takeUntil(this.ngUnsubscribe)' to ensure
@@ -17,11 +17,11 @@ export class DataTableService {
         */
         loadQuery: (searchTerm: string) => MultipleItemQuery<TItem>,
         /**
-        * Fields in the data table
+        * Fields in the data list
         */
-        fields: DataTableField<any>[]
-    ): DataTableBuilder<TItem> {
-        return new DataTableBuilder<TItem>(loadResolver, loadQuery, fields);
+        fields: DataListField<any>[]
+    ): DataListBuilder<TItem> {
+        return new DataListBuilder<TItem>(loadResolver, loadQuery, fields);
     }
 
 }

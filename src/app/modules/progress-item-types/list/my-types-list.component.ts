@@ -5,7 +5,7 @@ import { AppConfig, ComponentDependencyService, BaseComponent, ComponentConfig, 
 
 // required by component
 import { ProgressItemTypesOverviewMenuItem } from '../menu.items';
-import { DataTableConfig, AlignEnum, Filter } from '../../../../web-components/data-table';
+import { DataListConfig, AlignEnum, Filter } from '../../../../web-components/data-list';
 import { ProgressItemType } from '../../../models';
 
 @Component({
@@ -13,7 +13,7 @@ import { ProgressItemType } from '../../../models';
 })
 export class MyTypesListComponent extends BaseComponent implements OnInit {
 
-  private config: DataTableConfig<ProgressItemType>;
+  private config: DataListConfig<ProgressItemType>;
 
   constructor(
     protected dependencies: ComponentDependencyService) {
@@ -35,7 +35,7 @@ export class MyTypesListComponent extends BaseComponent implements OnInit {
       menuTitle: { key: 'module.progressItemTypes.submenu.overview' },
     });
 
-    this.config = this.dependencies.webComponentServices.dataTableService.dataTable<ProgressItemType>(
+    this.config = this.dependencies.webComponentServices.dataListService.dataList<ProgressItemType>(
       query => {
         return query
           .get()

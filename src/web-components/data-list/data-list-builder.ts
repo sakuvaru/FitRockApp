@@ -1,11 +1,11 @@
-import { DataTableConfig, SelectableConfig, Filter, PagerConfig } from './data-table.config';
-import { DataTableField } from './data-table-field.class';
+import { DataListConfig, SelectableConfig, Filter, PagerConfig } from './data-list.config';
+import { DataListField } from './data-list-field.class';
 import { Observable } from 'rxjs/RX';
 import { ResponseMultiple, IItem, MultipleItemQuery, ErrorResponse } from '../../lib/repository';
 
-export class DataTableBuilder<TItem extends IItem> {
+export class DataListBuilder<TItem extends IItem> {
 
-    private config: DataTableConfig<TItem>;
+    private config: DataListConfig<TItem>;
 
     constructor(
         /**
@@ -19,15 +19,15 @@ export class DataTableBuilder<TItem extends IItem> {
         */
         loadQuery: (searchTerm: string) => MultipleItemQuery<TItem>,
         /**
-        * Fields in the data table
+        * Fields in the data list
         */
-        fields: DataTableField<TItem>[]
+        fields: DataListField<TItem>[]
     ) {
-        this.config = new DataTableConfig<TItem>(loadResolver, loadQuery, fields);
+        this.config = new DataListConfig<TItem>(loadResolver, loadQuery, fields);
     }
 
     /**
-    * Indicates if last used filter will be used on the next load of given data table
+    * Indicates if last used filter will be used on the next load of given data list
     */
     saveLastFilter(save: boolean): this {
         this.config.saveLastFilter = save;
@@ -166,7 +166,7 @@ export class DataTableBuilder<TItem extends IItem> {
         return this;
     }
 
-    build(): DataTableConfig<TItem> {
+    build(): DataListConfig<TItem> {
         return this.config;
     }
 }

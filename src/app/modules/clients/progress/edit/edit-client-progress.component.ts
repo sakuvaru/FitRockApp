@@ -8,7 +8,7 @@ import { ProgressItemType } from '../../../../models';
 import { ClientsBaseComponent } from '../../clients-base.component';
 import { ClientMenuItems } from '../../menu.items';
 import { FormConfig, DynamicFormComponent } from '../../../../../web-components/dynamic-form';
-import { DataTableConfig, AlignEnum, Filter, DataTableComponent, DataTableField } from '../../../../../web-components/data-table';
+import { DataListConfig, AlignEnum, Filter, DataListComponent, DataListField } from '../../../../../web-components/data-list';
 import { ProgressItem, User, ProgressItemTypeWithCountDto } from '../../../../models';
 import { Observable } from 'rxjs/Rx';
 import { EditProgressItemDialogComponent } from '../dialogs/edit-progress-item-dialog.component';
@@ -23,10 +23,10 @@ import { stringHelper } from '../../../../../lib/utilities';
 export class EditClientProgressComponent extends ClientsBaseComponent implements OnInit {
 
     private formConfig: FormConfig<ProgressItem>;
-    private dataTableConfig: DataTableConfig<ProgressItem>;
+    private DataListConfig: DataListConfig<ProgressItem>;
     private progressItemTypes: ProgressItemType[];
 
-    @ViewChild(DataTableComponent) progressItemsDataTable: DataTableComponent;
+    @ViewChild(DataListComponent) progressItemsDataList: DataListComponent;
     @ViewChild(DynamicFormComponent) progressItemForm: DynamicFormComponent;
 
     constructor(
@@ -69,7 +69,7 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
             });
 
         observables.push(this.getInitFormObservable());
-        observables.push(this.getDataTableObservable());
+        observables.push(this.getDataListObservable());
         observables.push(obsClientMenu);
         observables.push(this.getProgressTypesObservable());
 
@@ -96,7 +96,7 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
                 return value;
             })
             .onAfterSave(() => {
-                this.reloadDataTable();
+                this.reloadDataList();
             })
             .clearFormAfterSave(true)
             .onFieldValueChange((config, changedField, newValue) => {
@@ -159,8 +159,8 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
             });
     }
 
-    private initDataTable(clientId: number): void {
-        this.dataTableConfig = this.dependencies.webComponentServices.dataTableService.dataTable<ProgressItem>(
+    private initDataList(clientId: number): void {
+        this.DataListConfig = this.dependencies.webComponentServices.dataListService.dataList<ProgressItem>(
             query => {
                 return query
                     .get()
@@ -233,11 +233,11 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
             .build();
     }
 
-    private getDataTableObservable(): Observable<any> {
+    private getDataListObservable(): Observable<any> {
         return this.clientIdChange
             .takeUntil(this.ngUnsubscribe)
             .map(clientId => {
-                this.initDataTable(clientId);
+                this.initDataList(clientId);
             });
     }
 
@@ -266,8 +266,7 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
 
         dialog.afterClosed().subscribe(m => {
             if (dialog.componentInstance.itemWasDeleted || dialog.componentInstance.itemWasUpdated) {
-                // reload data table
-                this.reloadDataTable();
+                this.reloadDataList();
             }
         });
     }
@@ -297,7 +296,7 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
                 this.progressItemTypes.push(createResponse.item);
 
                 // refresh data table
-                this.reloadDataTable();
+                this.reloadDataList();
 
                 // refresh form
                 this.reloadForm();
@@ -316,12 +315,12 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
                 this.reloadForm();
 
                 // refresh data table
-                this.reloadDataTable();
+                this.reloadDataList();
             });
     }
 
-    private reloadDataTable(): void {
-        this.progressItemsDataTable.forceReinitialization(this.dataTableConfig);
+    private reloadDataList(): void {
+        this.progressItemsDataList.forceReinitialization(this.DataListConfig);
     }
 
     private reloadForm(): void {

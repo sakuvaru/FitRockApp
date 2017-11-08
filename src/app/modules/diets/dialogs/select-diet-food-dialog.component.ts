@@ -4,7 +4,7 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { AppConfig, ComponentDependencyService, BaseComponent, ComponentConfig, ComponentSetup } from '../../../core';
 
 // required by component
-import { DataTableConfig, AlignEnum, Filter } from '../../../../web-components/data-table';
+import { DataListConfig, AlignEnum, Filter } from '../../../../web-components/data-list';
 import { Food } from '../../../models';
 import { MAT_DIALOG_DATA } from '@angular/material';
 
@@ -14,7 +14,7 @@ import { MAT_DIALOG_DATA } from '@angular/material';
 export class SelectDietFoodDialogComponent extends BaseComponent implements OnInit {
 
   private selectable: boolean = true;
-  private config: DataTableConfig<Food>;
+  private config: DataListConfig<Food>;
 
   public selectedFood: Food;
   public openAddCustomFoodDialog: boolean = false;
@@ -36,7 +36,7 @@ export class SelectDietFoodDialogComponent extends BaseComponent implements OnIn
   ngOnInit() {
     super.ngOnInit();
 
-    this.config = this.dependencies.webComponentServices.dataTableService.dataTable<Food>(
+    this.config = this.dependencies.webComponentServices.dataListService.dataList<Food>(
       query => {
         return query
           .get()

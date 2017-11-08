@@ -7,7 +7,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 // web modules
 import { ButtonsModule } from './buttons/buttons.module';
-import { DataTableModule } from './data-table/data-table.module';
+import { DataListModule } from './data-list/data-list.module';
 import { DynamicFormModule } from './dynamic-form/dynamic-form.module';
 import { LoaderModule } from './loader/loader.module';
 import { GraphModule } from './graph/graph.module';
@@ -28,7 +28,7 @@ import { ListingModule } from './listing/listing.module';
     ],
     exports: [
         DynamicFormModule,
-        DataTableModule,
+        DataListModule,
         ButtonsModule,
         LoaderModule,
         GraphModule,

@@ -5,7 +5,7 @@ import { AppConfig, ComponentDependencyService, BaseComponent, ComponentConfig, 
 
 // required by component
 import { LocationOverviewItems } from '../menu.items';
-import { DataTableConfig, AlignEnum, Filter } from '../../../../web-components/data-table';
+import { DataListConfig, AlignEnum, Filter } from '../../../../web-components/data-list';
 import { Location } from '../../../models';
 
 @Component({
@@ -13,7 +13,7 @@ import { Location } from '../../../models';
 })
 export class MyLocationsComponent extends BaseComponent implements OnInit {
 
-  private config: DataTableConfig<Location>;
+  private config: DataListConfig<Location>;
 
   constructor(
     protected dependencies: ComponentDependencyService) {
@@ -35,7 +35,7 @@ export class MyLocationsComponent extends BaseComponent implements OnInit {
       componentTitle: { key: 'module.locations.submenu.myLocations' },
     });
 
-    this.config = this.dependencies.webComponentServices.dataTableService.dataTable<Location>(
+    this.config = this.dependencies.webComponentServices.dataListService.dataList<Location>(
       query => {
         return query
           .get()

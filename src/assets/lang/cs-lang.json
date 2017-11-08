@@ -495,7 +495,7 @@
 		}
 	},
 	"webComponents": {
-		"dataTable": {
+		"dataList": {
 			"noResultsText": "Nejsou zde žádná data",
 			"noSearchResultsText": "Nic nenalezeno",
 			"allFilterText": "Vše"

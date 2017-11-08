@@ -1,17 +1,17 @@
 import { Component, Input, Output, OnInit, EventEmitter, AfterViewInit, OnChanges, SimpleChanges, ViewChild, ElementRef } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { DataTableField } from '../data-table-field.class';
-import { DataTableConfig, Filter, PagerConfig, } from '../data-table.config';
+import { DataListField } from '../data-list-field.class';
+import { DataListConfig, Filter, PagerConfig, } from '../data-list.config';
 import { AlignEnum } from '../align-enum';
 import { Observable } from 'rxjs/Rx';
 import { PagerButton } from './models';
 import { BaseWebComponent } from '../../base-web-component.class';
 
 @Component({
-    selector: 'data-table-layout-pager',
-    templateUrl: 'data-table-layout-pager.component.html'
+    selector: 'data-list-layout-pager',
+    templateUrl: 'data-list-layout-pager.component.html'
 })
-export class DataTableLayoutPagerComponent implements OnInit, OnChanges {
+export class DataListLayoutPagerComponent implements OnInit, OnChanges {
     @Input() pagerConfig: PagerConfig;
     @Input() totalPages: number;
     @Input() currentPage = 1; // initial page
@@ -98,13 +98,13 @@ export class DataTableLayoutPagerComponent implements OnInit, OnChanges {
 }
 
 @Component({
-    selector: 'data-table-layout-header',
-    templateUrl: 'data-table-layout-header.component.html'
+    selector: 'data-list-layout-header',
+    templateUrl: 'data-list-layout-header.component.html'
 })
-export class DataTableLayoutHeaderComponent {
-    @Input() config: DataTableConfig<any>;
+export class DataListLayoutHeaderComponent {
+    @Input() config: DataListConfig<any>;
 
-    private getTextAlignClass(field: DataTableField<any>): string | null {
+    private getTextAlignClass(field: DataListField<any>): string | null {
         if (field.align === AlignEnum.Center) {
             return 'text-center';
         } else if (field.align === AlignEnum.Left) {
@@ -115,17 +115,17 @@ export class DataTableLayoutHeaderComponent {
         return null;
     }
 
-    private isObservable(field: DataTableField<any>): boolean {
+    private isObservable(field: DataListField<any>): boolean {
         return field.label instanceof Observable;
     }
 }
 
 @Component({
-    selector: 'data-table-layout-search',
-    templateUrl: 'data-table-layout-search.component.html'
+    selector: 'data-list-layout-search',
+    templateUrl: 'data-list-layout-search.component.html'
 })
-export class DataTableLayoutSearchComponent implements OnInit {
-    @Input() config: DataTableConfig<any>;
+export class DataListLayoutSearchComponent implements OnInit {
+    @Input() config: DataListConfig<any>;
     @Input() searchTerm: string;
 
     @Output() search = new EventEmitter<string>();
@@ -141,10 +141,10 @@ export class DataTableLayoutSearchComponent implements OnInit {
 }
 
 @Component({
-    selector: 'data-table-layout-filters',
-    templateUrl: 'data-table-layout-filters.component.html'
+    selector: 'data-list-layout-filters',
+    templateUrl: 'data-list-layout-filters.component.html'
 })
-export class DataTableLayoutFiltersComponent {
+export class DataListLayoutFiltersComponent {
 
     @Input() activeFilterGuid: string;
     @Input() filters: Filter<any>[] = [];
@@ -157,13 +157,13 @@ export class DataTableLayoutFiltersComponent {
 
 
 @Component({
-    selector: 'data-table-layout-field',
-    templateUrl: 'data-table-layout-field.component.html'
+    selector: 'data-list-layout-field',
+    templateUrl: 'data-list-layout-field.component.html'
 })
-export class DataTableLayoutFieldComponent extends BaseWebComponent implements OnInit, OnChanges {
+export class DataListLayoutFieldComponent extends BaseWebComponent implements OnInit, OnChanges {
 
     @Input() item: any;
-    @Input() field: DataTableField<any>;
+    @Input() field: DataListField<any>;
 
     public fieldValue: string;
 
@@ -175,7 +175,7 @@ export class DataTableLayoutFieldComponent extends BaseWebComponent implements O
         this.initField(this.item, this.field);
     }
 
-    private initField(item: any, field: DataTableField<any>): void {
+    private initField(item: any, field: DataListField<any>): void {
         if (!this.fieldValue && item && field) {
             const valueFunc = field.value(item);
             if (valueFunc instanceof Observable) {
@@ -190,11 +190,11 @@ export class DataTableLayoutFieldComponent extends BaseWebComponent implements O
 }
 
 @Component({
-    selector: 'data-table-layout-items',
-    templateUrl: 'data-table-layout-items.component.html'
+    selector: 'data-list-layout-items',
+    templateUrl: 'data-list-layout-items.component.html'
 })
-export class DataTableLayoutItemsComponent implements OnInit, OnChanges {
-    @Input() config: DataTableConfig<any>;
+export class DataListLayoutItemsComponent implements OnInit, OnChanges {
+    @Input() config: DataListConfig<any>;
     @Input() items: any[];
     @Input() localLoaderLoading: boolean = false;
 
@@ -257,7 +257,7 @@ export class DataTableLayoutItemsComponent implements OnInit, OnChanges {
         }
     }
 
-    private getTextAlignClass(field: DataTableField<any>): string | null {
+    private getTextAlignClass(field: DataListField<any>): string | null {
         if (field.align === AlignEnum.Center) {
             return 'text-center';
         } else if (field.align === AlignEnum.Left) {

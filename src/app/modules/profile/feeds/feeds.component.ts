@@ -7,7 +7,7 @@ import { AppConfig, UrlConfig, ComponentDependencyService, BaseComponent, Compon
 import { MyProfileMenuItems } from '../menu.items';
 import { FormConfig } from '../../../../web-components/dynamic-form';
 import { Feed, FeedResult } from '../../../models';
-import { DataTableConfig, AlignEnum, Filter } from '../../../../web-components/data-table';
+import { DataListConfig, AlignEnum, Filter } from '../../../../web-components/data-list';
 import { Observable } from 'rxjs/Rx';
 import { StringHelper } from '../../../../lib/utilities';
 import { LoadMoreConfig } from '../../../../web-components/load-more';
@@ -17,7 +17,7 @@ import { LoadMoreConfig } from '../../../../web-components/load-more';
 })
 export class FeedsComponent extends BaseComponent implements OnInit {
 
-    private config: DataTableConfig<Feed>;
+    private config: DataListConfig<Feed>;
     private loadMoreConfig: LoadMoreConfig<Feed>;
 
     constructor(

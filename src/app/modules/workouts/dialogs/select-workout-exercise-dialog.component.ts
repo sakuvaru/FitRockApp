@@ -4,7 +4,7 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { AppConfig, ComponentDependencyService, BaseComponent, ComponentConfig, ComponentSetup } from '../../../core';
 
 // required by component
-import { DataTableConfig, AlignEnum, Filter } from '../../../../web-components/data-table';
+import { DataListConfig, AlignEnum, Filter } from '../../../../web-components/data-list';
 import { Exercise } from '../../../models';
 import { MAT_DIALOG_DATA } from '@angular/material';
 
@@ -14,7 +14,7 @@ import { MAT_DIALOG_DATA } from '@angular/material';
 export class SelectWorkoutExerciseDialogComponent extends BaseComponent implements OnInit {
 
   private selectable: boolean = true;
-  private config: DataTableConfig<Exercise>;
+  private config: DataListConfig<Exercise>;
 
   public selectedExercise: Exercise;
   public openAddCustomExerciseDialog: boolean = false;
@@ -36,7 +36,7 @@ export class SelectWorkoutExerciseDialogComponent extends BaseComponent implemen
   ngOnInit() {
     super.ngOnInit();
 
-    this.config = this.dependencies.webComponentServices.dataTableService.dataTable<Exercise>(
+    this.config = this.dependencies.webComponentServices.dataListService.dataList<Exercise>(
       query => {
         return query
           .get()
