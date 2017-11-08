@@ -325,6 +325,12 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
     }
 
     private reloadForm(): void {
-        this.progressItemForm.forceReinitialization(this.formConfig);
+        if (this.progressItemForm == null) {
+            // form was not yet initialized, no need to reload it.
+            // reloading it would throw an error because the component is not yet there
+
+        } else {
+            this.progressItemForm.forceReinitialization(this.formConfig);
+        }
     }
 }
