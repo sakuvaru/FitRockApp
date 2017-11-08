@@ -537,12 +537,12 @@
 		},
 		"gallery": {
 			"noImages": "Žádné fotografie nebyly nahrány",
-			"deleteImages": "Vyber fotografie ke smazání",
+			"deleteImages": "Smazat fotografie",
 			"close": "Zavřít",
 			"imageDeletionFailed": "Smazaní fotografie selhalo",
 			"imageSuccessfullyDeleted": "Fotografie smazána",
 			"deleted": "Smazáno",
-			"deleteImagesDialogTitle": "Smazat fotografie",
+			"deleteImagesDialogTitle": "Vyber fotografie ke smazání",
 			"dialogDelete": {
 				"message": "Opravdu smazat fotografii?",
 				"title": "Potvrzení",
