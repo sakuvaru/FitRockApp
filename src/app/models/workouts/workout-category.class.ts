@@ -4,6 +4,10 @@ export class WorkoutCategory extends BaseItem {
     public categoryName: string;
 }
 
-export class WorkoutCategoryListWithWorkoutsCount extends WorkoutCategory {
+export class WorkoutCategoryListWithWorkoutsCount {
+
+    public id: number;
+    public codename: string;
+    public categoryName: string;
     public workoutsCount: number;
 }

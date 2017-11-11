@@ -16,7 +16,14 @@ export class ProgressItemType extends BaseItem {
     public client: User;
 }
 
-export class ProgressItemTypeWithCountDto extends ProgressItemType {
+export class ProgressItemTypeWithCountDto {
+
+    public id: number;
+    public codename: string;
+    public typeName: string;
+    public isGlobal: boolean;
+    public ClientId?: number;
+    public translateValue: boolean;
     public progressItemsCount: number;
 }
 

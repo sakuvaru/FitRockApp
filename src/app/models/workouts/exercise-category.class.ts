@@ -5,5 +5,9 @@ export class ExerciseCategory extends BaseItem {
 }
 
 export class ExerciseCategoryListWithExercisesCount extends ExerciseCategory {
+
+    public id: number;
+    public codename: string;
+    public categoryName: string;
     public exercisesCount: number;
 }

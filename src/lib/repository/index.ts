@@ -7,6 +7,7 @@ export * from './models/responses';
 export * from './models/form-validation-result.enum';
 export * from './models/form-validation-result.class';
 export * from './models/error-reason.enum';
+export * from './queries/item/base-multiple-item-query.class';
 export * from './queries/item/single-item-query-custom.class';
 export * from './queries/item/single-item-query.class';
 export * from './queries/item/multiple-item-query.class';

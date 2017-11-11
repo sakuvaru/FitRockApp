@@ -1,7 +1,7 @@
 import { DataListConfig, SelectableConfig, Filter, PagerConfig } from './data-list.config';
 import { DataListField } from './data-list-field.class';
 import { Observable } from 'rxjs/RX';
-import { ResponseMultiple, IItem, MultipleItemQuery, ErrorResponse } from '../../lib/repository';
+import { BaseMultipleItemQuery, ResponseMultiple, IItem, MultipleItemQuery, ErrorResponse } from '../../lib/repository';
 
 export class DataListBuilder<TItem extends IItem> {
 
@@ -13,11 +13,11 @@ export class DataListBuilder<TItem extends IItem> {
         * Usually this should include 'takeUntil(this.ngUnsubscribe)' to ensure
         * that requests are cancelled if they are not required (e.g. after destroying component)
         */
-        loadResolver: (query: MultipleItemQuery<TItem>) => Observable<ResponseMultiple<TItem>>,
+        loadResolver: (query: BaseMultipleItemQuery) => Observable<ResponseMultiple<TItem>>,
         /**
         * Used to specify query that loads items
         */
-        loadQuery: (searchTerm: string) => MultipleItemQuery<TItem>,
+        loadQuery: (searchTerm: string) => BaseMultipleItemQuery,
         /**
         * Fields in the data list
         */

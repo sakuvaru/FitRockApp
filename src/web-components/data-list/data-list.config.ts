@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs/Observable';
-import { MultipleItemQuery, IItem, ResponseMultiple, ItemCountQuery, ErrorResponse } from '../../lib/repository';
+import { BaseMultipleItemQuery, MultipleItemQuery, IItem, ResponseMultiple, ItemCountQuery, ErrorResponse, MultipleItemQueryCustom } from '../../lib/repository';
 import { DataListField } from './data-list-field.class';
 import { guidHelper, stringHelper } from '../../lib/utilities';
 
@@ -106,11 +106,11 @@ export class DataListConfig<TItem extends IItem> {
         * Usually this should include 'takeUntil(this.ngUnsubscribe)' to ensure
         * that requests are cancelled if they are not required (e.g. after destroying component)
         */
-        public loadResolver: (query: MultipleItemQuery<TItem>) => Observable<ResponseMultiple<TItem>>,
+        public loadResolver: (query: BaseMultipleItemQuery) => Observable<ResponseMultiple<TItem>>,
         /**
         * Used to specify query that loads items
         */
-        public loadQuery: (searchTerm: string) => MultipleItemQuery<TItem>,
+        public loadQuery: (searchTerm: string) => BaseMultipleItemQuery,
         /**
         * Fields in the data list
         */
@@ -169,21 +169,21 @@ export class SelectableConfig<TItem extends IItem> {
     }
 }
 
-export class Filter<TItem extends IItem> {
+export class Filter<TModel extends any | IItem> {
 
     public filterNameKey: string;
     public count?: number;
     public guid: string;
 
-    public onFilter: (query: MultipleItemQuery<TItem>) => MultipleItemQuery<TItem>;
-    public countQuery?: (query: MultipleItemQuery<TItem>) => ItemCountQuery;
+    public onFilter: (query: BaseMultipleItemQuery) => BaseMultipleItemQuery;
+    public countQuery?: (query: BaseMultipleItemQuery) => ItemCountQuery;
 
     constructor(
         options: {
             filterNameKey: string,
-            onFilter: (query: MultipleItemQuery<TItem>) => MultipleItemQuery<TItem>,
+            onFilter: (query: BaseMultipleItemQuery ) => BaseMultipleItemQuery,
             count?: number,
-            countQuery?: (query: MultipleItemQuery<TItem>) => ItemCountQuery
+            countQuery?: (query: BaseMultipleItemQuery) => ItemCountQuery
         }
     ) {
         Object.assign(this, options);

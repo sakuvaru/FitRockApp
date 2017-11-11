@@ -1,5 +1,5 @@
 import { Component, Input, Output, OnInit, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
-import { MultipleItemQuery, ErrorResponse, ItemCountQuery } from '../../lib/repository';
+import { BaseMultipleItemQuery, ErrorResponse, ItemCountQuery } from '../../lib/repository';
 import { observableHelper } from '../../lib/utilities';
 import { DataListConfig, Filter } from './data-list.config';
 import { Observable } from 'rxjs/Rx';
@@ -30,8 +30,8 @@ export class DataListComponent extends BaseWebComponent implements OnInit, OnCha
     // filters
     private hasFilters = false;
     private activeFilterGuid: string | null;
-    private filters: Filter<any>[] = [];
-    private allFilter: Filter<any> | undefined;
+    private filters: Filter<BaseMultipleItemQuery>[] = [];
+    private allFilter: Filter<BaseMultipleItemQuery> | undefined;
 
     // pager
     private totalPages: number;
@@ -237,9 +237,9 @@ export class DataListComponent extends BaseWebComponent implements OnInit, OnCha
         return filter;
     }
 
-    private getQueryWithFilters(query: MultipleItemQuery<any>): MultipleItemQuery<any> {
+    private getQueryWithFilters(query: BaseMultipleItemQuery): BaseMultipleItemQuery {
         if (this.hasFilters) {
-            let filter: Filter<any> | undefined;
+            let filter: Filter<BaseMultipleItemQuery> | undefined;
 
             // try getting the active filter
             if (this.activeFilterGuid) {
