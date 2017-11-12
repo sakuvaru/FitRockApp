@@ -76,6 +76,16 @@ export class AdminToolbarComponent extends BaseComponent implements OnInit {
         return result ? result.imageUrl : undefined;
     }
 
+    private getFeedSubject(feed: Feed): string {
+        const feedResult = this.dependencies.itemServices.feedService.getFeedResult(feed);
+
+        if (!feedResult) {
+            return '';
+        }
+
+        return feedResult.subject;
+    }
+
     private getFeedText(feed: Feed): Observable<string> {
         const feedResult = this.dependencies.itemServices.feedService.getFeedResult(feed);
 
@@ -109,21 +119,21 @@ export class AdminToolbarComponent extends BaseComponent implements OnInit {
             this.getMarkAsReadObservable(feed)
                 .takeUntil(this.ngUnsubscribe)
                 .subscribe(response => {
-                this.preventFeedChange = false;
+                    this.preventFeedChange = false;
 
-                // there is one less unread feed
-                if (this.feedsCount > 0) {
-                    this.feedsCount--;
-                }
+                    // there is one less unread feed
+                    if (this.feedsCount > 0) {
+                        this.feedsCount--;
+                    }
 
-                // go to feed details
-                const feedUrl = this.getFeedUrl(feed);
-                if (!feedUrl) {
-                    console.warn('Cannot navigate to feed with id = ' + feed.id);
-                }
+                    // go to feed details
+                    const feedUrl = this.getFeedUrl(feed);
+                    if (!feedUrl) {
+                        console.warn('Cannot navigate to feed with id = ' + feed.id);
+                    }
 
-                super.navigate([feedUrl]);
-            });
+                    super.navigate([feedUrl]);
+                });
         } else {
             console.warn('Cannot click on invalid feed');
         }

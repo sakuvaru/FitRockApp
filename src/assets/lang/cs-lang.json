@@ -329,9 +329,6 @@
 				"feeds": "Notifikace"
 			}
 		},
-		"feeds":{
-			"userSentYouAMessage": "<span>{{user}}</span>: {{message}}"
-		},
 		"locations": {
 			"submenu": {
 				"overview": "Lokace",

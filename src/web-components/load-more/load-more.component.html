@@ -18,15 +18,18 @@
             <ng-container *ngIf="{ icon: config.iconResolver ? config.iconResolver(item) : undefined, image: config.imageResolver ? config.imageResolver(item) : undefined }; let data">
               <mat-list>
                 <mat-list-item>
-                    <mat-icon *ngIf="data.icon && !config.iconClassResolver" matListIcon>{{ data.icon }}</mat-icon>
-                    <mat-icon *ngIf="data.icon && config.iconClassResolver" matListIcon [ngClass]="[config.iconClassResolver(item)]">{{ data.icon }}</mat-icon>
-                    <img *ngIf="data.image" matListAvatar  [src]="data.image" alt="" />
+                  <mat-icon *ngIf="data.icon && !config.iconClassResolver" matListIcon>{{ data.icon }}</mat-icon>
+                  <mat-icon *ngIf="data.icon && config.iconClassResolver" matListIcon [ngClass]="[config.iconClassResolver(item)]">{{ data.icon }}</mat-icon>
+                  <img *ngIf="data.image" matListAvatar [src]="data.image" alt="" />
                   <p matLine>
                     <ng-container *ngIf="config.title && config.title(item) | async; let title">
                       <span class="md-body-1 tc-grey-900" [innerHtml]="title"></span>
                     </ng-container>
+
+                  </p>
+                  <p matLine>
                     <ng-container *ngIf="config.text && config.text(item) | async; let text">
-                      <span class="md-body-1 tc-grey-600" [innerHtml]="text"></span>
+                      <span class="md-body-1 tc-grey-700" [innerHtml]="text"></span>
                     </ng-container>
                   </p>
                   <p matLine>

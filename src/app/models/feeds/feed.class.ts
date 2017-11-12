@@ -15,6 +15,12 @@ export class Feed extends BaseItem {
 export class FeedResult {
 
     /**
+     * Subject of the feed
+     * Can be name of user or something similar
+     */
+    public subject: string;
+
+    /**
      * Icon of the feed
      */
     public icon?: string;
@@ -64,6 +70,7 @@ export class FeedResult {
 
     constructor(
         options: {
+            subject: string,
             data?: DataModel[],
             translationKey?: string,
             translationData?: any

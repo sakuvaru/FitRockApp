@@ -56,7 +56,7 @@ export class FeedsComponent extends BaseComponent implements OnInit {
     private initLoadMore(): void {
         this.loadMoreConfig = this.dependencies.webComponentServices.loadMoreService.loadMore<Feed>(
             search => this.dependencies.itemServices.feedService.getFeedsForUser(this.dependencies.authenticatedUserService.getUserId()),
-            query => query.get().takeUntil(this.ngUnsubscribe))
+            query => query.get())
             .text((item) => {
                 const feedResult = this.getFeedResult(item);
                 if (feedResult) {
@@ -69,7 +69,14 @@ export class FeedsComponent extends BaseComponent implements OnInit {
                 }
                 return Observable.of('');
             })
-            .footer((item) => Observable.of(super.fromNow(item.created)))
+            .title(item => {
+                const feedResult = this.getFeedResult(item);
+
+                if (!feedResult) {
+                    return Observable.of(super.fromNow(item.created));
+                }
+                return Observable.of(feedResult.subject + ' ' + '<span class="md-caption">' + super.fromNow(item.created) + '</span>');
+            })
             .iconResolver(item => this.getFeedIcon(item))
             .imageResolver(item => this.getFeedImage(item))
             .iconClassResolver(item => !item.markedAsRead ? 'tc-red-500' : '')

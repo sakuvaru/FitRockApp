@@ -25,18 +25,13 @@ export class FeedService extends BaseTypeService<Feed> {
 
         // message feeds
         if (feed.feedType.toLowerCase() === 'message') {
-            // prepare translation data
-            const translationData: any = {};
             const chatMessageData = feed.data.find(m => m.key === 'Message');
             const userData = feed.data.find(m => m.key === 'User');
 
-            translationData.message = chatMessageData ? stringHelper.shorten(chatMessageData.value, 85, true) : '';
-            translationData.user = userData ? userData.value : '';
-
             return new FeedResult({
+                subject: userData ? userData.value : '',
                 data: feed.data,
-                translationKey: 'module.feeds.userSentYouAMessage',
-                translationData: translationData,
+                text: chatMessageData ? stringHelper.shorten(chatMessageData.value, 85, true) : '',
                 imageUrl: feed.imageUrl
             });
         }

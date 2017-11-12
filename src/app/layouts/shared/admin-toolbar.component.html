@@ -20,7 +20,7 @@
     <mat-icon>more_vert</mat-icon>
   </button>
 
-  <mat-menu #moreMenu="matMenu">
+  <mat-menu #moreMenu="matMenu" panelClass="w-feed-menu">
     <button mat-menu-item [routerLink]="getAuthUrl('logout')">
       <mat-icon>exit_to_app</mat-icon> {{ 'userMenu.logout' | translate }}</button>
   </mat-menu>
@@ -34,12 +34,14 @@
               <mat-icon *ngIf="data.icon && !config.iconClassResolver" matListIcon>{{ data.icon }}</mat-icon>
               <mat-icon *ngIf="data.icon && config.iconClassResolver" matListIcon [ngClass]="[config.iconClassResolver(item)]">{{ data.icon }}</mat-icon>
               <img *ngIf="data.image" matListAvatar [src]="data.image" alt="" />
+              <h3 matLine>
+                <span class="w-feed-menu-subject" [innerHtml]="getFeedSubject(feed)"></span> <span class="w-feed-menu-date">{{ fromNow(feed.created) }}</span>
+              </h3>
               <h4 matLine>
                 <span class="text-wrap">
                   <span [innerHtml]="getFeedText(feed) | async "></span>
                 </span>
               </h4>
-              <p matLine class="md-caption">{{ fromNow(feed.created) }}</p>
             </a>
             <mat-divider *ngIf="!last"></mat-divider>
           </mat-nav-list>
