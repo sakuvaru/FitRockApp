@@ -155,7 +155,7 @@ export class DataListComponent extends BaseWebComponent implements OnInit, OnCha
                     // apply filter to query (filters are optional)
                     query = this.getQueryWithFilters(query);
 
-                    return this.config.loadResolver(query);
+                    return query.get();
                 })
                 .finally(() => {
                     if (this.config.onAfterLoad) {
@@ -193,7 +193,7 @@ export class DataListComponent extends BaseWebComponent implements OnInit, OnCha
             // apply filter to query (filters are optional)
             query = this.getQueryWithFilters(query);
 
-            this.config.loadResolver(query)
+            query.get()
                 .finally(() => {
                     if (this.config.onAfterLoad) {
                         this.config.onAfterLoad(this.isInitialLoad);

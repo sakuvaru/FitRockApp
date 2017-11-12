@@ -161,18 +161,14 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
 
     private initDataList(clientId: number): void {
         this.DataListConfig = this.dependencies.webComponentServices.dataListService.dataList<ProgressItem>(
-            query => {
-                return query
-                    .get()
-                    .takeUntil(this.ngUnsubscribe);
-            },
             searchTerm => {
                 return this.dependencies.itemServices.progressItemService.items()
                     .includeMultiple(['ProgressItemType', 'ProgressItemType.ProgressItemUnit'])
                     .whereEquals('ClientId', clientId)
                     .orderByDescending('MeasurementDate');
-            },
-            [
+            }
+        )
+            .withFields([
                 {
                     value: (item: ProgressItem) =>
                         item.progressItemType.translateValue
@@ -201,8 +197,7 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
                     hideOnSmallScreens: false,
                     align: AlignEnum.Right,
                 },
-            ]
-        )
+            ])
             .dynamicFilters((searchTerm) => {
                 return this.dependencies.itemServices.progressItemTypeService.getProgressItemTypeWithCountDto(this.clientId, undefined)
                     .get()

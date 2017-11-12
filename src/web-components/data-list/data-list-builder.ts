@@ -2,6 +2,7 @@ import { DataListConfig, SelectableConfig, Filter, PagerConfig } from './data-li
 import { DataListField } from './data-list-field.class';
 import { Observable } from 'rxjs/RX';
 import { BaseMultipleItemQuery, ResponseMultiple, IItem, MultipleItemQuery, ErrorResponse } from '../../lib/repository';
+import * as _ from 'underscore';
 
 export class DataListBuilder<TItem extends IItem> {
 
@@ -9,21 +10,21 @@ export class DataListBuilder<TItem extends IItem> {
 
     constructor(
         /**
-        * Method that is used to get observable out of loadQuery.
-        * Usually this should include 'takeUntil(this.ngUnsubscribe)' to ensure
-        * that requests are cancelled if they are not required (e.g. after destroying component)
-        */
-        loadResolver: (query: BaseMultipleItemQuery) => Observable<ResponseMultiple<TItem>>,
-        /**
         * Used to specify query that loads items
         */
         loadQuery: (searchTerm: string) => BaseMultipleItemQuery,
-        /**
-        * Fields in the data list
-        */
-        fields: DataListField<TItem>[]
     ) {
-        this.config = new DataListConfig<TItem>(loadResolver, loadQuery, fields);
+        this.config = new DataListConfig<TItem>(loadQuery);
+    }
+
+    withField(field: DataListField<TItem>): this {
+        this.config.fields.push(field);
+        return this;
+    }
+
+    withFields(fields: DataListField<TItem>[]): this {
+        this.config.fields = _.union(this.config.fields, fields);
+        return this;
     }
 
     /**

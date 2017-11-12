@@ -36,18 +36,14 @@ export class MyTypesListComponent extends BaseComponent implements OnInit {
     });
 
     this.config = this.dependencies.webComponentServices.dataListService.dataList<ProgressItemType>(
-      query => {
-        return query
-          .get()
-          .takeUntil(this.ngUnsubscribe);
-      },
       searchTerm => {
         return this.dependencies.itemServices.progressItemTypeService.items()
           .byCurrentUser()
           .whereEquals('IsGlobal', false)
           .include('ProgressItemUnit');
       },
-      [
+    )
+      .withFields([
         {
           value: (item) => item.translateValue ? super.translate('module.progressItemTypes.globalTypes.' + item.typeName) : item.typeName, flex: 40
         },
@@ -55,8 +51,7 @@ export class MyTypesListComponent extends BaseComponent implements OnInit {
           value: (item) => super.translate('module.progressItemUnits.' + item.progressItemUnit.unitCode.toString())
           , isSubtle: true, align: AlignEnum.Right, hideOnSmallScreens: true
         },
-      ]
-    )
+      ])
       .showPager(true)
       .showSearch(false)
       .pagerSize(7)

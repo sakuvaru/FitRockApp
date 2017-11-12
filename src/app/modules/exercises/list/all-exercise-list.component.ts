@@ -40,25 +40,20 @@ export class AllExerciseListComponent extends BaseComponent implements OnInit {
 
   private initDataList(): void {
     this.config = this.dependencies.webComponentServices.dataListService.dataList<Exercise>(
-      query => {
-        return query
-          .get()
-          .takeUntil(this.ngUnsubscribe);
-      },
       searchTerm => {
         return this.dependencies.itemServices.exerciseService.items()
           .include('ExerciseCategory')
           .whereLike('ExerciseName', searchTerm);
       },
-      [
+    )
+      .withFields([
         { label: 'module.workouts.exerciseName', value: (item) => item.exerciseName, flex: 40 },
         {
           label: 'shared.updated', value: (item) => {
             return item.exerciseCategory.categoryName;
           }, isSubtle: true, align: AlignEnum.Right, hideOnSmallScreens: true
         },
-      ]
-    )
+      ])
       .dynamicFilters((searchTerm) => {
         return this.dependencies.itemServices.exerciseCategoyService.getCategoriesWithExercisesCount(searchTerm, true)
           .get()

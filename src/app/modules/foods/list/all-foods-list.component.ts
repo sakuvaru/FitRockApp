@@ -36,25 +36,20 @@ export class AllFoodsListComponent extends BaseComponent implements OnInit {
     });
 
     this.config = this.dependencies.webComponentServices.dataListService.dataList<Food>(
-      query => {
-        return query
-          .get()
-          .takeUntil(this.ngUnsubscribe);
-      },
       searchTerm => {
         return this.dependencies.itemServices.foodService.items()
           .include('FoodCategory')
           .whereLike('FoodName', searchTerm);
       },
-      [
+    )
+      .withFields([
         { value: (item) => item.foodName, flex: 40 },
         {
           value: (item) => {
             return item.foodCategory.categoryName;
           }, isSubtle: true, align: AlignEnum.Right, hideOnSmallScreens: true
         },
-      ]
-    )
+      ])
       .dynamicFilters((searchTerm) => {
         return this.dependencies.itemServices.foodCategoryService.getFoodCategoryWithFoodsCountDto(searchTerm, true)
           .get()

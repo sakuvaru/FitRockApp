@@ -44,20 +44,16 @@ export class ClientsOverviewComponent extends ClientsBaseComponent implements On
     });
 
     this.config = this.dependencies.webComponentServices.dataListService.dataList<User>(
-      query => {
-        return query
-          .get()
-          .takeUntil(this.ngUnsubscribe);
-      },
       searchTerm => {
         return this.dependencies.itemServices.userService.clients()
           .whereLikeMultiple(['FirstName', 'LastName'], searchTerm);
       },
-      [
+
+    )
+      .withFields([
         { value: (item) => item.getFullName(), flex: 40 },
         { value: (item) => item.email, isSubtle: true, align: AlignEnum.Right, hideOnSmallScreens: true },
-      ]
-    )
+      ])
       .showAllFilter(true)
       .filter(new Filter({
         filterNameKey: 'module.clients.activeClients',

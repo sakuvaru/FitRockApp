@@ -41,11 +41,6 @@ export class DietTemplatesComponent extends BaseComponent implements OnInit {
   private initDataList(): void {
 
     this.config = this.dependencies.webComponentServices.dataListService.dataList<Diet>(
-      query => {
-        return query
-          .get()
-          .takeUntil(this.ngUnsubscribe);
-      },
       searchTerm => {
         return this.dependencies.itemServices.dietService.items()
           .includeMultiple(['DietCategory', 'Client'])
@@ -53,7 +48,8 @@ export class DietTemplatesComponent extends BaseComponent implements OnInit {
           .whereLike('DietName', searchTerm)
           .whereNull('ClientId');
       },
-      [
+    )
+      .withFields([
         { value: (item) => item.dietName, flex: 40 },
         {
           value: (item) => {
@@ -68,8 +64,7 @@ export class DietTemplatesComponent extends BaseComponent implements OnInit {
             return item.dietCategory.categoryName;
           }, isSubtle: true, align: AlignEnum.Right, hideOnSmallScreens: true
         },
-      ]
-    )
+      ])
       .dynamicFilters((searchTerm) => {
         return this.dependencies.itemServices.dietCategoryService.getCategoryCountForDietTemplates(searchTerm)
           .get()

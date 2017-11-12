@@ -40,11 +40,6 @@ export class ClientWorkoutsComponent extends BaseComponent implements OnInit {
 
   private initDataList(): void {
     this.config = this.dependencies.webComponentServices.dataListService.dataList<Workout>(
-      (query => {
-        return query
-          .get()
-          .takeUntil(this.ngUnsubscribe);
-      }),
       searchTerm => {
         return this.dependencies.itemServices.workoutService.items()
           .includeMultiple(['WorkoutCategory', 'Client'])
@@ -52,7 +47,8 @@ export class ClientWorkoutsComponent extends BaseComponent implements OnInit {
           .whereLike('WorkoutName', searchTerm)
           .whereNotNull('ClientId');
       },
-      [
+    )
+      .withFields([
         { label: 'module.workouts.workoutName', value: (item) => item.workoutName, flex: 40 },
         {
           label: '-', value: (item) => {

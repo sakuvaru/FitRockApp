@@ -37,17 +37,14 @@ export class SelectWorkoutExerciseDialogComponent extends BaseComponent implemen
     super.ngOnInit();
 
     this.config = this.dependencies.webComponentServices.dataListService.dataList<Exercise>(
-      query => {
-        return query
-          .get()
-          .takeUntil(this.ngUnsubscribe);
-      },
       searchTerm => {
         return this.dependencies.itemServices.exerciseService.items()
           .include('ExerciseCategory')
           .whereLike('ExerciseName', searchTerm);
       },
-      [
+
+    )
+      .withFields([
         {
           label: 'module.workouts.exerciseName',
           value: (item) => item.exerciseName,
@@ -61,8 +58,7 @@ export class SelectWorkoutExerciseDialogComponent extends BaseComponent implemen
           align: AlignEnum.Right,
           hideOnSmallScreens: true
         },
-      ]
-    )
+      ])
       .filter(new Filter({ filterNameKey: 'module.workouts.allExercises', onFilter: query => query }))
       .filter(new Filter({ filterNameKey: 'module.workouts.myExercises', onFilter: query => query.byCurrentUser().whereEquals('IsGlobal', false) }))
       .pagerSize(5)

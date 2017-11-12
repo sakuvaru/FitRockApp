@@ -40,11 +40,6 @@ export class WorkoutTemplatesComponent extends BaseComponent implements OnInit {
 
   private initDataList(): void {
     this.config = this.dependencies.webComponentServices.dataListService.dataList<Workout>(
-      query => {
-        return query
-          .get()
-          .takeUntil(this.ngUnsubscribe);
-      },
       searchTerm => {
         return this.dependencies.itemServices.workoutService.items()
           .include('WorkoutCategory')
@@ -52,15 +47,15 @@ export class WorkoutTemplatesComponent extends BaseComponent implements OnInit {
           .whereLike('WorkoutName', searchTerm)
           .whereNull('ClientId');
       },
-      [
+    )
+      .withFields([
         { label: 'module.workouts.workoutName', value: (item) => item.workoutName, flex: 40 },
         {
           label: 'shared.updated', value: (item) => {
             return item.workoutCategory.categoryName;
           }, isSubtle: true, align: AlignEnum.Right, hideOnSmallScreens: true
         },
-      ]
-    )
+      ])
       .dynamicFilters((searchTerm) => {
         return this.dependencies.itemServices.workoutCategoryService.getCategoryCountForWorkoutTemplates(searchTerm)
           .get()

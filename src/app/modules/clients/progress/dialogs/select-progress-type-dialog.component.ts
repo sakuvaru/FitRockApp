@@ -23,14 +23,14 @@ export class SelectProgressTypeDialogComponent extends BaseComponent implements 
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     super(dependencies);
-    
+
   }
 
   setup(): ComponentSetup | null {
     return {
-        initialized: true
+      initialized: true
     };
-}
+  }
 
   ngOnInit() {
     super.ngOnInit();
@@ -40,24 +40,20 @@ export class SelectProgressTypeDialogComponent extends BaseComponent implements 
 
   private initDataList(): void {
     this.config = this.dependencies.webComponentServices.dataListService.dataList<ProgressItemType>(
-      (query) => {
-        return query
-          .get()
-          .takeUntil(this.ngUnsubscribe);
-      },
       (searchTerm) => {
         return this.dependencies.itemServices.progressItemTypeService.getProgressItemTypesSelection(this.dependencies.authenticatedUserService.getUserId())
           .include('ProgressItemUnit');
       },
-      [
+    )
+      .withFields([
         {
-          value: (item: ProgressItemType) =>  item.isGlobal ? super.translate('module.progressItemTypes.globalTypes.' + item.typeName) : item.typeName, 
+          value: (item: ProgressItemType) => item.isGlobal ? super.translate('module.progressItemTypes.globalTypes.' + item.typeName) : item.typeName,
           flex: 40
         },
         {
-          value: (item) => super.translate( 'module.progressItemUnits.' + item.progressItemUnit.unitCode.toString()),
-          isSubtle: true, 
-          align: AlignEnum.Right, 
+          value: (item) => super.translate('module.progressItemUnits.' + item.progressItemUnit.unitCode.toString()),
+          isSubtle: true,
+          align: AlignEnum.Right,
           hideOnSmallScreens: true
         },
       ])

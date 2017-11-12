@@ -36,20 +36,15 @@ export class MyLocationsComponent extends BaseComponent implements OnInit {
     });
 
     this.config = this.dependencies.webComponentServices.dataListService.dataList<Location>(
-      query => {
-        return query
-          .get()
-          .takeUntil(this.ngUnsubscribe);
-      },
       searchTerm => {
         return this.dependencies.itemServices.locationService.items()
           .byCurrentUser()
           .whereLikeMultiple(['LocationName', 'Address'], searchTerm);
       },
-      [
-        { value: (item: Location) => item.locationName, flex: 60 },
-      ]
     )
+      .withFields([
+        { value: (item: Location) => item.locationName, flex: 60 }
+      ])
       .showPager(true)
       .showSearch(true)
       .pagerSize(7)

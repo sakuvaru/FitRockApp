@@ -37,17 +37,13 @@ export class SelectDietFoodDialogComponent extends BaseComponent implements OnIn
     super.ngOnInit();
 
     this.config = this.dependencies.webComponentServices.dataListService.dataList<Food>(
-      query => {
-        return query
-          .get()
-          .takeUntil(this.ngUnsubscribe);
-      },
       searchTerm => {
         return this.dependencies.itemServices.foodService.items()
           .include('FoodCategory')
           .whereLike('FoodName', searchTerm);
       },
-      [
+    )
+      .withFields([
         {
           value: (item) => item.foodName,
           flex: 60
@@ -59,8 +55,7 @@ export class SelectDietFoodDialogComponent extends BaseComponent implements OnIn
           align: AlignEnum.Right,
           hideOnSmallScreens: true
         },
-      ]
-    )
+      ])
       .filter(new Filter({ filterNameKey: 'module.diets.allFoods', onFilter: query => query }))
       .filter(new Filter({ filterNameKey: 'module.diets.myFoods', onFilter: query => query.byCurrentUser().whereEquals('IsGlobal', false) }))
       .pagerSize(5)

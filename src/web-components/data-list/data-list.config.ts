@@ -6,6 +6,11 @@ import { guidHelper, stringHelper } from '../../lib/utilities';
 export class DataListConfig<TItem extends IItem> {
 
     /**
+    * Fields in the data list
+    */
+    public fields: DataListField<TItem>[] = [];
+
+    /**
      * Indicates if last used filter will be used on the next load of given data list
      */
     public saveLastFilter: boolean = true;
@@ -102,19 +107,10 @@ export class DataListConfig<TItem extends IItem> {
 
     constructor(
         /**
-        * Method that is used to get observable out of loadQuery.
-        * Usually this should include 'takeUntil(this.ngUnsubscribe)' to ensure
-        * that requests are cancelled if they are not required (e.g. after destroying component)
-        */
-        public loadResolver: (query: BaseMultipleItemQuery) => Observable<ResponseMultiple<TItem>>,
-        /**
         * Used to specify query that loads items
         */
         public loadQuery: (searchTerm: string) => BaseMultipleItemQuery,
-        /**
-        * Fields in the data list
-        */
-        public fields: DataListField<TItem>[]
+
     ) { }
 
     isSelectable(): boolean {
@@ -134,7 +130,7 @@ export class DataListConfig<TItem extends IItem> {
         allProperties.forEach(property => {
             const propertyValue = this[property];
             if (propertyValue) {
-                fullText +=  property + '=' + propertyValue;
+                fullText += property + '=' + propertyValue;
             }
         });
         return stringHelper.getHash(fullText);
@@ -181,7 +177,7 @@ export class Filter<TModel extends any | IItem> {
     constructor(
         options: {
             filterNameKey: string,
-            onFilter: (query: BaseMultipleItemQuery ) => BaseMultipleItemQuery,
+            onFilter: (query: BaseMultipleItemQuery) => BaseMultipleItemQuery,
             count?: number,
             countQuery?: (query: BaseMultipleItemQuery) => ItemCountQuery
         }

@@ -64,36 +64,31 @@ export class ClientAppointmentListComponent extends ClientsBaseComponent impleme
     dateNow.setMilliseconds(0);
 
     this.config = this.dependencies.webComponentServices.dataListService.dataList<Appointment>(
-      query => {
-        return query
-          .get()
-          .takeUntil(this.ngUnsubscribe);
-      },
       searchTerm => {
         return this.dependencies.itemServices.appointmentService.items()
           .byCurrentUser()
           .whereEquals('ClientId', clientId)
           .include('Location');
       },
-      [
-        { 
-          value: (item: Appointment) => item.appointmentName, 
-          flex: 50 
+    )
+      .withFields([
+        {
+          value: (item) => item.appointmentName,
+          flex: 50
         },
-        { 
-          value: (item: Appointment) => item.location.locationName, 
+        {
+          value: (item) => item.location.locationName,
           flex: 25,
           isSubtle: true,
           hideOnSmallScreens: true,
           align: AlignEnum.Right
         },
-        { 
-          value: (item: Appointment) => super.formatDate(item.appointmentDate), 
-          isSubtle: true, 
-          align: AlignEnum.Right, 
-          },
-      ]
-    )
+        {
+          value: (item) => super.formatDate(item.appointmentDate),
+          isSubtle: true,
+          align: AlignEnum.Right,
+        },
+      ])
       .showAllFilter(false)
       .showSearch(false)
       .filter(new Filter({
