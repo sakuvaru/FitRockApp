@@ -1,6 +1,4 @@
-import { LineChart, VerticalBarChart } from './graph-types';
-import { GraphBuilder } from './graph.builder';
-import { GraphTypeEnum } from './graph-type.enum';
+import { LineChart, VerticalBarChart, GraphBuilder, GraphTypeEnum } from '../../../web-components/graph';
 import { Observable } from 'rxjs/Rx';
 
 export class GraphService {

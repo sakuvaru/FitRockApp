@@ -14,9 +14,6 @@ import { MessagesModule } from '../messages';
 // components
 import { UploaderComponent } from './uploader.component';
 
-// services
-import { UploaderService } from './uploader.service';
-
 @NgModule({
     imports: [
         CommonModule,
@@ -30,9 +27,6 @@ import { UploaderService } from './uploader.service';
     ],
     exports: [
         UploaderComponent,
-    ],
-    providers: [
-        UploaderService
     ]
 })
 export class UploaderModule { }

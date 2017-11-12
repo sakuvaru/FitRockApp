@@ -49,9 +49,13 @@ import { TranslateModule, TranslateLoader, MissingTranslationHandler } from '@ng
 // google map
 import { AgmCoreModule } from '@agm/core';
 
-// custom modules
+// core module
 import { CoreModule } from './core';
 
+// web component services
+import { WebComponentServicesModule } from './web-component-services/web-component-services.module';
+
+// modules
 import { LayoutsModule } from './layouts/layouts.module';
 import { SharedModule } from './modules/shared/shared.module';
 import { ServicesModule } from './services/services.module';
@@ -104,7 +108,10 @@ import { LocationModule } from './modules/locations/location.module';
     // authentication
     AuthModule,
 
-    // custom modules
+    // web component services
+    WebComponentServicesModule,
+
+    // modules
     LayoutsModule,
     SharedModule,
     DashboardModule,

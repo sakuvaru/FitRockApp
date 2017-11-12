@@ -21,9 +21,6 @@ import { GraphComponent } from './graph.component';
 import { VerticalBarGraphComponent } from './graph-components/vertical-bar-chart.component';
 import { LineChartGraphComponent } from './graph-components/line-chart.component';
 
-// service
-import { GraphService } from './graph.service';
-
 @NgModule({
     imports: [
         CommonModule,
@@ -41,9 +38,6 @@ import { GraphService } from './graph.service';
     ],
     exports: [
         GraphComponent
-    ],
-    providers: [
-        GraphService
     ]
 })
 export class GraphModule { }

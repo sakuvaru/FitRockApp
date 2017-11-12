@@ -1,7 +1,6 @@
-import { DataListBuilder } from './data-list-builder';
-import { DataListField } from './data-list-field.class';
-import { IItem, MultipleItemQuery, ResponseMultiple } from '../../lib/repository';
+import { IItem, MultipleItemQuery, ResponseMultiple } from '../../../lib/repository';
 import { Observable } from 'rxjs/Observable';
+import { DataListBuilder } from '../../../web-components/data-list';
 
 export class DataListService {
 

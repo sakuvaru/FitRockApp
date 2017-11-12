@@ -1,5 +1,5 @@
-import { DynamicFormEditBuilder, DynamicFormInsertBuilder } from './dynamic-form-builder';
-import { IItem, ResponseFormEdit, ResponseFormInsert, ResponseCreate, ResponseEdit } from '../../lib/repository';
+import { DynamicFormEditBuilder, DynamicFormInsertBuilder } from '../../../web-components/dynamic-form/dynamic-form-builder';
+import { IItem, ResponseFormEdit, ResponseFormInsert, ResponseCreate, ResponseEdit } from '../../../lib/repository';
 import { Observable } from 'rxjs/Rx';
 
 export class DynamicFormService {

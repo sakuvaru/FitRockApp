@@ -1,5 +1,5 @@
-import { LoadMoreBuilder } from './load-more-builder';
-import { MultipleItemQuery, IItem, ResponseMultiple } from '../../lib/repository';
+import { LoadMoreBuilder } from '../../../web-components/load-more';
+import { MultipleItemQuery, IItem, ResponseMultiple } from '../../../lib/repository';
 import { Observable } from 'rxjs/Rx';
 
 export class LoadMoreService {

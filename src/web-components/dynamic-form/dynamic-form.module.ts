@@ -8,9 +8,6 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 // Shared web components
 import { SharedWebComponentModule } from '../shared-web-components.module';
 
-// Services
-import { DynamicFormService } from './dynamic-form.service';
-
 // Dynamic form
 // see https://angular.io/docs/ts/latest/cookbook/dynamic-form.html for more details
 import { DynamicFormQuestionComponent } from './dynamic-form-question.component';
@@ -73,9 +70,6 @@ import { MessagesModule } from '../messages/messages.module';
         NumberComponent,
         PhoneNumberComponent,
         DateTimeComponent
-    ],
-    providers: [
-        DynamicFormService
     ],
     exports: [
         DynamicFormQuestionComponent,

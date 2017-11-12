@@ -11,9 +11,6 @@ import { LoaderModule } from '../loader/loader.module';
 // components
 import { LoadMoreComponent } from './load-more.component';
 
-// services
-import { LoadMoreService } from './load-more.service';
-
 @NgModule({
     imports: [
         CommonModule,
@@ -29,9 +26,6 @@ import { LoadMoreService } from './load-more.service';
     ],
     exports: [
         LoadMoreComponent,
-    ],
-    providers: [
-        LoadMoreService
     ]
 })
 export class LoadMoreModule { }

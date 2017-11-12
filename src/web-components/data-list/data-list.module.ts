@@ -6,9 +6,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { SharedWebComponentModule } from '../shared-web-components.module';
 
-// data list service
-import { DataListService } from './data-list-service';
-
 // components
 import { DataListComponent } from './data-list.component';
 import {
@@ -39,9 +36,6 @@ import { LoaderModule } from '../loader/loader.module';
     ],
     exports: [
         DataListComponent
-    ],
-    providers: [
-        DataListService
     ]
 })
 export class DataListModule { }

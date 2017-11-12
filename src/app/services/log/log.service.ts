@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Log } from '../models/log.class';
-import { RepositoryClient, ResponseCreate, ResponseMultiple } from '../../lib/repository';
-import { BaseTypeService } from './base/base-type.service';
+import { Log } from '../../models/log.class';
+import { RepositoryClient, ResponseCreate, ResponseMultiple } from '../../../lib/repository';
+import { BaseTypeService } from '../base/base-type.service';
 import { Observable } from 'rxjs/Rx';
 
 @Injectable()

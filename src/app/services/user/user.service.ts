@@ -1,12 +1,12 @@
 // service common
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { BaseTypeService } from './base/base-type.service';
+import { BaseTypeService } from '../base/base-type.service';
 
 // required by service
-import { User, UserFilterWithCount } from '../models';
-import { EditFormQuery, RepositoryClient, MultipleItemQuery, CreateItemQuery, ResponseSingle, MultipleItemQueryCustom } from '../../lib/repository';
-import { DynamicFormEditBuilder } from '../../web-components/dynamic-form';
+import { User, UserFilterWithCount } from '../../models';
+import { EditFormQuery, RepositoryClient, MultipleItemQuery, CreateItemQuery, ResponseSingle, MultipleItemQueryCustom } from '../../../lib/repository';
+import { DynamicFormEditBuilder } from '../../../web-components/dynamic-form';
 
 @Injectable()
 export class UserService extends BaseTypeService<User> {

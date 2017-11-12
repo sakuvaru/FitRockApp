@@ -1,5 +1,4 @@
-import { UploaderBuilder } from './uploader-builder';
-import { UploaderModeEnum } from './uploader-mode.enum';
+import { UploaderBuilder, UploaderModeEnum } from '../../../web-components/uploader';
 import { Observable } from 'rxjs/Rx';
 
 export class UploaderService {

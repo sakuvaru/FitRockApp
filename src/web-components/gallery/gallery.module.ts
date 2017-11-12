@@ -19,9 +19,6 @@ import { GalleryDeleteDialogComponent } from './gallery-delete-dialog.component'
 // components
 import { GalleryComponent } from './gallery.component';
 
-// services
-import { GalleryService } from './gallery.service';
-
 // buttons
 import { ButtonsModule } from '../buttons/buttons.module';
 
@@ -44,9 +41,6 @@ import { MessagesModule } from '../messages/messages.module';
     ],
     exports: [
         GalleryComponent,
-    ],
-    providers: [
-        GalleryService
     ],
     entryComponents: [
         GalleryDeleteDialogComponent

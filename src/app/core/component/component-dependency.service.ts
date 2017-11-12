@@ -31,12 +31,9 @@ import { TranslateService } from '@ngx-translate/core';
 import * as moment from 'moment';
 
 // Web component services
-import { DataListService } from '../../../web-components/data-list';
-import { DynamicFormService } from '../../../web-components/dynamic-form';
-import { LoadMoreService } from '../../../web-components/load-more';
-import { UploaderService } from '../../../web-components/uploader';
-import { GalleryService } from '../../../web-components/gallery';
-import { GraphService } from '../../../web-components/graph';
+import { DataListService, DynamicFormService, GalleryService, GraphService,
+    LoadMoreService, UploaderService
+} from '../../web-component-services';
 
 // Models
 import { User } from '../../models/';

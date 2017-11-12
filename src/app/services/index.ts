@@ -1,6 +1,6 @@
 // shared/common
-export * from './log.service';
-export * from './user.service';
+export * from './log/log.service';
+export * from './user/user.service';
 
 // workouts
 export * from './workouts/workout.service';

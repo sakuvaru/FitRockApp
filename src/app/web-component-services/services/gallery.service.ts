@@ -1,5 +1,4 @@
-import { GalleryBuilder } from './gallery.builder';
-import { GalleryImage } from './gallery-image.class';
+import { GalleryBuilder, GalleryImage } from '../../../web-components/gallery';
 import { Observable } from 'rxjs/Rx';
 
 export class GalleryService {

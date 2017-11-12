@@ -17,11 +17,19 @@ export class DataListBuilder<TItem extends IItem> {
         this.config = new DataListConfig<TItem>(loadQuery);
     }
 
+    /**
+     * Adds field to list
+     * @param field Field to add
+     */
     withField(field: DataListField<TItem>): this {
         this.config.fields.push(field);
         return this;
     }
 
+    /**
+     * Adds array of fields to list
+     * @param fields Fields to add
+     */
     withFields(fields: DataListField<TItem>[]): this {
         this.config.fields = _.union(this.config.fields, fields);
         return this;
