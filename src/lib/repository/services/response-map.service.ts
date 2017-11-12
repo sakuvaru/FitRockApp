@@ -150,7 +150,6 @@ export class ResponseMapService {
 
      mapPostResponse<T extends any>(response: Response): ResponsePost<T> {
         const responsePost = (response.json() || {}) as IResponsePostRaw;
-
         return new ResponsePost<T>({
             data: responsePost.data as T,
             action: responsePost.action,

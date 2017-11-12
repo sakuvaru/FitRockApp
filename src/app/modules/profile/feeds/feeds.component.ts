@@ -36,6 +36,8 @@ export class FeedsComponent extends BaseComponent implements OnInit {
 
         this.initMenu();
         this.initLoadMore();
+
+        super.subscribeToObservable(this.getMarkAllFeedsAsReadObservable());
     }
 
     private initMenu(): void {
@@ -45,6 +47,10 @@ export class FeedsComponent extends BaseComponent implements OnInit {
             menuItems: new MyProfileMenuItems().menuItems,
             menuTitle: { key: 'module.profile.submenu.myProfile' },
         });
+    }
+
+    private getMarkAllFeedsAsReadObservable(): Observable<any> {
+        return this.dependencies.itemServices.feedService.markAllFeedsAsReadForUser(this.dependencies.authenticatedUserService.getUserId());
     }
 
     private initLoadMore(): void {

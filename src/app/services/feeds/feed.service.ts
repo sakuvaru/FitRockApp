@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Feed, FeedResult } from '../../models';
-import { RepositoryClient, MultipleItemQuery, ResponseMultiple, ResponseEdit } from '../../../lib/repository';
+import { RepositoryClient, MultipleItemQuery, ResponseMultiple, ResponseEdit, ResponsePost } from '../../../lib/repository';
 import { BaseTypeService } from '../base/base-type.service';
 import { Observable } from 'rxjs/Rx';
 import { stringHelper } from '../../../lib/utilities';
@@ -46,6 +46,13 @@ export class FeedService extends BaseTypeService<Feed> {
     markFeedAsRead(feed: Feed): Observable<ResponseEdit<Feed>> {
         feed.markedAsRead = true;
         return super.edit(feed).set();
+    }
+
+    markAllFeedsAsReadForUser(userId: number): Observable<ResponsePost<boolean>> {
+        if (!userId) {
+            throw new Error('Invalid user');
+        }
+        return super.post<boolean>('MarkAllFeedsAsReadForUser').withJsonOption('UserId', userId).set();
     }
 
      getCountOfUnreadNotifications(userId: number): Observable<number> {

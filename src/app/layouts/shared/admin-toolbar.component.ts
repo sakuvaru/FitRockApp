@@ -106,7 +106,9 @@ export class AdminToolbarComponent extends BaseComponent implements OnInit {
             this.preventFeedChange = true;
 
             // mark feed as read upon clicking
-            this.getMarkAsReadObservable(feed).subscribe(response => {
+            this.getMarkAsReadObservable(feed)
+                .takeUntil(this.ngUnsubscribe)
+                .subscribe(response => {
                 this.preventFeedChange = false;
 
                 // there is one less unread feed
@@ -128,7 +130,6 @@ export class AdminToolbarComponent extends BaseComponent implements OnInit {
     }
 
     private getMarkAsReadObservable(feed: Feed): Observable<any> {
-        return this.dependencies.itemServices.feedService.markFeedAsRead(feed)
-            .takeUntil(this.ngUnsubscribe);
+        return this.dependencies.itemServices.feedService.markFeedAsRead(feed);
     }
 }
