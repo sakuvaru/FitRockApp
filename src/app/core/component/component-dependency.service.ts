@@ -65,7 +65,7 @@ export class ComponentDependencyService {
         this.router = injector.get(Router);
 
         // authenticated user service (note: has to be initialized when logging in)
-        this.authenticatedUserService = new AuthenticatedUserService();
+        this.authenticatedUserService = injector.get(AuthenticatedUserService);
 
         // core services
         this.coreServices = new CoreServices();

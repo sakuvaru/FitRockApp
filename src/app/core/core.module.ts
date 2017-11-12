@@ -31,6 +31,9 @@ import { DirectivesModule } from '../../directives';
 // https://github.com/valor-software/ng2-dragula
 import { DragulaModule } from 'ng2-dragula';
 
+// local authenticated user
+import { AuthenticatedUserService } from './services/authenticated-user.service';
+
 @NgModule({
     imports: [
         CommonModule,
@@ -50,7 +53,8 @@ import { DragulaModule } from 'ng2-dragula';
     ],
     providers: [
         SharedService,
-        ComponentDependencyService
+        ComponentDependencyService,
+        AuthenticatedUserService
     ],
     exports: [
         CommonModule,

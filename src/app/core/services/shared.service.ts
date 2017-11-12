@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import { ComponentConfig } from '../component/component.config';
-import { GlobalLoaderStatus } from '../models/core.models';
+import { GlobalLoaderStatus, AuthenticatedUser } from '../models/core.models';
 import { ComponentSetup } from '../component/component-setup.class';
 import { Log } from '../../models/';
 
@@ -16,6 +16,7 @@ export class SharedService {
   private componentSearchSource = new Subject<string>();
   private errorSource = new Subject<Log>();
   private componentSetupSource = new Subject<ComponentSetup>();
+  private authenticatedUserSource = new Subject<AuthenticatedUser>();
 
   // Observable string streams
   componentConfigChanged$ = this.componentConfigSource.asObservable();
@@ -23,6 +24,7 @@ export class SharedService {
   globalLoaderChanged$ = this.globalLoaderSource.asObservable();
   errorChanged$ = this.errorSource.asObservable();
   componentSetupChanged$ = this.componentSetupSource.asObservable();
+  authenticatedUserChanged$ = this.authenticatedUserSource.asObservable();
 
   // Service message commands
   setComponentConfig(config: ComponentConfig): void {
@@ -43,5 +45,9 @@ export class SharedService {
 
   setComponentSetup(setup: ComponentSetup): void {
     this.componentSetupSource.next(setup);
+  }
+
+  setAuthenticatedUser(user: AuthenticatedUser): void {
+    this.authenticatedUserSource.next(user);
   }
 }

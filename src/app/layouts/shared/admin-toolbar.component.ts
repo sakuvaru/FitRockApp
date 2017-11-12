@@ -15,6 +15,10 @@ export class AdminToolbarComponent extends BaseComponent implements OnInit {
     private feedsCount: number;
     private feeds: Feed[];
 
+    private defaultAvatarUrl: string = AppConfig.DefaultUserAvatarUrl;
+    private showAvatar: boolean = false;
+    private userAvatarUrl?: string;
+
     private readonly limitFeedsCount: number = 8;
 
     /**
@@ -32,13 +36,29 @@ export class AdminToolbarComponent extends BaseComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.initUserAvatar();
         this.subscribeToFeedObservables();
+    }
+
+    private initUserAvatar(): void {
+        const authUser = this.dependencies.authenticatedUserService.getUser();
+        this.userAvatarUrl = authUser ? authUser.avatarUrl : undefined;
+        this.showAvatar = true;
+
+        // listen to user changes and update avatar accordingly
+        this.dependencies.coreServices.sharedService.authenticatedUserChanged$
+            .takeUntil(this.ngUnsubscribe)
+            .subscribe(
+            user => {
+                if (user && user.avatarUrl) {
+                    this.userAvatarUrl = user.avatarUrl;
+                }
+            });
     }
 
     private subscribeToFeedObservables(): void {
         // do not run it through super.subscribeToObservable
         // as it causes some issues with rendering of the layout template (e.g. the icons are not resolved, the media queries do not work...)
-
         this.dependencies.itemServices.feedService.getCountOfUnreadNotifications(this.dependencies.authenticatedUserService.getUserId())
             .takeUntil(this.ngUnsubscribe)
             .subscribe(count => this.feedsCount = count, error => super.handleError(error));

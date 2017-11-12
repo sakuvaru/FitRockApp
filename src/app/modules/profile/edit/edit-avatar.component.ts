@@ -56,8 +56,13 @@ export class EditAvatarComponent extends BaseComponent implements OnInit {
             .useDefaultImageExtensions(true)
             .onAfterUpload<FetchedFile>((avatar => {
                 if (avatar && avatar.length === 1) {
+                    const avatarUrl = avatar[0].absoluteUrl;
+
                     // update src of the avatar
-                    this.avatarSrc = avatar[0].absoluteUrl;
+                    this.avatarSrc = avatarUrl;
+
+                    // update avatar in local storage
+                    this.dependencies.authenticatedUserService.updateAvatar(avatarUrl);
                 }
             }))
             .build();

@@ -1,7 +1,10 @@
+import { Injectable } from '@angular/core';
 import { AuthenticatedUser } from '../models/core.models';
+import { SharedService } from './shared.service';
 
 /// Service that provides the currently authenticated user
 /// Has to be initialized after the user is logged in using the 'setUser' method
+@Injectable()
 export class AuthenticatedUserService {
 
     /**
@@ -10,14 +13,29 @@ export class AuthenticatedUserService {
     private readonly authUserStorageKey = 'auth_user';
 
     constructor(
+        private sharedService: SharedService
     ) {
     }
 
     /**
      * Gets current user from local storage
      */
-    public getUser(): AuthenticatedUser | null {
+    getUser(): AuthenticatedUser | null {
         return this.getUserFromLocalStorage();
+    }
+
+    /**
+     * Updates avatar of current user in local storage.
+     * This method should be called each time avatar is changed so that
+     * new avatar can be displayed instead of the old one
+     * @param avatarUrl Avatar url
+     */
+    updateAvatar(avatarUrl: string): void {
+        const user = this.getUser();
+        if (user) {
+            user.avatarUrl = avatarUrl;
+            this.setUser(user);
+        }
     }
 
     /**
@@ -33,6 +51,9 @@ export class AuthenticatedUserService {
 
     public setUser(user: AuthenticatedUser): void {
         this.saveUserToStorage(user);
+
+        // notify shared service that user has been changed
+        this.sharedService.setAuthenticatedUser(user);
     }
 
     private saveUserToStorage(user: AuthenticatedUser): void {
@@ -47,6 +68,6 @@ export class AuthenticatedUserService {
 
         const userAs = JSON.parse(userJson) as AuthenticatedUser;
 
-        return new AuthenticatedUser(userAs.id, userAs.email, userAs.firstName, userAs.lastName, userAs.trainerId, userAs.isClient);
+        return new AuthenticatedUser(userAs.id, userAs.email, userAs.firstName, userAs.lastName, userAs.trainerId, userAs.isClient, userAs.avatarUrl);
     }
 }
