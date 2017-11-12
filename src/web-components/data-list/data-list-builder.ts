@@ -13,8 +13,22 @@ export class DataListBuilder<TItem extends IItem> {
         * Used to specify query that loads items
         */
         loadQuery: (searchTerm: string) => BaseMultipleItemQuery,
+        /**
+         * Image to be displayed when there is no data
+         */
+        noDataImageUrl: string
     ) {
         this.config = new DataListConfig<TItem>(loadQuery);
+        this.config.noDataImageUrl = noDataImageUrl;
+    }
+
+    /**
+     * Image used when there is no data in list
+     * @param imageUrl Image url
+     */
+    noDataImageUrl(imageUrl: string): this {
+        this.config.noDataImageUrl = imageUrl;
+        return this;
     }
 
     /**

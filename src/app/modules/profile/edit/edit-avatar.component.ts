@@ -1,7 +1,8 @@
 // common
 import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { AppConfig, UrlConfig, ComponentDependencyService, BaseComponent, ComponentSetup } from '../../../core';
+import { ComponentDependencyService, BaseComponent, ComponentSetup } from '../../../core';
+import { AppConfig, UrlConfig } from '../../../config';
 
 // requied by component
 import { MyProfileMenuItems } from '../menu.items';

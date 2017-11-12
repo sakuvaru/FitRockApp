@@ -1,7 +1,7 @@
 import { Component, Input, OnDestroy } from '@angular/core';
 import { TdMediaService } from '@covalent/core';
 
-import { AppConfig, ComponentDependencyService } from '../../core';
+import { ComponentDependencyService } from '../../core';
 
 @Component({
     selector: 'footer',

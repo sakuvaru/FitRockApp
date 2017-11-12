@@ -1,5 +1,4 @@
-import { AppConfig } from '../config/app.config';
-import { UrlConfig } from '../config/url.config';
+import { AppConfig, UrlConfig } from '../../config';
 import { MenuItem, MenuItemType, ResourceKey } from '../models/core.models';
 
 export class AdminMenu {

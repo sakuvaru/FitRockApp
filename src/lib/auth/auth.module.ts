@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Http, RequestOptions } from '@angular/http';
 import { AuthHttp, AuthConfig } from 'angular2-jwt';
-import { AppConfig } from '../../app/core/config/app.config';
 import { TokenService } from './token.service';
 import { AuthService } from './auth.service';
 import { AuthGuardService } from './auth-guard.service';

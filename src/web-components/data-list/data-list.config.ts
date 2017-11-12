@@ -105,6 +105,11 @@ export class DataListConfig<TItem extends IItem> {
      */
     public loaderConfig?: { start: () => void, stop: () => void };
 
+    /**
+     * Image used when there is no data in list
+     */
+    public noDataImageUrl: string;
+
     constructor(
         /**
         * Used to specify query that loads items

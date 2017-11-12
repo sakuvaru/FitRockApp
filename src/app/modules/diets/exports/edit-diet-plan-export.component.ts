@@ -1,7 +1,8 @@
 // common
 import { Component, Input, Output, OnInit, EventEmitter, OnDestroy, AfterViewInit, OnChanges, SimpleChanges } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { AppConfig, ComponentDependencyService, BaseComponent, ComponentConfig, ComponentSetup } from '../../../core';
+import { ComponentDependencyService, BaseComponent, ComponentConfig, ComponentSetup } from '../../../core';
+import { AppConfig, UrlConfig } from '../../../config';
 
 // required by component
 import { Diet, DietFood, Food } from '../../../models';

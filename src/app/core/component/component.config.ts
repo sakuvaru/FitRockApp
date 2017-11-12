@@ -1,4 +1,4 @@
-import { AppConfig } from '../config/app.config';
+import { AppConfig, UrlConfig } from '../../config';
 import { MenuItem, MenuItemType, ResourceKey } from '../models/core.models';
 
 export class ComponentConfig {

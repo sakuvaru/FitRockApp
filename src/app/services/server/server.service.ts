@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { RepositoryClient, ControllerModel } from '../../../lib/repository';
 import { BaseTypeService } from '../base/base-type.service';
 import { Observable } from 'rxjs/Rx';
-import { AppConfig } from '../../core';
 
 @Injectable()
 export class ServerService {

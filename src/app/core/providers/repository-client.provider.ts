@@ -4,7 +4,7 @@ import { Http } from '@angular/http';
 
 // config
 import { RepositoryConfig, TypeResolver, RepositoryClient } from '../../../lib/repository';
-import { AppConfig } from '../../core/config/app.config';
+import { AppConfig, UrlConfig } from '../../config';
 
 // services
 import { AuthHttp } from 'angular2-jwt';

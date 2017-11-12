@@ -1,6 +1,6 @@
 import { MenuItem, MenuItemType } from '../../core';
 import { User } from '../../models';
-import { AppConfig } from '../../core';
+import { AppConfig } from '../../config';
 
 export class ChatMenuItems {
 

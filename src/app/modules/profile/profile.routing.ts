@@ -5,7 +5,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthGuardService } from '../../../lib/auth';
 
 // config
-import { UrlConfig } from '../../core';
+import { AppConfig, UrlConfig } from '../../config';
 
 // base layouts
 import { SimpleLayoutComponent } from '../../layouts/simple-layout.component';

@@ -1,7 +1,6 @@
 import { ErrorHandler, Injectable, Injector } from '@angular/core';
 import { LocationStrategy, PathLocationStrategy } from '@angular/common';
-import { UrlConfig } from '../config/url.config';
-import { AppConfig } from '../config/app.config';
+import { AppConfig, UrlConfig } from '../../config';
 import { Router } from '@angular/router';
 import { LogService } from '../../services/';
 import { SharedService } from '../services/shared.service';

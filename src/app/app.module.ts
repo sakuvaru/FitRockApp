@@ -36,8 +36,7 @@ import { AppComponent } from './app.component';
 import { RepositoryClientProvider } from './core/providers/repository-client.provider';
 
 // config
-import { AppConfig } from './core/config/app.config';
-import { UrlConfig } from './core/config/url.config';
+import { AppConfig, UrlConfig } from './config';
 
 // web components
 import { WebComponentsModule } from '../web-components';

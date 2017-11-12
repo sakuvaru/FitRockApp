@@ -1,5 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { ComponentDependencyService, BaseComponent, MenuItemType, AppConfig, ComponentSetup } from '../../core';
+import { ComponentDependencyService, BaseComponent, MenuItemType, ComponentSetup } from '../../core';
+import { AppConfig, UrlConfig } from '../../config';
 
 import { StringHelper } from '../../../lib/utilities';
 import { Feed, FeedResult } from '../../models';

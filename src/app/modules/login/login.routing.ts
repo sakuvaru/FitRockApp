@@ -6,7 +6,7 @@ import { SimpleLayoutComponent } from '../../layouts/simple-layout.component';
 import { AdminLayoutComponent } from '../../layouts/admin-layout.component';
 
 // config
-import { UrlConfig } from '../../core';
+import { AppConfig, UrlConfig } from '../../config';
 
 // components
 import { LoginPageComponent } from './login-page.component';

@@ -1,6 +1,5 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
-import { AppConfig } from '../config/app.config';
-import { UrlConfig } from '../config/url.config';
+import { AppConfig, UrlConfig } from '../../config';
 import { ComponentDependencyService } from './component-dependency.service';
 import { ErrorResponse, ErrorReasonEnum } from '../../../lib/repository';
 import { ComponentConfig } from './component.config';

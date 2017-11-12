@@ -1,7 +1,8 @@
 import { Component, Input, Output, OnInit, EventEmitter, OnDestroy } from '@angular/core';
 import { AuthService } from '../lib/auth';
 import { ActivatedRoute, Params } from '@angular/router';
-import { AppConfig, ComponentDependencyService, BaseComponent, UrlConfig, ComponentSetup } from './core';
+import { ComponentDependencyService, BaseComponent, ComponentSetup } from './core';
+import { AppConfig, UrlConfig } from './config';
 import { AuthenticatedUserService } from './core/services/authenticated-user.service';
 import { AuthenticatedUser } from './core/models/core.models';
 import { Observable } from 'rxjs/Rx';

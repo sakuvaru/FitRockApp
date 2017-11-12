@@ -1,7 +1,8 @@
 // common
 import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { UrlConfig, AppConfig, ComponentDependencyService, BaseComponent, ComponentSetup } from '../../core';
+import { ComponentDependencyService, BaseComponent, ComponentSetup } from '../../core';
+import { AppConfig, UrlConfig } from '../../config';
 
 @Component({
   selector: 'unauthorized',

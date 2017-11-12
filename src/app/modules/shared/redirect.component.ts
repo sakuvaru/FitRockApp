@@ -1,7 +1,8 @@
 // common
 import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { AppConfig, ComponentDependencyService, BaseComponent, ComponentSetup } from '../../core';
+import { ComponentDependencyService, BaseComponent, ComponentSetup } from '../../core';
+import { AppConfig } from '../../config';
 
 /**
  * This component is used to redirect user to another component

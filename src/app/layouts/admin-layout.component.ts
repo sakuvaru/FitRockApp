@@ -2,7 +2,8 @@
 // common
 import { Component, Input, OnDestroy, ChangeDetectorRef, OnInit, AfterViewInit } from '@angular/core';
 import { TdMediaService } from '@covalent/core';
-import { ComponentDependencyService, BaseComponent, MenuItemType, AppConfig, ComponentSetup } from '../core';
+import { ComponentDependencyService, BaseComponent, MenuItemType, ComponentSetup } from '../core';
+import { AppConfig, UrlConfig } from '../config';
 
 // required by component
 import { Subscription } from 'rxjs/Rx';

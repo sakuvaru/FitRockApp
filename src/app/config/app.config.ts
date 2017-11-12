@@ -1,5 +1,5 @@
 import { UrlConfig } from './url.config';
-import { ControllerModel } from '../../../lib/repository';
+import { ControllerModel } from '../../lib/repository';
 
 export class AppConfig {
     // dev
@@ -54,4 +54,9 @@ export class AppConfig {
      * Default url to image used as avatar
      */
     public static DefaultUserAvatarUrl = AppConfig.ServerUrl + '/system/images/default_avatar.png';
+
+     /**
+     * No data image url
+     */
+    public static NoDataImageUrl = AppConfig.ServerUrl + '/system/images/empty.png';
 }
