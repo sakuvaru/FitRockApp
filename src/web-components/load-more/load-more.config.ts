@@ -82,6 +82,11 @@ export class LoadMoreConfig<TItem extends IItem> {
      * Indicates if local loader is enabled
      */
     public enableLocalLoader = true;
+
+    /**
+     * Indicates if separator between items is used
+     */
+    public useSeparator: boolean = true;
     
     constructor(
         /**

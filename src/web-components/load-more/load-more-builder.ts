@@ -13,6 +13,11 @@ export class LoadMoreBuilder<TItem extends IItem> {
         this.config = new LoadMoreConfig(loadResolver, loadQuery);
     }
 
+    useSeparator(use: boolean): this {
+        this.config.useSeparator = use;
+        return this;
+    }
+
     showSearch(show: boolean): this {
         this.config.showSearch = show;
         return this;

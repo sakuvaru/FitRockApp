@@ -14,7 +14,6 @@
         <div *ngIf="items && items.length > 0">
           <ng-container *ngFor="let item of items; let last = last">
             <mat-list>
-
                 <mat-list-item>
                     <mat-icon *ngIf="config.iconResolver && !config.iconClassResolver" mat-list-avatar>{{ config.iconResolver(item) }}</mat-icon>
                     <mat-icon *ngIf="config.iconResolver && config.iconClassResolver" mat-list-avatar [ngClass]="[config.iconClassResolver(item)]">{{ config.iconResolver(item) }}</mat-icon>
@@ -33,6 +32,7 @@
                         </ng-container>
                     </p>
                 </mat-list-item>
+                <mat-divider *ngIf="config.useSeparator"></mat-divider>
 
             </mat-list>
           </ng-container>
