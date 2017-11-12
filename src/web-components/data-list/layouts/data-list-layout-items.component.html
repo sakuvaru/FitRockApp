@@ -14,12 +14,13 @@
             </span>
         </mat-list-item>
     </div>
-    <div *ngIf="!localLoaderLoading && items && items.length === 0" layout="row" layout-align="center">
-        <div *ngIf="!localLoaderLoading && items && items.length === 0 && searchTerm" layout="row" layout-align="center">
-            <h3>{{config.searchNoItemsTextKey | translate}}</h3>
+    <div *ngIf="!localLoaderLoading && items && items.length === 0">
+        <div layout="row" layout-align="center">
+            <img style="max-height: 100px" alt="no data" [src]="config.noDataImageUrl" />
         </div>
-        <div *ngIf="!localLoaderLoading && items && items.length === 0 && !searchTerm" layout="row" layout-align="center">
-            <h3>{{config.noItemsTextKey | translate}}</h3>
+        <div layout="row" layout-align="center" style="margin-top: 10px">
+            <span *ngIf="searchTerm">{{config.searchNoItemsTextKey | translate}}</span>
+            <span *ngIf="!searchTerm">{{config.noItemsTextKey | translate}}</span>
         </div>
     </div>
 </mat-nav-list>
@@ -40,10 +41,13 @@
             </span>
         </mat-list-item>
     </div>
-    <div *ngIf="!localLoaderLoading && items && items.length === 0 && searchTerm" layout="row" layout-align="center">
-        <h3>{{config.searchNoItemsTextKey | translate}}</h3>
-    </div>
-    <div *ngIf="!localLoaderLoading && items && items.length === 0 && !searchTerm" layout="row" layout-align="center">
-        <h3>{{config.noItemsTextKey | translate}}</h3>
+    <div *ngIf="!localLoaderLoading && items && items.length === 0">
+        <div layout="row" layout-align="center">
+            <img style="max-height: 100px" alt="no data" [src]="config.noDataImageUrl" />
+        </div>
+        <div layout="row" layout-align="center" style="margin-top: 10px">
+            <span *ngIf="searchTerm">{{config.searchNoItemsTextKey | translate}}</span>
+            <span *ngIf="!searchTerm">{{config.noItemsTextKey | translate}}</span>
+        </div>
     </div>
 </mat-list>
