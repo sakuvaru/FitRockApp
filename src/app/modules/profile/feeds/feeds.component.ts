@@ -37,7 +37,7 @@ export class FeedsComponent extends BaseComponent implements OnInit {
         this.initMenu();
         this.initLoadMore();
 
-        super.subscribeToObservable(this.getMarkAllFeedsAsReadObservable());
+        super.subscribeToObservable(this.getMarkAllFeedsAsReadObservable(), { enableLoader: false});
     }
 
     private initMenu(): void {
