@@ -51,7 +51,7 @@ export class LoadMoreConfig<TItem extends IItem> {
     /**
      * If set, icon with with given function will be resolved, return name of the icon
      */
-    public iconResolver?: (item: TItem) => string;
+    public iconResolver?: (item: TItem) => string | undefined;
 
     /**
      * Resolver for icon class
@@ -61,7 +61,7 @@ export class LoadMoreConfig<TItem extends IItem> {
     /**
      * Used to generate image from URL
      */
-    public imageResolver?: (item: TItem) => string;
+    public imageResolver?: (item: TItem) => string | undefined;
 
     /**
      * Handler executed after items are loaded

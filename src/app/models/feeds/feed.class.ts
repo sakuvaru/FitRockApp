@@ -9,9 +9,20 @@ export class Feed extends BaseItem {
     public feedType: string;
     public data: DataModel[];
     public feedUser: User;
+    public imageUrl: string;
 }
 
 export class FeedResult {
+
+    /**
+     * Icon of the feed
+     */
+    public icon?: string;
+
+    /**
+     * Image url of the feed
+     */
+    public imageUrl?: string;
 
     /**
      * Data passed to feed
@@ -44,9 +55,9 @@ export class FeedResult {
         return '';
     }
 
-     /**
-     * Indicates if translation key is present and the feed should be translated
-     */
+    /**
+    * Indicates if translation key is present and the feed should be translated
+    */
     public shouldBeTranslated(): boolean {
         return this.translationKey != null;
     }
@@ -57,6 +68,8 @@ export class FeedResult {
             translationKey?: string,
             translationData?: any
             text?: string,
+            icon?: string,
+            imageUrl?: string
         }
     ) {
         Object.assign(this, options);

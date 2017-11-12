@@ -29,7 +29,7 @@ export class FeedsComponent extends BaseComponent implements OnInit {
         return {
             initialized: true
         };
-      }
+    }
 
     ngOnInit() {
         super.ngOnInit();
@@ -51,7 +51,7 @@ export class FeedsComponent extends BaseComponent implements OnInit {
         this.loadMoreConfig = this.dependencies.webComponentServices.loadMoreService.loadMore<Feed>(
             search => this.dependencies.itemServices.feedService.getFeedsForUser(this.dependencies.authenticatedUserService.getUserId()),
             query => query.get().takeUntil(this.ngUnsubscribe))
-            .text((item: Feed) => {
+            .text((item) => {
                 const feedResult = this.getFeedResult(item);
                 if (feedResult) {
                     if (feedResult.shouldBeTranslated() && feedResult.translationKey) {
@@ -63,20 +63,28 @@ export class FeedsComponent extends BaseComponent implements OnInit {
                 }
                 return Observable.of('');
             })
-            .footer((item: Feed) => Observable.of(super.fromNow(item.created)))
+            .footer((item) => Observable.of(super.fromNow(item.created)))
             .iconResolver(item => this.getFeedIcon(item))
+            .imageResolver(item => this.getFeedImage(item))
             .iconClassResolver(item => !item.markedAsRead ? 'tc-red-500' : '')
             .pageSize(15)
             .showSearch(false)
             .build();
     }
 
-    private getFeedIcon(feed: Feed): string {
-        return this.dependencies.itemServices.feedService.getFeedIcon(feed.feedType);
+    private getFeedIcon(feed: Feed): string | undefined {
+        const result = this.getFeedResult(feed);
+
+        return result ? result.icon : undefined;
+    }
+
+    private getFeedImage(feed: Feed): string | undefined {
+        const result = this.getFeedResult(feed);
+
+        return result ? result.imageUrl : undefined;
     }
 
     private getFeedResult(feed: Feed): FeedResult | null {
-        const feedResult = this.dependencies.itemServices.feedService.getFeedResult(feed);
-        return feedResult;
+        return this.dependencies.itemServices.feedService.getFeedResult(feed);
     }
 }

@@ -4,7 +4,9 @@
     <mat-form-field flex>
       <input matInput placeholder="{{'webComponents.loadMore.search' | translate}}" [formControl]="searchControl" [value]="searchTerm"
       />
-      <span matPrefix><mat-icon>search</mat-icon></span>
+      <span matPrefix>
+        <mat-icon>search</mat-icon>
+      </span>
     </mat-form-field>
   </div>
 
@@ -13,28 +15,29 @@
       <loader [enabled]="localLoaderLoading" type="linear">
         <div *ngIf="items && items.length > 0">
           <ng-container *ngFor="let item of items; let last = last">
-            <mat-list>
+            <ng-container *ngIf="{ icon: config.iconResolver ? config.iconResolver(item) : undefined, image: config.imageResolver ? config.imageResolver(item) : undefined }; let data">
+              <mat-list>
                 <mat-list-item>
-                    <mat-icon *ngIf="config.iconResolver && !config.iconClassResolver" mat-list-avatar>{{ config.iconResolver(item) }}</mat-icon>
-                    <mat-icon *ngIf="config.iconResolver && config.iconClassResolver" mat-list-avatar [ngClass]="[config.iconClassResolver(item)]">{{ config.iconResolver(item) }}</mat-icon>
-                    <img *ngIf="config.imageResolver" src="{{ config.imageResolver(item) }}" alt="" mat-list-avatar>
-                    <p matLine>
-                        <ng-container *ngIf="config.title && config.title(item) | async; let title" >
-                          <span class="md-body-1 tc-grey-900" [innerHtml]="title"></span>
-                        </ng-container>
-                        <ng-container *ngIf="config.text && config.text(item) | async; let text" >
-                            <span class="md-body-1 tc-grey-600" [innerHtml]="text"></span>
-                        </ng-container>
-                    </p>
-                    <p matLine>
-                        <ng-container *ngIf="config.footer && config.footer(item) | async; let footer" >
-                            <span class="md-caption" [innerHtml]="footer"></span>
-                        </ng-container>
-                    </p>
+                    <mat-icon *ngIf="data.icon && !config.iconClassResolver" matListIcon>{{ data.icon }}</mat-icon>
+                    <mat-icon *ngIf="data.icon && config.iconClassResolver" matListIcon [ngClass]="[config.iconClassResolver(item)]">{{ data.icon }}</mat-icon>
+                    <img *ngIf="data.image" matListAvatar  [src]="data.image" alt="" />
+                  <p matLine>
+                    <ng-container *ngIf="config.title && config.title(item) | async; let title">
+                      <span class="md-body-1 tc-grey-900" [innerHtml]="title"></span>
+                    </ng-container>
+                    <ng-container *ngIf="config.text && config.text(item) | async; let text">
+                      <span class="md-body-1 tc-grey-600" [innerHtml]="text"></span>
+                    </ng-container>
+                  </p>
+                  <p matLine>
+                    <ng-container *ngIf="config.footer && config.footer(item) | async; let footer">
+                      <span class="md-caption" [innerHtml]="footer"></span>
+                    </ng-container>
+                  </p>
                 </mat-list-item>
                 <mat-divider *ngIf="config.useSeparator"></mat-divider>
-
-            </mat-list>
+              </mat-list>
+            </ng-container>
           </ng-container>
         </div>
       </loader>
@@ -43,7 +46,11 @@
 
   <div *ngIf="items" class="text-center psh">
     <button *ngIf="showMoreButton" mat-raised-button color="primary" (click)="loadMoreButtonSubject.next()">{{ 'webComponents.loadMore.loadMore' | translate }}</button>
-    <p *ngIf="!showMoreButton"><span class="md-caption"><em>{{ 'webComponents.loadMore.defaultAllItemsLoaded' | translate }}</em></span></p>
+    <p *ngIf="!showMoreButton">
+      <span class="md-caption">
+        <em>{{ 'webComponents.loadMore.defaultAllItemsLoaded' | translate }}</em>
+      </span>
+    </p>
   </div>
 
   <div *ngIf="initialized && ((items && items.length === 0) || !items)" class="push">

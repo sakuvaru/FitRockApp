@@ -15,23 +15,6 @@ export class FeedService extends BaseTypeService<Feed> {
         });
     }
 
-    /**
-     * Gets anagular material icon for given feed with type
-     */
-    getFeedIcon(feedType: string): string {
-        const defaultIcon = 'today';
-
-        if (!feedType) {
-            return defaultIcon;
-        }
-
-        if ( feedType.toLowerCase() === 'message') {
-            return 'mail';
-        }
-
-        return defaultIcon;
-    }
-
      /**
      * Gets feed result (text, key) based on its type
      */
@@ -54,6 +37,7 @@ export class FeedService extends BaseTypeService<Feed> {
                 data: feed.data,
                 translationKey: 'module.feeds.userSentYouAMessage',
                 translationData: translationData,
+                imageUrl: feed.imageUrl
             });
         }
         return null;

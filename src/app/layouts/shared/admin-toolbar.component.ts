@@ -66,8 +66,14 @@ export class AdminToolbarComponent extends BaseComponent implements OnInit {
         return null;
     }
 
-    private getFeedIcon(feed: Feed): string {
-        return this.dependencies.itemServices.feedService.getFeedIcon(feed.feedType);
+    private getFeedIcon(feed: Feed): string | undefined {
+        const result = this.dependencies.itemServices.feedService.getFeedResult(feed);
+        return result ? result.icon : undefined;
+    }
+
+    private getFeedImage(feed: Feed): string | undefined {
+        const result = this.dependencies.itemServices.feedService.getFeedResult(feed);
+        return result ? result.imageUrl : undefined;
     }
 
     private getFeedText(feed: Feed): Observable<string> {

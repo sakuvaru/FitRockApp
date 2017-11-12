@@ -43,7 +43,7 @@ export class LoadMoreBuilder<TItem extends IItem> {
         return this;
     }
 
-    iconResolver(resolver: (item: TItem) => string): this {
+    iconResolver(resolver: (item: TItem) => string | undefined): this {
         this.config.iconResolver = resolver;
         return this;
     }
@@ -53,7 +53,7 @@ export class LoadMoreBuilder<TItem extends IItem> {
         return this;
     }
 
-    imageResolver(resolver: (item: TItem) => string): this {
+    imageResolver(resolver: (item: TItem) => string | undefined): this {
         this.config.imageResolver = resolver;
         return this;
     }
@@ -68,7 +68,7 @@ export class LoadMoreBuilder<TItem extends IItem> {
         return this;
     }
 
-    loaderConfig(start: () => void, stop: () => void ): this {
+    loaderConfig(start: () => void, stop: () => void): this {
         this.config.loaderConfig = { start: start, stop: stop };
         return this;
     }
