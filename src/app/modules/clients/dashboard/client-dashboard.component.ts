@@ -95,13 +95,17 @@ export class ClientDashboardComponent extends ClientsBaseComponent implements On
   }
 
   private getInitAppointmentObservable(): Observable<any> {
+    const dateNow = new Date();
+    dateNow.setSeconds(0);
+    dateNow.setMilliseconds(0);
+
     return this.clientIdChange
       .switchMap(clientId => {
         return this.dependencies.itemServices.appointmentService.items()
           .limit(1)
           .byCurrentUser()
           .whereEquals('ClientId', clientId)
-          .whereGreaterThan('AppointmentDate', new Date())
+          .whereGreaterThan('AppointmentDate', dateNow)
           .orderByAsc('AppointmentDate')
           .includeMultiple(['Workout', 'Location'])
           .get();

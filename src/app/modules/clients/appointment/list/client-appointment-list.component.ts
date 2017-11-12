@@ -58,6 +58,11 @@ export class ClientAppointmentListComponent extends ClientsBaseComponent impleme
   }
 
   private initList(clientId: number): void {
+
+    const dateNow = new Date();
+    dateNow.setSeconds(0);
+    dateNow.setMilliseconds(0);
+
     this.config = this.dependencies.webComponentServices.dataListService.dataList<Appointment>(
       query => {
         return query
@@ -93,12 +98,12 @@ export class ClientAppointmentListComponent extends ClientsBaseComponent impleme
       .showSearch(false)
       .filter(new Filter({
         filterNameKey: 'module.clients.appointments.upcomingAppointments',
-        onFilter: query => query.whereGreaterThan('AppointmentDate', new Date()),
+        onFilter: query => query.whereGreaterThan('AppointmentDate', dateNow),
         countQuery: (query) => query.toCountQuery()
       }))
       .filter(new Filter({
         filterNameKey: 'module.clients.appointments.oldAppointments',
-        onFilter: query => query.whereLessThen('AppointmentDate', new Date()),
+        onFilter: query => query.whereLessThen('AppointmentDate', dateNow),
         countQuery: (query) => query.toCountQuery()
       }))
       .showPager(true)
