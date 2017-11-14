@@ -1,4 +1,4 @@
-import { ControlTypeEnum } from '../models/control-type.enum';
+import { ControlTypeEnum } from '../enums/control-type.enum';
 
 export interface IFormField {
 

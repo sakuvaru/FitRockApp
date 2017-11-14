@@ -34,6 +34,9 @@ import { DragulaModule } from 'ng2-dragula';
 // local authenticated user
 import { AuthenticatedUserService } from './services/authenticated-user.service';
 
+// language service
+import { LanguageService } from './services/language.service';
+
 @NgModule({
     imports: [
         CommonModule,
@@ -54,7 +57,8 @@ import { AuthenticatedUserService } from './services/authenticated-user.service'
     providers: [
         SharedService,
         ComponentDependencyService,
-        AuthenticatedUserService
+        AuthenticatedUserService,
+        LanguageService
     ],
     exports: [
         CommonModule,

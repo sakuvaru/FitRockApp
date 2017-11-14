@@ -32,7 +32,7 @@ import { TypeResolverService } from './type-resolver.service';
 import { ResponseMapService } from './response-map.service';
 
 // enums
-import { ErrorReasonEnum } from '../models/error-reason.enum';
+import { ErrorReasonEnum } from '../enums/error-reason.enum';
 
 // rxjs
 import { Observable, Subject } from 'rxjs/Rx';

@@ -1,7 +1,7 @@
 import { ResponseGetBase } from './response-get-base.class';
 import { IItem } from '../interfaces/iitem.interface';
 import { FormValidationResult } from '../models/form-validation-result.class';
-import { ErrorReasonEnum } from './error-reason.enum';
+import { ErrorReasonEnum } from '../enums/error-reason.enum';
 import { FormField } from './form-fields';
 import { FetchedFile } from './fetched-file.class';
 

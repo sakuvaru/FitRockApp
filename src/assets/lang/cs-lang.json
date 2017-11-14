@@ -412,7 +412,8 @@
 			"beginner": "Začátečník",
 			"intermediate": "Středně pokročilý",
 			"advanced": "Pokročilý",
-			"fitnessCompetitor": "Závodník fitness"
+			"fitnessCompetitor": "Závodník fitness",
+			"language": "Jazyk aplikace"
 		},
 		"workout": {
 			"workoutName": "Název tréninku",

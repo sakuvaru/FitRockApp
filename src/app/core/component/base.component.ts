@@ -4,7 +4,7 @@ import { ComponentDependencyService } from './component-dependency.service';
 import { ErrorResponse, ErrorReasonEnum } from '../../../lib/repository';
 import { ComponentConfig } from './component.config';
 import { AdminMenu } from './admin-menu';
-import { MenuItem, ResourceKey } from '../models/core.models';
+import { MenuItem, ResourceKey, LanguageConfig, AuthenticatedUser } from '../models/core.models';
 import { Observable, Subject } from 'rxjs/Rx';
 import { NavigationExtras } from '@angular/router';
 import { ComponentSetup } from './component-setup.class';
@@ -30,9 +30,6 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
     // snackbar config
     private readonly snackbarDefaultDuration: number = 2500;
 
-    // locale config for moment js (https://momentjs.com/)
-    private readonly defaultMomentLocale: string = 'cs';
-
     // translations
     private snackbarSavedText: string;
     private snackbarDeletedText: string;
@@ -45,8 +42,11 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
     // component config
     protected componentConfig: ComponentConfig = new ComponentConfig();
 
-    // admin menu
-    protected adminMenu: AdminMenu = new AdminMenu();
+    // language
+    protected language?: LanguageConfig;
+
+    // auth user
+    protected authUser?: AuthenticatedUser;
 
     /**
     * Every child component should setup its base config.
@@ -277,6 +277,17 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
             this.dependencies.coreServices.sharedService.setComponentSetup(setup);
         }
 
+        // init auth user
+        this.authUser = this.dependencies.authenticatedUserService.getUser();
+
+        // set language based on users preferrence
+        if (this.authUser) {
+            this.language = this.dependencies.coreServices.languageService.getLanguage(this.authUser.language);
+        } else {
+            // default language
+            this.language = this.dependencies.coreServices.languageService.defaultLanguage;
+        }
+
         // stop loaders on component init 
         this.dependencies.coreServices.sharedService.setGlobalLoader(false, false);
 
@@ -315,10 +326,10 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
     }
 
     moment(inp?: moment.MomentInput, format?: moment.MomentFormatSpecification, strict?: boolean): moment.Moment {
-        return this.dependencies.coreServices.moment(inp, format, strict).locale(this.defaultMomentLocale);
+        return this.dependencies.coreServices.moment(inp, format, strict).locale(this.language ? this.language.momentJs : '');
     }
     momentLanguage(inp?: moment.MomentInput, format?: moment.MomentFormatSpecification, language?: string, strict?: boolean): moment.Moment {
-        return this.dependencies.coreServices.momentLanguage(inp, format, language, strict).locale(this.defaultMomentLocale);
+        return this.dependencies.coreServices.momentLanguage(inp, format, language, strict).locale(this.language ? this.language.momentJs : '');
     }
 
     formatDate(date: Date): string {
@@ -363,7 +374,7 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
             error => {
                 this.stopAllLoaders();
                 this.handleError(error);
-                }
+            }
             );
     }
 
@@ -400,7 +411,7 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
             error => {
                 this.stopAllLoaders();
                 this.handleError(error);
-                }
+            }
             );
     }
 }

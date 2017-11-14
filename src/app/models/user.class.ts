@@ -1,4 +1,4 @@
-import { BaseItem } from '../../lib/repository';
+import { BaseItem, LanguageEnum } from '../../lib/repository';
 
 export class User extends BaseItem {
 
@@ -21,6 +21,8 @@ export class User extends BaseItem {
     public trainer: User;
     public isActive: boolean;
     public avatarUrl: string;
+    public language: LanguageEnum;
+    public languageString: string;
 
     getFullName(): string {
         return this.firstName + ' ' + this.lastName;

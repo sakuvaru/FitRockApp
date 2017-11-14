@@ -1,6 +1,5 @@
-export interface IMenuItem {
-    menuItems: MenuItem[];
-}
+import { LanguageEnum } from '../../../lib/repository';
+
 
 export class ResourceKey {
 
@@ -50,7 +49,8 @@ export class AuthenticatedUser {
         public lastName: string,
         public trainerId: number,
         public isClient: boolean,
-        public avatarUrl: string
+        public avatarUrl: string,
+        public language: LanguageEnum
     ) {}
 }
 
@@ -65,6 +65,21 @@ export class GlobalLoaderStatus  {
          */
         public forceDisable
     ) {}
+}
+
+export class LanguageConfig {
+    constructor(
+        /**
+         * Locale used for momentjs
+         */
+        public momentJs: string,
+        /**
+         * Translation used for ngx translate service
+         * This points to language json in assets
+         */
+        public translate: string
+    ) {
+    }
 }
 
 

@@ -1,5 +1,5 @@
-<td-layout>
-  <td-navigation-drawer flex [sidenavTitle]="componentConfig.appName" logo="assets:teradata" [name]="displayUsername" [email]="email">
+<td-layout *ngIf="ready">
+  <td-navigation-drawer flex [sidenavTitle]="appName" logo="assets:teradata" [name]="displayUsername" [email]="email">
     <mat-nav-list>
       <a *ngFor="let item of adminMenu.mainMenu" mat-list-item [routerLink]="getMenuItemUrl(item.action, item.type)">
         <mat-icon>{{item.icon}}</mat-icon>{{item.label.key | translate}}</a>
@@ -12,7 +12,7 @@
     </div>
   </td-navigation-drawer>
   <div td-sidenav-content class="td-layout-footer pad">
-    &copy; {{year}} {{componentConfig.appName}}
+    &copy; {{year}} {{appName}}
   </div>
 
   <td-layout-nav>
@@ -37,7 +37,7 @@
         </div>
       </mat-toolbar>
       <mat-nav-list td-sidenav-content [tdLayoutManageListClose]="!media.query('gt-sm')">
-        <ng-template let-item let-last="last" ngFor [ngForOf]="componentConfig.menuItems">
+        <ng-template let-item let-last="last" ngFor [ngForOf]="menuItems">
           <a mat-list-item [routerLink]="getMenuItemUrl(item.action, item.type)">
             <img *ngIf="item.imageUrl" mat-list-avatar alt="" [src]="item.imageUrl">
             <mat-icon *ngIf="item.icon" [color]="getMenuItemColor(item.action, item.type)">{{item.icon}}</mat-icon>
@@ -68,7 +68,7 @@
     </td-layout-manage-list>
     <td-layout-footer>
       <div layout="row" layout-align="start center" class="md-caption">
-        <footer [appName]="componentConfig.appName"></footer>
+        <footer [appName]="appName"></footer>
       </div>
     </td-layout-footer>
   </td-layout-nav>

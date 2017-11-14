@@ -1,6 +1,6 @@
-import { MenuItem, MenuItemType, IMenuItem } from '../../core';
+import { MenuItem, MenuItemType } from '../../core';
 
-export class ClientOverviewMenuItems implements IMenuItem {
+export class ClientOverviewMenuItems {
 
     menuItems: MenuItem[];
 
@@ -11,7 +11,7 @@ export class ClientOverviewMenuItems implements IMenuItem {
     }
 }
 
-export class NewClientMenuItems implements IMenuItem {
+export class NewClientMenuItems {
 
     menuItems: MenuItem[];
 
@@ -23,7 +23,7 @@ export class NewClientMenuItems implements IMenuItem {
     }
 }
 
-export class ClientMenuItems implements IMenuItem {
+export class ClientMenuItems {
 
     menuItems: MenuItem[];
 
@@ -43,7 +43,7 @@ export class ClientMenuItems implements IMenuItem {
     }
 }
 
-export class ClientEditWorkoutMenuItems implements IMenuItem {
+export class ClientEditWorkoutMenuItems {
 
     menuItems: MenuItem[];
 
@@ -56,7 +56,7 @@ export class ClientEditWorkoutMenuItems implements IMenuItem {
     }
 }
 
-export class ClientEditAppointmentMenuItems implements IMenuItem {
+export class ClientEditAppointmentMenuItems {
 
     menuItems: MenuItem[];
 
@@ -69,7 +69,7 @@ export class ClientEditAppointmentMenuItems implements IMenuItem {
     }
 }
 
-export class NewClientAppointmentMenuItems implements IMenuItem {
+export class NewClientAppointmentMenuItems {
 
     menuItems: MenuItem[];
 
@@ -81,7 +81,7 @@ export class NewClientAppointmentMenuItems implements IMenuItem {
     }
 }
 
-export class NewClientWorkoutMenuItems implements IMenuItem {
+export class NewClientWorkoutMenuItems {
 
     menuItems: MenuItem[];
 
@@ -93,7 +93,7 @@ export class NewClientWorkoutMenuItems implements IMenuItem {
     }
 }
 
-export class ClientEditDietMenuItems implements IMenuItem {
+export class ClientEditDietMenuItems {
 
     menuItems: MenuItem[];
 
@@ -106,7 +106,7 @@ export class ClientEditDietMenuItems implements IMenuItem {
     }
 }
 
-export class NewClientDietMenuItems implements IMenuItem {
+export class NewClientDietMenuItems {
 
     menuItems: MenuItem[];
 
@@ -118,7 +118,7 @@ export class NewClientDietMenuItems implements IMenuItem {
     }
 }
 
-export class NewClientProgressItemTypeMenuItems implements IMenuItem {
+export class NewClientProgressItemTypeMenuItems {
 
     menuItems: MenuItem[];
 

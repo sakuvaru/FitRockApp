@@ -5,12 +5,13 @@ import { AppConfig, UrlConfig } from '../../config';
 import { StringHelper } from '../../../lib/utilities';
 import { Feed, FeedResult } from '../../models';
 import { Observable, Subscriber } from 'rxjs/Rx';
+import { BaseLayoutComponent } from '../base/base-layout.component';
 
 @Component({
     selector: 'admin-toolbar',
     templateUrl: 'admin-toolbar.component.html'
 })
-export class AdminToolbarComponent extends BaseComponent implements OnInit {
+export class AdminToolbarComponent extends BaseLayoutComponent {
 
     private feedsCount: number;
     private feeds: Feed[];
@@ -27,15 +28,10 @@ export class AdminToolbarComponent extends BaseComponent implements OnInit {
      */
     private preventFeedChange: boolean = false;
 
-    constructor(protected dependencies: ComponentDependencyService) {
+    constructor(
+        protected dependencies: ComponentDependencyService
+    ) {
         super(dependencies);
-    }
-
-    setup(): ComponentSetup | null {
-        return null;
-    }
-
-    ngOnInit() {
         this.initUserAvatar();
         this.subscribeToFeedObservables();
     }
@@ -61,7 +57,7 @@ export class AdminToolbarComponent extends BaseComponent implements OnInit {
         // as it causes some issues with rendering of the layout template (e.g. the icons are not resolved, the media queries do not work...)
         this.dependencies.itemServices.feedService.getCountOfUnreadNotifications(this.dependencies.authenticatedUserService.getUserId())
             .takeUntil(this.ngUnsubscribe)
-            .subscribe(count => this.feedsCount = count, error => super.handleError(error));
+            .subscribe(count => this.feedsCount = count, error => console.error('Admin toolbar encountered an error loading notifications'));
 
         this.dependencies.itemServices.feedService.getFeedsForUser(this.dependencies.authenticatedUserService.getUserId(), this.limitFeedsCount)
             .get()
@@ -69,7 +65,7 @@ export class AdminToolbarComponent extends BaseComponent implements OnInit {
             .subscribe(response => {
                 return this.feeds = response.items;
             },
-            error => super.handleError(error));
+            error => console.error('Admin toolbar encountered an error loading feeds'));
     }
 
     private getFeedUrl(feed: Feed): string | null {
@@ -81,7 +77,7 @@ export class AdminToolbarComponent extends BaseComponent implements OnInit {
         if (feed.feedType.toLowerCase() === 'message') {
             const senderUserIdData = feed.data.find(m => m.key === 'SenderUserId');
 
-            return super.getAuthUrl('chat/' + (senderUserIdData ? senderUserIdData.value : ''));
+            return UrlConfig.getAuthUrl('chat/' + (senderUserIdData ? senderUserIdData.value : ''));
         }
 
         return null;
@@ -121,7 +117,7 @@ export class AdminToolbarComponent extends BaseComponent implements OnInit {
 
         // translate output
         if (feedResult.translationKey && feedResult.shouldBeTranslated()) {
-            return super.translate(feedResult.translationKey, feedResult.translationData);
+            return this.dependencies.coreServices.translateService.get(feedResult.translationKey, feedResult.translationData);
         }
 
         // something went wrong
@@ -153,7 +149,7 @@ export class AdminToolbarComponent extends BaseComponent implements OnInit {
                         console.warn('Cannot navigate to feed with id = ' + feed.id);
                     }
 
-                    super.navigate([feedUrl]);
+                    this.dependencies.router.navigate([feedUrl]);
                 });
         } else {
             console.warn('Cannot click on invalid feed');

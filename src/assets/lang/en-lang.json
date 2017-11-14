@@ -1,11 +1,19 @@
 {
-    "menu":{
-        "dashboard": "Dashboard",
-        "clients": "Clients",
-        "trainingPlans": "Training plans",
-        "mealPlans": "Meal plans",
-        "locations": "Locations",
-        "forms": "Forms"
-    },
-    "hello": "hello smurfs {{value}}"
+    "menu": {
+		"shared": {
+			"back": "Back"
+		},
+		"main": "Main menu",
+		"dashboard": "Dashboard",
+		"chat": "Messages",
+		"clients": "Clients",
+		"workouts": "Workouts",
+		"exercises": "Exercises",
+		"diets": "Diets",
+		"foods": "Foods",
+		"progressItemTypes": "Progress types",
+		"locations": "Location",
+		"feeds": "Feeds",
+		"logout": "Logout"
+    }
 }

@@ -20,7 +20,7 @@ export class AuthenticatedUserService {
     /**
      * Gets current user from local storage
      */
-    getUser(): AuthenticatedUser | null {
+    getUser(): AuthenticatedUser | undefined {
         return this.getUserFromLocalStorage();
     }
 
@@ -60,14 +60,14 @@ export class AuthenticatedUserService {
         localStorage.setItem(this.authUserStorageKey, JSON.stringify(user));
     }
 
-    private getUserFromLocalStorage(): AuthenticatedUser | null {
+    private getUserFromLocalStorage(): AuthenticatedUser | undefined {
         const userJson = localStorage.getItem(this.authUserStorageKey);
         if (!userJson) {
-            return null;
+            return undefined;
         }
 
         const userAs = JSON.parse(userJson) as AuthenticatedUser;
 
-        return new AuthenticatedUser(userAs.id, userAs.email, userAs.firstName, userAs.lastName, userAs.trainerId, userAs.isClient, userAs.avatarUrl);
+        return new AuthenticatedUser(userAs.id, userAs.email, userAs.firstName, userAs.lastName, userAs.trainerId, userAs.isClient, userAs.avatarUrl, userAs.language);
     }
 }

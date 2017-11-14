@@ -1,5 +1,5 @@
 import { IFormValidationResult } from '../interfaces/iform-validation-result.interface';
-import { FormValidationResultEnum } from './form-validation-result.enum';
+import { FormValidationResultEnum } from '../enums/form-validation-result.enum';
 
 export class FormValidationResult {
 

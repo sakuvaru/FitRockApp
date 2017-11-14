@@ -1,4 +1,4 @@
-import { ControlTypeEnum } from './control-type.enum';
+import { ControlTypeEnum } from '../enums/control-type.enum';
 import { IDropdownFieldOption, IFormField, IFormFieldOptions } from '../interfaces/iform-fields';
 
 export class FormField implements IFormField {

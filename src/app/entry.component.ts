@@ -41,7 +41,7 @@ export class EntryComponent extends BaseComponent {
         } else {
           // user is authenticated, update auth user
           const user = response.item;
-          const authUser = new AuthenticatedUser(user.id, user.email, user.firstName, user.lastName, user.trainerUserId, user.isClient, user.avatarUrl);
+          const authUser = new AuthenticatedUser(user.id, user.email, user.firstName, user.lastName, user.trainerUserId, user.isClient, user.avatarUrl, user.language);
 
           // store user in authenticated user service
           this.dependencies.authenticatedUserService.setUser(authUser);
