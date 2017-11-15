@@ -10,10 +10,9 @@ import { NgModule } from '@angular/core';
 
 // Angular material
 import {
-    MATERIAL_COMPATIBILITY_MODE,
     MatDatepickerModule, MatSnackBarModule, MatNativeDateModule, MatAutocompleteModule,
     MatButtonModule, MatButtonToggleModule, MatCardModule, MatCheckboxModule, MatChipsModule,
-    CompatibilityModule, MatCommonModule, MatDialogModule, MatGridListModule,
+    MatCommonModule, MatDialogModule, MatGridListModule,
     MatIconModule, MatInputModule, MatLineModule, MatListModule, MatMenuModule, MatOptionModule, MatProgressBarModule,
     MatProgressSpinnerModule, MatRadioModule, MatRippleModule, MatSelectModule, MatSidenavModule,
     MatSliderModule, MatSlideToggleModule, MatTabsModule, MatToolbarModule, MatTooltipModule, NativeDateModule, MatTableModule,
@@ -27,7 +26,7 @@ import { PlatformModule } from '@angular/cdk/platform';
     imports: [
         MatDatepickerModule, MatSnackBarModule, MatNativeDateModule, MatAutocompleteModule,
         MatButtonModule, MatButtonToggleModule, MatCardModule, MatCheckboxModule, MatChipsModule,
-        CompatibilityModule, MatCommonModule, MatDialogModule, MatGridListModule,
+        MatCommonModule, MatDialogModule, MatGridListModule,
         MatIconModule, MatInputModule, MatLineModule, MatListModule, MatMenuModule, MatOptionModule, MatProgressBarModule,
         MatProgressSpinnerModule, MatRadioModule, MatRippleModule, MatSelectModule, MatSidenavModule,
         MatSliderModule, MatSlideToggleModule, MatTabsModule, MatToolbarModule, MatTooltipModule, NativeDateModule,
@@ -37,14 +36,10 @@ import { PlatformModule } from '@angular/cdk/platform';
     ],
     declarations: [
     ],
-    providers: [
-        /* Forces the use of 'mat' instead of deprecated 'md' selectors as per https://www.npmjs.com/package/angular-material-prefix-updater*/
-        { provide: MATERIAL_COMPATIBILITY_MODE, useValue: true },
-      ],
     exports: [
         MatDatepickerModule, MatSnackBarModule, MatNativeDateModule, MatAutocompleteModule,
         MatButtonModule, MatButtonToggleModule, MatCardModule, MatCheckboxModule, MatChipsModule,
-        CompatibilityModule, MatCommonModule, MatDialogModule, MatGridListModule,
+        MatCommonModule, MatDialogModule, MatGridListModule,
         MatIconModule, MatInputModule, MatLineModule, MatListModule, MatMenuModule, MatOptionModule, MatProgressBarModule,
         MatProgressSpinnerModule, MatRadioModule, MatRippleModule, MatSelectModule, MatSidenavModule,
         MatSliderModule, MatSlideToggleModule, MatTabsModule, MatToolbarModule, MatTooltipModule, NativeDateModule,

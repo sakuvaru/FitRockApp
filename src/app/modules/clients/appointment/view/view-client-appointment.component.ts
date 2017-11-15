@@ -28,7 +28,7 @@ export class ViewClientAppointmentComponent extends ClientsBaseComponent impleme
 
   setup(): ComponentSetup | null {
     return {
-      initialized: false
+      initialized: true
     };
   }
 
