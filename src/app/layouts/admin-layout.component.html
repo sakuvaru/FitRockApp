@@ -1,5 +1,5 @@
 <td-layout *ngIf="ready">
-  <td-navigation-drawer flex [sidenavTitle]="appName" logo="assets:teradata" [name]="displayUsername" [email]="email">
+  <td-navigation-drawer flex [sidenavTitle]="appName" [name]="displayUsername" [email]="email">
     <mat-nav-list>
       <a *ngFor="let item of adminMenu.mainMenu" mat-list-item [routerLink]="getMenuItemUrl(item.action, item.type)">
         <mat-icon>{{item.icon}}</mat-icon>{{item.label.key | translate}}</a>
@@ -16,12 +16,14 @@
   </div>
 
   <td-layout-nav>
-      <div td-toolbar-content flex>
-        <admin-toolbar></admin-toolbar>           
-      </div> 
+    <div td-toolbar-content flex>
+      <admin-toolbar></admin-toolbar>
+    </div>
+
     <td-layout-manage-list #manageList [opened]="media.registerQuery('gt-sm') | async" [mode]="(media.registerQuery('gt-sm') | async) ? 'side' :  'over'"
       [sidenavWidth]="(media.registerQuery('gt-xs') | async) ? '257px' : '100%'">
-      <mat-toolbar td-sidenav-content>
+
+      <mat-toolbar *ngIf="menuTitle || enableComponentSearch" td-sidenav-content>
         <ng-container *ngIf="!enableComponentSearch">
           <ng-container *ngIf="menuAvatarUrl">
             <img matCardAvatar class="push-right w-component-avatar" [src]="menuAvatarUrl" alt="menu avatar">
@@ -30,12 +32,15 @@
         </ng-container>
         <!-- using display none because otherwise the search control could not be initialized -->
         <div [style.display]="enableComponentSearch ? 'block' : 'none'" class="md-body-2">
-            <mat-form-field flex>
-                <input matInput [formControl]="searchControl" [value]="componentSearchValue" />
-                <span matPrefix><mat-icon>search</mat-icon></span>
-            </mat-form-field>
+          <mat-form-field flex>
+            <input matInput [formControl]="searchControl" [value]="componentSearchValue" />
+            <span matPrefix>
+              <mat-icon>search</mat-icon>
+            </span>
+          </mat-form-field>
         </div>
       </mat-toolbar>
+
       <mat-nav-list td-sidenav-content [tdLayoutManageListClose]="!media.query('gt-sm')">
         <ng-template let-item let-last="last" ngFor [ngForOf]="menuItems">
           <a mat-list-item [routerLink]="getMenuItemUrl(item.action, item.type)">
@@ -48,6 +53,7 @@
         </ng-template>
       </mat-nav-list>
 
+      <!--
       <mat-toolbar>
         <div layout="row" layout-align="start center" flex>
           <button mat-icon-button tdLayoutManageListOpen [hideWhenOpened]="true" tdMediaToggle="gt-sm" [mediaStyles]="{display: 'none'}">
@@ -58,11 +64,20 @@
           <button mat-icon-button [routerLink]="getAuthUrl('logout')"><mat-icon>exit_to_app</mat-icon></button>
         </div>
       </mat-toolbar>
-      
+    -->
+
+      <div class="w-component-header">
+        <button mat-icon-button tdLayoutManageListOpen [hideWhenOpened]="true" tdMediaToggle="gt-sm" [mediaStyles]="{display: 'none'}">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+        <h1>{{componentTitle}}</h1>
+      </div>
+
       <loader [enabled]="showLoading" type="linear"></loader>
       <!-- ngClass with hidden styles is used because *ngIf would cause the router to not be executed at all -->
       <div [ngClass]="{'w-hidden': !showComponent}">
-        <router-outlet></router-outlet>
+        <router-outlet>
+        </router-outlet>
       </div>
 
     </td-layout-manage-list>

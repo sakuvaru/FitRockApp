@@ -1,4 +1,50 @@
 .td-layout-nav-wrapper > .mat-toolbar {
     height: 56px;
     font-size: 14px;
+    @include nav-shadow(); 
+    margin-bottom:5 px;
+    z-index: 2; 
+}
+
+.td-layout-nav-wrapper {
+    z-index: 0;
+}
+
+.td-layout-manage-list-sidenav .mat-list-item .mat-list-text{
+    font-size: 13px;
+}
+
+.mat-drawer.mat-sidenav > .mat-toolbar {
+    background: white;
+}
+
+
+/**
+This is a fix for angular material issue where the sidenav is always visible if some child elements trigger Fullscreen
+More info at: https://github.com/angular/material2/issues/7636
+Revisit later to see if this is fixed and this can be removed.
+**/
+ .mat-drawer.mat-drawer-side {
+    z-index: -2!important;
+}
+
+.w-component-header {
+    color: hsla(0,0%,100%,.87);
+    background-color: $primary;
+    padding-left: 20px;
+    align-items: center;
+    display: flex;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+
+    h1 {
+        font-weight: 300;
+        margin: 0;
+        padding: 28px 8px;
+        font-size: 20px;
+        display: block;
+    }
 }
