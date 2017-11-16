@@ -124,7 +124,7 @@
                     </p>
 
                     <mat-nav-list *ngIf="workouts && workouts.length > 0">
-                        <a mat-list-item *ngFor="let workout of workouts" [routerLink]="getDietUrl(workout)">
+                        <a mat-list-item *ngFor="let workout of workouts" [routerLink]="getWorkoutUrl(workout)">
                             {{ workout.workoutName }}
                         </a>
                     </mat-nav-list>
