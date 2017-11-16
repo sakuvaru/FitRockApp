@@ -60,6 +60,20 @@ export class BaseLayoutComponent implements OnDestroy {
         return '/' + UrlConfig.getAuthUrl(action);
     }
 
+    protected getHomeUrl(): string {
+        const authUser = this.dependencies.authenticatedUserService.getUser();
+        if (authUser) {
+            if (authUser.isClient) {
+                return '/' + UrlConfig.getClientUrl('');
+            } else {
+                return '/' + UrlConfig.getTrainerUrl('');
+            }
+        }
+
+        console.warn('User is not authenticated');
+        return '';
+    }
+
     protected getMenuItemColor(action: string, type: MenuItemType): string | null {
         const activeColor = 'accent';
 

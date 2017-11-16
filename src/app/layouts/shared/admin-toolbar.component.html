@@ -2,7 +2,7 @@
   <button mat-icon-button tdLayoutToggle>
     <mat-icon>menu</mat-icon>
   </button>
-  <span>{{appName}}</span>
+  <a mat-button [routerLink]="getHomeUrl()">{{appName}}</a>
   <!-- Search box is not used for now
       <td-search-box placeholder="Search" [alwaysVisible]="false" flex></td-search-box>
     !-->
@@ -18,14 +18,15 @@
     <mat-icon>more_vert</mat-icon>
   </button>
 
-  <mat-menu #moreMenu="matMenu" panelClass="w-feed-menu">
-    <button mat-menu-item [routerLink]="getAuthUrl('logout')">
-      <mat-icon>exit_to_app</mat-icon> {{ 'userMenu.logout' | translate }}</button>
+  <mat-menu #moreMenu="matMenu">
+    <a mat-menu-item [routerLink]="getAuthUrl('logout')">
+      <mat-icon>exit_to_app</mat-icon> {{ 'userMenu.logout' | translate }}
+    </a>
   </mat-menu>
 
   <img *ngIf="showAvatar" mat-icon-button class="w-toolbar-avatar w-cursor-pointer" alt="profile image" [routerLink]="getAuthUrl('profile/edit')" matTooltip="{{ 'userMenu.profile' | translate }}" [src]="userAvatarUrl ? userAvatarUrl : defaultAvatarUrl" />
 
-  <mat-menu #feedsMenu="matMenu" [overlapTrigger]="false">
+  <mat-menu panelClass="w-feed-menu" #feedsMenu="matMenu" [overlapTrigger]="false">
     <td-menu>
       <ng-container *ngFor="let feed of feeds; let last = last">
         <ng-container *ngIf="{ icon: getFeedIcon(feed), image: getFeedImage(feed) }; let data">

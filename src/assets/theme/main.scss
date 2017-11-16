@@ -11,7 +11,10 @@
 @import './components/_data-list';
 @import './components/_gallery';
 @import './components/_comments';
-@import './components/_main-toolbar';
+
+// Site styles
+@import './site/_layout';
+@import './site/_main-toolbar';
 
 // Misc
 @import './misc/_loader';
