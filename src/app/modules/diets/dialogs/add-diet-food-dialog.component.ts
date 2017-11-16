@@ -71,7 +71,7 @@ export class AddDietFoodDialogComponent extends BaseComponent implements OnInit 
             .get()
             .flatMap(response => {
               if (response.isEmpty()) {
-                console.warn(`FoodUnit with id '${this.food.foodUnitId}' was not found, this should have not happened here`);
+                console.warn(`FoodUnit was not found, this should have not happened here`);
                 return Observable.of(originalLabel);
               }
               return super.translate('module.foodUnits.' + response.item.unitCode)

@@ -53,6 +53,21 @@ export class EditDietFoodDialogComponent extends BaseComponent implements OnInit
   private initForm(): void {
     this.dietFoodForm = this.dependencies.itemServices.dietFoodService.editForm(this.dietFood.id)
       .wrapInCard(false)
+      .fieldLabelResolver((field, originalLabel) => {
+        if (field.key === 'UnitValue') {
+          return this.dependencies.itemServices.foodUnitService.item().byId(this.dietFood.foodId)
+            .get()
+            .flatMap(response => {
+              if (response.isEmpty()) {
+                console.warn(`FoodUnit was not found, this should have not happened here`);
+                return Observable.of(originalLabel);
+              }
+              return super.translate('module.foodUnits.' + response.item.unitCode)
+                .map(unitTranslation => originalLabel + ' (' + unitTranslation + ')');
+            });
+        }
+        return Observable.of(originalLabel);
+      })
       .onAfterUpdate((response) => {
         this.dietFood = response.item;
         this.close();

@@ -516,7 +516,7 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
         observables.push(this.translateService.get(config.deleteTextKey).map(translation => this.deleteText = translation));
 
         observables.push(this.translateService.get('form.error.insufficientLicense').map(translation => this.insufficientLicenseError = translation));
-        observables.push(this.translateService.get('form.error.saveFailed').map(translation => this.generalErrorMessage =translation));
+        observables.push(this.translateService.get('form.error.saveFailed').map(translation => this.generalErrorMessage = translation));
         observables.push(this.translateService.get('form.error.unknownFormErrorMessage').map(translation => this.unknownErrorMessage = translation));
         observables.push(this.translateService.get('form.error.formLoadingError').map(translation => this.formLoadingErrorMessage = translation));
 

@@ -183,10 +183,7 @@ export abstract class BaseFormControlComponent extends BaseWebComponent implemen
             if (!this.formConfig.fieldLabelResolver) {
                 return Observable.of(fieldLabel);
             }
-            return this.formConfig.fieldLabelResolver(this.question, fieldLabel)
-                .flatMap(mappedFieldLabel => {
-                    return mappedFieldLabel;
-                });
+            return this.formConfig.fieldLabelResolver(this.question, fieldLabel);
         });
     }
 
