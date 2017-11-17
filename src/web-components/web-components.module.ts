@@ -19,6 +19,7 @@ import { TextModule } from './text/text.module';
 import { MapModule } from './map/map.module';
 import { ImagesModule } from './images/images.module';
 import { ListingModule } from './listing/listing.module';
+import { DataTableModule } from './data-table/data-table.module';
 
 @NgModule({
     imports: [
@@ -39,7 +40,8 @@ import { ListingModule } from './listing/listing.module';
         TextModule,
         MapModule,
         ImagesModule,
-        ListingModule
+        ListingModule,
+        DataTableModule
     ]
 })
 export class WebComponentsModule { }

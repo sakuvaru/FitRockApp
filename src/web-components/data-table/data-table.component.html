@@ -1,0 +1,46 @@
+<div class="w-data-table">
+  <ng-container *ngIf="config">
+
+    <loader [enabled]="loaderEnabled" type="linear"></loader>
+
+    <div class="w-data-table-filter">
+      <mat-form-field floatPlaceholder="never" [ngClass]="config.wrapInCard ? 'text-sm' : ''" flex>
+        <input matInput placeholder="{{ 'shared.search' | translate }}" [formControl]="searchControl" [value]="search" />
+        <span matPrefix>
+          <mat-icon>search</mat-icon>
+        </span>
+      </mat-form-field>
+    </div>
+
+    <div>
+      <mat-table #table [dataSource]="dataSource">
+
+        <!--- Note that these columns can be defined in any order.
+              The actual rendered columns are set as a property on the row definition" -->
+
+        <ng-container *ngFor="let fieldWrapper of fieldsWrapper">
+
+          <ng-container [matColumnDef]="fieldWrapper.nameDef">
+            <mat-header-cell *matHeaderCellDef>
+              <span *ngIf="fieldWrapper.field.nameIsObservable()">{{ fieldWrapper.field.name(item) | async }}</span>
+              <span *ngIf="!fieldWrapper.field.nameIsObservable()">{{ fieldWrapper.field.name(item) }}</span>
+            </mat-header-cell>
+            <mat-cell *matCellDef="let item">
+              <span *ngIf="fieldWrapper.field.valueIsObservable()">{{ fieldWrapper.field.value(item) | async }}</span>
+              <span *ngIf="!fieldWrapper.field.valueIsObservable()">{{ fieldWrapper.field.value(item) }}</span>
+            </mat-cell>
+          </ng-container>
+
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+
+    </div>
+
+  </ng-container>
+
+  <mat-paginator #paginator [length]="totalItems" [pageIndex]="paginatorPageIndex" [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 25, 50, 100]">
+  </mat-paginator>
+</div>

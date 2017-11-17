@@ -1,5 +1,9 @@
 <p>This is dashboard</p>
 
+<div class="push">
+    <data-table [config]="config"></data-table>
+</div>
+
 <h3 *ngIf="currentUser">
     Current user is authenticated: {{currentUser.isAuthenticated}} - {{currentUser.codename}}
 </h3>

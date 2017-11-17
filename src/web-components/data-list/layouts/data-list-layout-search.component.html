@@ -1,4 +1,4 @@
-<mat-form-field [ngClass]="config.wrapInCard ? 'text-sm' : ''" flex>
+<mat-form-field floatPlaceholder="never" [ngClass]="config.wrapInCard ? 'text-sm' : ''" flex>
   <input matInput placeholder="{{'shared.search' | translate}}" [formControl]="searchControl" [value]="searchTerm" />
   <span matPrefix><mat-icon>search</mat-icon></span>
 </mat-form-field>

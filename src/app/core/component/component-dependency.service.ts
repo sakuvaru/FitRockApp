@@ -33,7 +33,7 @@ import * as moment from 'moment';
 
 // Web component services
 import { DataListService, DynamicFormService, GalleryService, GraphService,
-    LoadMoreService, UploaderService
+    LoadMoreService, UploaderService, DataTableService
 } from '../../web-component-services';
 
 // Models
@@ -105,6 +105,7 @@ export class ComponentDependencyService {
         this.webComponentServices.uploaderService = injector.get(UploaderService);
         this.webComponentServices.galleryService = injector.get(GalleryService);
         this.webComponentServices.graphService = injector.get(GraphService);
+        this.webComponentServices.dataTableService = injector.get(DataTableService);
 
         // item services
         this.itemServices = new ItemServices();
@@ -155,6 +156,7 @@ export class WebComponentServices {
     public uploaderService: UploaderService;
     public galleryService: GalleryService;
     public graphService: GraphService;
+    public dataTableService: DataTableService;
 }
 
 export class CoreServices {
