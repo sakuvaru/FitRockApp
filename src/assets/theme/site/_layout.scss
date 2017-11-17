@@ -35,7 +35,7 @@
     background: white;
 }
 
-.w-component-header {
+.w-layout-component-header {
     color: hsla(0,0%,100%,.87);
     background-color: $primary;
     padding-left: 20px;
@@ -54,4 +54,8 @@
         font-size: 20px;
         display: block;
     }
+}
+
+.w-layout-sidemenu-title {
+    font-size: 18px;
 }

@@ -23,12 +23,12 @@
     <td-layout-manage-list #manageList [opened]="media.registerQuery('gt-sm') | async" [mode]="(media.registerQuery('gt-sm') | async) ? 'side' :  'over'"
       [sidenavWidth]="(media.registerQuery('gt-xs') | async) ? '257px' : '100%'">
 
-      <mat-toolbar *ngIf="menuTitle || enableComponentSearch" td-sidenav-content>
+      <mat-toolbar *ngIf="menuTitle || enableComponentSearch" class="w-component-to" td-sidenav-content>
         <ng-container *ngIf="!enableComponentSearch">
           <ng-container *ngIf="menuAvatarUrl">
             <img matCardAvatar class="push-right w-component-avatar" [src]="menuAvatarUrl" alt="menu avatar">
           </ng-container>
-          <span>{{shortenTitle(menuTitle)}}</span>
+          <span class="w-layout-sidemenu-title">{{shortenTitle(menuTitle)}}</span>
         </ng-container>
         <!-- using display none because otherwise the search control could not be initialized -->
         <div [style.display]="enableComponentSearch ? 'block' : 'none'" class="md-body-2">
@@ -66,7 +66,7 @@
       </mat-toolbar>
     -->
 
-      <div class="w-component-header">
+      <div class="w-layout-component-header">
         <button mat-icon-button tdLayoutManageListOpen [hideWhenOpened]="true" tdMediaToggle="gt-sm" [mediaStyles]="{display: 'none'}">
           <mat-icon>arrow_back</mat-icon>
         </button>

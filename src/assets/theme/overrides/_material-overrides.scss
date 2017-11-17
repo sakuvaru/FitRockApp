@@ -1,20 +1,32 @@
 
-    /** 
-    Note: in order for overrides to work, this css should be loaded after the material's css
-    **/
+/** 
+Note: in order for overrides to work, this css should be loaded after the material's css
+**/
 
-    .mat-chip{
-        margin-top: 5px!important;
-    }
+/**
+Chips
+*/
+
+.mat-chip{
+	 margin-top: 5px!important;
+}
     
-    .mat-chip:not(.mat-basic-chip) {
-         /* changes color of material chips because otherwise
-        they have same color as the background */
-        background: #C9C9C9;
-    }
+.mat-chip:not(.mat-basic-chip) {
+	/* changes color of material chips because otherwise
+    they have same color as the background */
+    background: #C9C9C9;
+}
     
-    .mat-chip.w-cursor-pointer{
-       cursor: pointer!important;
-    }
+.mat-chip.w-cursor-pointer{
+	cursor: pointer!important;
+}
+
+/** 
+Lists
+*/
+
+.mat-list-item {
+	font-size: 14px!important;
+}
 
 
