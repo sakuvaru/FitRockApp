@@ -1,9 +1,26 @@
+/* Layout z-index stacking */
+
+/* Material issue: https://github.com/angular/material2/issues/7636 */
+
+.mat-drawer.mat-drawer-side {
+    z-index: 1!important;
+}
+
+.mat-drawer-content {
+    z-index: auto!important;
+}
+
+.mat-drawer-container {
+    z-index: auto!important;
+}
+
+/* Others */
+
 .td-layout-nav-wrapper > .mat-toolbar {
     height: 56px;
     font-size: 14px;
     @include nav-shadow(); 
     margin-bottom:5 px;
-    z-index: 2; 
 }
 
 .td-layout-nav-wrapper {
@@ -16,16 +33,6 @@
 
 .mat-drawer.mat-sidenav > .mat-toolbar {
     background: white;
-}
-
-
-/**
-This is a fix for angular material issue where the sidenav is always visible if some child elements trigger Fullscreen
-More info at: https://github.com/angular/material2/issues/7636
-Revisit later to see if this is fixed and this can be removed.
-**/
- .mat-drawer.mat-drawer-side {
-    z-index: -2!important;
 }
 
 .w-component-header {
