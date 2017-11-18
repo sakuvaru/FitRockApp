@@ -38,7 +38,7 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
     /**
      * Limit
      */
-    private limit: number = 0;
+    private limit?: number = undefined;
 
     /**
      * Page size
@@ -128,7 +128,9 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
 
         // init properties
         this.pageSize = this.config.pageSize;
-        this.limit = this.config.limit;
+        if (this.config.limit) {
+            this.limit = this.config.limit;
+        }
         this.currentPage = this.config.page;
 
         // subscribe to filter
@@ -178,7 +180,11 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
         }
 
         // get Observable used to load data
-        const dataObs = this.config.getData(pageSize, page, search, limit);
+        if (!this.config.getData) {
+            throw new Error('Cannot fetch data because no get function was defined. This is a result of invalid configuration.');
+        }
+
+        const dataObs = this.config.getData(page, pageSize, search, limit);
 
         dataObs.map(response => {
             this.totalItems = response.totaltems;

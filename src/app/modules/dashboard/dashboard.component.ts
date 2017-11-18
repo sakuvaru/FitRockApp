@@ -35,15 +35,13 @@ export class DashboardComponent extends BaseComponent implements OnInit {
         super.ngOnInit();
 
         this.config = this.dependencies.webComponentServices.dataTableService.dataTable<User>(
-            (pageSize, page, search, limit) => this.dependencies.itemServices.userService.items()
-                .pageSize(pageSize)
-                .limit(limit)
-                .page(page)
+            (search) => this.dependencies.itemServices.userService.items()
                 .whereLikeMultiple(['FirstName', 'LastName'], search)
-                .get()
-                .map(response => new DataTableResponse(response.items, response.totalItems))
         )
             .withFields([
+                { name: item => 'Name', value: item => {
+                    return item.getFullName();
+                } },
                 { name: item => 'E-mail', value: item => item.email },
                 { name: item => super.translate('type.user'), value: item => item.city }
             ])

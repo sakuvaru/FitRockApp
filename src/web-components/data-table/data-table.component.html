@@ -22,12 +22,16 @@
 
           <ng-container [matColumnDef]="fieldWrapper.nameDef">
             <mat-header-cell *matHeaderCellDef>
-              <span *ngIf="fieldWrapper.field.nameIsObservable()">{{ fieldWrapper.field.name(item) | async }}</span>
-              <span *ngIf="!fieldWrapper.field.nameIsObservable()">{{ fieldWrapper.field.name(item) }}</span>
+              <ng-container *ngIf="fieldWrapper.field.name(item) as nameResult">
+                <span *ngIf="fieldWrapper.field.isObservable(nameResult)">{{ nameResult| async }}</span>
+                <span *ngIf="!fieldWrapper.field.isObservable(nameResult)">{{ nameResult }}</span>
+              </ng-container>
             </mat-header-cell>
             <mat-cell *matCellDef="let item">
-              <span *ngIf="fieldWrapper.field.valueIsObservable()">{{ fieldWrapper.field.value(item) | async }}</span>
-              <span *ngIf="!fieldWrapper.field.valueIsObservable()">{{ fieldWrapper.field.value(item) }}</span>
+              <ng-container *ngIf="fieldWrapper.field.value(item) as valueResult">
+                <span *ngIf="fieldWrapper.field.isObservable(valueResult)">{{ valueResult| async }}</span>
+                <span *ngIf="!fieldWrapper.field.isObservable(valueResult)">{{ valueResult }}</span>
+              </ng-container>
             </mat-cell>
           </ng-container>
 

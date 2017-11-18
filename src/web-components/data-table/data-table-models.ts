@@ -13,12 +13,8 @@ export class DataTableField<T> {
         public value: (item: T) => string | Observable<string>
     ) { }
 
-    valueIsObservable(): boolean {
-        return (this.value({} as any)) instanceof Observable;
-    }
-
-    nameIsObservable(): boolean {
-        return (this.name({} as any)) instanceof Observable;
+    isObservable(result: string | Observable<string>): boolean {
+        return result instanceof Observable;
     }
 }
 

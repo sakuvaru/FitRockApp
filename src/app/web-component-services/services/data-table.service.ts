@@ -10,14 +10,11 @@ export class DataTableService {
     ) { }
 
     dataTable<TItem extends IItem>(
-        data: (pageSize: number, page: number, search: string, limit: number) => Observable<DataTableResponse>,
+        data: (search: string) => MultipleItemQuery<TItem>,
     ): DataTableBuilder<TItem> {
 
-        const builder = new DataTableBuilder<TItem>(data);
-
-        return builder;
+        return new DataTableBuilder<TItem>(data);
     }
-
 }
 
 

@@ -16,7 +16,7 @@ export class DataTableConfig {
     /**
      * Default limit
      */
-    public limit: number = 1000;
+    public limit?: number;
 
     /**
      * Default page
@@ -32,7 +32,7 @@ export class DataTableConfig {
         /**
          * data
          */
-        public getData: (pageSize: number, page: number, search: string, limit: number) => Observable<DataTableResponse>,
+        public getData?: (page: number, pageSize: number, search: string, limit?: number) => Observable<DataTableResponse>,
     ) {
     }
 }

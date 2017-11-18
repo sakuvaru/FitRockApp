@@ -1,6 +1,6 @@
 import { DataTableConfig } from './data-table.config';
 import { Observable } from 'rxjs/Rx';
-import { IItem } from '../../lib/repository';
+import { IItem, MultipleItemQuery } from '../../lib/repository';
 import { DataTableField, DataTableResponse } from './data-table-models';
 import { IDataTableField } from './data-table.interfaces';
 import * as _ from 'underscore';
@@ -11,20 +11,18 @@ export class DataTableBuilder<TItem extends IItem> {
 
     constructor(
         /**
-         * Data
+         * Query
          */
-        private data: (pageSize: number, page: number, search: string, limit: number) => Observable<DataTableResponse>
+        private query: (search: string) => MultipleItemQuery<TItem>
     ) {
-
-        this.config = new DataTableConfig(
-           data
-        );
+        this.config = new DataTableConfig();
     }
 
     /**
     * Limit
     */
     limit(limit: number): this {
+
         this.config.limit = limit;
         return this;
     }
@@ -67,6 +65,26 @@ export class DataTableBuilder<TItem extends IItem> {
      * Gets the data table config
      */
     build(): DataTableConfig {
+        // assign observable
+        this.config.getData = (page: number, pageSize: number, search: string, limit: number) => this.getDataFunction(page, pageSize, search, limit);
         return this.config;
+    }
+
+    private getDataFunction(page: number, pageSize: number, search: string, limit: number): Observable<DataTableResponse> {
+        const query = this.query(search);
+
+        if (limit) {
+            query.limit(limit);
+        }
+
+        if (pageSize) {
+            query.pageSize(pageSize);
+        }
+
+        if (page) {
+            query.page(page);
+        }
+
+        return query.get().map(response => new DataTableResponse(response.items, response.totalItems));
     }
 }
