@@ -1,8 +1,16 @@
 import { Observable } from 'rxjs/Rx';
-import { DataTableField, DataTableResponse, DataTableButton, 
-    DataTableDeleteResponse } from './data-table-models';
+import {
+    DataTableField, DataTableResponse, DataTableButton,
+    DataTableDeleteResponse, Filter
+} from './data-table-models';
+import { guidHelper, stringHelper } from '../../lib/utilities';
 
 export class DataTableConfig {
+
+    /**
+     * Hash stored so that its not calculated each time its accessed
+     */
+    private _hash?: number;
 
     /**
      * Fields
@@ -39,11 +47,51 @@ export class DataTableConfig {
      */
     public deleteAction?: (item) => Observable<DataTableDeleteResponse>;
 
+    /**
+     * Filters
+     */
+    public filters: Filter[] = [];
+
+    /**
+     * Indicates if last filter, search & page is remembered
+     */
+    public rememberState: boolean = true;
+
+    /**
+     * Indicates if all filters is used when filters are present
+     */
+    public allFilter?: Filter;
+
     constructor(
         /**
          * data
          */
         public getData?: (page: number, pageSize: number, search: string, limit?: number) => Observable<DataTableResponse>,
     ) {
+    }
+
+    /**
+    * Gets unique hash of the configuration of data list
+    */
+    getHash(): number {
+        if (this._hash) {
+            return this._hash;
+        }
+
+        const allProperties = Object.getOwnPropertyNames(this);
+        let fullText = '';
+        allProperties.forEach(property => {
+            const propertyValue = this[property];
+            if (propertyValue) {
+                fullText += property + '=' + propertyValue;
+            }
+        });
+
+        const hash = stringHelper.getHash(fullText);
+
+        // save hash
+        this._hash = hash;
+
+        return hash;
     }
 }

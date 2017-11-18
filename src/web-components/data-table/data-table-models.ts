@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs/Rx';
-
+import { guidHelper, stringHelper } from '../../lib/utilities';
 import { IDataTableButton, IDataTableField } from './data-table.interfaces';
 
 export class DataTableField<T> implements IDataTableField<T> {
@@ -65,5 +65,37 @@ export class DataTableDeleteResponse {
     constructor(
         public isSuccessfull: boolean,
         public errorMessage?: string
+    ) { }
+}
+
+export class DataTableCountResponse {
+    constructor(
+        public count: number
     ) {}
 }
+
+export class Filter {
+
+    private _hash?: number;
+
+    constructor(
+        public name: Observable<string>,
+        public filter: (page: number, pageSize: number, search: string, limit?: number) => Observable<DataTableResponse>,
+        public count: (search: string) => Observable<DataTableCountResponse>
+    ) {
+    }
+}
+
+export class FilterWrapper {
+    constructor(
+        public resolvedName: string,
+        public resolvedCount: number,
+        public filter: Filter,
+        /**
+         * Higher priority = filter is on left
+         * Default is 2, while all filter is using 1
+         */
+        public priority: number = 2
+    ) {}
+}
+

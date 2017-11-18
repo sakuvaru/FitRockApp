@@ -1,13 +1,18 @@
 import { DataTableConfig } from './data-table.config';
 import { Observable } from 'rxjs/Rx';
-import { IItem, MultipleItemQuery, DeleteItemQuery } from '../../lib/repository';
-import { DataTableField, DataTableResponse, DataTableButton, DataTableDeleteResponse } from './data-table-models';
+import { IItem, MultipleItemQuery, DeleteItemQuery, ItemCountQuery } from '../../lib/repository';
+import {
+    DataTableField, DataTableResponse, DataTableButton, DataTableDeleteResponse,
+    Filter, DataTableCountResponse
+} from './data-table-models';
 import { IDataTableField, IDataTableButton } from './data-table.interfaces';
 import * as _ from 'underscore';
 
 export class DataTableBuilder<TItem extends IItem> {
 
     private config: DataTableConfig;
+
+    private filters: Filter[] = [];
 
     constructor(
         /**
@@ -95,16 +100,88 @@ export class DataTableBuilder<TItem extends IItem> {
     }
 
     /**
+    * Sets up filters
+    * @param filters filters
+    */
+    withFilters(filters: {
+        name: Observable<string>,
+        query: ((query: MultipleItemQuery<TItem>) => MultipleItemQuery<TItem>),
+        count?: ((query: MultipleItemQuery<TItem>) => ItemCountQuery),
+    }[]): this {
+        const returnfilters: Filter[] = [];
+
+        filters.forEach(filter => {
+            // resolve filter query using the 'base' query
+            const filterQuery = (search) => filter.query(this.query(search));
+
+            // resolve count query using the 'base' query
+            let countQuery;
+            const filterCount = filter.count;
+            if (filterCount) {
+                // user custom count query
+                countQuery = (search) => filterCount(this.query(search));
+            } else {
+                // use default count query
+                countQuery = (search) => filterQuery(search).toCountQuery();
+            }
+
+            returnfilters.push(
+                new Filter(
+                    filter.name,
+                    (page: number, pageSize: number, search: string, limit: number) => this.getDataResponse(filterQuery, page, pageSize, search, limit),
+                    (search) => this.getCountResponse(countQuery, search)
+                ));
+        });
+
+        this.config.filters = returnfilters;
+        return this;
+    }
+
+    /**
+    * Indicates if last filter, search & page is remembered
+    */
+    rememberState(remember: boolean): this {
+        this.config.rememberState = remember;
+        return this;
+    }
+
+    /**
+     * Indicates if all filters is used when filters are present
+     */
+    allFilter(name: Observable<string>): this {
+        // resolve filter query using the 'base' query
+        const filterQuery = (search) => this.query(search).toCountQuery();
+
+        this.config.allFilter =
+            new Filter(
+                name,
+                (page: number, pageSize: number, search: string, limit: number) => this.getDataResponse(this.query, page, pageSize, search, limit),
+                (search) => this.getCountResponse(filterQuery, search)
+            );
+
+        return this;
+    }
+
+    /**
      * Gets the data table config
      */
     build(): DataTableConfig {
         // assign observable
-        this.config.getData = (page: number, pageSize: number, search: string, limit: number) => this.getDataFunction(page, pageSize, search, limit);
+        this.config.getData = (page: number, pageSize: number, search: string, limit: number) => this.getDataResponse(this.query, page, pageSize, search, limit);
         return this.config;
     }
 
-    private getDataFunction(page: number, pageSize: number, search: string, limit: number): Observable<DataTableResponse> {
-        const query = this.query(search);
+    private getCountResponse(inputQuery: (search) => ItemCountQuery, search: string): Observable<DataTableCountResponse> {
+        const query = inputQuery(search);
+
+        return query.get()
+            .map(response => {
+                return new DataTableCountResponse(response.count);
+            });
+    }
+
+    private getDataResponse(inputQuery: (search) => MultipleItemQuery<TItem>, page: number, pageSize: number, search: string, limit: number): Observable<DataTableResponse> {
+        const query = inputQuery(search);
 
         if (limit) {
             query.limit(limit);

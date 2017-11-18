@@ -1,3 +1,12 @@
+<div *ngIf="filtersWrapper && filtersWrapper.length > 0" class="push-bottom-sm">
+  <mat-chip-list>
+
+    <mat-chip style="cursor: pointer" *ngFor="let filterWrapper of filtersWrapper" selected="false" (click)="runFilter(filterWrapper.resolvedName)" [selected]="filterWrapper.resolvedName === activeFilterName ? true : false">
+      {{ filterWrapper.resolvedName }} ({{ filterWrapper.resolvedCount }})
+    </mat-chip>
+  </mat-chip-list>
+</div>
+
 <div class="w-data-table">
   <ng-container *ngIf="config">
 

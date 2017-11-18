@@ -8,6 +8,7 @@ import { Log, User } from '../../models';
 import { CurrentUser } from '../../../lib/auth';
 
 import { DataTableConfig, DataTableResponse } from '../../../web-components/data-table';
+import { Observable } from 'rxjs/Rx';
 
 @Component({
     templateUrl: 'dashboard.component.html'
@@ -54,6 +55,21 @@ export class DashboardComponent extends BaseComponent implements OnInit {
                     tooltip: (item) => super.translate('shared.search')
                 }
             )
+            .withFilters([
+                {
+                    name: Observable.of('Ivuska'),
+                    query: (query) => query.whereLike('FirstName', 'Ivuska'),
+                },
+                {
+                    name: Observable.of('Janet'),
+                    query: (query) => query.whereLike('FirstName', 'Janet')
+                },
+                {
+                    name: Observable.of('Barry'),
+                    query: (query) => query.whereLike('FirstName', 'Barry')
+                }
+            ])
+            .allFilter(Observable.of('all'))
             .deleteAction((item) => this.dependencies.itemServices.userService.delete(item.id))
             .build();
 

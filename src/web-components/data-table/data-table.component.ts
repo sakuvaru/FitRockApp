@@ -2,14 +2,15 @@
 import { Component, Input, ViewChild, OnInit, OnChanges, SimpleChanges, ElementRef, AfterViewInit } from '@angular/core';
 import { BaseWebComponent } from '../base-web-component.class';
 import { DataSource } from '@angular/cdk/collections';
-import { guidHelper } from '../../lib/utilities';
+import { guidHelper, observableHelper } from '../../lib/utilities';
 import { FormControl } from '@angular/forms';
 
 import { DataTableConfig } from './data-table.config';
 import { DataTableSource } from './data-table-source.class';
 import {
     DataTableField, DataTableFieldWrapper, DataTableButtonWrapper,
-    DataTableButton, DataTableDeleteResponse
+    DataTableButton, DataTableDeleteResponse, Filter, FilterWrapper, DataTableResponse,
+    DataTableCountResponse
 } from './data-table-models';
 
 import { MatPaginator } from '@angular/material';
@@ -39,6 +40,21 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
      * Identifier for buttons columns
      */
     private readonly buttonsColumnDef: string = '_buttons';
+
+    /**
+     * All filters
+     */
+    private filtersWrapper: FilterWrapper[] = [];
+
+    /**
+     * Temp variable to hold filters
+     */
+    private tempFiltersWrapper: FilterWrapper[] = [];
+
+    /**
+     * Guid of active filter
+     */
+    private activeFilterName?: string;
 
     /**
      * Displayed columns
@@ -133,8 +149,14 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
             'tooltip': '',
             'deleted': ''
         },
-        'internalError': ''
+        'internalError': '',
+        'all': ''
     };
+
+    /**
+     * Local storage helper
+     */
+    private localStorageHelper = new LocalStorageHelper();
 
     /** 
      * Filter
@@ -150,8 +172,9 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
         private snackBar: MatSnackBar,
         private dialogService: TdDialogService,
         private translateService: TranslateService
-    ) { super();
-    
+    ) {
+        super();
+
         // init translations once 
         this.initTranslations();
     }
@@ -177,6 +200,11 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
             this.loaderEnabled = true;
         }
 
+               // current state
+               if (this.config.rememberState) {
+                this.initLastState(this.config.getHash());
+            }
+
         // map fields
         this.fieldsWrapper = this.config.fields.map(field => {
             return new DataTableFieldWrapper(field, guidHelper.newGuid());
@@ -190,8 +218,8 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
         const deleteAction = this.config.deleteAction;
         if (deleteAction) {
             this.buttons.push(new DataTableButton(
-                'delete', 
-                (item) => this.deleteConfirmation(deleteAction(item)), 
+                'delete',
+                (item) => this.deleteConfirmation(deleteAction(item)),
                 (item) => Observable.of(this.translations.delete.tooltip)
             ));
         }
@@ -203,8 +231,11 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
         }
         this.currentPage = this.config.page;
 
-        // subscribe to filter
-        this.subscribeToFilterChanges();
+        // init filters
+        this.initFilters();
+
+        // subscribe to text filter
+        this.subscribeToTextFilterChanges();
 
         // subscribe to pager changes
         this.subscribeToPagerChanges();
@@ -215,12 +246,106 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
         this.initialized = true;
     }
 
-    private subscribeToFilterChanges(): void {
+    private initFilters(): void {
+        // add all filter
+        const getData = this.config.getData;
+        const allFilter = this.config.allFilter;
+        let allFilterObs: Observable<void> | undefined;
+        if (allFilter && this.config.filters && this.config.filters.length > 0 && getData) {
+            allFilterObs = this.translateService.get('webComponents.dataTable.all').map(
+                allText => {
+                    // adjust all filter
+                    this.tempFiltersWrapper.push(new FilterWrapper(
+                        allText,
+                        0,
+                        allFilter,
+                        1
+                    ));
+                }
+            );
+        }
+
+        const observables: Observable<any>[] = [];
+
+        this.config.filters.forEach(filter => {
+
+            const obs = filter.count(this.search)
+            .flatMap(response => {
+                // create filter wrapper and set its count
+                const filterWrapper = new FilterWrapper('', response.count, filter);
+                return Observable.of(filterWrapper);
+            })
+            .flatMap(filterWrapper => {
+                // resolve name and set it
+                return filter.name.map(name => {
+                    filterWrapper.resolvedName = name;
+
+                    return filterWrapper;
+                });
+            })
+            .map(filterWrapper => {
+                // add filter to local variable
+                this.tempFiltersWrapper.push(filterWrapper);
+            });
+
+            observables.push(obs);
+        });
+
+        // add all filter
+        if (allFilterObs) {
+            observables.push(allFilterObs);
+        }
+
+        observableHelper.zipObservables(observables)
+            .takeUntil(this.ngUnsubscribe)
+            .subscribe(() => {
+                // sort filters based on priority
+                this.tempFiltersWrapper = this.tempFiltersWrapper.sort((n1, n2) => n1.priority - n2.priority);
+                
+                // replace filters with temp filters and reset temp filters
+                this.filtersWrapper = this.tempFiltersWrapper;
+
+                this.tempFiltersWrapper = [];
+            });
+    }
+
+    private recalculateFilters(): void {
+        this.filtersWrapper.forEach(filterWrapper => {
+            filterWrapper.filter.count(this.search).map(response => {
+                filterWrapper.resolvedCount = response.count;
+            })
+            .takeUntil(this.ngUnsubscribe)
+            .subscribe();
+        });
+    }
+
+    private runFilter(name: string): void {
+        // find filter
+        const filterWrapper = this.filtersWrapper.find(m => m.resolvedName === name);
+        if (!filterWrapper) {
+            console.warn(`Invalid filter'${name}'`);
+            return;
+        }
+
+        // set current filter
+        this.activeFilterName = name;
+
+        // reload data
+        this.loadData();
+    }
+
+    private subscribeToTextFilterChanges(): void {
         this.searchControl.valueChanges
             .debounceTime(this.debounceTime)
             .takeUntil(this.ngUnsubscribe)
             .subscribe(searchTerm => {
+                // udate searched variable
                 this.search = searchTerm;
+
+                // recalculate filters
+                 this.recalculateFilters();
+
+                // reload data
                 this.reloadData();
             });
     }
@@ -244,7 +369,7 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
             .subscribe();
     }
 
-    private loadData(pageSize, page, search, limit): void {
+    private loadData(): void {
         if (this.config.enableLocalLoader) {
             this.loaderEnabled = true;
         }
@@ -257,11 +382,36 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
             throw new Error('Cannot fetch data because no get function was defined. This is a result of invalid configuration.');
         }
 
-        const dataObs = this.config.getData(page, pageSize, search, limit);
+        let dataObs: Observable<DataTableResponse>;
+
+        // get data from main observable if no filter is used
+        let filter: Filter | undefined;
+        if (this.activeFilterName) {
+            const filterWrapper = this.filtersWrapper.find(m => m.resolvedName === this.activeFilterName);
+            if (!filterWrapper) {
+                console.log(`Invalid filter '${this.activeFilterName}'`);
+            } else {
+                filter = filterWrapper.filter;
+            }
+        }
+
+        if (filter) {
+            // use filter observable
+            dataObs = filter.filter(this.currentPage, this.pageSize, this.search, this.limit);
+        } else {
+            // get data from filter if its set
+            dataObs = this.config.getData(this.currentPage, this.pageSize, this.search, this.limit);
+        }
 
         dataObs.map(response => {
             this.totalItems = response.totaltems;
+
             this.dataSource = new DataTableSource(response.items);
+
+            // save current state
+            if (this.config.rememberState) {
+                this.saveCurrentState(this.config.getHash());
+            }
 
             if (this.config.enableLocalLoader) {
                 this.loaderEnabled = false;
@@ -275,9 +425,9 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
         this.dialogService.openConfirm({
             message: this.translations.delete.message,
             disableClose: false, // defaults to false
-            title: this.translations.delete.title, 
-            cancelButton: this.translations.delete.cancel, 
-            acceptButton: this.translations.delete.confirm, 
+            title: this.translations.delete.title,
+            cancelButton: this.translations.delete.cancel,
+            acceptButton: this.translations.delete.confirm,
         }).afterClosed().subscribe((accept: boolean) => {
             if (accept) {
                 this.deleteItem(action);
@@ -334,21 +484,85 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
 
     private initTranslations(): void {
         this.translateService.get('webComponents.dataTable.delete.message').map(text => this.translations.delete.message = text)
-        .zip(this.translateService.get('webComponents.dataTable.delete.title').map(text => this.translations.delete.title = text))
-        .zip(this.translateService.get('webComponents.dataTable.delete.cancel').map(text => this.translations.delete.cancel = text))
-        .zip(this.translateService.get('webComponents.dataTable.delete.confirm').map(text => this.translations.delete.confirm = text))
-        .zip(this.translateService.get('webComponents.dataTable.delete.tooltip').map(text => this.translations.delete.tooltip = text))
-        .zip(this.translateService.get('webComponents.dataTable.delete.deleted').map(text => this.translations.delete.deleted = text))
-        .zip(this.translateService.get('webComponents.dataTable.internalError').map(text => this.translations.internalError = text))
-        .takeUntil(this.ngUnsubscribe)
-        .subscribe();
+            .zip(this.translateService.get('webComponents.dataTable.delete.title').map(text => this.translations.delete.title = text))
+            .zip(this.translateService.get('webComponents.dataTable.delete.cancel').map(text => this.translations.delete.cancel = text))
+            .zip(this.translateService.get('webComponents.dataTable.delete.confirm').map(text => this.translations.delete.confirm = text))
+            .zip(this.translateService.get('webComponents.dataTable.delete.tooltip').map(text => this.translations.delete.tooltip = text))
+            .zip(this.translateService.get('webComponents.dataTable.delete.deleted').map(text => this.translations.delete.deleted = text))
+            .zip(this.translateService.get('webComponents.dataTable.internalError').map(text => this.translations.internalError = text))
+            .takeUntil(this.ngUnsubscribe)
+            .subscribe();
+    }
+
+    // local storage & last state
+    private saveCurrentState(hash: number): void {
+        this.localStorageHelper.saveFilterToLocalStorage(hash, this.activeFilterName || '');
+        this.localStorageHelper.savePageToLocalStorage(hash, this.currentPage);
+        this.localStorageHelper.saveSearchedDataToLocalStorage(hash, this.search);
+    }
+
+    private initLastState(hash: number): void {
+        const filterFormStorage = this.localStorageHelper.getFilterFromLocalStorage(hash);
+        const pageFromStorage = this.localStorageHelper.getPageFromLocalStorage(hash);
+        const searchTermFromStorage = this.localStorageHelper.getSearchedDataFromLocalStorage(hash);
+
+        if (filterFormStorage) {
+            this.activeFilterName = filterFormStorage;
+        }
+
+        if (pageFromStorage) {
+            this.currentPage = pageFromStorage;
+        }
+
+        if (searchTermFromStorage) {
+            this.search = searchTermFromStorage;
+        }
     }
 
     /**
      * Reloads data
      */
     reloadData(): void {
-        this.loadData(this.pageSize, this.currentPage, this.search, this.limit);
+        this.loadData();
+    }
+}
+
+class LocalStorageHelper {
+
+    // local storage suffixes
+    private localStorageActiveFilter = 'data_table_active_filter';
+    private localStoragePage = 'data_table_page';
+    private localStorageSearchedData = 'data_table_searchedData';
+
+    getFilterFromLocalStorage(hash: number): string | null {
+        return localStorage.getItem(this.localStorageActiveFilter + '_' + hash);
+    }
+
+    getPageFromLocalStorage(hash: number): number | null {
+        const page = localStorage.getItem(this.localStoragePage + '_' + hash);
+
+        if (!page) {
+            // use first page if none is was set
+            return 1;
+        }
+
+        return +page;
+    }
+
+    getSearchedDataFromLocalStorage(hash: number): string | null {
+        return localStorage.getItem(this.localStorageSearchedData + '_' + hash);
+    }
+
+    saveFilterToLocalStorage(hash: number, filterGuid: string) {
+        localStorage.setItem(this.localStorageActiveFilter + '_' + hash, filterGuid);
+    }
+
+    savePageToLocalStorage(hash: number, page: number) {
+        localStorage.setItem(this.localStoragePage + '_' + hash, page.toString());
+    }
+
+    saveSearchedDataToLocalStorage(hash: number, search: string) {
+        localStorage.setItem(this.localStorageSearchedData + '_' + hash, search);
     }
 }
 

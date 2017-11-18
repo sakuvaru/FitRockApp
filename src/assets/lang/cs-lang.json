@@ -560,7 +560,8 @@
 			},
 			"internalError": "Došlo k neznámé chybě",
 			"searchPlaceholder": "Hledat",
-			"actions": "Akce"
+			"actions": "Akce",
+			"all": "Vše"
 		}
 	}
 }
