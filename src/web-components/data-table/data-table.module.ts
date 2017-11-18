@@ -8,6 +8,7 @@ import { SharedWebComponentModule } from '../shared-web-components.module';
 
 // modules
 import { LoaderModule } from '../loader/loader.module';
+import { MessagesModule } from '../messages/messages.module';
 
 // components
 import { DataTableComponent } from './data-table.component';
@@ -19,7 +20,8 @@ import { DataTableComponent } from './data-table.component';
         RouterModule, // router needs to be importes so that routerLink can be used within components
         LoaderModule, 
         FormsModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        MessagesModule
     ],
     declarations: [
         DataTableComponent

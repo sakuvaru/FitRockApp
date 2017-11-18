@@ -8,4 +8,11 @@
         padding: 8px 24px 0;
 
     }
+
+    /**
+    Aligns buttons to right
+    */
+    .mat-cell.cdk-column-_buttons.mat-column-_buttons, .mat-header-cell.cdk-column-_buttons.mat-column-_buttons{
+        text-align: right;
+    }
 }

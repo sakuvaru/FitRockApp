@@ -3,9 +3,12 @@
 
     <loader [enabled]="loaderEnabled" type="linear"></loader>
 
+    <error-message *ngIf="errorMessage" [text]="errorMessage"></error-message>
+
     <div class="w-data-table-filter">
       <mat-form-field floatPlaceholder="never" [ngClass]="config.wrapInCard ? 'text-sm' : ''" flex>
-        <input matInput placeholder="{{ 'shared.search' | translate }}" [formControl]="searchControl" [value]="search" />
+        <input matInput placeholder="{{ 'webComponents.dataTable.searchPlaceholder' | translate }}" [formControl]="searchControl"
+          [value]="search" />
         <span matPrefix>
           <mat-icon>search</mat-icon>
         </span>
@@ -19,7 +22,6 @@
               The actual rendered columns are set as a property on the row definition" -->
 
         <ng-container *ngFor="let fieldWrapper of fieldsWrapper">
-
           <ng-container [matColumnDef]="fieldWrapper.nameDef">
             <mat-header-cell *matHeaderCellDef>
               <ng-container *ngIf="fieldWrapper.field.name(item) as nameResult">
@@ -34,7 +36,26 @@
               </ng-container>
             </mat-cell>
           </ng-container>
+        </ng-container>
 
+        <ng-container *ngIf="buttonsWrapper">
+          <ng-container [matColumnDef]="buttonsWrapper.nameDef">
+            <mat-header-cell *matHeaderCellDef>
+              {{ 'webComponents.dataTable.actions' | translate }}
+            </mat-header-cell>
+            <mat-cell *matCellDef="let item">
+              <ng-container *ngFor="let button of buttons">
+                <span (click)="button.action(item)">
+                  <a *ngIf="!button.tooltip" mat-icon-button>
+                    <mat-icon>{{button.icon}}</mat-icon>
+                  </a>
+                  <a *ngIf="button.tooltip" mat-icon-button matTooltip="{{ button.tooltip(item) | async }}">
+                    <mat-icon>{{button.icon}}</mat-icon>
+                  </a>
+                </span>
+              </ng-container>
+            </mat-cell>
+          </ng-container>
         </ng-container>
 
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

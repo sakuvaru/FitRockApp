@@ -45,6 +45,16 @@ export class DashboardComponent extends BaseComponent implements OnInit {
                 { name: item => 'E-mail', value: item => item.email },
                 { name: item => super.translate('type.user'), value: item => item.city }
             ])
+            .withButton(
+                {
+                    icon: 'motorcycle',
+                    action: (item => {
+                        console.log('Action was triggered');
+                    }),
+                    tooltip: (item) => super.translate('shared.search')
+                }
+            )
+            .deleteAction((item) => this.dependencies.itemServices.userService.delete(item.id))
             .build();
 
         this.setConfig({

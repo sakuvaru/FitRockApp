@@ -1,5 +1,6 @@
 import { Observable } from 'rxjs/Rx';
-import { DataTableField, DataTableResponse } from './data-table-models';
+import { DataTableField, DataTableResponse, DataTableButton, 
+    DataTableDeleteResponse } from './data-table-models';
 
 export class DataTableConfig {
 
@@ -7,6 +8,11 @@ export class DataTableConfig {
      * Fields
      */
     public fields: DataTableField<any>[] = [];
+
+    /**
+     * Action buttons
+     */
+    public buttons: DataTableButton<any>[] = [];
 
     /**
      * Indicates if local loader is enabled
@@ -27,6 +33,11 @@ export class DataTableConfig {
      * Default page size
      */
     public pageSize: number = 10;
+
+    /**
+     * Delete action
+     */
+    public deleteAction?: (item) => Observable<DataTableDeleteResponse>;
 
     constructor(
         /**

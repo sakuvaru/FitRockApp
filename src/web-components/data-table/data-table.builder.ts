@@ -1,8 +1,8 @@
 import { DataTableConfig } from './data-table.config';
 import { Observable } from 'rxjs/Rx';
-import { IItem, MultipleItemQuery } from '../../lib/repository';
-import { DataTableField, DataTableResponse } from './data-table-models';
-import { IDataTableField } from './data-table.interfaces';
+import { IItem, MultipleItemQuery, DeleteItemQuery } from '../../lib/repository';
+import { DataTableField, DataTableResponse, DataTableButton, DataTableDeleteResponse } from './data-table-models';
+import { IDataTableField, IDataTableButton } from './data-table.interfaces';
 import * as _ from 'underscore';
 
 export class DataTableBuilder<TItem extends IItem> {
@@ -58,6 +58,39 @@ export class DataTableBuilder<TItem extends IItem> {
      */
     withFields(fields: IDataTableField<TItem>[]): this {
         this.config.fields = _.union(this.config.fields, fields.map(m => new DataTableField(m.name, m.value)));
+        return this;
+    }
+
+    /**
+     * Adds button to list
+     * @param button Button to add
+     */
+    withButton(button: IDataTableButton<TItem>): this {
+        this.config.buttons.push(new DataTableButton(button.icon, button.action, button.tooltip));
+        return this;
+    }
+
+    /**
+     * Adds array of buttons to list
+     * @param buttons buttons to add
+     */
+    withButtons(buttons: IDataTableButton<TItem>[]): this {
+        this.config.buttons = _.union(this.config.buttons, buttons.map(m => new DataTableButton(m.icon, m.action, m.tooltip)));
+        return this;
+    }
+
+    /**
+     * Delete action
+     * @param resolver Delete resolver
+     */
+    deleteAction(resolver: (item: TItem) => DeleteItemQuery): this {
+        this.config.deleteAction = (item) => resolver(item)
+            .set()
+            .map(response => new DataTableDeleteResponse(true))
+            .catch(err => {
+                console.log(err);
+                return Observable.throw(new DataTableDeleteResponse(false, err));
+            });
         return this;
     }
 
