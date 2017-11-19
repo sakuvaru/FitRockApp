@@ -247,27 +247,20 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
     }
 
     private initFilters(): void {
-        // add all filter
-        const getData = this.config.getData;
+        const filters = this.config.filters;
+
+        // prepare all filter
         const allFilter = this.config.allFilter;
-        let allFilterObs: Observable<void> | undefined;
-        if (allFilter && this.config.filters && this.config.filters.length > 0 && getData) {
-            allFilterObs = this.translateService.get('webComponents.dataTable.all').map(
-                allText => {
-                    // adjust all filter
-                    this.tempFiltersWrapper.push(new FilterWrapper(
-                        allText,
-                        0,
-                        allFilter,
-                        1
-                    ));
-                }
-            );
+        if (allFilter && this.config.filters && this.config.filters.length > 0) {
+            // change the text for all filter
+            allFilter.name = this.translateService.get('webComponents.dataTable.all');
+
+            filters.push(allFilter);
         }
 
         const observables: Observable<any>[] = [];
 
-        this.config.filters.forEach(filter => {
+        filters.forEach(filter => {
 
             const obs = filter.count(this.search)
             .flatMap(response => {
@@ -291,16 +284,11 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
             observables.push(obs);
         });
 
-        // add all filter
-        if (allFilterObs) {
-            observables.push(allFilterObs);
-        }
-
         observableHelper.zipObservables(observables)
             .takeUntil(this.ngUnsubscribe)
             .subscribe(() => {
                 // sort filters based on priority
-                this.tempFiltersWrapper = this.tempFiltersWrapper.sort((n1, n2) => n1.priority - n2.priority);
+                this.tempFiltersWrapper = this.tempFiltersWrapper.sort((n1, n2) => n1.filter.priority - n2.filter.priority);
                 
                 // replace filters with temp filters and reset temp filters
                 this.filtersWrapper = this.tempFiltersWrapper;

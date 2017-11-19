@@ -156,7 +156,8 @@ export class DataTableBuilder<TItem extends IItem> {
             new Filter(
                 name,
                 (page: number, pageSize: number, search: string, limit: number) => this.getDataResponse(this.query, page, pageSize, search, limit),
-                (search) => this.getCountResponse(filterQuery, search)
+                (search) => this.getCountResponse(filterQuery, search),
+                1
             );
 
         return this;

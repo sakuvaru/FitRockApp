@@ -81,7 +81,12 @@ export class Filter {
     constructor(
         public name: Observable<string>,
         public filter: (page: number, pageSize: number, search: string, limit?: number) => Observable<DataTableResponse>,
-        public count: (search: string) => Observable<DataTableCountResponse>
+        public count: (search: string) => Observable<DataTableCountResponse>,
+        /**
+         * Higher priority = filter is on left
+         * Default is 2, while all filter is using 1
+         */
+        public priority: number = 2
     ) {
     }
 }
@@ -90,12 +95,7 @@ export class FilterWrapper {
     constructor(
         public resolvedName: string,
         public resolvedCount: number,
-        public filter: Filter,
-        /**
-         * Higher priority = filter is on left
-         * Default is 2, while all filter is using 1
-         */
-        public priority: number = 2
+        public filter: Filter
     ) {}
 }
 
