@@ -3,10 +3,29 @@ import { Observable } from 'rxjs/Rx';
 import { IItem, MultipleItemQuery, DeleteItemQuery, ItemCountQuery } from '../../lib/repository';
 import {
     DataTableField, DataTableResponse, DataTableButton, DataTableDeleteResponse,
-    Filter, DataTableCountResponse
+    Filter, DataTableCountResponse, DynamicFilter
 } from './data-table-models';
 import { IDataTableField, IDataTableButton } from './data-table.interfaces';
 import * as _ from 'underscore';
+
+// export table config
+export { DataTableConfig };
+
+export interface IDynamicFilter<TItem extends IItem> {
+    guid: string;
+    name: Observable<string>;
+    query: ((query: MultipleItemQuery<TItem>) => MultipleItemQuery<TItem>);
+    count: number;
+    priority?: number;
+}
+
+export interface IStaticFilter<TItem extends IItem> {
+    guid: string;
+    name: Observable<string>;
+    query: ((query: MultipleItemQuery<TItem>) => MultipleItemQuery<TItem>);
+    count?: ((query: MultipleItemQuery<TItem>) => ItemCountQuery);
+    priority?: number;
+}
 
 export class DataTableBuilder<TItem extends IItem> {
 
@@ -88,14 +107,49 @@ export class DataTableBuilder<TItem extends IItem> {
      * Delete action
      * @param resolver Delete resolver
      */
-    deleteAction(resolver: (item: TItem) => DeleteItemQuery): this {
+    deleteAction(resolver: (item: TItem) => DeleteItemQuery, itemName?: (item: TItem) => string): this {
         this.config.deleteAction = (item) => resolver(item)
             .set()
             .map(response => new DataTableDeleteResponse(true))
             .catch(err => {
-                console.log(err);
                 return Observable.throw(new DataTableDeleteResponse(false, err));
             });
+
+        this.config.itemName = itemName;
+
+        return this;
+    }
+
+    /**
+     * Sets dynamic filters
+     * @param filters Dynamic filters
+     */
+    withDynamicFilters(filtersQuery: (search: string) => Observable<IDynamicFilter<TItem>[]>): this {
+
+        const dynamicFiltersObs = (search) => filtersQuery(search).map(dynamicFilters => {
+            const returnfilters: DynamicFilter[] = [];
+
+            dynamicFilters.forEach(dynamicFilter => {
+                // resolve filter query using the 'base' query
+                const filterQuery = (filterSearch) => {
+                    return dynamicFilter.query(this.query(filterSearch));
+                };
+
+                returnfilters.push(
+                    new DynamicFilter(
+                        dynamicFilter.guid,
+                        dynamicFilter.name,
+                        (page: number, pageSize: number, xSearch: string, limit: number) => this.getDataResponse(filterQuery, page, pageSize, xSearch, limit),
+                        dynamicFilter.count,
+                        dynamicFilter.priority ? dynamicFilter.priority : 2
+                    ));
+            });
+
+            return returnfilters;
+        });
+       
+        this.config.dynamicFilters = dynamicFiltersObs;
+
         return this;
     }
 
@@ -103,11 +157,7 @@ export class DataTableBuilder<TItem extends IItem> {
     * Sets up filters
     * @param filters filters
     */
-    withFilters(filters: {
-        name: Observable<string>,
-        query: ((query: MultipleItemQuery<TItem>) => MultipleItemQuery<TItem>),
-        count?: ((query: MultipleItemQuery<TItem>) => ItemCountQuery),
-    }[]): this {
+    withFilters(filters: IStaticFilter<TItem>[]): this {
         const returnfilters: Filter[] = [];
 
         filters.forEach(filter => {
@@ -127,9 +177,11 @@ export class DataTableBuilder<TItem extends IItem> {
 
             returnfilters.push(
                 new Filter(
+                    filter.guid,
                     filter.name,
                     (page: number, pageSize: number, search: string, limit: number) => this.getDataResponse(filterQuery, page, pageSize, search, limit),
-                    (search) => this.getCountResponse(countQuery, search)
+                    (search) => this.getCountResponse(countQuery, search),
+                    filter.priority ? filter.priority : 2
                 ));
         });
 
@@ -154,6 +206,7 @@ export class DataTableBuilder<TItem extends IItem> {
 
         this.config.allFilter =
             new Filter(
+                '_allFilter',
                 name,
                 (page: number, pageSize: number, search: string, limit: number) => this.getDataResponse(this.query, page, pageSize, search, limit),
                 (search) => this.getCountResponse(filterQuery, search),

@@ -1,10 +1,23 @@
 <div *ngIf="filtersWrapper && filtersWrapper.length > 0" class="push-bottom-sm">
-  <mat-chip-list>
 
+  <!-- mat-chip-list is not used directly because ':focus' messes up with the search focus when some chip is selected(focused) -->
+  <!--
+    <mat-chip-list>
     <mat-chip style="cursor: pointer" *ngFor="let filterWrapper of filtersWrapper" selected="false" (click)="runFilter(filterWrapper.resolvedName)" [selected]="filterWrapper.resolvedName === activeFilterName ? true : false">
       {{ filterWrapper.resolvedName }} ({{ filterWrapper.resolvedCount }})
     </mat-chip>
   </mat-chip-list>
+  -->
+
+  <div class="mat-chip-list">
+    <div class="mat-chip-list-wrapper">
+      <div tabindex="-1" *ngFor="let filterWrapper of filtersWrapper" [class.mat-chip-selected]="filterWrapper.filter.guid === activeFilterGuid" class="w-cursor-pointer w-chip mat-chip mat-primary"
+      (click)="runFilter(filterWrapper.filter.guid)">
+       {{ filterWrapper.resolvedName }}&nbsp;<span *ngIf="filterWrapper.resolvedCount >= 0">({{ filterWrapper.resolvedCount }})</span>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <div class="w-data-table">

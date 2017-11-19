@@ -1,8 +1,9 @@
 import { Observable } from 'rxjs/Rx';
 import {
     DataTableField, DataTableResponse, DataTableButton,
-    DataTableDeleteResponse, Filter
+    DataTableDeleteResponse, DynamicFilter, AllFilter
 } from './data-table-models';
+import { IFilter } from './data-table.interfaces';
 import { guidHelper, stringHelper } from '../../lib/utilities';
 
 export class DataTableConfig {
@@ -48,9 +49,20 @@ export class DataTableConfig {
     public deleteAction?: (item) => Observable<DataTableDeleteResponse>;
 
     /**
+     * Used to get name of the item 
+     * Can be used for e.g preview of item in delete dialog
+     */
+    public itemName?: (item) => string;
+
+    /**
      * Filters
      */
-    public filters: Filter[] = [];
+    public filters: IFilter[] = [];
+
+    /**
+     * Dynamic filters
+     */
+    public dynamicFilters?: (search: string) => Observable<DynamicFilter[]>;
 
     /**
      * Indicates if last filter, search & page is remembered
@@ -58,9 +70,9 @@ export class DataTableConfig {
     public rememberState: boolean = true;
 
     /**
-     * Indicates if all filters is used when filters are present
+     * Sets up all filter. This filter is applicable only for static filters, not dynamic.
      */
-    public allFilter?: Filter;
+    public allFilter?: AllFilter;
 
     constructor(
         /**

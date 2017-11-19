@@ -551,13 +551,15 @@
 		},
 		"dataTable": {
 			"delete": {
-				"message": "Opravdu chceš smazat tento objekt?",
+				"messageGeneric": "Opravdu chceš smazat tento objekt?",
+				"messageWithName": "Opravdu chceš smazat objekt s názvem '{{ name }}'?",
 				"title": "Potvrzení",
 				"cancel": "Zrušit",
 				"confirm": "Smazat",
 				"tooltip": "Smazat",
 				"deleted": "Smazáno"
 			},
+			"loadingDataError": "Došlo k chybě při nahrávání dat",
 			"internalError": "Došlo k neznámé chybě",
 			"searchPlaceholder": "Hledat",
 			"actions": "Akce",

@@ -1,6 +1,7 @@
 import { Observable } from 'rxjs/Rx';
 import { guidHelper, stringHelper } from '../../lib/utilities';
-import { IDataTableButton, IDataTableField } from './data-table.interfaces';
+import { IDataTableButton, IDataTableField, IDataTableCountResponse, IDataTableResponse,
+IFilter } from './data-table.interfaces';
 
 export class DataTableField<T> implements IDataTableField<T> {
     constructor(
@@ -38,7 +39,7 @@ export class DataTableButton<T> implements DataTableButton<T> {
     ) { }
 }
 
-export class DataTableResponse {
+export class DataTableResponse implements IDataTableResponse {
 
     constructor(
         public items: any[],
@@ -68,25 +69,46 @@ export class DataTableDeleteResponse {
     ) { }
 }
 
-export class DataTableCountResponse {
+export class DataTableCountResponse implements IDataTableCountResponse {
     constructor(
         public count: number
     ) {}
 }
 
-export class Filter {
+export class DynamicFilter implements IFilter {
+    constructor(
+        public guid: string,
+        public name: Observable<string>,
+        public filter: (page: number, pageSize: number, search: string, limit?: number) => Observable<DataTableResponse>,
+        public count: number,
+        /**
+         * Higher priority = filter is on left
+         */
+        public priority
+    ) {
+    }
+}
+
+export class AllFilter {
+    constructor(
+        public filter: (page: number, pageSize: number, search: string, limit?: number) => Observable<DataTableResponse>,
+        public count: (search: string) => Observable<DataTableCountResponse>,
+    ) {}
+}
+
+export class Filter implements IFilter {
 
     private _hash?: number;
 
     constructor(
+        public guid: string,
         public name: Observable<string>,
         public filter: (page: number, pageSize: number, search: string, limit?: number) => Observable<DataTableResponse>,
         public count: (search: string) => Observable<DataTableCountResponse>,
         /**
          * Higher priority = filter is on left
-         * Default is 2, while all filter is using 1
          */
-        public priority: number = 2
+        public priority
     ) {
     }
 }
@@ -95,7 +117,7 @@ export class FilterWrapper {
     constructor(
         public resolvedName: string,
         public resolvedCount: number,
-        public filter: Filter
+        public filter: IFilter
     ) {}
 }
 

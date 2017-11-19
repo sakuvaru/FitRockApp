@@ -4,11 +4,11 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { ComponentDependencyService, BaseComponent, ComponentSetup } from '../../core';
 
 // required by component
-import { Log, User } from '../../models';
+import { Log, User, Exercise } from '../../models';
 import { CurrentUser } from '../../../lib/auth';
-
-import { DataTableConfig, DataTableResponse } from '../../../web-components/data-table';
 import { Observable } from 'rxjs/Rx';
+
+import { DataTableConfig, IDynamicFilter } from '../../../web-components/data-table/data-table.builder';
 
 @Component({
     templateUrl: 'dashboard.component.html'
@@ -35,6 +35,48 @@ export class DashboardComponent extends BaseComponent implements OnInit {
     ngOnInit(): void {
         super.ngOnInit();
 
+        this.config = this.dependencies.webComponentServices.dataTableService.dataTable<Exercise>(
+            (search) => this.dependencies.itemServices.exerciseService.items()
+                .include('ExerciseCategory')
+                .whereLike('ExerciseName', search)
+        )
+            .withFields([
+                { name: item => 'Name', value: item => item.exerciseName },
+                { name: item => 'Category', value: item => item.exerciseCategory.categoryName },
+            ])
+            .withButton(
+            {
+                icon: 'motorcycle',
+                action: (item => {
+                    console.log('Action was triggered');
+                }),
+                tooltip: (item) => super.translate('shared.search')
+            }
+            )
+            .withDynamicFilters(
+                search => 
+                    this.dependencies.itemServices.exerciseCategoyService.getCategoriesWithExercisesCount(search, true)
+                      .get()
+                      .map(response => {
+                        const filters: IDynamicFilter<Exercise>[] = [];
+                        response.items.forEach(category => {
+                          filters.push(({
+                            guid: category.id.toString(),
+                            name: Observable.of(category.codename),
+                            query: (query) => {
+                                return query.whereEquals('ExerciseCategoryId', category.id);
+                            },
+                            count: category.exercisesCount
+                          }));
+                        });
+                        return filters;
+                    })
+            )
+            .allFilter(Observable.of('all'))
+            .deleteAction((item) => this.dependencies.itemServices.exerciseService.delete(item.id), item => item.exerciseName)
+            .build();
+
+        /*
         this.config = this.dependencies.webComponentServices.dataTableService.dataTable<User>(
             (search) => this.dependencies.itemServices.userService.items()
                 .whereLikeMultiple(['FirstName', 'LastName'], search)
@@ -72,6 +114,7 @@ export class DashboardComponent extends BaseComponent implements OnInit {
             .allFilter(Observable.of('all'))
             .deleteAction((item) => this.dependencies.itemServices.userService.delete(item.id))
             .build();
+            */
 
         this.setConfig({
             menuTitle: { key: 'menu.main' },

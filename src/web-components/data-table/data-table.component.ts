@@ -10,11 +10,11 @@ import { DataTableSource } from './data-table-source.class';
 import {
     DataTableField, DataTableFieldWrapper, DataTableButtonWrapper,
     DataTableButton, DataTableDeleteResponse, Filter, FilterWrapper, DataTableResponse,
-    DataTableCountResponse
+    DataTableCountResponse, DynamicFilter, AllFilter
 } from './data-table-models';
-
+import { IFilter } from './data-table.interfaces';
 import { MatPaginator } from '@angular/material';
-import { Observable } from 'rxjs/Rx';
+import { Observable, Subject } from 'rxjs/Rx';
 import { MatSnackBar } from '@angular/material';
 import { TdDialogService } from '@covalent/core';
 import { TranslateService } from '@ngx-translate/core';
@@ -32,6 +32,13 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
     @Input() config: DataTableConfig;
 
     /**
+     * This gets triggered whenever any state of table changes such as
+     * when page is changed, filter is used, filter is changed, searched etc..
+     * Loaders should switch map based on this subject
+     */
+    private reloadDataSubject = new Subject<boolean>();
+
+    /**
      * Indicates if loader is enabled
      */
     private loaderEnabled: boolean = false;
@@ -40,6 +47,11 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
      * Identifier for buttons columns
      */
     private readonly buttonsColumnDef: string = '_buttons';
+
+    /**
+     * Guid of all filter
+     */
+    private readonly allFilterGuid: string = '_allFilter';
 
     /**
      * All filters
@@ -54,7 +66,7 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
     /**
      * Guid of active filter
      */
-    private activeFilterName?: string;
+    private activeFilterGuid?: string;
 
     /**
      * Displayed columns
@@ -86,7 +98,7 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
     private pageSize: number = 20;
 
     /**
-     * Total number of items in db
+     * Total number of items in db in current state (including active filter for example)
      */
     private totalItems: number = 0;
 
@@ -142,7 +154,7 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
      */
     private translations = {
         'delete': {
-            'message': '',
+            'messageGeneric': '',
             'cancel': '',
             'confirm': '',
             'title': '',
@@ -150,7 +162,8 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
             'deleted': ''
         },
         'internalError': '',
-        'all': ''
+        'all': '',
+        'loadingDataError': ''
     };
 
     /**
@@ -200,10 +213,10 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
             this.loaderEnabled = true;
         }
 
-               // current state
-               if (this.config.rememberState) {
-                this.initLastState(this.config.getHash());
-            }
+        // current state
+        if (this.config.rememberState) {
+            this.initLastState(this.config.getHash());
+        }
 
         // map fields
         this.fieldsWrapper = this.config.fields.map(field => {
@@ -219,7 +232,7 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
         if (deleteAction) {
             this.buttons.push(new DataTableButton(
                 'delete',
-                (item) => this.deleteConfirmation(deleteAction(item)),
+                (item) => this.deleteConfirmation(deleteAction(item), item),
                 (item) => Observable.of(this.translations.delete.tooltip)
             ));
         }
@@ -231,95 +244,275 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
         }
         this.currentPage = this.config.page;
 
-        // init filters
-        this.initFilters();
-
         // subscribe to text filter
         this.subscribeToTextFilterChanges();
 
         // subscribe to pager changes
         this.subscribeToPagerChanges();
 
-        // load actual data
-        this.reloadData();
+        // subscribe to reload data observable
+        this.subscribeToReloadData();
+
+        // if filters are used, init them and them load data 
+        // (so that current filter can be used to load filtered data)
+        if (this.areFiltersUsed()) {
+            this.getInitFiltersObservable()
+                .takeUntil(this.ngUnsubscribe)
+                .subscribe(filtersResolved => {
+                    // at this point all filters should be initialized
+                    this.reloadData();
+                },
+                error => this.handleError(error));
+        } else {
+            // no filter is used
+            // load data and filters independently
+            this.getInitFiltersObservable()
+                .takeUntil(this.ngUnsubscribe)
+                .subscribe(undefined, error => this.handleError(error));
+
+            // load data without filter
+            this.reloadData();
+        }
 
         this.initialized = true;
     }
 
-    private initFilters(): void {
+    private areFiltersUsed(): boolean {
+        if ((!this.config.filters || this.config.filters.length === 0) && !this.config.dynamicFilters) {
+            // no filters are configured
+            return false;
+        }
+
+        return true;
+    }
+
+    private getInitFiltersObservable(): Observable<boolean> {
+        if ((!this.config.filters || this.config.filters.length === 0) && !this.config.dynamicFilters) {
+            // no filters are configured
+            return Observable.of(false);
+        }
+
+        if (this.config.filters && this.config.filters.length > 0 && this.config.dynamicFilters) {
+            console.warn('Cannot evaluate both dynamic & static filters for Data table. Remove either one or the other');
+            return Observable.of(false);
+        }
+
+        if (this.config.filters && this.config.filters.length > 0) {
+            // static filters are used
+            return this.initStaticFilters();
+        }
+
+        if (this.config.dynamicFilters) {
+            // dynamic filters
+            return this.initDynamicFilters();
+        }
+
+        return Observable.of(false);
+    }
+
+    private initDynamicFilters(): Observable<boolean> {
+        if (!this.config.dynamicFilters) {
+            console.warn('Cannot init dynamic filters');
+            return Observable.of(false);
+        }
+
+        const getData = this.config.getData;
+
+        if (!getData) {
+            console.warn('Cannot init dynamic filters due to invalid dat function');
+            return Observable.of(false);
+        }
+
+        return this.config.dynamicFilters(this.search)
+            .flatMap(dynamicFilters => {
+                const filtersObs: Observable<any>[] = [];
+
+                dynamicFilters.forEach(dynamicFilter => {
+                    filtersObs.push(
+                        dynamicFilter.name
+                            .map(resolvedName => {
+                                return new FilterWrapper(
+                                    resolvedName,
+                                    dynamicFilter.count,
+                                    dynamicFilter
+                                );
+                            })
+                            .map(filter => {
+                                this.tempFiltersWrapper.push(filter);
+                            }));
+                });
+
+                // automatically append all filter at the beginning
+                // this filter is added when dynamic filters are used
+                filtersObs.push(Observable.of(
+                    new FilterWrapper(
+                        this.translations.all,
+                        0,
+                        new DynamicFilter(
+                            this.allFilterGuid,
+                            Observable.of(''),
+                            getData,
+                            1,
+                            0
+                        )
+                    )
+                )
+                    .map(filter => {
+                        this.tempFiltersWrapper.push(filter);
+                    }));
+
+                return observableHelper.zipObservables(filtersObs);
+            })
+            .flatMap(() => {
+                // sort filters based on priority
+                this.tempFiltersWrapper = this.tempFiltersWrapper.sort((n1, n2) => n1.filter.priority - n2.filter.priority);
+
+                // calculate total number of items and set all filter which should be added automatically
+                const allFilter = this.tempFiltersWrapper.find(m => m.filter.guid === this.allFilterGuid);
+                if (!allFilter) {
+                    console.warn('Could not find all filter for data table');
+                } else {
+                    let totalCount = 0;
+                    this.tempFiltersWrapper.forEach(tempFilter => {
+                        totalCount = totalCount + tempFilter.resolvedCount;
+                    });
+
+                    allFilter.resolvedCount = totalCount;
+                }
+
+                // replace filters with temp filters and reset temp filters
+                this.filtersWrapper = this.tempFiltersWrapper;
+
+                this.tempFiltersWrapper = [];
+
+                return Observable.of(true);
+            });
+    }
+
+    private initStaticFilters(): Observable<boolean> {
         const filters = this.config.filters;
 
         // prepare all filter
         const allFilter = this.config.allFilter;
         if (allFilter && this.config.filters && this.config.filters.length > 0) {
             // change the text for all filter
-            allFilter.name = this.translateService.get('webComponents.dataTable.all');
-
-            filters.push(allFilter);
+            filters.push(new Filter(
+                this.allFilterGuid,
+                this.translateService.get('webComponents.dataTable.all'),
+                allFilter.filter,
+                allFilter.count,
+                0
+            ));
         }
 
         const observables: Observable<any>[] = [];
 
         filters.forEach(filter => {
 
-            const obs = filter.count(this.search)
-            .flatMap(response => {
-                // create filter wrapper and set its count
-                const filterWrapper = new FilterWrapper('', response.count, filter);
-                return Observable.of(filterWrapper);
-            })
-            .flatMap(filterWrapper => {
-                // resolve name and set it
-                return filter.name.map(name => {
-                    filterWrapper.resolvedName = name;
+            let filterObs;
 
-                    return filterWrapper;
+            if (filter instanceof Filter) {
+                filterObs = filter.count(this.search);
+            } else {
+                throw Error(`Static filter is required for evaluating static filters`);
+            }
+
+            filterObs
+                .flatMap(response => {
+                    // create filter wrapper and set its count
+                    const filterWrapper = new FilterWrapper('', response.count, filter);
+                    return Observable.of(filterWrapper);
+                })
+                .flatMap(filterWrapper => {
+                    // resolve name and set it
+                    return filter.name.map(name => {
+                        filterWrapper.resolvedName = name;
+
+                        return filterWrapper;
+                    });
+                })
+                .map(filterWrapper => {
+                    // add filter to local variable
+                    this.tempFiltersWrapper.push(filterWrapper);
                 });
-            })
-            .map(filterWrapper => {
-                // add filter to local variable
-                this.tempFiltersWrapper.push(filterWrapper);
-            });
 
-            observables.push(obs);
+            observables.push(filterObs);
         });
 
-        observableHelper.zipObservables(observables)
-            .takeUntil(this.ngUnsubscribe)
-            .subscribe(() => {
+        return observableHelper.zipObservables(observables)
+            .flatMap(() => {
                 // sort filters based on priority
                 this.tempFiltersWrapper = this.tempFiltersWrapper.sort((n1, n2) => n1.filter.priority - n2.filter.priority);
-                
+
                 // replace filters with temp filters and reset temp filters
                 this.filtersWrapper = this.tempFiltersWrapper;
 
                 this.tempFiltersWrapper = [];
+
+                return Observable.of(true);
             });
     }
 
-    private recalculateFilters(): void {
-        this.filtersWrapper.forEach(filterWrapper => {
-            filterWrapper.filter.count(this.search).map(response => {
-                filterWrapper.resolvedCount = response.count;
-            })
-            .takeUntil(this.ngUnsubscribe)
-            .subscribe();
-        });
-    }
-
-    private runFilter(name: string): void {
-        // find filter
-        const filterWrapper = this.filtersWrapper.find(m => m.resolvedName === name);
-        if (!filterWrapper) {
-            console.warn(`Invalid filter'${name}'`);
-            return;
+    private recalculateFilters(): Observable<void> {
+        if ((!this.config.filters || this.config.filters.length === 0) && !this.config.dynamicFilters) {
+            // no filters are configured
+            return Observable.of(undefined);
         }
 
+        if (this.config.filters && this.config.filters.length > 0) {
+            return this.recalculateStaticFilters();
+        }
+
+        if (this.config.dynamicFilters) {
+            return this.recalculateDynamicFilters();
+        }
+
+        return Observable.of(undefined);
+    }
+
+    private recalculateStaticFilters(): Observable<void> {
+
+        const observables: Observable<void>[] = [];
+
+        this.filtersWrapper.forEach(filterWrapper => {
+            if (filterWrapper.filter instanceof Filter) {
+                observables.push(
+                    filterWrapper.filter.count(this.search).map(response => {
+                        filterWrapper.resolvedCount = response.count;
+                    }));
+            } else {
+                throw Error(`Cannot recalculate static filters because invalid filter type was provided`);
+            }
+
+        });
+
+        return observableHelper.zipObservables(observables);
+    }
+
+    private recalculateDynamicFilters(): Observable<void> {
+        if (!this.config.dynamicFilters) {
+            throw Error('Cannot recalculate dynamic filters');
+        }
+
+        // logic is the same for initialization, so use that
+        return this.initDynamicFilters().map(r => undefined);
+    }
+
+    private runFilter(guid: string): void {
+        // find filter
+        const filterWrapper = this.filtersWrapper.find(m => m.filter.guid === guid);
+        if (!filterWrapper) {
+            throw Error(`Invalid filter '${guid}'`);
+        }
+
+        // reset page to 1
+        this.currentPage = 1;
+
         // set current filter
-        this.activeFilterName = name;
+        this.activeFilterGuid = guid;
 
         // reload data
-        this.loadData();
+        this.reloadData();
     }
 
     private subscribeToTextFilterChanges(): void {
@@ -330,17 +523,15 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
                 // udate searched variable
                 this.search = searchTerm;
 
-                // recalculate filters
-                 this.recalculateFilters();
-
                 // reload data
                 this.reloadData();
-            });
+            },
+            error => this.handleError(error));
     }
 
     private subscribeToPagerChanges(): void {
         if (!this.paginator) {
-            console.log('Could not init paginator');
+            console.warn('Could not init paginator');
             return;
         }
 
@@ -357,14 +548,7 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
             .subscribe();
     }
 
-    private loadData(): void {
-        if (this.config.enableLocalLoader) {
-            this.loaderEnabled = true;
-        }
-
-        // reset errors
-        this.resetErrors();
-
+    private getLoadDataObservable(): Observable<void> {
         // get Observable used to load data
         if (!this.config.getData) {
             throw new Error('Cannot fetch data because no get function was defined. This is a result of invalid configuration.');
@@ -372,57 +556,82 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
 
         let dataObs: Observable<DataTableResponse>;
 
-        // get data from main observable if no filter is used
-        let filter: Filter | undefined;
-        if (this.activeFilterName) {
-            const filterWrapper = this.filtersWrapper.find(m => m.resolvedName === this.activeFilterName);
-            if (!filterWrapper) {
-                console.log(`Invalid filter '${this.activeFilterName}'`);
+        // try getting active filter
+        let activeFilter: IFilter | undefined;
+        if (this.activeFilterGuid) {
+            const activeFilterWrapper = this.filtersWrapper.find(m => m.filter.guid === this.activeFilterGuid);
+            if (!activeFilterWrapper) {
+                console.warn(`Invalid filter '${this.activeFilterGuid}'`);
             } else {
-                filter = filterWrapper.filter;
+                activeFilter = activeFilterWrapper.filter;
             }
         }
 
-        if (filter) {
+        if (activeFilter) {
             // use filter observable
-            dataObs = filter.filter(this.currentPage, this.pageSize, this.search, this.limit);
+            dataObs = activeFilter.filter(this.currentPage, this.pageSize, this.search, this.limit);
         } else {
             // get data from filter if its set
             dataObs = this.config.getData(this.currentPage, this.pageSize, this.search, this.limit);
         }
 
-        dataObs.map(response => {
-            this.totalItems = response.totaltems;
+        return dataObs
+            .map(response => {
+                this.totalItems = response.totaltems;
 
-            this.dataSource = new DataTableSource(response.items);
+                this.dataSource = new DataTableSource(response.items);
 
-            // save current state
-            if (this.config.rememberState) {
-                this.saveCurrentState(this.config.getHash());
-            }
+                // save current state
+                if (this.config.rememberState) {
+                    this.saveCurrentState(this.config.getHash());
+                }
 
-            if (this.config.enableLocalLoader) {
-                this.loaderEnabled = false;
-            }
-        })
-            .takeUntil(this.ngUnsubscribe)
-            .subscribe();
+                if (this.config.enableLocalLoader) {
+                    this.loaderEnabled = false;
+                }
+            });
     }
 
-    private deleteConfirmation(action: Observable<DataTableDeleteResponse>): void {
-        this.dialogService.openConfirm({
-            message: this.translations.delete.message,
-            disableClose: false, // defaults to false
-            title: this.translations.delete.title,
-            cancelButton: this.translations.delete.cancel,
-            acceptButton: this.translations.delete.confirm,
-        }).afterClosed().subscribe((accept: boolean) => {
-            if (accept) {
-                this.deleteItem(action);
-            } else {
-                // user did not accepted delete
-            }
-        });
+    private deleteConfirmation(action: Observable<DataTableDeleteResponse>, item: any): void {
+        // try getting the objet preview name
+        const previewName = this.config.itemName ? this.config.itemName(item) : undefined;
+
+        if (previewName) {
+            this.translateService
+                .get('webComponents.dataTable.delete.messageWithName', { 'name': previewName })
+                .map(message => {
+                    this.dialogService.openConfirm({
+                        message: message,
+                        disableClose: false, // defaults to false
+                        title: this.translations.delete.title,
+                        cancelButton: this.translations.delete.cancel,
+                        acceptButton: this.translations.delete.confirm,
+                    }).afterClosed().subscribe((accept: boolean) => {
+                        if (accept) {
+                            this.deleteItem(action);
+                        } else {
+                            // user did not accepted delete
+                        }
+                    });
+                })
+                .takeUntil(this.ngUnsubscribe)
+                .subscribe();
+
+        } else {
+            this.dialogService.openConfirm({
+                message: this.translations.delete.messageGeneric,
+                disableClose: false, // defaults to false
+                title: this.translations.delete.title,
+                cancelButton: this.translations.delete.cancel,
+                acceptButton: this.translations.delete.confirm,
+            }).afterClosed().subscribe((accept: boolean) => {
+                if (accept) {
+                    this.deleteItem(action);
+                } else {
+                    // user did not accepted delete
+                }
+            });
+        }
     }
 
     private deleteItem(action: Observable<DataTableDeleteResponse>): void {
@@ -471,20 +680,31 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
     }
 
     private initTranslations(): void {
-        this.translateService.get('webComponents.dataTable.delete.message').map(text => this.translations.delete.message = text)
+        this.translateService.get('webComponents.dataTable.delete.messageGeneric').map(text => this.translations.delete.messageGeneric = text)
+            .zip(this.translateService.get('webComponents.dataTable.all').map(text => this.translations.all = text))
             .zip(this.translateService.get('webComponents.dataTable.delete.title').map(text => this.translations.delete.title = text))
             .zip(this.translateService.get('webComponents.dataTable.delete.cancel').map(text => this.translations.delete.cancel = text))
             .zip(this.translateService.get('webComponents.dataTable.delete.confirm').map(text => this.translations.delete.confirm = text))
             .zip(this.translateService.get('webComponents.dataTable.delete.tooltip').map(text => this.translations.delete.tooltip = text))
             .zip(this.translateService.get('webComponents.dataTable.delete.deleted').map(text => this.translations.delete.deleted = text))
             .zip(this.translateService.get('webComponents.dataTable.internalError').map(text => this.translations.internalError = text))
+            .zip(this.translateService.get('webComponents.dataTable.loadingDataError').map(text => this.translations.loadingDataError = text))
             .takeUntil(this.ngUnsubscribe)
             .subscribe();
     }
 
+    private handleError(error: any): void {
+        console.warn('Error loading data table: ');
+        console.error(error);
+
+        this.errorMessage = this.translations.loadingDataError;
+
+        this.loaderEnabled = false;
+    }
+
     // local storage & last state
     private saveCurrentState(hash: number): void {
-        this.localStorageHelper.saveFilterToLocalStorage(hash, this.activeFilterName || '');
+        this.localStorageHelper.saveFilterToLocalStorage(hash, this.activeFilterGuid || '');
         this.localStorageHelper.savePageToLocalStorage(hash, this.currentPage);
         this.localStorageHelper.saveSearchedDataToLocalStorage(hash, this.search);
     }
@@ -495,7 +715,7 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
         const searchTermFromStorage = this.localStorageHelper.getSearchedDataFromLocalStorage(hash);
 
         if (filterFormStorage) {
-            this.activeFilterName = filterFormStorage;
+            this.activeFilterGuid = filterFormStorage;
         }
 
         if (pageFromStorage) {
@@ -507,11 +727,32 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
         }
     }
 
+    private reloadData(): void {
+        this.reloadDataSubject.next(true);
+    }
+
     /**
-     * Reloads data
+     * Subscribes to reload items observable
      */
-    reloadData(): void {
-        this.loadData();
+    private subscribeToReloadData(): void {
+        this.reloadDataSubject
+            .do(() => {
+                if (this.config.enableLocalLoader) {
+                    this.loaderEnabled = true;
+                }
+
+                // reset errors
+                this.resetErrors();
+            })
+            .switchMap(bool => this.recalculateFilters().zip(this.getLoadDataObservable())) // zip on this level becase we want to execute both at the same time
+            .takeUntil(this.ngUnsubscribe)
+            .subscribe(() => {
+
+                if (this.config.enableLocalLoader) {
+                    this.loaderEnabled = false;
+                }
+
+            }, error => this.handleError(error));
     }
 }
 
