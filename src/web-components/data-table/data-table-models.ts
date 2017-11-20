@@ -121,3 +121,27 @@ export class FilterWrapper {
     ) {}
 }
 
+export class DataTableAvatar {
+    constructor(
+        public imageUrl?: string,
+        public icon?: string
+    ) {
+    }
+
+    isIcon(): boolean {
+        if (this.icon) {
+            return true;
+        }
+
+        return false;
+    }
+
+    isImage(): boolean {
+        if (this.imageUrl) {
+            return true;
+        }
+
+        return false;
+    }
+}
+

@@ -64,7 +64,7 @@
         <!--- Note that these columns can be defined in any order.
               The actual rendered columns are set as a property on the row definition" -->
 
-        <ng-container *ngFor="let fieldWrapper of fieldsWrapper">
+        <ng-container *ngFor="let fieldWrapper of fieldsWrapper; let first = first">
           <ng-container [matColumnDef]="fieldWrapper.nameDef">
             <mat-header-cell *matHeaderCellDef>
               <ng-container *ngIf="fieldWrapper.field.name(item) as nameResult">
@@ -96,6 +96,20 @@
                     <mat-icon>{{button.icon}}</mat-icon>
                   </a>
                 </span>
+              </ng-container>
+            </mat-cell>
+          </ng-container>
+        </ng-container>
+
+        <ng-container>
+          <ng-container [matColumnDef]="avatarColumnDef">
+            <mat-header-cell *matHeaderCellDef>
+
+            </mat-header-cell>
+            <mat-cell *matCellDef="let item">
+              <ng-container *ngIf="config.avatar(item) as avatar">
+                  <img *ngIf="avatar.isImage()" class="w-data-table-avatar-image" alt="avatar" [src]="avatar.imageUrl" />
+                  <mat-icon *ngIf="avatar.isIcon()">{{ avatar.icon }}</mat-icon>
               </ng-container>
             </mat-cell>
           </ng-container>

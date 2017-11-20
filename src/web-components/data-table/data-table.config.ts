@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs/Rx';
 import {
     DataTableField, DataTableResponse, DataTableButton,
-    DataTableDeleteResponse, DynamicFilter, AllFilter
+    DataTableDeleteResponse, DynamicFilter, AllFilter, DataTableAvatar
 } from './data-table-models';
 import { IFilter } from './data-table.interfaces';
 import { guidHelper, stringHelper } from '../../lib/utilities';
@@ -73,6 +73,11 @@ export class DataTableConfig {
      * Sets up all filter. This filter is applicable only for static filters, not dynamic.
      */
     public allFilter?: AllFilter;
+
+    /**
+     * Avatar resolver
+     */
+    public avatar?: (item: any) => DataTableAvatar;
 
     constructor(
         /**

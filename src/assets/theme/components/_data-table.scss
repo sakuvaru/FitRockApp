@@ -12,7 +12,23 @@
     /**
     Aligns buttons to right
     */
-    .mat-cell.cdk-column-_buttons.mat-column-_buttons, .mat-header-cell.cdk-column-_buttons.mat-column-_buttons{
+    .mat-cell.cdk-column-_buttons.mat-column-_buttons, .mat-header-cell.cdk-column-_buttons.mat-column-_buttons {
         text-align: right;
+    }
+
+    /**
+    Max width for avatar column
+    */
+    .mat-cell.cdk-column-_avatar.mat-column-_avatar, .mat-header-cell.cdk-column-_avatar.mat-column-_avatar {
+        max-width: 50px;
+    }
+
+    /**
+    Avatar for data table
+    */
+    .w-data-table-avatar-image {
+        width: 30px;
+        height: 30px;
+        @include border-radius(50%);
     }
 }

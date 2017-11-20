@@ -72,7 +72,7 @@ export class DashboardComponent extends BaseComponent implements OnInit {
                         return filters;
                     })
             )
-            .allFilter(Observable.of('all'))
+            .avatarIcon(item => 'language')
             .deleteAction((item) => this.dependencies.itemServices.exerciseService.delete(item.id), item => item.exerciseName)
             .build();
 

@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Rx';
 import { IItem, MultipleItemQuery, DeleteItemQuery, ItemCountQuery } from '../../lib/repository';
 import {
     DataTableField, DataTableResponse, DataTableButton, DataTableDeleteResponse,
-    Filter, DataTableCountResponse, DynamicFilter
+    Filter, DataTableCountResponse, DynamicFilter, DataTableAvatar
 } from './data-table-models';
 import { IDataTableField, IDataTableButton } from './data-table.interfaces';
 import * as _ from 'underscore';
@@ -212,6 +212,22 @@ export class DataTableBuilder<TItem extends IItem> {
                 (search) => this.getCountResponse(filterQuery, search),
                 1
             );
+
+        return this;
+    }
+
+    avatarIcon(resolver: (item: TItem) => string): this {
+        this.config.avatar = (item) => {
+            return new DataTableAvatar(undefined, resolver(item));
+        };
+
+        return this;
+    }
+
+    avatarImage(resolver: (item: TItem) => string): this {
+        this.config.avatar = (item) => {
+            return new DataTableAvatar(resolver(item), undefined);
+        };
 
         return this;
     }

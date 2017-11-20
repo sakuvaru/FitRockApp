@@ -93,7 +93,15 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
      * Displayed columns
      */
     get displayedColumns(): string[] {
-        const fieldColumns = this.fieldsWrapper.map(m => m.nameDef);
+        let fieldColumns: string[] = [];
+
+        // add avatar at the beginning
+        if (this.showAvatar) {
+            fieldColumns.push(this.avatarColumnDef);
+        }
+        
+        // add fields
+        fieldColumns = _.union(fieldColumns, this.fieldsWrapper.map(m => m.nameDef));
 
         // add button at the end
         if (this.buttonsWrapper || this.config.deleteAction) {
@@ -102,6 +110,11 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
 
         return fieldColumns;
     }
+
+    /**
+     * Name definition for avatar column
+     */
+    private readonly avatarColumnDef: string = '_avatar';
 
     /**
      * Gets all data table buttons 
@@ -191,6 +204,13 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
      * Local storage helper
      */
     private localStorageHelper = new LocalStorageHelper();
+
+    get showAvatar(): boolean {
+        if (this.config.avatar) {
+            return true;
+        }
+        return false;
+    }
 
     /** 
      * Filter
