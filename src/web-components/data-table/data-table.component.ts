@@ -305,13 +305,7 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
                 },
                 error => this.handleError(error));
         } else {
-            // no filter is used
-            // load data and filters independently
-            this.getInitFiltersObservable()
-                .takeUntil(this.ngUnsubscribe)
-                .subscribe(undefined, error => this.handleError(error));
-
-            // load data without filter
+            // no filters are used
             this.reloadData();
         }
 
@@ -605,6 +599,12 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
                 console.warn(`Invalid filter '${this.activeFilterGuid}'`);
             } else {
                 activeFilter = activeFilterWrapper.filter;
+            }
+        } else {
+            // use the 'first' active filter is none is set & filters are used
+            if (this.filtersWrapper.length > 0) {
+                activeFilter = this.filtersWrapper[0].filter;
+                this.activeFilterGuid = activeFilter.guid;
             }
         }
 
