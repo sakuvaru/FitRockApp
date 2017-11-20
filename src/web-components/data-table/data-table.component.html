@@ -9,11 +9,32 @@
   </mat-chip-list>
   -->
 
-  <div class="mat-chip-list">
+  <div class="mat-chip-list" fxHide.sm="true">
+    <!-- Large layout -->
     <div class="mat-chip-list-wrapper">
-      <div tabindex="-1" *ngFor="let filterWrapper of filtersWrapper" [class.mat-chip-selected]="filterWrapper.filter.guid === activeFilterGuid" class="w-cursor-pointer w-chip mat-chip mat-primary"
-      (click)="runFilter(filterWrapper.filter.guid)">
-       {{ filterWrapper.resolvedName }}&nbsp;<span *ngIf="filterWrapper.resolvedCount >= 0">({{ filterWrapper.resolvedCount }})</span>
+      <div tabindex="-1" *ngFor="let filterWrapper of filtersWrapper" [class.mat-chip-selected]="filterWrapper.filter.guid === activeFilterGuid"
+        class="w-cursor-pointer w-chip mat-chip mat-primary" (click)="runFilter(filterWrapper.filter.guid)">
+        {{ filterWrapper.resolvedName }}&nbsp;
+        <span *ngIf="filterWrapper.resolvedCount >= 0">({{ filterWrapper.resolvedCount }})</span>
+      </div>
+    </div>
+  </div>
+  <div class="mat-chip-list" fxHide="true" fxHide.sm="false">
+    <!-- Small layout -->
+    <div class="mat-chip-list-wrapper">
+      <div tabindex="-1" *ngFor="let filterWrapper of showFullFilters ? filtersWrapper : filtersWrapperSmallLayout" [class.mat-chip-selected]="filterWrapper.filter.guid === activeFilterGuid"
+        class="w-cursor-pointer w-chip mat-chip mat-primary" (click)="runFilter(filterWrapper.filter.guid)">
+        {{ filterWrapper.resolvedName }}&nbsp;
+        <span *ngIf="filterWrapper.resolvedCount >= 0">({{ filterWrapper.resolvedCount }})</span>
+      </div>
+      <div tabindex="-1" *ngIf="filtersWrapper.length > filtersWrapperSmallLayout.length && !showFullFilters" (click)="toggleShowFullFilters()"
+        class="w-cursor-pointer w-chip mat-chip">
+        <span>+ {{ 'webComponents.dataTable.showMore' | translate }} ({{ filtersWrapper.length - filtersWrapperSmallLayout.length
+          }}) ...</span>
+      </div>
+      <div tabindex="-1" *ngIf="filtersWrapperSmallLayout.length < filtersWrapper.length && showFullFilters" (click)="toggleShowFullFilters()"
+        class="w-cursor-pointer w-chip mat-chip">
+        <span>{{ 'webComponents.dataTable.showLess' | translate }} ...</span>
       </div>
     </div>
   </div>

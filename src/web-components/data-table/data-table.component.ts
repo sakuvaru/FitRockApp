@@ -59,6 +59,27 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
     private filtersWrapper: FilterWrapper[] = [];
 
     /**
+     * Number of filters shown on small layout
+     */
+    private readonly filtersOnSmallLayout: number = 3;
+
+    /**
+     * Forces all filters to be shown
+     */
+    private showFullFilters: boolean = false;
+
+    /**
+     * All filters for small layout
+     */
+    get filtersWrapperSmallLayout(): FilterWrapper[] {
+        if (!this.filtersWrapper) {
+            return [];
+        }
+
+        return _.first(this.filtersWrapper, this.filtersOnSmallLayout);
+    }
+
+    /**
      * Temp variable to hold filters
      */
     private tempFiltersWrapper: FilterWrapper[] = [];
@@ -753,6 +774,10 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
                 }
 
             }, error => this.handleError(error));
+    }
+
+    private toggleShowFullFilters(): void {
+        this.showFullFilters = !this.showFullFilters;
     }
 }
 
