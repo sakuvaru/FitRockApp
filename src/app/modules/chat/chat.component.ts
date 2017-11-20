@@ -17,24 +17,24 @@ import * as _ from 'underscore';
 })
 export class ChatComponent extends BaseComponent implements OnInit {
 
-    private formConfig: FormConfig<ChatMessage> | null;
-    private chatMessages: ChatMessage[] | null;
+    public formConfig: FormConfig<ChatMessage> | null;
+    public chatMessages: ChatMessage[] | null;
 
-    private chatMessagesPage: number = 1;
-    private chatMessagesPageSize: number = 10;
-    private chatMessagesSearch: string = '';
-    private allChatMessagesLoaded: boolean = false;
+    public chatMessagesPage: number = 1;
+    public chatMessagesPageSize: number = 10;
+    public chatMessagesSearch: string = '';
+    public allChatMessagesLoaded: boolean = false;
 
     private readonly debounceTime = 300;
-    private searchControl = new FormControl();
+    public searchControl = new FormControl();
 
-    private noConversationFound: boolean = false;
-    private noUserFound: boolean = false;
-    private activeChatUserId: number;
+    public noConversationFound: boolean = false;
+    public noUserFound: boolean = false;
+    public activeChatUserId: number;
 
     private readonly clientsPageSize: number = 200;
 
-    private readonly defaultAvatarUrl: string = AppConfig.DefaultUserAvatarUrl;
+    public readonly defaultAvatarUrl: string = AppConfig.DefaultUserAvatarUrl;
 
     constructor(
         protected activatedRoute: ActivatedRoute,

@@ -15,7 +15,7 @@ import { Diet } from '../../../../models';
 })
 export class EditClientDietComponent extends ClientsBaseComponent implements OnInit {
 
-    private dietId: number;
+    public dietId: number;
 
     constructor(
         protected activatedRoute: ActivatedRoute,
@@ -59,7 +59,7 @@ export class EditClientDietComponent extends ClientsBaseComponent implements OnI
         });
     }
 
-    private handleLoadDiet(diet: Diet): void {
+    public handleLoadDiet(diet: Diet): void {
         const translationData: any = {};
         translationData.dietName = diet.dietName;
         super.updateComponentTitle({ key: 'module.clients.diet.editPlanWithName', data: translationData });

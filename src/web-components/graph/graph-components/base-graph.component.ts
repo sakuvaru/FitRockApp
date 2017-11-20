@@ -10,8 +10,6 @@ import { GraphConfig } from '../graph.config';
 import { GraphTypeEnum } from '../graph-type.enum';
 import { Observable, Subject } from 'rxjs/Rx';
 
-@Component({
-})
 export abstract class BaseGraphComponent extends BaseWebComponent implements OnInit, OnChanges {
 
     /**
@@ -27,27 +25,27 @@ export abstract class BaseGraphComponent extends BaseWebComponent implements OnI
     /**
      * This will contain graph data
      */
-    protected graphData: SingleSeries[] | MultiSeries[];
+    public graphData: SingleSeries[] | MultiSeries[];
 
     /**
      * Graph
      */
-    protected graph: BaseGraph;
+    public graph: BaseGraph;
 
     /**
      *  Legend title
      */
-    protected legendTitle: string;
+    public legendTitle: string;
 
     /**
      * Wrapper styles
      */
-    protected wrapperStyle: any;
+    public wrapperStyle: any;
 
     /**
      * Indicates if component is initialized
      */
-    protected initialized = false;
+    public initialized = false;
 
     /**
      * Initialization required for each specific graph

@@ -31,4 +31,8 @@
         height: 30px;
         @include border-radius(50%);
     }
+
+    .mat-row:hover {
+        background-color: yellow;
+    }
 }

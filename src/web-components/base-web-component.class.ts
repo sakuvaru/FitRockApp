@@ -1,8 +1,6 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { Observable, Subject } from 'rxjs/Rx';
 
-@Component({
-})
 export abstract class BaseWebComponent implements OnDestroy {
 
     /**

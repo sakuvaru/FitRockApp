@@ -6,7 +6,7 @@
     <mat-card-content>
         <mat-form-field>
             <mat-select #copyFromWorkout [disabled]="!workoutTemplates" placeholder="{{'module.clients.workout.copyWorkoutLabel' | translate}}"
-                [(ngModel)]="selectedValue">
+               >
                 <mat-option *ngFor="let workout of workoutTemplates" [value]="workout">
                     {{ workout.workoutName }}
                 </mat-option>

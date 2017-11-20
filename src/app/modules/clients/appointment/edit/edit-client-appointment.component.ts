@@ -16,7 +16,7 @@ import { Appointment } from '../../../../models';
 })
 export class EditClientAppointmentComponent extends ClientsBaseComponent implements OnInit {
 
-  private formConfig: FormConfig<Appointment>;
+  public formConfig: FormConfig<Appointment>;
 
   constructor(
     protected activatedRoute: ActivatedRoute,

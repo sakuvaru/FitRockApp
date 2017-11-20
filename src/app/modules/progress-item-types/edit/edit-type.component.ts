@@ -14,7 +14,7 @@ import { ProgressItemType } from '../../../models';
 })
 export class EditTypeComponent extends BaseComponent implements OnInit {
 
-    private formConfig: FormConfig<ProgressItemType>;
+    public formConfig: FormConfig<ProgressItemType>;
 
     constructor(
         private activatedRoute: ActivatedRoute,

@@ -19,7 +19,7 @@ export class EditDietExportComponent extends BaseComponent implements OnInit, On
 
     @Input() dietId: number;
 
-    private formConfig: FormConfig<Diet>;
+    public formConfig: FormConfig<Diet>;
 
     constructor(
         private activatedRoute: ActivatedRoute,

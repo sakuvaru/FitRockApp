@@ -16,10 +16,10 @@ export class LoginFormComponent extends BaseComponent implements OnInit {
     @Output() onLogoutEvent = new EventEmitter();
 
     // properties
-    private username: string;
-    private password: string;
+    public username: string;
+    public password: string;
 
-    private loginFailed: boolean;
+    public loginFailed: boolean;
 
     constructor(
         private activatedRoute: ActivatedRoute,

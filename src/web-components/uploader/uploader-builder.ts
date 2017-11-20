@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Rx';
 
 export class UploaderBuilder {
 
-    private config: UploaderConfig;
+    public config: UploaderConfig;
 
     constructor(
         /**

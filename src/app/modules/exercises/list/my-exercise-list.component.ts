@@ -14,7 +14,7 @@ import { Exercise, ExerciseCategoryListWithExercisesCount } from '../../../model
 })
 export class MyExerciseListComponent extends BaseComponent implements OnInit {
 
-  private config: DataListConfig<Exercise>;
+  public config: DataListConfig<Exercise>;
 
   constructor(
     protected dependencies: ComponentDependencyService) {

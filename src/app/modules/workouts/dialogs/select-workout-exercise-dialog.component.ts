@@ -14,8 +14,8 @@ import { MAT_DIALOG_DATA } from '@angular/material';
 })
 export class SelectWorkoutExerciseDialogComponent extends BaseComponent implements OnInit {
 
-  private selectable: boolean = true;
-  private config: DataListConfig<Exercise>;
+  public selectable: boolean = true;
+  public config: DataListConfig<Exercise>;
 
   public selectedExercise: Exercise;
   public openAddCustomExerciseDialog: boolean = false;
@@ -74,12 +74,12 @@ export class SelectWorkoutExerciseDialogComponent extends BaseComponent implemen
       .build();
   }
 
-  private addCustomExercise(): void {
+  public addCustomExercise(): void {
     this.openAddCustomExerciseDialog = true;
     this.close();
   }
 
-  private close(): void {
+  public close(): void {
     this.dependencies.tdServices.dialogService.closeAll();
   }
 }

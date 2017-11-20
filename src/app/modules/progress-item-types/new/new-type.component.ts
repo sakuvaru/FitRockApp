@@ -15,7 +15,7 @@ import { Observable } from 'rxjs/Rx';
 })
 export class NewTypeComponent extends BaseComponent implements OnInit {
 
-    private formConfig: FormConfig<ProgressItemType>;
+    public formConfig: FormConfig<ProgressItemType>;
 
     constructor(
         protected componentDependencyService: ComponentDependencyService) {

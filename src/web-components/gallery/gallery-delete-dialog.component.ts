@@ -30,10 +30,10 @@ export class GalleryDeleteDialogComponent extends BaseWebComponent implements On
     public groups: GalleryGroup[];
     public imagesRaw: GalleryImage[];
     public images: Image[];
-    private config: GalleryConfig;
+    public config: GalleryConfig;
     private snackBarService: MatSnackBar;
 
-    private imageDeletionFailed: boolean = false;
+    public  imageDeletionFailed: boolean = false;
 
     private readonly snackbarDefaultDuration: number = 2500;
 
@@ -50,13 +50,13 @@ export class GalleryDeleteDialogComponent extends BaseWebComponent implements On
     /**
      * Indicates if delete is in progress
      */
-    private deleteInProgress: boolean = false;
+    public deleteInProgress: boolean = false;
 
     private titleText: string;
     private messageText: string;
     private cancelText: string;
     private confirmText: string;
-    private tooltipText: string;
+    public tooltipText: string;
 
     constructor(
         public dialogRef: MatDialogRef<GalleryDeleteDialogComponent>,

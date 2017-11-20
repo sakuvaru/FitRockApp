@@ -13,7 +13,7 @@ import { WorkoutExercise } from '../../../../models';
 })
 export class WorkoutListDialogComponent extends BaseComponent implements OnInit {
 
-  private workoutExercises: WorkoutExercise[];
+  public workoutExercises: WorkoutExercise[];
 
   constructor(
     protected dependencies: ComponentDependencyService,
@@ -33,7 +33,7 @@ export class WorkoutListDialogComponent extends BaseComponent implements OnInit 
     super.ngOnInit();
   }
 
-  private close(): void {
+  public close(): void {
     this.dependencies.tdServices.dialogService.closeAll();
   }
 }

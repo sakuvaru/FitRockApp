@@ -15,7 +15,7 @@ import { Observable } from 'rxjs/Rx';
 })
 export class EditClientWorkoutComponent extends ClientsBaseComponent implements OnInit {
 
-    private workoutId: number;
+    public workoutId: number;
 
     constructor(
         protected activatedRoute: ActivatedRoute,
@@ -59,7 +59,7 @@ export class EditClientWorkoutComponent extends ClientsBaseComponent implements 
         });
     }
 
-    private handleLoadWorkout(workout: Workout): void {
+    public handleLoadWorkout(workout: Workout): void {
         const translationData: any = {};
         translationData.workoutName = workout.workoutName;
         super.updateComponentTitle({ key: 'module.clients.workout.editWorkoutWithName', data: translationData });

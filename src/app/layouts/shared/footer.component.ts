@@ -10,7 +10,7 @@ import { ComponentDependencyService } from '../../core';
 export class FooterComponent {
     @Input() appName: string;
 
-    private year: number;
+    public year: number;
 
     constructor(private dependencies: ComponentDependencyService) {
         const date = new Date();

@@ -27,11 +27,11 @@ export class EditWorkoutPlanExportComponent extends BaseComponent implements OnD
 
   @Input() workoutId: number;
 
-  private workout: Workout;
-  private sortedWorkoutExercises: WorkoutExercise[];
+  public workout: Workout;
+  public sortedWorkoutExercises: WorkoutExercise[];
 
-  private readonly dragulaBag: string = 'dragula-bag';
-  private readonly dragulaHandle: string = 'dragula-move-handle';
+  public readonly dragulaBag: string = 'dragula-bag';
+  public readonly dragulaHandle: string = 'dragula-move-handle';
 
   constructor(
     private activatedRoute: ActivatedRoute,

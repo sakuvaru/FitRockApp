@@ -16,13 +16,13 @@ import { User, Appointment, Workout, Diet, ChatMessage } from '../../../models';
 })
 export class ClientDashboardComponent extends ClientsBaseComponent implements OnInit {
 
-  private readonly defaultAvatarUrl: string = AppConfig.DefaultUserAvatarUrl;
-  private readonly googleApiKey: string = AppConfig.GoogleApiKey;
+  public readonly defaultAvatarUrl: string = AppConfig.DefaultUserAvatarUrl;
+  public readonly googleApiKey: string = AppConfig.GoogleApiKey;
 
-  private appointment?: Appointment;
-  private workouts?: Workout[];
-  private diets?: Diet[];
-  private chatMessages?: ChatMessage[];
+  public appointment?: Appointment;
+  public workouts?: Workout[];
+  public  diets?: Diet[];
+  public chatMessages?: ChatMessage[];
 
   constructor(
     protected activatedRoute: ActivatedRoute,

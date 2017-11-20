@@ -36,43 +36,43 @@ export class DynamicFormQuestionComponent extends BaseWebComponent {
 
   // ----------------------- Field types ------------------------ //
 
-  private isDropdownField(): boolean {
+  isDropdownField(): boolean {
     return this.question.controlTypeEnum === ControlTypeEnum.Dropdown;
   }
 
-  private isDateField(): boolean {
+  isDateField(): boolean {
     return this.question.controlTypeEnum === ControlTypeEnum.Date;
   }
 
-  private isBooleanField(): boolean {
+  isBooleanField(): boolean {
     return this.question.controlTypeEnum === ControlTypeEnum.Boolean;
   }
 
-  private isRadioBooleanField(): boolean {
+  isRadioBooleanField(): boolean {
     return this.question.controlTypeEnum === ControlTypeEnum.RadioBoolean;
   }
 
-  private isTextField(): boolean {
+  isTextField(): boolean {
     return this.question.controlTypeEnum === ControlTypeEnum.Text;
   }
 
-  private isTextAreaField(): boolean {
+  isTextAreaField(): boolean {
     return this.question.controlTypeEnum === ControlTypeEnum.TextArea;
   }
 
-  private isHiddenField(): boolean {
+  isHiddenField(): boolean {
     return this.question.controlTypeEnum === ControlTypeEnum.Hidden;
   }
 
-  private isNumberField(): boolean {
+  isNumberField(): boolean {
     return this.question.controlTypeEnum === ControlTypeEnum.Number;
   }
 
-  private isPhoneNumberField(): boolean {
+  isPhoneNumberField(): boolean {
     return this.question.controlTypeEnum === ControlTypeEnum.PhoneNumber;
   }
 
-  private isDateTime(): boolean {
+  isDateTime(): boolean {
     return this.question.controlTypeEnum === ControlTypeEnum.DateTime;
   }
 

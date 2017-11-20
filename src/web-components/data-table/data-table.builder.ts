@@ -29,7 +29,7 @@ export interface IStaticFilter<TItem extends IItem> {
 
 export class DataTableBuilder<TItem extends IItem> {
 
-    private config: DataTableConfig;
+    public config: DataTableConfig;
 
     private filters: Filter[] = [];
 

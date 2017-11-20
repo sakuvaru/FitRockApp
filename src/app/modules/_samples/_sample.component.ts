@@ -7,6 +7,7 @@ import { AppConfig, UrlConfig } from '../../config';
 // required by component
 
 @Component({
+    template: ''
 })
 export class SampleComponent extends BaseComponent {
     constructor(

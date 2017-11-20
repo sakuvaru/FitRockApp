@@ -13,7 +13,7 @@ import { Diet } from '../../../models';
 })
 export class EditDietPlanComponent extends BaseComponent implements OnInit, OnDestroy {
 
-  private dietId: number;
+  public dietId: number;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -37,7 +37,7 @@ export class EditDietPlanComponent extends BaseComponent implements OnInit, OnDe
       });
   }
 
-  private handleLoadDiet(diet: Diet): void {
+  public handleLoadDiet(diet: Diet): void {
     this.setConfig({
       menuItems: new DietMenuItems(diet.id).menuItems,
       menuTitle: {

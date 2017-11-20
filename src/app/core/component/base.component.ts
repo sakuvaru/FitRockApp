@@ -12,8 +12,6 @@ import { ComponentSetup } from './component-setup.class';
 // moment js
 import * as moment from 'moment';
 
-@Component({
-})
 export abstract class BaseComponent implements OnInit, OnDestroy {
 
     /**

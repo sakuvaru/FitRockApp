@@ -14,7 +14,7 @@ import { Workout, WorkoutCategoryListWithWorkoutsCount } from '../../../models';
 })
 export class WorkoutTemplatesComponent extends BaseComponent implements OnInit {
 
-  private config: DataListConfig<Workout>;
+  public config: DataListConfig<Workout>;
 
   constructor(
     protected dependencies: ComponentDependencyService) {

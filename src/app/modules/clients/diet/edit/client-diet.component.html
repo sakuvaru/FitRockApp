@@ -5,7 +5,7 @@
     <mat-divider></mat-divider>
     <mat-card-content>
         <mat-form-field>
-            <mat-select #copyFromDiet [disabled]="!dietTemplates" placeholder="{{'module.clients.diet.copyDietLabel' | translate}}" [(ngModel)]="selectedValue">
+            <mat-select #copyFromDiet [disabled]="!dietTemplates" placeholder="{{'module.clients.diet.copyDietLabel' | translate}}">
                 <mat-option *ngFor="let diet of dietTemplates" [value]="diet">
                     {{ diet.dietName }}
                 </mat-option>

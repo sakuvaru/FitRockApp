@@ -17,11 +17,11 @@ import { Observable, Subject } from 'rxjs/Rx';
 })
 export class NewClientProgressItemTypeDialogComponent extends ClientsBaseComponent implements OnInit {
 
-    private formConfig: FormConfig<ProgressItemType>;
+    public formConfig: FormConfig<ProgressItemType>;
 
-    private customSaveButtonSubject: Subject<void> = new Subject<void>();
-    private customDeleteButtonSubject: Subject<void> = new Subject<void>();
-    private formStatus: DynamicFormStatus | undefined;
+    public customSaveButtonSubject: Subject<void> = new Subject<void>();
+    public customDeleteButtonSubject: Subject<void> = new Subject<void>();
+    public formStatus: DynamicFormStatus | undefined;
 
     public createdProgressItemType?: ProgressItemType;
 
@@ -63,11 +63,11 @@ export class NewClientProgressItemTypeDialogComponent extends ClientsBaseCompone
             .build();
     }
 
-    private onStatusChanged(status: DynamicFormStatus): void {
+    public onStatusChanged(status: DynamicFormStatus): void {
         this.formStatus = status;
       }
 
-    private close(): void {
+    public close(): void {
         this.dependencies.tdServices.dialogService.closeAll();
     }
 }

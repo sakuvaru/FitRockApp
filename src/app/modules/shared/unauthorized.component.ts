@@ -10,7 +10,7 @@ import { AppConfig, UrlConfig } from '../../config';
 })
 export class UnauthorizedComponent extends BaseComponent {
 
-  private loginUrl: string;
+  public loginUrl: string;
 
   constructor(
     private activatedRoute: ActivatedRoute,

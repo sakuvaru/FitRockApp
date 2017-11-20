@@ -13,20 +13,20 @@ import { BaseLayoutComponent } from '../base/base-layout.component';
 })
 export class AdminToolbarComponent extends BaseLayoutComponent {
 
-    private feedsCount: number;
-    private feeds: Feed[];
+    public feedsCount: number;
+    public feeds: Feed[];
 
-    private defaultAvatarUrl: string = AppConfig.DefaultUserAvatarUrl;
-    private showAvatar: boolean = false;
-    private userAvatarUrl?: string;
+    public defaultAvatarUrl: string = AppConfig.DefaultUserAvatarUrl;
+    public showAvatar: boolean = false;
+    public userAvatarUrl?: string;
 
-    private readonly limitFeedsCount: number = 8;
+    public readonly limitFeedsCount: number = 8;
 
     /**
      * This field is used to prevent feeds from being changed when clicking on them (clicking changes its 'markedAsRead' status
      * which would change styling of the item)
      */
-    private preventFeedChange: boolean = false;
+    public preventFeedChange: boolean = false;
 
     constructor(
         protected dependencies: ComponentDependencyService
@@ -68,7 +68,7 @@ export class AdminToolbarComponent extends BaseLayoutComponent {
             error => console.error('Admin toolbar encountered an error loading feeds'));
     }
 
-    private getFeedUrl(feed: Feed): string | null {
+    public getFeedUrl(feed: Feed): string | null {
         if (!feed) {
             return null;
         }
@@ -83,17 +83,17 @@ export class AdminToolbarComponent extends BaseLayoutComponent {
         return null;
     }
 
-    private getFeedIcon(feed: Feed): string | undefined {
+    public getFeedIcon(feed: Feed): string | undefined {
         const result = this.dependencies.itemServices.feedService.getFeedResult(feed);
         return result ? result.icon : undefined;
     }
 
-    private getFeedImage(feed: Feed): string | undefined {
+    public getFeedImage(feed: Feed): string | undefined {
         const result = this.dependencies.itemServices.feedService.getFeedResult(feed);
         return result ? result.imageUrl : undefined;
     }
 
-    private getFeedSubject(feed: Feed): string {
+    public getFeedSubject(feed: Feed): string {
         const feedResult = this.dependencies.itemServices.feedService.getFeedResult(feed);
 
         if (!feedResult) {
@@ -103,7 +103,7 @@ export class AdminToolbarComponent extends BaseLayoutComponent {
         return feedResult.subject;
     }
 
-    private getFeedText(feed: Feed): Observable<string> {
+    public getFeedText(feed: Feed): Observable<string> {
         const feedResult = this.dependencies.itemServices.feedService.getFeedResult(feed);
 
         if (!feedResult) {
@@ -128,7 +128,7 @@ export class AdminToolbarComponent extends BaseLayoutComponent {
         return Observable.of('');
     }
 
-    private handleClickFeed(feed: Feed): void {
+    public handleClickFeed(feed: Feed): void {
         if (feed) {
             this.preventFeedChange = true;
 

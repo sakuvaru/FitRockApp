@@ -41,32 +41,32 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
     /**
      * Indicates if loader is enabled
      */
-    private loaderEnabled: boolean = false;
+    public loaderEnabled: boolean = false;
 
     /**
      * Identifier for buttons columns
      */
-    private readonly buttonsColumnDef: string = '_buttons';
+    public readonly buttonsColumnDef: string = '_buttons';
 
     /**
      * Guid of all filter
      */
-    private readonly allFilterGuid: string = '_allFilter';
+    public readonly allFilterGuid: string = '_allFilter';
 
     /**
      * All filters
      */
-    private filtersWrapper: FilterWrapper[] = [];
+    public filtersWrapper: FilterWrapper[] = [];
 
     /**
      * Number of filters shown on small layout
      */
-    private readonly filtersOnSmallLayout: number = 3;
+    public readonly filtersOnSmallLayout: number = 3;
 
     /**
      * Forces all filters to be shown
      */
-    private showFullFilters: boolean = false;
+    public showFullFilters: boolean = false;
 
     /**
      * All filters for small layout
@@ -87,7 +87,7 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
     /**
      * Guid of active filter
      */
-    private activeFilterGuid?: string;
+    public activeFilterGuid?: string;
 
     /**
      * Displayed columns
@@ -114,32 +114,32 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
     /**
      * Name definition for avatar column
      */
-    private readonly avatarColumnDef: string = '_avatar';
+    public readonly avatarColumnDef: string = '_avatar';
 
     /**
      * Gets all data table buttons 
      */
-    private buttons: DataTableButton<any>[] = [];
+    public buttons: DataTableButton<any>[] = [];
 
     /**
      * Limit
      */
-    private limit?: number = undefined;
+    public limit?: number = undefined;
 
     /**
      * Page size
      */
-    private pageSize: number = 20;
+    public pageSize: number = 20;
 
     /**
      * Total number of items in db in current state (including active filter for example)
      */
-    private totalItems: number = 0;
+    public totalItems: number = 0;
 
     /**
      * Index of current page
      */
-    private currentPage: number = 1;
+    public currentPage: number = 1;
 
     /**
      * Paginator indexes pages from 0
@@ -151,17 +151,17 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
     /**
      * Searched string
      */
-    private search: string = '';
+    public search: string = '';
 
     /**
      * Fields wrapper
      */
-    private fieldsWrapper: DataTableFieldWrapper[] = [];
+    public fieldsWrapper: DataTableFieldWrapper[] = [];
 
     /**
      * Buttons wrapper
      */
-    private buttonsWrapper?: DataTableButtonWrapper;
+    public buttonsWrapper?: DataTableButtonWrapper;
 
     /**
      * Data source
@@ -173,15 +173,15 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
     * which would cause component to be initialized twice (happened when component is inside a dialog)
     * Info: https://stackoverflow.com/questions/43111474/how-to-stop-ngonchanges-called-before-ngoninit/43111597
     */
-    private initialized = false;
+    public initialized = false;
 
     private readonly debounceTime = 500;
-    private searchControl = new FormControl();
+    public searchControl = new FormControl();
 
     /**
      * Error message, if set it will be displayed by component
      */
-    private errorMessage?: string;
+    public errorMessage?: string;
 
     /**
      * Translations
@@ -581,6 +581,10 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
         })
             .takeUntil(this.ngUnsubscribe)
             .subscribe();
+    }
+
+    private test(row: any) {
+        console.log(row);
     }
 
     private getLoadDataObservable(): Observable<void> {

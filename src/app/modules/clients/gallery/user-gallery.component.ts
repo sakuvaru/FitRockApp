@@ -22,10 +22,10 @@ export class UserGalleryComponent extends ClientsBaseComponent implements OnInit
     /**
      * This property is used to add uploaded images to gallery config
      */
-    private currentImages: GalleryImage[] = [];
+    public currentImages: GalleryImage[] = [];
 
-    private uploaderConfig: UploaderConfig;
-    private galleryConfig: GalleryConfig;
+    public uploaderConfig: UploaderConfig;
+    public galleryConfig: GalleryConfig;
 
     @ViewChild(GalleryComponent) galleryComponent: GalleryComponent;
 
@@ -144,7 +144,7 @@ export class UserGalleryComponent extends ClientsBaseComponent implements OnInit
         .build();
     }
 
-    private onImagesChange(images: GalleryImage[]): void {
+    onImagesChange(images: GalleryImage[]): void {
         // update current images so that no duplicates are inserted to gallery
         this.currentImages = images;
     }

@@ -23,9 +23,9 @@ import { stringHelper } from '../../../../../lib/utilities';
 })
 export class EditClientProgressComponent extends ClientsBaseComponent implements OnInit {
 
-    private formConfig: FormConfig<ProgressItem>;
-    private DataListConfig: DataListConfig<ProgressItem>;
-    private progressItemTypes: ProgressItemType[];
+    public formConfig: FormConfig<ProgressItem>;
+    public DataListConfig: DataListConfig<ProgressItem>;
+    public progressItemTypes: ProgressItemType[];
 
     @ViewChild(DataListComponent) progressItemsDataList: DataListComponent;
     @ViewChild(DynamicFormComponent) progressItemForm: DynamicFormComponent;
@@ -241,7 +241,7 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
         super.subscribeToObservable(this.getDeleteProgressTypeObservable(progressItemType));
     }
 
-    private openAddNewProgressItemTypeDialog(): void {
+    public openAddNewProgressItemTypeDialog(): void {
         const dialog = this.dependencies.tdServices.dialogService.open(NewClientProgressItemTypeDialogComponent, {
             width: AppConfig.DefaultDialogWidth,
         });
@@ -267,7 +267,7 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
         });
     }
 
-    private openSelectTypeDialog(): void {
+    public openSelectTypeDialog(): void {
         const dialog = this.dependencies.tdServices.dialogService.open(SelectProgressTypeDialogComponent, {
             width: AppConfig.DefaultDialogWidth,
         });

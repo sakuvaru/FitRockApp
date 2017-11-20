@@ -10,7 +10,7 @@ import { BaseWebComponent } from '../base-web-component.class';
 })
 export class EditButtonComponent extends BaseWebComponent implements OnInit {
 
-    private tooltipText: string;
+    public tooltipText: string;
 
     constructor(
         private dialogService: TdDialogService,
@@ -27,7 +27,7 @@ export class EditButtonComponent extends BaseWebComponent implements OnInit {
         this.translateService.get('webComponents.buttons.editButton.tooltip').subscribe(text => this.tooltipText = text);
     }
 
-    private handleClick(event: any): void {
+    public handleClick(event: any): void {
         event.stopPropagation(); // prevents issues if the clicked linked is within another link
         this.editAction.emit();
     }

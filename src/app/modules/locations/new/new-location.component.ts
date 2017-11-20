@@ -15,7 +15,7 @@ import { Observable } from 'rxjs/Rx';
 })
 export class NewLocationComponent extends BaseComponent implements OnInit {
 
-    private formConfig: FormConfig<Location>;
+    public formConfig: FormConfig<Location>;
 
     constructor(
         protected dependencies: ComponentDependencyService) {

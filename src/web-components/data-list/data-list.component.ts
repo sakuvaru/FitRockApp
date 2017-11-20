@@ -22,7 +22,7 @@ export class DataListComponent extends BaseWebComponent implements OnInit, OnCha
     @Input() config: DataListConfig<any>;
 
     // hash of current data list config
-    private configHash: number;
+    public configHash: number;
 
     // resolved data
     private items: any[] = [];
@@ -61,7 +61,7 @@ export class DataListComponent extends BaseWebComponent implements OnInit, OnCha
     * which would cause component to be initialized twice (happened when component is inside a dialog)
     * Info: https://stackoverflow.com/questions/43111474/how-to-stop-ngonchanges-called-before-ngoninit/43111597
     */
-    private initialized = false;
+    public initialized = false;
 
     constructor(
         private translateService: TranslateService,
@@ -442,7 +442,7 @@ export class DataListComponent extends BaseWebComponent implements OnInit, OnCha
         localStorage.setItem(this.localStorageSearchedData + '_' + hash, search);
     }
 
-    private handleLoadError(config: DataListConfig<any>, errorResponse: ErrorResponse | any): void {
+    public handleLoadError(config: DataListConfig<any>, errorResponse: ErrorResponse | any): void {
         if (this.config.onError) {
             this.config.onError(errorResponse);
         }

@@ -9,8 +9,6 @@ import { GlobalLoaderStatus, ComponentDependencyService, MenuItemType, MenuItem,
 import { BaseLayoutComponent } from './base-layout.component';
 import { FormControl } from '@angular/forms';
 
-@Component({
-})
 export class BaseAdminLayoutComponent extends BaseLayoutComponent implements OnDestroy, AfterViewInit {
 
     // Admin search
@@ -19,49 +17,49 @@ export class BaseAdminLayoutComponent extends BaseLayoutComponent implements OnD
     private componentSearchValue: string = '';
 
     // shortcut to media service
-    protected media: TdMediaService;
+    public media: TdMediaService;
 
     // Setup properties
     protected readonly titleCharsLength: number = 22;
-    protected readonly year: number = new Date().getFullYear();
+    public readonly year: number = new Date().getFullYear();
     protected readonly hideComponentWhenLoaderIsEnabled = AppConfig.HideComponentWhenLoaderIsEnabled;
 
     // Component configuration & data
-    protected globalLoaderStatus: GlobalLoaderStatus = new GlobalLoaderStatus(false, false);
-    protected componentIsInitialized: boolean;
-    protected enableComponentSearch: boolean;
-    protected componentTitle: string;
-    protected menuTitle: string;
-    protected menuAvatarUrl: string;
+    public globalLoaderStatus: GlobalLoaderStatus = new GlobalLoaderStatus(false, false);
+    public componentIsInitialized: boolean;
+    public enableComponentSearch: boolean;
+    public componentTitle: string;
+    public menuTitle: string;
+    public menuAvatarUrl: string;
 
     // calculated data
-    protected displayUsername: string;
-    protected email: string;
+    public displayUsername: string;
+    public email: string;
 
     // admin menu
-    protected adminMenu: AdminMenu = new AdminMenu();
+    public adminMenu: AdminMenu = new AdminMenu();
 
     /**
      * This property indicates if component should be shown
      */
-    protected showComponent: boolean = false;
+    public showComponent: boolean = false;
 
     /**
      * Indicates if loader should be shown
      */
-    protected showLoading: boolean = false;
+    public showLoading: boolean = false;
 
     /**
     * Part of url identifying 'client' or 'trainer' app type
     */
-    protected urlSegment: string;
+    public urlSegment: string;
 
     /**
      * Menu items
      */
-    protected menuItems?: MenuItem[];
+    public menuItems?: MenuItem[];
 
-    protected ready: boolean = false;
+    public ready: boolean = false;
 
     constructor(
         protected dependencies: ComponentDependencyService,

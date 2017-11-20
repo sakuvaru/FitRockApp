@@ -15,7 +15,7 @@ import { User } from '../../../../models';
 })
 export class NewClientComponent extends ClientsBaseComponent implements OnInit {
 
-    private formConfig: FormConfig<User>;
+    public formConfig: FormConfig<User>;
 
     constructor(
         protected activatedRoute: ActivatedRoute,

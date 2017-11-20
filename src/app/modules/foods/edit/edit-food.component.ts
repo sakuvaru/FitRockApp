@@ -16,7 +16,7 @@ import { Observable } from 'rxjs/Rx';
 })
 export class EditFoodComponent extends BaseComponent implements OnInit {
 
-    private formConfig: FormConfig<Food>;
+    public formConfig: FormConfig<Food>;
 
     constructor(
         private activatedRoute: ActivatedRoute,

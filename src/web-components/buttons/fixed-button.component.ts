@@ -14,14 +14,14 @@ export class FixedButtonComponent extends BaseWebComponent {
     // https://github.com/Teradata/covalent-nightly/blob/master/common/styles/_button.scss
     @Input() position: string;
 
-    private default_position = 'mat-fab-bottom-right';
-    private default_icon = 'add';
+    public default_position = 'mat-fab-bottom-right';
+    public default_icon = 'add';
     
     constructor() {
         super();
     }
 
-    private getPositionClass(): string {
+    public getPositionClass(): string {
         if (this.position) {
             return this.position;
         }
@@ -29,7 +29,7 @@ export class FixedButtonComponent extends BaseWebComponent {
         return this.default_position;
     }
 
-    private getIcon(): string {
+    public getIcon(): string {
         if (this.icon) {
             return this.icon;
         }

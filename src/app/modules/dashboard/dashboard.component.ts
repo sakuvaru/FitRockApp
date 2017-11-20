@@ -15,11 +15,11 @@ import { DataTableConfig, IDynamicFilter } from '../../../web-components/data-ta
 })
 export class DashboardComponent extends BaseComponent implements OnInit {
 
-    private logs: Log[];
-    private log: Log;
-    private currentUser: CurrentUser | null;
+    public logs: Log[];
+    public log: Log;
+    public currentUser: CurrentUser | null;
 
-    private config: DataTableConfig;
+    public config: DataTableConfig;
 
     constructor(
         protected dependencies: ComponentDependencyService) {

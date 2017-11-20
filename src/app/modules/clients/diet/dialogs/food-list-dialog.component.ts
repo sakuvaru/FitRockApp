@@ -13,7 +13,7 @@ import { DietFood } from '../../../../models';
 })
 export class FoodListDialogComponent extends BaseComponent implements OnInit {
 
-  private dietFoods: DietFood[];
+  public dietFoods: DietFood[];
 
   constructor(
     protected dependencies: ComponentDependencyService,
@@ -33,7 +33,7 @@ export class FoodListDialogComponent extends BaseComponent implements OnInit {
     super.ngOnInit();
   }
 
-  private close(): void {
+  public close(): void {
     this.dependencies.tdServices.dialogService.closeAll();
   }
 }

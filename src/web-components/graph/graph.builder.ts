@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Rx';
 
 export class GraphBuilder<TGraph extends BaseGraph> {
 
-    private config: GraphConfig<TGraph>;
+    public config: GraphConfig<TGraph>;
 
     constructor(
         public graph: Observable<TGraph>,

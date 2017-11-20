@@ -15,7 +15,7 @@ import { Observable } from 'rxjs/Rx';
 })
 export class EditExerciseComponent extends BaseComponent implements OnInit {
 
-    private formConfig: FormConfig<Exercise>;
+    public formConfig: FormConfig<Exercise>;
 
     constructor(
         private activatedRoute: ActivatedRoute,

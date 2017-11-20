@@ -13,8 +13,8 @@ import { Workout } from '../../../models';
 })
 export class EditWorkoutPlanComponent extends BaseComponent implements OnInit, OnDestroy {
 
-  private workoutId: number;
-  private workout: Workout;
+  public workoutId: number;
+  public workout: Workout;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -38,7 +38,7 @@ export class EditWorkoutPlanComponent extends BaseComponent implements OnInit, O
       });
   }
 
-  private handleLoadWorkout(workout: Workout): void {
+  public handleLoadWorkout(workout: Workout): void {
     this.setConfig({
       menuItems: new WorkoutMenuItems(workout.id).menuItems,
       menuTitle: {

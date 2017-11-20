@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Rx';
 
 export class GalleryBuilder {
 
-    private config: GalleryConfig;
+    public config: GalleryConfig;
 
     constructor(
         images: Observable<GalleryImage[]>

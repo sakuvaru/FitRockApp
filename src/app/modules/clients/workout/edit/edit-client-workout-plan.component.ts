@@ -15,8 +15,8 @@ import { Workout } from '../../../../models';
 })
 export class EditClientWorkoutPlanComponent extends ClientsBaseComponent implements OnInit {
 
-  private workoutId: number;
-  private workout: Workout;
+  public workoutId: number;
+  public workout: Workout;
 
   constructor(
     protected activatedRoute: ActivatedRoute,
@@ -60,7 +60,7 @@ export class EditClientWorkoutPlanComponent extends ClientsBaseComponent impleme
     });
   }
 
-  private handleLoadWorkout(workout: Workout): void {
+  public handleLoadWorkout(workout: Workout): void {
     const translationData: any = {};
     translationData.workoutName = workout.workoutName;
     super.updateComponentTitle({ key: 'module.clients.workout.editWorkoutWithName', data: translationData });

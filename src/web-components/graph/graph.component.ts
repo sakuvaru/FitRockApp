@@ -26,7 +26,7 @@ export class GraphComponent extends BaseWebComponent {
     /**
      * Indicates if loader is enabled
      */
-    private loaderEnabled: boolean = true;
+    public loaderEnabled: boolean = true;
 
     @ViewChild('graphComponent') graphComponent: BaseGraphComponent;
 

@@ -15,9 +15,9 @@ import { FetchedFile } from '../../../../lib/repository';
 })
 export class EditAvatarComponent extends BaseComponent implements OnInit {
 
-    private uploaderConfig: UploaderConfig;
+    public uploaderConfig: UploaderConfig;
 
-    private avatarSrc: string;
+    public avatarSrc: string;
 
     constructor(
         protected dependencies: ComponentDependencyService) {

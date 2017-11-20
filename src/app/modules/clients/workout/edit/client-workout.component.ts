@@ -21,19 +21,19 @@ import { WorkoutListDialogComponent } from '../dialogs/workout-list-dialog.compo
 })
 export class ClientWorkoutComponent extends ClientsBaseComponent implements OnInit, OnDestroy {
 
-    private workoutExists: boolean = true;
-    private workoutTemplates: Workout[];
-    private existingWorkouts: Workout[];
+    public workoutExists: boolean = true;
+    public workoutTemplates: Workout[];
+    public existingWorkouts: Workout[];
 
     /**
      * Name of the dragula bag - used in template & config
      */
-    private readonly dragulaBag: string = 'dragula-bag';
+    public readonly dragulaBag: string = 'dragula-bag';
 
     /**
      * Class of the handle used to drag & drop dragula items
      */
-    private readonly dragulaMoveHandle: string = 'dragula-move-handle';
+    public readonly dragulaMoveHandle: string = 'dragula-move-handle';
 
     /**
      * Drop subscription for dragula - Unsubscribe on destroy!
@@ -43,7 +43,7 @@ export class ClientWorkoutComponent extends ClientsBaseComponent implements OnIn
     /**
      * Indicates which workout is expanded
      */
-    private expandedWorkoutId: number | null = null;
+    public expandedWorkoutId: number | null = null;
 
     constructor(
         protected componentDependencyService: ComponentDependencyService,
@@ -177,7 +177,7 @@ export class ClientWorkoutComponent extends ClientsBaseComponent implements OnIn
             });
     }
 
-    private newWorkoutFromTemplate(data: any): void {
+    public newWorkoutFromTemplate(data: any): void {
         const selected = data.selected;
 
         if (!selected) {

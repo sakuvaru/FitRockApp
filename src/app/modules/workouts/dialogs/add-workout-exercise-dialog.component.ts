@@ -17,20 +17,20 @@ import { Observable, Subject } from 'rxjs/Rx';
 })
 export class AddWorkoutExerciseDialogComponent extends BaseComponent implements OnInit {
 
-  private config: DataListConfig<WorkoutExercise>;
-  private workoutId: number;
-  private exercise: Exercise;
+  public config: DataListConfig<WorkoutExercise>;
+  public workoutId: number;
+  public exercise: Exercise;
 
-  private workoutExerciseForm: FormConfig<WorkoutExercise>;
+  public workoutExerciseForm: FormConfig<WorkoutExercise>;
 
   /**
    * Accessed by parent component
    */
   public newWorkoutExercise: WorkoutExercise;
 
-  private customSaveButtonSubject: Subject<void> = new Subject<void>();
-  private customDeleteButtonSubject: Subject<void> = new Subject<void>();
-  private formStatus: DynamicFormStatus | undefined;
+  public customSaveButtonSubject: Subject<void> = new Subject<void>();
+  public customDeleteButtonSubject: Subject<void> = new Subject<void>();
+  public formStatus: DynamicFormStatus | undefined;
 
   constructor(
     protected dependencies: ComponentDependencyService,
@@ -73,11 +73,11 @@ export class AddWorkoutExerciseDialogComponent extends BaseComponent implements 
       .build();
   }
 
-  private onStatusChanged(status: DynamicFormStatus): void {
+  public onStatusChanged(status: DynamicFormStatus): void {
     this.formStatus = status;
   }
 
-  private close(): void {
+  public close(): void {
     this.dependencies.tdServices.dialogService.closeAll();
   }
 }

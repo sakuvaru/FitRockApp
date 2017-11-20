@@ -12,7 +12,7 @@ import { Observable } from 'rxjs/Rx';
 })
 export class ServerDownComponent extends BaseComponent implements OnInit {
 
-  private appOnline: boolean = false;
+  public appOnline: boolean = false;
 
   constructor(
     private activatedRoute: ActivatedRoute,

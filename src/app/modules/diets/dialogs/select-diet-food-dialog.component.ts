@@ -14,8 +14,8 @@ import { MAT_DIALOG_DATA } from '@angular/material';
 })
 export class SelectDietFoodDialogComponent extends BaseComponent implements OnInit {
 
-  private selectable: boolean = true;
-  private config: DataListConfig<Food>;
+  public selectable: boolean = true;
+  public config: DataListConfig<Food>;
 
   public selectedFood: Food;
   public openAddCustomFoodDialog: boolean = false;
@@ -71,12 +71,12 @@ export class SelectDietFoodDialogComponent extends BaseComponent implements OnIn
       .build();
   }
 
-  private addCustomFood(): void {
+  public addCustomFood(): void {
     this.openAddCustomFoodDialog = true;
     this.close();
   }
 
-  private close(): void {
+  public close(): void {
     this.dependencies.tdServices.dialogService.closeAll();
   }
 }

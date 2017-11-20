@@ -15,7 +15,7 @@ import { Observable } from 'rxjs/Rx';
 })
 export class PreviewExerciseComponent extends BaseComponent implements OnInit {
 
-    private exercise: Exercise;
+    public exercise: Exercise;
 
     constructor(
         private activatedRoute: ActivatedRoute,

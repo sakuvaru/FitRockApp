@@ -16,7 +16,7 @@ import { Observable, Subject } from 'rxjs/Rx';
 })
 export class EditDietFoodDialogComponent extends BaseComponent implements OnInit {
 
-  private dietFoodForm: FormConfig<DietFood>;
+  public dietFoodForm: FormConfig<DietFood>;
 
   // public because it is accessed by parent component
   public dietFood: DietFood;
@@ -24,9 +24,9 @@ export class EditDietFoodDialogComponent extends BaseComponent implements OnInit
   public idOfDeletedDietFood: number;
   public dietFoodWasDeleted: boolean = false;
 
-  private customSaveButtonSubject: Subject<void> = new Subject<void>();
-  private customDeleteButtonSubject: Subject<void> = new Subject<void>();
-  private formStatus: DynamicFormStatus | undefined;
+  public customSaveButtonSubject: Subject<void> = new Subject<void>();
+  public customDeleteButtonSubject: Subject<void> = new Subject<void>();
+  public formStatus: DynamicFormStatus | undefined;
 
   constructor(
     protected dependencies: ComponentDependencyService,
@@ -80,11 +80,11 @@ export class EditDietFoodDialogComponent extends BaseComponent implements OnInit
       .build();
   }
 
-  private onStatusChanged(status: DynamicFormStatus): void {
+  public onStatusChanged(status: DynamicFormStatus): void {
     this.formStatus = status;
   }
 
-  private close(): void {
+  public close(): void {
     this.dependencies.tdServices.dialogService.closeAll();
   }
 }

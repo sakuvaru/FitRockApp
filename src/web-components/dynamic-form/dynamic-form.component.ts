@@ -87,7 +87,7 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
      * which would cause component to be initialized twice (happened when component is inside a dialog)
      * Info: https://stackoverflow.com/questions/43111474/how-to-stop-ngonchanges-called-before-ngoninit/43111597
      */
-    private initialized = false;
+    public initialized = false;
 
     constructor(
         private fieldControlService: FieldControlService,
@@ -612,7 +612,7 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
         });
     }
 
-    private handleLoadError(config: FormConfig<any>, error: ErrorResponse | FormErrorResponse | any): void {
+    public handleLoadError(config: FormConfig<any>, error: ErrorResponse | FormErrorResponse | any): void {
         // log error because there is no guarantee that master component will handle it (in which case no error would be shown at all)
         console.error(error);
 

@@ -16,8 +16,8 @@ import { Appointment, User } from '../../../../models';
 })
 export class ViewClientAppointmentComponent extends ClientsBaseComponent implements OnInit {
 
-  private appointment?: Appointment;
-  private googleApiKey: string = AppConfig.GoogleApiKey;
+  public appointment?: Appointment;
+  public googleApiKey: string = AppConfig.GoogleApiKey;
 
   constructor(
     protected activatedRoute: ActivatedRoute,

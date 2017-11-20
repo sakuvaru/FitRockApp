@@ -16,16 +16,16 @@ import { Observable, Subject } from 'rxjs/Rx';
 })
 export class EditProgressItemDialogComponent extends BaseComponent implements OnInit {
 
-  private formConfig: FormConfig<ProgressItem>;
+  public formConfig: FormConfig<ProgressItem>;
 
   public item: ProgressItem;
   public idOfDeletedItem: number;
   public itemWasDeleted: boolean = false;
   public itemWasUpdated: boolean = false;
 
-  private customSaveButtonSubject: Subject<void> = new Subject<void>();
-  private customDeleteButtonSubject: Subject<void> = new Subject<void>();
-  private formStatus: DynamicFormStatus | undefined;
+  public customSaveButtonSubject: Subject<void> = new Subject<void>();
+  public customDeleteButtonSubject: Subject<void> = new Subject<void>();
+  public formStatus: DynamicFormStatus | undefined;
 
   constructor(
     protected dependencies: ComponentDependencyService,
@@ -63,11 +63,11 @@ export class EditProgressItemDialogComponent extends BaseComponent implements On
       .build();
   }
 
-  private onStatusChanged(status: DynamicFormStatus): void {
+  public onStatusChanged(status: DynamicFormStatus): void {
     this.formStatus = status;
   }
 
-  private close(): void {
+  public close(): void {
     this.dependencies.tdServices.dialogService.closeAll();
   }
 }

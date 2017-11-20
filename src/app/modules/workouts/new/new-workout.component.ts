@@ -15,7 +15,7 @@ import { Observable } from 'rxjs/Rx';
 })
 export class NewWorkoutComponent extends BaseComponent implements OnInit {
 
-    private formConfig: FormConfig<Workout>;
+    public formConfig: FormConfig<Workout>;
 
     constructor(
         protected componentDependencyService: ComponentDependencyService) {

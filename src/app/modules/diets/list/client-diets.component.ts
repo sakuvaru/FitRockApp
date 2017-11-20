@@ -14,7 +14,7 @@ import { Diet, DietCategoryWithDietsCountDto } from '../../../models';
 })
 export class ClientDietsComponent extends BaseComponent implements OnInit {
 
-  private config: DataListConfig<Diet>;
+  public config: DataListConfig<Diet>;
 
   constructor(
     protected dependencies: ComponentDependencyService) {

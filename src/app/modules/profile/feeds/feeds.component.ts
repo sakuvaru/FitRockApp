@@ -18,8 +18,8 @@ import { LoadMoreConfig } from '../../../../web-components/load-more';
 })
 export class FeedsComponent extends BaseComponent implements OnInit {
 
-    private config: DataListConfig<Feed>;
-    private loadMoreConfig: LoadMoreConfig<Feed>;
+    public config: DataListConfig<Feed>;
+    public loadMoreConfig: LoadMoreConfig<Feed>;
 
     constructor(
         protected dependencies: ComponentDependencyService) {

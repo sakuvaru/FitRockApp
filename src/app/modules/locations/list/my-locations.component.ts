@@ -14,7 +14,7 @@ import { Location } from '../../../models';
 })
 export class MyLocationsComponent extends BaseComponent implements OnInit {
 
-  private config: DataListConfig<Location>;
+  public config: DataListConfig<Location>;
 
   constructor(
     protected dependencies: ComponentDependencyService) {

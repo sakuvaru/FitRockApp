@@ -27,11 +27,11 @@ export class EditDietPlanExportComponent extends BaseComponent implements OnDest
 
   @Input() dietId: number;
 
-  private diet: Diet;
-  private sortedDietFoods: DietFood[];
+  public diet: Diet;
+  public sortedDietFoods: DietFood[];
 
-  private readonly dragulaBag: string = 'dragula-bag';
-  private readonly dragulaHandle: string = 'dragula-move-handle';
+  public readonly dragulaBag: string = 'dragula-bag';
+  public readonly dragulaHandle: string = 'dragula-move-handle';
 
   constructor(
     private activatedRoute: ActivatedRoute,

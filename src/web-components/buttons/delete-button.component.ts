@@ -14,7 +14,7 @@ export class DeleteButtonComponent extends BaseWebComponent implements OnInit {
     private messageText: string;
     private cancelText: string;
     private confirmText: string;
-    private tooltipText: string;
+    public tooltipText: string;
 
     constructor(
         private dialogService: TdDialogService,
@@ -40,7 +40,7 @@ export class DeleteButtonComponent extends BaseWebComponent implements OnInit {
             .subscribe();
     }
 
-    private handleClick(event: any): void {
+    public handleClick(event: any): void {
         event.stopPropagation(); // prevents issues if the clicked linked is within another link
 
         this.dialogService.openConfirm({

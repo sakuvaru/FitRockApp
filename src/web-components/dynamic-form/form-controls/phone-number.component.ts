@@ -14,7 +14,7 @@ export class PhoneNumberComponent extends BaseFormControlComponent implements On
     new PhoneFormat(PhoneFormatType.US, '+1', ['(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/])
   ];
 
-  private activePhoneFormat: PhoneFormat | undefined;
+  public activePhoneFormat: PhoneFormat | undefined;
 
   constructor(
     protected cdr: ChangeDetectorRef,

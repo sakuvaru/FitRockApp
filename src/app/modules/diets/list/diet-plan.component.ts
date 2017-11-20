@@ -14,8 +14,8 @@ import { Observable } from 'rxjs/Rx';
 })
 export class DietPlanComponent extends BaseComponent implements OnInit {
 
-  private diet: Diet;
-  private sortedDietFoods: DietFood[];
+  public diet: Diet;
+  public sortedDietFoods: DietFood[];
 
   constructor(
     private activatedRoute: ActivatedRoute,

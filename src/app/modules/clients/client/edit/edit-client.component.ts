@@ -16,13 +16,13 @@ import { Observable } from 'rxjs/Rx';
 })
 export class EditClientComponent extends ClientsBaseComponent implements OnInit {
 
-    private formConfig: FormConfig<User>;
+    public formConfig: FormConfig<User>;
 
     constructor(
         protected activatedRoute: ActivatedRoute,
         protected componentDependencyService: ComponentDependencyService
     ) {
-        super(componentDependencyService, activatedRoute, { subscribeToClient: false });
+        super(componentDependencyService, activatedRoute);
     }
 
     setup(): ComponentSetup | null {

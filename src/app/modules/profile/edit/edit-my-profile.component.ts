@@ -15,7 +15,7 @@ import { Observable } from 'rxjs/Rx';
 })
 export class EditMyProfileComponent extends BaseComponent implements OnInit {
 
-    private formConfig: FormConfig<User>;
+    public formConfig: FormConfig<User>;
 
     constructor(
         protected dependencies: ComponentDependencyService) {

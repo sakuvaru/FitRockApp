@@ -1,7 +1,10 @@
 // common
 import { Component, Input, Output, OnInit, EventEmitter, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { ComponentDependencyService, BaseComponent, ComponentSetup } from '../../core';
+// Note: importing from barrel caused 'Cannot resolve app parameters' error while building the app
+import { ComponentDependencyService } from '../../core/component/component-dependency.service';
+import { BaseComponent } from '../../core/component/base.component';
+import { ComponentSetup } from '../../core/component/component-setup.class';
 
 // required by component
 import { User } from '../../models';
@@ -9,8 +12,6 @@ import { ClientMenuItems } from './menu.items';
 import { GraphConfig, MultiSeries, BaseGraph, SingleSeries, LineChart, VerticalBarChart } from '../../../web-components/graph';
 import { Observable, Subject } from 'rxjs/Rx';
 
-@Component({
-})
 export abstract class ClientsBaseComponent extends BaseComponent implements OnInit, OnDestroy {
 
     /**
@@ -26,31 +27,19 @@ export abstract class ClientsBaseComponent extends BaseComponent implements OnIn
     /**
      * Contains resolved client Id
      */
-    protected clientId: number;
+    public clientId: number;
 
     /**
      * Contains resolved client
      */
-    protected client: User;
+    public client: User;
 
-    /**
-     * Indicates if the component will subscribe to whole User object
-     * This is useful when inheriting component does not need to access subscribe to 'User' object
-     * because it loads the User some other way (e.g. forms already contain User object)
-     */
-    private subscribeToClient: boolean = true;
 
     constructor(
         protected componentDependencyService: ComponentDependencyService,
-        protected activatedRoute: ActivatedRoute,
-        protected options?: {
-            subscribeToClient?: boolean
-        }) {
+        protected activatedRoute: ActivatedRoute
+    ) {
         super(componentDependencyService);
-
-        if (options) {
-            Object.assign(this, options);
-        }
     }
 
     ngOnInit() {
@@ -77,9 +66,7 @@ export abstract class ClientsBaseComponent extends BaseComponent implements OnIn
                     this.clientIdChange.next(id);
                     this.clientId = id;
 
-                    if (this.subscribeToClient) {
-                        this.initClientSubscription(id);
-                    }
+                    this.initClientSubscription(id);
                 }
 
             })

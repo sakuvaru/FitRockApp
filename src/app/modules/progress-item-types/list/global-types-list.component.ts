@@ -14,7 +14,7 @@ import { ProgressItemType } from '../../../models';
 })
 export class GlobalTypesListComponent extends BaseComponent implements OnInit {
 
-  private config: DataListConfig<ProgressItemType>;
+  public config: DataListConfig<ProgressItemType>;
 
   constructor(
     protected dependencies: ComponentDependencyService) {

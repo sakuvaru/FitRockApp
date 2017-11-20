@@ -14,8 +14,8 @@ import { Observable } from 'rxjs/Rx';
 })
 export class WorkoutPlanComponent extends BaseComponent implements OnInit {
 
-  private workout: Workout;
-  private sortedWorkoutExercises: WorkoutExercise[];
+  public workout: Workout;
+  public sortedWorkoutExercises: WorkoutExercise[];
 
   constructor(
     private activatedRoute: ActivatedRoute,

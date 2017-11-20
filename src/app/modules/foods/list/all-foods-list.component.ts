@@ -14,7 +14,7 @@ import { Food, FoodCategoryWithFoodsCountDto } from '../../../models';
 })
 export class AllFoodsListComponent extends BaseComponent implements OnInit {
 
-  private config: DataListConfig<Food>;
+  public config: DataListConfig<Food>;
 
   constructor(
     protected dependencies: ComponentDependencyService) {

@@ -14,7 +14,7 @@ import 'rxjs/add/operator/switchMap';
 })
 export class EditDietComponent extends BaseComponent implements OnInit {
 
-    private dietId: number;
+    public dietId: number;
 
     constructor(
         private activatedRoute: ActivatedRoute,
@@ -39,7 +39,7 @@ export class EditDietComponent extends BaseComponent implements OnInit {
             });
     }
 
-    private handleLoadDiet(diet: Diet): void {
+    public handleLoadDiet(diet: Diet): void {
         this.setConfig({
             menuItems: new DietMenuItems(diet.id).menuItems,
             menuTitle: {

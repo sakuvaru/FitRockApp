@@ -19,19 +19,19 @@ import { FoodListDialogComponent } from '../dialogs/food-list-dialog.component';
 })
 export class ClientDietComponent extends ClientsBaseComponent implements OnInit, OnDestroy {
 
-    private workoutExists: boolean = true;
-    private dietTemplates: Diet[];
-    private existingDiets: Diet[];
+    public workoutExists: boolean = true;
+    public dietTemplates: Diet[];
+    public existingDiets: Diet[];
 
     /**
      * Name of the dragula bag - used in the template & config
      */
-    private readonly dragulaBag: string = 'dragula-bag';
+    public readonly dragulaBag: string = 'dragula-bag';
 
     /**
      * Class of the handle used to drag & drop dragula items
      */
-    private readonly dragulaMoveHandle: string = 'dragula-move-handle';
+    public readonly dragulaMoveHandle: string = 'dragula-move-handle';
 
     /**
      * Drop subscription for dragula - Unsubscribe on destroy!
@@ -169,7 +169,7 @@ export class ClientDietComponent extends ClientsBaseComponent implements OnInit,
             });
     }
 
-    private newDietFromTemplate(data: any): void {
+    public newDietFromTemplate(data: any): void {
         const selected = data.selected;
 
         if (!selected) {

@@ -4,7 +4,7 @@ import { ResponseMultiple, IItem, MultipleItemQuery } from '../../lib/repository
 
 export class LoadMoreBuilder<TItem extends IItem> {
 
-    private config: LoadMoreConfig<TItem>;
+    public config: LoadMoreConfig<TItem>;
 
     constructor(
         loadQuery: (searchTerm: string) => MultipleItemQuery<TItem>,

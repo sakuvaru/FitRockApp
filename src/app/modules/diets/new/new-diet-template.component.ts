@@ -15,7 +15,7 @@ import { Observable } from 'rxjs/Rx';
 })
 export class NewDietTemplateComponent extends BaseComponent implements OnInit {
 
-    private formConfig: FormConfig<Diet>;
+    public formConfig: FormConfig<Diet>;
 
     constructor(
         protected componentDependencyService: ComponentDependencyService) {

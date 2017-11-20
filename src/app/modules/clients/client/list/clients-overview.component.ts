@@ -16,7 +16,7 @@ import { MultipleItemQuery } from '../../../../../lib/repository';
 })
 export class ClientsOverviewComponent extends ClientsBaseComponent implements OnInit {
 
-  private config: DataListConfig<User>;
+  public config: DataListConfig<User>;
 
   constructor(
     protected activatedRoute: ActivatedRoute,

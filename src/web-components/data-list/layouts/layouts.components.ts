@@ -131,7 +131,7 @@ export class DataListLayoutSearchComponent implements OnInit {
     @Output() search = new EventEmitter<string>();
 
     private readonly debounceTime = 500;
-    private searchControl = new FormControl();
+    public searchControl = new FormControl();
 
     ngOnInit() {
         this.searchControl.valueChanges

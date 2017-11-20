@@ -14,7 +14,7 @@ import { Observable } from 'rxjs/Rx';
 })
 export class PreviewLocationComponent extends BaseComponent implements OnInit {
 
-    private location: Location;
+    public location: Location;
 
     private googleApiKey: string = AppConfig.GoogleApiKey;
 

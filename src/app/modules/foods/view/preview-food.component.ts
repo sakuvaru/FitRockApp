@@ -15,7 +15,7 @@ import { Observable } from 'rxjs/Rx';
 })
 export class PreviewFoodComponent extends BaseComponent implements OnInit {
 
-    private food: Food;
+    public food: Food;
 
     constructor(
         private activatedRoute: ActivatedRoute,

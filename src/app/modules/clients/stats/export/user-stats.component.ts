@@ -17,9 +17,9 @@ export class UserStatsComponent extends BaseComponent implements OnInit, OnChang
 
     @Input() userId: number;
 
-    private graphConfig: GraphConfig<BaseGraph>;
-    private progressItemTypes: ProgressItemType[];
-    private idOfActiveType: number;
+    public graphConfig: GraphConfig<BaseGraph>;
+    public progressItemTypes: ProgressItemType[];
+    public idOfActiveType: number;
 
     @ViewChild(GraphComponent) graph: GraphComponent;
 

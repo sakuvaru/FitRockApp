@@ -17,7 +17,7 @@ import { Observable } from 'rxjs/Rx';
 })
 export class ClientAppointmentListComponent extends ClientsBaseComponent implements OnInit {
 
-  private config: DataListConfig<Appointment>;
+  public config: DataListConfig<Appointment>;
 
   constructor(
     protected activatedRoute: ActivatedRoute,

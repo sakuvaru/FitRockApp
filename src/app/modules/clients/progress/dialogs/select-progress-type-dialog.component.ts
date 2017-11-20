@@ -15,7 +15,7 @@ import { FormConfig } from '../../../../../web-components/dynamic-form';
 })
 export class SelectProgressTypeDialogComponent extends BaseComponent implements OnInit {
 
-  private config: DataListConfig<ProgressItemType>;
+  public config: DataListConfig<ProgressItemType>;
   public selectedItem: ProgressItemType;
   public openAddCustomProgressTypeDialog: boolean = false;
 
@@ -69,12 +69,12 @@ export class SelectProgressTypeDialogComponent extends BaseComponent implements 
       .build();
   }
 
-  private addCustomProgressType(): void {
+  public addCustomProgressType(): void {
     this.openAddCustomProgressTypeDialog = true;
     this.close();
   }
 
-  private close(): void {
+  public close(): void {
     this.dependencies.tdServices.dialogService.closeAll();
   }
 }

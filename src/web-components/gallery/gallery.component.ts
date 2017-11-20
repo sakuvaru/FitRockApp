@@ -38,7 +38,7 @@ export class GalleryComponent extends BaseWebComponent implements OnInit, OnChan
     /**
      * Component initiliazed flag
      */
-    private initialized: boolean = false;
+    public initialized: boolean = false;
 
     /**
      * Gallery images

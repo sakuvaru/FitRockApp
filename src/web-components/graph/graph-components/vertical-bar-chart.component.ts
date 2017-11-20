@@ -24,12 +24,12 @@ export class VerticalBarGraphComponent extends BaseGraphComponent implements OnI
     /**
      * X axis label
      */
-    private xAxisLabel: string;
+    public xAxisLabel: string;
 
     /**
      * Y axis label
      */
-    private yAxisLabel: string;
+    public yAxisLabel: string;
 
     constructor(
         protected translateService: TranslateService

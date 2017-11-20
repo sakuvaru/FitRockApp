@@ -16,11 +16,11 @@ import { Observable, Subject } from 'rxjs/Rx';
 })
 export class AddCustomFoodDialogComponent extends BaseComponent implements OnInit {
 
-  private foodForm: FormConfig<Food>;
+  public foodForm: FormConfig<Food>;
 
-  private customSaveButtonSubject: Subject<void> = new Subject<void>();
-  private customDeleteButtonSubject: Subject<void> = new Subject<void>();
-  private formStatus: DynamicFormStatus | undefined;
+  public customSaveButtonSubject: Subject<void> = new Subject<void>();
+  public customDeleteButtonSubject: Subject<void> = new Subject<void>();
+  public formStatus: DynamicFormStatus | undefined;
   
   /**
    * Accessed by parent component
@@ -56,11 +56,11 @@ export class AddCustomFoodDialogComponent extends BaseComponent implements OnIni
       .build();
   }
 
-  private onStatusChanged(status: DynamicFormStatus): void {
+  public onStatusChanged(status: DynamicFormStatus): void {
     this.formStatus = status;
   }
 
-  private close(): void {
+  public close(): void {
     this.dependencies.tdServices.dialogService.closeAll();
   }
 }

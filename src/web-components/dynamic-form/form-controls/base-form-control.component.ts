@@ -23,7 +23,7 @@ export abstract class BaseFormControlComponent extends BaseWebComponent implemen
     /**
      * Indicates when the field is initialized
      */
-    protected initialized: boolean = false;
+    public initialized: boolean = false;
 
     /**
      * Can be used to perform custom validation on the field.

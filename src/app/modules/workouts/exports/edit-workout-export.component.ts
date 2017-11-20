@@ -20,7 +20,7 @@ export class EditWorkoutExportComponent extends BaseComponent implements OnInit,
 
     @Input() workoutId: number;
 
-    private formConfig: FormConfig<Workout>;
+    public formConfig: FormConfig<Workout>;
 
     constructor(
         private activatedRoute: ActivatedRoute,

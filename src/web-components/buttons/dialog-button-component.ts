@@ -20,7 +20,7 @@ export class DialogButtonComponent extends BaseWebComponent {
     
     @Input() disabled: boolean;
 
-    private onClick(event): void {
+    public onClick(event): void {
         event.stopPropagation(); // prevents issues if the clicked linked is within another link
 
         if (!this.disabled) {

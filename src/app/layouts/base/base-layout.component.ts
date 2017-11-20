@@ -7,8 +7,6 @@ import { AppConfig, UrlConfig } from '../../config';
 import { stringHelper } from '../../../lib/utilities';
 import { GlobalLoaderStatus, ComponentDependencyService, MenuItemType  } from '../../core';
 
-@Component({
-})
 export class BaseLayoutComponent implements OnDestroy {
 
     /**
@@ -22,7 +20,7 @@ export class BaseLayoutComponent implements OnDestroy {
     */
     protected ngUnsubscribe: Subject<void> = new Subject<void>();
 
-    protected appName: string = AppConfig.AppName;
+    public appName: string = AppConfig.AppName;
 
     constructor(
         protected dependencies: ComponentDependencyService,
@@ -40,7 +38,7 @@ export class BaseLayoutComponent implements OnDestroy {
         this.ngUnsubscribe.complete();
     }
 
-    protected getMenuItemUrl(action: string, type: MenuItemType): string {
+    public getMenuItemUrl(action: string, type: MenuItemType): string {
         let url;
 
         if (type === MenuItemType.client) {
@@ -56,11 +54,11 @@ export class BaseLayoutComponent implements OnDestroy {
         return url;
     }
 
-    protected getAuthUrl(action: string): string {
+    public getAuthUrl(action: string): string {
         return '/' + UrlConfig.getAuthUrl(action);
     }
 
-    protected getHomeUrl(): string {
+    public getHomeUrl(): string {
         const authUser = this.dependencies.authenticatedUserService.getUser();
         if (authUser) {
             if (authUser.isClient) {
@@ -74,7 +72,7 @@ export class BaseLayoutComponent implements OnDestroy {
         return '';
     }
 
-    protected getMenuItemColor(action: string, type: MenuItemType): string | null {
+    public getMenuItemColor(action: string, type: MenuItemType): string | null {
         const activeColor = 'accent';
 
         const url = this.getMenuItemUrl(action, type);

@@ -16,13 +16,13 @@ import { Observable } from 'rxjs/Rx';
 })
 export class NewClientWorkoutComponent extends ClientsBaseComponent implements OnInit {
 
-    private formConfig: FormConfig<Workout>;
+    public formConfig: FormConfig<Workout>;
 
     constructor(
         protected activatedRoute: ActivatedRoute,
         protected componentDependencyService: ComponentDependencyService,
     ) {
-        super(componentDependencyService, activatedRoute, { subscribeToClient: true });
+        super(componentDependencyService, activatedRoute);
     }
 
     setup(): ComponentSetup | null {

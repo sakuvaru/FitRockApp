@@ -18,24 +18,24 @@ import * as _ from 'underscore';
 })
 export class ClientChatComponent extends ClientsBaseComponent implements OnInit {
 
-    private formConfig: FormConfig<ChatMessage>;
-    private chatMessages: ChatMessage[];
+    public formConfig: FormConfig<ChatMessage>;
+    public chatMessages: ChatMessage[];
 
-    private chatMessagesPage: number = 1;
+    public chatMessagesPage: number = 1;
     private readonly chatMessagesPageSize: number = 10;
-    private chatMessagesSearch: string = '';
-    private allChatMessagesLoaded: boolean = false;
+    public chatMessagesSearch: string = '';
+    public allChatMessagesLoaded: boolean = false;
 
     private readonly debounceTime = 300;
-    private searchControl = new FormControl();
+    public searchControl = new FormControl();
 
-    private readonly defaultAvatarUrl: string = AppConfig.DefaultUserAvatarUrl;
+    public readonly defaultAvatarUrl: string = AppConfig.DefaultUserAvatarUrl;
 
     constructor(
         protected activatedRoute: ActivatedRoute,
         protected componentDependencyService: ComponentDependencyService
     ) {
-        super(componentDependencyService, activatedRoute, { subscribeToClient: true });
+        super(componentDependencyService, activatedRoute);
 
     }
 

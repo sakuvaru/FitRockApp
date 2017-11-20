@@ -14,7 +14,7 @@ import 'rxjs/add/operator/switchMap';
 })
 export class EditWorkoutComponent extends BaseComponent implements OnInit {
 
-    private workoutId: number;
+    public workoutId: number;
 
     constructor(
         private activatedRoute: ActivatedRoute,
@@ -39,7 +39,7 @@ export class EditWorkoutComponent extends BaseComponent implements OnInit {
             });
     }
 
-    private handleLoadWorkout(workout: Workout): void {
+    public handleLoadWorkout(workout: Workout): void {
         this.setConfig({
             menuItems: new WorkoutMenuItems(workout.id).menuItems,
             menuTitle: {

@@ -12,10 +12,10 @@ import { Log } from '../../models';
 })
 export class AppErrorComponent extends BaseComponent implements OnInit {
 
-  private isCriticalError: boolean = false;
-  private showDebugDetails: boolean = false;
-  private log?: Log;
-  private translateParams: any;
+  public isCriticalError: boolean = false;
+  public showDebugDetails: boolean = false;
+  public log?: Log;
+  public translateParams: any;
 
   constructor(
     private activatedRoute: ActivatedRoute,

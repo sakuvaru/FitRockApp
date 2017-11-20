@@ -16,13 +16,13 @@ import { Observable } from 'rxjs/Rx';
 })
 export class NewClientAppointmentComponent extends ClientsBaseComponent implements OnInit {
 
-    private formConfig: FormConfig<Appointment>;
+    public formConfig: FormConfig<Appointment>;
 
     constructor(
         protected activatedRoute: ActivatedRoute,
         protected componentDependencyService: ComponentDependencyService,
     ) {
-        super(componentDependencyService, activatedRoute, { subscribeToClient: true });
+        super(componentDependencyService, activatedRoute);
     }
 
     setup(): ComponentSetup | null {

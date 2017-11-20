@@ -14,7 +14,7 @@ import { Food } from '../../../models';
 })
 export class NewFoodComponent extends BaseComponent implements OnInit {
 
-    private formConfig: FormConfig<Food>;
+    public formConfig: FormConfig<Food>;
 
     constructor(
         protected componentDependencyService: ComponentDependencyService) {
