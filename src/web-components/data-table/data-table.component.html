@@ -9,7 +9,7 @@
   </mat-chip-list>
   -->
 
-  <div class="mat-chip-list" fxHide.sm="true">
+  <div class="mat-chip-list" fxHide.sm="true" fxHide.xs="true">
     <!-- Large layout -->
     <div class="mat-chip-list-wrapper">
       <div tabindex="-1" *ngFor="let filterWrapper of filtersWrapper" [class.mat-chip-selected]="filterWrapper.filter.guid === activeFilterGuid"
@@ -19,7 +19,7 @@
       </div>
     </div>
   </div>
-  <div class="mat-chip-list" fxHide="true" fxHide.sm="false">
+  <div class="mat-chip-list" fxHide="true" fxHide.sm="false" fxHide.xs="false">
     <!-- Small layout -->
     <div class="mat-chip-list-wrapper">
       <div tabindex="-1" *ngFor="let filterWrapper of showFullFilters ? filtersWrapper : filtersWrapperSmallLayout" [class.mat-chip-selected]="filterWrapper.filter.guid === activeFilterGuid"
@@ -93,16 +93,34 @@
               {{ 'webComponents.dataTable.actions' | translate }}
             </mat-header-cell>
             <mat-cell *matCellDef="let item">
-              <ng-container *ngFor="let button of buttons">
-                <span (click)="handleButtonClick($event, button, item)">
-                  <a *ngIf="!button.tooltip" mat-icon-button>
-                    <mat-icon>{{button.icon}}</mat-icon>
-                  </a>
-                  <a *ngIf="button.tooltip" mat-icon-button matTooltip="{{ button.tooltip(item) | async }}">
-                    <mat-icon>{{button.icon}}</mat-icon>
-                  </a>
-                </span>
-              </ng-container>
+
+              <!-- Regular layout -->
+              <div fxHide.sm="true" fxHide.xs="true">
+                <ng-container *ngFor="let button of buttons">
+                  <span (click)="handleButtonClick($event, button, item)">
+                    <a *ngIf="!button.tooltip" mat-icon-button>
+                      <mat-icon>{{button.icon}}</mat-icon>
+                    </a>
+                    <a *ngIf="button.tooltip" mat-icon-button matTooltip="{{ button.tooltip(item) | async }}">
+                      <mat-icon>{{button.icon}}</mat-icon>
+                    </a>
+                  </span>
+                </ng-container>
+              </div>
+
+              <!-- Small layout -->
+              <div fxHide="true" fxHide.sm="false" fxHide.xs="false">
+                <button mat-icon-button [matMenuTriggerFor]="menu">
+                  <mat-icon>more_vert</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu">
+                  <button mat-menu-item *ngFor="let button of buttons" (click)="handleButtonClick($event, button, item)">
+                    <mat-icon>{{ button.icon }}</mat-icon>
+                    <span> {{ button.tooltip(item) | async }} </span>
+                  </button>
+                </mat-menu>
+              </div>
+
             </mat-cell>
           </ng-container>
         </ng-container>
@@ -129,7 +147,7 @@
 
   </ng-container>
 
-  <mat-paginator [style.display]="totalItems === 0 ? 'none' : 'block'" #paginator [length]="totalItems" [pageIndex]="paginatorPageIndex" [pageSize]="pageSize"
-    [pageSizeOptions]="[5, 10, 25, 50, 100]">
+  <mat-paginator [style.display]="totalItems === 0 ? 'none' : 'block'" #paginator [length]="totalItems" [pageIndex]="paginatorPageIndex"
+    [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 25, 50, 100]">
   </mat-paginator>
 </div>
