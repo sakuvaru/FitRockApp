@@ -59,7 +59,13 @@
     </div>
 
     <div>
-      <mat-table #table [dataSource]="dataSource">
+
+      <div *ngIf="totalItems === 0" class="w-data-table-no-data">
+        <img *ngIf="config.noDataImageUrl" alt="no items found" [src]="config.noDataImageUrl" />
+        <span> {{ 'webComponents.dataTable.noData' | translate }} </span>
+      </div>
+
+      <mat-table *ngIf="totalItems > 0" #table [dataSource]="dataSource">
 
         <!--- Note that these columns can be defined in any order.
               The actual rendered columns are set as a property on the row definition" -->
@@ -108,8 +114,8 @@
             </mat-header-cell>
             <mat-cell *matCellDef="let item">
               <ng-container *ngIf="config.avatar(item) as avatar">
-                  <img *ngIf="avatar.isImage()" class="w-data-table-avatar-image" alt="avatar" [src]="avatar.imageUrl" />
-                  <mat-icon *ngIf="avatar.isIcon()">{{ avatar.icon }}</mat-icon>
+                <img *ngIf="avatar.isImage()" class="w-data-table-avatar-image" alt="avatar" [src]="avatar.imageUrl" />
+                <mat-icon *ngIf="avatar.isIcon()">{{ avatar.icon }}</mat-icon>
               </ng-container>
             </mat-cell>
           </ng-container>
@@ -123,6 +129,7 @@
 
   </ng-container>
 
-  <mat-paginator #paginator [length]="totalItems" [pageIndex]="paginatorPageIndex" [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 25, 50, 100]">
+  <mat-paginator *ngIf="totalItems > 0" #paginator [length]="totalItems" [pageIndex]="paginatorPageIndex" [pageSize]="pageSize"
+    [pageSizeOptions]="[5, 10, 25, 50, 100]">
   </mat-paginator>
 </div>

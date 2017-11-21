@@ -7,6 +7,7 @@ import {
 } from './data-table-models';
 import { IDataTableField, IDataTableButton } from './data-table.interfaces';
 import * as _ from 'underscore';
+import { AppConfig } from 'app/config';
 
 // export table config
 export { DataTableConfig };
@@ -40,6 +41,9 @@ export class DataTableBuilder<TItem extends IItem> {
         private query: (search: string) => MultipleItemQuery<TItem>
     ) {
         this.config = new DataTableConfig();
+
+        // set default properties
+        this.config.noDataImageUrl = AppConfig.NoDataImageUrl;
     }
 
     /**
@@ -147,7 +151,7 @@ export class DataTableBuilder<TItem extends IItem> {
 
             return returnfilters;
         });
-       
+
         this.config.dynamicFilters = dynamicFiltersObs;
 
         return this;
@@ -229,6 +233,15 @@ export class DataTableBuilder<TItem extends IItem> {
             return new DataTableAvatar(resolver(item), undefined);
         };
 
+        return this;
+    }
+
+
+    /**
+     * Url of image to be used if there are no data
+     */
+    noDataImageUrl(imageUrl: string): this {
+        this.config.noDataImageUrl = imageUrl;
         return this;
     }
 

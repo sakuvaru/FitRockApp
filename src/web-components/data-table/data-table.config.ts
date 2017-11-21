@@ -79,6 +79,11 @@ export class DataTableConfig {
      */
     public avatar?: (item: any) => DataTableAvatar;
 
+    /**
+     * Url of image to be used if there are no data
+     */
+    public noDataImageUrl?: string;
+
     constructor(
         /**
          * data

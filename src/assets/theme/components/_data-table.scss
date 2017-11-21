@@ -9,6 +9,20 @@
 
     }
 
+    .w-data-table-no-data {
+        text-align: center;
+        padding-bottom: 30px;
+        img {
+            height: 55px;
+            display: inline-block;
+        }
+        span {
+            margin-top: 10px;
+            display: block;
+        }
+
+    }
+
     /**
     Aligns buttons to right
     */

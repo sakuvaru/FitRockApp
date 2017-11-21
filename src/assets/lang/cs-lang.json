@@ -565,7 +565,8 @@
 			"actions": "Akce",
 			"all": "Vše",
 			"showLess": "Zobrazit méně",
-			"showMore": "Další"
+			"showMore": "Další",
+			"noData": "Nejsou zde žádná data"
 		}
 	}
 }
