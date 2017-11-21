@@ -566,7 +566,7 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
 
     private subscribeToPagerChanges(): void {
         if (!this.paginator) {
-            console.warn('Could not init paginator');
+            console.warn('Could not init paginator. Make sure the paginator is registered after its been initialized in template');
             return;
         }
 
@@ -600,7 +600,7 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
         if (this.activeFilterGuid) {
             const activeFilterWrapper = this.filtersWrapper.find(m => m.filter.guid === this.activeFilterGuid);
             if (!activeFilterWrapper) {
-                console.warn(`Invalid filter '${this.activeFilterGuid}'`);
+                // filter might not be available because it has been removed due to searched term (dynamic filters)
             } else {
                 activeFilter = activeFilterWrapper.filter;
             }
