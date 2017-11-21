@@ -19,6 +19,7 @@ import { MatSnackBar } from '@angular/material';
 import { TdDialogService } from '@covalent/core';
 import { TranslateService } from '@ngx-translate/core';
 import * as _ from 'underscore';
+import { IDataTableButton } from 'web-components/data-table';
 
 @Component({
     selector: 'data-table',
@@ -77,6 +78,16 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
         }
 
         return _.first(this.filtersWrapper, this.filtersOnSmallLayout);
+    }
+
+    /**
+     * Indicates if data table is clickable
+     */
+    get isClickable(): boolean {
+        if (this.config.onClick) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -310,6 +321,21 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
         }
 
         this.initialized = true;
+    }
+
+    handleOnClick(item: any): void {
+        if (this.config.onClick) {
+            this.config.onClick(item);
+        }
+    }
+
+    handleButtonClick(event: any, button: DataTableButton<any>, item: any): void {
+        // cancel propagation of clicks so that e.g. 'onClick' event for the entire row
+        // is not triggered
+        event.stopPropagation();
+
+        // trigger action
+        button.action(item);
     }
 
     private areFiltersUsed(): boolean {
@@ -583,10 +609,6 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
             .subscribe();
     }
 
-    private test(row: any) {
-        console.log(row);
-    }
-
     private getLoadDataObservable(): Observable<void> {
         // get Observable used to load data
         if (!this.config.getData) {
@@ -651,7 +673,9 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
                         title: this.translations.delete.title,
                         cancelButton: this.translations.delete.cancel,
                         acceptButton: this.translations.delete.confirm,
-                    }).afterClosed().subscribe((accept: boolean) => {
+                    }).afterClosed()
+                        .takeUntil(this.ngUnsubscribe)
+                        .subscribe((accept: boolean) => {
                         if (accept) {
                             this.deleteItem(action);
                         } else {
@@ -669,7 +693,9 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
                 title: this.translations.delete.title,
                 cancelButton: this.translations.delete.cancel,
                 acceptButton: this.translations.delete.confirm,
-            }).afterClosed().subscribe((accept: boolean) => {
+            }).afterClosed()
+                .takeUntil(this.ngUnsubscribe)
+                .subscribe((accept: boolean) => {
                 if (accept) {
                     this.deleteItem(action);
                 } else {

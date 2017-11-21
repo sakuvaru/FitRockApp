@@ -72,6 +72,7 @@ export class DashboardComponent extends BaseComponent implements OnInit {
                         return filters;
                     })
             )
+            .onClick(item => console.log('click:' + item.codename))
             .avatarIcon(item => 'language')
             .deleteAction((item) => this.dependencies.itemServices.exerciseService.delete(item.id), item => item.exerciseName)
             .build();

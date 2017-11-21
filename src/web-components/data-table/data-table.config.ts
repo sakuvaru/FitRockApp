@@ -84,6 +84,11 @@ export class DataTableConfig {
      */
     public noDataImageUrl?: string;
 
+    /**
+     * On click event
+     */
+    public onClick?: (item: any) => void;
+
     constructor(
         /**
          * data

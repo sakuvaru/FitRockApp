@@ -47,6 +47,15 @@ export class DataTableBuilder<TItem extends IItem> {
     }
 
     /**
+     * On click event
+     * @param event Event 
+     */
+    onClick(event: (item: TItem) => void): this {
+        this.config.onClick = event;
+        return this;
+    }
+
+    /**
     * Limit
     */
     limit(limit: number): this {
