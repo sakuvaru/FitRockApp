@@ -140,7 +140,13 @@
         </ng-container>
 
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-        <mat-row (click)="handleOnClick(item)" *matRowDef="let item; columns: displayedColumns;"></mat-row>
+        <ng-container *ngIf="isClickable">
+          <mat-row matRipple (click)="handleOnClick(item)" *matRowDef="let item; columns: displayedColumns;"></mat-row>
+        </ng-container>
+        <ng-container *ngIf="!isClickable">
+          <mat-row (click)="handleOnClick(item)" *matRowDef="let item; columns: displayedColumns;"></mat-row>
+        </ng-container>
+
       </mat-table>
 
     </div>

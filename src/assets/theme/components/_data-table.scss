@@ -51,5 +51,12 @@
            background: rgba(0, 0, 0, 0.04);
            cursor: pointer;
         }
+
+        /**
+        Fixes ripple effect
+        */
+        .mat-row {
+            position: relative;
+        }
     }
 }
