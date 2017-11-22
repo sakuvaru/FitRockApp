@@ -10,16 +10,16 @@ import { DataTableSource } from './data-table-source.class';
 import {
     DataTableField, DataTableFieldWrapper, DataTableButtonWrapper,
     DataTableButton, DataTableDeleteResponse, Filter, FilterWrapper, DataTableResponse,
-    DataTableCountResponse, DynamicFilter, AllFilter
+    DataTableCountResponse, DynamicFilter, AllFilter, DataTableSort, 
 } from './data-table-models';
-import { IFilter } from './data-table.interfaces';
-import { MatPaginator } from '@angular/material';
+import { IFilter, IDataTableSort, IDataTableButton } from './data-table.interfaces';
 import { Observable, Subject } from 'rxjs/Rx';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar, MatSort, MatPaginator, Sort } from '@angular/material';
 import { TdDialogService } from '@covalent/core';
 import { TranslateService } from '@ngx-translate/core';
 import * as _ from 'underscore';
-import { IDataTableButton } from 'web-components/data-table';
+import { DataTableSortEnum } from './data-table-sort.enum';
+import { IDataTableField } from 'web-components/data-table';
 
 @Component({
     selector: 'data-table',
@@ -110,7 +110,7 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
         if (this.showAvatar) {
             fieldColumns.push(this.avatarColumnDef);
         }
-        
+
         // add fields
         fieldColumns = _.union(fieldColumns, this.fieldsWrapper.map(m => m.nameDef));
 
@@ -223,6 +223,36 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
         return false;
     }
 
+    /**
+     * Indicates if sort header has been subscribed to changes (sorting)
+     */
+    private sortHeaderSubscribed: boolean = false;
+
+
+    /**
+     * Variable that holds current sort
+     */
+    private currentSort: IDataTableSort | undefined;
+
+    /**
+     * Indicates if table is using sorting.
+     * This is calculated by checking if any of the fields contain
+     * sort key. 
+     */
+    private get isSortable(): boolean {
+        if (!this.config || !this.config.fields) {
+            console.warn('Function is called before config or fields are available');
+            return false;
+        }
+
+        const sortableField = this.config.fields.find(m => !(!m.sortKey));
+
+        if (sortableField) {
+            return true;
+        }
+        return false;
+    }
+
     /** 
      * Filter
      */
@@ -232,6 +262,20 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
      * Paginator
      */
     @ViewChild('paginator') paginator: MatPaginator;
+
+    /**
+     * Sort header
+     */
+    private _matSort: MatSort;
+    @ViewChild(MatSort) set matSort(content: MatSort) {
+        this._matSort = content;
+
+        // subscribe to changes once sort is available 
+        // this is here because the element is under *ngIf and therefore cannot be initilized immediately
+        if (content && !this.sortHeaderSubscribed && this.isSortable) {
+            this.subscribeToSortChanges();
+        }
+    }
 
     constructor(
         private snackBar: MatSnackBar,
@@ -590,6 +634,21 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
             error => this.handleError(error));
     }
 
+    private subscribeToSortChanges(): void {
+        this._matSort.sortChange
+            .debounceTime(this.debounceTime) // this also prevents the arrow animation from breaking
+            .takeUntil(this.ngUnsubscribe)
+            .subscribe(sort => {
+                // update current sort
+                this.setCurrentSort(sort);
+
+                // reload data
+                this.reloadData();
+            });
+
+        this.sortHeaderSubscribed = true;
+    }
+
     private subscribeToPagerChanges(): void {
         if (!this.paginator) {
             console.warn('Could not init paginator. Make sure the paginator is registered after its been initialized in template');
@@ -634,12 +693,13 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
             }
         }
 
+        // filter || default load function
         if (activeFilter) {
             // use filter observable
-            dataObs = activeFilter.filter(this.currentPage, this.pageSize, this.search, this.limit);
+            dataObs = activeFilter.filter(this.currentPage, this.pageSize, this.search, this.limit, this.currentSort);
         } else {
             // get data from filter if its set
-            dataObs = this.config.getData(this.currentPage, this.pageSize, this.search, this.limit);
+            dataObs = this.config.getData(this.currentPage, this.pageSize, this.search, this.limit, this.currentSort);
         }
 
         return dataObs
@@ -659,6 +719,31 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
             });
     }
 
+    private setCurrentSort(sort: Sort): void {
+        if (!sort) {
+            return;
+        }
+
+        // if direction is empty, it means that the default state is active
+        if (!sort.direction) {
+            // remove sort 
+            this.currentSort = undefined;
+            return;
+        }
+
+        // get sort order
+        const sortOrder = sort.direction.toLocaleLowerCase() === 'asc' ? DataTableSortEnum.Asc : DataTableSortEnum.Desc;
+
+        // get sorted field
+        const sortedFieldWrapper = this.fieldsWrapper.find(m => m.nameDef === sort.active);
+
+        if (!sortedFieldWrapper) {
+            throw Error(`Cannot sort table due to invalid '${sort.active}' sort field`);
+        }
+
+        this.currentSort = new DataTableSort(sortOrder, sortedFieldWrapper.field);
+    } 
+
     private deleteConfirmation(action: Observable<DataTableDeleteResponse>, item: any): void {
         // try getting the objet preview name
         const previewName = this.config.itemName ? this.config.itemName(item) : undefined;
@@ -676,12 +761,12 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
                     }).afterClosed()
                         .takeUntil(this.ngUnsubscribe)
                         .subscribe((accept: boolean) => {
-                        if (accept) {
-                            this.deleteItem(action);
-                        } else {
-                            // user did not accepted delete
-                        }
-                    });
+                            if (accept) {
+                                this.deleteItem(action);
+                            } else {
+                                // user did not accepted delete
+                            }
+                        });
                 })
                 .takeUntil(this.ngUnsubscribe)
                 .subscribe();
@@ -696,12 +781,12 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
             }).afterClosed()
                 .takeUntil(this.ngUnsubscribe)
                 .subscribe((accept: boolean) => {
-                if (accept) {
-                    this.deleteItem(action);
-                } else {
-                    // user did not accepted delete
-                }
-            });
+                    if (accept) {
+                        this.deleteItem(action);
+                    } else {
+                        // user did not accepted delete
+                    }
+                });
         }
     }
 

@@ -41,8 +41,8 @@ export class DashboardComponent extends BaseComponent implements OnInit {
                 .whereLike('ExerciseName', search)
         )
             .withFields([
-                { name: item => 'Name', value: item => item.exerciseName, hideOnSmallScreen: false },
-                { name: item => 'Category', value: item => item.exerciseCategory.categoryName, hideOnSmallScreen: true },
+                { sortKey: 'ExerciseName', name: item => 'Name', value: item => item.exerciseName, hideOnSmallScreen: false },
+                { sortKey: 'ExerciseCategory.CategoryName', name: item => 'Category', value: item => item.exerciseCategory.categoryName, hideOnSmallScreen: true },
             ])
             .withButton(
             {

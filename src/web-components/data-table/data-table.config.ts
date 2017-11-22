@@ -5,6 +5,7 @@ import {
 } from './data-table-models';
 import { IFilter } from './data-table.interfaces';
 import { guidHelper, stringHelper } from '../../lib/utilities';
+import { IDataTableSort } from 'web-components/data-table';
 
 export class DataTableConfig {
 
@@ -93,7 +94,7 @@ export class DataTableConfig {
         /**
          * data
          */
-        public getData?: (page: number, pageSize: number, search: string, limit?: number) => Observable<DataTableResponse>,
+        public getData?: (page: number, pageSize: number, search: string, limit?: number, sort?: IDataTableSort) => Observable<DataTableResponse>,
     ) {
     }
 

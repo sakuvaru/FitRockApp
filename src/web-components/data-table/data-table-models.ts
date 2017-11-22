@@ -1,10 +1,12 @@
 import { Observable } from 'rxjs/Rx';
 import { guidHelper, stringHelper } from '../../lib/utilities';
 import { IDataTableButton, IDataTableField, IDataTableCountResponse, IDataTableResponse,
-IFilter } from './data-table.interfaces';
+IFilter, IDataTableSort } from './data-table.interfaces';
+import { DataTableSortEnum } from './data-table-sort.enum';
 
 export class DataTableField<T> implements IDataTableField<T> {
     constructor(
+
         /**
          * Name of the field
          */
@@ -18,7 +20,13 @@ export class DataTableField<T> implements IDataTableField<T> {
         /**
          * Indicates if field should be hidden on small screens
          */
-        public hideOnSmallScreen: boolean
+        public hideOnSmallScreen: boolean,
+
+        /**
+         * Column name of the key.
+         * Required for sorting.
+         */
+        public sortKey?: string,
     ) { }
 
     isObservable(result: string | Observable<string>): boolean {
@@ -84,7 +92,7 @@ export class DynamicFilter implements IFilter {
     constructor(
         public guid: string,
         public name: Observable<string>,
-        public filter: (page: number, pageSize: number, search: string, limit?: number) => Observable<DataTableResponse>,
+        public filter: (page: number, pageSize: number, search: string, limit?: number, sort?: IDataTableSort) => Observable<DataTableResponse>,
         public count: number,
         /**
          * Higher priority = filter is on left
@@ -96,7 +104,7 @@ export class DynamicFilter implements IFilter {
 
 export class AllFilter {
     constructor(
-        public filter: (page: number, pageSize: number, search: string, limit?: number) => Observable<DataTableResponse>,
+        public filter: (page: number, pageSize: number, search: string, limit?: number, sort?: IDataTableSort) => Observable<DataTableResponse>,
         public count: (search: string) => Observable<DataTableCountResponse>,
     ) {}
 }
@@ -108,7 +116,7 @@ export class Filter implements IFilter {
     constructor(
         public guid: string,
         public name: Observable<string>,
-        public filter: (page: number, pageSize: number, search: string, limit?: number) => Observable<DataTableResponse>,
+        public filter: (page: number, pageSize: number, search: string, limit?: number, sort?: IDataTableSort) => Observable<DataTableResponse>,
         public count: (search: string) => Observable<DataTableCountResponse>,
         /**
          * Higher priority = filter is on left
@@ -149,4 +157,13 @@ export class DataTableAvatar {
         return false;
     }
 }
+
+
+export class DataTableSort implements IDataTableSort {
+    constructor(
+        public order: DataTableSortEnum,
+        public field: DataTableField<any>
+    ) { }
+}
+
 

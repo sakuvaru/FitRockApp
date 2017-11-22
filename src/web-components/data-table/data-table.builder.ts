@@ -3,9 +3,10 @@ import { Observable } from 'rxjs/Rx';
 import { IItem, MultipleItemQuery, DeleteItemQuery, ItemCountQuery } from '../../lib/repository';
 import {
     DataTableField, DataTableResponse, DataTableButton, DataTableDeleteResponse,
-    Filter, DataTableCountResponse, DynamicFilter, DataTableAvatar
+    Filter, DataTableCountResponse, DynamicFilter, DataTableAvatar, DataTableSort
 } from './data-table-models';
-import { IDataTableField, IDataTableButton } from './data-table.interfaces';
+import { IDataTableField, IDataTableButton, IDataTableSort } from './data-table.interfaces';
+import { DataTableSortEnum } from './data-table-sort.enum';
 import * as _ from 'underscore';
 import { AppConfig } from 'app/config';
 
@@ -85,7 +86,7 @@ export class DataTableBuilder<TItem extends IItem> {
      * @param field Field to add
      */
     withField(field: IDataTableField<TItem>): this {
-        this.config.fields.push(new DataTableField(field.name, field.value, field.hideOnSmallScreen));
+        this.config.fields.push(new DataTableField(field.name, field.value, field.hideOnSmallScreen, field.sortKey));
         return this;
     }
 
@@ -94,7 +95,7 @@ export class DataTableBuilder<TItem extends IItem> {
      * @param fields Fields to add
      */
     withFields(fields: IDataTableField<TItem>[]): this {
-        this.config.fields = _.union(this.config.fields, fields.map(m => new DataTableField(m.name, m.value, m.hideOnSmallScreen)));
+        this.config.fields = _.union(this.config.fields, fields.map(m => new DataTableField(m.name, m.value, m.hideOnSmallScreen, m.sortKey)));
         return this;
     }
 
@@ -152,7 +153,7 @@ export class DataTableBuilder<TItem extends IItem> {
                     new DynamicFilter(
                         dynamicFilter.guid,
                         dynamicFilter.name,
-                        (page: number, pageSize: number, xSearch: string, limit: number) => this.getDataResponse(filterQuery, page, pageSize, xSearch, limit),
+                        (page: number, pageSize: number, xSearch: string, limit?: number, sort?: IDataTableSort) => this.getDataResponse(filterQuery, page, pageSize, xSearch, limit, sort),
                         dynamicFilter.count,
                         dynamicFilter.priority ? dynamicFilter.priority : 2
                     ));
@@ -192,7 +193,7 @@ export class DataTableBuilder<TItem extends IItem> {
                 new Filter(
                     filter.guid,
                     filter.name,
-                    (page: number, pageSize: number, search: string, limit: number) => this.getDataResponse(filterQuery, page, pageSize, search, limit),
+                    (page: number, pageSize: number, search: string, limit?: number, sort?: IDataTableSort) => this.getDataResponse(filterQuery, page, pageSize, search, limit, sort),
                     (search) => this.getCountResponse(countQuery, search),
                     filter.priority ? filter.priority : 2
                 ));
@@ -221,7 +222,7 @@ export class DataTableBuilder<TItem extends IItem> {
             new Filter(
                 '_allFilter',
                 name,
-                (page: number, pageSize: number, search: string, limit: number) => this.getDataResponse(this.query, page, pageSize, search, limit),
+                (page: number, pageSize: number, search: string, limit?: number, sort?: IDataTableSort) => this.getDataResponse(this.query, page, pageSize, search, limit, sort),
                 (search) => this.getCountResponse(filterQuery, search),
                 1
             );
@@ -259,7 +260,7 @@ export class DataTableBuilder<TItem extends IItem> {
      */
     build(): DataTableConfig {
         // assign observable
-        this.config.getData = (page: number, pageSize: number, search: string, limit: number) => this.getDataResponse(this.query, page, pageSize, search, limit);
+        this.config.getData = (page: number, pageSize: number, search: string, limit?: number, sort?: IDataTableSort) => this.getDataResponse(this.query, page, pageSize, search, limit, sort);
         return this.config;
     }
 
@@ -272,7 +273,7 @@ export class DataTableBuilder<TItem extends IItem> {
             });
     }
 
-    private getDataResponse(inputQuery: (search) => MultipleItemQuery<TItem>, page: number, pageSize: number, search: string, limit: number): Observable<DataTableResponse> {
+    private getDataResponse(inputQuery: (search) => MultipleItemQuery<TItem>, page: number, pageSize: number, search: string, limit?: number, sort?: IDataTableSort): Observable<DataTableResponse> {
         const query = inputQuery(search);
 
         if (limit) {
@@ -285,6 +286,15 @@ export class DataTableBuilder<TItem extends IItem> {
 
         if (page) {
             query.page(page);
+        }
+
+        if (sort) {
+            // apply sort only if key (field column) was provided
+            if (sort.order === DataTableSortEnum.Asc && sort.field.sortKey) {
+                query.orderByAsc(sort.field.sortKey);
+            } else if (sort.field.sortKey) {
+                query.orderByDesc(sort.field.sortKey);
+            }
         }
 
         return query.get().map(response => new DataTableResponse(response.items, response.totalItems));

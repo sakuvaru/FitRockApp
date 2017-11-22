@@ -66,89 +66,111 @@
         <span> {{ 'webComponents.dataTable.noData' | translate }} </span>
       </div>
 
-      <mat-table *ngIf="totalItems > 0" #table [dataSource]="dataSource">
+      <!-- Using ngIf to hide data table would reset active sort filters -->
+      <div [style.display]="totalItems === 0 ? 'none' : 'block'">
+        <mat-table #table [dataSource]="dataSource" matSort>
 
-        <!--- Note that these columns can be defined in any order.
+          <!--- Note that these columns can be defined in any order.
               The actual rendered columns are set as a property on the row definition" -->
 
-        <ng-container *ngFor="let fieldWrapper of fieldsWrapper; let first = first">
-          <ng-container [matColumnDef]="fieldWrapper.nameDef">
-            <mat-header-cell *matHeaderCellDef fxHide="false" [fxHide.sm]="fieldWrapper.field.hideOnSmallScreen === true" [fxHide.xs]="fieldWrapper.field.hideOnSmallScreen === true" >
-              <ng-container *ngIf="fieldWrapper.field.name(item) as nameResult">
-                <span *ngIf="fieldWrapper.field.isObservable(nameResult)">{{ nameResult| async }}</span>
-                <span *ngIf="!fieldWrapper.field.isObservable(nameResult)">{{ nameResult }}</span>
-              </ng-container>
-            </mat-header-cell>
-            <mat-cell *matCellDef="let item" fxHide="false" [fxHide.sm]="fieldWrapper.field.hideOnSmallScreen === true" [fxHide.xs]="fieldWrapper.field.hideOnSmallScreen === true" >
-              <ng-container *ngIf="fieldWrapper.field.value(item) as valueResult">
-                <span *ngIf="fieldWrapper.field.isObservable(valueResult)">{{ valueResult| async }}</span>
-                <span *ngIf="!fieldWrapper.field.isObservable(valueResult)">{{ valueResult }}</span>
-              </ng-container>
-            </mat-cell>
-          </ng-container>
-        </ng-container>
+          <ng-container *ngFor="let fieldWrapper of fieldsWrapper; let first = first">
+            <ng-container [matColumnDef]="fieldWrapper.nameDef">
 
-        <ng-container *ngIf="buttonsWrapper">
-          <ng-container [matColumnDef]="buttonsWrapper.nameDef">
-            <mat-header-cell *matHeaderCellDef>
-              {{ 'webComponents.dataTable.actions' | translate }}
-            </mat-header-cell>
-            <mat-cell *matCellDef="let item">
-
-              <!-- Regular layout -->
-              <div fxHide.sm="true" fxHide.xs="true">
-                <ng-container *ngFor="let button of buttons">
-                  <span (click)="handleButtonClick($event, button, item)">
-                    <a *ngIf="!button.tooltip" mat-icon-button>
-                      <mat-icon>{{button.icon}}</mat-icon>
-                    </a>
-                    <a *ngIf="button.tooltip" mat-icon-button matTooltip="{{ button.tooltip(item) | async }}">
-                      <mat-icon>{{button.icon}}</mat-icon>
-                    </a>
-                  </span>
+              <!-- Sortable header -->
+              <ng-container *ngIf="fieldWrapper.field.sortKey">
+              <mat-header-cell mat-sort-header *matHeaderCellDef fxHide="false" [fxHide.sm]="fieldWrapper.field.hideOnSmallScreen === true"
+                [fxHide.xs]="fieldWrapper.field.hideOnSmallScreen === true">
+                <ng-container *ngIf="fieldWrapper.field.name(item) as nameResult">
+                  <span *ngIf="fieldWrapper.field.isObservable(nameResult)">{{ nameResult| async }}</span>
+                  <span *ngIf="!fieldWrapper.field.isObservable(nameResult)">{{ nameResult }}</span>
                 </ng-container>
-              </div>
+              </mat-header-cell>
+            </ng-container>
+            
+              <!-- Header without sort -->
+              <ng-container *ngIf="!fieldWrapper.field.sortKey">
+              <mat-header-cell  *matHeaderCellDef fxHide="false" [fxHide.sm]="fieldWrapper.field.hideOnSmallScreen === true"
+                [fxHide.xs]="fieldWrapper.field.hideOnSmallScreen === true">
+                <ng-container *ngIf="fieldWrapper.field.name(item) as nameResult">
+                  <span *ngIf="fieldWrapper.field.isObservable(nameResult)">{{ nameResult| async }}</span>
+                  <span *ngIf="!fieldWrapper.field.isObservable(nameResult)">{{ nameResult }}</span>
+                </ng-container>
+              </mat-header-cell>
+            </ng-container>
 
-              <!-- Small layout -->
-              <div fxHide="true" fxHide.sm="false" fxHide.xs="false">
-                <button mat-icon-button [matMenuTriggerFor]="menu">
-                  <mat-icon>more_vert</mat-icon>
-                </button>
-                <mat-menu #menu="matMenu">
-                  <button mat-menu-item *ngFor="let button of buttons" (click)="handleButtonClick($event, button, item)">
-                    <mat-icon>{{ button.icon }}</mat-icon>
-                    <span> {{ button.tooltip(item) | async }} </span>
+              <!-- Cell value -->
+              <mat-cell *matCellDef="let item" fxHide="false" [fxHide.sm]="fieldWrapper.field.hideOnSmallScreen === true" [fxHide.xs]="fieldWrapper.field.hideOnSmallScreen === true">
+                <ng-container *ngIf="fieldWrapper.field.value(item) as valueResult">
+                  <span *ngIf="fieldWrapper.field.isObservable(valueResult)">{{ valueResult| async }}</span>
+                  <span *ngIf="!fieldWrapper.field.isObservable(valueResult)">{{ valueResult }}</span>
+                </ng-container>
+              </mat-cell>
+
+            </ng-container>
+          </ng-container>
+
+          <ng-container *ngIf="buttonsWrapper">
+            <ng-container [matColumnDef]="buttonsWrapper.nameDef">
+              <mat-header-cell *matHeaderCellDef>
+                {{ 'webComponents.dataTable.actions' | translate }}
+              </mat-header-cell>
+              <mat-cell *matCellDef="let item">
+
+                <!-- Regular layout -->
+                <div fxHide.sm="true" fxHide.xs="true">
+                  <ng-container *ngFor="let button of buttons">
+                    <span (click)="handleButtonClick($event, button, item)">
+                      <a *ngIf="!button.tooltip" mat-icon-button>
+                        <mat-icon>{{button.icon}}</mat-icon>
+                      </a>
+                      <a *ngIf="button.tooltip" mat-icon-button matTooltip="{{ button.tooltip(item) | async }}">
+                        <mat-icon>{{button.icon}}</mat-icon>
+                      </a>
+                    </span>
+                  </ng-container>
+                </div>
+
+                <!-- Small layout -->
+                <div fxHide="true" fxHide.sm="false" fxHide.xs="false">
+                  <button mat-icon-button [matMenuTriggerFor]="menu">
+                    <mat-icon>more_vert</mat-icon>
                   </button>
-                </mat-menu>
-              </div>
+                  <mat-menu #menu="matMenu">
+                    <button mat-menu-item *ngFor="let button of buttons" (click)="handleButtonClick($event, button, item)">
+                      <mat-icon>{{ button.icon }}</mat-icon>
+                      <span> {{ button.tooltip(item) | async }} </span>
+                    </button>
+                  </mat-menu>
+                </div>
 
-            </mat-cell>
+              </mat-cell>
+            </ng-container>
           </ng-container>
-        </ng-container>
 
-        <ng-container>
-          <ng-container [matColumnDef]="avatarColumnDef">
-            <mat-header-cell *matHeaderCellDef>
+          <ng-container>
+            <ng-container [matColumnDef]="avatarColumnDef">
+              <mat-header-cell *matHeaderCellDef>
 
-            </mat-header-cell>
-            <mat-cell *matCellDef="let item">
-              <ng-container *ngIf="config.avatar(item) as avatar">
-                <img *ngIf="avatar.isImage()" class="w-data-table-avatar-image" alt="avatar" [src]="avatar.imageUrl" />
-                <mat-icon *ngIf="avatar.isIcon()">{{ avatar.icon }}</mat-icon>
-              </ng-container>
-            </mat-cell>
+              </mat-header-cell>
+              <mat-cell *matCellDef="let item">
+                <ng-container *ngIf="config.avatar(item) as avatar">
+                  <img *ngIf="avatar.isImage()" class="w-data-table-avatar-image" alt="avatar" [src]="avatar.imageUrl" />
+                  <mat-icon *ngIf="avatar.isIcon()">{{ avatar.icon }}</mat-icon>
+                </ng-container>
+              </mat-cell>
+            </ng-container>
           </ng-container>
-        </ng-container>
 
-        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-        <ng-container *ngIf="isClickable">
-          <mat-row matRipple (click)="handleOnClick(item)" *matRowDef="let item; columns: displayedColumns;"></mat-row>
-        </ng-container>
-        <ng-container *ngIf="!isClickable">
-          <mat-row (click)="handleOnClick(item)" *matRowDef="let item; columns: displayedColumns;"></mat-row>
-        </ng-container>
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <ng-container *ngIf="isClickable">
+            <mat-row matRipple (click)="handleOnClick(item)" *matRowDef="let item; columns: displayedColumns;"></mat-row>
+          </ng-container>
+          <ng-container *ngIf="!isClickable">
+            <mat-row (click)="handleOnClick(item)" *matRowDef="let item; columns: displayedColumns;"></mat-row>
+          </ng-container>
 
-      </mat-table>
+        </mat-table>
+      </div>
 
     </div>
 
