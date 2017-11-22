@@ -85,7 +85,7 @@ export class DataTableBuilder<TItem extends IItem> {
      * @param field Field to add
      */
     withField(field: IDataTableField<TItem>): this {
-        this.config.fields.push(new DataTableField(field.name, field.value));
+        this.config.fields.push(new DataTableField(field.name, field.value, field.hideOnSmallScreen));
         return this;
     }
 
@@ -94,7 +94,7 @@ export class DataTableBuilder<TItem extends IItem> {
      * @param fields Fields to add
      */
     withFields(fields: IDataTableField<TItem>[]): this {
-        this.config.fields = _.union(this.config.fields, fields.map(m => new DataTableField(m.name, m.value)));
+        this.config.fields = _.union(this.config.fields, fields.map(m => new DataTableField(m.name, m.value, m.hideOnSmallScreen)));
         return this;
     }
 

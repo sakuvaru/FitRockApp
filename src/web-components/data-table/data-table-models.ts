@@ -14,6 +14,11 @@ export class DataTableField<T> implements IDataTableField<T> {
          * Value of the field
          */
         public value: (item: T) => string | Observable<string>,
+
+        /**
+         * Indicates if field should be hidden on small screens
+         */
+        public hideOnSmallScreen: boolean
     ) { }
 
     isObservable(result: string | Observable<string>): boolean {

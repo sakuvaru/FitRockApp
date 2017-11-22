@@ -19,6 +19,7 @@
       </div>
     </div>
   </div>
+
   <div class="mat-chip-list" fxHide="true" fxHide.sm="false" fxHide.xs="false">
     <!-- Small layout -->
     <div class="mat-chip-list-wrapper">
@@ -72,13 +73,13 @@
 
         <ng-container *ngFor="let fieldWrapper of fieldsWrapper; let first = first">
           <ng-container [matColumnDef]="fieldWrapper.nameDef">
-            <mat-header-cell *matHeaderCellDef>
+            <mat-header-cell *matHeaderCellDef fxHide="false" [fxHide.sm]="fieldWrapper.field.hideOnSmallScreen === true" [fxHide.xs]="fieldWrapper.field.hideOnSmallScreen === true" >
               <ng-container *ngIf="fieldWrapper.field.name(item) as nameResult">
                 <span *ngIf="fieldWrapper.field.isObservable(nameResult)">{{ nameResult| async }}</span>
                 <span *ngIf="!fieldWrapper.field.isObservable(nameResult)">{{ nameResult }}</span>
               </ng-container>
             </mat-header-cell>
-            <mat-cell *matCellDef="let item">
+            <mat-cell *matCellDef="let item" fxHide="false" [fxHide.sm]="fieldWrapper.field.hideOnSmallScreen === true" [fxHide.xs]="fieldWrapper.field.hideOnSmallScreen === true" >
               <ng-container *ngIf="fieldWrapper.field.value(item) as valueResult">
                 <span *ngIf="fieldWrapper.field.isObservable(valueResult)">{{ valueResult| async }}</span>
                 <span *ngIf="!fieldWrapper.field.isObservable(valueResult)">{{ valueResult }}</span>

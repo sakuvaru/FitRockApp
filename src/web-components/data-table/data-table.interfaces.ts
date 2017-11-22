@@ -11,6 +11,11 @@ export interface IDataTableField<T> {
      * Value of the field
      */
     value: (item: T) => string | Observable<string>;
+
+    /**
+     * Indicates if field should be hidden on small screens
+     */
+    hideOnSmallScreen: boolean;
 }
 
 export interface IDataTableResponse {
