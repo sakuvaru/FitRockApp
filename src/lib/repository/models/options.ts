@@ -140,11 +140,11 @@ export class OrderBy implements IOption {
     }
 
     public GetParam(): string {
-        return 'orderby.' + this.field;
+        return 'orderbyasc'; 
     }
 
     public GetParamValue(): string {
-        return 'asc';
+        return this.field;
     }
 }
 
@@ -159,11 +159,11 @@ export class OrderByDescending implements IOption {
     }
 
     public GetParam(): string {
-        return 'orderby.' + this.field;
+        return 'orderbydesc'; 
     }
 
     public GetParamValue(): string {
-        return 'desc';
+        return this.field;
     }
 }
 
