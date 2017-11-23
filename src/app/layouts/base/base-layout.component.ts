@@ -6,6 +6,7 @@ import { Subject } from 'rxjs/Rx';
 import { AppConfig, UrlConfig } from '../../config';
 import { stringHelper } from '../../../lib/utilities';
 import { GlobalLoaderStatus, ComponentDependencyService, MenuItemType  } from '../../core';
+import * as moment from 'moment';
 
 export class BaseLayoutComponent implements OnDestroy {
 
@@ -38,7 +39,7 @@ export class BaseLayoutComponent implements OnDestroy {
         this.ngUnsubscribe.complete();
     }
 
-    public getMenuItemUrl(action: string, type: MenuItemType): string {
+    getMenuItemUrl(action: string, type: MenuItemType): string {
         let url;
 
         if (type === MenuItemType.client) {
@@ -54,11 +55,11 @@ export class BaseLayoutComponent implements OnDestroy {
         return url;
     }
 
-    public getAuthUrl(action: string): string {
+    getAuthUrl(action: string): string {
         return '/' + UrlConfig.getAuthUrl(action);
     }
 
-    public getHomeUrl(): string {
+    getHomeUrl(): string {
         const authUser = this.dependencies.authenticatedUserService.getUser();
         if (authUser) {
             if (authUser.isClient) {
@@ -72,7 +73,7 @@ export class BaseLayoutComponent implements OnDestroy {
         return '';
     }
 
-    public getMenuItemColor(action: string, type: MenuItemType): string | null {
+    getMenuItemColor(action: string, type: MenuItemType): string | null {
         const activeColor = 'accent';
 
         const url = this.getMenuItemUrl(action, type);
@@ -87,5 +88,13 @@ export class BaseLayoutComponent implements OnDestroy {
         }
 
         return null;
+    }
+
+    moment(inp?: moment.MomentInput, format?: moment.MomentFormatSpecification, strict?: boolean): moment.Moment {
+        return this.dependencies.coreServices.moment(inp, format, strict);
+    }
+
+    fromNow(date: Date): string {
+        return this.moment(date).fromNow();
     }
 }
