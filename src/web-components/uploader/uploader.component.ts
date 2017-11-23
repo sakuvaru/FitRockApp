@@ -7,12 +7,18 @@ import { BaseWebComponent } from '../base-web-component.class';
 import { UploaderConfig } from './uploader.config';
 import * as _ from 'underscore';
 import { MatSnackBar } from '@angular/material';
+import { Observable, Subject } from 'rxjs/Rx';
 
 @Component({
     selector: 'uploader',
     templateUrl: 'uploader.component.html'
 })
 export class UploaderComponent extends BaseWebComponent implements OnInit, OnChanges {
+
+    /**
+     * Subject for triggering upload actions
+     */
+    private uploadButtonSubject = new Subject<File[] | File>();
 
     /**
      * Maximum number of uploaded files
@@ -56,16 +62,6 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
     private acceptedExtensions: string[];
 
     /**
-     * Text to be shown when files are uploaded
-     */
-    private snackbarUploadedText: string;
-
-    /**
-     * Key used to translate uploaded text
-     */
-    private snackbarUploadedTextKey: string = 'webComponents.uploader.uploaded';
-
-    /**
      * Duration which the snackbar is visible
      */
     private readonly snackbarDefaultDuration: number = 2500;
@@ -74,6 +70,17 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
      * Indicates if loader is enabled
      */
     private loaderEnabled: boolean = false;
+
+    /**
+    * Flag for initialization component, used because ngOnChanges can be called before ngOnInit
+    * which would cause component to be initialized twice (happened when component is inside a dialog)
+    * Info: https://stackoverflow.com/questions/43111474/how-to-stop-ngonchanges-called-before-ngoninit/43111597
+    */
+    public initialized = false;
+
+    private translations = {
+        'snackbarUploadedText': ''
+    };
 
     constructor(
         private translateService: TranslateService,
@@ -85,31 +92,50 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
     @Input() config: UploaderConfig;
 
     ngOnInit() {
-        if (this.config) {
-            this.initUploader(this.config);
-        }
+        this.initUploader();
     }
 
     ngOnChanges(changes: SimpleChanges) {
-        if (changes.config.currentValue) {
-            this.initUploader(changes.config.currentValue);
+        this.initUploader();
+    }
+
+    selectEvent(file: File | FileList): void {
+        if (this.config.onSelectFiles) {
+            this.config.onSelectFiles(file);
         }
     }
 
-    private initUploader(config: UploaderConfig): void {
-        if (!config) {
-            console.warn('Uploader could not be initialized');
+    cancelEvent(): void {
+    }
+
+    toggleDisabled(): void {
+        this.disabled = !this.disabled;
+    }
+
+    handleUploadSingle(file: File): void {
+        this.uploadButtonSubject.next(file);
+    }
+
+    handleUploadMultiple(files: File[]): void {
+        this.uploadButtonSubject.next(files);
+    }
+
+    private initUploader(): void {
+        if (!this.config && !this.initialized) {
             return;
         }
 
-        this.config = config;
+        this.initialized = true;
+
+        // subscribe to upload button
+        this.subscribeToUploadButtons();
 
         // init translations
         this.initTranslations();
 
         // check that upload function is defined
-        if (!config.uploadFunction) {
-            console.warn('Uploader could not be initialized because upload function is not defined');
+        if (!this.config.uploadFunction) {
+            throw Error('Uploader could not be initialized because upload function is not defined');
         }
 
         // init accepted extensions
@@ -122,8 +148,48 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
         }
     }
 
+    private subscribeToUploadButtons() {
+        this.uploadButtonSubject
+            .do(() => {
+                this.loaderEnabled = true;
+                this.resetCounters();
+            })
+            .switchMap((fileInput) => {
+                if (fileInput instanceof File) {
+                    return this.uploadSingle(fileInput);
+                }
+
+                if (fileInput instanceof FileList) {
+                    return this.uploadMultiple(fileInput);
+                }
+
+                throw Error(`Unsupported upload type`);
+            })
+            .takeUntil(this.ngUnsubscribe)
+            .subscribe((files) => {
+                if (this.config.onAfterUpload) {
+                    this.config.onAfterUpload(files);
+                }
+
+                this.clearSelectedFiles();
+
+                this.snackBarService.open(this.translations.snackbarUploadedText, undefined, { duration: this.snackbarDefaultDuration });
+
+                this.loaderEnabled = false;
+            },
+            error => {
+                this.uploadFailed = true;
+
+                this.loaderEnabled = false;
+
+                if (this.config.onFailedUpload) {
+                    this.config.onFailedUpload(error);
+                }
+            });
+    }
+
     private initTranslations(): void {
-        this.translateService.get(this.snackbarUploadedTextKey).subscribe(result => this.snackbarUploadedText = result);
+        this.translateService.get('webComponents.uploader.uploaded').subscribe(result => this.translations.snackbarUploadedText = result);
     }
 
     private getAcceptedExtensions(config: UploaderConfig): string[] {
@@ -166,81 +232,32 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
         return extensionsString;
     }
 
-    selectEvent(file: File | FileList): void {
-        if (this.config.onSelectFiles) {
-            this.config.onSelectFiles(file);
-        }
-    }
-
-    cancelEvent(): void {
-    }
-
-    toggleDisabled(): void {
-        this.disabled = !this.disabled;
-    }
-
-    uploadSingle(file: File): void {
-        this.resetCounters();
-
+    private uploadSingle(file: File): Observable<any[]> {
         if (!file) {
             this.noFilesSelected = true;
-            return;
+            return Observable.of();
         }
 
         if (!this.fileIsAllowed(file)) {
             this.extensionNotAllowed = true;
             this.extensionsNotAllowedParam.extensions = this.getListOfNotAllowedExtensions([file]);
-            return;
+            return Observable.of();
         }
 
-        try {
-            this.loaderEnabled = true;
-            if (this.config.loaderConfig) {
-                this.config.loaderConfig.start();
-            }
+        return this.config.uploadFunction(file)
+            .map(response => {
+                if (response.files && response.files.length === 1) {
+                    return response.files;
+                }
 
-            this.config.uploadFunction(file)
-                .takeUntil(this.ngUnsubscribe)
-                .subscribe(response => {
-                    const uploadedFile: any[] = response.file ? [response.file] : [];
-
-                    if (this.config.onAfterUpload) {
-                        this.config.onAfterUpload(uploadedFile);
-                    }
-
-                    this.clearSelectedFiles();
-
-                    this.loaderEnabled = false;
-
-                    this.snackBarService.open(this.snackbarUploadedText, undefined, { duration: this.snackbarDefaultDuration });
-                },
-                error => {
-                    this.uploadFailed = true;
-
-                    this.loaderEnabled = false;
-                    if (this.config.loaderConfig) {
-                        this.config.loaderConfig.stop();
-                    }
-
-                    if (this.config.onFailedUpload) {
-                        this.config.onFailedUpload(error);
-                    }
-                });
-        } catch (error) {
-            this.uploadFailed = true;
-
-            if (this.config.onFailedUpload) {
-                this.config.onFailedUpload(error);
-            }
-        }
+                throw new Error(`Unexpected upload result. Multiple files were received even though only 1 file was expected.`);
+            });
     }
 
-    uploadMultiple(file: any): void {
-        this.resetCounters();
-
+    private uploadMultiple(file: FileList): Observable<any[]> {
         if (!file) {
             this.noFilesSelected = true;
-            return;
+            return Observable.of();
         }
         const files: File[] = [];
 
@@ -258,64 +275,19 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
 
         if (files.length === 0) {
             this.noFilesSelected = true;
-            return;
+            return Observable.of();
         }
 
         if (!this.allFilesAllowed(files)) {
             this.extensionNotAllowed = true;
             this.extensionsNotAllowedParam.extensions = this.getListOfNotAllowedExtensions(files);
-            return;
+            return Observable.of();
         }
 
-        try {
-            this.loaderEnabled = true;
-            if (this.config.loaderConfig) {
-                this.config.loaderConfig.start();
-            }
-
-            this.config.uploadFunction(files)
-                .takeUntil(this.ngUnsubscribe)
-                .subscribe(response => {
-                    if (this.config.onAfterUpload) {
-                        this.config.onAfterUpload(response.files);
-                    }
-
-                    this.clearSelectedFiles();
-
-                    if (this.config.loaderConfig) {
-                        this.config.loaderConfig.stop();
-                    }
-
-                    this.loaderEnabled = false;
-
-                    this.snackBarService.open(this.snackbarUploadedText, undefined, { duration: this.snackbarDefaultDuration });
-                },
-                error => {
-                    this.uploadFailed = true;
-
-                    if (this.config.onFailedUpload) {
-                        this.config.onFailedUpload(error);
-                    }
-
-                    this.loaderEnabled = false;
-                    if (this.config.loaderConfig) {
-                        this.config.loaderConfig.stop();
-                    }
-                });
-        } catch (error) {
-            this.uploadFailed = true;
-
-            if (this.config.onFailedUpload) {
-                this.config.onFailedUpload(error);
-            }
-
-            this.loaderEnabled = false;
-
-            if (this.config.loaderConfig) {
-                this.config.loaderConfig.stop();
-            }
-        }
-
+        return this.config.uploadFunction(files)
+            .map(response => {
+                return response.files;
+            });
     }
 
     private getListOfNotAllowedExtensions(files: File[]): string {

@@ -1,6 +1,8 @@
 import { UploaderModeEnum } from './uploader-mode.enum';
 import { UploaderConfig } from './uploader.config';
+import { ResponseUpload } from './uploader-models';
 import { Observable } from 'rxjs/Rx';
+import { ResponseUploadMultiple, ResponseUploadSingle } from '../../lib/repository';
 
 export class UploaderBuilder {
 
@@ -10,14 +12,28 @@ export class UploaderBuilder {
         /**
          * Mode of the uploader
          */
-        public mode: UploaderModeEnum,
+        private mode: UploaderModeEnum,
         /**
          * Method responsible for uploading file || files
          */
-        uploadFunction: (files: File[] | File) => Observable<any>
+        private upload: (files: File[] | File) => Observable<ResponseUploadSingle | ResponseUploadMultiple>
     ) {
+
+        // map response for upload component
+        const mappedUpload = (files: File[] | File) => this.upload(files).map(response => {
+            if (response instanceof ResponseUploadSingle) {
+                return new ResponseUpload([response.file]);
+            }
+
+            if (response instanceof ResponseUploadMultiple) {
+                return new ResponseUpload([response.files]);
+            }
+
+            throw Error (`Unsupported response type`);
+        });
+
         this.config = new UploaderConfig(
-            uploadFunction,
+            mappedUpload,
             mode
         );
     }
@@ -77,16 +93,6 @@ export class UploaderBuilder {
      */
     onSelectFiles(callback: (files: FileList | File) => void): this {
         this.config.onSelectFiles = callback;
-        return this;
-    }
-
-    /**
-     * Global loader for the component
-     * @param start Start function
-     * @param stop Stop function
-     */
-    loaderConfig(start: () => void, stop: () => void): this {
-        this.config.loaderConfig = { start: start, stop: stop };
         return this;
     }
 

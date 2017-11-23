@@ -1,5 +1,6 @@
 import { UploaderModeEnum } from './uploader-mode.enum';
 import { Observable } from 'rxjs/Rx';
+import { ResponseUpload } from './uploader-models';
 
 export class UploaderConfig {
 
@@ -50,16 +51,11 @@ export class UploaderConfig {
      */
     public onSelectFiles?: (files: FileList | File) => void;
 
-     /**
-     * Loader configuration
-     */
-    public loaderConfig?: { start: () => void, stop: () => void };
-
     constructor(
         /**
         * Function responsible for uploading files
         */
-        public uploadFunction: (files: File[] | File) => Observable<any>,
+        public uploadFunction: (files: File[] | File) => Observable<ResponseUpload>,
         /**
          * Mode of the uploader
          */

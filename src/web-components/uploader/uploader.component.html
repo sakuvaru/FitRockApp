@@ -11,7 +11,7 @@
 
   <ng-container *ngIf="config.mode === 0">
     <td-file-upload #fileUpload defaultColor="primary" activeColor="primary" cancelColor="warn" (select)="selectEvent($event)"
-      (upload)="uploadSingle($event)" (cancel)="cancelEvent()" [accept]="acceptedExtensionsString" [disabled]="disabled">
+      (upload)="handleUploadSingle($event)" (cancel)="cancelEvent()" [accept]="acceptedExtensionsString" [disabled]="disabled">
       <mat-icon>file_upload</mat-icon><span>{{ fileUpload.files?.name }}</span>
       <ng-template td-file-input-label>
         <mat-icon>attach_file</mat-icon><span>{{ 'webComponents.uploader.chooseAFile' | translate}}</span>
@@ -21,7 +21,7 @@
 
   <ng-container *ngIf="config.mode === 1">
     <td-file-upload #fileUpload defaultColor="primary" activeColor="primary" cancelColor="warn" (select)="selectEvent($event)"
-      (upload)="uploadMultiple($event)" (cancel)="cancelEvent()" [accept]="acceptedExtensionsString" [disabled]="disabled"
+      (upload)="handleUploadMultiple($event)" (cancel)="cancelEvent()" [accept]="acceptedExtensionsString" [disabled]="disabled"
       multiple>
       <mat-icon>file_upload</mat-icon><span>{{ fileUpload.files?.name }}</span>
       <ng-template td-file-input-label>

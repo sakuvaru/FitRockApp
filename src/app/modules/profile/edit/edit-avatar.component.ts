@@ -7,7 +7,7 @@ import { AppConfig, UrlConfig } from '../../../config';
 // requied by component
 import { MyProfileMenuItems } from '../menu.items';
 import { Observable } from 'rxjs/Rx';
-import { UploaderConfig, UploaderModeEnum } from '../../../../web-components/uploader';
+import { UploaderConfig } from '../../../../web-components/uploader';
 import { FetchedFile } from '../../../../lib/repository';
 
 @Component({
@@ -49,8 +49,7 @@ export class EditAvatarComponent extends BaseComponent implements OnInit {
     private initUploader(): void {
         const userId = this.dependencies.authenticatedUserService.getUserId();
 
-        this.uploaderConfig = this.dependencies.webComponentServices.uploaderService.uploader(
-            UploaderModeEnum.SingleFile, 
+        this.uploaderConfig = this.dependencies.webComponentServices.uploaderService.singleUpload(
             (file: File) => this.dependencies.fileService.uploadAvatar(file, userId)
             .set())
             .useDefaultImageExtensions(true)

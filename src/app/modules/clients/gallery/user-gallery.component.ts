@@ -8,7 +8,7 @@ import { AppConfig, UrlConfig } from '../../../config';
 import { Observable } from 'rxjs/Rx';
 import { ClientsBaseComponent } from '../clients-base.component';
 import { ClientMenuItems } from '../menu.items';
-import { UploaderConfig, UploaderModeEnum } from '../../../../web-components/uploader';
+import { UploaderConfig } from '../../../../web-components/uploader';
 import { FileRecord } from '../../../models';
 import { FetchedFile } from '../../../../lib/repository';
 import { GalleryConfig, GalleryImage, GalleryGroup, ImageGroupResult, GalleryComponent } from '../../../../web-components/gallery';
@@ -52,8 +52,7 @@ export class UserGalleryComponent extends ClientsBaseComponent implements OnInit
         return this.clientIdChange
             .takeUntil(this.ngUnsubscribe)
             .map(clientId => {
-                this.uploaderConfig = this.dependencies.webComponentServices.uploaderService.uploader(
-                    UploaderModeEnum.MultipleFiles,
+                this.uploaderConfig = this.dependencies.webComponentServices.uploaderService.multipleUpload(
                     (files: File[]) => this.dependencies.fileService.uploadGalleryImages(files, clientId)
                         .set())
                     .useDefaultImageExtensions(true)
@@ -83,26 +82,26 @@ export class UserGalleryComponent extends ClientsBaseComponent implements OnInit
 
     private getInitGalleryObservable(): Observable<void> {
         return this.clientIdChange
-        .takeUntil(this.ngUnsubscribe)
-        .map(clientId => {
-            this.galleryConfig = this.getGalleryConfig(clientId);
-        });
+            .takeUntil(this.ngUnsubscribe)
+            .map(clientId => {
+                this.galleryConfig = this.getGalleryConfig(clientId);
+            });
     }
 
     private getGalleryImagesObservable(clientId: number): Observable<GalleryImage[]> {
         return this.dependencies.fileService.getGalleryFiles(clientId).set()
-        .map(response => {
-            if (response.files) {
-                const galleryImages = response.files.map(m => new GalleryImage({
-                    imageUrl: m.absoluteUrl,
-                    imageDate: m.fileLastModified
-                    // used for testing the gallery grouping -> imageDate: super.moment(m.fileLastModified).add(Math.floor(Math.random() * 20), 'days').toDate()
-                }));
+            .map(response => {
+                if (response.files) {
+                    const galleryImages = response.files.map(m => new GalleryImage({
+                        imageUrl: m.absoluteUrl,
+                        imageDate: m.fileLastModified
+                        // used for testing the gallery grouping -> imageDate: super.moment(m.fileLastModified).add(Math.floor(Math.random() * 20), 'days').toDate()
+                    }));
 
-                return galleryImages;
-            }
-            return [];
-        });
+                    return galleryImages;
+                }
+                return [];
+            });
     }
 
     private getClientMenuObservable(): Observable<void> {
@@ -127,21 +126,21 @@ export class UserGalleryComponent extends ClientsBaseComponent implements OnInit
         return this.dependencies.webComponentServices.galleryService.gallery(
             this.getGalleryImagesObservable(clientId)
         )
-        .isDownlodable(true)
-        .groupResolver((galleryImage: GalleryImage) => {
-            // group images by day
-            return galleryImage.imageDate ? new ImageGroupResult(super.moment(galleryImage.imageDate).format('LL'), super.moment(galleryImage.imageDate).startOf('day').toDate()) : new ImageGroupResult('');
-        })
-        .groupsOrder((groups: GalleryGroup[]) => _.sortBy(groups, (m) => m.groupDate).reverse())
-        .deleteFunction((image: GalleryImage) => {
-            return this.dependencies.fileService.deleteFile(image.imageUrl)
-                .set()
-                .map(response => response.fileDeleted);
-        })
-        .onImagesLoaded(images => {
-            this.currentImages = images;
-        })
-        .build();
+            .isDownlodable(true)
+            .groupResolver((galleryImage: GalleryImage) => {
+                // group images by day
+                return galleryImage.imageDate ? new ImageGroupResult(super.moment(galleryImage.imageDate).format('LL'), super.moment(galleryImage.imageDate).startOf('day').toDate()) : new ImageGroupResult('');
+            })
+            .groupsOrder((groups: GalleryGroup[]) => _.sortBy(groups, (m) => m.groupDate).reverse())
+            .deleteFunction((image: GalleryImage) => {
+                return this.dependencies.fileService.deleteFile(image.imageUrl)
+                    .set()
+                    .map(response => response.fileDeleted);
+            })
+            .onImagesLoaded(images => {
+                this.currentImages = images;
+            })
+            .build();
     }
 
     onImagesChange(images: GalleryImage[]): void {
