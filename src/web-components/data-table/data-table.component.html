@@ -61,7 +61,7 @@
 
     <div [class.w-data-table-clickable]="isClickable">
 
-      <div *ngIf="totalItems === 0" class="w-data-table-no-data">
+      <div *ngIf="totalItems === 0 && anyDataLoaded" class="w-data-table-no-data">
         <img *ngIf="config.noDataImageUrl" alt="no items found" [src]="config.noDataImageUrl" />
         <span> {{ 'webComponents.dataTable.noData' | translate }} </span>
       </div>

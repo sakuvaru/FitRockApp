@@ -91,6 +91,11 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
     }
 
     /**
+     * Indicates if any data was already loaded
+     */
+    private anyDataLoaded: boolean = false;
+
+    /**
      * Temp variable to hold filters
      */
     private tempFiltersWrapper: FilterWrapper[] = [];
@@ -300,9 +305,12 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
      * inits data table
      */
     initDataTable(): void {
-        if (!this.config) {
+        if (!this.config && !this.initialized) {
             return;
         }
+
+        // mark component as initialized to prevent multiple initialization
+        this.initialized = true;
 
         // start up loader
         if (this.config.enableLocalLoader) {
@@ -363,8 +371,6 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
             // no filters are used
             this.reloadData();
         }
-
-        this.initialized = true;
     }
 
     handleOnClick(item: any): void {
@@ -711,6 +717,9 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
                 if (this.config.rememberState) {
                     this.saveCurrentState(this.config.getHash());
                 }
+
+                // mark data as loaded
+                this.anyDataLoaded = true;
             });
     }
 
