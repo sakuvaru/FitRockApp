@@ -651,8 +651,7 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
 
     private subscribeToPagerChanges(): void {
         if (!this.paginator) {
-            console.warn('Could not init paginator. Make sure the paginator is registered after its been initialized in template');
-            return;
+            throw Error('Could not init paginator. Make sure the paginator is registered after its been initialized in template');
         }
 
         // set translations
