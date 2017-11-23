@@ -10,10 +10,12 @@
     </mat-form-field>
   </div>
 
+  <error-message class="push-bottom" *ngIf="loadingError" text="{{ 'webComponents.loadMore.errorLoadingData' | translate }}"></error-message>
+
   <ng-container *ngIf="config.wrapInCard">
     <mat-card class="push">
-      <loader [enabled]="localLoaderLoading" type="linear">
-        <div *ngIf="items && items.length > 0">
+      <loader [enabled]="loaderEnabled && isFirstLoad" type="linear"></loader>
+        <ng-container *ngIf="items && items.length > 0">
           <ng-container *ngFor="let item of items; let last = last">
             <ng-container *ngIf="{ icon: config.iconResolver ? config.iconResolver(item) : undefined, image: config.imageResolver ? config.imageResolver(item) : undefined }; let data">
               <mat-list>
@@ -22,19 +24,19 @@
                   <mat-icon *ngIf="data.icon && config.iconClassResolver" matListIcon [ngClass]="[config.iconClassResolver(item)]">{{ data.icon }}</mat-icon>
                   <img *ngIf="data.image" matListAvatar [src]="data.image" alt="" />
                   <p matLine>
-                    <ng-container *ngIf="config.title && config.title(item) | async; let title">
-                      <span class="md-body-1 tc-grey-900" [innerHtml]="title"></span>
+                    <ng-container *ngIf="config.title">
+                      <span class="md-body-1 tc-grey-900" [innerHtml]="config.title(item) | async"></span>
                     </ng-container>
 
                   </p>
                   <p matLine>
-                    <ng-container *ngIf="config.text && config.text(item) | async; let text">
-                      <span class="md-body-1 tc-grey-700" [innerHtml]="text"></span>
+                    <ng-container *ngIf="config.text">
+                      <span class="md-body-1 tc-grey-700" [innerHtml]="config.text(item) | async"></span>
                     </ng-container>
                   </p>
                   <p matLine>
-                    <ng-container *ngIf="config.footer && config.footer(item) | async; let footer">
-                      <span class="md-caption" [innerHtml]="footer"></span>
+                    <ng-container *ngIf="config.footer">
+                      <span class="md-caption" [innerHtml]="config.footer(item) | async"></span>
                     </ng-container>
                   </p>
                 </mat-list-item>
@@ -42,21 +44,15 @@
               </mat-list>
             </ng-container>
           </ng-container>
-        </div>
-      </loader>
+        </ng-container>
+        <loader [enabled]="loaderEnabled && !isFirstLoad" type="linear"></loader>
+        <mat-card-actions *ngIf="!isFirstLoad">
+            <button [disabled]="allDataLoaded" mat-raised-button color="primary" (click)="loadNextPage()">{{ 'webComponents.loadMore.loadMore' | translate }}</button>
+        </mat-card-actions>
     </mat-card>
   </ng-container>
 
-  <div *ngIf="items" class="text-center psh">
-    <button *ngIf="showMoreButton" mat-raised-button color="primary" (click)="loadMoreButtonSubject.next()">{{ 'webComponents.loadMore.loadMore' | translate }}</button>
-    <p *ngIf="!showMoreButton">
-      <span class="md-caption">
-        <em>{{ 'webComponents.loadMore.defaultAllItemsLoaded' | translate }}</em>
-      </span>
-    </p>
-  </div>
-
-  <div *ngIf="initialized && ((items && items.length === 0) || !items)" class="push">
+  <div *ngIf="dataLoaded && ((items && items.length === 0) || !items)" class="push">
     <no-data-message></no-data-message>
   </div>
 

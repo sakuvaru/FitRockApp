@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs/Observable';
-import { MultipleItemQuery, IItem, ResponseMultiple } from '../../lib/repository';
+import { LoadMoreResponse } from './load-more.models';
 
-export class LoadMoreConfig<TItem extends IItem> {
+export class LoadMoreConfig {
 
     /**
      * Indicates if component is wrapped in a material design card
@@ -31,37 +31,37 @@ export class LoadMoreConfig<TItem extends IItem> {
     /**
      * Text to be shown in the listing, can include HTML
      */
-    public text?: (item: TItem) => Observable<string>;
+    public text?: (item: any) => Observable<string>;
 
     /**
      * Title to be shown in the listing, can include HTML
      */
-    public title?: (item: TItem) => Observable<string>;
+    public title?: (item: any) => Observable<string>;
 
     /**
      * Footer text to be shown in the listing, can include HTML
      */
-    public footer?: (item: TItem) => Observable<string>;
+    public footer?: (item: any) => Observable<string>;
 
     /**
      * On click handled
      */
-    public onClick?: (item: TItem) => void;
+    public onClick?: (item: any) => void;
 
     /**
      * If set, icon with with given function will be resolved, return name of the icon
      */
-    public iconResolver?: (item: TItem) => string | undefined;
+    public iconResolver?: (item: any) => string | undefined;
 
     /**
      * Resolver for icon class
      */
-    public iconClassResolver?: (item: TItem) => string;
+    public iconClassResolver?: (item: any) => string;
 
     /**
      * Used to generate image from URL
      */
-    public imageResolver?: (item: TItem) => string | undefined;
+    public imageResolver?: (item: any) => string | undefined;
 
     /**
      * Handler executed after items are loaded
@@ -73,11 +73,6 @@ export class LoadMoreConfig<TItem extends IItem> {
      */
     public onBeforeLoad?: (isInitialLoad: boolean) => void;
 
-     /**
-     * Loader configuration
-     */
-    public loaderConfig?: { start: () => void, stop: () => void };
-
     /**
      * Indicates if local loader is enabled
      */
@@ -87,20 +82,12 @@ export class LoadMoreConfig<TItem extends IItem> {
      * Indicates if separator between items is used
      */
     public useSeparator: boolean = true;
-    
-    constructor(
-        /**
-        * Method that is used to get observable out of loadQuery.
-        * Usually this should include 'takeUntil(this.ngUnsubscribe)' to ensure
-        * that requests are cancelled if they are not required (e.g. after destroying component)
-        */
-        public loadResolver: (query: MultipleItemQuery<TItem>) => Observable<ResponseMultiple<TItem>>,
-        /**
-        * Used to specify query that loads items
-        */
-        public loadQuery: (searchTerm: string) => MultipleItemQuery<TItem>) {
-    }
 
+    /**
+     * Data of the load more response
+     */
+    public data?: (page: number, pageSize: number, search: string) => Observable<LoadMoreResponse>;
+    
     isClickable(): boolean {
         return !(!this.onClick);
     }

@@ -19,7 +19,7 @@ import { LoadMoreConfig } from '../../../../web-components/load-more';
 export class FeedsComponent extends BaseComponent implements OnInit {
 
     public config: DataListConfig<Feed>;
-    public loadMoreConfig: LoadMoreConfig<Feed>;
+    public loadMoreConfig: LoadMoreConfig;
 
     constructor(
         protected dependencies: ComponentDependencyService) {
@@ -38,7 +38,7 @@ export class FeedsComponent extends BaseComponent implements OnInit {
         this.initMenu();
         this.initLoadMore();
 
-        super.subscribeToObservable(this.getMarkAllFeedsAsReadObservable(), { enableLoader: false});
+        super.subscribeToObservable(this.getMarkAllFeedsAsReadObservable(), { enableLoader: false });
     }
 
     private initMenu(): void {
@@ -56,8 +56,8 @@ export class FeedsComponent extends BaseComponent implements OnInit {
 
     private initLoadMore(): void {
         this.loadMoreConfig = this.dependencies.webComponentServices.loadMoreService.loadMore<Feed>(
-            search => this.dependencies.itemServices.feedService.getFeedsForUser(this.dependencies.authenticatedUserService.getUserId()),
-            query => query.get())
+            (search) => this.dependencies.itemServices.feedService.getFeedsForUser(this.dependencies.authenticatedUserService.getUserId())
+        )
             .text((item) => {
                 const feedResult = this.getFeedResult(item);
                 if (feedResult) {

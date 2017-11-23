@@ -522,7 +522,8 @@
 		"loadMore": {
 			"loadMore": "Další",
 			"defaultAllItemsLoaded": "Všechny záznamy nahrány",
-			"search": "Hledat ..."
+			"search": "Hledat ...",
+			"errorLoadingData": "Došlo k chybě při nahrávání dat"
 		},
 		"uploader": {
 			"noFilesSelected": "Žádné soubory nebyly vybrány",

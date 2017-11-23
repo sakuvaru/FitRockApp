@@ -1,16 +1,19 @@
 import { LoadMoreConfig } from './load-more.config';
 import { Observable } from 'rxjs/RX';
 import { ResponseMultiple, IItem, MultipleItemQuery } from '../../lib/repository';
+import { LoadMoreResponse } from './load-more.models';
 
 export class LoadMoreBuilder<TItem extends IItem> {
 
-    public config: LoadMoreConfig<TItem>;
+    public config: LoadMoreConfig;
 
     constructor(
-        loadQuery: (searchTerm: string) => MultipleItemQuery<TItem>,
-        loadResolver: (query: MultipleItemQuery<TItem>) => Observable<ResponseMultiple<TItem>>,
+        /**
+         * Query
+         */
+        private query: (search: string) => MultipleItemQuery<TItem>
     ) {
-        this.config = new LoadMoreConfig(loadResolver, loadQuery);
+        this.config = new LoadMoreConfig();
     }
 
     useSeparator(use: boolean): this {
@@ -68,11 +71,6 @@ export class LoadMoreBuilder<TItem extends IItem> {
         return this;
     }
 
-    loaderConfig(start: () => void, stop: () => void): this {
-        this.config.loaderConfig = { start: start, stop: stop };
-        return this;
-    }
-
     /**
     * Text to be shown in the listing. Can include HTML.
     */
@@ -105,7 +103,23 @@ export class LoadMoreBuilder<TItem extends IItem> {
         return this;
     }
 
-    build(): LoadMoreConfig<TItem> {
+    build(): LoadMoreConfig {
+         // assign observable
+         this.config.data = (page: number, pageSize: number, search: string) => this.getDataResponse(this.query, page, pageSize, search);
         return this.config;
+    }
+
+    private getDataResponse(inputQuery: (search) => MultipleItemQuery<TItem>, page: number, pageSize: number, search: string): Observable<LoadMoreResponse> {
+        const query = inputQuery(search);
+
+        if (pageSize) {
+            query.pageSize(pageSize);
+        }
+
+        if (page) {
+            query.page(page);
+        }
+
+        return query.get().map(response => new LoadMoreResponse(response.items, response.pages, response.totalItems));
     }
 }
