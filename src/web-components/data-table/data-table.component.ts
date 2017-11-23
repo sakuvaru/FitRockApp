@@ -180,7 +180,7 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
     private dataSource?: DataSource<any>;
 
     /**
-    * Flag for initialization component, used because ngOngChanges can be called before ngOnInit
+    * Flag for initialization component, used because ngOnChanges can be called before ngOnInit
     * which would cause component to be initialized twice (happened when component is inside a dialog)
     * Info: https://stackoverflow.com/questions/43111474/how-to-stop-ngonchanges-called-before-ngoninit/43111597
     */
@@ -289,17 +289,17 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
     }
 
     ngOnInit() {
-        this.initDataTable(this.config);
+        this.initDataTable();
     }
 
     ngOnChanges(changes: SimpleChanges) {
-        this.initDataTable(this.config);
+        this.initDataTable();
     }
 
     /**
      * inits data table
      */
-    initDataTable(config: DataTableConfig): void {
+    initDataTable(): void {
         if (!this.config) {
             return;
         }
@@ -670,7 +670,7 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
     private getLoadDataObservable(): Observable<void> {
         // get Observable used to load data
         if (!this.config.getData) {
-            throw new Error('Cannot fetch data because no get function was defined. This is a result of invalid configuration.');
+            throw new Error('Cannot load data because no get function was defined. This is a result of invalid configuration.');
         }
 
         let dataObs: Observable<DataTableResponse>;
@@ -710,10 +710,6 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
                 // save current state
                 if (this.config.rememberState) {
                     this.saveCurrentState(this.config.getHash());
-                }
-
-                if (this.config.enableLocalLoader) {
-                    this.loaderEnabled = false;
                 }
             });
     }
