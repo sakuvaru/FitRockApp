@@ -12,7 +12,7 @@
 
   <error-message class="push-bottom" *ngIf="loadingError" text="{{ 'webComponents.loadMore.errorLoadingData' | translate }}"></error-message>
 
-  <ng-container *ngIf="config.wrapInCard">
+  <ng-container *ngIf="config.wrapInCard && !isFirstLoad && items && items.length > 0">
     <mat-card class="push">
       <loader [enabled]="loaderEnabled && isFirstLoad" type="linear"></loader>
         <ng-container *ngIf="items && items.length > 0">
