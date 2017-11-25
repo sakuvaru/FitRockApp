@@ -7,8 +7,8 @@ import { ComponentDependencyService, BaseComponent, ComponentSetup } from '../..
 import { Log, User, Exercise } from '../../models';
 import { CurrentUser } from '../../../lib/auth';
 import { Observable } from 'rxjs/Rx';
-
-import { DataTableConfig, IDynamicFilter } from '../../../web-components/data-table/data-table.builder';
+import { DataTableConfig, IDynamicFilter } from '../../../web-components/data-table/';
+import { DataFormBuilder, DataFormConfig } from '../../../web-components/data-form/';
 
 @Component({
     templateUrl: 'dashboard.component.html'
@@ -20,6 +20,7 @@ export class DashboardComponent extends BaseComponent implements OnInit {
     public currentUser: CurrentUser | null;
 
     public config: DataTableConfig;
+    public formConfig: DataFormConfig;
 
     constructor(
         protected dependencies: ComponentDependencyService) {
@@ -35,6 +36,18 @@ export class DashboardComponent extends BaseComponent implements OnInit {
     ngOnInit(): void {
         super.ngOnInit();
 
+        this.formConfig = this.dependencies.webComponentServices.dataFormService.insertForm<Exercise>(
+            this.dependencies.itemServices.exerciseService.insertFormQuery().get()
+        )
+        .onFieldValueChange((config, field, value) => {
+            return Observable.of()
+                .map(() => {
+            field.key = 'asef';
+                });
+        })
+            .build();
+
+        /*
         this.config = this.dependencies.webComponentServices.dataTableService.dataTable<Exercise>(
             (search) => this.dependencies.itemServices.exerciseService.items()
                 .include('ExerciseCategory')
@@ -76,6 +89,8 @@ export class DashboardComponent extends BaseComponent implements OnInit {
             .avatarIcon(item => 'language')
             .deleteAction((item) => this.dependencies.itemServices.exerciseService.delete(item.id), item => item.exerciseName)
             .build();
+
+        */
 
         /*
         this.config = this.dependencies.webComponentServices.dataTableService.dataTable<User>(

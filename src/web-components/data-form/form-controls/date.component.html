@@ -1,0 +1,12 @@
+<div *ngIf="initialized" layout="row" layout-margin [formGroup]="form">
+
+  <mat-form-field [hintLabel]="question.hint" flex>
+
+    <input #textInput matInput (click)="datepicker.open()" [matDatepicker]="datepicker" [formControlName]="question.key" [id]="question.key"
+      [required]="question.required" [placeholder]="question.label">
+    <mat-datepicker-toggle matSuffix [for]="datepicker"></mat-datepicker-toggle>
+    <mat-datepicker #datepicker></mat-datepicker>
+    <mat-error>{{customError}}</mat-error>
+  </mat-form-field>
+
+</div>

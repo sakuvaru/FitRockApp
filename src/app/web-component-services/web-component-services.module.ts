@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 
 // services to import
-import { DataListService, DynamicFormService, GalleryService, GraphService, LoadMoreService, UploaderService, DataTableService
+import { DataListService, DynamicFormService, GalleryService, GraphService, LoadMoreService, 
+    UploaderService, DataTableService, DataFormService
  } from './index';
 
 @NgModule({
@@ -16,7 +17,8 @@ import { DataListService, DynamicFormService, GalleryService, GraphService, Load
         GraphService, 
         LoadMoreService,
         UploaderService,
-        DataTableService
+        DataTableService,
+        DataFormService
     ]
 })
 export class WebComponentServicesModule { }

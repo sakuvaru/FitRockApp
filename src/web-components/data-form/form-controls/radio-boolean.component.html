@@ -1,0 +1,11 @@
+<div *ngIf="initialized" layout="row" layout-margin [formGroup]="form">
+
+  <div flex>
+    <mat-radio-group [formControlName]="question.key" [id]="question.key" [required]="question.required" (change)="handleRadioButtonChange($event)"
+      #elem>
+      <mat-radio-button [checked]="radioCheckboxTrueChecked" value="true" class="push-right">{{trueOptionLabel}}</mat-radio-button>
+      <mat-radio-button [checked]="radioCheckboxFalseChecked" value="false">{{falseOptionLabel}}</mat-radio-button>
+    </mat-radio-group>
+  </div>
+
+</div>
