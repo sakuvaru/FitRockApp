@@ -568,6 +568,15 @@
 			"showLess": "Zobrazit méně",
 			"showMore": "Další",
 			"noData": "Nejsou zde žádná data"
+		},
+		"dataForm": {
+			"formLoadingError": "Nahrávání formuláře selhalo",
+			"internalError": "Došlo k neznámě chybě při ukládání dat",
+			"snackbar": {
+				"saved": "Uloženo",
+				"deleted": "Smazáno",
+				"inserted": "Vytvořeno"
+			}
 		}
 	}
 }

@@ -25,16 +25,29 @@ export class DateComponent extends BaseFormControlComponent implements OnInit, O
   }
 
   protected getInsertValue(): Date | string {
-    if (this.question.defaultValue) {
-      return new Date(this.question.defaultValue);
+    const defaultFieldValue = this.field.defaultValue;
+
+    if (!defaultFieldValue) {
+      return '';
     }
-    return '';
+
+    if (!(defaultFieldValue instanceof Date)) {
+      throw Error(`Date time field expected default value to be 'Date', but other type was given`);
+    }
+
+    return defaultFieldValue;
   }
 
   protected getEditValue(): Date | string {
-    if (this.question.rawValue) {
-      return (new Date(this.question.rawValue));
+    const fieldValue = this.field.value;
+
+    if (!fieldValue) {
+      return '';
     }
-    return '';
+
+    if (!(fieldValue instanceof Date)) {
+      throw Error(`Date time field expected value to be 'Date', but other type was given`);
+    }
+    return fieldValue;
   }
 }

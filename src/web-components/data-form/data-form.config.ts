@@ -1,18 +1,21 @@
 import { Observable } from 'rxjs/RX';
 import { FormGroup } from '@angular/forms';
-import { DataFormEditResponse, DataFormInsertResponse, DataFormField, DataFormEditDefinition,
-    DataFormInsertDefinition, DataFormDeleteResponse } from './data-form-models';
+import {
+    DataFormEditResponse, DataFormInsertResponse, DataFormField, DataFormEditDefinition,
+    DataFormInsertDefinition, DataFormDeleteResponse
+} from './data-form-models';
 
 export class DataFormConfig {
+
 
     /**
      * Indicates if form is wrapped in card
      */
     public wrapInCard: boolean = true;
 
-     /**
-     * Form definition query
-     */
+    /**
+    * Form definition query
+    */
     public formDefinition: Observable<DataFormEditDefinition | DataFormInsertDefinition>;
 
     /**
@@ -83,11 +86,6 @@ export class DataFormConfig {
     public enableDelete = true;
 
     /**
-     * Callback before initializing the form
-     */
-    public onBeforeFormInit?: () => void;
-
-    /**
      * Callback for when the form has fetched data
      */
     public onFormLoaded?: (form: DataFormEditDefinition | DataFormInsertDefinition) => void;
@@ -117,9 +115,9 @@ export class DataFormConfig {
      */
     public onBeforeDelete?: (formData: Object) => void;
 
-     /**
-     * Called when a value in a field changes
-     */
+    /**
+    * Called when a value in a field changes
+    */
     public onFieldValueChange?: (config: DataFormConfig, changedField: DataFormField, newValue: string | boolean | number) => Observable<void>;
 
     /**
@@ -137,12 +135,17 @@ export class DataFormConfig {
      */
     public fieldLabelResolver?: (field: DataFormField, originalLabel: string) => Observable<string>;
 
-     /**
-     * Can be used to get custom option labels (e.g. in dropdown lists)
-     */
+    /**
+    * Can be used to get custom option labels (e.g. in dropdown lists)
+    */
     public optionLabelResolver?: (field: DataFormField, optionLabel: string) => Observable<string>;
 
     constructor(
+        /**
+        * Type of the form
+        * This value is used e.g. for translations and identification of type
+        */
+        public type: string
     ) {
     }
 

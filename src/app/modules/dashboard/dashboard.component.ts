@@ -37,14 +37,19 @@ export class DashboardComponent extends BaseComponent implements OnInit {
         super.ngOnInit();
 
         this.formConfig = this.dependencies.webComponentServices.dataFormService.insertForm<Exercise>(
-            this.dependencies.itemServices.exerciseService.insertFormQuery().get()
+            'Exercise',
+            this.dependencies.itemServices.exerciseService.insertFormQuery().get(),
+            (formData) => this.dependencies.itemServices.exerciseService.create(formData).set(),
+            {
+                delete: (formData) => this.dependencies.itemServices.exerciseService.delete(formData['Id']).set()
+            }
         )
-        .onFieldValueChange((config, field, value) => {
-            return Observable.of()
-                .map(() => {
-            field.key = 'asef';
-                });
-        })
+            .onFieldValueChange((config, field, value) => {
+                return Observable.of()
+                    .map(() => {
+                        field.key = 'asef';
+                    });
+            })
             .build();
 
         /*

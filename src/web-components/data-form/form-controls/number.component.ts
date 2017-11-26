@@ -39,12 +39,32 @@ export class NumberComponent extends BaseFormControlComponent implements OnInit,
     super.ngOnChanges(changes);
   }
 
-  protected getInsertValue(): string {
-    return this.question.defaultValue;
+  protected getInsertValue(): number {
+    const defaultFieldValue = this.field.defaultValue;
+
+    if (!defaultFieldValue) {
+      return 0;
+    }
+
+    if (!(defaultFieldValue instanceof Number)) {
+      throw Error(`Number field expected default value to be 'Number', but other type was given`);
+    }
+
+    return defaultFieldValue;
   }
 
-  protected getEditValue(): string {
-    return this.question.value;
+  protected getEditValue(): number {
+    const fieldValue = this.field.value;
+
+    if (!fieldValue) {
+      return 0;
+    }
+
+    if (!(fieldValue instanceof Number)) {
+      throw Error(`Number time field expected value to be 'Number', but other type was given`);
+    }
+
+    return fieldValue;
   }
 
   private setCustomValidator(): void {
@@ -89,11 +109,11 @@ export class NumberComponent extends BaseFormControlComponent implements OnInit,
   }
 
   private getMaxNumberValue(): number {
-    if (!this.question.options) {
+    if (!this.field.options) {
       return this.maximumNumberValue;
     }
 
-    const definedNumber = this.question.options.maxNumberValue;
+    const definedNumber = this.field.options.maxNumberValue;
     if (definedNumber === 0) {
       return 0;
     }
@@ -107,11 +127,11 @@ export class NumberComponent extends BaseFormControlComponent implements OnInit,
   }
 
   private getMinNumberValue(): number {
-    if (!this.question.options) {
+    if (!this.field.options) {
       return this.miniumNumberValue;
     }
 
-    const definedNumber = this.question.options.minNumberValue;
+    const definedNumber = this.field.options.minNumberValue;
     if (definedNumber === 0) {
       return 0;
     }

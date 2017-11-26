@@ -1,7 +1,7 @@
 import { Component, Input, AfterViewInit, ChangeDetectorRef, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { BaseFormControlComponent } from './base-form-control.component';
-import { DropdownFieldOption } from '../../../lib/repository';
+import { DataFieldDropdownOption } from '../data-form-models';
 
 @Component({
   selector: 'df-dropdown',
@@ -44,22 +44,22 @@ export class DropdownComponent extends BaseFormControlComponent implements OnIni
       return;
     }
 
-    if (this.question.options && this.question.options.listOptions) {
-      this.question.options.listOptions.forEach(option => {
+    if (this.field.options && this.field.options.listOptions) {
+      this.field.options.listOptions.forEach(option => {
 
-        let optionInList: DropdownFieldOption | undefined;
-        if (this.question && this.question.options && this.question.options.listOptions) {
-          optionInList = this.question.options.listOptions.find(m => m.value === option.value);
+        let optionInList: DataFieldDropdownOption | undefined;
+        if (this.field && this.field.options && this.field.options.listOptions) {
+          optionInList = this.field.options.listOptions.find(m => m.value === option.value);
         }
 
         if (!optionInList) {
-          console.warn(`Could not find option '${option.value}' in dropdown list of field '${this.question.key}'`);
+          console.warn(`Could not find option '${option.value}' in dropdown list of field '${this.field.key}'`);
           return;
         }
 
-        if (this.formConfig.optionLabelResolver) {
+        if (this.config.optionLabelResolver) {
           // resolve option label using custom function if available
-          this.formConfig.optionLabelResolver(this.question, option.name)
+          this.config.optionLabelResolver(this.field, option.name)
             .takeUntil(this.ngUnsubscribe)
             .subscribe(resolvedName => {
               if (optionInList) {
@@ -90,11 +90,11 @@ export class DropdownComponent extends BaseFormControlComponent implements OnIni
     }
   }
 
-  protected getInsertValue(): any {
-    return this.question.defaultValue;
+  protected getInsertValue(): string | number | boolean | Date | undefined  {
+    return this.field.defaultValue;
   }
 
-  protected getEditValue(): any {
-    return this.question.value;
+  protected getEditValue(): string | number | boolean | Date | undefined  {
+    return this.field.value;
   }
 }

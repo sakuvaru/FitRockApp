@@ -1,9 +1,9 @@
-<div *ngIf="initialized" layout="row" layout-margin [formGroup]="form">
+<div *ngIf="initialized" layout="row" layout-margin [formGroup]="formGroup">
 
-  <mat-form-field [hintLabel]="question.hint" flex>
-    <input matInput [attr.maxLength]="question.options.maxLength > 0 ? question.options.maxLength : null" [required]="question.required"
-      [placeholder]="question.label" [formControlName]="question.key" [id]="question.key" type="number" #elem>
-    <mat-hint *ngIf="question.showLengthHint()" [ngClass]="{'tc-red-600': elem.value.length > question.options.maxLength}" align="end">{{elem.value.length}} / {{question.options.maxLength}}</mat-hint>
+  <mat-form-field [hintLabel]="field.hint" flex>
+    <input matInput [attr.maxLength]="field.options.maxLength > 0 ? field.options.maxLength : null" [required]="field.required"
+      [placeholder]="field.label" [formControlName]="field.key" [id]="field.key" type="number" #elem>
+    <mat-hint *ngIf="showLengthHint()" [ngClass]="{'tc-red-600': elem.value.length > field.options.maxLength}" align="end">{{elem.value.length}} / {{options.maxLength}}</mat-hint>
     <mat-error>{{customError}}</mat-error>
   </mat-form-field>
 

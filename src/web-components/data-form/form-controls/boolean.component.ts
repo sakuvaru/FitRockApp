@@ -28,9 +28,11 @@ export class BooleanComponent extends BaseFormControlComponent implements OnInit
 
   protected getInsertValue(): boolean {
     // set default checkbox value to false programatically (it will otherwise treat checkbox as undefined)
-    if (!this.question.required) {
+    const defaultFieldValue = this.field.defaultValue;
+
+    if (!this.field.required) {
       let defaultValue: boolean;
-      if (this.question.defaultValue) {
+      if (defaultFieldValue) {
         defaultValue = true;
       } else {
         defaultValue = false;
@@ -39,16 +41,31 @@ export class BooleanComponent extends BaseFormControlComponent implements OnInit
       this.checkBoxIsChecked = defaultValue;
       return defaultValue;
     }
-    this.checkBoxIsChecked = this.question.defaultValue;
-    return this.question.defaultValue;
+
+    if (!(defaultFieldValue instanceof Boolean)) {
+      throw Error(`Boolean field expected default value to be 'Boolean', but other type was given`);
+    }
+    this.checkBoxIsChecked = defaultFieldValue;
+    return defaultFieldValue;
   }
 
   protected getEditValue(): boolean {
-    if (!this.question.required) {
-      this.checkBoxIsChecked = this.question.value;
-      return this.question.value;
+    const fieldValue = this.field.value;
+    const defaultFieldValue = this.field.defaultValue;
+
+    if (!this.field.required) {
+      if (!(fieldValue instanceof Boolean)) {
+        throw Error(`Boolean field expected value to be 'Boolean', but other type was given`);
+      }
+      this.checkBoxIsChecked = fieldValue;
+      return fieldValue;
     }
-    this.checkBoxIsChecked = this.question.defaultValue;
-    return this.question.defaultValue;
+
+    if (!(defaultFieldValue instanceof Boolean)) {
+      throw Error(`Boolean field expected default value to be 'Boolean', but other type was given`);
+    }
+
+    this.checkBoxIsChecked = defaultFieldValue;
+    return defaultFieldValue;
   }
 }

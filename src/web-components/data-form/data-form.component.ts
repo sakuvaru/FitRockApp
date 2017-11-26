@@ -8,14 +8,16 @@ import { BaseWebComponent } from '../base-web-component.class';
 // data form 
 import { DataFormConfig } from './data-form.config';
 import { DataFormActiomEnum } from './data-form-action.enum';
-import { DataFormDeleteResponse, DataFormEditDefinition, DataFormEditResponse, DataFormField,
-    DataFormInsertDefinition, DataFormInsertResponse 
-    } from './data-form-models';
+import {
+    DataFormDeleteResponse, DataFormEditDefinition, DataFormEditResponse, DataFormField,
+    DataFormInsertDefinition, DataFormInsertResponse
+} from './data-form-models';
 
 // additional services
 import * as _ from 'underscore';
 import { MatSnackBar } from '@angular/material';
 import { observableHelper } from '../../lib/utilities';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
     selector: 'data-form',
@@ -29,6 +31,11 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
      * Used for triggering form actions
      */
     private formActionSubject = new Subject<DataFormActiomEnum>();
+
+    /**
+     * Subject for reloading form definition
+     */
+    private initFormSubject = new Subject<boolean>();
 
     /**
      * Indicates if loader is enabled
@@ -66,6 +73,11 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
     private formError?: string;
 
     /**
+     * Snackbar duration
+     */
+    private readonly snackbarDuration: number = 2500;
+
+    /**
     * Flag for initialization component, used because ngOnChanges can be called before ngOnInit
     * which would cause component to be initialized twice (happened when component is inside a dialog)
     * Info: https://stackoverflow.com/questions/43111474/how-to-stop-ngonchanges-called-before-ngoninit/43111597
@@ -80,7 +92,27 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
         return this.config.isEditForm;
     }
 
+    public get isDeleteEnabled(): boolean {
+        if (this.config.deleteFunction) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Translations
+     */
+    private translations = {
+        'snackbar': {
+            'deleted': '',
+            'saved': '',
+            'inserted': ''
+        }
+    };
+
     constructor(
+        private snackbarService: MatSnackBar,
+        private translateService: TranslateService
     ) {
         super();
     }
@@ -113,11 +145,14 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
         // mark component as initialized
         this.initialized = true;
 
-        // init form
-        this.getInitFormObservable()
-            .takeUntil(this.ngUnsubscribe)
-            .subscribe(undefined, error => this.handleLoadError(error));
+        // init translations
+        this.initTranslations();
 
+        // subscribe to init form
+        this.subscribeToInitForm();
+
+        // init form
+        this.initForm();
     }
 
     private getInitFormObservable(): Observable<void> {
@@ -147,43 +182,98 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
 
             return fieldObservable;
         })
-        .map(() => {
-            // at this point, all fields should be assigned to temp fields
-            // reassign fields to their property and clear temp fields
-            this.fields = this.tempFields;
-            this.clearTempFields();
+            .map(() => {
+                // at this point, all fields should be assigned to temp fields
+                // reassign fields to their property and clear temp fields
+                this.fields = this.tempFields;
+                this.clearTempFields();
 
-            // init form group
-            this.formGroup = this.toFormGroup(this.fields);
+                // init form group
+                this.formGroup = this.toFormGroup(this.fields);
 
-            // subscribe to form changes since form group is initialized
-            this.subscribeToFormChanges();
+                // subscribe to form changes since form group is initialized
+                this.subscribeToFormChanges();
 
-            // trigger form loaded event
-            if (this.config.onFormLoaded) {
-                this.config.onFormLoaded(xDefinition);
-            }
-        });
+                // subscribe to actions
+                this.subscribeToFormActions();
+
+                // trigger form loaded event
+                if (this.config.onFormLoaded) {
+                    this.config.onFormLoaded(xDefinition);
+                }
+            });
 
     }
 
-    private editItem(): Observable<void> {
-        return Observable.of();
+    private subscribeToInitForm(): void {
+        this.initFormSubject.switchMap(() => this.getInitFormObservable())
+            .takeUntil(this.ngUnsubscribe)
+            .subscribe();
     }
 
-    private deleteItem(): Observable<void> {
-        return Observable.of();
+    private initForm() {
+        this.initFormSubject.next(true);
     }
 
-    private insertItem(): Observable<void> {
-        return Observable.of();
+    private editItem(): Observable<DataFormEditResponse> {
+        if (!this.config.saveFunction) {
+            throw Error(`Form save function is not defined`);
+        }
+
+        return this.config.saveFunction(this.getFormValue())
+            .map(response => {
+                const editResponse = response;
+                if (!(editResponse instanceof DataFormEditResponse)) {
+                    throw Error(`Function expected edit response to be returned.`);
+                }
+
+                return editResponse;
+            });
+    }
+
+    private deleteItem(): Observable<DataFormDeleteResponse> {
+        if (!this.config.deleteFunction) {
+            throw Error(`Form delete function is not defined`);
+        }
+
+        return this.config.deleteFunction(this.getFormValue())
+            .map(response => {
+                const deleteResponse = response;
+                if (!(deleteResponse instanceof DataFormDeleteResponse)) {
+                    throw Error(`Function expected delete response to be returned.`);
+                }
+
+                return deleteResponse;
+            });
+    }
+
+    private insertItem(): Observable<DataFormInsertResponse> {
+        if (!this.config.saveFunction) {
+            throw Error(`Form save function is not defined`);
+        }
+
+        return this.config.saveFunction(this.getFormValue())
+            .map(response => {
+                const insertResponse = response;
+                if (!(insertResponse instanceof DataFormInsertResponse)) {
+                    throw Error(`Function expected insert response to be returned.`);
+                }
+
+                return insertResponse;
+            });
     }
 
     private subscribeToFormActions(): void {
         let xType: DataFormActiomEnum;
 
         this.formActionSubject
-            .do(() => this.clearErrors())
+            .do(() => {
+                // start loader
+                this.startLoader();
+
+                // clear previous errors
+                this.clearErrors();
+            })
             .switchMap(type => {
                 // remember type
                 xType = type;
@@ -212,17 +302,85 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
                 throw Error(`Unsuported form action`);
             })
             .takeUntil(this.ngUnsubscribe)
-            .subscribe(() => {
+            .subscribe(response => {
+                if (response instanceof DataFormInsertResponse) {
+                    this.showSnackbarInsertMessage();
 
-                console.log('toto after events');
+                    if (this.config.onAfterSave) {
+                        this.config.onAfterSave(response);
+                    }
 
-            }, 
-        error => {
-            this.handleSaveError(error);
+                    if (this.config.clearFormAfterSave) {
+                        this.clearForm();
+                    }
+                }
+                if (response instanceof DataFormEditResponse) {
+                    this.showSnackbarSaveMessage();
+
+                    if (this.config.onAfterSave) {
+                        this.config.onAfterSave(response);
+                    }
+
+                    if (this.config.clearFormAfterSave) {
+                        this.clearForm();
+                    }
+                }
+                if (response instanceof DataFormDeleteResponse) {
+                    this.showSnackbarDeleteMessage();
+
+                    if (this.config.onAfterDelete) {
+                        this.config.onAfterDelete(response);
+                    }
+                }
+
+                // stop loader
+                this.stopLoader();
+            },
+            error => {
+                this.handleSaveError(error);
+            });
+    }
+
+    private convertEmptyStringsToNull(): void {
+        const formGroup = this.formGroup;
+        if (!formGroup) {
+            throw Error(`Form group is undefined`);
+        }
+
+        this.fields.forEach(question => {
+            const formInput = formGroup.controls[question.key];
+
+            if (formInput.value === '') {
+                formInput.setValue(null);
+            }
         });
     }
 
+    private startLoader(): void {
+        if (this.config.enableLocalLoader) {
+            this.loaderEnabled = true;
+        }
+    }
+
+    private stopLoader(): void {
+        if (this.config.enableLocalLoader) {
+            this.loaderEnabled = false;
+        }
+    }
+
+    private initTranslations(): void {
+        this.translateService.get('webComponents.dataForm.snackbar.saved').map(text => this.translations.snackbar.saved = text)
+            .zip(this.translateService.get('webComponents.dataForm.snackbar.deleted').map(text => this.translations.snackbar.deleted = text))
+            .zip(this.translateService.get('webComponents.dataForm.snackbar.inserted').map(text => this.translations.snackbar.inserted = text))
+            .takeUntil(this.ngUnsubscribe)
+            .subscribe();
+    }
+
     private getFormValue(): Object {
+        // convert empty string to null
+        // this prevent some issue when saving data on server
+        this.convertEmptyStringsToNull();
+
         return this.formGroup ? this.formGroup.value : undefined;
     }
 
@@ -231,8 +389,8 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
             throw Error(`Could not subscribe to form changes`);
         }
         this.formGroup.valueChanges
-        .takeUntil(this.ngUnsubscribe)
-        .subscribe(response => this.handleFormChange());
+            .takeUntil(this.ngUnsubscribe)
+            .subscribe(response => this.handleFormChange());
     }
 
     private resolveField(field: DataFormField): Observable<DataFormField> {
@@ -249,17 +407,29 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
             });
     }
 
+    private clearForm(): void {
+        if (!this.config.isInsertForm) {
+            throw Error(`Only insert forms can be cleared after save`);
+        }
+        this.initForm();
+    }
+
     private handleLoadError(error): void {
+        console.error(error);
         this.errorLoadingForm = true;
+
+        this.stopLoader();
     }
 
     private handleSaveError(error): void {
-        console.log('todo ');
+        console.error(error);
         this.unknownError = true;
 
         if (this.config.onError) {
             this.config.onError(error);
         }
+
+        this.stopLoader();
     }
 
     private handleFormChange(): void {
@@ -281,11 +451,27 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
         this.unknownError = false;
     }
 
+    private showSnackbarMessage(message: string): void {
+        this.snackbarService.open(message, '', { duration: this.snackbarDuration });
+    }
+
+    private showSnackbarSaveMessage(): void {
+        this.showSnackbarMessage(this.translations.snackbar.saved);
+    }
+
+    private showSnackbarDeleteMessage(): void {
+        this.showSnackbarMessage(this.translations.snackbar.deleted);
+    }
+
+    private showSnackbarInsertMessage(): void {
+        this.showSnackbarMessage(this.translations.snackbar.inserted);
+    }
+
     /**
      * Gets form group out of fields
      * @param fields Fields
      */
-    toFormGroup(fields: DataFormField[]): FormGroup {
+    private toFormGroup(fields: DataFormField[]): FormGroup {
         const group: any = {};
 
         if (fields) {

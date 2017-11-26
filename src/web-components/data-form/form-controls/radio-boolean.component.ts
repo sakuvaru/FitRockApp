@@ -41,20 +41,20 @@ export class RadioBooleanComponent extends BaseFormControlComponent implements O
     }
 
     // translate labels for radio boolean
-    if (this.question.options && this.question.options.trueOptionLabel) {
-      this.translateService.get(this.question.options.trueOptionLabel)
+    if (this.field.options && this.field.options.trueOptionLabel) {
+      this.translateService.get(this.field.options.trueOptionLabel)
         .takeUntil(this.ngUnsubscribe)
         .subscribe(translatedText => {
-          if (translatedText && this.question.options) {
+          if (translatedText && this.field.options) {
             this.trueOptionLabel = translatedText;
           }
         });
     }
-    if (this.question.options && this.question.options.falseOptionLabel) {
-      this.translateService.get(this.question.options.falseOptionLabel)
+    if (this.field.options && this.field.options.falseOptionLabel) {
+      this.translateService.get(this.field.options.falseOptionLabel)
         .takeUntil(this.ngUnsubscribe)
         .subscribe(translatedText => {
-          if (translatedText && this.question.options) {
+          if (translatedText && this.field.options) {
             this.falseOptionLabel = translatedText;
           }
         });
@@ -63,7 +63,7 @@ export class RadioBooleanComponent extends BaseFormControlComponent implements O
 
   protected getInsertValue(): boolean {
     let defaultValue: boolean;
-    if (this.question.defaultValue) {
+    if (this.field.defaultValue) {
       defaultValue = true;
     } else {
       defaultValue = false;
@@ -75,10 +75,20 @@ export class RadioBooleanComponent extends BaseFormControlComponent implements O
   }
 
   protected getEditValue(): boolean {
-    this.radioCheckboxTrueChecked = this.question.value;
-    this.radioCheckboxFalseChecked = !this.question.value;
+    const fieldValue = this.field.value;
+    
+        if (!fieldValue) {
+          return this.getInsertValue();
+        }
+    
+        if (!(fieldValue instanceof Boolean)) {
+          throw Error(`RadioBoolean field expected value to be 'String', but other type was given`);
+        }
 
-    return this.question.value;
+    this.radioCheckboxTrueChecked = fieldValue;
+    this.radioCheckboxFalseChecked = !fieldValue;
+
+    return fieldValue;
   }
 
   private handleRadioButtonChange(): void {

@@ -70,6 +70,11 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
     public showFullFilters: boolean = false;
 
     /**
+     * Snackbar duration
+     */
+    private readonly snackbarDuration: number = 2500;
+
+    /**
      * All filters for small layout
      */
     get filtersWrapperSmallLayout(): FilterWrapper[] {
@@ -827,7 +832,7 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
 
     private showSnackbar(message: string): void {
         this.snackBar.open(message, '', {
-            duration: 2500
+            duration: this.snackbarDuration
         });
     }
 

@@ -25,10 +25,30 @@ export class TextComponent extends BaseFormControlComponent implements OnInit, O
   }
 
   protected getInsertValue(): string {
-    return this.question.defaultValue;
+    const defaultFieldValue = this.field.defaultValue;
+
+    if (!defaultFieldValue) {
+      return '';
+    }
+
+    if (!(defaultFieldValue instanceof String)) {
+      throw Error(`Text field expected default value to be 'String', but other type was given`);
+    }
+
+    return defaultFieldValue;
   }
 
   protected getEditValue(): string {
-    return this.question.value;
+    const fieldValue = this.field.value;
+
+    if (!fieldValue) {
+      return '';
+    }
+
+    if (fieldValue || !(fieldValue instanceof String)) {
+      throw Error(`Text field expected value to be 'String', but other type was given`);
+    }
+
+    return fieldValue;
   }
 }

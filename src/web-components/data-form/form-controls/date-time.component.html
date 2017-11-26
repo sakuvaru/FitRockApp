@@ -1,7 +1,7 @@
-<div *ngIf="initialized" layout="row" layout-margin [formGroup]="form">
+<div *ngIf="initialized" layout="row" layout-margin [formGroup]="formGroup">
 
   This is experimental field:
 
-    <owl-date-time [formControlName]="question.key"></owl-date-time>
+    <owl-date-time [formControlName]="field.key"></owl-date-time>
 
 </div>

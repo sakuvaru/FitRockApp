@@ -39,6 +39,7 @@ import { MessagesModule } from '../messages/messages.module';
 
 // components
 import { DataFormComponent } from './data-form.component';
+import { DataFormFieldComponent } from './data-form-field.component';
 
 @NgModule({
     imports: [
@@ -55,6 +56,8 @@ import { DataFormComponent } from './data-form.component';
     ],
     declarations: [
         DataFormComponent,
+        DataFormFieldComponent,
+        // form controls        
         TextComponent,
         BooleanComponent,
         RadioBooleanComponent,
@@ -64,7 +67,7 @@ import { DataFormComponent } from './data-form.component';
         HiddenComponent,
         NumberComponent,
         PhoneNumberComponent,
-        DateTimeComponent
+        DateTimeComponent,
     ],
     exports: [
         DataFormComponent,

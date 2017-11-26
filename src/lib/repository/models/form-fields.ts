@@ -67,7 +67,7 @@ export class FormField implements IFormField {
     }) {
         Object.assign(this, constructorOptions);
 
-        this.mapFormField(this.controlType, constructorOptions.rawValue);
+        this.mapFormField(this.controlType, constructorOptions.rawValue, constructorOptions.defaultValue);
     }
 
     showLengthHint(): boolean {
@@ -83,7 +83,7 @@ export class FormField implements IFormField {
         return false;
     }
 
-    private mapFormField(controlType: string, rawValue?: any): void {
+    private mapFormField(controlType: string, rawValue: any, defaultValue: any): void {
         // by default the rawValue === value, however some fields need to be converted to their proper types (e.g. number, boolean or Date)
         this.value = rawValue;
 
@@ -94,6 +94,7 @@ export class FormField implements IFormField {
         } else if (controlType === 'Date') {
             this.controlTypeEnum = ControlTypeEnum.Date;
             this.value = new Date(rawValue);
+            this.defaultValue = new Date(defaultValue);
         } else if (controlType === 'Boolean') {
             this.controlTypeEnum = ControlTypeEnum.Boolean;
         } else if (controlType === 'RadioBoolean') {
@@ -107,11 +108,13 @@ export class FormField implements IFormField {
         } else if (controlType === 'Number') {
             this.controlTypeEnum = ControlTypeEnum.Number;
             this.value = +rawValue;
+            this.defaultValue = +defaultValue;
         } else if (controlType === 'PhoneNumber') {
             this.controlTypeEnum = ControlTypeEnum.PhoneNumber;
         } else if (controlType === 'DateTime') {
             this.controlTypeEnum = ControlTypeEnum.DateTime;
             this.value = new Date(rawValue);
+            this.defaultValue = new Date(defaultValue);
         } else {
             this.controlTypeEnum = ControlTypeEnum.Unknown;
         }

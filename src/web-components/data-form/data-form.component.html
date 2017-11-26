@@ -1,21 +1,29 @@
 <ng-container *ngIf="config && config.wrapInCard">
 
-    <loader [enabled]="loaderEnabled" type="linear"></loader>
 
     <mat-card *ngIf="formGroup">
+        <loader [enabled]="loaderEnabled" type="linear"></loader>
+
         <mat-card-content>
+
+            <error-message *ngIf="errorLoadingForm" text="{{ 'webComponents.dataForm.formLoadingError' | translate }}"></error-message>
+
             <form [formGroup]="formGroup" autocomplete="off">
                 <ng-container *ngFor="let field of fields">
-                    {{ field.key }}
+                    <data-form-field [field]="field" [formGroup]="formGroup" [config]="config"></data-form-field>
                 </ng-container>
             </form>
+
+            <error-message *ngIf="formError" [text]="formError"></error-message>
+            <error-message *ngIf="unknownError" text="{{ 'webComponents.dataForm.internalError' | translate }}"></error-message>
+        
         </mat-card-content>
         <mat-card-actions>
             <div fxFlex layout="row">
                 <button *ngIf="isInsertForm" mat-raised-button color="accent" (click)="handleInsertItem()" [disabled]="!formGroup.valid">Insert</button>
                 <button *ngIf="isEditForm" mat-raised-button color="accent" (click)="handleEditItem()" [disabled]="!formGroup.valid">Save</button>
                 <div flex></div>
-                <delete-button (confirm)="handleDeleteItem()"></delete-button>
+                <delete-button *ngIf="isDeleteEnabled" (confirm)="handleDeleteItem()"></delete-button>
             </div>
         </mat-card-actions>
     </mat-card>
