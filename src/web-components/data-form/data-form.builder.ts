@@ -4,8 +4,10 @@ import {
     DataFormInsertDefinition, DataFormDeleteResponse, DataFieldDropdownOption, DataFormFieldChangeResult
 } from './data-form-models';
 import { Observable } from 'rxjs/Rx';
-import { ResponseFormEdit, ResponseFormInsert, IItem, FormField, ControlTypeEnum, 
-    ResponseEdit, ResponseCreate, ResponseDelete } from '../../lib/repository';
+import {
+    ResponseFormEdit, ResponseFormInsert, IItem, FormField, ControlTypeEnum,
+    ResponseEdit, ResponseCreate, ResponseDelete
+} from '../../lib/repository';
 import { DataFormFieldTypeEnum } from './data-form-field-type.enum';
 
 export class DataFormBuilder<TItem extends IItem> {
@@ -59,6 +61,95 @@ export class DataFormBuilder<TItem extends IItem> {
 
     wrapInCard(wrap: boolean): this {
         this.config.wrapInCard = wrap;
+        return this;
+    }
+
+    /**
+     * Indicates if form contains delete button and if user can trigger 'delete method' defined in this form config
+     * This property has to be enabled if the delete method is to be triggered
+     */
+    enableDelete(enable: boolean): this {
+        this.config.enableDelete = enable;
+        return this;
+    }
+
+    /**
+     * Indicates if field in form are cleared when the form is saved
+     */
+    clearFormAfterSave(clear: boolean): this {
+        this.config.clearFormAfterSave = clear;
+        return this;
+    }
+
+    /**
+     * Callback for when the form has fetched data
+     */
+    onFormLoaded(resolver: (form: DataFormEditDefinition | DataFormInsertDefinition) => void): this {
+        this.config.onFormLoaded = resolver;
+        return this;
+    }
+
+    /**
+     * Callback for saving an item
+     */
+    onAfterSave(resolver: (response: DataFormInsertResponse | DataFormEditResponse) => void): this {
+        this.config.onAfterSave = resolver;
+        return this;
+    }
+
+    /**
+     * Callback for errors
+     */
+    onError(resolver: (error: any) => void): this {
+        this.config.onError = resolver;
+        return this;
+    }
+
+    /**
+     * Callback before both updating or inserting an item in the form
+     */
+    onBeforeSave(resolver: (formData: Object) => void): this {
+        this.config.onBeforeDelete = resolver;
+        return this;
+    }
+
+    /**
+     * Callback after deleting an item
+     */
+    onAfterDelete(resolver: (response: DataFormDeleteResponse) => void): this {
+        this.config.onAfterDelete = resolver;
+        return this;
+    }
+
+    /**
+     * Callback before deleting an item
+     */
+    onBeforeDelete(resolver: (formData: Object) => void): this {
+        this.config.onBeforeDelete = resolver;
+        return this;
+    }
+
+    /**
+    * Indicates if local loader is enabled
+    */
+    enableLocalLoader(enable: boolean): this {
+        this.config.enableLocalLoader = enable;
+        return this;
+    }
+
+    /**
+     * Can be used to get custom field labels
+     */
+    fieldLabelResolver(resolver: (field: DataFormField, originalLabel: string) => Observable<string>): this {
+        this.config.fieldLabelResolver = resolver;
+        return this;
+    }
+
+    /**
+    * Can be used to get custom option labels (e.g. in dropdown lists)
+    */
+    optionLabelResolver(resolver: (field: DataFormField, optionLabel: string) => Observable<string>): this {
+        this.config.optionLabelResolver = resolver;
         return this;
     }
 
