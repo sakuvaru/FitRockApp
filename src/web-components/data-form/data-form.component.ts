@@ -25,6 +25,9 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class DataFormComponent extends BaseWebComponent implements OnInit, OnChanges {
 
+    /**
+     * Configuration object
+     */
     @Input() config: DataFormConfig;
 
     /**
@@ -36,6 +39,31 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
      * Subject for reloading form definition
      */
     private initFormSubject = new Subject<boolean>();
+
+    /**
+     * Subject for form changes
+     */
+    private formChangeSubject = new Subject<FormGroup>();
+
+    /**
+     * Subject for form value changes
+     */
+    private formValueChangeSubject = new Subject<any>();
+
+    /**
+     * Subject for form status changes. Indicates if form is valid or invalid
+     */
+    private formStatusChangeSubject = new Subject<boolean>();
+
+    /**
+     * Form value change event
+     */
+    public formValueChange: Observable<any> = this.formValueChangeSubject;
+
+    /**
+     * Form status change event
+     */
+    public formStatusChange: Observable<boolean> = this.formStatusChangeSubject;
 
     /**
      * Indicates if loader is enabled
@@ -398,11 +426,23 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
 
     private subscribeToFormChanges(): void {
         if (!this.formGroup) {
-            throw Error(`Could not subscribe to form changes`);
+            throw Error(`Could not subscribe to form value changes`);
         }
         this.formGroup.valueChanges
+            .map(changes => {
+                // trigger events
+                this.formValueChangeSubject.next(changes);
+            })
             .takeUntil(this.ngUnsubscribe)
             .subscribe(response => this.handleFormChange());
+
+        this.formGroup.statusChanges
+            .map(status => {
+                // trigger events
+                this.formStatusChangeSubject.next(status === 'VALID');
+            })
+            .takeUntil(this.ngUnsubscribe)
+            .subscribe();
     }
 
     private resolveField(field: DataFormField): Observable<DataFormField> {
@@ -447,6 +487,9 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
         if (this.config.onError) {
             this.config.onError(error);
         }
+
+        // re-subscribe to button clicks because error unsubscribes from the observable
+        this.subscribeToFormActions();
 
         this.stopLoader();
     }

@@ -1,7 +1,12 @@
 <p>This is dashboard</p>
 
 <div class="push">
-    <data-form [config]="formConfig"></data-form>
+    <data-form #dataForm [config]="formConfig"></data-form>
+</div>
+
+<div class="push">
+    <button [dataForm]="dataForm" dataFormSaveButton mat-raised-button>Custom save</button>
+    <button [dataForm]="dataForm" dataFormDeleteButton mat-raised-button>Custom delete</button>
 </div>
 
 <div class="push">
