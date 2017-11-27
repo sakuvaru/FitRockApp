@@ -1,40 +1,40 @@
 <ng-container *ngIf="isTextField()">
-  <df-text [field]="field" [formGroup]="formGroup" [config]="config"></df-text>
+  <df-text [fields]="fields" [field]="field" [formGroup]="formGroup" [config]="config"></df-text>
 </ng-container>
 
 <ng-container *ngIf="isBooleanField()">
-  <df-boolean [field]="field" [formGroup]="formGroup" [config]="config"></df-boolean>
+  <df-boolean [fields]="fields" [field]="field" [formGroup]="formGroup" [config]="config"></df-boolean>
 </ng-container>
 
 <ng-container *ngIf="isRadioBooleanField()">
-  <df-radio-boolean [field]="field" [formGroup]="formGroup" [config]="config"></df-radio-boolean>
+  <df-radio-boolean [fields]="fields" [field]="field" [formGroup]="formGroup" [config]="config"></df-radio-boolean>
 </ng-container>
 
 <ng-container *ngIf="isDateField()">
-  <df-date [field]="field" [formGroup]="formGroup" [config]="config"></df-date>
+  <df-date [fields]="fields" [field]="field" [formGroup]="formGroup" [config]="config"></df-date>
 </ng-container>
 
 <ng-container *ngIf="isTextAreaField()">
-  <df-text-area [field]="field" [formGroup]="formGroup" [config]="config"></df-text-area>
+  <df-text-area [fields]="fields" [field]="field" [formGroup]="formGroup" [config]="config"></df-text-area>
 </ng-container>
 
 <ng-container *ngIf="isHiddenField()">
-  <df-hidden [field]="field" [formGroup]="formGroup" [config]="config"></df-hidden>
+  <df-hidden [fields]="fields" [field]="field" [formGroup]="formGroup" [config]="config"></df-hidden>
 </ng-container>
 
 <ng-container *ngIf="isDropdownField()">
-  <df-dropdown [field]="field" [formGroup]="formGroup" [config]="config"></df-dropdown>
+  <df-dropdown [fields]="fields" [field]="field" [formGroup]="formGroup" [config]="config"></df-dropdown>
 </ng-container>
 
 <ng-container *ngIf="isNumberField()">
-  <df-number [field]="field" [formGroup]="formGroup" [config]="config"></df-number>
+  <df-number [fields]="fields" [field]="field" [formGroup]="formGroup" [config]="config"></df-number>
 </ng-container>
 
 <ng-container *ngIf="isPhoneNumberField()">
-  <df-phone-number [field]="field" [formGroup]="formGroup" [config]="config"></df-phone-number>
+  <df-phone-number [fields]="fields" [field]="field" [formGroup]="formGroup" [config]="config"></df-phone-number>
 </ng-container>
 
 <ng-container *ngIf="isDateTime()">
-  <df-date-time [field]="field" [formGroup]="formGroup" [config]="config"></df-date-time>
+  <df-date-time [fields]="fields" [field]="field" [formGroup]="formGroup" [config]="config"></df-date-time>
 </ng-container>
 

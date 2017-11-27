@@ -169,3 +169,11 @@ export class DataFormDeleteResponse {
         public deletedItemId: number
     ) { }
 }
+
+export class DataFormFieldChangeResult {
+    constructor(
+        public value: string | number | Date | boolean
+    ) { }
+}
+
+

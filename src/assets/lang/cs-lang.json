@@ -570,6 +570,8 @@
 			"noData": "Nejsou zde žádná data"
 		},
 		"dataForm": {
+			"save": "Uložit",
+			"insert": "Vytvořit",
 			"formLoadingError": "Nahrávání formuláře selhalo",
 			"internalError": "Došlo k neznámě chybě při ukládání dat",
 			"snackbar": {

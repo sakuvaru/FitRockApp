@@ -2,7 +2,7 @@ import { Observable } from 'rxjs/RX';
 import { FormGroup } from '@angular/forms';
 import {
     DataFormEditResponse, DataFormInsertResponse, DataFormField, DataFormEditDefinition,
-    DataFormInsertDefinition, DataFormDeleteResponse
+    DataFormInsertDefinition, DataFormDeleteResponse, DataFormFieldChangeResult
 } from './data-form-models';
 
 export class DataFormConfig {
@@ -17,16 +17,6 @@ export class DataFormConfig {
     * Form definition query
     */
     public formDefinition: Observable<DataFormEditDefinition | DataFormInsertDefinition>;
-
-    /**
-     * Key of submit text button
-     */
-    public submitTextKey = 'form.shared.save';
-
-    /**
-     * Key of delete text button
-    */
-    public deleteTextKey = 'form.shared.delete';
 
     /**
      * List of fields (questions) assigned to the form
@@ -53,16 +43,6 @@ export class DataFormConfig {
      * Function to be executed when deleting an existing item in the form
      */
     public deleteFunction?: (formData: Object) => Observable<DataFormDeleteResponse>;
-
-    /**
-     * Key of the text shown in snackbar after inserting/saving item
-     */
-    public snackBarTextKey = 'form.shared.saved';
-
-    /**
-     * Key of the text shown in snackbar after successfully deleting an item
-     */
-    public deleteSnackBarTextKey = 'form.shared.deleted';
 
     /**
      * Item loaded in the form
@@ -118,7 +98,7 @@ export class DataFormConfig {
     /**
     * Called when a value in a field changes
     */
-    public onFieldValueChange?: (config: DataFormConfig, changedField: DataFormField, newValue: string | boolean | number) => Observable<void>;
+    public onFieldValueChange?: (fields: DataFormField[], changedField: DataFormField, newValue: string | boolean | number) => Observable<DataFormFieldChangeResult | void>;
 
     /**
      * Resolver used to change the value of certain fields manually

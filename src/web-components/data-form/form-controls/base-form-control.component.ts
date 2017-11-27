@@ -4,15 +4,31 @@ import { TranslateService } from '@ngx-translate/core';
 import { DataFormConfig } from '../data-form.config';
 import { stringHelper, numberHelper } from '../../../lib/utilities';
 import { BaseWebComponent } from '../../base-web-component.class';
-import { DataFormField } from '../data-form-models';
+import { DataFormField, DataFormFieldChangeResult } from '../data-form-models';
 import { Observable } from 'rxjs/Rx';
 
 // NOTE: see https://angular.io/docs/ts/latest/cookbook/dynamic-form.html for more details
 
 export abstract class BaseFormControlComponent extends BaseWebComponent implements OnInit, OnChanges {
 
+    /**
+     * All fields in form
+     */
+    @Input() fields: DataFormField[];
+
+    /**
+     * Current field
+     */
     @Input() field: DataFormField;
+
+    /**
+     * Form group
+     */
     @Input() formGroup: FormGroup;
+
+    /**
+     * Configuration
+     */
     @Input() config: DataFormConfig;
 
     /**
@@ -136,18 +152,31 @@ export abstract class BaseFormControlComponent extends BaseWebComponent implemen
     }
 
     /**
-     * Use this method to check value changes & to determine whether the value is valid or not
+     * Use this method to check value changes & to determines whether the value is valid or not
      */
     private getSubscribeToChangesObservable(): Observable<any> {
         const control = this.getQuestionControl();
         return control.valueChanges
-            .map(newValue => {
+            .flatMap(newValue => {
                 // run field change callback if defined
                 if (this.config.onFieldValueChange) {
-                    this.config.onFieldValueChange(this.config, this.field, newValue);
+                    const changeResultObs = this.config.onFieldValueChange(this.fields, this.field, newValue)
+                        .map(result => {
+                            if (result && (result instanceof DataFormFieldChangeResult)) {
+                                // new value was returned
+                                return result.value;
+                            }
+
+                            return newValue;
+                        });
+                    
+                    return changeResultObs;
                 }
 
-                // check if the field's value is valid
+                return Observable.of(newValue);
+            })
+            .map(newValue => { 
+                 // check if the field's value is valid
                 const valueValidation = this.getValidationResult(newValue);
 
                 if (!valueValidation.isValid) {

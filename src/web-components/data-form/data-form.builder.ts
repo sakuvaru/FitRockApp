@@ -1,7 +1,7 @@
 import { DataFormConfig } from './data-form.config';
 import {
     DataFormEditResponse, DataFormInsertResponse, DataFormField, DataFormEditDefinition,
-    DataFormInsertDefinition, DataFormDeleteResponse, DataFieldDropdownOption
+    DataFormInsertDefinition, DataFormDeleteResponse, DataFieldDropdownOption, DataFormFieldChangeResult
 } from './data-form-models';
 import { Observable } from 'rxjs/Rx';
 import { ResponseFormEdit, ResponseFormInsert, IItem, FormField, ControlTypeEnum, 
@@ -42,9 +42,9 @@ export class DataFormBuilder<TItem extends IItem> {
 
     /**
     * Called when a value in a field changes.
-    * Can also be used to dynamically change other fields in form
+    * Can be used to modify the field or value
     */
-    onFieldValueChange(callback: (config: DataFormConfig, changedField: DataFormField, newValue: string | Date | number | boolean) => Observable<void>): this {
+    onFieldValueChange(callback: (fields: DataFormField[], changedField: DataFormField, newValue: string | Date | number | boolean) => Observable<DataFormFieldChangeResult | void>): this {
         this.config.onFieldValueChange = callback;
         return this;
     }

@@ -14,6 +14,7 @@ import { BaseWebComponent } from '../base-web-component.class';
 
 export class DataFormFieldComponent extends BaseWebComponent {
 
+  @Input() fields: DataFormField[];
   @Input() field: DataFormField;
   @Input() formGroup: FormGroup;
   @Input() config: DataFormConfig;

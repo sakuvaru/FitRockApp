@@ -10,7 +10,7 @@
 
             <form [formGroup]="formGroup" autocomplete="off">
                 <ng-container *ngFor="let field of fields">
-                    <data-form-field [field]="field" [formGroup]="formGroup" [config]="config"></data-form-field>
+                    <data-form-field [fields]="fields" [field]="field" [formGroup]="formGroup" [config]="config"></data-form-field>
                 </ng-container>
             </form>
 
@@ -20,8 +20,8 @@
         </mat-card-content>
         <mat-card-actions>
             <div fxFlex layout="row">
-                <button *ngIf="isInsertForm" mat-raised-button color="accent" (click)="handleInsertItem()" [disabled]="!formGroup.valid">Insert</button>
-                <button *ngIf="isEditForm" mat-raised-button color="accent" (click)="handleEditItem()" [disabled]="!formGroup.valid">Save</button>
+                <button *ngIf="isInsertForm" mat-raised-button color="accent" (click)="handleInsertItem()" [disabled]="!formGroup.valid">{{ 'webComponents.dataForm.insert' | translate }}</button>
+                <button *ngIf="isEditForm" mat-raised-button color="accent" (click)="handleEditItem()" [disabled]="!formGroup.valid">{{ 'webComponents.dataForm.save' | translate }}</button>
                 <div flex></div>
                 <delete-button *ngIf="isDeleteEnabled" (confirm)="handleDeleteItem()"></delete-button>
             </div>
