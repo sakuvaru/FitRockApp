@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, ViewContainerRef, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, Output, EventEmitter, ViewContainerRef, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Observable, Subject } from 'rxjs/Rx';
 
@@ -112,7 +112,8 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
 
     constructor(
         private snackbarService: MatSnackBar,
-        private translateService: TranslateService
+        private translateService: TranslateService,
+        private cdr: ChangeDetectorRef
     ) {
         super();
     }
@@ -206,9 +207,20 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
     }
 
     private subscribeToInitForm(): void {
-        this.initFormSubject.switchMap(() => this.getInitFormObservable())
+        this.initFormSubject
+            .do(() => {
+                if (this.config.enableLocalLoader) {
+                    this.startLoader();
+                }
+            })
+            .switchMap(() => this.getInitFormObservable())
             .takeUntil(this.ngUnsubscribe)
-            .subscribe();
+            .subscribe(() => {
+                if (this.config.enableLocalLoader) {
+                    this.stopLoader();
+                }
+            },
+            error => this.handleLoadError(error));
     }
 
     private initForm() {
@@ -401,8 +413,15 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
 
         return this.config.fieldValueResolver(field.key, field.value)
             .map(newValue => {
-                field.value = this.getFieldValueSetByResolver(newValue);
+                const resolvedValue = this.getFieldValueSetByResolver(newValue);
 
+                // set field value
+                field.value = resolvedValue;
+
+                // set also field default value in case the field is visible
+                field.defaultValue = resolvedValue;
+
+                // return resolved field
                 return field;
             });
     }
@@ -475,9 +494,9 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
         const group: any = {};
 
         if (fields) {
-            fields.forEach(question => {
-                group[question.key] = question.required ? new FormControl(question.value, Validators.required)
-                    : new FormControl(question.value);
+            fields.forEach(field => {
+                group[field.key] = field.required ? new FormControl(field.value, Validators.required)
+                    : new FormControl(field.value);
             });
         }
 
@@ -490,7 +509,7 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
      * @param fieldName Name of field
      * @param value Value
      */
-    private getFieldValueSetByResolver(value: string | boolean | number): string {
+    private getFieldValueSetByResolver(value: string | boolean | number | Date): string {
         // boolean field needs to return 'string' with 'false' value otherwise the JSON .NET mapping
         // does not map the object
         if (!value) {

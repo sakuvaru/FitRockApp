@@ -106,8 +106,6 @@ export abstract class BaseFormControlComponent extends BaseWebComponent implemen
 
         // init field value
         this.initFieldValue();
-
-
     }
 
     private initFieldValue(): void {

@@ -52,7 +52,7 @@ export class DataFormBuilder<TItem extends IItem> {
     /**
     * Resolver used to change the value of certain fields manually
     */
-    fieldValueResolver(resolver: (fieldName: string, value: string | number | boolean | Date) => Observable<string | boolean | number>): this {
+    fieldValueResolver(resolver: (fieldName: string, value: string | number | boolean | Date) => Observable<string | boolean | number | Date>): this {
         this.config.fieldValueResolver = resolver;
         return this;
     }

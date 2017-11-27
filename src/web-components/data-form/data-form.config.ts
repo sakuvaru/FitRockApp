@@ -103,7 +103,7 @@ export class DataFormConfig {
     /**
      * Resolver used to change the value of certain fields manually
      */
-    public fieldValueResolver?: (fieldName: string, value: any) => Observable<string | boolean | number>;
+    public fieldValueResolver?: (fieldName: string, value: any) => Observable<string | boolean | number | Date>;
 
     /**
      * Indicates if local loader is enabled

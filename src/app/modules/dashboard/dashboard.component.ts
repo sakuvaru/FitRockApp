@@ -44,10 +44,16 @@ export class DashboardComponent extends BaseComponent implements OnInit {
                 delete: (formData) => this.dependencies.itemServices.exerciseService.delete(formData['Id']).set()
             }
         )
+            .fieldValueResolver((fieldName, value) => {
+                if (fieldName === 'ExerciseName') {
+                    return Observable.of('Hello smurfies');
+                }
+                return Observable.of(value);
+            })
             .onFieldValueChange((fields, field, value) => {
                 return Observable.of(undefined)
                     .map(() => {
-                        console.log(fields);
+                        // console.log(fields);
                     });
             })
             .build();
