@@ -124,6 +124,9 @@ export class MapService {
             defaultValue: formField.defaultValue,
             required: formField.required,
             rawValue: formField.value,
+            hint: formField.hint,
+            rowNumber: formField.rowNumber,
+            width: formField.width,
             options: formField.options ? new FormFieldOptions({
                 falseOptionLabel: formField.options.falseOptionLabel,
                 trueOptionLabel: formField.options.trueOptionLabel,
@@ -133,7 +136,7 @@ export class MapService {
                 minAutosizeRows: formField.options.minAutosizeRows,
                 minLength: formField.options.minLength,
                 maxNumberValue: formField.options.maxNumberValue,
-                minNumberValue: formField.options.minNumberValue
+                minNumberValue: formField.options.minNumberValue,
             }) : undefined
         });
     }

@@ -215,6 +215,7 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
                 // at this point, all fields should be assigned to temp fields
                 // reassign fields to their property and clear temp fields
                 this.fields = this.tempFields;
+                console.log(this.fields);
                 this.clearTempFields();
 
                 // init form group

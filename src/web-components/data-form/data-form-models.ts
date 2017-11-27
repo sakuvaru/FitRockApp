@@ -27,6 +27,16 @@ export class DataFormField {
     */
     public hint?: string;
 
+    /**
+     * Row number (used for grouping multiple fields into a single row)
+     */
+    public rowNumber?: number;
+
+    /**
+     * Width of the field
+     */
+    public width?: number;
+
     constructor(
         /**
          * Key (column) of the field
@@ -45,7 +55,9 @@ export class DataFormField {
             // optional
             defaultValue?: any,
             options?: DataFormFieldOptions,
-            hint?: string
+            hint?: string,
+            rowNumber?: number,
+            width?: number
         }) {
         Object.assign(this, optional);
     }

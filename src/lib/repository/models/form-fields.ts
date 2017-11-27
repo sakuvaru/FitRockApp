@@ -53,6 +53,16 @@ export class FormField implements IFormField {
     */
     public hint?: string;
 
+    /**
+ * Requested width of the field
+ */
+    public width?: number;
+
+    /**
+     * Requested row number
+     */
+    public rowNumber?: number;
+
     constructor(constructorOptions: {
         // required
         key: string,
@@ -63,7 +73,9 @@ export class FormField implements IFormField {
         defaultValue?: any,
         required?: boolean,
         options?: IFormFieldOptions,
-        hint?: string
+        hint?: string,
+        width?: number,
+        rowNumber?: number
     }) {
         Object.assign(this, constructorOptions);
 

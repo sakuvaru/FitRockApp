@@ -193,6 +193,8 @@ export class DataFormBuilder<TItem extends IItem> {
             {
                 defaultValue: field.defaultValue,
                 hint: field.hint,
+                rowNumber: field.rowNumber,
+                width: field.width, 
                 options: field.options ? {
                     extraTranslationData: field.options.extraTranslationData,
                     listOptions: field.options.listOptions ? field.options.listOptions.map(m => new DataFieldDropdownOption(m.value, m.name, m.extraDataJson)) : undefined,
