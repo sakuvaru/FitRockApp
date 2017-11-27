@@ -31,11 +31,11 @@ export class TextComponent extends BaseFormControlComponent implements OnInit, O
       return '';
     }
 
-    if (!(defaultFieldValue instanceof String)) {
+    if (!((typeof defaultFieldValue === 'string') || (defaultFieldValue instanceof String))) {
       throw Error(`Text field expected default value to be 'String', but other type was given`);
     }
 
-    return defaultFieldValue;
+    return defaultFieldValue as string;
   }
 
   protected getEditValue(): string {
@@ -45,10 +45,10 @@ export class TextComponent extends BaseFormControlComponent implements OnInit, O
       return '';
     }
 
-    if (fieldValue || !(fieldValue instanceof String)) {
+    if (!((typeof fieldValue === 'string') || (fieldValue instanceof String))) {
       throw Error(`Text field expected value to be 'String', but other type was given`);
     }
 
-    return fieldValue;
+    return fieldValue as string;
   }
 }
