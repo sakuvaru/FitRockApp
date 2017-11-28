@@ -9,17 +9,25 @@
             <error-message *ngIf="errorLoadingForm" text="{{ 'webComponents.dataForm.formLoadingError' | translate }}"></error-message>
 
             <form [formGroup]="formGroup" autocomplete="off">
-                <ng-container *ngFor="let field of fields">
-                    <data-form-field [fields]="fields" [field]="field" [formGroup]="formGroup" [config]="config"></data-form-field>
+
+                <ng-container *ngFor="let row of rows">
+                    <div fxLayout fxLayout.sm="column" fxLayout.xs="column" fxLayout.md="row">
+                        <ng-container *ngFor="let field of row.fields">
+                            <div [fxFlex]="field.width">
+                                <data-form-field [fields]="fields" [field]="field" [formGroup]="formGroup" [config]="config"></data-form-field>
+                            </div>
+                        </ng-container>
+                    </div>
                 </ng-container>
             </form>
 
             <error-message *ngIf="formError" [text]="formError"></error-message>
             <error-message *ngIf="unknownError" text="{{ 'webComponents.dataForm.internalError' | translate }}"></error-message>
-        
+
         </mat-card-content>
+        <mat-divider></mat-divider>
         <mat-card-actions>
-            <div fxFlex layout="row">
+            <div fxFlex layout="row" class="push-left push-right push-top-sm push-bottom-sm">
                 <button *ngIf="isInsertForm" mat-raised-button color="accent" (click)="handleInsertItem()" [disabled]="!formGroup.valid">{{ 'webComponents.dataForm.insert' | translate }}</button>
                 <button *ngIf="isEditForm" mat-raised-button color="accent" (click)="handleEditItem()" [disabled]="!formGroup.valid">{{ 'webComponents.dataForm.save' | translate }}</button>
                 <div flex></div>
@@ -31,5 +39,5 @@
 </ng-container>
 
 <ng-container *ngIf="config && config.wrapInCard">
-    To do
+    Forms outside mat card not yet done
 </ng-container>

@@ -76,14 +76,14 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
     public formGroup?: FormGroup;
 
     /**
-     * Currently used fields
+     * Rows of fields
      */
-    public fields: DataFormField[] = [];
+    public rows: DataFormRow[] = [];
 
     /**
      * Temp fields
      */
-    private tempFields: DataFormField[] = [];
+    private fields: DataFormField[] = [];
 
     /**
      * Indicates if there is a problem with loading form
@@ -195,11 +195,14 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
             // prepare field observables
             const fieldObservables: Observable<void>[] = [];
 
+            // clear fields
+            this.clearFields();
+
             definition.fields.forEach(field => {
                 fieldObservables.push(this.resolveField(field)
                     .map(resolvedField => {
-                        // add resolved field to temporary fields
-                        this.tempFields.push(resolvedField);
+                        // add resolved field to fields
+                        this.fields.push(resolvedField);
                     }));
             });
 
@@ -212,12 +215,10 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
             return fieldObservable;
         })
             .map(() => {
-                // at this point, all fields should be assigned to temp fields
-                // reassign fields to their property and clear temp fields
-                this.fields = this.tempFields;
+                // at this point, all fields should be assigned to fields
+                // create rows out of fields
+                this.rows = this.getRows(this.fields);
                 
-                this.clearTempFields();
-
                 // init form group
                 this.formGroup = this.toFormGroup(this.fields);
 
@@ -250,6 +251,16 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
                 }
             },
             error => this.handleLoadError(error));
+    }
+
+    private checkTotalWidthOfRow(row: DataFormRow): void {
+        const expectedWidth: number = 100;
+        let totalWidth: number = 0;
+        row.fields.forEach(field => totalWidth = totalWidth + (field.width ? field.width : 0));
+
+        if (totalWidth !== expectedWidth) {
+            console.warn(`Row '${row.rowNumber}' has fields with a total width of '${totalWidth}' while it should be '${expectedWidth}'`);
+        }
     }
 
     private initForm() {
@@ -382,6 +393,48 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
             });
     }
 
+    private getRows(fields: DataFormField[]): DataFormRow[] {
+        const rows: DataFormRow[] = [];
+        const defaultRowNumber: number = -1;
+        const defaultWidth: number = 100;
+
+        if (!fields) {
+            return [];
+        }
+
+        const getRow = (rowNumber: number, width: number) => {
+            const row = rows.find(m => m.rowNumber === rowNumber);
+            if (!row) {
+                // row  does not exist, create it first
+                const newRow = new DataFormRow(rowNumber);
+                rows.push(newRow);
+                return newRow;
+            }
+            return row;
+        };
+
+        fields.forEach(field => {
+            let row: DataFormRow;
+
+            if (!field.width || !field.rowNumber) {
+                // use default values because the row is not properly set
+                row = getRow(defaultRowNumber, defaultWidth);
+            } else {
+                // get row using field values
+                row = getRow(field.rowNumber, field.width);
+            }
+
+            // add field to row
+            row.addField(field);
+        });
+
+        // check row widths
+        rows.forEach(row => this.checkTotalWidthOfRow(row));
+        
+        // sort rows by row number
+        return _.sortBy(rows, m => m.rowNumber);
+    }
+
     private convertEmptyStringsToNull(): void {
         const formGroup = this.formGroup;
         if (!formGroup) {
@@ -500,10 +553,6 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
         this.formError = undefined;
     }
 
-    private clearTempFields(): void {
-        this.tempFields = [];
-    }
-
     private clearFields(): void {
         this.fields = [];
     }
@@ -565,5 +614,18 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
 
         return value.toString().trim();
     }
+}
 
+class DataFormRow {
+
+    public fields: DataFormField[] = [];
+
+    constructor(
+        public rowNumber: number,
+    ) {
+    }
+
+    addField(field: DataFormField): void {
+        this.fields.push(field);
+    }
 }

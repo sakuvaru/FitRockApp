@@ -44,6 +44,7 @@ export class DashboardComponent extends BaseComponent implements OnInit {
                 delete: (formData) => this.dependencies.itemServices.exerciseService.delete(formData['Id']).set()
             }
         )
+            // .fieldLabelResolver((fieldname, originalLabel) => Observable.of('he'))
             .fieldValueResolver((fieldName, value) => {
                 if (fieldName === 'ExerciseName') {
                     return Observable.of('Hello smurfies');
@@ -53,6 +54,7 @@ export class DashboardComponent extends BaseComponent implements OnInit {
             .onFieldValueChange((fields, field, value) => {
                 return Observable.of(undefined)
                     .map(() => {
+                        // fields[0].label = 'Asef';
                         // console.log(fields);
                     });
             })
