@@ -1,5 +1,5 @@
 <mat-dialog-actions>
-    <span *ngIf="exercise" class="md-title">{{'module.workouts.addWorkoutExercise' | translate }} - {{ exercise.exerciseName }}</span>
+    <span *ngIf="exercise" class="md-title">{{'module.workouts.addWorkoutExercise' | localize }} - {{ exercise.exerciseName }}</span>
     <span flex></span>
     <close-button (click)="close()"></close-button>
 </mat-dialog-actions>
@@ -12,6 +12,6 @@
 </mat-dialog-content>
 
 <mat-dialog-actions>
-    <dialog-button [disabled]="!formStatus || (formStatus && !formStatus.isValid)" color="accent" (handleClick)="customSaveButtonSubject.next()">{{ 'shared.create' | translate }}</dialog-button>
+    <dialog-button [disabled]="!formStatus || (formStatus && !formStatus.isValid)" color="accent" (handleClick)="customSaveButtonSubject.next()">{{ 'shared.create' | localize }}</dialog-button>
     <span flex></span>
 </mat-dialog-actions>

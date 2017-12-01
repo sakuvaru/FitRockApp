@@ -4,17 +4,17 @@
             <mat-card-content *ngIf="appointment">
                 <p class="md-headline">{{ appointment.appointmentName }}</p>
                 <p>
-                    <span class="md-caption">{{ 'module.clients.appointments.when' | translate }}:</span> {{ formatDate(appointment.appointmentDate)
+                    <span class="md-caption">{{ 'module.clients.appointments.when' | localize }}:</span> {{ formatDate(appointment.appointmentDate)
                     }}
                 </p>
                 <p>
-                    <span class="md-caption">{{ 'module.clients.appointments.where' | translate }}:</span> {{ appointment.location.address }}
+                    <span class="md-caption">{{ 'module.clients.appointments.where' | localize }}:</span> {{ appointment.location.address }}
                 </p>
                 <p *ngIf="appointment.workout">
-                    <span class="md-caption">{{ 'module.clients.appointments.workout' | translate }}:</span> {{ appointment.workout.workoutName }}
+                    <span class="md-caption">{{ 'module.clients.appointments.workout' | localize }}:</span> {{ appointment.workout.workoutName }}
                 </p>
                 <p *ngIf="appointment.notes">
-                    <span class="md-caption">{{ 'module.clients.appointments.notes' | translate }}:</span>
+                    <span class="md-caption">{{ 'module.clients.appointments.notes' | localize }}:</span>
                 </p>
                 <p *ngIf="appointment.notes" class="md-caption">
                     {{ appointment.notes }}

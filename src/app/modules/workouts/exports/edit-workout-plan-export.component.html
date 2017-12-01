@@ -7,7 +7,7 @@
 </mat-card>
 
 <div *ngIf="sortedWorkoutExercises" class="push">
-  <button mat-raised-button color="primary" class="text-upper" (click)="openSelecExerciseDialog()">{{'module.workouts.addExercise' | translate }}</button>
+  <button mat-raised-button color="primary" class="text-upper" (click)="openSelecExerciseDialog()">{{'module.workouts.addExercise' | localize }}</button>
 
   <div *ngIf="sortedWorkoutExercises">
     <mat-list [dragula]='"dragula-bag"' class="push-top" [dragulaModel]="sortedWorkoutExercises">
@@ -25,6 +25,6 @@
   </div>
 
   <div *ngIf="sortedWorkoutExercises && sortedWorkoutExercises.length > 5" class="push-top">
-    <button mat-raised-button color="primary" class="text-upper" (click)="openSelecExerciseDialog()">{{'module.workouts.addExercise' | translate }}</button>
+    <button mat-raised-button color="primary" class="text-upper" (click)="openSelecExerciseDialog()">{{'module.workouts.addExercise' | localize }}</button>
   </div>
 </div>

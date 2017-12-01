@@ -1,10 +1,10 @@
-<h2>{{ 'module.shared.errors.errorPageTitle' | translate }}</h2>
+<h2>{{ 'module.shared.errors.errorPageTitle' | localize }}</h2>
 
 <div *ngIf="isCriticalError">
-    {{ 'module.shared.errors.criticalErrorText' | translate }}
+    {{ 'module.shared.errors.criticalErrorText' | localize }}
 </div>
 
-<div *ngIf="!isCriticalError" [innerHTML]="'module.shared.errors.loggedErrorText' | translate:translateParams">
+<div *ngIf="!isCriticalError" [innerHTML]="'module.shared.errors.loggedErrorText' | localize:translateParams">
 </div>
 
 <div *ngIf="showDebugDetails && log" class="push">

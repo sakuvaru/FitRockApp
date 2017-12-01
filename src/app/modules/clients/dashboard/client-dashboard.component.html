@@ -4,37 +4,37 @@
             <mat-card fxFlex>
                 <mat-card-content>
                     <p class="md-title primary">
-                        {{ 'module.clients.dashboard.nextAppointment' | translate }}
+                        {{ 'module.clients.dashboard.nextAppointment' | localize }}
                     </p>
 
                     <ng-container *ngIf="appointment">
                         <p class="md-subhead">{{ appointment.appointmentName }}</p>
                         <p>
-                            <span class="md-caption">{{ 'module.clients.appointments.when' | translate }}:</span> {{ formatDate(appointment.appointmentDate)
+                            <span class="md-caption">{{ 'module.clients.appointments.when' | localize }}:</span> {{ formatDate(appointment.appointmentDate)
                             }}
                         </p>
                         <p>
-                            <span class="md-caption">{{ 'module.clients.appointments.where' | translate }}:</span> {{ appointment.location.address
+                            <span class="md-caption">{{ 'module.clients.appointments.where' | localize }}:</span> {{ appointment.location.address
                             }}
                         </p>
                         <p *ngIf="appointment.workout">
-                            <span class="md-caption">{{ 'module.clients.appointments.workout' | translate }}:</span> {{ appointment.workout.workoutName
+                            <span class="md-caption">{{ 'module.clients.appointments.workout' | localize }}:</span> {{ appointment.workout.workoutName
                             }}
                         </p>
                         <p *ngIf="appointment.notes">
-                            <span class="md-caption">{{ 'module.clients.appointments.notes' | translate }}:</span>
+                            <span class="md-caption">{{ 'module.clients.appointments.notes' | localize }}:</span>
                         </p>
                         <p *ngIf="appointment.notes" class="md-caption">
                             {{ appointment.notes }}
                         </p>
                     </ng-container>
 
-                    <info-message *ngIf="!appointment" text="{{ 'module.clients.dashboard.noAppointment' | translate }}"></info-message>
+                    <info-message *ngIf="!appointment" text="{{ 'module.clients.dashboard.noAppointment' | localize }}"></info-message>
                 </mat-card-content>
                 <mat-card-content *ngIf="appointment">
 
                     <p class="md-title primary">
-                        {{ 'module.clients.dashboard.nextAppointmentMap' | translate }}
+                        {{ 'module.clients.dashboard.nextAppointmentMap' | localize }}
                     </p>
 
                     <map [apiKey]="googleApiKey" [address]="appointment.location.address" [lat]="appointment.location.lat" [lng]="appointment.location.lng"></map>
@@ -48,8 +48,8 @@
                 <mat-card-content>
 
                     <p class="md-title primary">
-                        {{ 'module.clients.dashboard.privateNotes' | translate }}
-                        <span class="md-caption">({{ 'module.clients.dashboard.privateNotesHint' | translate }} )</span>
+                        {{ 'module.clients.dashboard.privateNotes' | localize }}
+                        <span class="md-caption">({{ 'module.clients.dashboard.privateNotesHint' | localize }} )</span>
                     </p>
 
                     <p>
@@ -63,7 +63,7 @@
                 <mat-card-content>
 
                     <p class="md-title primary">
-                        {{ 'module.clients.dashboard.publicNotes' | translate }}
+                        {{ 'module.clients.dashboard.publicNotes' | localize }}
                     </p>
 
                     <p>
@@ -77,7 +77,7 @@
                 <mat-card-content>
 
                     <p class="md-title primary">
-                        {{ 'module.clients.dashboard.latestMessages' | translate }}
+                        {{ 'module.clients.dashboard.latestMessages' | localize }}
                     </p>
 
                     <mat-nav-list *ngIf="chatMessages && chatMessages.length > 0">
@@ -87,7 +87,7 @@
                         </mat-list-item>
                     </mat-nav-list>
 
-                    <info-message *ngIf="!chatMessages || chatMessages.length === 0" text="{{ 'module.clients.dashboard.noChatMessages' | translate }}"></info-message>
+                    <info-message *ngIf="!chatMessages || chatMessages.length === 0" text="{{ 'module.clients.dashboard.noChatMessages' | localize }}"></info-message>
 
                 </mat-card-content>
             </mat-card>
@@ -101,7 +101,7 @@
                 <mat-card-content>
 
                     <p class="md-title primary">
-                        {{ 'module.clients.dashboard.diets' | translate }}
+                        {{ 'module.clients.dashboard.diets' | localize }}
                     </p>
 
                     <mat-nav-list *ngIf="diets && diets.length > 0">
@@ -110,7 +110,7 @@
                         </a>
                     </mat-nav-list>
 
-                    <info-message *ngIf="!diets || diets.length === 0" text="{{ 'module.clients.dashboard.noDiets' | translate }}"></info-message>
+                    <info-message *ngIf="!diets || diets.length === 0" text="{{ 'module.clients.dashboard.noDiets' | localize }}"></info-message>
 
                 </mat-card-content>
             </mat-card>
@@ -120,7 +120,7 @@
                 <mat-card-content>
 
                     <p class="md-title primary">
-                        {{ 'module.clients.dashboard.workouts' | translate }}
+                        {{ 'module.clients.dashboard.workouts' | localize }}
                     </p>
 
                     <mat-nav-list *ngIf="workouts && workouts.length > 0">
@@ -129,7 +129,7 @@
                         </a>
                     </mat-nav-list>
 
-                    <info-message *ngIf="!workouts || workouts.length === 0" text="{{ 'module.clients.dashboard.noWorkouts' | translate }}"></info-message>
+                    <info-message *ngIf="!workouts || workouts.length === 0" text="{{ 'module.clients.dashboard.noWorkouts' | localize }}"></info-message>
 
                 </mat-card-content>
             </mat-card>

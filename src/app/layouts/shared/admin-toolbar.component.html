@@ -8,23 +8,23 @@
     !-->
   <span flex></span>
 
-  <button mat-icon-button [matMenuTriggerFor]="feedsMenu" matTooltip="{{ 'userMenu.notifications' | translate }}">
+  <button mat-icon-button [matMenuTriggerFor]="feedsMenu" matTooltip="{{ 'userMenu.notifications' | localize }}">
     <td-notification-count [notifications]="feedsCount">
       <mat-icon>notifications</mat-icon>
     </td-notification-count>
   </button>
 
-  <button mat-icon-button [matMenuTriggerFor]="moreMenu" matTooltip="{{ 'userMenu.more' | translate }}">
+  <button mat-icon-button [matMenuTriggerFor]="moreMenu" matTooltip="{{ 'userMenu.more' | localize }}">
     <mat-icon>more_vert</mat-icon>
   </button>
 
   <mat-menu #moreMenu="matMenu">
     <a mat-menu-item [routerLink]="getAuthUrl('logout')">
-      <mat-icon>exit_to_app</mat-icon> {{ 'userMenu.logout' | translate }}
+      <mat-icon>exit_to_app</mat-icon> {{ 'userMenu.logout' | localize }}
     </a>
   </mat-menu>
 
-  <img *ngIf="showAvatar" mat-icon-button class="w-toolbar-avatar w-cursor-pointer" alt="profile image" [routerLink]="getAuthUrl('profile/edit')" matTooltip="{{ 'userMenu.profile' | translate }}" [src]="userAvatarUrl ? userAvatarUrl : defaultAvatarUrl" />
+  <img *ngIf="showAvatar" mat-icon-button class="w-toolbar-avatar w-cursor-pointer" alt="profile image" [routerLink]="getAuthUrl('profile/edit')" matTooltip="{{ 'userMenu.profile' | localize }}" [src]="userAvatarUrl ? userAvatarUrl : defaultAvatarUrl" />
 
   <mat-menu panelClass="w-feed-menu" #feedsMenu="matMenu" [overlapTrigger]="false">
     <td-menu>
@@ -49,10 +49,10 @@
         </ng-container>
       </ng-container>
       <button mat-button td-menu-footer *ngIf="!feeds || (feeds && feeds.length <= 0)">
-        {{ 'userMenu.noNotifications' | translate }}
+        {{ 'userMenu.noNotifications' | localize }}
       </button>
       <button *ngIf="feeds && feeds.length > 0" mat-button color="primary" td-menu-footer routerLink="{{ getAuthUrl('profile/feeds') }}">
-        {{ 'userMenu.seeAllNotifications' | translate }}
+        {{ 'userMenu.seeAllNotifications' | localize }}
       </button>
     </td-menu>
   </mat-menu>

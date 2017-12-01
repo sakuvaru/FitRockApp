@@ -1,5 +1,5 @@
 <mat-dialog-actions>
-    <span *ngIf="food" class="md-title">{{'module.diets.addDietFood' | translate }} - {{ food.foodName }}</span>
+    <span *ngIf="food" class="md-title">{{'module.diets.addDietFood' | localize }} - {{ food.foodName }}</span>
     <span flex></span>
     <close-button (click)="close()"></close-button>
 </mat-dialog-actions>
@@ -11,6 +11,6 @@
 </mat-dialog-content>
 
 <mat-dialog-actions>
-    <dialog-button [disabled]="!formStatus || (formStatus && !formStatus.isValid)" color="accent" (handleClick)="customSaveButtonSubject.next()">{{ 'shared.create' | translate }}</dialog-button>
+    <dialog-button [disabled]="!formStatus || (formStatus && !formStatus.isValid)" color="accent" (handleClick)="customSaveButtonSubject.next()">{{ 'shared.create' | localize }}</dialog-button>
     <span flex></span>
 </mat-dialog-actions>

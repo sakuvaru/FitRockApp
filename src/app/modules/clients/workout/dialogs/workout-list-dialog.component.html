@@ -1,5 +1,5 @@
 <mat-dialog-actions>
-    <span class="md-title">{{'module.clients.workout.workoutList' | translate }}</span>
+    <span class="md-title">{{'module.clients.workout.workoutList' | localize }}</span>
     <span flex></span>
     <close-button (click)="close()"></close-button>
 </mat-dialog-actions>
@@ -12,8 +12,8 @@
                     <strong>{{ workoutExercise.exercise.exerciseName }}</strong>
                     <span class="md-caption" *ngIf="workoutExercise.sets && workoutExercise.reps">
                         &nbsp;
-                        <span matTooltip="{{'module.workouts.sets' | translate}}">{{workoutExercise.sets}}</span> x
-                        <span matTooltip="{{'module.workouts.reps' | translate}}">{{workoutExercise.reps}}</span>
+                        <span matTooltip="{{'module.workouts.sets' | localize}}">{{workoutExercise.sets}}</span> x
+                        <span matTooltip="{{'module.workouts.reps' | localize}}">{{workoutExercise.reps}}</span>
                     </span>
                 </div>
                 <div matLine *ngIf="workoutExercise.notes">

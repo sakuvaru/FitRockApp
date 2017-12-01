@@ -4,7 +4,7 @@
             <mat-chip *ngFor="let progressItemType of progressItemTypes" [selected]="idOfActiveType === progressItemType.id" class="w-cursor-pointer"
                 (click)="onSelectType(progressItemType)">
                 <ng-container *ngIf="progressItemType.translateValue">
-                    {{'module.progressItemTypes.globalTypes.' + progressItemType.codename | translate}}
+                    {{'module.progressItemTypes.globalTypes.' + progressItemType.codename | localize}}
                 </ng-container>
                 <ng-container *ngIf="!progressItemType.translateValue">
                     {{progressItemType.typeName}}
@@ -18,5 +18,5 @@
 </ng-container>
 
 <div class="push">
-    <info-message *ngIf="progressItemTypes && progressItemTypes.length <= 0" text="{{ 'module.clients.stats.noStats' | translate }}"></info-message>
+    <info-message *ngIf="progressItemTypes && progressItemTypes.length <= 0" text="{{ 'module.clients.stats.noStats' | localize }}"></info-message>
 </div>

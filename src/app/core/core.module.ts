@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SharedService } from './services/shared.service';
 import { ComponentDependencyService } from './component/component-dependency.service';
+import { LocalizationModule } from '../../lib/localization';
 
 // angular forms
 import { FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -20,9 +21,6 @@ import { AuthModule } from '../../lib/auth';
 
 // web components
 import { WebComponentsModule } from '../../web-components';
-
-// translation
-import { TranslateModule } from '@ngx-translate/core';
 
 // directives
 import { DirectivesModule } from '../../directives';
@@ -54,9 +52,9 @@ import { SystemService } from './services/system.service';
         FlexLayoutModule,
         MediaQueriesModule,
         WebComponentsModule,
-        TranslateModule,
         DragulaModule,
-        DirectivesModule
+        DirectivesModule,
+        LocalizationModule
     ],
     declarations: [
     ],
@@ -78,9 +76,9 @@ import { SystemService } from './services/system.service';
         FlexLayoutModule,
         MediaQueriesModule,
         WebComponentsModule,
-        TranslateModule,
         DragulaModule,
-        DirectivesModule
+        DirectivesModule,
+        LocalizationModule
     ]
 })
 export class CoreModule { }
