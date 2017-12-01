@@ -2,8 +2,9 @@ import { Observable } from 'rxjs/RX';
 import { FormGroup } from '@angular/forms';
 import {
     DataFormEditResponse, DataFormInsertResponse, DataFormField, DataFormEditDefinition,
-    DataFormInsertDefinition, DataFormDeleteResponse, DataFormFieldChangeResult
+    DataFormInsertDefinition, DataFormDeleteResponse, DataFormFieldChangeResult, DataFormSection
 } from './data-form-models';
+import { DataFormSectionSize } from './data-form.enums';
 
 export class DataFormConfig {
 
@@ -119,6 +120,11 @@ export class DataFormConfig {
     * Can be used to get custom option labels (e.g. in dropdown lists)
     */
     public optionLabelResolver?: (field: DataFormField, optionLabel: string) => Observable<string>;
+
+    /**
+     * Sections
+     */
+    public sections: DataFormSection[] = [];
 
     constructor(
         /**

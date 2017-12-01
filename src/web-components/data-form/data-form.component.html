@@ -11,6 +11,11 @@
             <form [formGroup]="formGroup" autocomplete="off">
 
                 <ng-container *ngFor="let row of rows">
+                    <div *ngIf="row.section" class="push-left push-right">
+                        <h2 *ngIf="row.isLargeSection()" class="title">{{ row.section.title | async }}</h2>
+                        <h3 *ngIf="row.isMediumSection()" class="subheading-2">{{ row.section.title | async }}</h3>
+                        <h4 *ngIf="row.isSmallSection()" class="subheading-1">{{ row.section.title | async }}</h4>
+                    </div>
                     <div fxLayout fxLayout.sm="column" fxLayout.xs="column" fxLayout.md="row">
                         <ng-container *ngFor="let field of row.fields">
                             <div [fxFlex]="field.width">

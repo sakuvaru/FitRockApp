@@ -7,10 +7,10 @@ import { BaseWebComponent } from '../base-web-component.class';
 
 // data form 
 import { DataFormConfig } from './data-form.config';
-import { DataFormActiomEnum } from './data-form-action.enum';
+import { DataFormActiomEnum, DataFormSectionSize } from './data-form.enums';
 import {
     DataFormDeleteResponse, DataFormEditDefinition, DataFormEditResponse, DataFormField,
-    DataFormInsertDefinition, DataFormInsertResponse
+    DataFormInsertDefinition, DataFormInsertResponse, DataFormSection
 } from './data-form-models';
 
 // additional services
@@ -430,6 +430,17 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
 
         // check row widths
         rows.forEach(row => this.checkTotalWidthOfRow(row));
+
+        // assign sections to rows
+        this.config.sections.forEach(section => {
+            // check if row with section index exists
+            const row = rows.find(m => m.rowNumber === section.rowNumber);
+            if (!row) {
+                console.warn(`Could initialize section because row with number '${section.rowNumber}' was not found`);
+            } else {
+                row.addSection(section);
+            }
+        });
         
         // sort rows by row number
         return _.sortBy(rows, m => m.rowNumber);
@@ -619,6 +630,7 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
 class DataFormRow {
 
     public fields: DataFormField[] = [];
+    public section?: DataFormSection;
 
     constructor(
         public rowNumber: number,
@@ -627,5 +639,32 @@ class DataFormRow {
 
     addField(field: DataFormField): void {
         this.fields.push(field);
+    }
+    addSection(section: DataFormSection): void {
+        this.section = section;
+    }
+
+    isSmallSection(): boolean {
+        if (!this.section) {
+            return false;
+        }
+
+        return this.section.size === DataFormSectionSize.Small;
+    }
+
+    isMediumSection(): boolean {
+        if (!this.section) {
+            return false;
+        }
+
+        return this.section.size === DataFormSectionSize.Medium;
+    }
+
+    isLargeSection(): boolean {
+        if (!this.section) {
+            return false;
+        }
+
+        return this.section.size === DataFormSectionSize.Large;
     }
 }

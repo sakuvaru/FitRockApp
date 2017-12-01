@@ -1,4 +1,5 @@
-import { DataFormFieldTypeEnum } from './data-form-field-type.enum';
+import { Observable } from 'rxjs/Observable';
+import { DataFormFieldTypeEnum, DataFormSectionSize} from './data-form.enums';
 
 export class DataFormField {
 
@@ -185,6 +186,14 @@ export class DataFormDeleteResponse {
 export class DataFormFieldChangeResult {
     constructor(
         public value: string | number | Date | boolean
+    ) { }
+}
+
+export class DataFormSection {
+    constructor(
+        public title: Observable<string>,
+        public size: DataFormSectionSize,
+        public rowNumber: number
     ) { }
 }
 

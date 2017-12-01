@@ -1,14 +1,15 @@
 import { DataFormConfig } from './data-form.config';
 import {
     DataFormEditResponse, DataFormInsertResponse, DataFormField, DataFormEditDefinition,
-    DataFormInsertDefinition, DataFormDeleteResponse, DataFieldDropdownOption, DataFormFieldChangeResult
+    DataFormInsertDefinition, DataFormDeleteResponse, DataFieldDropdownOption, DataFormFieldChangeResult,
+    DataFormSection
 } from './data-form-models';
 import { Observable } from 'rxjs/Rx';
 import {
     ResponseFormEdit, ResponseFormInsert, IItem, FormField, ControlTypeEnum,
     ResponseEdit, ResponseCreate, ResponseDelete
 } from '../../lib/repository';
-import { DataFormFieldTypeEnum } from './data-form-field-type.enum';
+import { DataFormFieldTypeEnum } from './data-form.enums';
 
 export class DataFormBuilder<TItem extends IItem> {
 
@@ -59,8 +60,42 @@ export class DataFormBuilder<TItem extends IItem> {
         return this;
     }
 
+    /**
+     * Indicates if form is within a card
+     * @param wrap Wrap in card
+     */
     wrapInCard(wrap: boolean): this {
         this.config.wrapInCard = wrap;
+        return this;
+    }
+
+    /**
+     * Section
+     * @param section Section
+     */
+    section(section: DataFormSection): this {
+        if (section instanceof DataFormSection) {
+            this.config.sections.push(section);
+        }
+
+        this.config.sections.push(new DataFormSection(section.title, section.size, section.rowNumber));
+
+        return this;
+    }
+
+    /**
+     * Sections of the form
+     * @param sections Sections
+     */
+    sections(sections: DataFormSection[]): this {
+        sections.forEach(section => {
+            if (section instanceof DataFormSection) {
+                this.config.sections.push(section);
+            }
+    
+            this.config.sections.push(new DataFormSection(section.title, section.size, section.rowNumber));
+        });
+
         return this;
     }
 

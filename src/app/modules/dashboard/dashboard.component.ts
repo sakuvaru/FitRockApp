@@ -8,7 +8,7 @@ import { Log, User, Exercise } from '../../models';
 import { CurrentUser } from '../../../lib/auth';
 import { Observable } from 'rxjs/Rx';
 import { DataTableConfig, IDynamicFilter } from '../../../web-components/data-table/';
-import { DataFormBuilder, DataFormConfig, DataFormFieldChangeResult } from '../../../web-components/data-form/';
+import { DataFormBuilder, DataFormConfig, DataFormFieldChangeResult, DataFormSectionSize } from '../../../web-components/data-form/';
 
 @Component({
     templateUrl: 'dashboard.component.html'
@@ -44,6 +44,11 @@ export class DashboardComponent extends BaseComponent implements OnInit {
                 delete: (formData) => this.dependencies.itemServices.exerciseService.delete(formData['Id']).set()
             }
         )
+            .section({
+                rowNumber: 3,
+                title: Observable.of('Additional items'),
+                size: DataFormSectionSize.Medium
+            })
             // .fieldLabelResolver((fieldname, originalLabel) => Observable.of('he'))
             .fieldValueResolver((fieldName, value) => {
                 if (fieldName === 'ExerciseName') {

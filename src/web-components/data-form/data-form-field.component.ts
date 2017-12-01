@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { FormGroup, AbstractControl } from '@angular/forms';
 import { DataFormField } from './data-form-models';
-import { DataFormFieldTypeEnum } from './data-form-field-type.enum';
+import { DataFormFieldTypeEnum } from './data-form.enums';
 import { DataFormConfig } from './data-form.config';
 import { BaseWebComponent } from '../base-web-component.class';
 
