@@ -15,7 +15,10 @@ import { LocalizationPipe } from './localization.pipe';
     imports: [
         CommonModule,
         HttpClientModule,
-        TranslateModule.forChild({
+        // verify in future if this is ok. In child modules, 'forChild' should be called instead, but that does not
+        // register TranslateService which is required for this module to work. This is why forRoot is used here.
+        // https://github.com/ngx-translate/core/issues/209
+        TranslateModule.forRoot({
             missingTranslationHandler: { provide: MissingTranslationHandler, useClass: CustomMissingTranslationHandler },
             loader: {
               provide: TranslateLoader,

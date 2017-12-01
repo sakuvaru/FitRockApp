@@ -34,8 +34,8 @@ import { DragulaModule } from 'ng2-dragula';
 // local authenticated user
 import { AuthenticatedUserService } from './services/authenticated-user.service';
 
-// language service
-import { LanguageService } from './services/language.service';
+// current language service
+import { CurrentLanguageService } from './services/current-language.service';
 
 // localization 
 import { AppLanguageResolver } from './providers/app-language-resolver';
@@ -64,7 +64,7 @@ import { SystemService } from './services/system.service';
         SharedService,
         ComponentDependencyService,
         AuthenticatedUserService,
-        LanguageService,
+        CurrentLanguageService,
         AppLanguageResolver,
         SystemService
     ],
