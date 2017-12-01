@@ -16,6 +16,9 @@ import { TranslateModule } from '@ngx-translate/core';
 // directives
 import { DirectivesModule } from '../directives';
 
+// localization
+import { LocalizationModule } from '../lib/localization';
+
 @NgModule({
     imports: [
         CommonModule,
@@ -24,7 +27,8 @@ import { DirectivesModule } from '../directives';
         TranslateModule,
         DirectivesModule,
         FlexLayoutModule,
-        MediaQueriesModule
+        MediaQueriesModule,
+        LocalizationModule
     ],
     declarations: [
     ],
@@ -37,7 +41,8 @@ import { DirectivesModule } from '../directives';
         TranslateModule,
         DirectivesModule,
         FlexLayoutModule,
-        MediaQueriesModule
+        MediaQueriesModule,
+        LocalizationModule
     ]
 })
 export class SharedWebComponentModule { }

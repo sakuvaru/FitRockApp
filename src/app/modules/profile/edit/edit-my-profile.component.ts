@@ -23,9 +23,9 @@ export class EditMyProfileComponent extends BaseComponent implements OnInit {
     }
 
     setup(): ComponentSetup {
-         return {
-             initialized: true
-         };
+        return {
+            initialized: true
+        };
     }
 
     ngOnInit() {
@@ -45,6 +45,15 @@ export class EditMyProfileComponent extends BaseComponent implements OnInit {
     private initForm(): void {
         this.formConfig = this.dependencies.itemServices.userService.myProfileForm()
             .enableDelete(false)
+            .onAfterUpdate(response => {
+                if (this.dependencies.coreServices.languageService.isDifferentThanCurrent(response.item.language)) {
+                    // language has changed, update it
+                    this.dependencies.coreServices.languageService.setLanguage(response.item.language);
+
+                    // reload page to see new translation
+                    this.dependencies.coreServices.systemService.reloadPage();
+                }
+            })
             .build();
     }
 }

@@ -45,6 +45,15 @@ export class EditClientComponent extends ClientsBaseComponent implements OnInit 
                 this.formConfig = this.dependencies.itemServices.userService.editForm(clientId)
                     .enableDelete(false)
                     .onAfterDelete(() => super.navigate([this.getTrainerUrl('clients')]))
+                    .onAfterUpdate(response => {
+                        if (this.dependencies.coreServices.languageService.isDifferentThanCurrent(response.item.language)) {
+                            // language has changed, update it
+                            this.dependencies.coreServices.languageService.setLanguage(response.item.language);
+
+                            // reload page to see new translation
+                            this.dependencies.coreServices.systemService.reloadPage();
+                        }
+                    })
                     .onFormLoaded(form => {
                         const user = form.item;
 

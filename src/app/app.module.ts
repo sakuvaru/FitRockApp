@@ -43,7 +43,11 @@ import { WebComponentsModule } from '../web-components';
 
 // translations
 import { HttpLoaderFactory, CustomMissingTranslationHandler } from './core/providers/translate-loader.provider';
+import { AppLanguageResolver } from './core/providers/app-language-resolver';
 import { TranslateModule, TranslateLoader, MissingTranslationHandler } from '@ngx-translate/core';
+
+// localization
+import { LocalizationModule, LanguageResolver } from '../lib/localization';
 
 // google map
 import { AgmCoreModule } from '@agm/core';
@@ -134,6 +138,11 @@ import { LocationModule } from './modules/locations/location.module';
         useFactory: HttpLoaderFactory,
         deps: [HttpClient]
       }
+    }),
+
+    // localization
+    LocalizationModule.forRoot({
+      languageResolver: { provide: LanguageResolver, useClass: AppLanguageResolver }
     }),
 
     // web components

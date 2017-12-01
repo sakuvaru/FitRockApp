@@ -19,6 +19,8 @@ import { MatSnackBar } from '@angular/material';
 import { observableHelper } from '../../lib/utilities';
 import { TranslateService } from '@ngx-translate/core';
 
+import { LocalizationService } from '../../lib/localization';
+
 @Component({
     selector: 'data-form',
     templateUrl: 'data-form.component.html'
@@ -141,9 +143,12 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
     constructor(
         private snackbarService: MatSnackBar,
         private translateService: TranslateService,
-        private cdr: ChangeDetectorRef
+        private cdr: ChangeDetectorRef,
+        private localizationService: LocalizationService
     ) {
         super();
+
+        this.localizationService.get('menu.dashboard').subscribe(result => console.log(result));
     }
 
     ngOnInit(): void {

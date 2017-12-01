@@ -46,6 +46,9 @@ export class EntryComponent extends BaseComponent {
           // store user in authenticated user service
           this.dependencies.authenticatedUserService.setUser(authUser);
 
+          // store user language ui preference
+          this.dependencies.coreServices.languageService.setLanguage(authUser.language);
+
           this.redirectUser(user.isClient);
         }
       },

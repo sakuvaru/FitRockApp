@@ -37,6 +37,12 @@ import { AuthenticatedUserService } from './services/authenticated-user.service'
 // language service
 import { LanguageService } from './services/language.service';
 
+// localization 
+import { AppLanguageResolver } from './providers/app-language-resolver';
+
+// system
+import { SystemService } from './services/system.service';
+
 @NgModule({
     imports: [
         CommonModule,
@@ -58,7 +64,9 @@ import { LanguageService } from './services/language.service';
         SharedService,
         ComponentDependencyService,
         AuthenticatedUserService,
-        LanguageService
+        LanguageService,
+        AppLanguageResolver,
+        SystemService
     ],
     exports: [
         CommonModule,

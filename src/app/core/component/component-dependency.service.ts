@@ -8,6 +8,7 @@ import { AuthService } from '../../../lib/auth';
 import { TdMediaService, TdLoadingService, TdDialogService } from '@covalent/core';
 import { SharedService } from '../services/shared.service';
 import { AuthenticatedUserService } from '../services/authenticated-user.service';
+import { SystemService } from '../services/system.service';
 import { LanguageService } from '../services/language.service';
 import { RepositoryClient } from '../../../lib/repository';
 
@@ -70,6 +71,7 @@ export class ComponentDependencyService {
 
         // core services
         this.coreServices = new CoreServices();
+        this.coreServices.systemService = injector.get(SystemService);
         this.coreServices.languageService = injector.get(LanguageService);
         this.coreServices.serverService = injector.get(ServerService);
         this.coreServices.authService = injector.get(AuthService);
@@ -162,6 +164,7 @@ export class WebComponentServices {
 }
 
 export class CoreServices {
+    public systemService: SystemService;
     public languageService: LanguageService;
     public serverService: ServerService;
     public repositoryClient: RepositoryClient;

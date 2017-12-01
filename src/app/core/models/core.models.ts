@@ -70,14 +70,20 @@ export class GlobalLoaderStatus  {
 export class LanguageConfig {
     constructor(
         /**
+         * Language source enum
+         */
+        public language: LanguageEnum,
+
+        /**
          * Locale used for momentjs
          */
         public momentJs: string,
+
         /**
          * Translation used for ngx translate service
          * This points to language json in assets
          */
-        public translate: string
+        public uiLanguage: string
     ) {
     }
 }

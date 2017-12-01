@@ -278,14 +278,6 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
         // init auth user
         this.authUser = this.dependencies.authenticatedUserService.getUser();
 
-        // set language based on users preferrence
-        if (this.authUser) {
-            this.language = this.dependencies.coreServices.languageService.getLanguage(this.authUser.language);
-        } else {
-            // default language
-            this.language = this.dependencies.coreServices.languageService.defaultLanguage;
-        }
-
         // stop loaders on component init 
         this.dependencies.coreServices.sharedService.setGlobalLoader(false, false);
 
