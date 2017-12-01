@@ -117,7 +117,7 @@ export class AdminToolbarComponent extends BaseLayoutComponent {
 
         // translate output
         if (feedResult.translationKey && feedResult.shouldBeTranslated()) {
-            return this.dependencies.coreServices.translateService.get(feedResult.translationKey, feedResult.translationData);
+            return this.dependencies.coreServices.localizationService.get(feedResult.translationKey, feedResult.translationData);
         }
 
         // something went wrong

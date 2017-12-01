@@ -287,17 +287,10 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
             this.dependencies.coreServices.authService.handleAuthentication();
         }
 
-        // set language version
-        // this language will be used as a fallback when a translation isn't found in the current language
-        this.dependencies.coreServices.translateService.setDefaultLang(AppConfig.DefaultLanguage);
-
-        // the lang to use, if the lang isn't available, it will use the current loader to get them
-        this.dependencies.coreServices.translateService.use(this.dependencies.coreServices.translateService.getBrowserLang());
-
         // translations
-        this.dependencies.coreServices.translateService.get('shared.saved').subscribe(text => this.snackbarSavedText = text);
+        this.dependencies.coreServices.localizationService.get('shared.saved').subscribe(text => this.snackbarSavedText = text);
 
-        this.dependencies.coreServices.translateService.get('shared.deleted').subscribe(text => this.snackbarDeletedText = text);
+        this.dependencies.coreServices.localizationService.get('shared.deleted').subscribe(text => this.snackbarDeletedText = text);
     }
 
     protected initializeComponent(initialize: boolean = true): void {
@@ -312,7 +305,7 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
 
     // --------------- Useful aliases ------------------ //
     translate(key: string, data?: any): Observable<string> {
-        return this.dependencies.coreServices.translateService.get(key, data);
+        return this.dependencies.coreServices.localizationService.get(key, data);
     }
 
     moment(inp?: moment.MomentInput, format?: moment.MomentFormatSpecification, strict?: boolean): moment.Moment {

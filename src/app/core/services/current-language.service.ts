@@ -3,7 +3,7 @@ import { LanguageConfig } from '../models/core.models';
 import { LanguageEnum } from '../../../lib/repository';
 
 @Injectable()
-export class LanguageService {
+export class CurrentLanguageService {
 
     /**
      * Default language

@@ -112,7 +112,7 @@ export class BaseAdminLayoutComponent extends BaseLayoutComponent implements OnD
 
                 // resolve component's title using translation services
                 if (componentConfig.componentTitle) {
-                    this.dependencies.coreServices.translateService.get(componentConfig.componentTitle.key, componentConfig.componentTitle.data)
+                    this.dependencies.coreServices.localizationService.get(componentConfig.componentTitle.key, componentConfig.componentTitle.data)
                         .subscribe(text => {
                             this.componentTitle = text;
                             this.componentChangedNotification();
@@ -121,7 +121,7 @@ export class BaseAdminLayoutComponent extends BaseLayoutComponent implements OnD
 
                 // resolve menu title using translation services
                 if (componentConfig.menuTitle) {
-                    this.dependencies.coreServices.translateService.get(componentConfig.menuTitle.key, componentConfig.menuTitle.data)
+                    this.dependencies.coreServices.localizationService.get(componentConfig.menuTitle.key, componentConfig.menuTitle.data)
                         .takeUntil(this.ngUnsubscribe)
                         .subscribe(text => {
                             this.menuTitle = text;

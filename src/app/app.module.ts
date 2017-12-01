@@ -41,12 +41,8 @@ import { AppConfig, UrlConfig } from './config';
 // web components
 import { WebComponentsModule } from '../web-components';
 
-// translations
-import { HttpLoaderFactory, CustomMissingTranslationHandler } from './core/providers/translate-loader.provider';
-import { AppLanguageResolver } from './core/providers/app-language-resolver';
-import { TranslateModule, TranslateLoader, MissingTranslationHandler } from '@ngx-translate/core';
-
 // localization
+import { AppLanguageResolver } from '../app/core/providers/app-language-resolver';
 import { LocalizationModule, LanguageResolver } from '../lib/localization';
 
 // google map
@@ -129,16 +125,6 @@ import { LocationModule } from './modules/locations/location.module';
     ProfileModule,
     ChatModule,
     LocationModule,
-
-    // translation
-    TranslateModule.forRoot({
-      missingTranslationHandler: { provide: MissingTranslationHandler, useClass: CustomMissingTranslationHandler },
-      loader: {
-        provide: TranslateLoader,
-        useFactory: HttpLoaderFactory,
-        deps: [HttpClient]
-      }
-    }),
 
     // localization
     LocalizationModule.forRoot({

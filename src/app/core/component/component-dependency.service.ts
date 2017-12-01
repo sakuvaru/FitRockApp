@@ -9,7 +9,7 @@ import { TdMediaService, TdLoadingService, TdDialogService } from '@covalent/cor
 import { SharedService } from '../services/shared.service';
 import { AuthenticatedUserService } from '../services/authenticated-user.service';
 import { SystemService } from '../services/system.service';
-import { LanguageService } from '../services/language.service';
+import { CurrentLanguageService } from '../services/current-language.service';
 import { RepositoryClient } from '../../../lib/repository';
 
 // Helpers
@@ -26,8 +26,8 @@ import { UserService, ExerciseCategoryService, ExerciseService, LogService, Work
 // Angular material
 import { MatSnackBar, MatDialog } from '@angular/material';
 
-// Translation service
-import { TranslateService } from '@ngx-translate/core';
+// Localization service
+import { LocalizationService } from '../../../lib/localization';
 
 // moment js
 import * as moment from 'moment';
@@ -72,11 +72,11 @@ export class ComponentDependencyService {
         // core services
         this.coreServices = new CoreServices();
         this.coreServices.systemService = injector.get(SystemService);
-        this.coreServices.languageService = injector.get(LanguageService);
+        this.coreServices.currentLanguage = injector.get(CurrentLanguageService);
         this.coreServices.serverService = injector.get(ServerService);
         this.coreServices.authService = injector.get(AuthService);
         this.coreServices.repositoryClient = injector.get(RepositoryClient);
-        this.coreServices.translateService = injector.get(TranslateService);
+        this.coreServices.localizationService = injector.get(LocalizationService);
         this.coreServices.sharedService = injector.get(SharedService);
         this.coreServices.moment = moment;
         this.coreServices.momentLanguage = moment;
@@ -165,12 +165,12 @@ export class WebComponentServices {
 
 export class CoreServices {
     public systemService: SystemService;
-    public languageService: LanguageService;
+    public currentLanguage: CurrentLanguageService;
     public serverService: ServerService;
     public repositoryClient: RepositoryClient;
     public authService: AuthService;
     public sharedService: SharedService;
-    public translateService: TranslateService;
+    public localizationService: LocalizationService;
     public moment: (inp?: moment.MomentInput, format?: moment.MomentFormatSpecification, strict?: boolean) => moment.Moment;
     public momentLanguage: (inp?: moment.MomentInput, format?: moment.MomentFormatSpecification, language?: string, strict?: boolean) => moment.Moment;
 }
