@@ -1,6 +1,6 @@
 // common
 import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
+import { LocalizationService } from '../../lib/localization';
 import { BaseWebComponent } from '../base-web-component.class';
 
 // required by component
@@ -51,6 +51,16 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
      */
     private extensionsNotAllowedParam: any = {};
 
+     /**
+     * Max files param for translation
+     */
+    private get maxFilesParam(): any {
+        const param: any = {};
+        param.maxFiles = this.maxFiles;
+
+        return param;
+    }
+
     /**
      * List of accepted extensions, include '.' here as per https://teradata.github.io/covalent/#/components/file-upload
      */
@@ -83,7 +93,7 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
     };
 
     constructor(
-        private translateService: TranslateService,
+        private localizationService: LocalizationService,
         private snackBarService: MatSnackBar,
     ) {
         super();
@@ -189,7 +199,7 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
     }
 
     private initTranslations(): void {
-        this.translateService.get('webComponents.uploader.uploaded').subscribe(result => this.translations.snackbarUploadedText = result);
+        this.localizationService.get('webComponents.uploader.uploaded').subscribe(result => this.translations.snackbarUploadedText = result);
     }
 
     private getAcceptedExtensions(config: UploaderConfig): string[] {

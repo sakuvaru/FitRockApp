@@ -3,14 +3,14 @@
 </ng-container>
 
 <ng-container *ngIf="count === 0">
-    {{ m0 | translate }}
+    {{ m0 | localize }}
 </ng-container>
 <ng-container *ngIf="count === 1">
-    {{ m1 | translate }}
+    {{ m1 | localize }}
 </ng-container>
 <ng-container *ngIf="count >= 2 && count < 5">
-    {{ m2 | translate }}
+    {{ m2 | localize }}
 </ng-container>
 <ng-container *ngIf="count >= 5">
-    {{ m5 | translate }}
+    {{ m5 | localize }}
 </ng-container>

@@ -1,7 +1,7 @@
 // common
 import { Component, Input, Output, EventEmitter, ViewContainerRef, OnInit } from '@angular/core';
 import { TdDialogService } from '@covalent/core';
-import { TranslateService } from '@ngx-translate/core';
+import { LocalizationService } from '../../lib/localization';
 import { BaseWebComponent } from '../base-web-component.class';
 
 @Component({
@@ -19,7 +19,7 @@ export class DeleteButtonComponent extends BaseWebComponent implements OnInit {
     constructor(
         private dialogService: TdDialogService,
         private viewContainerRef: ViewContainerRef,
-        private translateService: TranslateService
+        private localizationService: LocalizationService
     ) {
         super();
     }
@@ -31,11 +31,11 @@ export class DeleteButtonComponent extends BaseWebComponent implements OnInit {
     @Output() confirm = new EventEmitter();
 
     ngOnInit() {
-        this.translateService.get('webComponents.buttons.deleteButton.message').map(text => this.messageText = text)
-            .zip(this.translateService.get('webComponents.buttons.deleteButton.title').map(text => this.titleText = text))
-            .zip(this.translateService.get('webComponents.buttons.deleteButton.cancel').map(text => this.cancelText = text))
-            .zip(this.translateService.get('webComponents.buttons.deleteButton.confirm').map(text => this.confirmText = text))
-            .zip(this.translateService.get('webComponents.buttons.deleteButton.tooltip').map(text => this.tooltipText = text))
+        this.localizationService.get('webComponents.buttons.deleteButton.message').map(text => this.messageText = text)
+            .zip(this.localizationService.get('webComponents.buttons.deleteButton.title').map(text => this.titleText = text))
+            .zip(this.localizationService.get('webComponents.buttons.deleteButton.cancel').map(text => this.cancelText = text))
+            .zip(this.localizationService.get('webComponents.buttons.deleteButton.confirm').map(text => this.confirmText = text))
+            .zip(this.localizationService.get('webComponents.buttons.deleteButton.tooltip').map(text => this.tooltipText = text))
             .takeUntil(this.ngUnsubscribe)
             .subscribe();
     }

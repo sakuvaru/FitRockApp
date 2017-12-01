@@ -10,9 +10,6 @@ import { CovalentModule } from '../lib/covalent';
 // Angular meterial
 import { AngularMaterialModule } from '../lib/material';
 
-// translation
-import { TranslateModule } from '@ngx-translate/core';
-
 // directives
 import { DirectivesModule } from '../directives';
 
@@ -24,7 +21,6 @@ import { LocalizationModule } from '../lib/localization';
         CommonModule,
         CovalentModule,
         AngularMaterialModule,
-        TranslateModule,
         DirectivesModule,
         FlexLayoutModule,
         MediaQueriesModule,
@@ -38,7 +34,6 @@ import { LocalizationModule } from '../lib/localization';
         CommonModule,
         CovalentModule,
         AngularMaterialModule,
-        TranslateModule,
         DirectivesModule,
         FlexLayoutModule,
         MediaQueriesModule,

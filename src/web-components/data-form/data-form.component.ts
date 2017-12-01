@@ -17,8 +17,6 @@ import {
 import * as _ from 'underscore';
 import { MatSnackBar } from '@angular/material';
 import { observableHelper } from '../../lib/utilities';
-import { TranslateService } from '@ngx-translate/core';
-
 import { LocalizationService } from '../../lib/localization';
 
 @Component({
@@ -142,7 +140,6 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
 
     constructor(
         private snackbarService: MatSnackBar,
-        private translateService: TranslateService,
         private cdr: ChangeDetectorRef,
         private localizationService: LocalizationService
     ) {
@@ -479,9 +476,9 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
     }
 
     private initTranslations(): void {
-        this.translateService.get('webComponents.dataForm.snackbar.saved').map(text => this.translations.snackbar.saved = text)
-            .zip(this.translateService.get('webComponents.dataForm.snackbar.deleted').map(text => this.translations.snackbar.deleted = text))
-            .zip(this.translateService.get('webComponents.dataForm.snackbar.inserted').map(text => this.translations.snackbar.inserted = text))
+        this.localizationService.get('webComponents.dataForm.snackbar.saved').map(text => this.translations.snackbar.saved = text)
+            .zip(this.localizationService.get('webComponents.dataForm.snackbar.deleted').map(text => this.translations.snackbar.deleted = text))
+            .zip(this.localizationService.get('webComponents.dataForm.snackbar.inserted').map(text => this.translations.snackbar.inserted = text))
             .takeUntil(this.ngUnsubscribe)
             .subscribe();
     }

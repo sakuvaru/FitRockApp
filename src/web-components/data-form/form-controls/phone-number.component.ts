@@ -1,5 +1,5 @@
 import { Component, Input, AfterViewInit, ChangeDetectorRef, OnInit, OnChanges, SimpleChanges } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
+import { LocalizationService } from '../../../lib/localization';
 import { BaseFormControlComponent } from './base-form-control.component';
 
 @Component({
@@ -18,9 +18,9 @@ export class PhoneNumberComponent extends BaseFormControlComponent implements On
 
   constructor(
     protected cdr: ChangeDetectorRef,
-    protected translateService: TranslateService
+    protected localizationService: LocalizationService
   ) {
-    super(cdr, translateService);
+    super(cdr, localizationService);
   }
 
   ngOnInit() {

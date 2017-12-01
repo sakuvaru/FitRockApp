@@ -1,5 +1,5 @@
 import { Component, Input, AfterViewInit, ChangeDetectorRef, OnInit, OnChanges, SimpleChanges } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
+import { LocalizationService } from '../../../lib/localization';
 import { BaseFormControlComponent } from './base-form-control.component';
 
 @Component({
@@ -20,9 +20,9 @@ export class RadioBooleanComponent extends BaseFormControlComponent implements O
 
   constructor(
     protected cdr: ChangeDetectorRef,
-    protected translateService: TranslateService
+    protected localizationService: LocalizationService
   ) {
-    super(cdr, translateService);
+    super(cdr, localizationService);
   }
 
   ngOnInit() {
@@ -42,7 +42,7 @@ export class RadioBooleanComponent extends BaseFormControlComponent implements O
 
     // translate labels for radio boolean
     if (this.question.options && this.question.options.trueOptionLabel) {
-      this.translateService.get(this.question.options.trueOptionLabel)
+      this.localizationService.get(this.question.options.trueOptionLabel)
         .takeUntil(this.ngUnsubscribe)
         .subscribe(translatedText => {
           if (translatedText && this.question.options) {
@@ -51,7 +51,7 @@ export class RadioBooleanComponent extends BaseFormControlComponent implements O
         });
     }
     if (this.question.options && this.question.options.falseOptionLabel) {
-      this.translateService.get(this.question.options.falseOptionLabel)
+      this.localizationService.get(this.question.options.falseOptionLabel)
         .takeUntil(this.ngUnsubscribe)
         .subscribe(translatedText => {
           if (translatedText && this.question.options) {

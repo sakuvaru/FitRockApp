@@ -3,7 +3,7 @@ import { Component, Input, Output, OnInit, EventEmitter, OnChanges, SimpleChange
 import { BaseWebComponent } from '../../base-web-component.class';
 
 // required
-import { TranslateService } from '@ngx-translate/core';
+import { LocalizationService } from '../../../lib/localization';
 import { VerticalBarChart } from '../graph-types';
 import { GraphConfig } from '../graph.config';
 import { Observable } from 'rxjs/Rx';
@@ -32,8 +32,8 @@ export class VerticalBarGraphComponent extends BaseGraphComponent implements OnI
     public yAxisLabel: string;
 
     constructor(
-        protected translateService: TranslateService
-    ) { super(translateService); }
+        protected localizationService: LocalizationService
+    ) { super(localizationService); }
 
 
     ngOnInit() {

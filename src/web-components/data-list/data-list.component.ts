@@ -3,7 +3,7 @@ import { BaseMultipleItemQuery, ErrorResponse, ItemCountQuery } from '../../lib/
 import { observableHelper } from '../../lib/utilities';
 import { DataListConfig, Filter } from './data-list.config';
 import { Observable } from 'rxjs/Rx';
-import { TranslateService } from '@ngx-translate/core';
+import { LocalizationService } from '../../lib/localization';
 import { TdMediaService } from '@covalent/core';
 import { BaseWebComponent } from '../base-web-component.class';
 import { DataListLayoutSearchComponent } from './layouts/layouts.components';
@@ -64,7 +64,7 @@ export class DataListComponent extends BaseWebComponent implements OnInit, OnCha
     public initialized = false;
 
     constructor(
-        private translateService: TranslateService,
+        private localizationService: LocalizationService,
         private mediaService: TdMediaService,
     ) {
         super();

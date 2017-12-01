@@ -19,8 +19,8 @@
             <img style="max-height: 100px" alt="no data" [src]="config.noDataImageUrl" />
         </div>
         <div layout="row" layout-align="center" style="margin-top: 10px">
-            <span *ngIf="searchTerm">{{config.searchNoItemsTextKey | translate}}</span>
-            <span *ngIf="!searchTerm">{{config.noItemsTextKey | translate}}</span>
+            <span *ngIf="searchTerm">{{config.searchNoItemsTextKey | localize}}</span>
+            <span *ngIf="!searchTerm">{{config.noItemsTextKey | localize}}</span>
         </div>
     </div>
 </mat-nav-list>
@@ -46,8 +46,8 @@
             <img style="max-height: 100px" alt="no data" [src]="config.noDataImageUrl" />
         </div>
         <div layout="row" layout-align="center" style="margin-top: 10px">
-            <span *ngIf="searchTerm">{{config.searchNoItemsTextKey | translate}}</span>
-            <span *ngIf="!searchTerm">{{config.noItemsTextKey | translate}}</span>
+            <span *ngIf="searchTerm">{{config.searchNoItemsTextKey | localize}}</span>
+            <span *ngIf="!searchTerm">{{config.noItemsTextKey | localize}}</span>
         </div>
     </div>
 </mat-list>

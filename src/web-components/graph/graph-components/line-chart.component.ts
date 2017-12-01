@@ -4,7 +4,7 @@ import { BaseWebComponent } from '../../base-web-component.class';
 
 // required
 import { MultiSeries, SingleSeries } from '../graph-models';
-import { TranslateService } from '@ngx-translate/core';
+import { LocalizationService } from '../../../lib/localization';
 import { LineChart } from '../graph-types';
 import { GraphConfig } from '../graph.config';
 import { Observable } from 'rxjs/Rx';
@@ -32,8 +32,8 @@ export class LineChartGraphComponent extends BaseGraphComponent implements OnIni
     public yAxisLabel: string;
 
     constructor(
-        protected translateService: TranslateService
-    ) { super(translateService); }
+        protected localizationService: LocalizationService
+    ) { super(localizationService); }
 
 
     ngOnInit() {

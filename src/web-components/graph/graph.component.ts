@@ -3,7 +3,7 @@ import { Component, Input, ViewChild } from '@angular/core';
 import { BaseWebComponent } from '../base-web-component.class';
 
 // required
-import { TranslateService } from '@ngx-translate/core';
+import { LocalizationService } from '../../lib/localization';
 import { BaseGraph } from './graph-types';
 import { GraphConfig } from './graph.config';
 import { BaseGraphComponent } from './graph-components/base-graph.component';
@@ -31,7 +31,7 @@ export class GraphComponent extends BaseWebComponent {
     @ViewChild('graphComponent') graphComponent: BaseGraphComponent;
 
     constructor(
-        protected translateService: TranslateService
+        protected localizationService: LocalizationService
     ) { super(); }
 
     /**

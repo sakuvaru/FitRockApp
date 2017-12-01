@@ -15,7 +15,7 @@ import {
 } from '../../lib/repository';
 
 // services
-import { TranslateService } from '@ngx-translate/core';
+import { LocalizationService } from '../../lib/localization';
 import { FieldControlService } from './field-control.service';
 
 // helpers
@@ -92,7 +92,7 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
     constructor(
         private fieldControlService: FieldControlService,
         private snackBarService: MatSnackBar,
-        private translateService: TranslateService,
+        private localizationService: LocalizationService,
         private cdr: ChangeDetectorRef
     ) {
         super();
@@ -510,15 +510,15 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
     private getTranslateLabelsObservable(config: FormConfig<any>): Observable<any> {
         const observables: Observable<any>[] = [];
 
-        observables.push(this.translateService.get(config.submitTextKey).map(translation => this.submitText = translation));
-        observables.push(this.translateService.get(config.snackBarTextKey).map(translation => this.snackbarText = translation));
-        observables.push(this.translateService.get(config.deleteSnackBarTextKey).map(translation => this.deleteSnackbarText = translation));
-        observables.push(this.translateService.get(config.deleteTextKey).map(translation => this.deleteText = translation));
+        observables.push(this.localizationService.get(config.submitTextKey).map(translation => this.submitText = translation));
+        observables.push(this.localizationService.get(config.snackBarTextKey).map(translation => this.snackbarText = translation));
+        observables.push(this.localizationService.get(config.deleteSnackBarTextKey).map(translation => this.deleteSnackbarText = translation));
+        observables.push(this.localizationService.get(config.deleteTextKey).map(translation => this.deleteText = translation));
 
-        observables.push(this.translateService.get('form.error.insufficientLicense').map(translation => this.insufficientLicenseError = translation));
-        observables.push(this.translateService.get('form.error.saveFailed').map(translation => this.generalErrorMessage = translation));
-        observables.push(this.translateService.get('form.error.unknownFormErrorMessage').map(translation => this.unknownErrorMessage = translation));
-        observables.push(this.translateService.get('form.error.formLoadingError').map(translation => this.formLoadingErrorMessage = translation));
+        observables.push(this.localizationService.get('form.error.insufficientLicense').map(translation => this.insufficientLicenseError = translation));
+        observables.push(this.localizationService.get('form.error.saveFailed').map(translation => this.generalErrorMessage = translation));
+        observables.push(this.localizationService.get('form.error.unknownFormErrorMessage').map(translation => this.unknownErrorMessage = translation));
+        observables.push(this.localizationService.get('form.error.formLoadingError').map(translation => this.formLoadingErrorMessage = translation));
 
         return observableHelper.zipObservables(observables);
     }
@@ -717,52 +717,52 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
     private getFormFieldErrorMessage(validation: FormValidationResult, fieldLabel?: string): Observable<string> {
         if (validation.validationResult === FormValidationResultEnum.InvalidCodename) {
             if (fieldLabel) {
-                return this.translateService.get('form.error.invalidCodenameWithLabel', { label: fieldLabel });
+                return this.localizationService.get('form.error.invalidCodenameWithLabel', { label: fieldLabel });
             }
-            return this.translateService.get('form.error.invalidCodename');
+            return this.localizationService.get('form.error.invalidCodename');
         }
 
         if (validation.validationResult === FormValidationResultEnum.InvalidEmail) {
             if (fieldLabel) {
-                return this.translateService.get('form.error.invalidEmailWithLabel', { label: fieldLabel });
+                return this.localizationService.get('form.error.invalidEmailWithLabel', { label: fieldLabel });
             }
-            return this.translateService.get('form.error.invalidEmail');
+            return this.localizationService.get('form.error.invalidEmail');
         }
 
         if (validation.validationResult === FormValidationResultEnum.NotUnique) {
             if (fieldLabel) {
-                return this.translateService.get('form.error.notUniqueWithLabel', { label: fieldLabel });
+                return this.localizationService.get('form.error.notUniqueWithLabel', { label: fieldLabel });
             }
-            return this.translateService.get('form.error.notUnique');
+            return this.localizationService.get('form.error.notUnique');
         }
 
         if (validation.validationResult === FormValidationResultEnum.NotEditable) {
             if (fieldLabel) {
-                return this.translateService.get('form.error.notEditableWithLabel', { label: fieldLabel });
+                return this.localizationService.get('form.error.notEditableWithLabel', { label: fieldLabel });
             }
-            return this.translateService.get('form.error.notEditable');
+            return this.localizationService.get('form.error.notEditable');
         }
 
         if (validation.validationResult === FormValidationResultEnum.Other) {
             if (fieldLabel) {
-                return this.translateService.get('form.error.otherWithLabel', { label: fieldLabel });
+                return this.localizationService.get('form.error.otherWithLabel', { label: fieldLabel });
             }
-            return this.translateService.get('form.error.other');
+            return this.localizationService.get('form.error.other');
         }
 
         if (validation.validationResult === FormValidationResultEnum.OneRecordPerDay) {
             if (fieldLabel) {
-                return this.translateService.get('form.error.oneRecordPerDayLabel', { label: fieldLabel });
+                return this.localizationService.get('form.error.oneRecordPerDayLabel', { label: fieldLabel });
             }
-            return this.translateService.get('form.error.oneRecordPerDay');
+            return this.localizationService.get('form.error.oneRecordPerDay');
         }
 
         if (validation.validationResult === FormValidationResultEnum.CustomWithMessageKey) {
             const translationKey = `form.${this.config.type.toLowerCase()}.${validation.messageKey}`;
             if (fieldLabel) {
-                return this.translateService.get(translationKey, { label: fieldLabel });
+                return this.localizationService.get(translationKey, { label: fieldLabel });
             }
-            return this.translateService.get(translationKey);
+            return this.localizationService.get(translationKey);
         }
 
         if (validation.validationResult === FormValidationResultEnum.ConstraintConflict) {
@@ -772,18 +772,18 @@ export class DynamicFormComponent extends BaseWebComponent implements OnInit, On
                 const affectedTypeTranslationKey = `type.${stringHelper.toCamelCase(messageKey)}`;
                 const constraintConflictTranslationKey = `form.error.constraintConflict`;
                 
-                return this.translateService.get(affectedTypeTranslationKey).switchMap(translatedType => {
+                return this.localizationService.get(affectedTypeTranslationKey).switchMap(translatedType => {
                     const data: any = {'dependentType': translatedType};
-                    return this.translateService.get(constraintConflictTranslationKey, data);
+                    return this.localizationService.get(constraintConflictTranslationKey, data);
                 });
             } else {
                 // we don't know what type is causing the issue
                 const genericConstraintErrorKey = 'form.error.genericConstraintConflict';
-                return this.translateService.get(genericConstraintErrorKey);
+                return this.localizationService.get(genericConstraintErrorKey);
             }
         }
 
-        return this.translateService.get('form.error.unknown');
+        return this.localizationService.get('form.error.unknown');
     }
 
     private clearErrorMessages(): void {

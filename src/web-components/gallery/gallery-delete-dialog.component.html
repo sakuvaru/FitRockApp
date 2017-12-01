@@ -1,10 +1,10 @@
 <mat-dialog-actions>
-    <span class="md-title">{{'webComponents.gallery.deleteImagesDialogTitle' | translate }}</span>
+    <span class="md-title">{{'webComponents.gallery.deleteImagesDialogTitle' | localize }}</span>
     <span flex></span>
     <close-button (click)="close()"></close-button>
 </mat-dialog-actions>
 
-<error-message *ngIf="imageDeletionFailed" title="{{ 'webComponents.gallery.imageDeletionFailed' | translate }}"></error-message>
+<error-message *ngIf="imageDeletionFailed" title="{{ 'webComponents.gallery.imageDeletionFailed' | localize }}"></error-message>
 
 <div class="push-bottom-sm">
     <loader [enabled]="deleteInProgress" type="linear"></loader>

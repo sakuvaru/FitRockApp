@@ -1,6 +1,6 @@
 // common
 import { Component, Input, Output, EventEmitter, ViewContainerRef, OnInit, OnChanges, SimpleChanges } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
+import { LocalizationService } from '../../lib/localization';
 import { BaseWebComponent } from '../base-web-component.class';
 import { LoadMoreConfig } from './load-more.config';
 import { LoadMoreResponse } from './load-more.models';
@@ -101,7 +101,7 @@ export class LoadMoreComponent extends BaseWebComponent implements OnInit, OnCha
     }
 
     constructor(
-        private translateService: TranslateService
+        private localizationService: LocalizationService
     ) {
         super();
     }

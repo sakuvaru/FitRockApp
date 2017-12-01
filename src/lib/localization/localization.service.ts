@@ -6,7 +6,6 @@ import { LanguageResolver } from './language-resolver';
 @Injectable()
 export class LocalizationService {
 
-
     constructor(
         private translateService: TranslateService,
         private languageResolver: LanguageResolver
@@ -23,6 +22,4 @@ export class LocalizationService {
     get(key: string,  interpolateParams?: Object): Observable<string> {
         return this.translateService.get(key, interpolateParams);
     }
-
-
 }

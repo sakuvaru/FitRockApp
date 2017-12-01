@@ -30,12 +30,12 @@
       </div>
       <div tabindex="-1" *ngIf="filtersWrapper.length > filtersWrapperSmallLayout.length && !showFullFilters" (click)="toggleShowFullFilters()"
         class="w-cursor-pointer w-chip mat-chip">
-        <span>+ {{ 'webComponents.dataTable.showMore' | translate }} ({{ filtersWrapper.length - filtersWrapperSmallLayout.length
+        <span>+ {{ 'webComponents.dataTable.showMore' | localize }} ({{ filtersWrapper.length - filtersWrapperSmallLayout.length
           }}) ...</span>
       </div>
       <div tabindex="-1" *ngIf="filtersWrapperSmallLayout.length < filtersWrapper.length && showFullFilters" (click)="toggleShowFullFilters()"
         class="w-cursor-pointer w-chip mat-chip">
-        <span>{{ 'webComponents.dataTable.showLess' | translate }} ...</span>
+        <span>{{ 'webComponents.dataTable.showLess' | localize }} ...</span>
       </div>
     </div>
   </div>
@@ -51,7 +51,7 @@
 
     <div class="w-data-table-filter">
       <mat-form-field floatPlaceholder="never" [ngClass]="config.wrapInCard ? 'text-sm' : ''" flex>
-        <input matInput placeholder="{{ 'webComponents.dataTable.searchPlaceholder' | translate }}" [formControl]="searchControl"
+        <input matInput placeholder="{{ 'webComponents.dataTable.searchPlaceholder' | localize }}" [formControl]="searchControl"
           [value]="search" />
         <span matPrefix>
           <mat-icon>search</mat-icon>
@@ -63,7 +63,7 @@
 
       <div *ngIf="totalItems === 0 && anyDataLoaded" class="w-data-table-no-data">
         <img *ngIf="config.noDataImageUrl" alt="no items found" [src]="config.noDataImageUrl" />
-        <span> {{ 'webComponents.dataTable.noData' | translate }} </span>
+        <span> {{ 'webComponents.dataTable.noData' | localize }} </span>
       </div>
 
       <!-- Using ngIf to hide data table would reset active sort filters -->
@@ -112,7 +112,7 @@
           <ng-container *ngIf="buttonsWrapper">
             <ng-container [matColumnDef]="buttonsWrapper.nameDef">
               <mat-header-cell *matHeaderCellDef>
-                {{ 'webComponents.dataTable.actions' | translate }}
+                {{ 'webComponents.dataTable.actions' | localize }}
               </mat-header-cell>
               <mat-cell *matCellDef="let item">
 

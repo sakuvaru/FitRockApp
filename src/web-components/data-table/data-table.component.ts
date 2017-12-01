@@ -16,7 +16,7 @@ import { IFilter, IDataTableSort, IDataTableButton } from './data-table.interfac
 import { Observable, Subject } from 'rxjs/Rx';
 import { MatSnackBar, MatSort, MatPaginator, Sort } from '@angular/material';
 import { TdDialogService } from '@covalent/core';
-import { TranslateService } from '@ngx-translate/core';
+import { LocalizationService } from '../../lib/localization';
 import * as _ from 'underscore';
 import { DataTableSortEnum } from './data-table-sort.enum';
 import { IDataTableField } from 'web-components/data-table';
@@ -290,7 +290,7 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
     constructor(
         private snackBar: MatSnackBar,
         private dialogService: TdDialogService,
-        private translateService: TranslateService
+        private localizationService: LocalizationService
     ) {
         super();
 
@@ -514,7 +514,7 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
             // change the text for all filter
             filters.push(new Filter(
                 this.allFilterGuid,
-                this.translateService.get('webComponents.dataTable.all'),
+                this.localizationService.get('webComponents.dataTable.all'),
                 allFilter.filter,
                 allFilter.count,
                 0
@@ -758,7 +758,7 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
         const previewName = this.config.itemName ? this.config.itemName(item) : undefined;
 
         if (previewName) {
-            this.translateService
+            this.localizationService
                 .get('webComponents.dataTable.delete.messageWithName', { 'name': previewName })
                 .map(message => {
                     this.dialogService.openConfirm({
@@ -845,15 +845,15 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
     }
 
     private initTranslations(): void {
-        this.translateService.get('webComponents.dataTable.delete.messageGeneric').map(text => this.translations.delete.messageGeneric = text)
-            .zip(this.translateService.get('webComponents.dataTable.all').map(text => this.translations.all = text))
-            .zip(this.translateService.get('webComponents.dataTable.delete.title').map(text => this.translations.delete.title = text))
-            .zip(this.translateService.get('webComponents.dataTable.delete.cancel').map(text => this.translations.delete.cancel = text))
-            .zip(this.translateService.get('webComponents.dataTable.delete.confirm').map(text => this.translations.delete.confirm = text))
-            .zip(this.translateService.get('webComponents.dataTable.delete.tooltip').map(text => this.translations.delete.tooltip = text))
-            .zip(this.translateService.get('webComponents.dataTable.delete.deleted').map(text => this.translations.delete.deleted = text))
-            .zip(this.translateService.get('webComponents.dataTable.internalError').map(text => this.translations.internalError = text))
-            .zip(this.translateService.get('webComponents.dataTable.loadingDataError').map(text => this.translations.loadingDataError = text))
+        this.localizationService.get('webComponents.dataTable.delete.messageGeneric').map(text => this.translations.delete.messageGeneric = text)
+            .zip(this.localizationService.get('webComponents.dataTable.all').map(text => this.translations.all = text))
+            .zip(this.localizationService.get('webComponents.dataTable.delete.title').map(text => this.translations.delete.title = text))
+            .zip(this.localizationService.get('webComponents.dataTable.delete.cancel').map(text => this.translations.delete.cancel = text))
+            .zip(this.localizationService.get('webComponents.dataTable.delete.confirm').map(text => this.translations.delete.confirm = text))
+            .zip(this.localizationService.get('webComponents.dataTable.delete.tooltip').map(text => this.translations.delete.tooltip = text))
+            .zip(this.localizationService.get('webComponents.dataTable.delete.deleted').map(text => this.translations.delete.deleted = text))
+            .zip(this.localizationService.get('webComponents.dataTable.internalError').map(text => this.translations.internalError = text))
+            .zip(this.localizationService.get('webComponents.dataTable.loadingDataError').map(text => this.translations.loadingDataError = text))
             .takeUntil(this.ngUnsubscribe)
             .subscribe();
     }

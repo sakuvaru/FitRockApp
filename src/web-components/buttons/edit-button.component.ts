@@ -1,7 +1,7 @@
 // common
 import { Component, Input, Output, EventEmitter, ViewContainerRef, OnInit } from '@angular/core';
 import { TdDialogService } from '@covalent/core';
-import { TranslateService } from '@ngx-translate/core';
+import { LocalizationService } from '../../lib/localization';
 import { BaseWebComponent } from '../base-web-component.class';
 
 @Component({
@@ -15,7 +15,7 @@ export class EditButtonComponent extends BaseWebComponent implements OnInit {
     constructor(
         private dialogService: TdDialogService,
         private viewContainerRef: ViewContainerRef,
-        private translateService: TranslateService
+        private localizationService: LocalizationService
     ) { super();
     }
 
@@ -24,7 +24,7 @@ export class EditButtonComponent extends BaseWebComponent implements OnInit {
     @Output() editAction = new EventEmitter();
 
     ngOnInit() {
-        this.translateService.get('webComponents.buttons.editButton.tooltip').subscribe(text => this.tooltipText = text);
+        this.localizationService.get('webComponents.buttons.editButton.tooltip').subscribe(text => this.tooltipText = text);
     }
 
     public handleClick(event: any): void {

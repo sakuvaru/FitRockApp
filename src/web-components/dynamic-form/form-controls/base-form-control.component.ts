@@ -1,7 +1,7 @@
 import { Component, Input, AfterViewInit, ChangeDetectorRef, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { FormGroup, AbstractControl } from '@angular/forms';
 import { FormField, ControlTypeEnum, DropdownFieldOption } from '../../../lib/repository';
-import { TranslateService } from '@ngx-translate/core';
+import { LocalizationService } from '../../../lib/localization';
 import { FormConfig } from '../form-config.class';
 import { stringHelper, numberHelper } from '../../../lib/utilities';
 import { BaseWebComponent } from '../../base-web-component.class';
@@ -43,7 +43,7 @@ export abstract class BaseFormControlComponent extends BaseWebComponent implemen
 
     constructor(
         protected cdr: ChangeDetectorRef,
-        protected translateService: TranslateService,
+        protected localizationService: LocalizationService,
     ) {
         super();
     }
@@ -119,7 +119,7 @@ export abstract class BaseFormControlComponent extends BaseWebComponent implemen
                 const valueValidation = this.getValidationResult(newValue);
 
                 if (!valueValidation.isValid) {
-                    this.translateService.get(valueValidation.errorMessageKey, valueValidation.translationData)
+                    this.localizationService.get(valueValidation.errorMessageKey, valueValidation.translationData)
                         .subscribe(translatedErrorMessage => {
                             // set custom error so that it can be displayed in the html template
                             this.customError = translatedErrorMessage;
@@ -170,7 +170,7 @@ export abstract class BaseFormControlComponent extends BaseWebComponent implemen
             extraTranslationData = this.question.options.extraTranslationData;
         }
 
-        const originalTranslationObservable = this.translateService
+        const originalTranslationObservable = this.localizationService
             .get(labelTranslationKey, extraTranslationData);
 
         // no field label resolver is defined so we can return original translation
@@ -189,7 +189,7 @@ export abstract class BaseFormControlComponent extends BaseWebComponent implemen
 
     private getQuestionHintObservable(): Observable<string> {
         const translationKey = this.getQuestionHintKey();
-        return this.translateService.get(translationKey);
+        return this.localizationService.get(translationKey);
     }
 
     private getQuestionLabelKey(): string {

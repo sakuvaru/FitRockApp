@@ -5,7 +5,7 @@
       #elem>&nbsp;{{question.label}}
       <span class="md-caption">({{question.hint}})</span>
     </mat-checkbox>
-    <span *ngIf="required && !elem.checked" class="tc-grey-500 md-caption"> ({{ 'form.shared.required' | translate }})</span>
+    <span *ngIf="required && !elem.checked" class="tc-grey-500 md-caption"> ({{ 'form.shared.required' | localize }})</span>
   </div>
 
 </div>

@@ -20,7 +20,7 @@ import { GalleryConfig } from './gallery.config';
 import * as _ from 'underscore';
 
 // translations
-import { TranslateService } from '@ngx-translate/core';
+import { LocalizationService } from '../../lib/localization';
 
 @Component({
     templateUrl: 'gallery-delete-dialog.component.html'
@@ -61,7 +61,7 @@ export class GalleryDeleteDialogComponent extends BaseWebComponent implements On
     constructor(
         public dialogRef: MatDialogRef<GalleryDeleteDialogComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any,
-        private translateService: TranslateService,
+        private localizationService: LocalizationService,
         private dialogService: TdDialogService,
         private viewContainerRef: ViewContainerRef,
     ) {
@@ -82,11 +82,11 @@ export class GalleryDeleteDialogComponent extends BaseWebComponent implements On
         }
 
         // init translations
-        this.translateService.get('webComponents.gallery.dialogDelete.message').map(text => this.messageText = text)
-            .zip(this.translateService.get('webComponents.gallery.dialogDelete.title').map(text => this.titleText = text))
-            .zip(this.translateService.get('webComponents.gallery.dialogDelete.cancel').map(text => this.cancelText = text))
-            .zip(this.translateService.get('webComponents.gallery.dialogDelete.confirm').map(text => this.confirmText = text))
-            .zip(this.translateService.get('webComponents.gallery.dialogDelete.tooltip').map(text => this.tooltipText = text))
+        this.localizationService.get('webComponents.gallery.dialogDelete.message').map(text => this.messageText = text)
+            .zip(this.localizationService.get('webComponents.gallery.dialogDelete.title').map(text => this.titleText = text))
+            .zip(this.localizationService.get('webComponents.gallery.dialogDelete.cancel').map(text => this.cancelText = text))
+            .zip(this.localizationService.get('webComponents.gallery.dialogDelete.confirm').map(text => this.confirmText = text))
+            .zip(this.localizationService.get('webComponents.gallery.dialogDelete.tooltip').map(text => this.tooltipText = text))
             .takeUntil(this.ngUnsubscribe)
             .subscribe();
     }
@@ -177,7 +177,7 @@ export class GalleryDeleteDialogComponent extends BaseWebComponent implements On
     }
 
     private initTranslations(): void {
-        this.translateService.get('webComponents.gallery.deleted').subscribe(result => this.snackbarDeleteText = result);
+        this.localizationService.get('webComponents.gallery.deleted').subscribe(result => this.snackbarDeleteText = result);
     }
 
     private removeImage(image: Image): void {

@@ -7,7 +7,7 @@
 
         <mat-card-content>
 
-            <error-message *ngIf="errorLoadingForm" text="{{ 'webComponents.dataForm.formLoadingError' | translate }}"></error-message>
+            <error-message *ngIf="errorLoadingForm" text="{{ 'webComponents.dataForm.formLoadingError' | localize }}"></error-message>
 
             <form [formGroup]="formGroup" autocomplete="off">
 
@@ -28,14 +28,14 @@
             </form>
 
             <error-message *ngIf="formError" [text]="formError"></error-message>
-            <error-message *ngIf="unknownError" text="{{ 'webComponents.dataForm.internalError' | translate }}"></error-message>
+            <error-message *ngIf="unknownError" text="{{ 'webComponents.dataForm.internalError' | localize }}"></error-message>
 
         </mat-card-content>
         <mat-divider></mat-divider>
         <mat-card-actions>
             <div fxFlex layout="row" class="push-left push-right push-top-sm push-bottom-sm">
-                <button *ngIf="isInsertForm" mat-raised-button color="accent" (click)="handleInsertItem()" [disabled]="!formGroup.valid">{{ 'webComponents.dataForm.insert' | translate }}</button>
-                <button *ngIf="isEditForm" mat-raised-button color="accent" (click)="handleEditItem()" [disabled]="!formGroup.valid">{{ 'webComponents.dataForm.save' | translate }}</button>
+                <button *ngIf="isInsertForm" mat-raised-button color="accent" (click)="handleInsertItem()" [disabled]="!formGroup.valid">{{ 'webComponents.dataForm.insert' | localize }}</button>
+                <button *ngIf="isEditForm" mat-raised-button color="accent" (click)="handleEditItem()" [disabled]="!formGroup.valid">{{ 'webComponents.dataForm.save' | localize }}</button>
                 <div flex></div>
                 <delete-button *ngIf="isDeleteEnabled" (confirm)="handleDeleteItem()"></delete-button>
             </div>

@@ -3,7 +3,7 @@ import { Component, Input, Output, OnInit, EventEmitter, OnChanges, SimpleChange
 import { BaseWebComponent } from '../../base-web-component.class';
 
 // required
-import { TranslateService } from '@ngx-translate/core';
+import { LocalizationService } from '../../../lib/localization';
 import { MultiSeries, SingleSeries } from '../graph-models';
 import { BaseGraph } from '../graph-types';
 import { GraphConfig } from '../graph.config';
@@ -53,7 +53,7 @@ export abstract class BaseGraphComponent extends BaseWebComponent implements OnI
     abstract specializedGraphInit(graph: BaseGraph): Observable<BaseGraph>;
 
     constructor(
-        protected translateService: TranslateService
+        protected localizationService: LocalizationService
     ) { super(); }
 
 
@@ -140,7 +140,7 @@ export abstract class BaseGraphComponent extends BaseWebComponent implements OnI
     }
 
     private getInitTranslationsObservable(config: GraphConfig<BaseGraph>): Observable<void> {
-        return this.translateService.get(config.legendTitleKey).map(translation => {
+        return this.localizationService.get(config.legendTitleKey).map(translation => {
             this.legendTitle = translation;
         });
     }

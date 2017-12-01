@@ -1,5 +1,5 @@
 import { Component, Input, AfterViewInit, ChangeDetectorRef, OnInit, OnChanges, SimpleChanges } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
+import { LocalizationService } from '../../../lib/localization';
 import { BaseFormControlComponent } from './base-form-control.component';
 import { DataFieldDropdownOption } from '../data-form-models';
 
@@ -24,9 +24,9 @@ export class DropdownComponent extends BaseFormControlComponent implements OnIni
 
   constructor(
     protected cdr: ChangeDetectorRef,
-    protected translateService: TranslateService
+    protected localizationService: LocalizationService
   ) {
-    super(cdr, translateService);
+    super(cdr, localizationService);
   }
 
   ngOnInit() {
@@ -68,7 +68,7 @@ export class DropdownComponent extends BaseFormControlComponent implements OnIni
             });
         }  else if (option.name === this.optionNoValueName) {
            // check if the value represents 'noValue' option
-           this.translateService.get(this.optionNoValueTranslationKey)
+           this.localizationService.get(this.optionNoValueTranslationKey)
            .takeUntil(this.ngUnsubscribe)
            .subscribe(translatedText => {
              if (optionInList) {        
@@ -77,7 +77,7 @@ export class DropdownComponent extends BaseFormControlComponent implements OnIni
            });
         } else {
           // or try resolve label using the default translations
-          this.translateService.get(option.name)
+          this.localizationService.get(option.name)
             .takeUntil(this.ngUnsubscribe)
             .subscribe(translatedText => {
               if (optionInList) {        
