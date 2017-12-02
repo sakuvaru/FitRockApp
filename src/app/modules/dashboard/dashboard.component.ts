@@ -58,38 +58,6 @@ export class DashboardComponent extends BaseComponent implements OnInit {
             })
             .build();
 
-        /*
-        this.formConfig = this.dependencies.webComponentServices.dataFormService.insertForm<Exercise>(
-            'Exercise',
-            this.dependencies.itemServices.exerciseService.insertFormQuery().get(),
-            (formData) => this.dependencies.itemServices.exerciseService.create(formData).set(),
-            {
-                delete: (formData) => this.dependencies.itemServices.exerciseService.delete(formData['Id']).set()
-            }
-        )
-            .section({
-                rowNumber: 3,
-                title: Observable.of('Additional items'),
-                size: DataFormSectionSize.Medium
-            })
-            // .fieldLabelResolver((fieldname, originalLabel) => Observable.of('he'))
-            .fieldValueResolver((fieldName, value) => {
-                if (fieldName === 'ExerciseName') {
-                    return Observable.of('Hello smurfies');
-                }
-                return Observable.of(value);
-            })
-            .onFieldValueChange((fields, field, value) => {
-                return Observable.of(undefined)
-                    .map(() => {
-                        // fields[0].label = 'Asef';
-                        // console.log(fields);
-                    });
-            })
-            .build();
-            */
-
-        /*
         this.config = this.dependencies.webComponentServices.dataTableService.dataTable<Exercise>(
             (search) => this.dependencies.itemServices.exerciseService.items()
                 .include('ExerciseCategory')
@@ -132,7 +100,6 @@ export class DashboardComponent extends BaseComponent implements OnInit {
             .deleteAction((item) => this.dependencies.itemServices.exerciseService.delete(item.id), item => item.exerciseName)
             .build();
 
-        */
 
         /*
         this.config = this.dependencies.webComponentServices.dataTableService.dataTable<User>(

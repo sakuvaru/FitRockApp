@@ -7,7 +7,7 @@ import { AppConfig, UrlConfig } from '../../../../config';
 // required by component
 import { ClientsBaseComponent } from '../../clients-base.component';
 import { ClientMenuItems } from '../../menu.items';
-import { DataListConfig, AlignEnum, Filter } from '../../../../../web-components/data-list';
+import { DataTableConfig } from '../../../../../web-components/data-table';
 import { Appointment } from '../../../../models';
 import { MultipleItemQuery } from '../../../../../lib/repository';
 import { Observable } from 'rxjs/Rx';
@@ -17,7 +17,7 @@ import { Observable } from 'rxjs/Rx';
 })
 export class ClientAppointmentListComponent extends ClientsBaseComponent implements OnInit {
 
-  public config: DataListConfig<Appointment>;
+  public config: DataTableConfig;
 
   constructor(
     protected activatedRoute: ActivatedRoute,
@@ -64,46 +64,40 @@ export class ClientAppointmentListComponent extends ClientsBaseComponent impleme
     dateNow.setSeconds(0);
     dateNow.setMilliseconds(0);
 
-    this.config = this.dependencies.webComponentServices.dataListService.dataList<Appointment>(
-      searchTerm => {
-        return this.dependencies.itemServices.appointmentService.items()
-          .byCurrentUser()
-          .whereEquals('ClientId', clientId)
-          .include('Location');
-      },
-    )
+    this.config = this.dependencies.itemServices.appointmentService.buildDataTable((query, search) => query
+      .byCurrentUser()
+      .whereEquals('ClientId', clientId)
+      .whereLike('AppointmentName', search)
+      .include('Location'))
       .withFields([
         {
           value: (item) => item.appointmentName,
-          flex: 50
+          name: (item) => super.translate('module.clients.appointments.appointmentName'),
+          sortKey: 'AppointmentName'
         },
         {
           value: (item) => item.location.locationName,
-          flex: 25,
-          isSubtle: true,
-          hideOnSmallScreens: true,
-          align: AlignEnum.Right
+          name: (item) => super.translate('module.clients.appointments.where'),
+          sortKey: 'Location.LocationName'
         },
         {
           value: (item) => super.formatDate(item.appointmentDate),
-          isSubtle: true,
-          align: AlignEnum.Right,
+          name: (item) => super.translate('module.clients.appointments.when'),
+          sortKey: 'AppointmentDate'
         },
       ])
-      .showAllFilter(false)
-      .showSearch(false)
-      .filter(new Filter({
-        filterNameKey: 'module.clients.appointments.upcomingAppointments',
-        onFilter: query => query.whereGreaterThan('AppointmentDate', dateNow),
-        countQuery: (query) => query.toCountQuery()
-      }))
-      .filter(new Filter({
-        filterNameKey: 'module.clients.appointments.oldAppointments',
-        onFilter: query => query.whereLessThen('AppointmentDate', dateNow),
-        countQuery: (query) => query.toCountQuery()
-      }))
-      .showPager(true)
-      .pagerSize(7)
+      .withFilters([
+        {
+          name: super.translate('module.clients.appointments.upcomingAppointments'),
+          guid: 'upcomingAppointments',
+          query: query => query.whereGreaterThan('AppointmentDate', dateNow),
+        },
+        {
+          name: super.translate('module.clients.appointments.oldAppointments'),
+          guid: 'oldAppointments',
+          query: query => query.whereLessThen('AppointmentDate', dateNow),
+        }
+      ])
       .onClick((item) => super.navigate([super.getTrainerUrl('clients/edit/') + this.clientId + '/appointments/view/' + item.id]))
       .build();
   }

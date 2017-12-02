@@ -151,7 +151,8 @@
 				"where": "Kde",
 				"when": "Kdy",
 				"notes": "Poznámky",
-				"workout": "Trénink"
+				"workout": "Trénink",
+				"appointmentName": "Název schůzky"
 			},
 			"viewClientSubtitle": "{{fullName}}",
 			"clients": "Klienti",
