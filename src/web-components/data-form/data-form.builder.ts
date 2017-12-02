@@ -125,10 +125,18 @@ export class DataFormBuilder<TItem extends IItem> {
     }
 
     /**
-     * Callback for when the form has fetched data
-     */
-    onFormLoaded(resolver: (form: DataFormEditDefinition | DataFormInsertDefinition) => void): this {
-        this.config.onFormLoaded = resolver;
+    * Callback for when the form has fetched data
+    */
+    onInsertFormLoaded(resolver: (form: DataFormInsertDefinition) => void): this {
+        this.config.onInsertFormLoaded = resolver;
+        return this;
+    }
+
+    /**
+    * Callback for when the form has fetched data
+    */
+    onEditFormLoaded(resolver: (form: DataFormEditDefinition) => void): this {
+        this.config.onEditFormLoaded = resolver;
         return this;
     }
 
@@ -233,6 +241,7 @@ export class DataFormBuilder<TItem extends IItem> {
             field.key,
             this.mapFieldType(field.controlTypeEnum),
             field.required,
+            field.value,
             {
                 defaultValue: field.defaultValue,
                 hint: field.hint,
@@ -280,7 +289,7 @@ export class DataFormBuilder<TItem extends IItem> {
     private mapFormDefinition(formDefinition: Observable<ResponseFormEdit<TItem> | ResponseFormInsert>): Observable<DataFormEditDefinition | DataFormInsertDefinition> {
         return formDefinition.map(response => {
             if (response instanceof ResponseFormEdit) {
-                return new DataFormEditDefinition(response.fields.map(m => this.mapDataFormField(m)));
+                return new DataFormEditDefinition(response.fields.map(m => this.mapDataFormField(m)), response.item);
             }
 
             if (response instanceof ResponseFormInsert) {

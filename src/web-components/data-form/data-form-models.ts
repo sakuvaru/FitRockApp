@@ -4,11 +4,6 @@ import { DataFormFieldTypeEnum, DataFormSectionSize} from './data-form.enums';
 export class DataFormField {
 
     /**
-     * Value of the field
-     */
-    public value?: string | number | Date | boolean;
-
-    /**
      * Default value of the field
      */
     public defaultValue?: string | number | Date | boolean;
@@ -51,6 +46,11 @@ export class DataFormField {
          * Indicates if field is required
          */
         public required: boolean,
+
+        /** 
+         * Value of field
+        */
+        public value?: string | boolean | Date | number,
         
         optional?: {
             // optional
@@ -151,7 +151,8 @@ export abstract class DataFormAbstractDefinition {
 export class DataFormEditDefinition extends DataFormAbstractDefinition {
 
     constructor(
-        public fields: DataFormField[]
+        public fields: DataFormField[],
+        public item: any
     ) {
         super(fields);
     }

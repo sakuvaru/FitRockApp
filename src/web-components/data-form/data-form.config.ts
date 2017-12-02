@@ -69,7 +69,12 @@ export class DataFormConfig {
     /**
      * Callback for when the form has fetched data
      */
-    public onFormLoaded?: (form: DataFormEditDefinition | DataFormInsertDefinition) => void;
+    public onEditFormLoaded?: (form: DataFormInsertDefinition) => void;
+
+    /**
+     * Callback for when the form has fetched data
+     */
+    public onInsertFormLoaded?: (form: DataFormInsertDefinition) => void;
 
     /**
      * Callback for saving an item

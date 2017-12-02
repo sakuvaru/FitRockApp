@@ -7,7 +7,7 @@ import { BaseWebComponent } from '../base-web-component.class';
 
 // data form 
 import { DataFormConfig } from './data-form.config';
-import { DataFormActiomEnum, DataFormSectionSize } from './data-form.enums';
+import { DataFormActiomEnum, DataFormSectionSize, DataFormFieldTypeEnum } from './data-form.enums';
 import {
     DataFormDeleteResponse, DataFormEditDefinition, DataFormEditResponse, DataFormField,
     DataFormInsertDefinition, DataFormInsertResponse, DataFormSection
@@ -144,8 +144,6 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
         private localizationService: LocalizationService
     ) {
         super();
-
-        this.localizationService.get('menu.dashboard').subscribe(result => console.log(result));
     }
 
     ngOnInit(): void {
@@ -231,9 +229,18 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
                 this.subscribeToFormActions();
 
                 // trigger form loaded event
-                if (this.config.onFormLoaded) {
-                    this.config.onFormLoaded(xDefinition);
+                if (xDefinition instanceof DataFormEditDefinition) {
+                    if (this.config.onEditFormLoaded) {
+                        this.config.onEditFormLoaded(xDefinition);
+                    }
+                } else if (xDefinition instanceof DataFormInsertDefinition) {
+                    if (this.config.onInsertFormLoaded) {
+                        this.config.onInsertFormLoaded(xDefinition);
+                    }
+                } else {
+                    throw Error(`Unsupported form definition response`);
                 }
+
             });
 
     }
@@ -374,10 +381,6 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
                     if (this.config.onAfterSave) {
                         this.config.onAfterSave(response);
                     }
-
-                    if (this.config.clearFormAfterSave) {
-                        this.clearForm();
-                    }
                 }
                 if (response instanceof DataFormDeleteResponse) {
                     this.showSnackbarDeleteMessage();
@@ -421,6 +424,11 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
 
         fields.forEach(field => {
             let row: DataFormRow;
+
+            // do not add hidden fields to row
+            if (field.fieldType === DataFormFieldTypeEnum.Hidden) {
+                return;
+            }
 
             if (!field.width || !field.rowNumber) {
                 // use default values because the row is not properly set

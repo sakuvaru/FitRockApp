@@ -4,7 +4,7 @@
             <loader [enabled]="loaderEnabled" type="linear"></loader>
         </mat-card>
     </div>
-    <form [formGroup]="formGroup" autocomplete="off">
+    <form *ngIf="formGroup" [formGroup]="formGroup" autocomplete="off">
 
         <mat-card>
 

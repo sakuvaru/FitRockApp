@@ -120,7 +120,10 @@ export abstract class BaseFormControlComponent extends BaseWebComponent implemen
             const editValue = this.getEditValue();
             this.formGroup.controls[this.field.key].setValue(editValue);
             this.field.value = editValue;
+
         }
+
+        this.cdr.detectChanges();
     }
 
     private translate(): void {
