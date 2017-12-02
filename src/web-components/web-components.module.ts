@@ -20,6 +20,7 @@ import { ImagesModule } from './images/images.module';
 import { ListingModule } from './listing/listing.module';
 import { DataTableModule } from './data-table/data-table.module';
 import { DataFormModule } from './data-form/data-form.module';
+import { LayoutModule } from './layout/layout.module';
 
 @NgModule({
     imports: [
@@ -41,7 +42,8 @@ import { DataFormModule } from './data-form/data-form.module';
         ImagesModule,
         ListingModule,
         DataTableModule,
-        DataFormModule
+        DataFormModule,
+        LayoutModule
     ]
 })
 export class WebComponentsModule { }
