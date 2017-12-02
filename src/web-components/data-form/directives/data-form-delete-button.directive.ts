@@ -42,7 +42,11 @@ export class DataFormDeleteButtonDirective extends BaseWebComponent implements O
         this.initialized = true;
 
         // listen to clicks
-        this.renderer.listen(this.elem.nativeElement, 'click', (event) => {
+        // find button because it is possible that nativeElement itself is not a button
+        const button = this.elem.nativeElement.querySelector('button');
+
+        // use either the button or native element itself (which should be button)
+        this.renderer.listen(button ? button : this.elem.nativeElement, 'click', (event) => {
             this.handleButtonClick();
         });
     }
@@ -54,7 +58,7 @@ export class DataFormDeleteButtonDirective extends BaseWebComponent implements O
         }
 
         if (this.dataForm.isDeleteEnabled) {
-           this.dataForm.handleDeleteItem();
+            this.dataForm.handleDeleteItem();
         } else {
             console.warn(`Cannot delete item using form because delete is not enabled`);
             return;

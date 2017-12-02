@@ -36,6 +36,7 @@ export class DataFormSaveButtonDirective extends BaseWebComponent implements OnI
     private initDirective(): void {
         if (!this.dataForm || this.initialized) {
             // form is not yet ready or was already initialized
+            console.log(this.dataForm);
             return;
         }
 
@@ -47,7 +48,11 @@ export class DataFormSaveButtonDirective extends BaseWebComponent implements OnI
         this.initialized = true;
 
         // listen to clicks
-        this.renderer.listen(this.elem.nativeElement, 'click', (event) => {
+        // find button because it is possible that nativeElement itself is not a button
+        const button = this.elem.nativeElement.querySelector('button');
+
+        // use either the button or native element itself (which should be button)
+        this.renderer.listen(button ? button : this.elem.nativeElement, 'click', (event) => {
             this.handleButtonClick();
         });
 
@@ -68,6 +73,8 @@ export class DataFormSaveButtonDirective extends BaseWebComponent implements OnI
     }
 
     private handleButtonClick(): void {
+        console.log('cli');
+        
         // make sure that input is set and contains reference to data form component
         if (!this.dataForm || !(this.dataForm instanceof DataFormComponent)) {
             throw Error(`Data form save directive failed because data form is not set or is of improper type`);
