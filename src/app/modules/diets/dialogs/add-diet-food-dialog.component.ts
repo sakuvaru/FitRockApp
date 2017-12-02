@@ -8,7 +8,7 @@ import { AppConfig, UrlConfig } from '../../../config';
 import { DataListConfig, AlignEnum } from '../../../../web-components/data-list';
 import { Food, DietFood } from '../../../models';
 import { MAT_DIALOG_DATA } from '@angular/material';
-import { FormConfig, DynamicFormStatus } from '../../../../web-components/dynamic-form';
+import { DataFormConfig } from '../../../../web-components/data-form';
 import { Observable, Subject } from 'rxjs/Rx';
 import { stringHelper } from '../../../../lib/utilities';
 
@@ -21,11 +21,7 @@ export class AddDietFoodDialogComponent extends BaseComponent implements OnInit 
   public dietId: number;
   public food: Food;
 
-  public dietFoodForm: FormConfig<DietFood>;
-
-  public customSaveButtonSubject: Subject<void> = new Subject<void>();
-  public customDeleteButtonSubject: Subject<void> = new Subject<void>();
-  public formStatus: DynamicFormStatus | undefined;
+  public dietFoodForm: DataFormConfig;
 
   /**
    * Accessed by parent component
@@ -56,14 +52,14 @@ export class AddDietFoodDialogComponent extends BaseComponent implements OnInit 
   }
 
   private initForm(): void {
-    this.dietFoodForm = this.dependencies.itemServices.dietFoodService.insertForm()
+    this.dietFoodForm = this.dependencies.itemServices.dietFoodService.buildInsertForm()
       .fieldValueResolver((fieldName, value) => {
         if (fieldName === 'FoodId') {
-          return this.food.id;
+          return Observable.of(this.food.id);
         } else if (fieldName === 'DietId') {
-          return this.dietId;
+          return Observable.of(this.dietId);
         }
-        return value;
+        return Observable.of(value);
       })
       .fieldLabelResolver((field, originalLabel) => {
         if (field.key === 'UnitValue') {
@@ -86,10 +82,6 @@ export class AddDietFoodDialogComponent extends BaseComponent implements OnInit 
         this.close();
       }))
       .build();
-  }
-
-  public onStatusChanged(status: DynamicFormStatus): void {
-    this.formStatus = status;
   }
 
   public close(): void {

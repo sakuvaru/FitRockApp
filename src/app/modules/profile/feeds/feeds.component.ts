@@ -6,7 +6,6 @@ import { AppConfig, UrlConfig } from '../../../config';
 
 // requied by component
 import { MyProfileMenuItems } from '../menu.items';
-import { FormConfig } from '../../../../web-components/dynamic-form';
 import { Feed, FeedResult } from '../../../models';
 import { DataListConfig, AlignEnum, Filter } from '../../../../web-components/data-list';
 import { Observable } from 'rxjs/Rx';

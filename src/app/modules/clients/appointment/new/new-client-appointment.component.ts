@@ -6,7 +6,7 @@ import { AppConfig, UrlConfig } from '../../../../config';
 
 // required by component
 import { ClientsBaseComponent } from '../../clients-base.component';
-import { FormConfig } from '../../../../../web-components/dynamic-form';
+import { DataFormConfig } from '../../../../../web-components/data-form';
 import { NewClientAppointmentMenuItems } from '../../menu.items';
 import { Appointment } from '../../../../models';
 import { Observable } from 'rxjs/Rx';
@@ -16,7 +16,7 @@ import { Observable } from 'rxjs/Rx';
 })
 export class NewClientAppointmentComponent extends ClientsBaseComponent implements OnInit {
 
-    public formConfig: FormConfig<Appointment>;
+    public formConfig: DataFormConfig;
 
     constructor(
         protected activatedRoute: ActivatedRoute,
@@ -61,14 +61,14 @@ export class NewClientAppointmentComponent extends ClientsBaseComponent implemen
     private getFormObservable(): Observable<any> {
         return this.clientIdChange
             .map(clientId => {
-                this.formConfig = this.dependencies.itemServices.appointmentService.insertForm({
-                    customFormDefinitionQuery: this.dependencies.itemServices.appointmentService.insertFormQuery().withData('clientId', clientId)
+                this.formConfig = this.dependencies.itemServices.appointmentService.buildInsertForm({
+                    formDefinitionQuery: this.dependencies.itemServices.appointmentService.insertFormQuery().withData('clientId', clientId)
                 })
                     .fieldValueResolver((fieldName, value) => {
                         if (fieldName === 'ClientId') {
-                            return clientId;
+                            return Observable.of(clientId);
                         }
-                        return value;
+                        return Observable.of(value);
                     })
                     .onAfterInsert((response) => super.navigate([super.getTrainerUrl('clients/edit/' + clientId + '/appointments/edit/' + response.item.id)]))
                     .build();

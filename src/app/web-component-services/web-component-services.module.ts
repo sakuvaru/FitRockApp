@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 
 // services to import
-import { DataListService, DynamicFormService, GalleryService, GraphService, LoadMoreService, 
+import { DataListService, GalleryService, GraphService, LoadMoreService, 
     UploaderService, DataTableService, DataFormService
  } from './index';
 
@@ -12,7 +12,6 @@ import { DataListService, DynamicFormService, GalleryService, GraphService, Load
     ],
     providers: [
         DataListService,
-        DynamicFormService, 
         GalleryService,
         GraphService, 
         LoadMoreService,

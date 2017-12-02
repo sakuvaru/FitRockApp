@@ -178,7 +178,7 @@ export class ChatComponent extends BaseComponent implements OnInit {
                 return Observable.of(value);
             })
             .wrapInCard(false)
-            .onAfterSave((response) => {
+            .onAfterInsert((response) => {
                 // reload messages
                 super.subscribeToObservable(this.getChatMessagesObservable(userId, 1, true, this.chatMessagesSearch)
                     .takeUntil(this.ngUnsubscribe));

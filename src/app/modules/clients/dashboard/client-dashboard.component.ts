@@ -8,7 +8,6 @@ import { AppConfig, UrlConfig } from '../../../config';
 import { Observable } from 'rxjs/Rx';
 import { ClientsBaseComponent } from '../clients-base.component';
 import { ClientMenuItems } from '../menu.items';
-import { FormConfig, DynamicFormComponent } from '../../../../web-components/dynamic-form';
 import { User, Appointment, Workout, Diet, ChatMessage } from '../../../models';
 
 @Component({

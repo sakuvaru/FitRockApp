@@ -33,7 +33,7 @@ import { LocalizationService } from '../../../lib/localization';
 import * as moment from 'moment';
 
 // Web component services
-import { DataListService, DynamicFormService, GalleryService, GraphService,
+import { DataListService, GalleryService, GraphService,
     LoadMoreService, UploaderService, DataTableService, DataFormService
 } from '../../web-component-services';
 
@@ -102,7 +102,6 @@ export class ComponentDependencyService {
         // web component services
         this.webComponentServices = new WebComponentServices();
         this.webComponentServices.dataListService = injector.get(DataListService);
-        this.webComponentServices.dynamicFormService = injector.get(DynamicFormService);
         this.webComponentServices.loadMoreService = injector.get(LoadMoreService);
         this.webComponentServices.uploaderService = injector.get(UploaderService);
         this.webComponentServices.galleryService = injector.get(GalleryService);
@@ -154,7 +153,6 @@ export class ComponentDependencyService {
 
 export class WebComponentServices {
     public dataListService: DataListService;
-    public dynamicFormService: DynamicFormService;
     public loadMoreService: LoadMoreService;
     public uploaderService: UploaderService;
     public galleryService: GalleryService;

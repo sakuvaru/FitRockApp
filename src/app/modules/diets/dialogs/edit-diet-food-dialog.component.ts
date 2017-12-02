@@ -8,7 +8,7 @@ import { AppConfig, UrlConfig } from '../../../config';
 import { DataListConfig, AlignEnum } from '../../../../web-components/data-list';
 import { Food, DietFood } from '../../../models';
 import { MAT_DIALOG_DATA } from '@angular/material';
-import { FormConfig, DynamicFormStatus } from '../../../../web-components/dynamic-form';
+import { DataFormConfig} from '../../../../web-components/data-form';
 import { Observable, Subject } from 'rxjs/Rx';
 
 @Component({
@@ -16,17 +16,13 @@ import { Observable, Subject } from 'rxjs/Rx';
 })
 export class EditDietFoodDialogComponent extends BaseComponent implements OnInit {
 
-  public dietFoodForm: FormConfig<DietFood>;
+  public dietFoodForm: DataFormConfig;
 
   // public because it is accessed by parent component
   public dietFood: DietFood;
 
   public idOfDeletedDietFood: number;
   public dietFoodWasDeleted: boolean = false;
-
-  public customSaveButtonSubject: Subject<void> = new Subject<void>();
-  public customDeleteButtonSubject: Subject<void> = new Subject<void>();
-  public formStatus: DynamicFormStatus | undefined;
 
   constructor(
     protected dependencies: ComponentDependencyService,
@@ -51,7 +47,7 @@ export class EditDietFoodDialogComponent extends BaseComponent implements OnInit
   }
 
   private initForm(): void {
-    this.dietFoodForm = this.dependencies.itemServices.dietFoodService.editForm(this.dietFood.id)
+    this.dietFoodForm = this.dependencies.itemServices.dietFoodService.buildEditForm(this.dietFood.id)
       .wrapInCard(false)
       .fieldLabelResolver((field, originalLabel) => {
         if (field.key === 'UnitValue') {
@@ -68,7 +64,7 @@ export class EditDietFoodDialogComponent extends BaseComponent implements OnInit
         }
         return Observable.of(originalLabel);
       })
-      .onAfterUpdate((response) => {
+      .onAfterEdit((response) => {
         this.dietFood = response.item;
         this.close();
       })
@@ -78,10 +74,6 @@ export class EditDietFoodDialogComponent extends BaseComponent implements OnInit
         this.close();
       })
       .build();
-  }
-
-  public onStatusChanged(status: DynamicFormStatus): void {
-    this.formStatus = status;
   }
 
   public close(): void {
