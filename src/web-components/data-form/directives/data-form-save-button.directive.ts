@@ -27,11 +27,11 @@ export class DataFormSaveButtonDirective extends BaseWebComponent implements Aft
     }
 
     ngAfterViewInit() {
-        this.initDirective();
+       // this.initDirective();
     }
 
     private initDirective(): void {
-        if (!this.dataForm || this.initialized) {
+        if (!this.dataForm || this.initialized || !this.elem) {
             // form is not yet ready or was already initialized
             return;
         }

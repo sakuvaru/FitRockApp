@@ -435,20 +435,26 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
         const rows: DataFormRow[] = [];
         let defaultStartRowNumber: number = -1000;
         const defaultWidth: number = 100;
+        const unsetRowNumber: number = -1;
 
         if (!fields) {
             return [];
         }
 
-        const getRow = (rowNumber: number, width: number) => {
+        const getRow = (rowNumber: number, width: number, createAsSeparateRow: boolean) => {
             const row = rows.find(m => m.rowNumber === rowNumber);
             if (!row) {
+                const calculatedRowNumber = createAsSeparateRow ? defaultStartRowNumber : rowNumber;
                 // row  does not exist, create it first
-                const newRow = new DataFormRow(defaultStartRowNumber);
+                const newRow = new DataFormRow(calculatedRowNumber);
+
+                // insert new row
                 rows.push(newRow);
 
-                // increase the default start row
-                defaultStartRowNumber++;
+                // increase the default start row if row was created separately
+                if (createAsSeparateRow) {
+                    defaultStartRowNumber++;
+                }
 
                 return newRow;
             }
@@ -463,12 +469,12 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
                 return;
             }
 
-            if (!field.width || !field.rowNumber) {
+            if (!field.width || !field.rowNumber || unsetRowNumber === field.rowNumber) {
                 // use default values because the row is not properly set
-                row = getRow(defaultStartRowNumber, defaultWidth);
+                row = getRow(defaultStartRowNumber, defaultWidth, true);
             } else {
                 // get row using field values
-                row = getRow(field.rowNumber, field.width);
+                row = getRow(field.rowNumber, field.width, false);
             }
 
             // add field to row

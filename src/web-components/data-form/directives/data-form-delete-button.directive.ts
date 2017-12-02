@@ -26,7 +26,7 @@ export class DataFormDeleteButtonDirective extends BaseWebComponent implements A
     }
 
     private initDirective(): void {
-        if (!this.dataForm || this.initialized) {
+        if (!this.dataForm || this.initialized || !this.elem) {
             // form is not yet ready or was already initialized
             return;
         }
@@ -45,7 +45,7 @@ export class DataFormDeleteButtonDirective extends BaseWebComponent implements A
         const elem = button ? button : a;
 
         // by wrapping elem in div it will work universally
-        this.renderer.listen(elem, 'click', (event) => {
+        this.renderer.listen(elem ? elem : this.elem.nativeElement, 'click', (event) => {
             this.handleButtonClick();
         });
     }
