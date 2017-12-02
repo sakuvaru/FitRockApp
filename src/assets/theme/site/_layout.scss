@@ -59,3 +59,22 @@
 .w-layout-sidemenu-title {
     font-size: 18px;
 }
+
+.w-layout-drawbar-item:hover {
+    background-color: $primary!important;
+    
+    color: $primary-contrast!important;
+
+    .mat-icon {
+        color: $primary-contrast!important;
+    }
+}
+
+.td-nagivation-drawer-toolbar.mat-toolbar {
+    background-color: $primary!important;
+    color: $primary-contrast!important;
+}
+
+.td-navigation-drawer-menu-toggle > span {
+    font-size: 12px!important;
+}
