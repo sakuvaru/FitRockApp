@@ -18,6 +18,7 @@ import * as _ from 'underscore';
 import { MatSnackBar } from '@angular/material';
 import { observableHelper } from '../../lib/utilities';
 import { LocalizationService } from '../../lib/localization';
+import { TdDialogService } from '@covalent/core';
 
 @Component({
     selector: 'data-form',
@@ -134,14 +135,23 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
         'snackbar': {
             'deleted': '',
             'saved': '',
-            'inserted': ''
-        }
+            'inserted': '',
+        },
+        'delete': {
+            'messageGeneric': '',
+            'cancel': '',
+            'confirm': '',
+            'title': '',
+            'tooltip': '',
+            'deleted': ''
+        },
     };
 
     constructor(
         private snackbarService: MatSnackBar,
         private cdr: ChangeDetectorRef,
-        private localizationService: LocalizationService
+        private localizationService: LocalizationService,
+        private dialogService: TdDialogService,
     ) {
         super();
     }
@@ -155,7 +165,8 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
     }
 
     handleDeleteItem(): void {
-        this.formActionSubject.next(DataFormActiomEnum.Delete);
+        // first confirm delete
+        this.confirmDelete();
     }
 
     handleEditItem(): void {
@@ -289,6 +300,24 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
                 }
 
                 return editResponse;
+            });
+    }
+
+    private confirmDelete(): void {
+        this.dialogService.openConfirm({
+            message: this.translations.delete.messageGeneric,
+            disableClose: false, // defaults to false
+            title: this.translations.delete.title,
+            cancelButton: this.translations.delete.cancel,
+            acceptButton: this.translations.delete.confirm,
+        }).afterClosed()
+            .takeUntil(this.ngUnsubscribe)
+            .subscribe((accept: boolean) => {
+                if (accept) {
+                    this.formActionSubject.next(DataFormActiomEnum.Delete);
+                } else {
+                    // user did not accepted delete
+                }
             });
     }
 
@@ -491,6 +520,11 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
         this.localizationService.get('webComponents.dataForm.snackbar.saved').map(text => this.translations.snackbar.saved = text)
             .zip(this.localizationService.get('webComponents.dataForm.snackbar.deleted').map(text => this.translations.snackbar.deleted = text))
             .zip(this.localizationService.get('webComponents.dataForm.snackbar.inserted').map(text => this.translations.snackbar.inserted = text))
+            .zip(this.localizationService.get('webComponents.dataForm.delete.messageGeneric').map(text => this.translations.delete.messageGeneric = text))
+            .zip(this.localizationService.get('webComponents.dataForm.delete.title').map(text => this.translations.delete.title = text))
+            .zip(this.localizationService.get('webComponents.dataForm.delete.cancel').map(text => this.translations.delete.cancel = text))
+            .zip(this.localizationService.get('webComponents.dataForm.delete.confirm').map(text => this.translations.delete.confirm = text))
+            .zip(this.localizationService.get('webComponents.dataForm.delete.tooltip').map(text => this.translations.delete.tooltip = text))
             .takeUntil(this.ngUnsubscribe)
             .subscribe();
     }

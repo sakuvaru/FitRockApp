@@ -3,11 +3,12 @@ import { DataFormComponent } from '../data-form.component';
 
 // common
 import { BaseWebComponent } from '../../base-web-component.class';
+import { AfterViewInit } from '@angular/core/src/metadata/lifecycle_hooks';
 
 @Directive({
     selector: '[dataFormDeleteButton]',
 })
-export class DataFormDeleteButtonDirective extends BaseWebComponent implements OnInit, OnChanges {
+export class DataFormDeleteButtonDirective extends BaseWebComponent implements AfterViewInit {
 
     @Input() dataForm: DataFormComponent;
 
@@ -20,11 +21,7 @@ export class DataFormDeleteButtonDirective extends BaseWebComponent implements O
         super();
     }
 
-    ngOnInit() {
-        this.initDirective();
-    }
-
-    ngOnChanges(changes: SimpleChanges) {
+    ngAfterViewInit() {
         this.initDirective();
     }
 
@@ -35,20 +32,45 @@ export class DataFormDeleteButtonDirective extends BaseWebComponent implements O
         }
 
         if (!(this.dataForm instanceof DataFormComponent)) {
-            throw Error(`Data form save directive failed because data form is not set or is of improper type`);
+            throw Error(`Data form delete directive failed because data form is not set or is of improper type`);
         }
 
         // initialize directive only once
         this.initialized = true;
 
         // listen to clicks
-        // find button because it is possible that nativeElement itself is not a button
         const button = this.elem.nativeElement.querySelector('button');
+        const a = this.elem.nativeElement.querySelector('a');
 
-        // use either the button or native element itself (which should be button)
-        this.renderer.listen(button ? button : this.elem.nativeElement, 'click', (event) => {
+        const elem = button ? button : a;
+
+        // by wrapping elem in div it will work universally
+        this.renderer.listen(elem, 'click', (event) => {
             this.handleButtonClick();
         });
+    }
+
+    private wrapElemInDivAndReturnIt(): any {
+        // Get parent of the original input element
+        const parent = this.elem.nativeElement.parentNode;
+
+        // Create a div
+        const divElement = this.renderer.createElement('div');
+
+        // Render div as inline
+        this.renderer.setStyle(divElement, 'display', 'inline');
+        this.renderer.setStyle(divElement, 'position', 'relative');
+
+        // Add the div, just before the input
+        this.renderer.insertBefore(parent, divElement, this.elem.nativeElement);
+
+        // Remove the input
+        this.renderer.removeChild(parent, this.elem.nativeElement);
+
+        // Re-add it inside the div
+        this.renderer.appendChild(divElement, this.elem.nativeElement);
+
+        return divElement;
     }
 
     private handleButtonClick(): void {

@@ -3,11 +3,12 @@ import { DataFormComponent } from '../data-form.component';
 
 // common
 import { BaseWebComponent } from '../../base-web-component.class';
+import { AfterViewInit } from '@angular/core/src/metadata/lifecycle_hooks';
 
 @Directive({
     selector: '[dataFormSaveButton]',
 })
-export class DataFormSaveButtonDirective extends BaseWebComponent implements OnInit, OnChanges {
+export class DataFormSaveButtonDirective extends BaseWebComponent implements AfterViewInit {
 
     @Input() dataForm: DataFormComponent;
 
@@ -25,18 +26,13 @@ export class DataFormSaveButtonDirective extends BaseWebComponent implements OnI
         super();
     }
 
-    ngOnInit() {
-        this.initDirective();
-    }
-
-    ngOnChanges(changes: SimpleChanges) {
+    ngAfterViewInit() {
         this.initDirective();
     }
 
     private initDirective(): void {
         if (!this.dataForm || this.initialized) {
             // form is not yet ready or was already initialized
-            console.log(this.dataForm);
             return;
         }
 
@@ -48,11 +44,14 @@ export class DataFormSaveButtonDirective extends BaseWebComponent implements OnI
         this.initialized = true;
 
         // listen to clicks
-        // find button because it is possible that nativeElement itself is not a button
+        // find button because it is possible that nativeElement itself is not a button or link
         const button = this.elem.nativeElement.querySelector('button');
+        const a = this.elem.nativeElement.querySelector('a');
+
+        const elem = button ? button : a;
 
         // use either the button or native element itself (which should be button)
-        this.renderer.listen(button ? button : this.elem.nativeElement, 'click', (event) => {
+        this.renderer.listen(elem ? elem : this.elem.nativeElement, 'click', (event) => {
             this.handleButtonClick();
         });
 
@@ -73,8 +72,6 @@ export class DataFormSaveButtonDirective extends BaseWebComponent implements OnI
     }
 
     private handleButtonClick(): void {
-        console.log('cli');
-        
         // make sure that input is set and contains reference to data form component
         if (!this.dataForm || !(this.dataForm instanceof DataFormComponent)) {
             throw Error(`Data form save directive failed because data form is not set or is of improper type`);

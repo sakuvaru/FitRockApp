@@ -28,6 +28,8 @@ export class DeleteButtonComponent extends BaseWebComponent implements OnInit {
 
     @Input() mode: 'button' | 'simple' = 'button';
 
+    @Input() enableConfirm: boolean = true;
+
     @Output() confirm = new EventEmitter();
 
     ngOnInit() {
@@ -42,6 +44,11 @@ export class DeleteButtonComponent extends BaseWebComponent implements OnInit {
 
     public handleClick(event: any): void {
         event.stopPropagation(); // prevents issues if the clicked linked is within another link
+
+        // confirmation not required
+        if (!this.enableConfirm) {
+            return;
+        }
 
         this.dialogService.openConfirm({
             message: this.messageText,

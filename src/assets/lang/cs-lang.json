@@ -578,6 +578,14 @@
 				"saved": "Uloženo",
 				"deleted": "Smazáno",
 				"inserted": "Vytvořeno"
+			},
+			"delete": {
+				"messageGeneric": "Opravdu chceš smazat tento objekt?",
+				"title": "Potvrzení",
+				"cancel": "Zrušit",
+				"confirm": "Smazat",
+				"tooltip": "Smazat",
+				"deleted": "Smazáno"
 			}
 		}
 	}
