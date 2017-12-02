@@ -47,11 +47,11 @@ export class PhoneNumberComponent extends BaseFormControlComponent implements On
       return '';
     }
 
-    if (!(defaultFieldValue instanceof String)) {
-      throw Error(`PhoneNumber field expected default value to be 'String', but other type was given`);
+    if (!((typeof defaultFieldValue === 'string') || (defaultFieldValue instanceof String))) {
+      throw Error(`Text field expected value to be 'String', but other type was given`);
     }
 
-    return defaultFieldValue;
+    return defaultFieldValue as string;
   }
 
   protected getEditValue(): string {
@@ -61,11 +61,11 @@ export class PhoneNumberComponent extends BaseFormControlComponent implements On
       return '';
     }
 
-    if (fieldValue || !(fieldValue instanceof String)) {
-      throw Error(`PhoneNumber field expected value to be 'String', but other type was given`);
+    if (!((typeof fieldValue === 'string') || (fieldValue instanceof String))) {
+      throw Error(`Text field expected value to be 'String', but other type was given`);
     }
 
-    return fieldValue;
+    return fieldValue as string;
   }
 }
 

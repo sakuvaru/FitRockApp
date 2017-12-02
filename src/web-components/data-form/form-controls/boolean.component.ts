@@ -30,10 +30,8 @@ export class BooleanComponent extends BaseFormControlComponent implements OnInit
     // set default checkbox value to false programatically (it will otherwise treat checkbox as undefined)
     const defaultFieldValue = this.field.defaultValue;
 
-    if (this.field.required) {
-      if (!this.isBoolean(defaultFieldValue)) {
-        throw Error(`Boolean field expected value to be 'Boolean', but other type was given`);
-      }
+    if (defaultFieldValue && !this.isBoolean(defaultFieldValue)) {
+      throw Error(`Boolean field expected value to be 'Boolean', but other type was given`);
     }
 
     if (defaultFieldValue) {
@@ -48,10 +46,8 @@ export class BooleanComponent extends BaseFormControlComponent implements OnInit
   protected getEditValue(): boolean {
     const fieldValue = this.field.value;
 
-    if (this.field.required) {
-      if (!this.isBoolean(fieldValue)) {
-        throw Error(`Boolean field expected value to be 'Boolean', but other type was given`);
-      }
+    if (fieldValue && !this.isBoolean(fieldValue)) {
+      throw Error(`Boolean field expected value to be 'Boolean', but other type was given`);
     }
 
     if (fieldValue) {
