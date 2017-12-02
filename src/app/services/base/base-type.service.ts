@@ -11,9 +11,15 @@ import {
 import { numberHelper } from '../../../lib/utilities';
 import { DynamicFormEditBuilder, DynamicFormInsertBuilder } from '../../../web-components/dynamic-form';
 
+// forms
+import { DataFormService } from '../../web-component-services';
+import { DataFormBuilder } from '../../../web-components/data-form';
+
 export abstract class BaseTypeService<TItem extends IItem> {
 
     public type: string;
+
+    private readonly dataFormService: DataFormService = new DataFormService();
 
     constructor(
         protected repositoryClient: RepositoryClient,
@@ -76,6 +82,65 @@ export abstract class BaseTypeService<TItem extends IItem> {
     /* --------------------- Form queries ------------------------- */
 
     /**
+     * Builds insert form
+     */
+    buildInsertForm(
+        options?: {
+            formDefinitionQuery?: InsertFormQuery<TItem>,
+            insertQuery?: (formData: Object) => CreateItemQuery<TItem> 
+        }
+    ): DataFormBuilder<TItem> {
+        // query used to get form definition from server
+        const formDefinitionQuery = options && options.formDefinitionQuery ? options.formDefinitionQuery : this.insertFormQuery();
+        const createQuery = options && options.insertQuery ? options.insertQuery : (item: TItem) => this.create(item);
+    
+        return this.dataFormService.insertForm<TItem>(this.type, formDefinitionQuery.get(), (formData) => createQuery(formData).set());
+    }
+
+    buildEditForm (
+        formDefinitionQuery: EditFormQuery<TItem>,
+        options?: {
+            editQuery?: (formData: Object) => EditItemQuery<TItem>,
+            deleteQuery?: (formData: Object) => DeleteItemQuery
+        }
+    ): DataFormBuilder<TItem>;   
+    buildEditForm (
+        itemId: number,
+        options?: {
+            editQuery?: (formData: Object) => EditItemQuery<TItem>,
+            deleteQuery?: (formData: Object) => DeleteItemQuery
+        }
+    ): DataFormBuilder<TItem>;
+    buildEditForm (
+        queryOrId: EditFormQuery<TItem> | number,
+        options?: {
+            editQuery?: (formData: Object) => EditItemQuery<TItem>,
+            deleteQuery?: (formData: Object) => DeleteItemQuery
+        }
+    ): DataFormBuilder<TItem> {
+        // query used to get form definition from server
+        let formQuery: EditFormQuery<TItem> | undefined;
+        if (queryOrId instanceof EditFormQuery) {
+            formQuery = queryOrId;
+        }   
+        
+        if (numberHelper.isNumber(queryOrId)) {
+            formQuery = this.editFormQuery(+queryOrId);
+        }
+
+        if (!formQuery) {
+            throw Error('Could not process edit query');
+        }
+
+        const editQuery = options && options.editQuery ? options.editQuery : (formData: Object) => this.edit(formData);
+        const deleteQuery = options && options.deleteQuery ? options.deleteQuery : (formData: Object) => this.delete(formData['Id']);
+   
+        return this.dataFormService.editForm<TItem>(this.type, formQuery.get(), (formData) => editQuery(formData).set(), {
+            delete: (formData) => deleteQuery(formData).set()
+        });
+    }
+
+    /**
      * Query used to save new item
      */
     insertFormQuery(): InsertFormQuery<TItem> {
@@ -116,8 +181,7 @@ export abstract class BaseTypeService<TItem extends IItem> {
         customEditQuery?: (formData: Object) => EditItemQuery<TItem>,
         customDeleteQuery?: (formData: Object) => DeleteItemQuery
     }): DynamicFormEditBuilder<TItem>;
-
-     /**
+    /**
     * Gets edit form builder
     * @param itemId Id of the item to edit
     */
@@ -125,7 +189,6 @@ export abstract class BaseTypeService<TItem extends IItem> {
             customEditQuery?: (formData: Object) => EditItemQuery<TItem>,
             customDeleteQuery?: (formData: Object) => DeleteItemQuery
         }): DynamicFormEditBuilder<TItem>;
-
     editForm(x: EditFormQuery<TItem> | number, options?: {
         customEditQuery?: (formData: Object) => EditItemQuery<TItem>,
         customDeleteQuery?: (formData: Object) => DeleteItemQuery

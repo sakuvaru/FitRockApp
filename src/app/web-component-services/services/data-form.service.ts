@@ -11,7 +11,7 @@ export class DataFormService {
     editForm<TItem extends IItem>(
         type: string,
         formDefinition: Observable<ResponseFormEdit<TItem>>,
-        edit: (formData: Object) => Observable<ResponseCreate<TItem>>,
+        edit: (formData: Object) => Observable<ResponseEdit<TItem>>,
         options?: {
             delete?: (formData: Object) => Observable<ResponseDelete>
         }
