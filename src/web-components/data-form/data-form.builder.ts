@@ -61,6 +61,14 @@ export class DataFormBuilder<TItem extends IItem> {
     }
 
     /**
+     * Indicates if action buttons (save, edit, delete) are rendered
+     */
+    renderButtons(render: boolean): this {
+        this.config.renderButtons = render;
+        return this;
+    }
+
+    /**
      * Indicates if form is within a card
      * @param wrap Wrap in card
      */

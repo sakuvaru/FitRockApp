@@ -34,7 +34,7 @@
 
             </mat-card-content>
             <mat-divider></mat-divider>
-            <mat-card-actions>
+            <mat-card-actions *ngIf="config.renderButtons">
                 <div fxFlex layout="row" class="push-left push-right push-top-sm push-bottom-sm">
                     <button *ngIf="isInsertForm" mat-raised-button color="accent" (click)="handleInsertItem()" [disabled]="!formGroup.valid">{{ 'webComponents.dataForm.insert' | localize }}</button>
                     <button *ngIf="isEditForm" mat-raised-button color="accent" (click)="handleEditItem()" [disabled]="!formGroup.valid">{{ 'webComponents.dataForm.save' | localize }}</button>
@@ -79,7 +79,7 @@
 
                 <mat-divider></mat-divider>
 
-                <div fxFlex layout="row" class="push-left push-right push-top-sm push-bottom-sm">
+                <div *ngIf="config.renderButtons" fxFlex layout="row" class="push-left push-right push-top-sm push-bottom-sm">
                     <button *ngIf="isInsertForm" mat-raised-button color="accent" (click)="handleInsertItem()" [disabled]="!formGroup.valid">{{ 'webComponents.dataForm.insert' | localize }}</button>
                     <button *ngIf="isEditForm" mat-raised-button color="accent" (click)="handleEditItem()" [disabled]="!formGroup.valid">{{ 'webComponents.dataForm.save' | localize }}</button>
                     <div flex></div>

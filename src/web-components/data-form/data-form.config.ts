@@ -126,6 +126,11 @@ export class DataFormConfig {
      */
     public sections: DataFormSection[] = [];
 
+    /**
+     * Indicates if action buttons (save, edit, delete) are rendered
+     */
+    public renderButtons: boolean = true;
+
     constructor(
         /**
         * Type of the form
