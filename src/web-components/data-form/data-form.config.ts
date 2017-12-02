@@ -77,9 +77,14 @@ export class DataFormConfig {
     public onInsertFormLoaded?: (form: DataFormInsertDefinition) => void;
 
     /**
+     * Callback for saving a new item
+     */
+    public onAfterInsert?: (response: DataFormInsertResponse) => void;
+    
+    /**
      * Callback for saving an item
      */
-    public onAfterSave?: (response: DataFormInsertResponse | DataFormEditResponse) => void;
+    public onAfterEdit?: (response: DataFormEditResponse) => void;
 
     /**
      * Callback for errors

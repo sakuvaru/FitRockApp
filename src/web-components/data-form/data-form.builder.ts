@@ -141,10 +141,18 @@ export class DataFormBuilder<TItem extends IItem> {
     }
 
     /**
+     * Callback for saving a new item
+     */
+    onAfterInsert(resolver: (response: DataFormInsertResponse) => void): this {
+        this.config.onAfterInsert = resolver;
+        return this;
+    }
+
+     /**
      * Callback for saving an item
      */
-    onAfterSave(resolver: (response: DataFormInsertResponse | DataFormEditResponse) => void): this {
-        this.config.onAfterSave = resolver;
+    onAfterEdit(resolver: (response: DataFormEditResponse) => void): this {
+        this.config.onAfterEdit = resolver;
         return this;
     }
 

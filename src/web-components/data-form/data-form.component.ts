@@ -367,8 +367,8 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
                 if (response instanceof DataFormInsertResponse) {
                     this.showSnackbarInsertMessage();
 
-                    if (this.config.onAfterSave) {
-                        this.config.onAfterSave(response);
+                    if (this.config.onAfterInsert) {
+                        this.config.onAfterInsert(response);
                     }
 
                     if (this.config.clearFormAfterSave) {
@@ -378,8 +378,8 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
                 if (response instanceof DataFormEditResponse) {
                     this.showSnackbarSaveMessage();
 
-                    if (this.config.onAfterSave) {
-                        this.config.onAfterSave(response);
+                    if (this.config.onAfterEdit) {
+                        this.config.onAfterEdit(response);
                     }
                 }
                 if (response instanceof DataFormDeleteResponse) {
