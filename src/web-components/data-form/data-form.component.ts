@@ -220,7 +220,7 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
                 // at this point, all fields should be assigned to fields
                 // create rows out of fields
                 this.rows = this.getRows(this.fields);
-                
+
                 // init form group
                 this.formGroup = this.toFormGroup(this.fields);
 
@@ -397,7 +397,7 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
 
     private getRows(fields: DataFormField[]): DataFormRow[] {
         const rows: DataFormRow[] = [];
-        const defaultRowNumber: number = -1;
+        let defaultStartRowNumber: number = -1000;
         const defaultWidth: number = 100;
 
         if (!fields) {
@@ -408,8 +408,12 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
             const row = rows.find(m => m.rowNumber === rowNumber);
             if (!row) {
                 // row  does not exist, create it first
-                const newRow = new DataFormRow(rowNumber);
+                const newRow = new DataFormRow(defaultStartRowNumber);
                 rows.push(newRow);
+
+                // increase the default start row
+                defaultStartRowNumber++;
+
                 return newRow;
             }
             return row;
@@ -420,7 +424,7 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
 
             if (!field.width || !field.rowNumber) {
                 // use default values because the row is not properly set
-                row = getRow(defaultRowNumber, defaultWidth);
+                row = getRow(defaultStartRowNumber, defaultWidth);
             } else {
                 // get row using field values
                 row = getRow(field.rowNumber, field.width);
@@ -443,7 +447,7 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
                 row.addSection(section);
             }
         });
-        
+
         // sort rows by row number
         return _.sortBy(rows, m => m.rowNumber);
     }
