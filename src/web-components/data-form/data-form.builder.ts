@@ -250,8 +250,8 @@ export class DataFormBuilder<TItem extends IItem> {
             this.mapFieldType(field.controlTypeEnum),
             field.required,
             field.value,
+            field.defaultValue,
             {
-                defaultValue: field.defaultValue,
                 hint: field.hint,
                 rowNumber: field.rowNumber,
                 width: field.width, 

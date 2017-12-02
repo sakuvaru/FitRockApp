@@ -1,12 +1,7 @@
 import { Observable } from 'rxjs/Observable';
-import { DataFormFieldTypeEnum, DataFormSectionSize} from './data-form.enums';
+import { DataFormFieldTypeEnum, DataFormSectionSize } from './data-form.enums';
 
 export class DataFormField {
-
-    /**
-     * Default value of the field
-     */
-    public defaultValue?: string | number | Date | boolean;
 
     /**
      * Additional field options
@@ -51,10 +46,14 @@ export class DataFormField {
          * Value of field
         */
         public value?: string | boolean | Date | number,
-        
+
+        /**
+        * Default value of the field
+        */
+        public defaultValue?: string | number | Date | boolean,
+
         optional?: {
             // optional
-            defaultValue?: any,
             options?: DataFormFieldOptions,
             hint?: string,
             rowNumber?: number,

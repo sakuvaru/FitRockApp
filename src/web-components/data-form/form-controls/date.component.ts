@@ -24,30 +24,15 @@ export class DateComponent extends BaseFormControlComponent implements OnInit, O
     super.ngOnChanges(changes);
   }
 
-  protected getInsertValue(): Date | string {
+  protected getInsertValue(): string {
     const defaultFieldValue = this.field.defaultValue;
 
-    if (!defaultFieldValue) {
-      return '';
-    }
-
-    if (!(defaultFieldValue instanceof Date)) {
-      throw Error(`Date time field expected default value to be 'Date', but other type was given`);
-    }
-
-    return defaultFieldValue;
+    return defaultFieldValue as string;
   }
 
-  protected getEditValue(): Date | string {
+  protected getEditValue(): string {
     const fieldValue = this.field.value;
 
-    if (!fieldValue) {
-      return '';
-    }
-
-    if (!(fieldValue instanceof Date)) {
-      throw Error(`Date time field expected value to be 'Date', but other type was given`);
-    }
-    return fieldValue;
+    return fieldValue as string;
   }
 }

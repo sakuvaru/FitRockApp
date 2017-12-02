@@ -177,6 +177,10 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
         this.formActionSubject.next(DataFormActiomEnum.Insert);
     }
 
+    reloadForm(): void {
+        this.initForm();
+    }
+
     private initDataForm(): void {
         if (!this.config || this.initialized) {
             return;
@@ -571,8 +575,8 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
                 // set field value
                 field.value = resolvedValue;
 
-                // set also field default value in case the field is visible
-                field.defaultValue = resolvedValue;
+                // do not 'change default value' as this is overwrite
+                // field.defaultValue = resolvedValue;
 
                 // return resolved field
                 return field;
