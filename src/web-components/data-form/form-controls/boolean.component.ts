@@ -30,42 +30,44 @@ export class BooleanComponent extends BaseFormControlComponent implements OnInit
     // set default checkbox value to false programatically (it will otherwise treat checkbox as undefined)
     const defaultFieldValue = this.field.defaultValue;
 
-    if (!this.field.required) {
-      let defaultValue: boolean;
-      if (defaultFieldValue) {
-        defaultValue = true;
-      } else {
-        defaultValue = false;
+    if (this.field.required) {
+      if (!this.isBoolean(defaultFieldValue)) {
+        throw Error(`Boolean field expected value to be 'Boolean', but other type was given`);
       }
-
-      this.checkBoxIsChecked = defaultValue;
-      return defaultValue;
     }
 
-    if (!(defaultFieldValue instanceof Boolean)) {
-      throw Error(`Boolean field expected default value to be 'Boolean', but other type was given`);
+    if (defaultFieldValue) {
+      this.checkBoxIsChecked = true;
+      return true;
+    } else {
+      this.checkBoxIsChecked = false;
+      return false;
     }
-    this.checkBoxIsChecked = defaultFieldValue;
-    return defaultFieldValue;
   }
 
   protected getEditValue(): boolean {
     const fieldValue = this.field.value;
-    const defaultFieldValue = this.field.defaultValue;
 
-    if (!this.field.required) {
-      if (!(fieldValue instanceof Boolean)) {
+    if (this.field.required) {
+      if (!this.isBoolean(fieldValue)) {
         throw Error(`Boolean field expected value to be 'Boolean', but other type was given`);
       }
-      this.checkBoxIsChecked = fieldValue;
-      return fieldValue;
     }
 
-    if (!(defaultFieldValue instanceof Boolean)) {
-      throw Error(`Boolean field expected default value to be 'Boolean', but other type was given`);
+    if (fieldValue) {
+      this.checkBoxIsChecked = true;
+      return true;
+    } else {
+      this.checkBoxIsChecked = false;
+      return false;
     }
+  }
 
-    this.checkBoxIsChecked = defaultFieldValue;
-    return defaultFieldValue;
+  private isBoolean(value: any): boolean {
+    if (typeof (value) === 'boolean') {
+      // variable is a boolean
+      return true;
+    }
+    return false;
   }
 }

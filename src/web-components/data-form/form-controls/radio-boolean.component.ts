@@ -1,6 +1,8 @@
 import { Component, Input, AfterViewInit, ChangeDetectorRef, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { LocalizationService } from '../../../lib/localization';
 import { BaseFormControlComponent } from './base-form-control.component';
+import { Observable } from 'rxjs/Observable';
+import { observableHelper } from 'lib/utilities';
 
 @Component({
   selector: 'df-radio-boolean',
@@ -9,14 +11,16 @@ import { BaseFormControlComponent } from './base-form-control.component';
 
 export class RadioBooleanComponent extends BaseFormControlComponent implements OnInit, OnChanges {
 
-  private radioCheckboxTrueChecked: boolean;
-  private radioCheckboxFalseChecked: boolean;
-  private showRequiredLabels: boolean = true;
+  public radioCheckboxTrueChecked: boolean;
+  public radioCheckboxFalseChecked: boolean;
+  public showRequiredLabels: boolean = true;
 
-  private trueOptionLabel: string;
-  private falseOptionLabel: string;
+  public trueOptionLabel: string;
+  public falseOptionLabel: string;
 
-  private labelsTranslated: boolean = false;
+  public labelsTranslated: boolean = false;
+
+  public wrappers: WrapperValue[] = [];
 
   constructor(
     protected cdr: ChangeDetectorRef,
@@ -40,58 +44,103 @@ export class RadioBooleanComponent extends BaseFormControlComponent implements O
       return;
     }
 
-    // translate labels for radio boolean
+    // init wrappers
+    const observables: Observable<any>[] = [];
+
     if (this.field.options && this.field.options.trueOptionLabel) {
-      this.localizationService.get(this.field.options.trueOptionLabel)
-        .takeUntil(this.ngUnsubscribe)
-        .subscribe(translatedText => {
+      observables.push(this.localizationService.get(this.field.options.trueOptionLabel)
+        .map(translatedText => {
           if (translatedText && this.field.options) {
             this.trueOptionLabel = translatedText;
           }
-        });
+        }));
+    } else {
+      observables.push(Observable.of(undefined).map(() => {
+        this.trueOptionLabel = 'Not translated';
+      }));
     }
+
     if (this.field.options && this.field.options.falseOptionLabel) {
-      this.localizationService.get(this.field.options.falseOptionLabel)
-        .takeUntil(this.ngUnsubscribe)
-        .subscribe(translatedText => {
+      observables.push(this.localizationService.get(this.field.options.falseOptionLabel)
+        .map(translatedText => {
           if (translatedText && this.field.options) {
             this.falseOptionLabel = translatedText;
           }
-        });
+        }));
+    } else {
+      observables.push(Observable.of(undefined).map(() => {
+        this.falseOptionLabel = 'Not translated';
+      }));
     }
+
+    const zippedObservable = observableHelper.zipObservables(observables).map(() => {
+      // init wrappers
+      this.wrappers = [
+        new WrapperValue(this.trueOptionLabel, true),
+        new WrapperValue(this.falseOptionLabel, false)
+      ];
+    })
+      .takeUntil(this.ngUnsubscribe)
+      .subscribe();
   }
 
   protected getInsertValue(): boolean {
-    let defaultValue: boolean;
-    if (this.field.defaultValue) {
-      defaultValue = true;
-    } else {
-      defaultValue = false;
-    }
-    this.radioCheckboxTrueChecked = defaultValue;
-    this.radioCheckboxFalseChecked = !defaultValue;
+    // set default checkbox value to false programatically (it will otherwise treat checkbox as undefined)
+    const defaultFieldValue = this.field.defaultValue;
 
-    return defaultValue;
+    if (this.field.required) {
+      if (!this.isBoolean(defaultFieldValue)) {
+        throw Error(`Boolean field expected value to be 'Boolean', but other type was given`);
+      }
+    }
+
+    if (defaultFieldValue) {
+      this.radioCheckboxTrueChecked = true;
+      this.radioCheckboxFalseChecked = false;
+      return true;
+    } else {
+      this.radioCheckboxTrueChecked = false;
+      this.radioCheckboxFalseChecked = true;
+      return false;
+    }
   }
 
   protected getEditValue(): boolean {
     const fieldValue = this.field.value;
-    
-        if (!fieldValue) {
-          return this.getInsertValue();
-        }
-    
-        if (!(fieldValue instanceof Boolean)) {
-          throw Error(`RadioBoolean field expected value to be 'String', but other type was given`);
-        }
 
-    this.radioCheckboxTrueChecked = fieldValue;
-    this.radioCheckboxFalseChecked = !fieldValue;
+    if (this.field.required) {
+      if (!this.isBoolean(fieldValue)) {
+        throw Error(`Boolean field expected value to be 'Boolean', but other type was given`);
+      }
+    }
 
-    return fieldValue;
+    if (fieldValue) {
+      this.radioCheckboxTrueChecked = true;
+      this.radioCheckboxFalseChecked = false;
+      return true;
+    } else {
+      this.radioCheckboxTrueChecked = false;
+      this.radioCheckboxFalseChecked = true;
+      return false;
+    }
+  }
+
+  private isBoolean(value: any): boolean {
+    if (typeof (value) === 'boolean') {
+      // variable is a boolean
+      return true;
+    }
+    return false;
   }
 
   private handleRadioButtonChange(): void {
     this.showRequiredLabels = false;
   }
+}
+
+class WrapperValue {
+  constructor(
+    public label: string,
+    public value: boolean
+  ) { }
 }
