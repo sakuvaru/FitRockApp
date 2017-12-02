@@ -20,7 +20,7 @@ export class DataTableField<T> implements IDataTableField<T> {
         /**
          * Indicates if field should be hidden on small screens
          */
-        public hideOnSmallScreen: boolean,
+        public hideOnSmallScreen?: boolean,
 
         /**
          * Column name of the key.

@@ -124,8 +124,8 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
         // add fields
         fieldColumns = _.union(fieldColumns, this.fieldsWrapper.map(m => m.nameDef));
 
-        // add button at the end
-        if (this.buttonsWrapper || this.config.deleteAction) {
+        // add button at the end (if there are any buttons)
+        if (this.buttonsWrapper && this.buttonsWrapper.buttons && this.buttonsWrapper.buttons.length > 0) {
             fieldColumns.push(this.buttonsColumnDef);
         }
 
@@ -533,7 +533,7 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
                 throw Error(`Static filter is required for evaluating static filters`);
             }
 
-            filterObs
+            filterObs = filterObs
                 .flatMap(response => {
                     // create filter wrapper and set its count
                     const filterWrapper = new FilterWrapper('', response.count, filter);
@@ -543,7 +543,6 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
                     // resolve name and set it
                     return filter.name.map(name => {
                         filterWrapper.resolvedName = name;
-
                         return filterWrapper;
                     });
                 })

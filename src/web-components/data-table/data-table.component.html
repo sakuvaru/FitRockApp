@@ -109,7 +109,7 @@
             </ng-container>
           </ng-container>
 
-          <ng-container *ngIf="buttonsWrapper">
+          <ng-container *ngIf="buttonsWrapper && buttonsWrapper.buttons && buttonsWrapper.buttons.length > 0">
             <ng-container [matColumnDef]="buttonsWrapper.nameDef">
               <mat-header-cell *matHeaderCellDef>
                 {{ 'webComponents.dataTable.actions' | localize }}

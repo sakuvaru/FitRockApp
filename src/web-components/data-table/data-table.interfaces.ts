@@ -17,7 +17,7 @@ export interface IDataTableField<T> {
     /**
      * Indicates if field should be hidden on small screens
      */
-    hideOnSmallScreen: boolean;
+    hideOnSmallScreen?: boolean;
 
     /**
      * Column name of the key.
