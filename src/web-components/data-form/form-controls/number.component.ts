@@ -46,11 +46,7 @@ export class NumberComponent extends BaseFormControlComponent implements OnInit,
       return 0;
     }
 
-    if (!(defaultFieldValue instanceof Number)) {
-      throw Error(`Number field expected default value to be 'Number', but other type was given`);
-    }
-
-    return defaultFieldValue;
+    return +defaultFieldValue;
   }
 
   protected getEditValue(): number {
@@ -60,11 +56,7 @@ export class NumberComponent extends BaseFormControlComponent implements OnInit,
       return 0;
     }
 
-    if (!(fieldValue instanceof Number)) {
-      throw Error(`Number time field expected value to be 'Number', but other type was given`);
-    }
-
-    return fieldValue;
+    return +fieldValue;
   }
 
   private setCustomValidator(): void {
