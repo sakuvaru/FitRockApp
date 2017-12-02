@@ -14,11 +14,16 @@ import { numberHelper } from '../../../lib/utilities';
 import { DataFormService } from '../../web-component-services';
 import { DataFormBuilder } from '../../../web-components/data-form';
 
+// data tables
+import { DataTableService } from '../../web-component-services';
+import { DataTableBuilder } from '../../../web-components/data-table';
+
 export abstract class BaseTypeService<TItem extends IItem> {
 
     public type: string;
 
     private readonly dataFormService: DataFormService = new DataFormService();
+    private readonly dataTableService: DataTableService = new DataTableService();
 
     constructor(
         protected repositoryClient: RepositoryClient,
@@ -78,7 +83,7 @@ export abstract class BaseTypeService<TItem extends IItem> {
         return this.repositoryClient.post<TAny>(this.type, action);
     }
 
-    /* --------------------- Form queries ------------------------- */
+    /* --------------------- Form builds ------------------------- */
 
     /**
      * Builds insert form
@@ -137,6 +142,21 @@ export abstract class BaseTypeService<TItem extends IItem> {
         return this.dataFormService.editForm<TItem>(this.type, formQuery.get(), (formData) => editQuery(formData).set(), {
             delete: (formData) => deleteQuery(formData).set()
         });
+    }
+
+    /* --------------------------- Data table builds ------------------------------- */
+
+    /**
+     * Builds data table
+     * @param query Query
+     */
+    buildDataTable(
+        query: (query: MultipleItemQuery<TItem>, search: string) => MultipleItemQuery<TItem>
+    ): DataTableBuilder<TItem> {
+
+        const resolvedQuery = (search: string) => query(this.items(), search);
+
+        return this.dataTableService.dataTable<TItem>(resolvedQuery);
     }
 
     /**
