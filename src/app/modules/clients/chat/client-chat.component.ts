@@ -8,7 +8,7 @@ import { AppConfig, UrlConfig } from '../../../config';
 import { ClientsBaseComponent } from '../clients-base.component';
 import { ClientMenuItems } from '../menu.items';
 import { User, ChatMessage } from '../../../models';
-import { FormConfig } from '../../../../web-components/dynamic-form';
+import { DataFormConfig } from '../../../../web-components/data-form';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs/Rx';
 import * as _ from 'underscore';
@@ -18,7 +18,7 @@ import * as _ from 'underscore';
 })
 export class ClientChatComponent extends ClientsBaseComponent implements OnInit {
 
-    public formConfig: FormConfig<ChatMessage>;
+    public formConfig: DataFormConfig;
     public chatMessages: ChatMessage[];
 
     public chatMessagesPage: number = 1;
@@ -75,19 +75,17 @@ export class ClientChatComponent extends ClientsBaseComponent implements OnInit 
         return this.clientIdChange
             .takeUntil(this.ngUnsubscribe)
             .map(clientId => {
-                const formConfig = this.dependencies.itemServices.chatMessageService.insertForm()
+                const formConfig = this.dependencies.itemServices.chatMessageService.buildInsertForm()
                     .fieldValueResolver((fieldName, value) => {
                         // manually set recipient & sender
                         if (fieldName === 'SenderUserId') {
-                            return this.dependencies.authenticatedUserService.getUserId();
+                            return Observable.of(this.dependencies.authenticatedUserService.getUserId());
                         } else if (fieldName === 'RecipientUserId') {
-                            return this.clientId;
+                            return Observable.of(this.clientId);
                         }
-                        return value;
+                        return Observable.of(value);
                     })
                     .wrapInCard(false)
-                    .snackBarTextKey('module.clients.chat.snackbarSaved')
-                    .submitTextKey('module.clients.chat.submit')
                     .onAfterInsert((response) => {
                         // reload messages
                         super.subscribeToObservable(this.getChatMessagesObservable(this.clientId, 1, true, this.chatMessagesSearch)

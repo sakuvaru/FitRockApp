@@ -5,7 +5,7 @@ import { ComponentDependencyService, BaseComponent, ComponentSetup } from '../..
 import { AppConfig, UrlConfig } from '../../../config';
 
 // required by component
-import { FormConfig } from '../../../../web-components/dynamic-form';
+import { DataFormConfig } from '../../../../web-components/data-form';
 import { NewExerciseMenuItems } from '../menu.items';
 import { Exercise } from '../../../models';
 import { Observable } from 'rxjs/Rx';
@@ -15,7 +15,7 @@ import { Observable } from 'rxjs/Rx';
 })
 export class NewExerciseComponent extends BaseComponent implements OnInit {
 
-    public formConfig: FormConfig<Exercise>;
+    public formConfig: DataFormConfig;
 
     constructor(
         protected componentDependencyService: ComponentDependencyService) {
@@ -40,7 +40,7 @@ export class NewExerciseComponent extends BaseComponent implements OnInit {
     }
 
     private initForm(): void {
-        this.formConfig = this.dependencies.itemServices.exerciseService.insertForm()
+        this.formConfig = this.dependencies.itemServices.exerciseService.buildInsertForm()
             .onAfterInsert((response) => this.navigate([this.getTrainerUrl('exercises/edit'), response.item.id]))
             .build();
     }

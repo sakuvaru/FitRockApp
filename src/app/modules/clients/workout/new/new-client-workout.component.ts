@@ -6,7 +6,7 @@ import { AppConfig, UrlConfig } from '../../../../config';
 
 // required by component
 import { ClientsBaseComponent } from '../../clients-base.component';
-import { FormConfig } from '../../../../../web-components/dynamic-form';
+import { DataFormConfig } from '../../../../../web-components/data-form';
 import { NewClientWorkoutMenuItems } from '../../menu.items';
 import { Workout } from '../../../../models';
 import { Observable } from 'rxjs/Rx';
@@ -16,7 +16,7 @@ import { Observable } from 'rxjs/Rx';
 })
 export class NewClientWorkoutComponent extends ClientsBaseComponent implements OnInit {
 
-    public formConfig: FormConfig<Workout>;
+    public formConfig: DataFormConfig;
 
     constructor(
         protected activatedRoute: ActivatedRoute,
@@ -48,6 +48,7 @@ export class NewClientWorkoutComponent extends ClientsBaseComponent implements O
     private getClientObservable(): Observable<any> {
         return this.clientChange.map(client => {
             this.setConfig({
+                componentTitle: { key: 'module.clients.workout.newWorkout' },
                 menuItems: new NewClientWorkoutMenuItems(client.id).menuItems,
                 menuTitle: {
                     key: 'module.clients.viewClientSubtitle',
@@ -61,19 +62,16 @@ export class NewClientWorkoutComponent extends ClientsBaseComponent implements O
         return this.clientIdChange
             .takeUntil(this.ngUnsubscribe)
             .map(params => {
-                this.formConfig = this.dependencies.itemServices.workoutService.insertForm()
+                this.formConfig = this.dependencies.itemServices.workoutService.buildInsertForm()
                     .fieldValueResolver((fieldName, value) => {
                         if (fieldName === 'ClientId') {
-                            return this.clientId;
+                            return Observable.of(this.clientId);
                         }
-                        return value;
+                        return Observable.of(value);
                     })
                     .onAfterInsert((response) => super.navigate([super.getTrainerUrl('clients/edit/' + this.clientId + '/workout/' + response.item.id + '/workout-plan')]))
-                    .onFormLoaded(form => {
-                        this.setConfig({
-                            componentTitle: { key: 'module.clients.workout.newWorkout' },
-                            menuItems: new NewClientWorkoutMenuItems(this.clientId).menuItems
-                        });
+                    .onInsertFormLoaded(form => {
+                       
                     })
                     .build();
 

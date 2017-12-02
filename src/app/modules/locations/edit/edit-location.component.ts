@@ -6,7 +6,7 @@ import { AppConfig, UrlConfig } from '../../../config';
 
 // required by component
 import { LocationsEditMenuItems } from '../menu.items';
-import { FormConfig } from '../../../../web-components/dynamic-form';
+import { DataFormConfig } from '../../../../web-components/data-form';
 import { Location } from '../../../models';
 import { Observable } from 'rxjs/Rx';
 
@@ -15,7 +15,7 @@ import { Observable } from 'rxjs/Rx';
 })
 export class EditLocationComponent extends BaseComponent implements OnInit {
 
-    public formConfig: FormConfig<Location>;
+    public formConfig: DataFormConfig;
 
     constructor(
         private activatedRoute: ActivatedRoute,
@@ -40,9 +40,9 @@ export class EditLocationComponent extends BaseComponent implements OnInit {
         this.activatedRoute.params
             .takeUntil(this.ngUnsubscribe)
             .map((params: Params) => {
-                this.formConfig = this.dependencies.itemServices.locationService.editForm(+params['id'])
+                this.formConfig = this.dependencies.itemServices.locationService.buildEditForm(+params['id'])
                     .onAfterDelete(() => super.navigate([this.getTrainerUrl('locations')]))
-                    .onFormLoaded(form => {
+                    .onEditFormLoaded(form => {
                         this.setConfig({
                             menuItems: new LocationsEditMenuItems(form.item.id).menuItems,
                             menuTitle: {

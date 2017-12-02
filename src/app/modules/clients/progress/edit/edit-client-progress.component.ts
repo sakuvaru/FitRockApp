@@ -8,7 +8,7 @@ import { AppConfig, UrlConfig } from '../../../../config';
 import { ProgressItemType } from '../../../../models';
 import { ClientsBaseComponent } from '../../clients-base.component';
 import { ClientMenuItems } from '../../menu.items';
-import { FormConfig, DynamicFormComponent } from '../../../../../web-components/dynamic-form';
+import { DataFormComponent, DataFormConfig, DataFormFieldChangeResult } from '../../../../../web-components/data-form';
 import { DataListConfig, AlignEnum, Filter, DataListComponent, DataListField } from '../../../../../web-components/data-list';
 import { ProgressItem, User, ProgressItemTypeWithCountDto } from '../../../../models';
 import { Observable } from 'rxjs/Rx';
@@ -23,12 +23,12 @@ import { stringHelper } from '../../../../../lib/utilities';
 })
 export class EditClientProgressComponent extends ClientsBaseComponent implements OnInit {
 
-    public formConfig: FormConfig<ProgressItem>;
+    public formConfig: DataFormConfig;
     public DataListConfig: DataListConfig<ProgressItem>;
     public progressItemTypes: ProgressItemType[];
 
     @ViewChild(DataListComponent) progressItemsDataList: DataListComponent;
-    @ViewChild(DynamicFormComponent) progressItemForm: DynamicFormComponent;
+    @ViewChild(DataFormComponent) progressItemForm: DataFormComponent;
 
     constructor(
         protected activatedRoute: ActivatedRoute,
@@ -86,51 +86,52 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
     }
 
     private initProgressItemsForm(clientId: number): void {
-        this.formConfig = this.dependencies.itemServices.progressItemService.insertForm({
-            customFormDefinitionQuery: this.dependencies.itemServices.progressItemService.insertFormQuery().withData('clientId', clientId)
+        this.formConfig = this.dependencies.itemServices.progressItemService.buildInsertForm({
+            formDefinitionQuery: this.dependencies.itemServices.progressItemService.insertFormQuery().withData('clientId', clientId)
         })
             .wrapInCard(false)
             .fieldValueResolver((fieldName, value) => {
                 if (fieldName === 'ClientId') {
-                    return this.clientId;
+                    return Observable.of(this.clientId);
                 }
-                return value;
+                return Observable.of(value);
             })
-            .onAfterSave(() => {
+            .onAfterInsert(() => {
                 this.reloadDataList();
             })
             .clearFormAfterSave(true)
-            .onFieldValueChange((config, changedField, newValue) => {
+            .onFieldValueChange((fields, changedField, newValue) => {
+                const changeResult = Observable.of(new DataFormFieldChangeResult(newValue));
                 // set extra translation value for measurement value based on currently selected type
                 // process for changing the measurement type
                 if (changedField.key !== 'ProgressItemTypeId') {
-                    return;
+                    return changeResult;
                 }
 
                 // get option with the value === newValue 
                 if (!changedField.options || !changedField.options.listOptions) {
-                    return;
+                    return changeResult;
                 }
 
                 const listOption = changedField.options.listOptions.find(m => m.value === newValue);
-                const measurementValueField = config.fields.find(m => m.key === 'Value');
+                const measurementValueField = fields.find(m => m.key === 'Value');
 
                 if (!measurementValueField) {
-                    return;
+                    return changeResult;
                 }
 
                 if (!listOption) {
                     // option is not in the list, use the default label
-                    super.translate('form.progressItem.value')
-                        .takeUntil(this.ngUnsubscribe)
-                        .subscribe(translation => {
+                    return super.translate('form.progressItem.value')
+                        .map(translation => {
                             measurementValueField.label = translation;
-                        });
+                        })
+                        .flatMap(() => changeResult);
                 } else {
                     // set new custom translation label
                     const translationData: any = {};
                     const unitCode = listOption.extraDataJson.unit;
-                    super.translate('module.progressItemUnits.' + unitCode)
+                    return super.translate('module.progressItemUnits.' + unitCode)
                         .flatMap(unitTranslation => {
                             translationData.unit = unitTranslation;
                             return super.translate('form.progressItem.valueWithUnit', translationData)
@@ -138,8 +139,7 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
                                     measurementValueField.label = stringHelper.capitalizeText(translation);
                                 });
                         })
-                        .takeUntil(this.ngUnsubscribe)
-                        .subscribe();
+                        .flatMap(() => changeResult);
                 }
             })
             .build();
@@ -325,7 +325,7 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
             // reloading it would throw an error because the component is not yet there
 
         } else {
-            this.progressItemForm.forceReinitialization(this.formConfig);
+            this.progressItemForm.reloadForm();
         }
     }
 }

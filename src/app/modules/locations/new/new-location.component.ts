@@ -5,7 +5,7 @@ import { ComponentDependencyService, BaseComponent, ComponentConfig, ComponentSe
 import { AppConfig, UrlConfig } from '../../../config';
 
 // required by component
-import { FormConfig } from '../../../../web-components/dynamic-form';
+import { DataFormConfig } from '../../../../web-components/data-form';
 import { NewLocationsMenuItems } from '../menu.items';
 import { Location } from '../../../models';
 import { Observable } from 'rxjs/Rx';
@@ -15,7 +15,7 @@ import { Observable } from 'rxjs/Rx';
 })
 export class NewLocationComponent extends BaseComponent implements OnInit {
 
-    public formConfig: FormConfig<Location>;
+    public formConfig: DataFormConfig;
 
     constructor(
         protected dependencies: ComponentDependencyService) {
@@ -41,7 +41,7 @@ export class NewLocationComponent extends BaseComponent implements OnInit {
     }
 
     private initForm(): void {
-        this.formConfig = this.dependencies.itemServices.locationService.insertForm()
+        this.formConfig = this.dependencies.itemServices.locationService.buildInsertForm()
             .onAfterInsert((response) => this.navigate([this.getTrainerUrl('locations/edit'), response.item.id]))
             .optionLabelResolver((field, optionLabel) => {
                 if (field.key === 'LocationType') {

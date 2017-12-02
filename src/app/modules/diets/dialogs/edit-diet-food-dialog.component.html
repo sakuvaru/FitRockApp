@@ -6,13 +6,12 @@
 
 <mat-dialog-content>
     <div class="md-padding">
-        <dynamic-form [config]="dietFoodForm" (statusChanged)="onStatusChanged($event)" [customSaveButtonSubject]="customSaveButtonSubject" [customDeleteButtonSubject]="customDeleteButtonSubject"></dynamic-form>
+        <data-form #dataForm [config]="dietFoodForm"></data-form>
     </div>
 </mat-dialog-content>
 
 <mat-dialog-actions>
-    <dialog-button color="accent" [disabled]="!formStatus || (formStatus && !formStatus.isValid)" (handleClick)="customSaveButtonSubject.next()">{{ 'shared.save' | localize }}</dialog-button>
+    <dialog-button [dataForm]="dataForm" dataFormSaveButton color="accent">{{ 'shared.save' | localize }}</dialog-button>
     <span flex></span>
-    <delete-button *ngIf="formStatus && formStatus.isDeleteEnabled" (confirm)="customDeleteButtonSubject.next()"></delete-button>
+    <delete-button [dataForm]="dataForm" dataFormDeleteButton enableConfirm="false"></delete-button>
 </mat-dialog-actions>
-

@@ -8,24 +8,19 @@ import { AppConfig, UrlConfig } from '../../../../config';
 import { DataListConfig, AlignEnum } from '../../../../../web-components/data-list';
 import { MAT_DIALOG_DATA } from '@angular/material';
 import { ProgressItem } from '../../../../models';
-import { FormConfig, DynamicFormStatus } from '../../../../../web-components/dynamic-form';
-import { Observable, Subject } from 'rxjs/Rx';
+import { DataFormConfig } from '../../../../../web-components/data-form';
 
 @Component({
   templateUrl: 'edit-progress-item-dialog.component.html'
 })
 export class EditProgressItemDialogComponent extends BaseComponent implements OnInit {
 
-  public formConfig: FormConfig<ProgressItem>;
+  public formConfig: DataFormConfig;
 
   public item: ProgressItem;
   public idOfDeletedItem: number;
   public itemWasDeleted: boolean = false;
   public itemWasUpdated: boolean = false;
-
-  public customSaveButtonSubject: Subject<void> = new Subject<void>();
-  public customDeleteButtonSubject: Subject<void> = new Subject<void>();
-  public formStatus: DynamicFormStatus | undefined;
 
   constructor(
     protected dependencies: ComponentDependencyService,
@@ -49,9 +44,9 @@ export class EditProgressItemDialogComponent extends BaseComponent implements On
   }
 
   private initForm(): void {
-    this.formConfig = this.dependencies.itemServices.progressItemService.editForm(this.item.id)
+    this.formConfig = this.dependencies.itemServices.progressItemService.buildEditForm(this.item.id)
       .wrapInCard(false)
-      .onAfterUpdate((response) => {
+      .onAfterEdit((response) => {
         this.itemWasUpdated = true;
         this.close();
       })
@@ -60,11 +55,8 @@ export class EditProgressItemDialogComponent extends BaseComponent implements On
         this.itemWasDeleted = true;
         this.close();
       })
+      .renderButtons(false)
       .build();
-  }
-
-  public onStatusChanged(status: DynamicFormStatus): void {
-    this.formStatus = status;
   }
 
   public close(): void {

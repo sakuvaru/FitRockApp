@@ -7,7 +7,7 @@ import { AppConfig, UrlConfig } from '../../config';
 // required by component
 import { ChatMenuItems } from './menu.items';
 import { User, ChatMessage } from '../../models';
-import { FormConfig } from '../../../web-components/dynamic-form';
+import { DataFormConfig } from '../../../web-components/data-form';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs/Rx';
 import * as _ from 'underscore';
@@ -17,8 +17,8 @@ import * as _ from 'underscore';
 })
 export class ChatComponent extends BaseComponent implements OnInit {
 
-    public formConfig: FormConfig<ChatMessage> | null;
-    public chatMessages: ChatMessage[] | null;
+    public formConfig?: DataFormConfig;
+    public chatMessages?: ChatMessage[];
 
     public chatMessagesPage: number = 1;
     public chatMessagesPageSize: number = 10;
@@ -151,8 +151,8 @@ export class ChatComponent extends BaseComponent implements OnInit {
     private resetChatUser(): void {
         this.chatMessagesPage = 1;
         this.chatMessagesSearch = '';
-        this.chatMessages = null;
-        this.formConfig = null;
+        this.chatMessages = undefined;
+        this.formConfig = undefined;
     }
 
     private setNoUserFound(): void {
@@ -166,21 +166,19 @@ export class ChatComponent extends BaseComponent implements OnInit {
     }
 
     private initChatForm(userId: number): void {
-        this.formConfig = this.dependencies.itemServices.chatMessageService.insertForm()
+        this.formConfig = this.dependencies.itemServices.chatMessageService.buildInsertForm()
             .fieldValueResolver((fieldName, value) => {
                 // manually set recipient & sender
                 if (fieldName === 'SenderUserId') {
-                    return this.dependencies.authenticatedUserService.getUserId();
+                    return Observable.of(this.dependencies.authenticatedUserService.getUserId());
                 }
                 if (fieldName === 'RecipientUserId') {
-                    return userId;
+                    return Observable.of(userId);
                 }
-                return value;
+                return Observable.of(value);
             })
             .wrapInCard(false)
-            .snackBarTextKey('module.clients.chat.snackbarSaved')
-            .submitTextKey('module.clients.chat.submit')
-            .onAfterInsert((response) => {
+            .onAfterSave((response) => {
                 // reload messages
                 super.subscribeToObservable(this.getChatMessagesObservable(userId, 1, true, this.chatMessagesSearch)
                     .takeUntil(this.ngUnsubscribe));

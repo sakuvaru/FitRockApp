@@ -5,7 +5,7 @@ import { ComponentDependencyService, BaseComponent, ComponentSetup } from '../..
 import { AppConfig, UrlConfig } from '../../../config';
 
 // required by component
-import { FormConfig } from '../../../../web-components/dynamic-form';
+import { DataFormConfig } from '../../../../web-components/data-form';
 import { NewProgressItemTypeMenuItems } from '../menu.items';
 import { ProgressItemType } from '../../../models';
 import { Observable } from 'rxjs/Rx';
@@ -15,7 +15,7 @@ import { Observable } from 'rxjs/Rx';
 })
 export class NewTypeComponent extends BaseComponent implements OnInit {
 
-    public formConfig: FormConfig<ProgressItemType>;
+    public formConfig: DataFormConfig;
 
     constructor(
         protected componentDependencyService: ComponentDependencyService) {
@@ -41,12 +41,12 @@ export class NewTypeComponent extends BaseComponent implements OnInit {
     }
 
     private initForm(): void {
-        this.formConfig = this.dependencies.itemServices.progressItemTypeService.insertForm()
+        this.formConfig = this.dependencies.itemServices.progressItemTypeService.buildInsertForm()
             .fieldValueResolver((fieldName, value) => {
                 if (fieldName === 'TranslateValue') {
-                    return false;
+                    return Observable.of(false);
                 }
-                return value;
+                return Observable.of(value);
             })
             .onAfterInsert((response) => this.navigate([this.getTrainerUrl('progress-item-types/edit'), response.item.id]))
             .build();

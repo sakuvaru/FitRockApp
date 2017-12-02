@@ -8,7 +8,6 @@ import { AppConfig, UrlConfig } from '../../../../config';
 import { DataListConfig, AlignEnum } from '../../../../../web-components/data-list';
 import { MAT_DIALOG_DATA } from '@angular/material';
 import { ProgressItemType } from '../../../../models';
-import { FormConfig } from '../../../../../web-components/dynamic-form';
 
 @Component({
   templateUrl: 'select-progress-type-dialog.component.html'

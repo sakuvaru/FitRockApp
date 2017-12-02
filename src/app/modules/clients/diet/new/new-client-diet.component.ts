@@ -6,7 +6,7 @@ import { AppConfig, UrlConfig } from '../../../../config';
 
 // required by component
 import { ClientsBaseComponent } from '../../clients-base.component';
-import { FormConfig } from '../../../../../web-components/dynamic-form';
+import { DataFormConfig } from '../../../../../web-components/data-form';
 import { NewClientDietMenuItems } from '../../menu.items';
 import { Diet } from '../../../../models';
 import { Observable } from 'rxjs/Rx';
@@ -16,7 +16,7 @@ import { Observable } from 'rxjs/Rx';
 })
 export class NewClientDietComponent extends ClientsBaseComponent implements OnInit {
 
-    public formConfig: FormConfig<Diet>;
+    public formConfig: DataFormConfig;
 
     constructor(
         protected activatedRoute: ActivatedRoute,
@@ -63,13 +63,13 @@ export class NewClientDietComponent extends ClientsBaseComponent implements OnIn
         return this.clientIdChange
             .takeUntil(this.ngUnsubscribe)
             .map(clientId => {
-                this.formConfig = this.dependencies.itemServices.dietService.insertForm()
+                this.formConfig = this.dependencies.itemServices.dietService.buildInsertForm()
                     .fieldValueResolver((fieldName, value) => {
                         // manually set client
                         if (fieldName === 'ClientId') {
-                            return this.clientId;
+                            return Observable.of(this.clientId);
                         }
-                        return value;
+                        return Observable.of(value);
                     })
                     .onAfterInsert((response) => super.navigate([super.getTrainerUrl('clients/edit/' + this.clientId + '/diet/' + response.item.id + '/diet-plan')]))
                     .build();

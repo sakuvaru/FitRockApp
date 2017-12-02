@@ -5,7 +5,7 @@ import { ComponentDependencyService, BaseComponent, ComponentSetup } from '../..
 import { AppConfig, UrlConfig } from '../../../config';
 
 // required by component
-import { FormConfig } from '../../../../web-components/dynamic-form';
+import { DataFormConfig } from '../../../../web-components/data-form';
 import { Diet } from '../../../models';
 import { Observable } from 'rxjs/Rx';
 
@@ -19,7 +19,7 @@ export class EditDietExportComponent extends BaseComponent implements OnInit, On
 
     @Input() dietId: number;
 
-    public formConfig: FormConfig<Diet>;
+    public formConfig: DataFormConfig;
 
     constructor(
         private activatedRoute: ActivatedRoute,
@@ -44,9 +44,9 @@ export class EditDietExportComponent extends BaseComponent implements OnInit, On
     }
 
     private initForm(dietId: number): void {
-        this.formConfig = this.dependencies.itemServices.dietService.editForm(dietId)
+        this.formConfig = this.dependencies.itemServices.dietService.buildEditForm(dietId)
             .onAfterDelete(() => super.navigate([super.getTrainerUrl('diets')]))
-            .onFormLoaded(form => {
+            .onEditFormLoaded(form => {
                 const diet = form.item;
 
                 // set loaded workout

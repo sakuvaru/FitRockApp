@@ -5,7 +5,7 @@ import { ComponentDependencyService, BaseComponent, ComponentSetup } from '../..
 import { AppConfig, UrlConfig } from '../../../config';
 
 // required by component
-import { FormConfig } from '../../../../web-components/dynamic-form';
+import { DataFormConfig } from '../../../../web-components/data-form';
 import { NewFoodMenuItems } from '../menu.items';
 import { Food } from '../../../models';
 
@@ -14,7 +14,7 @@ import { Food } from '../../../models';
 })
 export class NewFoodComponent extends BaseComponent implements OnInit {
 
-    public formConfig: FormConfig<Food>;
+    public formConfig: DataFormConfig;
 
     constructor(
         protected componentDependencyService: ComponentDependencyService) {
@@ -39,7 +39,7 @@ export class NewFoodComponent extends BaseComponent implements OnInit {
     }
 
     private initForm(): void {
-        this.formConfig = this.dependencies.itemServices.foodService.insertForm()
+        this.formConfig = this.dependencies.itemServices.foodService.buildInsertForm()
             .onAfterInsert((response) => this.navigate([this.getTrainerUrl('foods/edit'), response.item.id]))
             .build();
     }

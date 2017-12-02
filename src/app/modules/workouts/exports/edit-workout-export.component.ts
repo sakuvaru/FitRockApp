@@ -5,7 +5,7 @@ import { ComponentDependencyService, BaseComponent, ComponentSetup } from '../..
 import { AppConfig, UrlConfig } from '../../../config';
 
 // required by component
-import { FormConfig } from '../../../../web-components/dynamic-form';
+import { DataFormConfig } from '../../../../web-components/data-form';
 import { Workout } from '../../../models';
 import 'rxjs/add/operator/switchMap';
 import { Observable } from 'rxjs/Rx';
@@ -20,7 +20,7 @@ export class EditWorkoutExportComponent extends BaseComponent implements OnInit,
 
     @Input() workoutId: number;
 
-    public formConfig: FormConfig<Workout>;
+    public formConfig: DataFormConfig;
 
     constructor(
         private activatedRoute: ActivatedRoute,
@@ -45,9 +45,9 @@ export class EditWorkoutExportComponent extends BaseComponent implements OnInit,
     }
 
     private initForm(workoutId: number): void {
-        this.formConfig = this.dependencies.itemServices.workoutService.editForm(workoutId)
+        this.formConfig = this.dependencies.itemServices.workoutService.buildEditForm(workoutId)
             .onAfterDelete(() => super.navigate([super.getTrainerUrl('workouts')]))
-            .onFormLoaded(form => {
+            .onEditFormLoaded(form => {
                 this.loadWorkout.next(form.item);
             })
             .build();

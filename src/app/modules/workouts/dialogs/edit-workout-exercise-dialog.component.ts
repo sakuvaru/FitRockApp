@@ -9,7 +9,7 @@ import { DataListConfig, AlignEnum } from '../../../../web-components/data-list'
 import { Exercise } from '../../../models';
 import { MAT_DIALOG_DATA } from '@angular/material';
 import { WorkoutExercise } from '../../../models';
-import { FormConfig, DynamicFormStatus } from '../../../../web-components/dynamic-form';
+import { DataFormConfig } from '../../../../web-components/data-form';
 import { Observable, Subject } from 'rxjs/Rx';
 
 @Component({
@@ -17,17 +17,13 @@ import { Observable, Subject } from 'rxjs/Rx';
 })
 export class EditWorkoutExerciseDialogComponent extends BaseComponent implements OnInit {
 
-  public workoutExerciseForm: FormConfig<WorkoutExercise>;
+  public workoutExerciseForm: DataFormConfig;
 
   // public because it is accessed by parent component
   public workoutExercise: WorkoutExercise;
 
   public idOfDeletedWorkoutExercise: number;
   public workoutExerciseWasDeleted: boolean = false;
-
-  public customSaveButtonSubject: Subject<void> = new Subject<void>();
-  public customDeleteButtonSubject: Subject<void> = new Subject<void>();
-  public formStatus: DynamicFormStatus | undefined;
 
   constructor(
     protected dependencies: ComponentDependencyService,
@@ -51,9 +47,9 @@ export class EditWorkoutExerciseDialogComponent extends BaseComponent implements
   }
 
   private initForm(): void {
-    this.workoutExerciseForm = this.dependencies.itemServices.workoutExerciseService.editForm(this.workoutExercise.id)
+    this.workoutExerciseForm = this.dependencies.itemServices.workoutExerciseService.buildEditForm(this.workoutExercise.id)
       .wrapInCard(false)
-      .onAfterUpdate((response) => {
+      .onAfterEdit((response) => {
         this.workoutExercise = response.item;
         this.close();
       })
@@ -63,10 +59,6 @@ export class EditWorkoutExerciseDialogComponent extends BaseComponent implements
         this.close();
       })
       .build();
-  }
-
-  public onStatusChanged(status: DynamicFormStatus): void {
-    this.formStatus = status;
   }
 
   public close(): void {

@@ -8,7 +8,7 @@ import { AppConfig, UrlConfig } from '../../../../config';
 import { Observable } from 'rxjs/Rx';
 import { ClientsBaseComponent } from '../../clients-base.component';
 import { ClientEditAppointmentMenuItems } from '../../menu.items';
-import { FormConfig, DynamicFormComponent } from '../../../../../web-components/dynamic-form';
+import { DataFormConfig, DataFormComponent} from '../../../../../web-components/data-form';
 import { Appointment } from '../../../../models';
 
 @Component({
@@ -16,7 +16,7 @@ import { Appointment } from '../../../../models';
 })
 export class EditClientAppointmentComponent extends ClientsBaseComponent implements OnInit {
 
-  public formConfig: FormConfig<Appointment>;
+  public formConfig: DataFormConfig;
 
   constructor(
     protected activatedRoute: ActivatedRoute,
@@ -52,11 +52,11 @@ export class EditClientAppointmentComponent extends ClientsBaseComponent impleme
   }
 
   private initForm(appointmentId: number): void {
-    this.formConfig = this.dependencies.itemServices.appointmentService.editForm(
+    this.formConfig = this.dependencies.itemServices.appointmentService.buildEditForm(
         this.dependencies.itemServices.appointmentService.editFormQuery(appointmentId).withData('clientId', this.clientId))
       .enableDelete(true)
       .onAfterDelete(() => super.navigate([this.getTrainerUrl('clients/edit/' + this.clientId + '/appointments')]))
-      .onFormLoaded(form => {
+      .onEditFormLoaded(form => {
         const appointment = form.item;
 
          // setup menu

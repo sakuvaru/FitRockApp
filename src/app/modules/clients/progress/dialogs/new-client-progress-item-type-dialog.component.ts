@@ -7,7 +7,7 @@ import { AppConfig, UrlConfig } from '../../../../config';
 // required by component
 import { MAT_DIALOG_DATA } from '@angular/material';
 import { ClientsBaseComponent } from '../../clients-base.component';
-import { FormConfig, DynamicFormStatus } from '../../../../../web-components/dynamic-form';
+import { DataFormConfig } from '../../../../../web-components/data-form';
 import { NewClientProgressItemTypeMenuItems } from '../../menu.items';
 import { ProgressItemType } from '../../../../models';
 import { Observable, Subject } from 'rxjs/Rx';
@@ -17,11 +17,7 @@ import { Observable, Subject } from 'rxjs/Rx';
 })
 export class NewClientProgressItemTypeDialogComponent extends ClientsBaseComponent implements OnInit {
 
-    public formConfig: FormConfig<ProgressItemType>;
-
-    public customSaveButtonSubject: Subject<void> = new Subject<void>();
-    public customDeleteButtonSubject: Subject<void> = new Subject<void>();
-    public formStatus: DynamicFormStatus | undefined;
+    public formConfig: DataFormConfig;
 
     public createdProgressItemType?: ProgressItemType;
 
@@ -46,26 +42,23 @@ export class NewClientProgressItemTypeDialogComponent extends ClientsBaseCompone
     }
 
     private initForm(): void {
-        this.formConfig = this.dependencies.itemServices.progressItemTypeService.insertForm()
+        this.formConfig = this.dependencies.itemServices.progressItemTypeService.buildInsertForm()
             .wrapInCard(false)
             .fieldValueResolver((fieldName, value) => {
                 if (fieldName === 'ClientId') {
-                    return this.clientId;
+                    return Observable.of(this.clientId);
                 } else if (fieldName === 'TranslateValue') {
-                    return false;
+                    return Observable.of(false);
                 }
-                return value;
+                return Observable.of(value);
             })
             .onAfterInsert((response) => {
                 this.createdProgressItemType = response.item;
                 this.close();
             })
+            .renderButtons(false)
             .build();
     }
-
-    public onStatusChanged(status: DynamicFormStatus): void {
-        this.formStatus = status;
-      }
 
     public close(): void {
         this.dependencies.tdServices.dialogService.closeAll();

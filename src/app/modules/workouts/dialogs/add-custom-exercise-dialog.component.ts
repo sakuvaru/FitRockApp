@@ -8,7 +8,7 @@ import { AppConfig, UrlConfig } from '../../../config';
 import { DataListConfig, AlignEnum } from '../../../../web-components/data-list';
 import { Exercise } from '../../../models';
 import { MAT_DIALOG_DATA } from '@angular/material';
-import { FormConfig, DynamicFormStatus } from '../../../../web-components/dynamic-form';
+import { DataFormConfig } from '../../../../web-components/data-form';
 import { Observable, Subject } from 'rxjs/Rx';
 
 @Component({
@@ -16,16 +16,12 @@ import { Observable, Subject } from 'rxjs/Rx';
 })
 export class AddCustomExerciseDialogComponent extends BaseComponent implements OnInit {
 
-  public workoutExerciseForm: FormConfig<Exercise>;
+  public workoutExerciseForm: DataFormConfig;
 
   /**
    * Accessed by parent component
    */
   public newExercise: Exercise;
-
-  public customSaveButtonSubject: Subject<void> = new Subject<void>();
-  public customDeleteButtonSubject: Subject<void> = new Subject<void>();
-  public formStatus: DynamicFormStatus | undefined;
 
   constructor(
     protected dependencies: ComponentDependencyService,
@@ -47,17 +43,13 @@ export class AddCustomExerciseDialogComponent extends BaseComponent implements O
   }
 
   private initForm(): void {
-    this.workoutExerciseForm = this.dependencies.itemServices.exerciseService.insertForm()
+    this.workoutExerciseForm = this.dependencies.itemServices.exerciseService.buildInsertForm()
       .wrapInCard(false)
       .onAfterInsert((response => {
         this.newExercise = response.item;
         this.close();
       }))
       .build();
-  }
-
-  public onStatusChanged(status: DynamicFormStatus): void {
-    this.formStatus = status;
   }
 
   public close(): void {

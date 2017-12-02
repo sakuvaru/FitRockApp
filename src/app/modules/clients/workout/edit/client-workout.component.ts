@@ -7,7 +7,6 @@ import { AppConfig, UrlConfig } from '../../../../config';
 // required by component
 import { ClientsBaseComponent } from '../../clients-base.component';
 import { ClientMenuItems } from '../../menu.items';
-import { FormConfig } from '../../../../../web-components/dynamic-form';
 import { User, Workout, WorkoutExercise } from '../../../../models';
 import { DragulaService } from 'ng2-dragula';
 import 'rxjs/add/operator/switchMap';

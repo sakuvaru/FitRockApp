@@ -3,7 +3,7 @@
         <mat-card>
             <mat-card-content class="push-top">
                 <h3>{{'module.clients.progress.newProgressItemRecord' | localize}}</h3>
-                <dynamic-form #progressItemForm *ngIf="progressItemTypes && progressItemTypes.length > 0" [config]="formConfig"></dynamic-form>
+                <data-form #progressItemForm *ngIf="progressItemTypes && progressItemTypes.length > 0" [config]="formConfig"></data-form>
                 <info-message *ngIf="progressItemTypes && progressItemTypes.length === 0" title="{{ 'module.clients.progress.addProgressTypeFirst' | localize }}"></info-message>
             </mat-card-content>
         </mat-card>

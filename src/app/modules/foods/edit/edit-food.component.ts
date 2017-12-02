@@ -6,7 +6,7 @@ import { AppConfig, UrlConfig } from '../../../config';
 
 // required by component
 import { FoodMenuItems } from '../menu.items';
-import { FormConfig } from '../../../../web-components/dynamic-form';
+import { DataFormConfig } from '../../../../web-components/data-form';
 import { Food } from '../../../models';
 import 'rxjs/add/operator/switchMap';
 import { Observable } from 'rxjs/Rx';
@@ -16,7 +16,7 @@ import { Observable } from 'rxjs/Rx';
 })
 export class EditFoodComponent extends BaseComponent implements OnInit {
 
-    public formConfig: FormConfig<Food>;
+    public formConfig: DataFormConfig;
 
     constructor(
         private activatedRoute: ActivatedRoute,
@@ -41,9 +41,9 @@ export class EditFoodComponent extends BaseComponent implements OnInit {
         this.activatedRoute.params
             .takeUntil(this.ngUnsubscribe)
             .map((params: Params) => {
-                this.formConfig = this.dependencies.itemServices.foodService.editForm(+params['id'])
+                this.formConfig = this.dependencies.itemServices.foodService.buildEditForm(+params['id'])
                     .onAfterDelete(() => super.navigate([this.getTrainerUrl('foods')]))
-                    .onFormLoaded(form => {
+                    .onEditFormLoaded(form => {
                         this.setConfig({
                             menuItems: new FoodMenuItems(form.item.id).menuItems,
                             menuTitle: {

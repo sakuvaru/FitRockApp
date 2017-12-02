@@ -6,7 +6,7 @@ import { BaseTypeService } from '../base/base-type.service';
 // required by service
 import { User, UserFilterWithCount } from '../../models';
 import { EditFormQuery, RepositoryClient, MultipleItemQuery, CreateItemQuery, ResponseSingle, MultipleItemQueryCustom } from '../../../lib/repository';
-import { DynamicFormEditBuilder } from '../../../web-components/dynamic-form';
+import { DataFormBuilder } from '../../../web-components/data-form';
 
 @Injectable()
 export class UserService extends BaseTypeService<User> {
@@ -18,10 +18,10 @@ export class UserService extends BaseTypeService<User> {
         });
     }
 
-    myProfileForm(): DynamicFormEditBuilder<User> {
+    myProfileForm(): DataFormBuilder<User> {
         const myProfileFormQuery = super.editFormQuery(-1).withCustomAction('GetMyProfileForm');
 
-        return super.editForm(myProfileFormQuery);
+        return super.buildEditForm(myProfileFormQuery);
     }
 
     clients(): MultipleItemQuery<User> {

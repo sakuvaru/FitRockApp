@@ -5,10 +5,9 @@ import { ComponentDependencyService, BaseComponent, ComponentConfig, ComponentSe
 import { AppConfig, UrlConfig } from '../../../config';
 
 // required by component
-import { DataListConfig, AlignEnum } from '../../../../web-components/data-list';
 import { Food } from '../../../models';
 import { MAT_DIALOG_DATA } from '@angular/material';
-import { FormConfig, DynamicFormStatus } from '../../../../web-components/dynamic-form';
+import { DataFormConfig} from '../../../../web-components/data-form';
 import { Observable, Subject } from 'rxjs/Rx';
 
 @Component({
@@ -16,11 +15,7 @@ import { Observable, Subject } from 'rxjs/Rx';
 })
 export class AddCustomFoodDialogComponent extends BaseComponent implements OnInit {
 
-  public foodForm: FormConfig<Food>;
-
-  public customSaveButtonSubject: Subject<void> = new Subject<void>();
-  public customDeleteButtonSubject: Subject<void> = new Subject<void>();
-  public formStatus: DynamicFormStatus | undefined;
+  public foodForm: DataFormConfig;
   
   /**
    * Accessed by parent component
@@ -47,17 +42,13 @@ export class AddCustomFoodDialogComponent extends BaseComponent implements OnIni
   }
 
   private initForm(): void {
-    this.foodForm = this.dependencies.itemServices.foodService.insertForm()
+    this.foodForm = this.dependencies.itemServices.foodService.buildInsertForm()
       .wrapInCard(false)
       .onAfterInsert((response => {
         this.newFood = response.item;
         this.close();
       }))
       .build();
-  }
-
-  public onStatusChanged(status: DynamicFormStatus): void {
-    this.formStatus = status;
   }
 
   public close(): void {

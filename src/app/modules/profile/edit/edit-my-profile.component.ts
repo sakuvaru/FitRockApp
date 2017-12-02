@@ -6,7 +6,7 @@ import { AppConfig, UrlConfig } from '../../../config';
 
 // requied by component
 import { MyProfileMenuItems } from '../menu.items';
-import { FormConfig } from '../../../../web-components/dynamic-form';
+import { DataFormConfig } from '../../../../web-components/data-form';
 import { User } from '../../../models';
 import { Observable } from 'rxjs/Rx';
 
@@ -15,7 +15,7 @@ import { Observable } from 'rxjs/Rx';
 })
 export class EditMyProfileComponent extends BaseComponent implements OnInit {
 
-    public formConfig: FormConfig<User>;
+    public formConfig: DataFormConfig;
 
     constructor(
         protected dependencies: ComponentDependencyService) {
@@ -45,7 +45,7 @@ export class EditMyProfileComponent extends BaseComponent implements OnInit {
     private initForm(): void {
         this.formConfig = this.dependencies.itemServices.userService.myProfileForm()
             .enableDelete(false)
-            .onAfterUpdate(response => {
+            .onAfterEdit(response => {
                 if (this.dependencies.coreServices.currentLanguage.isDifferentThanCurrent(response.item.language)) {
                     // language has changed, update it
                     this.dependencies.coreServices.currentLanguage.setLanguage(response.item.language);

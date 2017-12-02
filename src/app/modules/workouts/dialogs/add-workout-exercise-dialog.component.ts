@@ -9,7 +9,7 @@ import { DataListConfig, AlignEnum } from '../../../../web-components/data-list'
 import { Exercise } from '../../../models';
 import { MAT_DIALOG_DATA } from '@angular/material';
 import { WorkoutExercise } from '../../../models';
-import { FormConfig, DynamicFormStatus } from '../../../../web-components/dynamic-form';
+import { DataFormConfig } from '../../../../web-components/data-form';
 import { Observable, Subject } from 'rxjs/Rx';
 
 @Component({
@@ -21,16 +21,12 @@ export class AddWorkoutExerciseDialogComponent extends BaseComponent implements 
   public workoutId: number;
   public exercise: Exercise;
 
-  public workoutExerciseForm: FormConfig<WorkoutExercise>;
+  public workoutExerciseForm: DataFormConfig;
 
   /**
    * Accessed by parent component
    */
   public newWorkoutExercise: WorkoutExercise;
-
-  public customSaveButtonSubject: Subject<void> = new Subject<void>();
-  public customDeleteButtonSubject: Subject<void> = new Subject<void>();
-  public formStatus: DynamicFormStatus | undefined;
 
   constructor(
     protected dependencies: ComponentDependencyService,
@@ -56,14 +52,14 @@ export class AddWorkoutExerciseDialogComponent extends BaseComponent implements 
   }
 
   private initForm(): void {
-    this.workoutExerciseForm = this.dependencies.itemServices.workoutExerciseService.insertForm()
+    this.workoutExerciseForm = this.dependencies.itemServices.workoutExerciseService.buildInsertForm()
       .fieldValueResolver((fieldName, value) => {
         if (fieldName === 'ExerciseId') {
-          return this.exercise.id;
+          return Observable.of(this.exercise.id);
         } else if (fieldName === 'WorkoutId') {
-          return this.workoutId;
+          return Observable.of(this.workoutId);
         }
-        return value;
+        return Observable.of(value);
       })
       .wrapInCard(false)
       .onAfterInsert((response => {
@@ -71,10 +67,6 @@ export class AddWorkoutExerciseDialogComponent extends BaseComponent implements 
         this.close();
       }))
       .build();
-  }
-
-  public onStatusChanged(status: DynamicFormStatus): void {
-    this.formStatus = status;
   }
 
   public close(): void {

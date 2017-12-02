@@ -6,7 +6,7 @@ import { AppConfig, UrlConfig } from '../../../../config';
 
 // required by component
 import { ClientsBaseComponent } from '../../clients-base.component';
-import { FormConfig } from '../../../../../web-components/dynamic-form';
+import { DataFormConfig } from '../../../../../web-components/data-form';
 import { NewClientMenuItems } from '../../menu.items';
 import { User } from '../../../../models';
 
@@ -15,7 +15,7 @@ import { User } from '../../../../models';
 })
 export class NewClientComponent extends ClientsBaseComponent implements OnInit {
 
-    public formConfig: FormConfig<User>;
+    public formConfig: DataFormConfig;
 
     constructor(
         protected activatedRoute: ActivatedRoute,
@@ -43,8 +43,8 @@ export class NewClientComponent extends ClientsBaseComponent implements OnInit {
     }
 
     private initForm(): void {
-        this.formConfig = this.dependencies.itemServices.userService.insertForm({
-            customInsertQuery: (item: User) => this.dependencies.itemServices.userService.createClient(item)
+        this.formConfig = this.dependencies.itemServices.userService.buildInsertForm({
+            insertQuery: (item: User) => this.dependencies.itemServices.userService.createClient(item)
         })
             .onAfterInsert((response) => {
                 // redirect to view client page

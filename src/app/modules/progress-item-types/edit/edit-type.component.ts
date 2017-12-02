@@ -6,7 +6,7 @@ import { AppConfig, UrlConfig } from '../../../config';
 
 // required by component
 import { ProgressItemMenuItems } from '../menu.items';
-import { FormConfig } from '../../../../web-components/dynamic-form';
+import { DataFormConfig } from '../../../../web-components/data-form';
 import { ProgressItemType } from '../../../models';
 
 @Component({
@@ -14,7 +14,7 @@ import { ProgressItemType } from '../../../models';
 })
 export class EditTypeComponent extends BaseComponent implements OnInit {
 
-    public formConfig: FormConfig<ProgressItemType>;
+    public formConfig: DataFormConfig;
 
     constructor(
         private activatedRoute: ActivatedRoute,
@@ -38,9 +38,9 @@ export class EditTypeComponent extends BaseComponent implements OnInit {
         this.activatedRoute.params
             .takeUntil(this.ngUnsubscribe)
             .map((params: Params) => {
-                this.formConfig = this.dependencies.itemServices.progressItemTypeService.editForm(+params['id'])
+                this.formConfig = this.dependencies.itemServices.progressItemTypeService.buildEditForm(+params['id'])
                     .onAfterDelete(() => super.navigate([this.getTrainerUrl('progress-item-types')]))
-                    .onFormLoaded(form => {
+                    .onEditFormLoaded(form => {
                         this.setConfig({
                             menuItems: new ProgressItemMenuItems(form.item.id).menuItems,
                             menuTitle: {

@@ -7,7 +7,7 @@ import { AppConfig, UrlConfig } from '../../../../config';
 // required by component
 import { ClientsBaseComponent } from '../../clients-base.component';
 import { ClientMenuItems } from '../../menu.items';
-import { FormConfig } from '../../../../../web-components/dynamic-form';
+import { DataFormConfig } from '../../../../../web-components/data-form';
 import { User } from '../../../../models';
 import { Observable } from 'rxjs/Rx';
 
@@ -16,7 +16,7 @@ import { Observable } from 'rxjs/Rx';
 })
 export class EditClientComponent extends ClientsBaseComponent implements OnInit {
 
-    public formConfig: FormConfig<User>;
+    public formConfig: DataFormConfig;
 
     constructor(
         protected activatedRoute: ActivatedRoute,
@@ -42,10 +42,10 @@ export class EditClientComponent extends ClientsBaseComponent implements OnInit 
         return this.clientIdChange
             .takeUntil(this.ngUnsubscribe)
             .map(clientId => {
-                this.formConfig = this.dependencies.itemServices.userService.editForm(clientId)
+                this.formConfig = this.dependencies.itemServices.userService.buildEditForm(clientId)
                     .enableDelete(false)
                     .onAfterDelete(() => super.navigate([this.getTrainerUrl('clients')]))
-                    .onAfterUpdate(response => {
+                    .onAfterEdit(response => {
                         if (this.dependencies.coreServices.currentLanguage.isDifferentThanCurrent(response.item.language)) {
                             // language has changed, update it
                             this.dependencies.coreServices.currentLanguage.setLanguage(response.item.language);
@@ -54,7 +54,7 @@ export class EditClientComponent extends ClientsBaseComponent implements OnInit 
                             this.dependencies.coreServices.systemService.reloadPage();
                         }
                     })
-                    .onFormLoaded(form => {
+                    .onEditFormLoaded(form => {
                         const user = form.item;
 
                         this.setConfig({
