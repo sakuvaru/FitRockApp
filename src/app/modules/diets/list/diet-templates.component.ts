@@ -58,16 +58,6 @@ export class DietTemplatesComponent extends BaseComponent implements OnInit {
           sortKey: 'DietName'
         },
         {
-          value: (item) => {
-            if (item.client) {
-              return item.client.getFullName();
-            }
-            return '';
-          },
-          name: (item) => super.translate('module.diets.createdForClient'),
-          sortKey: 'Client.FirstName'
-        },
-        {
           value: (item) => item.dietCategory.categoryName,
           name: (item) => super.translate('module.diets.dietCategory'),
           sortKey: 'DietCategory.CategoryName'

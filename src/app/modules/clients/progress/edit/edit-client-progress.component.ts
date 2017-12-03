@@ -165,8 +165,7 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
             (query, search) => {
                 return query
                     .includeMultiple(['ProgressItemType', 'ProgressItemType.ProgressItemUnit'])
-                    .whereEquals('ClientId', clientId)
-                    .orderByDescending('MeasurementDate');
+                    .whereEquals('ClientId', clientId);
             }
         )
             .withFields([

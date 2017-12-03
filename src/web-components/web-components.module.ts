@@ -7,7 +7,6 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 // web modules
 import { ButtonsModule } from './buttons/buttons.module';
-import { DataListModule } from './data-list/data-list.module';
 import { LoaderModule } from './loader/loader.module';
 import { GraphModule } from './graph/graph.module';
 import { MessagesModule } from './messages/messages.module';
@@ -29,7 +28,6 @@ import { LayoutModule } from './layout/layout.module';
     declarations: [
     ],
     exports: [
-        DataListModule,
         ButtonsModule,
         LoaderModule,
         GraphModule,
