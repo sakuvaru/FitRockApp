@@ -31,11 +31,11 @@ export class TextAreaComponent extends BaseFormControlComponent implements OnIni
       return '';
     }
 
-    if (!(defaultFieldValue instanceof String)) {
-      throw Error(`TextArea field expected default value to be 'String', but other type was given`);
+    if (!((typeof defaultFieldValue === 'string') || (defaultFieldValue instanceof String))) {
+      throw Error(`Text field expected default value to be 'String', but other type was given`);
     }
 
-    return defaultFieldValue;
+    return defaultFieldValue as string;
   }
 
   protected getEditValue(): string {
@@ -45,11 +45,11 @@ export class TextAreaComponent extends BaseFormControlComponent implements OnIni
       return '';
     }
 
-    if (fieldValue || !(fieldValue instanceof String)) {
-      throw Error(`TextArea field expected value to be 'String', but other type was given`);
+    if (!((typeof fieldValue === 'string') || (fieldValue instanceof String))) {
+      throw Error(`Text field expected value to be 'String', but other type was given`);
     }
 
-    return fieldValue;
+    return fieldValue as string;
   }
 }
 
