@@ -107,6 +107,11 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
     private readonly snackbarDuration: number = 2500;
 
     /**
+     * Prevents subscribing to form changes multiple times (e.g. when reloading form)
+     */
+    private subscribedToFormSubscriptions: boolean = false;
+
+    /**
     * Flag for initialization component, used because ngOnChanges can be called before ngOnInit
     * which would cause component to be initialized twice (happened when component is inside a dialog)
     * Info: https://stackoverflow.com/questions/43111474/how-to-stop-ngonchanges-called-before-ngoninit/43111597
@@ -238,10 +243,15 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
                 this.formGroup = this.toFormGroup(this.fields);
 
                 // subscribe to form changes since form group is initialized
-                this.subscribeToFormChanges();
+                if (!this.subscribedToFormSubscriptions) {
+                    this.subscribeToFormChanges();
 
-                // subscribe to actions
-                this.subscribeToFormActions();
+                    // subscribe to actions
+                    this.subscribeToFormActions();
+
+                    // make sure that subscription happens only once during the lifetime of component
+                    this.subscribedToFormSubscriptions = true;
+                } 
 
                 // trigger form loaded event
                 if (xDefinition instanceof DataFormEditDefinition) {
@@ -257,7 +267,6 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
                 }
 
             });
-
     }
 
     private subscribeToInitForm(): void {
