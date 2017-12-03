@@ -27,7 +27,7 @@ export class DataFormSaveButtonDirective extends BaseWebComponent implements Aft
     }
 
     ngAfterViewInit() {
-       // this.initDirective();
+        this.initDirective();
     }
 
     private initDirective(): void {
