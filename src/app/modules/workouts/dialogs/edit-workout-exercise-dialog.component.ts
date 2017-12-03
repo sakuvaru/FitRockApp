@@ -5,7 +5,6 @@ import { ComponentDependencyService, BaseComponent, ComponentConfig, ComponentSe
 import { AppConfig, UrlConfig } from '../../../config';
 
 // required by component
-import { DataListConfig, AlignEnum } from '../../../../web-components/data-list';
 import { Exercise } from '../../../models';
 import { MAT_DIALOG_DATA } from '@angular/material';
 import { WorkoutExercise } from '../../../models';
@@ -58,6 +57,7 @@ export class EditWorkoutExerciseDialogComponent extends BaseComponent implements
         this.workoutExerciseWasDeleted = true;
         this.close();
       })
+      .renderButtons(false)
       .build();
   }
 

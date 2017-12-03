@@ -5,7 +5,6 @@ import { ComponentDependencyService, BaseComponent, ComponentConfig, ComponentSe
 import { AppConfig, UrlConfig } from '../../../../config';
 
 // required by component
-import { DataListConfig, AlignEnum } from '../../../../../web-components/data-list';
 import { MAT_DIALOG_DATA } from '@angular/material';
 import { ProgressItem } from '../../../../models';
 import { DataFormConfig } from '../../../../../web-components/data-form';

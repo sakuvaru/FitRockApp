@@ -6,15 +6,16 @@ import { AppConfig, UrlConfig } from '../../../config';
 
 // required by component
 import { FoodOverviewItems } from '../menu.items';
-import { DataListConfig, AlignEnum, Filter } from '../../../../web-components/data-list';
+import { IDynamicFilter, DataTableConfig} from '../../../../web-components/data-table';
 import { Food, FoodCategoryWithFoodsCountDto } from '../../../models';
+import { Observable } from 'rxjs/Rx';
 
 @Component({
   templateUrl: 'my-foods-list.component.html'
 })
 export class MyFoodsListComponent extends BaseComponent implements OnInit {
 
-  public config: DataListConfig<Food>;
+  public config: DataTableConfig;
 
   constructor(
     protected dependencies: ComponentDependencyService) {
@@ -30,49 +31,53 @@ export class MyFoodsListComponent extends BaseComponent implements OnInit {
   ngOnInit() {
     super.ngOnInit();
 
+    this.init();
+  }
+
+  private init() {
     this.setConfig({
-      menuTitle: { key: 'module.foods.submenu.myFoods' },
+      menuTitle: { key: 'module.foods.submenu.allFoods' },
       menuItems: new FoodOverviewItems().menuItems,
       componentTitle: { key: 'module.foods.submenu.overview' },
     });
-
-    this.config = this.dependencies.webComponentServices.dataListService.dataList<Food>(
-      searchTerm => {
-        return this.dependencies.itemServices.foodService.items()
-          .include('FoodCategory')
-          .byCurrentUser()
-          .whereLike('FoodName', searchTerm);
-      },
-    )
+    this.config = this.dependencies.itemServices.foodService.buildDataTable((query, search) => {
+      return query
+        .include('FoodCategory')
+        .byCurrentUser()
+        .whereLike('FoodName', search);
+    })
       .withFields([
-        { value: (item) => item.foodName, flex: 40 },
         {
-          value: (item) => {
-            return item.foodCategory.categoryName;
-          }, isSubtle: true, align: AlignEnum.Right, hideOnSmallScreens: true
+          value: (item) => item.foodName,
+          name: (item) => super.translate('module.foods.foodName'),
+          sortKey: 'FoodName'
         },
+        {
+          value: (item) => item.foodCategory.categoryName,
+          name: (item) => super.translate('module.foods.foodCategory'),
+          sortKey: 'FoodCategory.CategoryName'
+        },
+        {
+          name: (item) => super.translate('shared.updated'),
+          value: (item) => super.fromNow(item.updated),
+          sortKey: 'Updated'
+        }
       ])
-      .dynamicFilters((searchTerm) => {
-        return this.dependencies.itemServices.foodCategoryService.getFoodCategoryWithFoodsCountDto(searchTerm, false)
-          .get()
-          .map(response => {
-            const filters: Filter<FoodCategoryWithFoodsCountDto>[] = [];
-            response.items.forEach(category => {
-              filters.push(new Filter({
-                filterNameKey: category.codename,
-                onFilter: (query) => query.whereEquals('FoodCategoryId', category.id),
-                count: category.foodsCount
-              }));
-            });
-            return filters;
-          })
-          .takeUntil(this.ngUnsubscribe);
-      })
-      .showAllFilter(true)
-      .showPager(true)
-      .showSearch(true)
-      .pagerSize(7)
-      .onClick((item) => super.navigate([super.getTrainerUrl('foods/edit/') + item.id]))
+      .withDynamicFilters(search => this.dependencies.itemServices.foodCategoryService.getFoodCategoryWithFoodsCountDto(search, true)
+        .get()
+        .map(response => {
+          const filters: IDynamicFilter<Food>[] = [];
+          response.items.forEach(category => {
+            filters.push(({
+              guid: category.id.toString(),
+              name: Observable.of(category.codename),
+              query: (query) => query.whereEquals('FoodCategoryId', category.id),
+              count: category.foodsCount
+            }));
+          });
+          return filters;
+        }))
+      .onClick((item) => super.navigate([super.getTrainerUrl('foods/preview/') + item.id]))
       .build();
   }
 }

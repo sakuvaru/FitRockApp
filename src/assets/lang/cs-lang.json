@@ -160,7 +160,9 @@
 			"activeClients": "Aktivní",
 			"inactiveClients": "Neaktivní",
 			"editClient": "Změna údajů",
-			"copyFromTemplate": "Zkopírovat ze šablony"
+			"copyFromTemplate": "Zkopírovat ze šablony",
+			"fullName": "Celé jméno",
+			"email": "E-mail"
 		},
 		"workouts": {
 			"submenu": {
@@ -168,6 +170,8 @@
 				"workoutTemplates": "Šablony",
 				"new": "Nová šablona tréninku"
 			},
+			"workoutCategory": "Kategorie",
+			"workoutForClient": "Pro klienta",
 			"workoutName": "Trénink",
 			"editWorkout": "Změna tréninku",
 			"trainingPlans": "Tréninkové plány",
@@ -200,7 +204,8 @@
 			"myExercises": "Moje cviky",
 			"allExercises": "Všechny cviky",
 			"preview": "Náhled cviku",
-			"new": "Nový cvik"
+			"new": "Nový cvik",
+			"exerciseCategory": "Kategorie"
 		},
 		"diets": {
 			"submenu": {
@@ -211,6 +216,9 @@
 				"edit": "Upravit základní údaje",
 				"new": "Nová šablona jídelníčku"
 			},
+			"dietCategory": "Kategorie",
+			"createdForClient": "Pro klienta",
+			"dietName": "Název jídelníčku",
 			"editDiet": "Upravit jídelníček",
 			"editTemplate": "Upravit šablonu",
 			"previewDiet": "Přehled plánu",
@@ -233,7 +241,9 @@
 				"preview": "Náhled",
 				"overview": "Přehled",
 				"new": "Nové jídlo"
-			}
+			},
+			"foodName": "Název",
+			"foodCategory": "Kategorie"
 		},
 		"foodUnits": {
 			"mg": "miligram",
@@ -308,7 +318,11 @@
 				"ChestCircumference": "Obvod hrudníku",
 				"BodyFat": "Procento tělesného tuku",
 				"LeanMuscleMass": "Čistá svalová hmota"
-			}
+			},
+			"typeName": "Název sledovaného typu",
+			"unit": "Jednotka měření",
+			"value": "Naměřená hodnota",
+			"measurementDate": "Datum záznamu"
 		},
 		"progressItems":{
 			"xAxisDateLabel": "Datum"
@@ -346,7 +360,8 @@
 			},
 			"address": "Adresa",
 			"lng": "Zem. délka",
-			"lat": "Zem. šířka"
+			"lat": "Zem. šířka",
+			"locationName": "Název lokace"
 		},
 		"shared": {
 			"errors": {

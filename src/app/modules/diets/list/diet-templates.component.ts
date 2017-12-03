@@ -6,15 +6,16 @@ import { AppConfig, UrlConfig } from '../../../config';
 
 // required by component
 import { DietsOverviewMenuItems } from '../menu.items';
-import { DataListConfig, AlignEnum, Filter } from '../../../../web-components/data-list';
-import { Diet, DietCategoryWithDietsCountDto } from '../../../models';
+import { DataTableConfig, IDynamicFilter } from '../../../../web-components/data-table';
+import { DietCategoryWithDietsCountDto, Diet, DietCategory } from '../../../models';
+import { Observable } from 'rxjs/Rx';
 
 @Component({
   templateUrl: 'diet-templates.component.html'
 })
 export class DietTemplatesComponent extends BaseComponent implements OnInit {
 
-  public config: DataListConfig<Diet>;
+  public config: DataTableConfig;
 
   constructor(
     protected dependencies: ComponentDependencyService) {
@@ -36,53 +37,65 @@ export class DietTemplatesComponent extends BaseComponent implements OnInit {
       componentTitle: { key: 'module.diets.submenu.dietTemplates' },
     });
 
-    this.initDataList();
+    this.init();
   }
 
-  private initDataList(): void {
-
-    this.config = this.dependencies.webComponentServices.dataListService.dataList<Diet>(
-      searchTerm => {
-        return this.dependencies.itemServices.dietService.items()
+  private init(): void {
+    this.config = this.dependencies.itemServices.dietService.buildDataTable(
+      (query, search) => {
+        return query
           .includeMultiple(['DietCategory', 'Client'])
           .byCurrentUser()
-          .whereLike('DietName', searchTerm)
+          .whereLike('DietName', search)
           .whereNull('ClientId');
       },
     )
-      .withFields([
-        { value: (item) => item.dietName, flex: 40 },
+      .withFields(
+      [
+        {
+          value: (item) => item.dietName,
+          name: (item) => super.translate('module.diets.dietName'),
+          sortKey: 'DietName'
+        },
         {
           value: (item) => {
             if (item.client) {
               return item.client.getFullName();
             }
             return '';
-          }, isSubtle: true, align: AlignEnum.Left, hideOnSmallScreens: true
+          },
+          name: (item) => super.translate('module.diets.createdForClient'),
+          sortKey: 'Client.FirstName'
         },
         {
-          value: (item) => {
-            return item.dietCategory.categoryName;
-          }, isSubtle: true, align: AlignEnum.Right, hideOnSmallScreens: true
+          value: (item) => item.dietCategory.categoryName,
+          name: (item) => super.translate('module.diets.dietCategory'),
+          sortKey: 'DietCategory.CategoryName'
         },
+        {
+          name: (item) => super.translate('shared.updated'),
+          value: (item) => super.fromNow(item.updated),
+          sortKey: 'Updated'
+        }
       ])
-      .dynamicFilters((searchTerm) => {
-        return this.dependencies.itemServices.dietCategoryService.getCategoryCountForDietTemplates(searchTerm)
-          .get()
-          .map(response => {
-            const filters: Filter<DietCategoryWithDietsCountDto>[] = [];
-            response.items.forEach(category => {
-              filters.push(new Filter({
-                filterNameKey: category.codename,
-                onFilter: (query) => query.whereEquals('DietCategoryId', category.id),
-                count: category.dietsCount
-              }));
-            });
-            return filters;
-          })
-          .takeUntil(this.ngUnsubscribe);
-      })
-      .showAllFilter(true)
+      .withDynamicFilters(
+      (search) => this.dependencies.itemServices.dietCategoryService.getCategoryCountForClientDiets(search)
+        .get()
+        .map(response => {
+          const filters: IDynamicFilter<Diet>[] = [];
+          response.items.forEach(category => {
+            filters.push(({
+              guid: category.id.toString(),
+              name: Observable.of(category.codename),
+              query: (query) => {
+                return query.whereEquals('DietCategoryId', category.id);
+              },
+              count: category.dietsCount
+            }));
+          });
+          return filters;
+        })
+      )
       .onClick((item) => super.navigate([super.getTrainerUrl('diets/edit-plan/') + item.id]))
       .build();
   }

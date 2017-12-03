@@ -7,16 +7,14 @@ import { AppConfig, UrlConfig } from '../../../../config';
 // required by component
 import { ClientsBaseComponent } from '../../clients-base.component';
 import { ClientOverviewMenuItems } from '../../menu.items';
-import { DataListConfig, AlignEnum, Filter } from '../../../../../web-components/data-list';
-import { User, UserFilterWithCount } from '../../../../models';
-import { MultipleItemQuery } from '../../../../../lib/repository';
+import { DataTableConfig } from '../../../../../web-components/data-table';
 
 @Component({
   templateUrl: 'clients-overview.component.html'
 })
 export class ClientsOverviewComponent extends ClientsBaseComponent implements OnInit {
 
-  public config: DataListConfig<User>;
+  public config: DataTableConfig;
 
   constructor(
     protected activatedRoute: ActivatedRoute,
@@ -33,44 +31,51 @@ export class ClientsOverviewComponent extends ClientsBaseComponent implements On
 
   ngOnInit(): void {
     super.ngOnInit();
-    this.initDataList();
+    this.init();
     super.initClientSubscriptions();
   }
 
-  private initDataList(): void {
+  private init(): void {
     this.setConfig({
       menuTitle: { key: 'menu.clients' },
       menuItems: new ClientOverviewMenuItems().menuItems,
       componentTitle: { key: 'module.clients.allClients' },
     });
 
-    this.config = this.dependencies.webComponentServices.dataListService.dataList<User>(
-      searchTerm => {
+    this.config = this.dependencies.itemServices.userService.buildDataTable(
+      (query, search) => {
         return this.dependencies.itemServices.userService.clients()
-          .whereLikeMultiple(['FirstName', 'LastName'], searchTerm);
+          .whereLikeMultiple(['FirstName', 'LastName'], search);
       },
-
     )
       .withFields([
-        { value: (item) => item.getFullName(), flex: 40 },
-        { value: (item) => item.email, isSubtle: true, align: AlignEnum.Right, hideOnSmallScreens: true },
+        { 
+          value: (item) => item.getFullName(), 
+          name: (item) => super.translate('module.clients.fullName'),
+          sortKey: 'FirstName'
+        },
+        { 
+          value: (item) => item.email,
+          name: (item) => super.translate('module.clients.email'),
+          sortKey: 'Email'
+        }
       ])
-      .showAllFilter(true)
-      .filter(new Filter({
-        filterNameKey: 'module.clients.activeClients',
-        onFilter: query => query.whereEquals('IsActive', true),
-        countQuery: (query) => query.toCountQuery()
-      }))
-      .filter(new Filter({
-        filterNameKey: 'module.clients.inactiveClients',
-        onFilter: query => query.whereEquals('IsActive', false),
-        countQuery: (query) => query.toCountQuery()
-      }))
-      .showPager(true)
-      .showSearch(true)
-      .pagerSize(7)
+      .withFilters(
+        [
+          {
+            name: super.translate('module.clients.activeClients'),
+            guid: 'ActiveClients',
+            query: query => query.whereEquals('IsActive', true),
+          },
+          {
+            name: super.translate('module.clients.inactiveClients'),
+            guid: 'InactiveClients',
+            query: query => query.whereEquals('IsActive', false),
+          }
+        ]
+      )
       .onClick((item) => super.navigate([super.getTrainerUrl('clients/edit/' + item.id + '/dashboard')]))
-      .avatarUrlResolver((item) => item.avatarUrl ? item.avatarUrl : AppConfig.DefaultUserAvatarUrl)
+      .avatarImage((item) => item.avatarUrl ? item.avatarUrl : AppConfig.DefaultUserAvatarUrl)
       .build();
   }
 }

@@ -76,8 +76,9 @@
       <loader [enabled]="showLoading" type="linear"></loader>
       <!-- ngClass with hidden styles is used because *ngIf would cause the router to not be executed at all -->
       <div [ngClass]="{'w-hidden': !showComponent}">
-        <router-outlet>
-        </router-outlet>
+        <page-wrapper>
+          <router-outlet></router-outlet>
+        </page-wrapper>
       </div>
 
     </td-layout-manage-list>

@@ -5,7 +5,6 @@ import { ComponentDependencyService, BaseComponent, ComponentConfig, ComponentSe
 import { AppConfig, UrlConfig } from '../../../config';
 
 // required by component
-import { DataListConfig, AlignEnum } from '../../../../web-components/data-list';
 import { Exercise } from '../../../models';
 import { MAT_DIALOG_DATA } from '@angular/material';
 import { DataFormConfig } from '../../../../web-components/data-form';
@@ -49,6 +48,7 @@ export class AddCustomExerciseDialogComponent extends BaseComponent implements O
         this.newExercise = response.item;
         this.close();
       }))
+      .renderButtons(false)
       .build();
   }
 

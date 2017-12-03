@@ -48,6 +48,7 @@ export class AddCustomFoodDialogComponent extends BaseComponent implements OnIni
         this.newFood = response.item;
         this.close();
       }))
+      .renderButtons(false)
       .build();
   }
 

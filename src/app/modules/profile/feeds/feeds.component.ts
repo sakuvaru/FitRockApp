@@ -7,7 +7,6 @@ import { AppConfig, UrlConfig } from '../../../config';
 // requied by component
 import { MyProfileMenuItems } from '../menu.items';
 import { Feed, FeedResult } from '../../../models';
-import { DataListConfig, AlignEnum, Filter } from '../../../../web-components/data-list';
 import { Observable } from 'rxjs/Rx';
 import { StringHelper } from '../../../../lib/utilities';
 import { LoadMoreConfig } from '../../../../web-components/load-more';
@@ -17,7 +16,6 @@ import { LoadMoreConfig } from '../../../../web-components/load-more';
 })
 export class FeedsComponent extends BaseComponent implements OnInit {
 
-    public config: DataListConfig<Feed>;
     public loadMoreConfig: LoadMoreConfig;
 
     constructor(

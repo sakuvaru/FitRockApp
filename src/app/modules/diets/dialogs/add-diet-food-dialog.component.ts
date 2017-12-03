@@ -5,7 +5,6 @@ import { ComponentDependencyService, BaseComponent, ComponentConfig, ComponentSe
 import { AppConfig, UrlConfig } from '../../../config';
 
 // required by component
-import { DataListConfig, AlignEnum } from '../../../../web-components/data-list';
 import { Food, DietFood } from '../../../models';
 import { MAT_DIALOG_DATA } from '@angular/material';
 import { DataFormConfig } from '../../../../web-components/data-form';
@@ -17,7 +16,6 @@ import { stringHelper } from '../../../../lib/utilities';
 })
 export class AddDietFoodDialogComponent extends BaseComponent implements OnInit {
 
-  public config: DataListConfig<DietFood>;
   public dietId: number;
   public food: Food;
 
@@ -81,6 +79,7 @@ export class AddDietFoodDialogComponent extends BaseComponent implements OnInit 
         this.newDietFood = response.item;
         this.close();
       }))
+      .renderButtons(false)
       .build();
   }
 

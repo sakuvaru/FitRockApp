@@ -6,7 +6,7 @@ import { AppConfig, UrlConfig } from '../../../config';
 
 // required by component
 import { LocationOverviewItems } from '../menu.items';
-import { DataListConfig, AlignEnum, Filter } from '../../../../web-components/data-list';
+import { DataTableConfig } from '../../../../web-components/data-table';
 import { Location } from '../../../models';
 
 @Component({
@@ -14,7 +14,7 @@ import { Location } from '../../../models';
 })
 export class MyLocationsComponent extends BaseComponent implements OnInit {
 
-  public config: DataListConfig<Location>;
+  public config: DataTableConfig;
 
   constructor(
     protected dependencies: ComponentDependencyService) {
@@ -36,19 +36,25 @@ export class MyLocationsComponent extends BaseComponent implements OnInit {
       componentTitle: { key: 'module.locations.submenu.myLocations' },
     });
 
-    this.config = this.dependencies.webComponentServices.dataListService.dataList<Location>(
-      searchTerm => {
-        return this.dependencies.itemServices.locationService.items()
+    this.config = this.dependencies.itemServices.locationService.buildDataTable(
+      (query, search) => {
+        return query
           .byCurrentUser()
-          .whereLikeMultiple(['LocationName', 'Address'], searchTerm);
+          .whereLikeMultiple(['LocationName', 'Address'], search);
       },
     )
       .withFields([
-        { value: (item: Location) => item.locationName, flex: 60 }
+        {
+          value: (item) => item.locationName,
+          name: (item) => super.translate('modules.locations.locationName'),
+          sortKey: 'LocationName'
+        },
+        {
+          name: (item) => super.translate('shared.updated'),
+          value: (item) => super.fromNow(item.updated),
+          sortKey: 'Updated'
+        }
       ])
-      .showPager(true)
-      .showSearch(true)
-      .pagerSize(7)
       .onClick((item) => super.navigate([super.getTrainerUrl('locations/view/') + item.id]))
       .build();
   }

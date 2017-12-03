@@ -9,7 +9,7 @@ import { ProgressItemType } from '../../../../models';
 import { ClientsBaseComponent } from '../../clients-base.component';
 import { ClientMenuItems } from '../../menu.items';
 import { DataFormComponent, DataFormConfig, DataFormFieldChangeResult } from '../../../../../web-components/data-form';
-import { DataListConfig, AlignEnum, Filter, DataListComponent, DataListField } from '../../../../../web-components/data-list';
+import { DataTableConfig, DataTableComponent, IDynamicFilter } from '../../../../../web-components/data-table';
 import { ProgressItem, User, ProgressItemTypeWithCountDto } from '../../../../models';
 import { Observable } from 'rxjs/Rx';
 import { EditProgressItemDialogComponent } from '../dialogs/edit-progress-item-dialog.component';
@@ -24,10 +24,10 @@ import { stringHelper } from '../../../../../lib/utilities';
 export class EditClientProgressComponent extends ClientsBaseComponent implements OnInit {
 
     public formConfig: DataFormConfig;
-    public DataListConfig: DataListConfig<ProgressItem>;
+    public dataTableConfig: DataTableConfig;
     public progressItemTypes: ProgressItemType[];
 
-    @ViewChild(DataListComponent) progressItemsDataList: DataListComponent;
+    @ViewChild(DataTableComponent) progressItemsDataTable: DataTableComponent;
     @ViewChild(DataFormComponent) progressItemForm: DataFormComponent;
 
     constructor(
@@ -161,9 +161,9 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
     }
 
     private initDataList(clientId: number): void {
-        this.DataListConfig = this.dependencies.webComponentServices.dataListService.dataList<ProgressItem>(
-            searchTerm => {
-                return this.dependencies.itemServices.progressItemService.items()
+        this.dataTableConfig = this.dependencies.itemServices.progressItemService.buildDataTable(
+            (query, search) => {
+                return query
                     .includeMultiple(['ProgressItemType', 'ProgressItemType.ProgressItemUnit'])
                     .whereEquals('ClientId', clientId)
                     .orderByDescending('MeasurementDate');
@@ -171,60 +171,46 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
         )
             .withFields([
                 {
-                    value: (item: ProgressItem) =>
+                    value: (item) =>
                         item.progressItemType.translateValue
                             ? super.translate('module.progressItemTypes.globalTypes.' + item.progressItemType.codename)
                             : item.progressItemType.typeName
                     ,
-                    isSubtle: false,
-                    hideOnSmallScreens: false,
-                    align: AlignEnum.Left,
+                    name: (item) => super.translate('module.progressItemTypes.typeName'),
                 },
                 {
-                    value: (item: ProgressItem) => item.value.toString(),
-                    isSubtle: true,
-                    hideOnSmallScreens: false,
-                    align: AlignEnum.Left,
+                    name: (item) => super.translate('module.progressItemTypes.value'),
+                    value: (item) => item.value.toString(),
+                    sortKey: 'Value',
                 },
                 {
-                    value: (item: ProgressItem) => super.translate('module.progressItemUnits.' + item.progressItemType.progressItemUnit.unitCode),
-                    isSubtle: true,
-                    hideOnSmallScreens: true,
-                    align: AlignEnum.Left
+                    value: (item) => super.translate('module.progressItemUnits.' + item.progressItemType.progressItemUnit.unitCode),
+                    name: (item) => super.translate('module.progressItemTypes.unit')
                 },
                 {
-                    value: (item) => super.moment(item.measurementDate).format('MMMM DD'),
-                    isSubtle: true,
-                    hideOnSmallScreens: false,
-                    align: AlignEnum.Right,
+                    value: (item) => super.formatDate(item.measurementDate),
+                    name: (item) => super.translate('module.progressItemTypes.measurementDate'),
+                    sortKey: 'MeasurementDate'
                 },
             ])
-            .dynamicFilters((searchTerm) => {
-                return this.dependencies.itemServices.progressItemTypeService.getProgressItemTypeWithCountDto(this.clientId, undefined)
-                    .get()
-                    .map(response => {
-                        const filters: Filter<ProgressItemTypeWithCountDto>[] = [];
-                        response.items.forEach(type => {
-                            let typeKey;
-                            if (type.translateValue) {
-                                typeKey = 'module.progressItemTypes.globalTypes.' + type.codename;
-                            } else {
-                                typeKey = type.typeName;
-                            }
-
-                            filters.push(new Filter({
-                                filterNameKey: typeKey,
-                                onFilter: (query) => query.whereEquals('ProgressItemTypeId', type.id),
-                                count: type.progressItemsCount
-                            }));
-                        });
-                        return filters;
-                    })
-                    .takeUntil(this.ngUnsubscribe);
-            })
-            .wrapInCard(true)
-            .showAllFilter(true)
-            .showSearch(false)
+            .withDynamicFilters(
+            (search) => this.dependencies.itemServices.progressItemTypeService.getProgressItemTypeWithCountDto(this.clientId, undefined)
+                .get()
+                .map(response => {
+                    const filters: IDynamicFilter<ProgressItem>[] = [];
+                    response.items.forEach(type => {
+                        filters.push(({
+                            guid: type.id.toString(),
+                            name: type.translateValue ? super.translate('module.progressItemTypes.globalTypes.' + type.codename) : Observable.of(type.typeName),
+                            query: (query) => {
+                                return query.whereEquals('ProgressItemTypeId', type.id);
+                            },
+                            count: type.progressItemsCount
+                        }));
+                    });
+                    return filters;
+                })
+            )
             .onClick((item) => this.openEditProgressItemDialog(item))
             .build();
     }
@@ -316,7 +302,7 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
     }
 
     private reloadDataList(): void {
-        this.progressItemsDataList.forceReinitialization(this.DataListConfig);
+        this.progressItemsDataTable.reloadData();
     }
 
     private reloadForm(): void {

@@ -6,15 +6,16 @@ import { AppConfig, UrlConfig } from '../../../config';
 
 // required by component
 import { WorkoutsOverviewMenuItems } from '../menu.items';
-import { DataListConfig, AlignEnum, Filter } from '../../../../web-components/data-list';
+import { DataTableConfig, IDynamicFilter } from '../../../../web-components/data-table';
 import { Workout, WorkoutCategoryListWithWorkoutsCount } from '../../../models';
+import { Observable } from 'rxjs/Rx';
 
 @Component({
   templateUrl: 'client-workouts.component.html'
 })
 export class ClientWorkoutsComponent extends BaseComponent implements OnInit {
 
-  public config: DataListConfig<Workout>;
+  public config: DataTableConfig;
 
   constructor(
     protected dependencies: ComponentDependencyService) {
@@ -36,52 +37,63 @@ export class ClientWorkoutsComponent extends BaseComponent implements OnInit {
       componentTitle: { key: 'module.workouts.submenu.clientWorkouts' },
     });
 
-    this.initDataList();
+    this.init();
   }
 
-  private initDataList(): void {
-    this.config = this.dependencies.webComponentServices.dataListService.dataList<Workout>(
-      searchTerm => {
-        return this.dependencies.itemServices.workoutService.items()
+  private init(): void {
+    this.config = this.dependencies.itemServices.workoutService.buildDataTable(
+      (query, search) => {
+        return query
           .includeMultiple(['WorkoutCategory', 'Client'])
           .byCurrentUser()
-          .whereLike('WorkoutName', searchTerm)
+          .whereLike('WorkoutName', search)
           .whereNotNull('ClientId');
       },
     )
       .withFields([
-        { label: 'module.workouts.workoutName', value: (item) => item.workoutName, flex: 40 },
         {
-          label: '-', value: (item) => {
+          name: (item) => super.translate('module.workouts.workoutName'),
+          value: (item) => item.workoutName,
+          sortKey: 'WorkoutName'
+        },
+        {
+          name: (item) => super.translate('module.workouts.workoutForClient'),
+          value: (item) => {
             if (item.client) {
               return item.client.getFullName();
             }
             return '';
-          }, isSubtle: true, align: AlignEnum.Left, hideOnSmallScreens: true
+          },
         },
         {
-          label: 'shared.updated', value: (item) => {
-            return item.workoutCategory.categoryName;
-          }, isSubtle: true, align: AlignEnum.Right, hideOnSmallScreens: true
+          name: (item) => super.translate('module.workouts.workoutCategory'),
+          value: (item) => item.workoutCategory.categoryName,
+          sortKey: 'WorkoutCategory.CategoryName'
         },
+        {
+          name: (item) => super.translate('shared.updated'),
+          value: (item) => super.fromNow(item.updated),
+          sortKey: 'Updated'
+        }
       ])
-      .dynamicFilters((searchTerm) => {
-        return this.dependencies.itemServices.workoutCategoryService.getCategoryCountForClientWorkouts(searchTerm)
-          .get()
-          .map(response => {
-            const filters: Filter<WorkoutCategoryListWithWorkoutsCount>[] = [];
-            response.items.forEach(category => {
-              filters.push(new Filter({
-                filterNameKey: category.codename,
-                onFilter: (query) => query.whereEquals('WorkoutCategoryId', category.id),
-                count: category.workoutsCount
-              }));
-            });
-            return filters;
-          })
-          .takeUntil(this.ngUnsubscribe);
-      })
-      .showAllFilter(true)
+      .withDynamicFilters(
+      (search) => this.dependencies.itemServices.workoutCategoryService.getCategoryCountForClientWorkouts(search)
+        .get()
+        .map(response => {
+          const filters: IDynamicFilter<Workout>[] = [];
+          response.items.forEach(category => {
+            filters.push(({
+              guid: category.id.toString(),
+              name: Observable.of(category.codename),
+              query: (query) => {
+                return query.whereEquals('WorkoutCategoryId', category.id);
+              },
+              count: category.workoutsCount
+            }));
+          });
+          return filters;
+        })
+      )
       .onClick((item) => super.navigate([super.getTrainerUrl('workouts/edit-plan/') + item.id]))
       .build();
   }

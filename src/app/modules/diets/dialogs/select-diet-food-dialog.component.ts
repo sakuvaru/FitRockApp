@@ -5,7 +5,7 @@ import { ComponentDependencyService, BaseComponent, ComponentConfig, ComponentSe
 import { AppConfig, UrlConfig } from '../../../config';
 
 // required by component
-import { DataListConfig, AlignEnum, Filter } from '../../../../web-components/data-list';
+import { DataTableConfig } from '../../../../web-components/data-table';
 import { Food } from '../../../models';
 import { MAT_DIALOG_DATA } from '@angular/material';
 
@@ -15,9 +15,9 @@ import { MAT_DIALOG_DATA } from '@angular/material';
 export class SelectDietFoodDialogComponent extends BaseComponent implements OnInit {
 
   public selectable: boolean = true;
-  public config: DataListConfig<Food>;
+  public config?: DataTableConfig;
 
-  public selectedFood: Food;
+  public selectedFood?: Food;
   public openAddCustomFoodDialog: boolean = false;
 
   constructor(
@@ -37,32 +37,39 @@ export class SelectDietFoodDialogComponent extends BaseComponent implements OnIn
   ngOnInit() {
     super.ngOnInit();
 
-    this.config = this.dependencies.webComponentServices.dataListService.dataList<Food>(
-      searchTerm => {
-        return this.dependencies.itemServices.foodService.items()
+    this.config = this.dependencies.itemServices.foodService.buildDataTable(
+      (query, search) => {
+        return query
           .include('FoodCategory')
-          .whereLike('FoodName', searchTerm);
+          .whereLike('FoodName', search);
       },
     )
       .withFields([
         {
           value: (item) => item.foodName,
-          flex: 60
+          name: (item) => super.translate('module.foods.foodName'),
+          sortKey: 'FoodName'
         },
         {
           value: (item) => super.translate('module.foodCategories.' + item.foodCategory.codename),
-          flex: 40,
-          isSubtle: true,
-          align: AlignEnum.Right,
-          hideOnSmallScreens: true
+          name: (item) => super.translate('module.foods.foodCategory'),
+          sortKey: 'FoodCategory.CategoryName'
         },
       ])
-      .filter(new Filter({ filterNameKey: 'module.diets.allFoods', onFilter: query => query }))
-      .filter(new Filter({ filterNameKey: 'module.diets.myFoods', onFilter: query => query.byCurrentUser().whereEquals('IsGlobal', false) }))
-      .pagerSize(5)
-      .showPager(true)
-      .showSearch(true)
-      .wrapInCard(false)
+      .withFilters([
+        {
+          guid: 'allFoods',
+          name: super.translate('module.diets.allFoods'),
+          query: query => query
+        },
+        {
+          guid: 'myFoods',
+          name: super.translate('module.diets.myFoods'),
+          query: query => query.byCurrentUser().whereEquals('IsGlobal', false)
+        }
+      ])
+      .pageSize(5)
+      .renderPager(false)
       .onClick((item: Food) => {
         // assign selected item
         this.selectedFood = item;

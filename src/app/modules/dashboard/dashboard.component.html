@@ -10,8 +10,12 @@
 </div>
 
 <div class="push">
-    <data-table [config]="config"></data-table>
+    <data-table #dataTable [config]="config"></data-table>
 </div>
+
+<h2>Separated pager</h2>
+
+<data-table-pager [dataTable]="dataTable"></data-table-pager>
 
 <h3 *ngIf="currentUser">
     Current user is authenticated: {{currentUser.isAuthenticated}} - {{currentUser.codename}}

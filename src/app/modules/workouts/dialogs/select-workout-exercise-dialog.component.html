@@ -6,5 +6,10 @@
 </mat-dialog-actions>
 
 <mat-dialog-content>
-    <data-list [config]="config"></data-list>
+    <data-table #dataTable [config]="config"></data-table>
 </mat-dialog-content>
+
+<mat-dialog-actions>
+    <div flex></div>
+    <data-table-pager [dataTable]="dataTable"></data-table-pager>
+</mat-dialog-actions>

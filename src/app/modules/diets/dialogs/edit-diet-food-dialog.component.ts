@@ -5,7 +5,6 @@ import { ComponentDependencyService, BaseComponent, ComponentConfig, ComponentSe
 import { AppConfig, UrlConfig } from '../../../config';
 
 // required by component
-import { DataListConfig, AlignEnum } from '../../../../web-components/data-list';
 import { Food, DietFood } from '../../../models';
 import { MAT_DIALOG_DATA } from '@angular/material';
 import { DataFormConfig} from '../../../../web-components/data-form';
@@ -73,6 +72,7 @@ export class EditDietFoodDialogComponent extends BaseComponent implements OnInit
         this.dietFoodWasDeleted = true;
         this.close();
       })
+      .renderButtons(false)
       .build();
   }
 

@@ -5,7 +5,6 @@ import { ComponentDependencyService, BaseComponent, ComponentConfig, ComponentSe
 import { AppConfig, UrlConfig } from '../../../config';
 
 // required by component
-import { DataListConfig, AlignEnum } from '../../../../web-components/data-list';
 import { Exercise } from '../../../models';
 import { MAT_DIALOG_DATA } from '@angular/material';
 import { WorkoutExercise } from '../../../models';
@@ -17,7 +16,6 @@ import { Observable, Subject } from 'rxjs/Rx';
 })
 export class AddWorkoutExerciseDialogComponent extends BaseComponent implements OnInit {
 
-  public config: DataListConfig<WorkoutExercise>;
   public workoutId: number;
   public exercise: Exercise;
 
@@ -66,6 +64,7 @@ export class AddWorkoutExerciseDialogComponent extends BaseComponent implements 
         this.newWorkoutExercise = response.item;
         this.close();
       }))
+      .renderButtons(false)
       .build();
   }
 

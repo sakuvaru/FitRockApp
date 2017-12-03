@@ -5,9 +5,10 @@ import { ComponentDependencyService, BaseComponent, ComponentConfig, ComponentSe
 import { AppConfig, UrlConfig } from '../../../config';
 
 // required by component
-import { DataListConfig, AlignEnum, Filter } from '../../../../web-components/data-list';
+import { DataTableConfig, IDynamicFilter } from '../../../../web-components/data-table';
 import { Exercise } from '../../../models';
 import { MAT_DIALOG_DATA } from '@angular/material';
+import { Observable } from 'rxjs/Rx';
 
 @Component({
   templateUrl: 'select-workout-exercise-dialog.component.html'
@@ -15,7 +16,7 @@ import { MAT_DIALOG_DATA } from '@angular/material';
 export class SelectWorkoutExerciseDialogComponent extends BaseComponent implements OnInit {
 
   public selectable: boolean = true;
-  public config: DataListConfig<Exercise>;
+  public config: DataTableConfig;
 
   public selectedExercise: Exercise;
   public openAddCustomExerciseDialog: boolean = false;
@@ -37,35 +38,49 @@ export class SelectWorkoutExerciseDialogComponent extends BaseComponent implemen
   ngOnInit() {
     super.ngOnInit();
 
-    this.config = this.dependencies.webComponentServices.dataListService.dataList<Exercise>(
-      searchTerm => {
+    this.config = this.dependencies.itemServices.exerciseService.buildDataTable(
+      (query, search) => {
         return this.dependencies.itemServices.exerciseService.items()
           .include('ExerciseCategory')
-          .whereLike('ExerciseName', searchTerm);
+          .whereLike('ExerciseName', search);
       },
-
     )
       .withFields([
         {
-          label: 'module.workouts.exerciseName',
+          name: (item) => super.translate('module.exercises.exerciseName'),
           value: (item) => item.exerciseName,
-          flex: 60
+          sortKey: 'ExerciseName'
         },
         {
-          label: 'module.workouts.exerciseCategory',
+          name: (item) => super.translate('module.exercises.exerciseCategory'),
           value: (item) => item.exerciseCategory.categoryName,
-          flex: 40,
-          isSubtle: true,
-          align: AlignEnum.Right,
-          hideOnSmallScreens: true
+          sortKey: 'ExerciseCategory.CategoryName'
         },
+        {
+          name: (item) => super.translate('shared.updated'),
+          value: (item) => super.fromNow(item.updated),
+          sortKey: 'Updated'
+        }
       ])
-      .filter(new Filter({ filterNameKey: 'module.workouts.allExercises', onFilter: query => query }))
-      .filter(new Filter({ filterNameKey: 'module.workouts.myExercises', onFilter: query => query.byCurrentUser().whereEquals('IsGlobal', false) }))
-      .pagerSize(5)
-      .showPager(true)
-      .showSearch(true)
-      .wrapInCard(false)
+      .withDynamicFilters(
+      search =>
+        this.dependencies.itemServices.exerciseCategoyService.getCategoriesWithExercisesCount(search, true)
+          .get()
+          .map(response => {
+            const filters: IDynamicFilter<Exercise>[] = [];
+            response.items.forEach(category => {
+              filters.push(({
+                guid: category.id.toString(),
+                name: Observable.of(category.codename),
+                query: (query) => query.whereEquals('ExerciseCategoryId', category.id),
+                count: category.exercisesCount
+              }));
+            });
+            return filters;
+          })
+      )
+      .renderPager(false)
+      .pageSize(5)
       .onClick((item: Exercise) => {
         // assign selected exercise
         this.selectedExercise = item;

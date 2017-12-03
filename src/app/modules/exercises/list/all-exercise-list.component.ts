@@ -6,15 +6,16 @@ import { AppConfig, UrlConfig } from '../../../config';
 
 // required by component
 import { ExercisesOverviewMenuItem } from '../menu.items';
-import { DataListConfig, AlignEnum, Filter } from '../../../../web-components/data-list';
+import { IDynamicFilter, DataTableConfig } from '../../../../web-components/data-table';
 import { Exercise, ExerciseCategoryListWithExercisesCount } from '../../../models';
+import { Observable } from 'rxjs/Rx';
 
 @Component({
   templateUrl: 'all-exercise-list.component.html'
 })
 export class AllExerciseListComponent extends BaseComponent implements OnInit {
 
-  public config: DataListConfig<Exercise>;
+  public config: DataTableConfig;
 
   constructor(
     protected dependencies: ComponentDependencyService) {
@@ -36,45 +37,51 @@ export class AllExerciseListComponent extends BaseComponent implements OnInit {
       componentTitle: { key: 'module.exercises.overview' },
     });
 
-    this.initDataList();
+    this.init();
   }
 
-  private initDataList(): void {
-    this.config = this.dependencies.webComponentServices.dataListService.dataList<Exercise>(
-      searchTerm => {
-        return this.dependencies.itemServices.exerciseService.items()
+  private init(): void {
+    this.config = this.dependencies.itemServices.exerciseService.buildDataTable(
+      (query, search) => {
+        return query
           .include('ExerciseCategory')
-          .whereLike('ExerciseName', searchTerm);
+          .whereLike('ExerciseName', search);
       },
     )
       .withFields([
-        { label: 'module.workouts.exerciseName', value: (item) => item.exerciseName, flex: 40 },
         {
-          label: 'shared.updated', value: (item) => {
-            return item.exerciseCategory.categoryName;
-          }, isSubtle: true, align: AlignEnum.Right, hideOnSmallScreens: true
+          name: (item) => super.translate('module.exercises.exerciseName'),
+          value: (item) => item.exerciseName,
+          sortKey: 'ExerciseName'
         },
+        {
+          name: (item) => super.translate('module.exercises.exerciseCategory'),
+          value: (item) => item.exerciseCategory.categoryName,
+          sortKey: 'ExerciseCategory.CategoryName'
+        },
+        {
+          name: (item) => super.translate('shared.updated'),
+          value: (item) => super.fromNow(item.updated),
+          sortKey: 'Updated'
+        }
       ])
-      .dynamicFilters((searchTerm) => {
-        return this.dependencies.itemServices.exerciseCategoyService.getCategoriesWithExercisesCount(searchTerm, true)
+      .withDynamicFilters(
+      search =>
+        this.dependencies.itemServices.exerciseCategoyService.getCategoriesWithExercisesCount(search, true)
           .get()
           .map(response => {
-            const filters: Filter<ExerciseCategoryListWithExercisesCount>[] = [];
+            const filters: IDynamicFilter<Exercise>[] = [];
             response.items.forEach(category => {
-              filters.push(new Filter({
-                filterNameKey: category.codename,
-                onFilter: (query) => query.whereEquals('ExerciseCategoryId', category.id),
+              filters.push(({
+                guid: category.id.toString(),
+                name: Observable.of(category.codename),
+                query: (query) => query.whereEquals('ExerciseCategoryId', category.id),
                 count: category.exercisesCount
               }));
             });
             return filters;
           })
-          .takeUntil(this.ngUnsubscribe);
-      })
-      .showAllFilter(true)
-      .showPager(true)
-      .showSearch(true)
-      .pagerSize(7)
+      )
       .onClick((item) => super.navigate([super.getTrainerUrl('exercises/preview/') + item.id]))
       .build();
   }
