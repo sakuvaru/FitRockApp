@@ -61,7 +61,7 @@
 
     <div [class.w-data-table-clickable]="isClickable">
 
-      <div *ngIf="totalItems === 0 && anyDataLoaded" class="w-data-table-no-data">
+      <div *ngIf="totalItems === 0 && anyDataLoaded" class="w-data-table-no-data push-bottom-md">
         <img *ngIf="config.noDataImageUrl" alt="no items found" [src]="config.noDataImageUrl" />
         <span> {{ 'webComponents.dataTable.noData' | localize }} </span>
       </div>
@@ -176,7 +176,7 @@
 
   </ng-container>
 
-  <mat-paginator *ngIf="config && config.renderPager" #paginator [style.display]="totalItems === 0 ? 'none' : 'block'" [length]="totalItems" [pageIndex]="paginatorPageIndex"
+  <mat-paginator *ngIf="config && config.renderPager" #paginator style="margin-right:35px" [style.display]="totalItems === 0 ? 'none' : 'block'" [length]="totalItems" [pageIndex]="paginatorPageIndex"
     [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions">
   </mat-paginator>
 </div>
