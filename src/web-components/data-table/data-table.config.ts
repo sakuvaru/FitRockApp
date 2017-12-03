@@ -90,6 +90,16 @@ export class DataTableConfig {
      */
     public onClick?: (item: any) => void;
 
+    /**
+     * Page size options
+     */
+    public pageSizeOptions: number[] = [5, 10, 25, 50, 100];
+
+    /**
+     * Indicates if pager is rendered
+     */
+    public renderPager: boolean = true;
+
     constructor(
         /**
          * data

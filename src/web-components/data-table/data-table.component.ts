@@ -10,7 +10,7 @@ import { DataTableSource } from './data-table-source.class';
 import {
     DataTableField, DataTableFieldWrapper, DataTableButtonWrapper,
     DataTableButton, DataTableDeleteResponse, Filter, FilterWrapper, DataTableResponse,
-    DataTableCountResponse, DynamicFilter, AllFilter, DataTableSort, 
+    DataTableCountResponse, DynamicFilter, AllFilter, DataTableSort,
 } from './data-table-models';
 import { IFilter, IDataTableSort, IDataTableButton } from './data-table.interfaces';
 import { Observable, Subject } from 'rxjs/Rx';
@@ -163,6 +163,11 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
     public currentPage: number = 1;
 
     /**
+     * Page size options
+     */
+    public pageSizeOptions: number[] = [];
+
+    /**
      * Paginator indexes pages from 0
      */
     get paginatorPageIndex(): number {
@@ -269,9 +274,15 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
     @ViewChild('filter') filter: ElementRef;
 
     /**
-     * Paginator
+     * Paginator is registered this way because it is under *ngIf
      */
-    @ViewChild('paginator') paginator: MatPaginator;
+    private _paginator: MatPaginator;
+    @ViewChild(MatPaginator) set paginator(content: MatPaginator) {
+        if (content) {
+            this._paginator = content;
+            this.subscribeToPagerChanges();
+        }
+    } 
 
     /**
      * Sort header
@@ -306,10 +317,29 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
         this.initDataTable();
     }
 
+    reloadData(): void {
+        this.reloadDataSubject.next(true);
+    }
+
+    handleOnClick(item: any): void {
+        if (this.config.onClick) {
+            this.config.onClick(item);
+        }
+    }
+
+    handleButtonClick(event: any, button: DataTableButton<any>, item: any): void {
+        // cancel propagation of clicks so that e.g. 'onClick' event for the entire row
+        // is not triggered
+        event.stopPropagation();
+
+        // trigger action
+        button.action(item);
+    }
+
     /**
      * inits data table
      */
-    initDataTable(): void {
+    private initDataTable(): void {
         if (!this.config && !this.initialized) {
             return;
         }
@@ -352,12 +382,10 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
             this.limit = this.config.limit;
         }
         this.currentPage = this.config.page;
+        this.pageSizeOptions = this.config.pageSizeOptions;
 
         // subscribe to text filter
         this.subscribeToTextFilterChanges();
-
-        // subscribe to pager changes
-        this.subscribeToPagerChanges();
 
         // subscribe to reload data observable
         this.subscribeToReloadData();
@@ -376,21 +404,6 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
             // no filters are used
             this.reloadData();
         }
-    }
-
-    handleOnClick(item: any): void {
-        if (this.config.onClick) {
-            this.config.onClick(item);
-        }
-    }
-
-    handleButtonClick(event: any, button: DataTableButton<any>, item: any): void {
-        // cancel propagation of clicks so that e.g. 'onClick' event for the entire row
-        // is not triggered
-        event.stopPropagation();
-
-        // trigger action
-        button.action(item);
     }
 
     private areFiltersUsed(): boolean {
@@ -660,14 +673,14 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
     }
 
     private subscribeToPagerChanges(): void {
-        if (!this.paginator) {
+        if (!this._paginator) {
             throw Error('Could not init paginator. Make sure the paginator is registered after its been initialized in template');
         }
 
         // set translations
-        this.paginator._intl.itemsPerPageLabel = '';
+        this._paginator._intl.itemsPerPageLabel = '';
 
-        this.paginator.page.map(pageChange => {
+        this._paginator.page.map(pageChange => {
             this.currentPage = pageChange.pageIndex + 1;
             this.pageSize = pageChange.pageSize;
 
@@ -750,7 +763,7 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
         }
 
         this.currentSort = new DataTableSort(sortOrder, sortedFieldWrapper.field);
-    } 
+    }
 
     private deleteConfirmation(action: Observable<DataTableDeleteResponse>, item: any): void {
         // try getting the objet preview name
@@ -889,10 +902,6 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
         if (searchTermFromStorage) {
             this.search = searchTermFromStorage;
         }
-    }
-
-    private reloadData(): void {
-        this.reloadDataSubject.next(true);
     }
 
     /**

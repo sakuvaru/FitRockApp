@@ -12,6 +12,7 @@ import { MessagesModule } from '../messages/messages.module';
 
 // components
 import { DataTableComponent } from './data-table.component';
+import { DataTablePagerComponent } from './data-table-pager.component';
 
 @NgModule({
     imports: [
@@ -24,10 +25,12 @@ import { DataTableComponent } from './data-table.component';
         MessagesModule
     ],
     declarations: [
-        DataTableComponent
+        DataTableComponent,
+        DataTablePagerComponent
     ],
     exports: [
-        DataTableComponent
+        DataTableComponent,
+        DataTablePagerComponent
     ]
 })
 export class DataTableModule { }

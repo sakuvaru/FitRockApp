@@ -176,7 +176,7 @@
 
   </ng-container>
 
-  <mat-paginator [style.display]="totalItems === 0 ? 'none' : 'block'" #paginator [length]="totalItems" [pageIndex]="paginatorPageIndex"
-    [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 25, 50, 100]">
+  <mat-paginator *ngIf="config && config.renderPager" #paginator [style.display]="totalItems === 0 ? 'none' : 'block'" [length]="totalItems" [pageIndex]="paginatorPageIndex"
+    [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions">
   </mat-paginator>
 </div>

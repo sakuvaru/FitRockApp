@@ -1,0 +1,3 @@
+<mat-paginator *ngIf="dataTable" [style.display]="dataTable.totalItems === 0 ? 'none' : 'block'" #paginator [length]="dataTable.totalItems" [pageIndex]="dataTable.paginatorPageIndex"
+    [pageSize]="dataTable.pageSize" [pageSizeOptions]="dataTable.pageSizeOptions">
+</mat-paginator>

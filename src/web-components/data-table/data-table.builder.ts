@@ -168,6 +168,23 @@ export class DataTableBuilder<TItem extends IItem> {
     }
 
     /**
+     * Indicates if pager should be rendered
+     * @param render If pager should be rendered
+     */
+    renderPager(render: boolean): this {
+        this.config.renderPager = render;
+        return this;
+    }
+
+     /**
+     * Page size options
+     */
+     pageSizeOptions(options: number[]): this {
+         this.config.pageSizeOptions = options;
+         return this;
+     }
+
+    /**
     * Sets up filters
     * @param filters filters
     */
