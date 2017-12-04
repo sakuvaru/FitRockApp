@@ -20,12 +20,14 @@ export class DataTablePagerComponent extends BaseWebComponent implements OnInit,
 
     private initialized: boolean = false;
 
+    private paginatorSubscribed: boolean = false;
+
     /**
      * Paginator is registered this way because it is under *ngIf
      */
     private _paginator: MatPaginator;
     @ViewChild(MatPaginator) set paginator(content: MatPaginator) {
-        if (content) {
+        if (content && !this.paginatorSubscribed) {
             this._paginator = content;
             // subscribe to changes once sort is available 
             // this is here because the element is under *ngIf and therefore cannot be initilized immediately
@@ -58,6 +60,9 @@ export class DataTablePagerComponent extends BaseWebComponent implements OnInit,
         if (!this._paginator) {
             throw Error('Could not init paginator. Make sure the paginator is registered after its been initialized in template');
         }
+
+        // make sure that no multiple subscriptions are registered
+        this.paginatorSubscribed = true;
 
         // set translations
         this._paginator._intl.itemsPerPageLabel = '';

@@ -243,6 +243,10 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
      */
     private sortHeaderSubscribed: boolean = false;
 
+    /**
+     * Indicates if paginator has been suscribed to changes
+     */
+    private paginatorSubscribed: boolean = false;
 
     /**
      * Variable that holds current sort
@@ -278,7 +282,7 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
      */
     private _paginator: MatPaginator;
     @ViewChild(MatPaginator) set paginator(content: MatPaginator) {
-        if (content) {
+        if (content && !this.paginatorSubscribed) {
             this._paginator = content;
             this.subscribeToPagerChanges();
         }
@@ -340,7 +344,7 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
      * inits data table
      */
     private initDataTable(): void {
-        if (!this.config && !this.initialized) {
+        if (!this.config || this.initialized) {
             return;
         }
 
@@ -676,6 +680,9 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
         if (!this._paginator) {
             throw Error('Could not init paginator. Make sure the paginator is registered after its been initialized in template');
         }
+
+        // mark paginator as subscribed so that there are no multiple subscriptions
+        this.paginatorSubscribed = true;
 
         // set translations
         this._paginator._intl.itemsPerPageLabel = '';
