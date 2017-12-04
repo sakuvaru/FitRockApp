@@ -1,4 +1,4 @@
-<mat-card *ngIf="diet" class="push">
+<mat-card *ngIf="diet">
   <mat-card-title>{{diet.dietName}}</mat-card-title>
   <mat-card-subtitle>{{diet.dietCategory.categoryName}}</mat-card-subtitle>
   <mat-card-content *ngIf="diet.description">
@@ -6,7 +6,7 @@
   </mat-card-content>
 </mat-card>
 
-<div *ngIf="diet" class="push">
+<div *ngIf="diet" class="push-top">
   <button mat-raised-button color="primary" class="text-upper" (click)="openSelectFoodDialog()">{{'module.diets.addDietFood' | localize }}</button>
   <div *ngIf="sortedDietFoods">
 

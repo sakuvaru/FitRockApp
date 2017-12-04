@@ -1,5 +1,5 @@
 <ng-container *ngIf="progressItemTypes && progressItemTypes.length > 0">
-    <div class="push">
+    <div>
         <mat-chip-list selectable="true">
             <mat-chip *ngFor="let progressItemType of progressItemTypes" [selected]="idOfActiveType === progressItemType.id" class="w-cursor-pointer"
                 (click)="onSelectType(progressItemType)">
@@ -13,10 +13,12 @@
         </mat-chip-list>
     </div>
 
-    <graph #graph [config]="graphConfig"></graph>
+    <div class="push-top-sm">
+        <graph #graph [config]="graphConfig"></graph>
+    </div>
 
 </ng-container>
 
-<div class="push">
+<div>
     <info-message *ngIf="progressItemTypes && progressItemTypes.length <= 0" text="{{ 'module.clients.stats.noStats' | localize }}"></info-message>
 </div>

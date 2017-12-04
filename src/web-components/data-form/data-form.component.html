@@ -1,50 +1,51 @@
 <ng-container *ngIf="config && config.wrapInCard">
-    <div *ngIf="!formGroup">
-        <mat-card>
-            <loader [enabled]="loaderEnabled" type="linear"></loader>
-        </mat-card>
+    <div class="w-data-form">
+        <div *ngIf="!formGroup">
+            <mat-card>
+                <loader [enabled]="loaderEnabled" type="linear"></loader>
+            </mat-card>
+        </div>
+        <form *ngIf="formGroup" [formGroup]="formGroup" autocomplete="off">
+
+            <mat-card>
+
+                <loader [enabled]="loaderEnabled" type="linear"></loader>
+
+                <mat-card-content>
+
+                    <error-message *ngIf="errorLoadingForm" text="{{ 'webComponents.dataForm.formLoadingError' | localize }}"></error-message>
+
+                    <ng-container *ngFor="let row of rows">
+                        <div *ngIf="row.section" class="push-left push-right">
+                            <h2 *ngIf="row.isLargeSection()" class="title">{{ row.section.title | async }}</h2>
+                            <h3 *ngIf="row.isMediumSection()" class="subheading-2">{{ row.section.title | async }}</h3>
+                            <h4 *ngIf="row.isSmallSection()" class="subheading-1">{{ row.section.title | async }}</h4>
+                        </div>
+                        <div fxLayout fxLayout.sm="column" fxLayout.xs="column" fxLayout.md="row">
+                            <ng-container *ngFor="let field of row.fields">
+                                <div [fxFlex]="field.width">
+                                    <data-form-field [fields]="fields" [field]="field" [formGroup]="formGroup" [config]="config"></data-form-field>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </ng-container>
+
+                    <error-message *ngIf="formError" [text]="formError"></error-message>
+                    <error-message *ngIf="unknownError" text="{{ 'webComponents.dataForm.internalError' | localize }}"></error-message>
+
+                </mat-card-content>
+                <mat-divider *ngIf="config.renderButtons"></mat-divider>
+                <mat-card-actions *ngIf="config.renderButtons">
+                    <div fxFlex layout="row" class="push-left push-right push-top-sm push-bottom-sm">
+                        <button *ngIf="isInsertForm" mat-raised-button color="accent" (click)="handleInsertItem()" [disabled]="!formGroup.valid">{{ 'webComponents.dataForm.insert' | localize }}</button>
+                        <button *ngIf="isEditForm" mat-raised-button color="accent" (click)="handleEditItem()" [disabled]="!formGroup.valid">{{ 'webComponents.dataForm.save' | localize }}</button>
+                        <div flex></div>
+                        <delete-button *ngIf="isDeleteEnabled" (confirm)="handleDeleteItem()"></delete-button>
+                    </div>
+                </mat-card-actions>
+            </mat-card>
+        </form>
     </div>
-    <form *ngIf="formGroup" [formGroup]="formGroup" autocomplete="off">
-
-        <mat-card>
-
-            <loader [enabled]="loaderEnabled" type="linear"></loader>
-
-            <mat-card-content>
-
-                <error-message *ngIf="errorLoadingForm" text="{{ 'webComponents.dataForm.formLoadingError' | localize }}"></error-message>
-
-                <ng-container *ngFor="let row of rows">
-                    <div *ngIf="row.section" class="push-left push-right">
-                        <h2 *ngIf="row.isLargeSection()" class="title">{{ row.section.title | async }}</h2>
-                        <h3 *ngIf="row.isMediumSection()" class="subheading-2">{{ row.section.title | async }}</h3>
-                        <h4 *ngIf="row.isSmallSection()" class="subheading-1">{{ row.section.title | async }}</h4>
-                    </div>
-                    <div fxLayout fxLayout.sm="column" fxLayout.xs="column" fxLayout.md="row">
-                        <ng-container *ngFor="let field of row.fields">
-                            <div [fxFlex]="field.width">
-                                <data-form-field [fields]="fields" [field]="field" [formGroup]="formGroup" [config]="config"></data-form-field>
-                            </div>
-                        </ng-container>
-                    </div>
-                </ng-container>
-
-                <error-message *ngIf="formError" [text]="formError"></error-message>
-                <error-message *ngIf="unknownError" text="{{ 'webComponents.dataForm.internalError' | localize }}"></error-message>
-
-            </mat-card-content>
-            <mat-divider *ngIf="config.renderButtons"></mat-divider>
-            <mat-card-actions *ngIf="config.renderButtons">
-                <div fxFlex layout="row" class="push-left push-right push-top-sm push-bottom-sm">
-                    <button *ngIf="isInsertForm" mat-raised-button color="accent" (click)="handleInsertItem()" [disabled]="!formGroup.valid">{{ 'webComponents.dataForm.insert' | localize }}</button>
-                    <button *ngIf="isEditForm" mat-raised-button color="accent" (click)="handleEditItem()" [disabled]="!formGroup.valid">{{ 'webComponents.dataForm.save' | localize }}</button>
-                    <div flex></div>
-                    <delete-button *ngIf="isDeleteEnabled" (confirm)="handleDeleteItem()"></delete-button>
-                </div>
-            </mat-card-actions>
-        </mat-card>
-    </form>
-
 </ng-container>
 
 <ng-container *ngIf="config && !config.wrapInCard">

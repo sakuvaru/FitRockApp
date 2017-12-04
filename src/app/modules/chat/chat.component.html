@@ -1,16 +1,15 @@
 <ng-container *ngIf="formConfig && chatMessages">
 
-    <div class="push-left push-right push-top">
+    <div>
         <mat-form-field flex>
-            <input matInput placeholder="{{'shared.search' | localize}}" [formControl]="searchControl" [value]="chatMessagesSearch"
-            />
+            <input matInput placeholder="{{'shared.search' | localize}}" [formControl]="searchControl" [value]="chatMessagesSearch" />
             <span matPrefix>
                 <mat-icon>search</mat-icon>
             </span>
         </mat-form-field>
     </div>
 
-    <mat-card class="push">
+    <mat-card>
         <mat-card-content>
             <data-form [config]="formConfig"></data-form>
         </mat-card-content>

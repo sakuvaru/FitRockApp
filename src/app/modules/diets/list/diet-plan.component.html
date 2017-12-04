@@ -1,4 +1,4 @@
-<mat-card *ngIf="diet" class="push">
+<mat-card *ngIf="diet" class="push-bottom">
   <mat-card-title>{{diet.dietName}}</mat-card-title>
   <mat-card-subtitle>{{diet.dietCategory.categoryName}}</mat-card-subtitle>
   <mat-divider></mat-divider>
@@ -7,7 +7,7 @@
   </mat-card-content>
 </mat-card>
 
-<div class="push" *ngIf="sortedDietFoods">
+<div *ngIf="sortedDietFoods">
   <td-expansion-panel *ngFor="let dietFood of sortedDietFoods; let i = index">
     <ng-template td-expansion-panel-label>
       <span class="tc-red-700">{{i + 1}}.</span> {{dietFood.food.foodName}}

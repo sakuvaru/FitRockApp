@@ -1,4 +1,4 @@
-<mat-card *ngIf="workout" class="push">
+<mat-card *ngIf="workout">
   <mat-card-title>{{workout.workoutName}}</mat-card-title>
   <mat-card-subtitle>{{workout.workoutCategory.categoryName}}</mat-card-subtitle>
   <mat-divider></mat-divider>
@@ -7,7 +7,7 @@
   </mat-card-content>
 </mat-card>
 
-<div class="push" *ngIf="sortedWorkoutExercises">
+<div class="push-top" *ngIf="sortedWorkoutExercises">
   <td-expansion-panel *ngFor="let workoutExercise of sortedWorkoutExercises; let i = index">
     <ng-template td-expansion-panel-label>
       <span class="tc-red-700">{{i + 1}}.</span> {{workoutExercise.exercise.exerciseName}}

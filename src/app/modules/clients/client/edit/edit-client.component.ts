@@ -46,13 +46,7 @@ export class EditClientComponent extends ClientsBaseComponent implements OnInit 
                     .enableDelete(false)
                     .onAfterDelete(() => super.navigate([this.getTrainerUrl('clients')]))
                     .onAfterEdit(response => {
-                        if (this.dependencies.coreServices.currentLanguage.isDifferentThanCurrent(response.item.language)) {
-                            // language has changed, update it
-                            this.dependencies.coreServices.currentLanguage.setLanguage(response.item.language);
-
-                            // reload page to see new translation
-                            this.dependencies.coreServices.systemService.reloadPage();
-                        }
+                       // no need to set language because language was not changed for current user
                     })
                     .onEditFormLoaded(form => {
                         const user = form.item;

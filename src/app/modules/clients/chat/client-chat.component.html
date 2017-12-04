@@ -1,4 +1,4 @@
-<div class="push-left push-right push-top">
+<div>
     <mat-form-field flex>
         <input matInput placeholder="{{'shared.search' | localize}}" [formControl]="searchControl" [value]="chatMessagesSearch"
         />
@@ -8,7 +8,7 @@
     </mat-form-field>
 </div>
 
-<mat-card class="push">
+<mat-card>
     <mat-card-content>
         <data-form [config]="formConfig"></data-form>
     </mat-card-content>
@@ -22,7 +22,7 @@
 </mat-card>
 
 
-<div class="text-center push">
+<div class="text-center">
     <button *ngIf="!allChatMessagesLoaded" mat-raised-button color="primary" (click)="loadMoreMessages()">{{ 'shared.loadMore' | localize }}</button>
     <button *ngIf="allChatMessagesLoaded" mat-raised-button>{{ 'module.clients.chat.allMessagesLoaded' | localize }}</button>
 </div>

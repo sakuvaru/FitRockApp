@@ -29,4 +29,12 @@ Lists
 	font-size: 14px!important;
 }
 
+/**
+Material card should have no default margin, margin is set with page wrapper or manually
+*/
+
+.mat-card {
+	margin: 0!important;
+}
+
 

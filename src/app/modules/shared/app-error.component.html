@@ -7,7 +7,7 @@
 <div *ngIf="!isCriticalError" [innerHTML]="'module.shared.errors.loggedErrorText' | localize:translateParams">
 </div>
 
-<div *ngIf="showDebugDetails && log" class="push">
+<div *ngIf="showDebugDetails && log" class="push-top">
     <mat-card>
         <mat-card-title>Error message</mat-card-title>
         <mat-card-content>

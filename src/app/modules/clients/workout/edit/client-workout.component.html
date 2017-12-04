@@ -1,4 +1,4 @@
-<mat-card class="push">
+<mat-card>
     <mat-card-content>
         <button mat-raised-button color="primary" [routerLink]="[getTrainerUrl('clients/edit/' + clientId + '/new-workout')]">{{'module.clients.workout.newWorkout' | localize}}</button>
     </mat-card-content>
@@ -16,7 +16,7 @@
     </mat-card-content>
 </mat-card>
 
-<div *ngIf="existingWorkouts" class="push">
+<div *ngIf="existingWorkouts" class="push-top">
     <mat-list [dragula]='"dragula-bag"' [dragulaModel]="existingWorkouts">
         <ng-container *ngFor="let workout of existingWorkouts; let i = index">
             <mat-list-item class="w-sort-list-item dragula-move-handle">
