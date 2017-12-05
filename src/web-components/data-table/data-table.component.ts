@@ -129,11 +129,18 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
         fieldColumns = _.union(fieldColumns, this.fieldsWrapper.map(m => m.nameDef));
 
         // add button at the end (if there are any buttons)
-        if (this.buttonsWrapper && this.buttonsWrapper.buttons && this.buttonsWrapper.buttons.length > 0) {
+        if (this.renderButtons) {
             fieldColumns.push(this.buttonsColumnDef);
         }
 
         return fieldColumns;
+    }
+
+    public get renderButtons(): boolean {
+        if (this.buttonsWrapper && this.buttonsWrapper.buttons && this.buttonsWrapper.buttons.length > 0) {
+            return true;
+        }
+        return false;
     }
 
     /**

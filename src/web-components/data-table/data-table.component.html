@@ -49,6 +49,7 @@
 
     <error-message *ngIf="errorMessage" [text]="errorMessage"></error-message>
 
+    <!-- Search -->
     <div class="w-data-table-filter">
       <mat-form-field floatPlaceholder="never" [ngClass]="config.wrapInCard ? 'text-sm' : ''" flex>
         <input matInput placeholder="{{ 'webComponents.dataTable.searchPlaceholder' | localize }}" [formControl]="searchControl"
@@ -109,7 +110,8 @@
             </ng-container>
           </ng-container>
 
-          <ng-container *ngIf="buttonsWrapper && buttonsWrapper.buttons && buttonsWrapper.buttons.length > 0">
+          <!-- Buttons -->
+          <ng-container *ngIf="renderButtons">
             <ng-container [matColumnDef]="buttonsWrapper.nameDef">
               <mat-header-cell *matHeaderCellDef>
                 {{ 'webComponents.dataTable.actions' | localize }}
@@ -147,6 +149,7 @@
             </ng-container>
           </ng-container>
 
+          <!-- Avatar column -->
           <ng-container>
             <ng-container [matColumnDef]="avatarColumnDef">
               <mat-header-cell *matHeaderCellDef>
@@ -161,6 +164,7 @@
             </ng-container>
           </ng-container>
 
+          <!-- Rows -->
           <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
           <ng-container *ngIf="isClickable">
             <mat-row matRipple (click)="handleOnClick(item)" *matRowDef="let item; columns: displayedColumns;"></mat-row>
@@ -176,6 +180,7 @@
 
   </ng-container>
 
+  <!-- Paginator -->
   <mat-paginator *ngIf="config && config.renderPager" #paginator style="margin-right:35px" [style.display]="totalItems === 0 ? 'none' : 'block'" [length]="totalItems" [pageIndex]="paginatorPageIndex"
     [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions">
   </mat-paginator>
