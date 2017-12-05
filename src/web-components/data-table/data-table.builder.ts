@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/Rx';
 import { IItem, MultipleItemQuery, DeleteItemQuery, ItemCountQuery } from '../../lib/repository';
 import {
     DataTableField, DataTableResponse, DataTableButton, DataTableDeleteResponse,
-    Filter, DataTableCountResponse, DynamicFilter, DataTableAvatar, DataTableSort
+    Filter, DataTableCountResponse, DynamicFilter, DataTableAvatar, DataTableSort, AllFilter
 } from './data-table-models';
 import { IDataTableField, IDataTableButton, IDataTableSort } from './data-table.interfaces';
 import { DataTableSortEnum } from './data-table-sort.enum';
@@ -231,17 +231,15 @@ export class DataTableBuilder<TItem extends IItem> {
     /**
      * Indicates if all filters is used when filters are present
      */
-    allFilter(name: Observable<string>): this {
+    allFilter(name?: Observable<string>): this {
         // resolve filter query using the 'base' query
         const filterQuery = (search) => this.query(search).toCountQuery();
 
         this.config.allFilter =
-            new Filter(
-                '_allFilter',
+            new AllFilter(
                 name,
                 (page: number, pageSize: number, search: string, limit?: number, sort?: IDataTableSort) => this.getDataResponse(this.query, page, pageSize, search, limit, sort),
                 (search) => this.getCountResponse(filterQuery, search),
-                1
             );
 
         return this;

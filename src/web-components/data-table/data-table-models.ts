@@ -1,7 +1,9 @@
 import { Observable } from 'rxjs/Rx';
 import { guidHelper, stringHelper } from '../../lib/utilities';
-import { IDataTableButton, IDataTableField, IDataTableCountResponse, IDataTableResponse,
-IFilter, IDataTableSort } from './data-table.interfaces';
+import {
+    IDataTableButton, IDataTableField, IDataTableCountResponse, IDataTableResponse,
+    IFilter, IDataTableSort
+} from './data-table.interfaces';
 import { DataTableSortEnum } from './data-table-sort.enum';
 
 export class DataTableField<T> implements IDataTableField<T> {
@@ -85,7 +87,7 @@ export class DataTableDeleteResponse {
 export class DataTableCountResponse implements IDataTableCountResponse {
     constructor(
         public count: number
-    ) {}
+    ) { }
 }
 
 export class DynamicFilter implements IFilter {
@@ -104,9 +106,11 @@ export class DynamicFilter implements IFilter {
 
 export class AllFilter {
     constructor(
+        public name: Observable<string> | undefined,
         public filter: (page: number, pageSize: number, search: string, limit?: number, sort?: IDataTableSort) => Observable<DataTableResponse>,
         public count: (search: string) => Observable<DataTableCountResponse>,
-    ) {}
+    ) {
+    }
 }
 
 export class Filter implements IFilter {
@@ -131,7 +135,7 @@ export class FilterWrapper {
         public resolvedName: string,
         public resolvedCount: number,
         public filter: IFilter
-    ) {}
+    ) { }
 }
 
 export class DataTableAvatar {

@@ -531,7 +531,7 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
             // change the text for all filter
             filters.push(new Filter(
                 this.allFilterGuid,
-                this.localizationService.get('webComponents.dataTable.all'),
+                allFilter.name ? allFilter.name : this.localizationService.get('webComponents.dataTable.all'),
                 allFilter.filter,
                 allFilter.count,
                 0
