@@ -63,8 +63,6 @@ export class CurrentLanguageService {
     private getLanguageConfig(languageEnum: LanguageEnum): LanguageConfig {
         let language: LanguageConfig;
 
-        console.log(languageEnum);
-
         if (languageEnum === LanguageEnum.Default) {
             language = this.defaultLanguage;
         } else if (languageEnum === LanguageEnum.Cz) {
@@ -75,8 +73,6 @@ export class CurrentLanguageService {
             console.warn(`Language '${languageEnum}' is not valid. Default language used`);
             language = this.defaultLanguage;
         }
-
-        console.log(language);
 
         return language;
     }
