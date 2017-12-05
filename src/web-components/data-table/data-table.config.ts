@@ -1,11 +1,16 @@
 import { Observable } from 'rxjs/Rx';
+
+import { stringHelper } from '../../lib/utilities';
 import {
-    DataTableField, DataTableResponse, DataTableButton,
-    DataTableDeleteResponse, DynamicFilter, AllFilter, DataTableAvatar
+    AllFilter,
+    DataTableAvatar,
+    DataTableButton,
+    DataTableDeleteResponse,
+    DataTableField,
+    DataTableResponse,
+    DynamicFilter,
 } from './data-table-models';
-import { IFilter } from './data-table.interfaces';
-import { guidHelper, stringHelper } from '../../lib/utilities';
-import { IDataTableSort } from 'web-components/data-table';
+import { IDataTableSort, IFilter } from './data-table.interfaces';
 
 export class DataTableConfig {
 

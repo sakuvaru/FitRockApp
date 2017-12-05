@@ -1,13 +1,9 @@
-// common
-import { Component, Input, Output, OnInit, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
-import { BaseWebComponent } from '../../base-web-component.class';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Observable } from 'rxjs/Rx';
 
-// required
 import { LocalizationService } from '../../../lib/localization';
 import { VerticalBarChart } from '../graph-types';
 import { GraphConfig } from '../graph.config';
-import { Observable } from 'rxjs/Rx';
-
 import { BaseGraphComponent } from './base-graph.component';
 
 @Component({

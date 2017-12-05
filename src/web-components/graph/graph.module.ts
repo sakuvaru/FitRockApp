@@ -1,25 +1,15 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormGroup } from '@angular/forms';
-import { RouterModule } from '@angular/router';
-
-// base shared web components module
-import { SharedWebComponentModule } from '../shared-web-components.module';
-
-// modules
-import { LoaderModule } from '../loader/loader.module';
-
-// ngx charts
+import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterModule } from '@angular/router';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 
-// components
-import { GraphComponent } from './graph.component';
-
-// graphs
-import { VerticalBarGraphComponent } from './graph-components/vertical-bar-chart.component';
+import { LoaderModule } from '../loader/loader.module';
+import { SharedWebComponentModule } from '../shared-web-components.module';
 import { LineChartGraphComponent } from './graph-components/line-chart.component';
+import { VerticalBarGraphComponent } from './graph-components/vertical-bar-chart.component';
+import { GraphComponent } from './graph.component';
 
 @NgModule({
     imports: [

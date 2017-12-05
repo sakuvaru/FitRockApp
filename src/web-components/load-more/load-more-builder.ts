@@ -1,6 +1,7 @@
-import { LoadMoreConfig } from './load-more.config';
 import { Observable } from 'rxjs/RX';
-import { ResponseMultiple, IItem, MultipleItemQuery } from '../../lib/repository';
+
+import { IItem, MultipleItemQuery } from '../../lib/repository';
+import { LoadMoreConfig } from './load-more.config';
 import { LoadMoreResponse } from './load-more.models';
 
 export class LoadMoreBuilder<TItem extends IItem> {

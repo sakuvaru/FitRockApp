@@ -1,6 +1,7 @@
-import { BaseGraph } from './graph-types';
 import { Observable } from 'rxjs/Rx';
+
 import { GraphTypeEnum } from './graph-type.enum';
+import { BaseGraph } from './graph-types';
 
 export class GraphConfig<TGraph extends BaseGraph> {
 

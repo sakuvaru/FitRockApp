@@ -1,6 +1,6 @@
-// common
-import { Component, Input, Output, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+
 import { BaseWebComponent } from '../base-web-component.class';
 
 @Component({

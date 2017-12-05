@@ -1,4 +1,5 @@
 import { Observable } from 'rxjs/Observable';
+
 import { DataFormFieldTypeEnum, DataFormSectionSize } from './data-form.enums';
 
 export class DataFormField {

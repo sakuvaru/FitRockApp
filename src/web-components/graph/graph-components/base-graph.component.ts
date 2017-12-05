@@ -1,14 +1,11 @@
-// common
-import { Component, Input, Output, OnInit, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
-import { BaseWebComponent } from '../../base-web-component.class';
+import { EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Observable } from 'rxjs/Rx';
 
-// required
 import { LocalizationService } from '../../../lib/localization';
+import { BaseWebComponent } from '../../base-web-component.class';
 import { MultiSeries, SingleSeries } from '../graph-models';
 import { BaseGraph } from '../graph-types';
 import { GraphConfig } from '../graph.config';
-import { GraphTypeEnum } from '../graph-type.enum';
-import { Observable, Subject } from 'rxjs/Rx';
 
 export abstract class BaseGraphComponent extends BaseWebComponent implements OnInit, OnChanges {
 

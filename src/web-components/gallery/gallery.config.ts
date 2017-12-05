@@ -1,7 +1,8 @@
-import { GalleryImage } from './gallery-image.class';
-import { GalleryGroup } from './gallery-group.class';
-import { ImageGroupResult } from './image-group-result.class';
 import { Observable } from 'rxjs/Rx';
+
+import { GalleryGroup } from './gallery-group.class';
+import { GalleryImage } from './gallery-image.class';
+import { ImageGroupResult } from './image-group-result.class';
 
 export class GalleryConfig {
 

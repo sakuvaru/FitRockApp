@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs/Rx';
-import { DataTableSortEnum } from './data-table-sort.enum';
 import { DataTableField } from 'web-components/data-table';
+import { DataTableSortEnum } from './data-table-sort.enum';
 
 export interface IDataTableField<T> {
 

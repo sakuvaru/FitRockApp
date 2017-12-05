@@ -1,9 +1,10 @@
 import { Component, Input } from '@angular/core';
-import { FormGroup, AbstractControl } from '@angular/forms';
-import { DataFormField } from './data-form-models';
-import { DataFormFieldTypeEnum } from './data-form.enums';
-import { DataFormConfig } from './data-form.config';
+import { FormGroup } from '@angular/forms';
+
 import { BaseWebComponent } from '../base-web-component.class';
+import { DataFormField } from './data-form-models';
+import { DataFormConfig } from './data-form.config';
+import { DataFormFieldTypeEnum } from './data-form.enums';
 
 // NOTE: see https://angular.io/docs/ts/latest/cookbook/dynamic-form.html for more details
 

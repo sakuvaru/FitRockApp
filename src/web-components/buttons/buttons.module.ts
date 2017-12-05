@@ -1,16 +1,13 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormGroup } from '@angular/forms';
+import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import { SharedWebComponentModule } from '../shared-web-components.module';
-
-// components
-import { FixedButtonComponent } from './fixed-button.component';
+import { AddButtonComponent } from './add-button.component';
+import { CloseButtonComponent } from './close-button.component';
 import { DeleteButtonComponent } from './delete-button.component';
 import { EditButtonComponent } from './edit-button.component';
-import { CloseButtonComponent } from './close-button.component';
-import { AddButtonComponent } from './add-button.component';
+import { FixedButtonComponent } from './fixed-button.component';
 
 @NgModule({
     imports: [

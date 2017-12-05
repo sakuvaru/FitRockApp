@@ -1,14 +1,22 @@
-import { DataTableConfig } from './data-table.config';
-import { Observable } from 'rxjs/Rx';
-import { IItem, MultipleItemQuery, DeleteItemQuery, ItemCountQuery } from '../../lib/repository';
-import {
-    DataTableField, DataTableResponse, DataTableButton, DataTableDeleteResponse,
-    Filter, DataTableCountResponse, DynamicFilter, DataTableAvatar, DataTableSort, AllFilter
-} from './data-table-models';
-import { IDataTableField, IDataTableButton, IDataTableSort } from './data-table.interfaces';
-import { DataTableSortEnum } from './data-table-sort.enum';
-import * as _ from 'underscore';
 import { AppConfig } from 'app/config';
+import { Observable } from 'rxjs/Rx';
+import * as _ from 'underscore';
+
+import { DeleteItemQuery, IItem, ItemCountQuery, MultipleItemQuery } from '../../lib/repository';
+import {
+    AllFilter,
+    DataTableAvatar,
+    DataTableButton,
+    DataTableCountResponse,
+    DataTableDeleteResponse,
+    DataTableField,
+    DataTableResponse,
+    DynamicFilter,
+    Filter,
+} from './data-table-models';
+import { DataTableSortEnum } from './data-table-sort.enum';
+import { DataTableConfig } from './data-table.config';
+import { IDataTableButton, IDataTableField, IDataTableSort } from './data-table.interfaces';
 
 // export table config
 export { DataTableConfig };

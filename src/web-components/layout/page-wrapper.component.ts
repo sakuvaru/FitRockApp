@@ -1,5 +1,5 @@
-// common
 import { Component } from '@angular/core';
+
 import { BaseWebComponent } from '../base-web-component.class';
 
 @Component({

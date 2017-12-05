@@ -1,14 +1,9 @@
 // common
-import { Component, Input, ViewChild, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { MatPaginator } from '@angular/material';
 
-// base
 import { BaseWebComponent } from '../base-web-component.class';
-
-// data table
 import { DataTableComponent } from './data-table.component';
-
-// material
-import { MatSort, MatPaginator, Sort } from '@angular/material';
 
 @Component({
     selector: 'data-table-pager',

@@ -1,4 +1,3 @@
-// gallery classes
 import { Image } from 'angular-modal-gallery';
 
 export class GalleryGroup {

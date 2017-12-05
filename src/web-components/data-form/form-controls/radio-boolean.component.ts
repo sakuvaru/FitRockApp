@@ -1,8 +1,9 @@
-import { Component, Input, AfterViewInit, ChangeDetectorRef, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { ChangeDetectorRef, Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { observableHelper } from 'lib/utilities';
+import { Observable } from 'rxjs/Observable';
+
 import { LocalizationService } from '../../../lib/localization';
 import { BaseFormControlComponent } from './base-form-control.component';
-import { Observable } from 'rxjs/Observable';
-import { observableHelper } from 'lib/utilities';
 
 @Component({
   selector: 'df-radio-boolean',

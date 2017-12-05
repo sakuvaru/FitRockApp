@@ -1,15 +1,10 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormGroup } from '@angular/forms';
+import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import { SharedWebComponentModule } from '../shared-web-components.module';
-
-// components
-import { PluralComponent } from './plural.component';
-
-// diet
 import { PluralFoodUnitsComponent } from './diet/plural-food-units.component';
+import { PluralComponent } from './plural.component';
 
 @NgModule({
     imports: [

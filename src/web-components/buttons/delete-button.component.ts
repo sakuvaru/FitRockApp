@@ -1,6 +1,6 @@
-// common
-import { Component, Input, Output, EventEmitter, ViewContainerRef, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewContainerRef } from '@angular/core';
 import { TdDialogService } from '@covalent/core';
+
 import { LocalizationService } from '../../lib/localization';
 import { BaseWebComponent } from '../base-web-component.class';
 

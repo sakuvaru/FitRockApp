@@ -1,6 +1,7 @@
+import { Observable } from 'rxjs/Rx';
+
 import { MultiSeries, SingleSeries } from './graph-models';
 import { GraphTypeEnum } from './graph-type.enum';
-import { Observable } from 'rxjs/Rx';
 
 export abstract class BaseGraph {
 

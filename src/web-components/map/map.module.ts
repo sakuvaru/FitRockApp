@@ -1,14 +1,9 @@
-import { NgModule } from '@angular/core';
+import { AgmCoreModule } from '@agm/core';
 import { CommonModule } from '@angular/common';
-import { FormGroup } from '@angular/forms';
+import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import { SharedWebComponentModule } from '../shared-web-components.module';
-
-// AGM map module (https://angular-maps.com/guides/getting-started/)
-import { AgmCoreModule } from '@agm/core';
-
-// components
 import { MapComponent } from './map.component';
 
 @NgModule({

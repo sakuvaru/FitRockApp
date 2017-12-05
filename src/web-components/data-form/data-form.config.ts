@@ -1,10 +1,15 @@
 import { Observable } from 'rxjs/RX';
-import { FormGroup } from '@angular/forms';
+
 import {
-    DataFormEditResponse, DataFormInsertResponse, DataFormField, DataFormEditDefinition,
-    DataFormInsertDefinition, DataFormDeleteResponse, DataFormFieldChangeResult, DataFormSection
+    DataFormDeleteResponse,
+    DataFormEditDefinition,
+    DataFormEditResponse,
+    DataFormField,
+    DataFormFieldChangeResult,
+    DataFormInsertDefinition,
+    DataFormInsertResponse,
+    DataFormSection,
 } from './data-form-models';
-import { DataFormSectionSize } from './data-form.enums';
 
 export class DataFormConfig {
 

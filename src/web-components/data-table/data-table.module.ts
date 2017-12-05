@@ -1,18 +1,13 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 
-// base shared web components module
-import { SharedWebComponentModule } from '../shared-web-components.module';
-
-// modules
 import { LoaderModule } from '../loader/loader.module';
 import { MessagesModule } from '../messages/messages.module';
-
-// components
-import { DataTableComponent } from './data-table.component';
+import { SharedWebComponentModule } from '../shared-web-components.module';
 import { DataTablePagerComponent } from './data-table-pager.component';
+import { DataTableComponent } from './data-table.component';
 
 @NgModule({
     imports: [

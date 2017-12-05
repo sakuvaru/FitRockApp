@@ -1,26 +1,15 @@
 // common
-import { Component, Inject, Input, OnInit, ViewContainerRef } from '@angular/core';
-import { BaseWebComponent } from '../base-web-component.class';
-
-// covalent
+import { Component, Inject, OnInit, ViewContainerRef } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar } from '@angular/material';
 import { TdDialogService } from '@covalent/core';
-
-// material
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
-
-// gallery
 import { Image } from 'angular-modal-gallery';
+import * as _ from 'underscore';
 
-// models
+import { LocalizationService } from '../../lib/localization';
+import { BaseWebComponent } from '../base-web-component.class';
 import { GalleryGroup } from './gallery-group.class';
 import { GalleryImage } from './gallery-image.class';
 import { GalleryConfig } from './gallery.config';
-
-// helpers
-import * as _ from 'underscore';
-
-// translations
-import { LocalizationService } from '../../lib/localization';
 
 @Component({
     templateUrl: 'gallery-delete-dialog.component.html'

@@ -1,23 +1,15 @@
 // common
-import { Component, Input, OnInit, Output, OnChanges, SimpleChanges, EventEmitter } from '@angular/core';
-import { BaseWebComponent } from '../base-web-component.class';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { MatDialog } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
+import { Description, Image, ImageModalEvent } from 'angular-modal-gallery';
 import { Observable } from 'rxjs/Rx';
 
-// gallery classes
-import { Image, Description, ImageModalEvent } from 'angular-modal-gallery';
-
-// required by component
+import { BaseWebComponent } from '../base-web-component.class';
+import { GalleryDeleteDialogComponent } from './gallery-delete-dialog.component';
+import { GalleryGroup } from './gallery-group.class';
 import { GalleryImage } from './gallery-image.class';
 import { GalleryConfig } from './gallery.config';
-import { GalleryGroup } from './gallery-group.class';
-import { ImageGroupResult } from './image-group-result.class';
-
-// dialog
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { GalleryDeleteDialogComponent } from './gallery-delete-dialog.component';
-
-// material
-import { MatSnackBar } from '@angular/material';
 
 @Component({
     selector: 'gallery',

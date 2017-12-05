@@ -1,13 +1,11 @@
-// common
-import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
-import { LocalizationService } from '../../lib/localization';
-import { BaseWebComponent } from '../base-web-component.class';
-
-// required by component
-import { UploaderConfig } from './uploader.config';
-import * as _ from 'underscore';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 import { Observable, Subject } from 'rxjs/Rx';
+import * as _ from 'underscore';
+
+import { LocalizationService } from '../../lib/localization';
+import { BaseWebComponent } from '../base-web-component.class';
+import { UploaderConfig } from './uploader.config';
 
 @Component({
     selector: 'uploader',

@@ -1,14 +1,27 @@
-import { DataFormConfig } from './data-form.config';
-import {
-    DataFormEditResponse, DataFormInsertResponse, DataFormField, DataFormEditDefinition,
-    DataFormInsertDefinition, DataFormDeleteResponse, DataFieldDropdownOption, DataFormFieldChangeResult,
-    DataFormSection
-} from './data-form-models';
 import { Observable } from 'rxjs/Rx';
+
 import {
-    ResponseFormEdit, ResponseFormInsert, IItem, FormField, ControlTypeEnum,
-    ResponseEdit, ResponseCreate, ResponseDelete
+    ControlTypeEnum,
+    FormField,
+    IItem,
+    ResponseCreate,
+    ResponseDelete,
+    ResponseEdit,
+    ResponseFormEdit,
+    ResponseFormInsert,
 } from '../../lib/repository';
+import {
+    DataFieldDropdownOption,
+    DataFormDeleteResponse,
+    DataFormEditDefinition,
+    DataFormEditResponse,
+    DataFormField,
+    DataFormFieldChangeResult,
+    DataFormInsertDefinition,
+    DataFormInsertResponse,
+    DataFormSection,
+} from './data-form-models';
+import { DataFormConfig } from './data-form.config';
 import { DataFormFieldTypeEnum } from './data-form.enums';
 
 export class DataFormBuilder<TItem extends IItem> {

@@ -1,16 +1,10 @@
-// common
 import { Component, Input, ViewChild } from '@angular/core';
-import { BaseWebComponent } from '../base-web-component.class';
 
-// required
 import { LocalizationService } from '../../lib/localization';
+import { BaseWebComponent } from '../base-web-component.class';
+import { BaseGraphComponent } from './graph-components/base-graph.component';
 import { BaseGraph } from './graph-types';
 import { GraphConfig } from './graph.config';
-import { BaseGraphComponent } from './graph-components/base-graph.component';
-
-// graphs
-import { LineChartGraphComponent } from './graph-components/line-chart.component';
-import { VerticalBarGraphComponent } from './graph-components/vertical-bar-chart.component';
 
 @Component({
     selector: 'graph',

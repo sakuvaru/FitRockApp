@@ -1,25 +1,29 @@
-// common
-import { Component, Input, ViewChild, OnInit, OnChanges, SimpleChanges, ElementRef, AfterViewInit } from '@angular/core';
-import { BaseWebComponent } from '../base-web-component.class';
 import { DataSource } from '@angular/cdk/collections';
-import { guidHelper, observableHelper } from '../../lib/utilities';
+import { Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
-
-import { DataTableConfig } from './data-table.config';
-import { DataTableSource } from './data-table-source.class';
-import {
-    DataTableField, DataTableFieldWrapper, DataTableButtonWrapper,
-    DataTableButton, DataTableDeleteResponse, Filter, FilterWrapper, DataTableResponse,
-    DataTableCountResponse, DynamicFilter, AllFilter, DataTableSort,
-} from './data-table-models';
-import { IFilter, IDataTableSort, IDataTableButton } from './data-table.interfaces';
-import { Observable, Subject } from 'rxjs/Rx';
-import { MatSnackBar, MatSort, MatPaginator, Sort } from '@angular/material';
+import { MatPaginator, MatSnackBar, MatSort, Sort } from '@angular/material';
 import { TdDialogService } from '@covalent/core';
-import { LocalizationService } from '../../lib/localization';
+import { LocalizationService } from 'lib/localization';
+import { Observable, Subject } from 'rxjs/Rx';
 import * as _ from 'underscore';
+
+import { guidHelper, observableHelper } from '../../lib/utilities';
+import { BaseWebComponent } from '../base-web-component.class';
+import {
+    DataTableButton,
+    DataTableButtonWrapper,
+    DataTableDeleteResponse,
+    DataTableFieldWrapper,
+    DataTableResponse,
+    DataTableSort,
+    DynamicFilter,
+    Filter,
+    FilterWrapper,
+} from './data-table-models';
 import { DataTableSortEnum } from './data-table-sort.enum';
-import { IDataTableField } from 'web-components/data-table';
+import { DataTableSource } from './data-table-source.class';
+import { DataTableConfig } from './data-table.config';
+import { IDataTableSort, IFilter } from './data-table.interfaces';
 
 @Component({
     selector: 'data-table',

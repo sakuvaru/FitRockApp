@@ -1,7 +1,8 @@
-import { Component, Input, AfterViewInit, ChangeDetectorRef, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { ChangeDetectorRef, Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+
 import { LocalizationService } from '../../../lib/localization';
-import { BaseFormControlComponent, ValueValidationResult } from './base-form-control.component';
 import { numberHelper } from '../../../lib/utilities';
+import { BaseFormControlComponent, ValueValidationResult } from './base-form-control.component';
 
 @Component({
   selector: 'df-number',

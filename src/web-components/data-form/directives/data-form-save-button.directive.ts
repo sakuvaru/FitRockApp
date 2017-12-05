@@ -1,9 +1,8 @@
-import { Directive, ElementRef, Input, OnInit, Renderer2, OnChanges, SimpleChanges } from '@angular/core';
-import { DataFormComponent } from '../data-form.component';
-
-// common
-import { BaseWebComponent } from '../../base-web-component.class';
+import { Directive, ElementRef, Input, Renderer2 } from '@angular/core';
 import { AfterViewInit } from '@angular/core/src/metadata/lifecycle_hooks';
+
+import { BaseWebComponent } from '../../base-web-component.class';
+import { DataFormComponent } from '../data-form.component';
 
 @Directive({
     selector: '[dataFormSaveButton]',

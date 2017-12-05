@@ -1,12 +1,11 @@
-// common
-import { Component, Input, Output, EventEmitter, ViewContainerRef, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { Observable, Subject } from 'rxjs/Rx';
+import * as _ from 'underscore';
+
 import { LocalizationService } from '../../lib/localization';
 import { BaseWebComponent } from '../base-web-component.class';
 import { LoadMoreConfig } from './load-more.config';
-import { LoadMoreResponse } from './load-more.models';
-import * as _ from 'underscore';
-import { Observable, Subject } from 'rxjs/Rx';
-import { FormControl } from '@angular/forms';
 
 @Component({
     selector: 'load-more',

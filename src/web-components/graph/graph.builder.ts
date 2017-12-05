@@ -1,8 +1,8 @@
-import { MultiSeries, SingleSeries } from './graph-models';
-import { GraphConfig } from './graph.config';
-import { BaseGraph } from './graph-types';
-import { GraphTypeEnum } from './graph-type.enum';
 import { Observable } from 'rxjs/Rx';
+
+import { GraphTypeEnum } from './graph-type.enum';
+import { BaseGraph } from './graph-types';
+import { GraphConfig } from './graph.config';
 
 export class GraphBuilder<TGraph extends BaseGraph> {
 

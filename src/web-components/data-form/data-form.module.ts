@@ -1,49 +1,28 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-
-// Shared web components
-import { SharedWebComponentModule } from '../shared-web-components.module';
-
-// Date time picker
-// see https://www.npmjs.com/package/ng-pick-datetime
-import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { TextMaskModule } from 'angular2-text-mask';
 import { DateTimePickerModule } from 'ng-pick-datetime';
 
-// Angular input mask
-// see https://github.com/text-mask/text-mask/tree/master/angular2#readme 
-import { TextMaskModule } from 'angular2-text-mask';
-
-// form controls
-import { TextComponent } from './form-controls/text.component';
+import { ButtonsModule } from '../buttons/buttons.module';
+import { LoaderModule } from '../loader/loader.module';
+import { MessagesModule } from '../messages/messages.module';
+import { SharedWebComponentModule } from '../shared-web-components.module';
+import { DataFormFieldComponent } from './data-form-field.component';
+import { DataFormComponent } from './data-form.component';
+import { DataFormDeleteButtonDirective } from './directives/data-form-delete-button.directive';
+import { DataFormSaveButtonDirective } from './directives/data-form-save-button.directive';
 import { BooleanComponent } from './form-controls/boolean.component';
-import { RadioBooleanComponent } from './form-controls/radio-boolean.component';
+import { DateTimeComponent } from './form-controls/date-time.component';
 import { DateComponent } from './form-controls/date.component';
-import { TextAreaComponent } from './form-controls/text-area.component';
 import { DropdownComponent } from './form-controls/dropdown.component';
 import { HiddenComponent } from './form-controls/hidden.component';
 import { NumberComponent } from './form-controls/number.component';
 import { PhoneNumberComponent } from './form-controls/phone-number.component';
-import { DateTimeComponent } from './form-controls/date-time.component';
-
-// loader
-import { LoaderModule } from '../loader/loader.module';
-
-// buttons
-import { ButtonsModule} from '../buttons/buttons.module';
-
-// messages
-import { MessagesModule } from '../messages/messages.module';
-
-// components
-import { DataFormComponent } from './data-form.component';
-import { DataFormFieldComponent } from './data-form-field.component';
-
-// directives
-import { DataFormSaveButtonDirective } from './directives/data-form-save-button.directive';
-import { DataFormDeleteButtonDirective } from './directives/data-form-delete-button.directive';
+import { RadioBooleanComponent } from './form-controls/radio-boolean.component';
+import { TextAreaComponent } from './form-controls/text-area.component';
+import { TextComponent } from './form-controls/text.component';
 
 @NgModule({
     imports: [

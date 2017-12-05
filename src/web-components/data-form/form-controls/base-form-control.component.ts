@@ -1,13 +1,12 @@
-import { Component, Input, AfterViewInit, ChangeDetectorRef, OnInit, OnChanges, SimpleChanges } from '@angular/core';
-import { FormGroup, AbstractControl } from '@angular/forms';
-import { LocalizationService } from '../../../lib/localization';
-import { DataFormConfig } from '../data-form.config';
-import { stringHelper, numberHelper } from '../../../lib/utilities';
-import { BaseWebComponent } from '../../base-web-component.class';
-import { DataFormField, DataFormFieldChangeResult } from '../data-form-models';
+import { ChangeDetectorRef, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { AbstractControl, FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs/Rx';
 
-// NOTE: see https://angular.io/docs/ts/latest/cookbook/dynamic-form.html for more details
+import { LocalizationService } from '../../../lib/localization';
+import { stringHelper } from '../../../lib/utilities';
+import { BaseWebComponent } from '../../base-web-component.class';
+import { DataFormField, DataFormFieldChangeResult } from '../data-form-models';
+import { DataFormConfig } from '../data-form.config';
 
 export abstract class BaseFormControlComponent extends BaseWebComponent implements OnInit, OnChanges {
 

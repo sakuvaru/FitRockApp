@@ -1,17 +1,10 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormGroup } from '@angular/forms';
+import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { SharedWebComponentModule } from '../shared-web-components.module';
-
-// loader
 import { LoaderModule } from '../loader/loader.module';
-
-// messages module
 import { MessagesModule } from '../messages';
-
-// components
+import { SharedWebComponentModule } from '../shared-web-components.module';
 import { UploaderComponent } from './uploader.component';
 
 @NgModule({

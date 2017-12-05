@@ -1,4 +1,5 @@
 import { Observable } from 'rxjs/Observable';
+
 import { LoadMoreResponse } from './load-more.models';
 
 export class LoadMoreConfig {

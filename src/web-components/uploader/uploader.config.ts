@@ -1,5 +1,6 @@
-import { UploaderModeEnum } from './uploader-mode.enum';
 import { Observable } from 'rxjs/Rx';
+
+import { UploaderModeEnum } from './uploader-mode.enum';
 import { ResponseUpload } from './uploader-models';
 
 export class UploaderConfig {

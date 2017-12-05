@@ -1,20 +1,11 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-// Flex layout for angular - https://www.npmjs.com/package/%40angular%2Fflex-layout
+import { NgModule } from '@angular/core';
 import { FlexLayoutModule, MediaQueriesModule } from '@angular/flex-layout';
 
-// Covalent modules for Angular2 - include here so all components can reference them in templates
-import { CovalentModule } from '../lib/covalent';
-
-// Angular meterial
-import { AngularMaterialModule } from '../lib/material';
-
-// directives
 import { DirectivesModule } from '../directives';
-
-// localization
+import { CovalentModule } from '../lib/covalent';
 import { LocalizationModule } from '../lib/localization';
+import { AngularMaterialModule } from '../lib/material';
 
 @NgModule({
     imports: [

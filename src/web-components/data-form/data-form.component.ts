@@ -1,24 +1,24 @@
-import { ChangeDetectorRef, Component, Input, Output, EventEmitter, ViewContainerRef, OnInit, OnChanges, SimpleChanges } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Observable, Subject } from 'rxjs/Rx';
-
-// common
-import { BaseWebComponent } from '../base-web-component.class';
-
-// data form 
-import { DataFormConfig } from './data-form.config';
-import { DataFormActiomEnum, DataFormSectionSize, DataFormFieldTypeEnum } from './data-form.enums';
-import {
-    DataFormDeleteResponse, DataFormEditDefinition, DataFormEditResponse, DataFormField,
-    DataFormInsertDefinition, DataFormInsertResponse, DataFormSection
-} from './data-form-models';
-
-// additional services
-import * as _ from 'underscore';
+import { ChangeDetectorRef, Component, Input, OnChanges, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material';
-import { observableHelper } from '../../lib/utilities';
-import { LocalizationService } from '../../lib/localization';
 import { TdDialogService } from '@covalent/core';
+import { Observable, Subject } from 'rxjs/Rx';
+import * as _ from 'underscore';
+
+import { LocalizationService } from '../../lib/localization';
+import { observableHelper } from '../../lib/utilities';
+import { BaseWebComponent } from '../base-web-component.class';
+import {
+    DataFormDeleteResponse,
+    DataFormEditDefinition,
+    DataFormEditResponse,
+    DataFormField,
+    DataFormInsertDefinition,
+    DataFormInsertResponse,
+    DataFormSection,
+} from './data-form-models';
+import { DataFormConfig } from './data-form.config';
+import { DataFormActiomEnum, DataFormFieldTypeEnum, DataFormSectionSize } from './data-form.enums';
 
 @Component({
     selector: 'data-form',

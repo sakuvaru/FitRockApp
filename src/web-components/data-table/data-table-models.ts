@@ -1,10 +1,13 @@
 import { Observable } from 'rxjs/Rx';
-import { guidHelper, stringHelper } from '../../lib/utilities';
-import {
-    IDataTableButton, IDataTableField, IDataTableCountResponse, IDataTableResponse,
-    IFilter, IDataTableSort
-} from './data-table.interfaces';
+
 import { DataTableSortEnum } from './data-table-sort.enum';
+import {
+    IDataTableCountResponse,
+    IDataTableField,
+    IDataTableResponse,
+    IDataTableSort,
+    IFilter,
+} from './data-table.interfaces';
 
 export class DataTableField<T> implements IDataTableField<T> {
     constructor(

@@ -1,4 +1,5 @@
-import { Component, Input, AfterViewInit, ChangeDetectorRef, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { ChangeDetectorRef, Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+
 import { LocalizationService } from '../../../lib/localization';
 import { BaseFormControlComponent } from './base-form-control.component';
 
