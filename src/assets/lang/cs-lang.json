@@ -63,7 +63,8 @@
 		"loadMore": "Další",
 		"deleted": "Smazáno",
 		"save": "Uložit",
-		"create": "Vytvořit"
+		"create": "Vytvořit",
+		"edit": "Upravit"
 	},
 	"module": {
 		"clients": {
@@ -88,7 +89,6 @@
 				"nextAppointmentMap": "Mapa",
 				"diets": "Jídelníčky",
 				"workouts": "Tréninkové plány",
-				"latestMessages": "Poslední zprávy",
 				"noDiets": "Žádné jídelníčky nebyly vytvořeny",
 				"noWorkouts": "Žádné tréninkové plány nebyly vytvořeny",
 				"noChatMessages": "Nemáš žádné zprávy",

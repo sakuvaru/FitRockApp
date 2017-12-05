@@ -151,12 +151,25 @@ export abstract class BaseTypeService<TItem extends IItem> {
      * @param query Query
      */
     buildDataTable(
-        query: (query: MultipleItemQuery<TItem>, search: string) => MultipleItemQuery<TItem>
+        query: (query: MultipleItemQuery<TItem>, search: string) => MultipleItemQuery<TItem>,
+        options?: {
+            enableDelete?: boolean
+        }
     ): DataTableBuilder<TItem> {
 
         const resolvedQuery = (search: string) => query(this.items(), search);
 
-        return this.dataTableService.dataTable<TItem>(resolvedQuery);
+        // build data table
+        const dataTable = this.dataTableService.dataTable<TItem>(resolvedQuery);
+
+        const enableDelete = options && options.enableDelete ? true : false;
+
+        if (enableDelete) {
+            // configure delete action
+            dataTable.deleteAction(item => this.delete(item.id));
+        }
+
+        return dataTable;
     }
 
     /**

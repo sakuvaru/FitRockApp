@@ -167,7 +167,7 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
                     .includeMultiple(['ProgressItemType', 'ProgressItemType.ProgressItemUnit'])
                     .whereEquals('ClientId', clientId);
             }
-        )
+        , { enableDelete: true })
             .withFields([
                 {
                     value: (item) =>
@@ -210,7 +210,11 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
                     return filters;
                 })
             )
-            .onClick((item) => this.openEditProgressItemDialog(item))
+            .withButton({
+                icon: 'edit',
+                tooltip: (item) => super.translate('shared.edit'),
+                action: (item) => this.openEditProgressItemDialog(item)
+            })
             .build();
     }
 
