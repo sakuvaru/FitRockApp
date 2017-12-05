@@ -387,7 +387,7 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
                         this.config.onBeforeDelete(this.getFormValue());
                     }
 
-                    return this.deleteItem();
+                    return this.deleteItem().map(response => new ResponseWrapper(response));
                 }
 
                 if (this.config.onBeforeSave) {
@@ -395,17 +395,18 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
                 }
 
                 if (type === DataFormActiomEnum.Edit) {
-                    return this.editItem();
+                    return this.editItem().map(response => new ResponseWrapper(response));
                 }
 
                 if (type === DataFormActiomEnum.Insert) {
-                    return this.insertItem();
+                    return this.insertItem().map(response => new ResponseWrapper(response));
                 }
 
                 throw Error(`Unsuported form action`);
             })
             .takeUntil(this.ngUnsubscribe)
-            .subscribe(response => {
+            .subscribe(responseWrapper => {
+                const response = responseWrapper.response;
                 if (response instanceof DataFormInsertResponse) {
                     this.showSnackbarInsertMessage();
 
@@ -735,3 +736,10 @@ class DataFormRow {
         return this.section.size === DataFormSectionSize.Large;
     }
 }
+
+class ResponseWrapper {
+    constructor(
+        public response: DataFormEditResponse | DataFormDeleteResponse | DataFormInsertResponse
+    ) { }
+}
+
