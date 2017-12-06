@@ -40,7 +40,7 @@
                         <button *ngIf="isInsertForm" mat-raised-button color="accent" (click)="handleInsertItem()" [disabled]="!formGroup.valid">{{ 'webComponents.dataForm.insert' | localize }}</button>
                         <button *ngIf="isEditForm" mat-raised-button color="accent" (click)="handleEditItem()" [disabled]="!formGroup.valid">{{ 'webComponents.dataForm.save' | localize }}</button>
                         <div flex></div>
-                        <delete-button [enableConfirm]="true" *ngIf="isDeleteEnabled" (confirm)="handleDeleteItem()"></delete-button>
+                        <delete-button [enableConfirm]="false" *ngIf="isDeleteEnabled" (confirm)="handleDeleteItem()"></delete-button>
                     </div>
                 </mat-card-actions>
             </mat-card>
@@ -84,7 +84,7 @@
                     <button *ngIf="isInsertForm" mat-raised-button color="accent" (click)="handleInsertItem()" [disabled]="!formGroup.valid">{{ 'webComponents.dataForm.insert' | localize }}</button>
                     <button *ngIf="isEditForm" mat-raised-button color="accent" (click)="handleEditItem()" [disabled]="!formGroup.valid">{{ 'webComponents.dataForm.save' | localize }}</button>
                     <div flex></div>
-                    <delete-button [enableConfirm]="true" *ngIf="isDeleteEnabled" (confirm)="handleDeleteItem()"></delete-button>
+                    <delete-button [enableConfirm]="false" *ngIf="isDeleteEnabled" (confirm)="handleDeleteItem()"></delete-button>
                 </div>
             </div>
         </form>
