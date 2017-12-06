@@ -1,45 +1,22 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SharedService } from './services/shared.service';
-import { ComponentDependencyService } from './component/component-dependency.service';
-import { LocalizationModule } from '../../lib/localization';
-
-// angular forms
-import { FormsModule, ReactiveFormsModule} from '@angular/forms';
-
-// Covalent modules for Angular  - include here so all components can reference them in templates
-import { CovalentModule } from '../../lib/covalent';
-
-// Angular meterial
-import { AngularMaterialModule } from '../../lib/material';
-
-// Flex layout for angular - https://www.npmjs.com/package/%40angular%2Fflex-layout
+import { NgModule } from '@angular/core';
 import { FlexLayoutModule, MediaQueriesModule } from '@angular/flex-layout';
-
-// core modules - include
-import { AuthModule } from '../../lib/auth';
-
-// web components
-import { WebComponentsModule } from '../../web-components';
-
-// directives
-import { DirectivesModule } from '../../directives';
-
-// Drag & drop
-// https://github.com/valor-software/ng2-dragula
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DragulaModule } from 'ng2-dragula';
 
-// local authenticated user
-import { AuthenticatedUserService } from './services/authenticated-user.service';
-
-// current language service
-import { CurrentLanguageService } from './services/current-language.service';
-
-// localization 
+import { DirectivesModule } from '../../directives';
+import { AuthModule } from '../../lib/auth';
+import { CovalentModule } from '../../lib/covalent';
+import { LocalizationModule } from '../../lib/localization';
+import { AngularMaterialModule } from '../../lib/material';
+import { WebComponentsModule } from '../../web-components';
+import { ComponentDependencyService } from './component/component-dependency.service';
 import { AppLanguageResolver } from './providers/app-language-resolver';
-
-// system
+import { AuthenticatedUserService } from './services/authenticated-user.service';
+import { CurrentLanguageService } from './services/current-language.service';
+import { SharedService } from './services/shared.service';
 import { SystemService } from './services/system.service';
+import { TimeService } from './services/time.service';
 
 @NgModule({
     imports: [
@@ -64,7 +41,8 @@ import { SystemService } from './services/system.service';
         AuthenticatedUserService,
         CurrentLanguageService,
         AppLanguageResolver,
-        SystemService
+        SystemService,
+        TimeService
     ],
     exports: [
         CommonModule,

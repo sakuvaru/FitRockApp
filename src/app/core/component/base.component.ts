@@ -9,9 +9,6 @@ import { Observable, Subject } from 'rxjs/Rx';
 import { NavigationExtras } from '@angular/router';
 import { ComponentSetup } from './component-setup.class';
 
-// moment js
-import * as moment from 'moment';
-
 export abstract class BaseComponent implements OnInit, OnDestroy {
 
     /**
@@ -41,7 +38,7 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
     protected componentConfig: ComponentConfig = new ComponentConfig();
 
     // language
-    protected language?: LanguageConfig;
+    protected currentLanguage?: LanguageConfig;
 
     // auth user
     protected authUser?: AuthenticatedUser;
@@ -303,24 +300,17 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
         this.dependencies.coreServices.sharedService.setComponentSetup(currentSetup);
     }
 
-    // --------------- Useful aliases ------------------ //
+    // --------------- Common method aliases ------------------ //
     translate(key: string, data?: any): Observable<string> {
         return this.dependencies.coreServices.localizationService.get(key, data);
     }
 
-    moment(inp?: moment.MomentInput, format?: moment.MomentFormatSpecification, strict?: boolean): moment.Moment {
-        return this.dependencies.coreServices.moment(inp, format, strict).locale(this.language ? this.language.momentJs : '');
-    }
-    momentLanguage(inp?: moment.MomentInput, format?: moment.MomentFormatSpecification, language?: string, strict?: boolean): moment.Moment {
-        return this.dependencies.coreServices.momentLanguage(inp, format, language, strict).locale(this.language ? this.language.momentJs : '');
-    }
-
     formatDate(date: Date): string {
-        return this.moment(date).format('D MMMM hh:mm');
+        return this.dependencies.coreServices.timeService.formatDate(date);
     }
 
     fromNow(date: Date): string {
-        return this.moment(date).fromNow();
+        return this.dependencies.coreServices.timeService.fromNow(date);
     }
 
     // -------------- Observable subscriptions -------------- //

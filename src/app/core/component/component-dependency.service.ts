@@ -1,47 +1,59 @@
-import { Injectable, Injector, } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
+import { Injectable, Injector } from '@angular/core';
+import { MatDialog, MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs/Rx';
+import { TdDialogService, TdLoadingService, TdMediaService } from '@covalent/core';
 
-// Components's common services
 import { AuthService } from '../../../lib/auth';
-import { TdMediaService, TdLoadingService, TdDialogService } from '@covalent/core';
-import { SharedService } from '../services/shared.service';
-import { AuthenticatedUserService } from '../services/authenticated-user.service';
-import { SystemService } from '../services/system.service';
-import { CurrentLanguageService } from '../services/current-language.service';
-import { RepositoryClient } from '../../../lib/repository';
-
-// Helpers
-import { guidHelper, numberHelper, observableHelper, stringHelper, GuidHelper, NumberHelper, ObservableHelper, StringHelper } from '../../../lib/utilities';
-
-// Services
-import { UserService, ExerciseCategoryService, ExerciseService, LogService, WorkoutCategoryService,
-     WorkoutExerciseService, WorkoutService, DietCategoryService, DietFoodService, DietService,
-    FoodCategoryService, FoodService, FoodUnitService, ProgressItemService, ProgressItemTypeService,
-   ChatMessageService, FeedService, FileService, AppointmentService, LocationService, ProgressItemUnitService,
-   ServerService
- } from '../../services';
-
-// Angular material
-import { MatSnackBar, MatDialog } from '@angular/material';
-
-// Localization service
 import { LocalizationService } from '../../../lib/localization';
-
-// moment js
-import * as moment from 'moment';
-
-// Web component services
-import { GalleryService, GraphService,
-    LoadMoreService, UploaderService, DataTableService, DataFormService
+import { RepositoryClient } from '../../../lib/repository';
+import {
+    GuidHelper,
+    guidHelper,
+    NumberHelper,
+    numberHelper,
+    ObservableHelper,
+    observableHelper,
+    StringHelper,
+    stringHelper,
+} from '../../../lib/utilities';
+import {
+    AppointmentService,
+    ChatMessageService,
+    DietCategoryService,
+    DietFoodService,
+    DietService,
+    ExerciseCategoryService,
+    ExerciseService,
+    FeedService,
+    FileService,
+    FoodCategoryService,
+    FoodService,
+    FoodUnitService,
+    LocationService,
+    LogService,
+    ProgressItemService,
+    ProgressItemTypeService,
+    ProgressItemUnitService,
+    ServerService,
+    UserService,
+    WorkoutCategoryService,
+    WorkoutExerciseService,
+    WorkoutService,
+} from '../../services';
+import {
+    DataFormService,
+    DataTableService,
+    GalleryService,
+    GraphService,
+    LoadMoreService,
+    UploaderService,
 } from '../../web-component-services';
+import { AuthenticatedUserService } from '../services/authenticated-user.service';
+import { CurrentLanguageService } from '../services/current-language.service';
+import { SharedService } from '../services/shared.service';
+import { SystemService } from '../services/system.service';
+import { TimeService } from '../services/time.service';
 
-// Models
-import { User } from '../../models/';
-
-/// Use this class to define shared services that should be available for all conmponents
-/// This is so that each component does not have to define all common dependencies, but only the ones it needs
 @Injectable()
 export class ComponentDependencyService {
 
@@ -78,8 +90,7 @@ export class ComponentDependencyService {
         this.coreServices.repositoryClient = injector.get(RepositoryClient);
         this.coreServices.localizationService = injector.get(LocalizationService);
         this.coreServices.sharedService = injector.get(SharedService);
-        this.coreServices.moment = moment;
-        this.coreServices.momentLanguage = moment;
+        this.coreServices.timeService = injector.get(TimeService);
 
         // helpers
         this.helpers = new Helpers();
@@ -167,8 +178,7 @@ export class CoreServices {
     public authService: AuthService;
     public sharedService: SharedService;
     public localizationService: LocalizationService;
-    public moment: (inp?: moment.MomentInput, format?: moment.MomentFormatSpecification, strict?: boolean) => moment.Moment;
-    public momentLanguage: (inp?: moment.MomentInput, format?: moment.MomentFormatSpecification, language?: string, strict?: boolean) => moment.Moment;
+    public timeService: TimeService;
 }
 
 export class MdServices {
