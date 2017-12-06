@@ -46,7 +46,7 @@ export class MyLocationsComponent extends BaseComponent implements OnInit {
       .withFields([
         {
           value: (item) => item.locationName,
-          name: (item) => super.translate('modules.locations.locationName'),
+          name: (item) => super.translate('module.locations.locationName'),
           sortKey: 'LocationName'
         },
         {
