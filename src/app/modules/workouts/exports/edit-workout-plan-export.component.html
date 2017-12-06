@@ -18,7 +18,7 @@
           <span class="md-caption tc-grey-700">&nbsp;&nbsp;<span *ngIf="workoutExercise.sets && workoutExercise.reps">{{workoutExercise.sets}}x{{workoutExercise.reps}}</span></span>
           <span flex></span>
           <edit-button color="none" (editAction)="openWorkoutExerciseDialog(workoutExercise)"></edit-button>
-          <delete-button color="none" (confirm)="deleteWorkoutExercise(workoutExercise)"></delete-button>
+          <delete-button [enableConfirm]="true" color="none" (confirm)="deleteWorkoutExercise(workoutExercise)"></delete-button>
         </mat-list-item>
       </ng-container>
     </mat-list>

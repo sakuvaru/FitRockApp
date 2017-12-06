@@ -24,7 +24,7 @@
                                 {{progressItemType.typeName}}
                             </ng-container>
                             &nbsp;
-                            <delete-button mode="simple" (confirm)="handleDeleteType(progressItemType)"></delete-button>
+                            <delete-button [enableConfirm]="true" mode="simple" (confirm)="handleDeleteType(progressItemType)"></delete-button>
                         </mat-chip>
                     </mat-chip-list>
                 </div>

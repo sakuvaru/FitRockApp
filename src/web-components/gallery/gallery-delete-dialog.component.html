@@ -18,7 +18,7 @@
                     <img matListAvatar *ngIf="img.thumb" class="w-gallery-thumb" src="{{img.thumb}}" alt='{{img.description}}' />
                     <img matListAvatar *ngIf="!img.thumb" class="w-gallery-thumb" src="{{img.img}}" alt='{{img.description}}' />
                     <span flex></span>
-                    <delete-button (confirm)="onDelete(img)"></delete-button>
+                    <delete-button [enableConfirm]="true" (confirm)="onDelete(img)"></delete-button>
                 </mat-list-item>
             </mat-list>
             <div style="clear: both"></div>

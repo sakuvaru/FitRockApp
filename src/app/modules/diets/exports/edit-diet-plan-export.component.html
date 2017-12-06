@@ -19,7 +19,7 @@
             <span class="md-caption">&nbsp;( <plural-food-units [count]="dietFood.unitValue" [unitCode]="dietFood.food.foodUnit.unitCode"></plural-food-units>)</span>
             <span flex></span>
             <edit-button color="none" (editAction)="openDietFoodDialog(dietFood)"></edit-button>
-            <delete-button color="none" (confirm)="deleteDietFood(dietFood)"></delete-button>
+            <delete-button [enableConfirm]="true" color="none" (confirm)="deleteDietFood(dietFood)"></delete-button>
           </mat-list-item>
         </ng-container>
       </mat-list>

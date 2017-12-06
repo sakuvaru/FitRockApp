@@ -25,7 +25,7 @@
                 <span flex></span>
                 <mat-icon matTooltip="{{'module.clients.diet.foodList' | localize}}" class="w-cursor-pointer" (click)="openFoodListDialog(diet.dietFoods)"><i class="material-icons">remove_red_eye</i></mat-icon>
                 <edit-button (editAction)="goToEditDiet(diet)"></edit-button>
-                <delete-button (confirm)="deleteDiet(diet)"></delete-button>
+                <delete-button [enableConfirm]="true" (confirm)="deleteDiet(diet)"></delete-button>
             </mat-list-item>
         </ng-container>
     </mat-list>

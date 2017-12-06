@@ -38,7 +38,7 @@ export class DeleteButtonComponent extends BaseWebComponent implements OnInit, O
     @Output() confirm = new EventEmitter();
 
     ngOnInit() {
-        this.initSubscription();
+        this.initButton();
 
         this.localizationService.get('webComponents.buttons.deleteButton.message').map(text => this.messageText = text)
             .zip(this.localizationService.get('webComponents.buttons.deleteButton.title').map(text => this.titleText = text))
@@ -50,11 +50,12 @@ export class DeleteButtonComponent extends BaseWebComponent implements OnInit, O
     }
 
     ngOnChanges() {
-        this.initSubscription();
+        this.initButton();
     }
 
-    private initSubscription(): void {
-        if (this.enableConfirm && !this.subscribed) {
+    private initButton(): void {
+        if (!this.subscribed && this.enableConfirm) {
+            this.subscribed = true;
             this.confirmSubject.switchMap(() => {
                 return this.dialogService.openConfirm({
                     message: this.messageText,
@@ -74,13 +75,8 @@ export class DeleteButtonComponent extends BaseWebComponent implements OnInit, O
             })
                 .takeUntil(this.ngUnsubscribe)
                 .subscribe();
-
-                this.subscribed = true;
-        } else {
-            // unsubscribe otherwise
-            this.confirmSubject.unsubscribe();
-            this.subscribed = false;
         }
+
     }
 
     private openConfirm(): void {
@@ -91,13 +87,12 @@ export class DeleteButtonComponent extends BaseWebComponent implements OnInit, O
 
     public handleClick(event: any): void {
         event.stopPropagation(); // prevents issues if the clicked linked is within another link
-
         // confirmation not required
-        if (!this.enableConfirm) {
-            this.confirm.emit();
+        if (this.enableConfirm) {
+            this.openConfirm();
             return;
         } else {
-            this.openConfirm();
+            this.confirm.emit();
         }
     }
 }

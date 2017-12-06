@@ -13,5 +13,5 @@
 <mat-dialog-actions>
         <button mat-raised-button [dataForm]="dataForm" dataFormSaveButton color="accent">{{ 'shared.save' | localize }}</button>
     <span flex></span>
-    <delete-button [dataForm]="dataForm" dataFormDeleteButton enableConfirm="false"></delete-button>
+    <delete-button [dataForm]="dataForm" dataFormDeleteButton [enableConfirm]="false"></delete-button>
 </mat-dialog-actions>
