@@ -1,4 +1,0 @@
-/* It is really important that you define a height component `agm-map`. Otherwise, you won't see a map on the page! */
-agm-map {
-    height: 300px;
-  }
