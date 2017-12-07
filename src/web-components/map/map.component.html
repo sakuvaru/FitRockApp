@@ -1,7 +1,8 @@
 <!-- this creates a google map on the page with the given lat/lng from -->
 <!-- the component as the initial center of the map: -->
-<ng-container>
-    <agm-map [style.height]="height ? height + 'px' : defaultHeight + 'px' " #agmMap [latitude]="lat" [longitude]="lng" [zoomControl]="zoomControl" [zoom]="zoom" [mapDraggable]="mapDraggable" [scrollwheel]="scrollWheel">
+<div #mapWrapper>
+    <agm-map #agmMap [style.height]="height ? height + 'px' : defaultHeight + 'px'" [latitude]="lat" [longitude]="lng" [zoomControl]="zoomControl"
+        [zoom]="zoom" [mapDraggable]="mapDraggable" [scrollwheel]="scrollWheel">
         <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
     </agm-map>
-</ng-container>
+</div>

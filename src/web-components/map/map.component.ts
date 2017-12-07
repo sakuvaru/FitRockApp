@@ -1,14 +1,23 @@
+import { AgmMap } from '@agm/core';
 import { HttpClient } from '@angular/common/http';
-import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import {
+    AfterContentChecked,
+    Component,
+    ElementRef,
+    Input,
+    OnChanges,
+    OnInit,
+    SimpleChanges,
+    ViewChild,
+} from '@angular/core';
 
 import { BaseWebComponent } from '../base-web-component.class';
-import { AgmMap } from '@agm/core';
 
 @Component({
     selector: 'map',
     templateUrl: 'map.component.html'
 })
-export class MapComponent extends BaseWebComponent implements OnInit, OnChanges {
+export class MapComponent extends BaseWebComponent implements OnInit, OnChanges, AfterContentChecked {
 
     /**
      * Google API Key, required for geolocation services
@@ -66,7 +75,23 @@ export class MapComponent extends BaseWebComponent implements OnInit, OnChanges 
      */
     private mapReadySubscribed: boolean = false;
 
+    /**
+     * Indicates if map is visible (used a div wrapper around the map)
+     */
+    private mapVisible: boolean = false;
+
+    /**
+     * AGM Map
+     */
     @ViewChild(AgmMap) agmMap: AgmMap;
+
+    /**
+     * Div wrapper indicates if the map inside is visible or not. 
+     * This fixes an error where google map would 
+     * be greyed out if the component was hidden (e.g. the component is hidden until loaded).
+     * We need to verify if map is visible and trigger resize if it is.
+     */
+    @ViewChild('mapWrapper') mapWrapper: ElementRef;
 
     constructor(
         private http: HttpClient
@@ -82,18 +107,29 @@ export class MapComponent extends BaseWebComponent implements OnInit, OnChanges 
         this.initMap();
     }
 
-    private initMap(): void {
-        if (!this.mapReadySubscribed) {
-            this.agmMap.mapReady
-                .map(() => {
-                    // this fixes an issue where the map would render grey when switching 
-                    // between components. 
-                    this.agmMap.triggerResize();
-                })
-                .takeUntil(this.ngUnsubscribe)
-                .subscribe();
+    ngAfterContentChecked(): void {
+        if (this.mapWrapper) {
+            if (this.mapVisible === false && this.mapWrapper.nativeElement.offsetParent != null) {
+                // isVisible switched from false to true
+                this.mapVisible = true;
+                this.reloadMap();
+
+            } else if (this.mapVisible === true && this.mapWrapper.nativeElement.offsetParent == null) {
+                // isVisible switched from true to false
+                this.mapVisible = false;
+            }
+        }
+    }
+
+    private reloadMap(): void {
+        if (!this.agmMap) {
+            throw Error('Cannot reload map because it was not yet initialized');
         }
 
+        this.agmMap.triggerResize().then(() => null);
+    }
+
+    private initMap(): void {
         if (!this.lat || !this.lng) {
             // try loading coordinates from address
             this.loadCoordinatesFromAddress();
@@ -126,7 +162,7 @@ export class MapComponent extends BaseWebComponent implements OnInit, OnChanges 
                 }
             })
             .takeUntil(this.ngUnsubscribe)
-            .subscribe();
+            .subscribe(() => this.reloadMap());
     }
 
     private getGeocodeUrl(): string {
