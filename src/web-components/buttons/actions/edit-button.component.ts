@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewContainerRef } from '@angular/core';
 import { TdDialogService } from '@covalent/core';
 
-import { LocalizationService } from '../../lib/localization';
-import { BaseWebComponent } from '../base-web-component.class';
+import { LocalizationService } from '../../../lib/localization';
+import { BaseWebComponent } from '../../base-web-component.class';
 
 @Component({
     selector: 'edit-button',

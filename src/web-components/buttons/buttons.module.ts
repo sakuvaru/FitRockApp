@@ -3,31 +3,40 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import { SharedWebComponentModule } from '../shared-web-components.module';
-import { AddButtonComponent } from './add-button.component';
-import { CloseButtonComponent } from './close-button.component';
-import { DeleteButtonComponent } from './delete-button.component';
-import { EditButtonComponent } from './edit-button.component';
-import { FixedButtonComponent } from './fixed-button.component';
+import { AddButtonComponent } from './actions/add-button.component';
+import { CloseButtonComponent } from './actions/close-button.component';
+import { DeleteButtonComponent } from './actions/delete-button.component';
+import { EditButtonComponent } from './actions/edit-button.component';
+import { FixedButtonComponent } from './actions/fixed-button.component';
+import { FacebookButtonComponent } from './social/facebook-button.component';
+import { GoogleButtonComponent } from './social/google-button.component';
+import { TwitterButtonComponent } from './social/twitter-button.component';
 
 @NgModule({
     imports: [
         CommonModule,
         SharedWebComponentModule, 
-        RouterModule, // router needs to be importes so that routerLink can be used within components
+        RouterModule
     ],
     declarations: [
         FixedButtonComponent,
         DeleteButtonComponent,
         EditButtonComponent,
         CloseButtonComponent,
-        AddButtonComponent
+        AddButtonComponent,
+        FacebookButtonComponent,
+        GoogleButtonComponent,
+        TwitterButtonComponent
     ],
     exports: [
         FixedButtonComponent,
         DeleteButtonComponent,
         EditButtonComponent,
         CloseButtonComponent,
-        AddButtonComponent
+        AddButtonComponent,
+        FacebookButtonComponent,
+        GoogleButtonComponent,
+        TwitterButtonComponent
     ]
 })
 export class ButtonsModule { }

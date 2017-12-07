@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewContainerRef, OnChanges } from '@angular/core';
 import { TdDialogService } from '@covalent/core';
 
-import { LocalizationService } from '../../lib/localization';
-import { BaseWebComponent } from '../base-web-component.class';
+import { LocalizationService } from '../../../lib/localization';
+import { BaseWebComponent } from '../../base-web-component.class';
 import { Subject } from 'rxjs/Rx';
 
 @Component({

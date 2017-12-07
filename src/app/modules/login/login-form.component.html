@@ -1,13 +1,9 @@
-<mat-card class="push-bottom">
-    <mat-card-content class="push-bottom-none">
-        <p>
-            <a (click)="loginWithGoogle()" color="primary" mat-raised-button>Log In with Google</a>
-        </p>
-        <p>
-            <a (click)="loginWithFacebook()" color="primary" mat-raised-button>Log In with Facebook</a>
-        </p>
-    </mat-card-content>
-</mat-card>
+<div class="push-bottom">
+    <div>
+        <facebook-button (click)="loginWithFacebook()"></facebook-button>  
+        <google-button  class="push-left-sm" (click)="loginWithGoogle()"></google-button>
+    </div>
+</div>
 
 <mat-card>
     <mat-card-title layout="row" layout-align="start center">

@@ -1,6 +1,6 @@
 // common
 import { Component, Input } from '@angular/core';
-import { BaseWebComponent } from '../base-web-component.class';
+import { BaseWebComponent } from '../../base-web-component.class';
 
 @Component({
     selector: 'add-button',
