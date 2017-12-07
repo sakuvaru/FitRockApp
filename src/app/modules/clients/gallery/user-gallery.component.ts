@@ -129,14 +129,18 @@ export class UserGalleryComponent extends ClientsBaseComponent implements OnInit
             .isDownlodable(true)
             .groupResolver((galleryImage: GalleryImage) => {
                 // group images by day
-                return galleryImage.imageDate ? new ImageGroupResult(super.moment(galleryImage.imageDate).format('LL'), super.moment(galleryImage.imageDate).startOf('day').toDate()) : new ImageGroupResult('');
+                const startOf = 'day';
+
+                return galleryImage.imageDate
+                    ? new ImageGroupResult(this.dependencies.coreServices.timeService.moment(galleryImage.imageDate).startOf(startOf).format('LL'), galleryImage.imageDate
+                    )
+                    : new ImageGroupResult('');
             })
             .groupsOrder((groups: GalleryGroup[]) => _.sortBy(groups, (m) => m.groupDate).reverse())
-            .deleteFunction((image: GalleryImage) => {
-                return this.dependencies.fileService.deleteFile(image.imageUrl)
-                    .set()
-                    .map(response => response.fileDeleted);
-            })
+            .deleteFunction((image: GalleryImage) => this.dependencies.fileService.deleteFile(image.imageUrl)
+                .set()
+                .map(response => response.fileDeleted)
+            )
             .onImagesLoaded(images => {
                 this.currentImages = images;
             })

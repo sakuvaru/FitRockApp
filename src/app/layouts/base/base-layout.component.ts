@@ -90,11 +90,7 @@ export class BaseLayoutComponent implements OnDestroy {
         return null;
     }
 
-    moment(inp?: moment.MomentInput, format?: moment.MomentFormatSpecification, strict?: boolean): moment.Moment {
-        return this.dependencies.coreServices.moment(inp, format, strict);
-    }
-
     fromNow(date: Date): string {
-        return this.moment(date).fromNow();
+        return this.dependencies.coreServices.timeService.fromNow(date);
     }
 }

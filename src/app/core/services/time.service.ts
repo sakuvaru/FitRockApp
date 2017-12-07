@@ -1,11 +1,10 @@
-import { CurrentLanguageService } from './current-language.service';
-import { Injectable } from '@angular/core';
-import { AuthenticatedUser } from '../models/core.models';
-import { SharedService } from './shared.service';
-
-import * as moment from 'moment';
 import 'moment/locale/cs';
+
+import { Injectable } from '@angular/core';
 import { LanguageConfig } from 'app/core';
+import * as moment from 'moment';
+
+import { CurrentLanguageService } from './current-language.service';
 
 @Injectable()
 export class TimeService {
@@ -18,7 +17,9 @@ export class TimeService {
         this.currentLanguage = currentLanguageService.getLanguage();
     }
 
-    moment: (inp: moment.MomentInput, strict?: boolean) => moment.Moment;
+    moment(date: moment.MomentInput, strict?: boolean): moment.Moment {
+        return moment(date).locale(this.currentLanguage.momentJs);
+    }
 
     formatDate(date: Date): string {
         return moment(date).locale(this.currentLanguage.momentJs).format('LL');
