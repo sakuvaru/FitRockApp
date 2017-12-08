@@ -66,6 +66,7 @@ export interface IFormField {
      * Indicates if length hint should be shown
      */
     showLengthHint(): boolean;
+    
 }
 
 export interface IDropdownFieldOption {
@@ -136,4 +137,9 @@ export interface IFormFieldOptions {
      * Used for passing extra data to translation
      */
     extraTranslationData?: any;
+
+    /**
+    * Icon
+    */
+    icon?: string;
 }

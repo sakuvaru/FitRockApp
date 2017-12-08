@@ -54,8 +54,8 @@ export class FormField implements IFormField {
     public hint?: string;
 
     /**
- * Requested width of the field
- */
+    * Requested width of the field
+    */
     public width?: number;
 
     /**
@@ -75,7 +75,7 @@ export class FormField implements IFormField {
         options?: IFormFieldOptions,
         hint?: string,
         width?: number,
-        rowNumber?: number
+        rowNumber?: number,
     }) {
         Object.assign(this, constructorOptions);
 
@@ -193,6 +193,11 @@ export class FormFieldOptions implements IFormFieldOptions {
      */
     public extraTranslationData?: any;
 
+    /**
+     * Icon
+     */
+    public icon?: string;
+
     constructor(options: {
         maxLength?: number,
         minLength?: number,
@@ -204,6 +209,7 @@ export class FormFieldOptions implements IFormFieldOptions {
         maxNumberValue?: number,
         minNumberValue?: number,
         extraTranslationData?: any,
+        icon?: string
     }) {
         Object.assign(this, options);
     }

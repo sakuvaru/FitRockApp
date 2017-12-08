@@ -279,6 +279,7 @@ export class DataFormBuilder<TItem extends IItem> {
                     minLength: field.options.minLength,
                     minNumberValue: field.options.minNumberValue,
                     trueOptionLabel: field.options.trueOptionLabel,
+                    icon: field.options.icon
                 } : undefined
             }
         );

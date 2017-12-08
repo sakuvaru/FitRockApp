@@ -137,6 +137,7 @@ export class MapService {
                 minLength: formField.options.minLength,
                 maxNumberValue: formField.options.maxNumberValue,
                 minNumberValue: formField.options.minNumberValue,
+                icon: formField.options.icon
             }) : undefined
         });
     }

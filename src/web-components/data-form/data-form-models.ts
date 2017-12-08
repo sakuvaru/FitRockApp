@@ -34,10 +34,12 @@ export class DataFormField {
          * Key (column) of the field
          */
         public key: string,
+
         /**
          * Type used to render the field
          */
         public fieldType: DataFormFieldTypeEnum,
+
         /**
          * Indicates if field is required
          */
@@ -54,11 +56,10 @@ export class DataFormField {
         public defaultValue?: string | number | Date | boolean,
 
         optional?: {
-            // optional
             options?: DataFormFieldOptions,
             hint?: string,
             rowNumber?: number,
-            width?: number
+            width?: number,
         }) {
         Object.assign(this, optional);
     }
@@ -116,6 +117,11 @@ export class DataFormFieldOptions {
      */
     public extraTranslationData?: any;
 
+    /**
+     * Icon
+     */
+    public icon?: string;
+
     constructor(options?: {
         maxLength?: number,
         minLength?: number,
@@ -127,6 +133,7 @@ export class DataFormFieldOptions {
         maxNumberValue?: number,
         minNumberValue?: number,
         extraTranslationData?: any,
+        icon?: string
     }) {
         Object.assign(this, options);
     }
