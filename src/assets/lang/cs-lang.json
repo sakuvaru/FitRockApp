@@ -555,7 +555,8 @@
 			"uploadFailed": "Nastala chyba při náhrávání souborů",
 			"extensionNotAllowed": "Soubory typu '{{extensions}}' nelze nahrát",
 			"uploaded": "Soubory nahrány",
-			"orDropFilesHere": "nebo zde přetáhni soubory"
+			"orDropFilesHere": "nebo zde přetáhni soubory",
+			"orDropFileHere": "nebo jej zde přetáhni"
 		},
 		"gallery": {
 			"noImages": "Žádné fotografie nebyly nahrány",
