@@ -172,6 +172,12 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
                 return;
             }
 
+            // handle situation where user was logged out (e.g. due to long inactivity)
+            if (error.reason === ErrorReasonEnum.NotAuthorized) {
+                this.dependencies.router.navigate([UrlConfig.getLoginUrl()]);
+                return;
+            }
+
             // handle license error
             if (error.reason === ErrorReasonEnum.LicenseLimitation) {
                 this.showErrorDialog('errors.invalidLicense');
