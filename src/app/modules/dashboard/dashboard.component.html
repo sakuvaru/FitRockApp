@@ -1,21 +1,6 @@
 <p>This is dashboard</p>
 
-<div class="push-top">
-    <data-form #dataForm [config]="formConfig"></data-form>
-</div>
-
-<div class="push-top">
-    <button [dataForm]="dataForm" dataFormSaveButton mat-raised-button>Custom save</button>
-    <button [dataForm]="dataForm" dataFormDeleteButton mat-raised-button>Custom delete</button>
-</div>
-
-<div class="push-top">
-    <data-table #dataTable [config]="config"></data-table>
-</div>
-
-<h2>Separated pager</h2>
-
-<data-table-pager [dataTable]="dataTable"></data-table-pager>
+<calendar></calendar>
 
 <h3 *ngIf="currentUser">
     Current user is authenticated: {{currentUser.isAuthenticated}} - {{currentUser.codename}}

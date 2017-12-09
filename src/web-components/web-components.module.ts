@@ -15,6 +15,7 @@ import { MapModule } from './map/map.module';
 import { MessagesModule } from './messages/messages.module';
 import { TextModule } from './text/text.module';
 import { UploaderModule } from './uploader/uploader.module';
+import { CalendarModule } from './calendar/calendar.module';
 
 @NgModule({
     imports: [
@@ -36,7 +37,8 @@ import { UploaderModule } from './uploader/uploader.module';
         ListingModule,
         DataTableModule,
         DataFormModule,
-        LayoutModule
+        LayoutModule,
+        CalendarModule
     ]
 })
 export class WebComponentsModule { }
