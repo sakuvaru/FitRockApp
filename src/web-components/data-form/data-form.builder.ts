@@ -1,4 +1,6 @@
+import { Message } from '_debugger';
 import { Observable } from 'rxjs/Rx';
+import { stringHelper } from '../../lib/utilities';
 
 import {
     ControlTypeEnum,
@@ -9,17 +11,23 @@ import {
     ResponseEdit,
     ResponseFormEdit,
     ResponseFormInsert,
+    ErrorResponse,
+    FormErrorResponse,
+    FormValidationResultEnum,
+    ErrorReasonEnum
 } from '../../lib/repository';
 import {
     DataFieldDropdownOption,
     DataFormDeleteResponse,
     DataFormEditDefinition,
     DataFormEditResponse,
+    DataFormError,
     DataFormField,
     DataFormFieldChangeResult,
     DataFormInsertDefinition,
     DataFormInsertResponse,
     DataFormSection,
+    DataFormErrorTranslationItem
 } from './data-form-models';
 import { DataFormConfig } from './data-form.config';
 import { DataFormFieldTypeEnum } from './data-form.enums';
@@ -113,7 +121,7 @@ export class DataFormBuilder<TItem extends IItem> {
             if (section instanceof DataFormSection) {
                 this.config.sections.push(section);
             }
-    
+
             this.config.sections.push(new DataFormSection(section.title, section.size, section.rowNumber));
         });
 
@@ -161,9 +169,9 @@ export class DataFormBuilder<TItem extends IItem> {
         return this;
     }
 
-     /**
-     * Callback for saving an item
-     */
+    /**
+    * Callback for saving an item
+    */
     onAfterEdit(resolver: (response: DataFormEditResponse) => void): this {
         this.config.onAfterEdit = resolver;
         return this;
@@ -267,7 +275,7 @@ export class DataFormBuilder<TItem extends IItem> {
             {
                 hint: field.hint,
                 rowNumber: field.rowNumber,
-                width: field.width, 
+                width: field.width,
                 options: field.options ? {
                     extraTranslationData: field.options.extraTranslationData,
                     listOptions: field.options.listOptions ? field.options.listOptions.map(m => new DataFieldDropdownOption(m.value, m.name, m.extraDataJson)) : undefined,
@@ -295,7 +303,7 @@ export class DataFormBuilder<TItem extends IItem> {
     }
 
     private mapSaveFunction(saveFunction: (formData: Object) => Observable<ResponseEdit<TItem> | ResponseCreate<TItem>>): (formData: object) => Observable<DataFormInsertResponse | DataFormEditResponse> {
-        return (formData: Object) => saveFunction(formData).map(response => {
+        return (formData: Object) => this.mapDataFormError(saveFunction(formData).map(response => {
             if (response instanceof ResponseEdit) {
                 return new DataFormEditResponse(response.item);
             }
@@ -305,11 +313,11 @@ export class DataFormBuilder<TItem extends IItem> {
             }
 
             throw Error(`Unexpected response from save function`);
-        });
+        }));
     }
 
     private mapFormDefinition(formDefinition: Observable<ResponseFormEdit<TItem> | ResponseFormInsert>): Observable<DataFormEditDefinition | DataFormInsertDefinition> {
-        return formDefinition.map(response => {
+        return this.mapDataFormError(formDefinition.map(response => {
             if (response instanceof ResponseFormEdit) {
                 return new DataFormEditDefinition(response.fields.map(m => this.mapDataFormField(m)), response.item);
             }
@@ -319,6 +327,114 @@ export class DataFormBuilder<TItem extends IItem> {
             }
 
             throw Error(`Unsupported form definition`);
+        })
+        );
+    }
+
+    private mapDataFormError<TModel>(obs: Observable<TModel>): Observable<any> {
+        return obs.catch(error => {
+            const field = error.formValidation.column;
+            const translationItems: DataFormErrorTranslationItem[] = [];
+            let translationKey: string | undefined;
+
+            if (field) {
+                translationItems.push(new DataFormErrorTranslationItem('label', `form.${stringHelper.toCamelCase(this.config.type)}.${stringHelper.toCamelCase(field)}`));
+            }
+
+            if (error instanceof FormErrorResponse) {
+                const formValidationError = error.formValidation.validationResult;
+
+                if (formValidationError === FormValidationResultEnum.InvalidCodename) {
+                    if (field) {
+                        translationKey = 'form.error.invalidCodenameWithLabel';
+                    } else {
+                        translationKey = 'form.error.invalidCodename';
+                    }
+                }
+
+                if (formValidationError === FormValidationResultEnum.InvalidEmail) {
+                    if (field) {
+                        translationKey = 'form.error.invalidEmailWithLabel';
+                    } else {
+                        translationKey = 'form.error.invalidEmail';
+                    }
+                }
+
+                if (formValidationError === FormValidationResultEnum.NotUnique) {
+                    if (field) {
+                        translationKey = 'form.error.notUniqueWithLabel';
+                    } else {
+                        translationKey = 'form.error.notUnique';
+                    }
+                }
+
+                if (formValidationError === FormValidationResultEnum.NotEditable) {
+                    if (field) {
+                        translationKey = 'form.error.notEditableWithLabel';
+                    } else {
+                        translationKey = 'form.error.notEditable';
+                    }
+                }
+
+                if (formValidationError === FormValidationResultEnum.ConstraintConflict) {
+
+                    if (error.formValidation.messageKey) {
+                        translationItems.push(new DataFormErrorTranslationItem('dependentType', 'type.' + stringHelper.toCamelCase(error.formValidation.messageKey)));
+                        translationKey = 'form.error.constraintConflict';
+                    } else {
+                        translationKey = 'form.error.genericConstraintConflict';
+                    }
+                }
+
+                if (formValidationError === FormValidationResultEnum.FormLoadingError) {
+                    translationKey = 'form.error.formLoadingError';
+                }
+
+                if (formValidationError === FormValidationResultEnum.OneRecordPerDay) {
+                    translationKey = 'form.error.oneRecordPerDay';
+                }
+
+                if (formValidationError === FormValidationResultEnum.Other) {
+                    if (field) {
+                        translationKey = 'form.error.otherWithLabel';
+                    } else {
+                        translationKey = 'form.error.other';
+                    }
+                }
+
+                return Observable.throw(new DataFormError(
+                    translationKey ? translationKey : 'form.error.unknown',
+                    field,
+                    translationItems
+                ));
+            }
+
+            if (error instanceof ErrorResponse) {
+
+                if (error.reason === ErrorReasonEnum.LicenseLimitation) {
+                    translationKey = 'form.error.insufficientLicense';
+                }
+
+                if (error.reason === ErrorReasonEnum.FormError) {
+                    translationKey = 'form.error.formLoadingError';
+                }
+
+                if (error.reason === ErrorReasonEnum.NotAuthorized) {
+                    translationKey = 'form.error.notAuthorized';
+                }
+
+                if (error.reason === ErrorReasonEnum.ServerNotRunning) {
+                    translationKey = 'form.error.serverDown';
+                }
+
+                return Observable.throw(new DataFormError(
+                    translationKey ? translationKey : 'form.error.unknown',
+                    field,
+                    translationItems
+                ));
+            }
+
+            return Observable.throw(error);
         });
     }
 }

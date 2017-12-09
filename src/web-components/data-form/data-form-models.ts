@@ -205,5 +205,20 @@ export class DataFormSection {
     ) { }
 }
 
+export class DataFormError { 
+    constructor(
+        public translationKey: string,
+        public field?: string,
+        public dataToTranslate?: DataFormErrorTranslationItem[]
+    ) { }
+}
+
+export class DataFormErrorTranslationItem {
+    constructor(
+        public name: string,
+        public value: string
+    ) { }
+}
+
 
 

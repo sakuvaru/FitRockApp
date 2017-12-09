@@ -12,6 +12,7 @@ import {
     DataFormDeleteResponse,
     DataFormEditDefinition,
     DataFormEditResponse,
+    DataFormError,
     DataFormField,
     DataFormInsertDefinition,
     DataFormInsertResponse,
@@ -251,7 +252,7 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
 
                     // make sure that subscription happens only once during the lifetime of component
                     this.subscribedToFormSubscriptions = true;
-                } 
+                }
 
                 // trigger form loaded event
                 if (xDefinition instanceof DataFormEditDefinition) {
@@ -606,25 +607,65 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
         this.initForm();
     }
 
-    private handleLoadError(error): void {
+    private handleLoadError(error: DataFormError | any): void {
         console.error(error);
-        this.errorLoadingForm = true;
 
+        if (error instanceof DataFormError) {
+            this.resolveErrorMessage(error);
+        } else {
+            this.unknownError = true;
+        }
+
+        this.errorLoadingForm = true;
         this.stopLoader();
     }
 
-    private handleSaveError(error): void {
+    private handleSaveError(error: DataFormError | any): void {
         console.error(error);
-        this.unknownError = true;
 
         if (this.config.onError) {
             this.config.onError(error);
+        }
+
+        if (error instanceof DataFormError) {
+            this.resolveErrorMessage(error);
+        } else {
+            this.unknownError = true;
         }
 
         // re-subscribe to button clicks because error unsubscribes from the observable
         this.subscribeToFormActions();
 
         this.stopLoader();
+    }
+
+    private resolveErrorMessage(error: DataFormError): void {
+        const translationData: any = {};
+        const extraTranslations: Observable<string>[] = [];
+        if (error.dataToTranslate) {
+            error.dataToTranslate.forEach(item => {
+                // translate and assign data
+                extraTranslations.push(this.localizationService.get(item.value).map(text => translationData[item.name] = text));
+            });
+        }
+
+        // resolve translations
+        const translationObs = extraTranslations && extraTranslations.length > 0 
+            ? observableHelper.zipObservables(extraTranslations)
+            : Observable.of(undefined);
+
+        translationObs
+            .flatMap(() => {
+                // at this point all extra translation should be resolved
+                // resolve primary error message
+                return this.localizationService.get(error.translationKey, translationData);
+            })
+            .map(errorMessage => {
+                // we have a complete error message here
+                this.formError = errorMessage;
+            })
+            .takeUntil(this.ngUnsubscribe)
+            .subscribe();
     }
 
     private handleFormChange(): void {

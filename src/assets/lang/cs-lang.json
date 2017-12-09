@@ -390,11 +390,12 @@
 			"saveFailed": "Uložení se nezdařilo",
 			"unknownFormErrorMessage": "Uložení se nezdařilo s neznámou chybou. Zkontrolujte formulář s zkuste to znova.",
 			"insufficientLicense": "Pro tuto akci nemáš dostatečnou licenci",
+			"notAuthorized": "Pro tuto akci musíš být přihlášený",
+			"serverDown": "Server je mimo provoz, zkus to prosím později",
 			"valueIsNotANumber": "Pole musí obsahovat číslo",
 			"invalidMaxNumberValue": "Maximální povolená hodnota je '{{number}}'",
 			"invalidMinNumberValue": "Minimiální povolená hodnota je '{{number}}'",
-			"oneRecordPerDayLabel": "Záznam s těmito daty může existovat pouze jedenkrát za den. Můžeš upravit existující záznam nebo změnit datum.",
-			"oneRecordPerDay": "Záznam s těmito daty může existovat pouze jedenkrát za den. Můžeš upravit existující záznam nebo změnit datum."
+			"oneRecordPerDay": "Záznam s tímto časem může existovat pouze jedenkrát za den. Můžeš upravit existující záznam nebo změnit datum."
 		},
 		"shared": {
 			"save": "Uložit",
