@@ -549,12 +549,13 @@
 		},
 		"uploader": {
 			"noFilesSelected": "Žádné soubory nebyly vybrány",
-			"chooseAFile": "Vyber soubor ...",
+			"chooseAFile": "Vyber soubor (max. 1)",
 			"chooseFiles": "Vyber soubory (max. {{maxFiles}}) ...",
 			"uploadSuccessful": "Soubory byly úspěšně uloženy",
 			"uploadFailed": "Nastala chyba při náhrávání souborů",
 			"extensionNotAllowed": "Soubory typu '{{extensions}}' nelze nahrát",
-			"uploaded": "Soubory nahrány"
+			"uploaded": "Soubory nahrány",
+			"orDropFilesHere": "nebo zde přetáhni soubory"
 		},
 		"gallery": {
 			"noImages": "Žádné fotografie nebyly nahrány",

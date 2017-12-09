@@ -1,0 +1,31 @@
+.w-uploader {
+    .upload-box {
+        background-color: white;
+        outline: 2px dashed black;
+        outline-offset: -10px;
+        line-height: 170px;
+        vertical-align: middle;
+        text-align: center;
+
+        .upload-text {
+            display: inline-block;
+        }
+
+        div {
+            display: inline;
+        }
+
+      }
+
+      .upload-box.upload-drag-over {
+        background-color: lighten($primary, 40%)!important;
+
+        /**
+        This makes sure that the drag events of the td file upload component
+        does not cancel the drag events used by uploader
+        */
+        td-file-upload {
+            pointer-events: none;
+        }
+    }
+}

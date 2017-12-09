@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { ViewChild, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 import { Observable, Subject } from 'rxjs/Rx';
 import * as _ from 'underscore';
@@ -6,6 +6,7 @@ import * as _ from 'underscore';
 import { LocalizationService } from '../../lib/localization';
 import { BaseWebComponent } from '../base-web-component.class';
 import { UploaderConfig } from './uploader.config';
+import { UploaderModeEnum } from './uploader-mode.enum';
 
 @Component({
     selector: 'uploader',
@@ -49,9 +50,9 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
      */
     private extensionsNotAllowedParam: any = {};
 
-     /**
-     * Max files param for translation
-     */
+    /**
+    * Max files param for translation
+    */
     private get maxFilesParam(): any {
         const param: any = {};
         param.maxFiles = this.maxFiles;
@@ -90,14 +91,29 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
         'snackbarUploadedText': ''
     };
 
-    constructor(
-        private localizationService: LocalizationService,
-        private snackBarService: MatSnackBar,
-    ) {
-        super();
+    /**
+     * Indicates if uploader box is dragged over
+     */
+    public isDraggedOver: boolean = false;
+
+    /**
+     * Used for keepign the drag over child elements
+     * https://stackoverflow.com/questions/7110353/html5-dragleave-fired-when-hovering-a-child-element
+     */
+    public dragCounter: number = 0;
+
+    public get applyDragOverClass(): boolean {
+        return this.dragCounter === 0;
     }
 
     @Input() config: UploaderConfig;
+
+    constructor(
+        private localizationService: LocalizationService,
+        private snackBarService: MatSnackBar
+    ) {
+        super();
+    }
 
     ngOnInit() {
         this.initUploader();
@@ -126,6 +142,26 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
 
     handleUploadMultiple(files: File[]): void {
         this.uploadButtonSubject.next(files);
+    }
+
+    dragEnter(event: any): void {
+        event.preventDefault();
+        this.dragCounter++;
+        this.isDraggedOver = true;
+    }
+
+    dragLeave(event: any): void {
+        event.preventDefault();
+        this.dragCounter--;
+        if (this.dragCounter === 0) { 
+            this.isDraggedOver = false;
+        }
+    }
+
+    drop(event: any): void {
+        event.preventDefault();
+        this.dragCounter = 0;
+        this.isDraggedOver = false;
     }
 
     private initUploader(): void {
@@ -163,27 +199,49 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
                 this.resetCounters();
             })
             .switchMap((fileInput) => {
-                if (fileInput instanceof File) {
+                if (this.config.mode === UploaderModeEnum.SingleFile) {
+                    if (!(fileInput instanceof File)) {
+                        throw Error(`Single file upload expected 'File' input`);
+                    }
                     return this.uploadSingle(fileInput);
                 }
 
-                if (fileInput instanceof FileList) {
-                    return this.uploadMultiple(fileInput);
+                if (this.config.mode === UploaderModeEnum.MultipleFiles) {
+                    const files: File[] = [];
+
+                    if (fileInput instanceof FileList) {
+                        for (let i = 0; i < this.maxFiles; i++) {
+                            if (fileInput[i]) {
+                                files.push(fileInput[i]);
+                            }
+                        }
+                    } else if (fileInput instanceof File) {
+                        files.push(fileInput);
+                    } else {
+                        throw Error(`Unexpected file input`);
+                    }
+                  
+                    return this.uploadMultiple(files);
                 }
 
                 throw Error(`Unsupported upload type`);
             })
             .takeUntil(this.ngUnsubscribe)
             .subscribe((files) => {
-                if (this.config.onAfterUpload) {
-                    this.config.onAfterUpload(files);
+                if (!files) {
+                    // upload was not successful - no selected file, invalid extension etc.
+                    this.loaderEnabled = false;
+                } else if (files && Array.isArray(files)) {
+                    if (this.config.onAfterUpload) {
+                        this.config.onAfterUpload(files);
+                    }
+
+                    this.clearSelectedFiles();
+
+                    this.snackBarService.open(this.translations.snackbarUploadedText, undefined, { duration: this.snackbarDefaultDuration });
+
+                    this.loaderEnabled = false;
                 }
-
-                this.clearSelectedFiles();
-
-                this.snackBarService.open(this.translations.snackbarUploadedText, undefined, { duration: this.snackbarDefaultDuration });
-
-                this.loaderEnabled = false;
             },
             error => {
                 this.uploadFailed = true;
@@ -240,16 +298,16 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
         return extensionsString;
     }
 
-    private uploadSingle(file: File): Observable<any[]> {
+    private uploadSingle(file: File): Observable<any[] | boolean> {
         if (!file) {
             this.noFilesSelected = true;
-            return Observable.of();
+            return Observable.of(false);
         }
 
         if (!this.fileIsAllowed(file)) {
             this.extensionNotAllowed = true;
             this.extensionsNotAllowedParam.extensions = this.getListOfNotAllowedExtensions([file]);
-            return Observable.of();
+            return Observable.of(false);
         }
 
         return this.config.uploadFunction(file)
@@ -262,34 +320,16 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
             });
     }
 
-    private uploadMultiple(file: FileList): Observable<any[]> {
-        if (!file) {
+    private uploadMultiple(files: File[]): Observable<any[] | boolean> {
+        if (!files || files.length === 0) {
             this.noFilesSelected = true;
-            return Observable.of();
-        }
-        const files: File[] = [];
-
-        // if multiple selection is used, but only 1 file is selected, it is returned directly
-        if (file instanceof File) {
-            files.push(file);
-        } else {
-            // this means multiple files were selected
-            for (let i = 0; i < this.maxFiles; i++) {
-                if (file[i]) {
-                    files.push(file[i]);
-                }
-            }
-        }
-
-        if (files.length === 0) {
-            this.noFilesSelected = true;
-            return Observable.of();
+            return Observable.of(false);
         }
 
         if (!this.allFilesAllowed(files)) {
             this.extensionNotAllowed = true;
             this.extensionsNotAllowedParam.extensions = this.getListOfNotAllowedExtensions(files);
-            return Observable.of();
+            return Observable.of(false);
         }
 
         return this.config.uploadFunction(files)
