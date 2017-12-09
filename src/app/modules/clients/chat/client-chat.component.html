@@ -22,7 +22,7 @@
 </mat-card>
 
 
-<div class="text-center">
+<div class="text-center push">
     <button *ngIf="!allChatMessagesLoaded" mat-raised-button color="primary" (click)="loadMoreMessages()">{{ 'shared.loadMore' | localize }}</button>
     <button *ngIf="allChatMessagesLoaded" mat-raised-button>{{ 'module.clients.chat.allMessagesLoaded' | localize }}</button>
 </div>

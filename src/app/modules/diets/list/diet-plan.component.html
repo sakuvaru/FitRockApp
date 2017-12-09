@@ -7,7 +7,7 @@
   </mat-card-content>
 </mat-card>
 
-<div *ngIf="sortedDietFoods">
+<div class="push-top" *ngIf="sortedDietFoods">
   <td-expansion-panel *ngFor="let dietFood of sortedDietFoods; let i = index">
     <ng-template td-expansion-panel-label>
       <span class="tc-red-700">{{i + 1}}.</span> {{dietFood.food.foodName}}
