@@ -68,7 +68,7 @@ export class WorkoutTemplatesComponent extends BaseComponent implements OnInit {
         }
       ])
       .withDynamicFilters(
-      (search) => this.dependencies.itemServices.workoutCategoryService.getCategoryCountForClientWorkouts(search)
+      (search) => this.dependencies.itemServices.workoutCategoryService.getCategoryCountForWorkoutTemplates(search)
         .get()
         .map(response => {
           const filters: IDynamicFilter<Workout>[] = [];

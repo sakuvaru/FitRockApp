@@ -69,7 +69,7 @@ export class DietTemplatesComponent extends BaseComponent implements OnInit {
         }
       ])
       .withDynamicFilters(
-      (search) => this.dependencies.itemServices.dietCategoryService.getCategoryCountForClientDiets(search)
+      (search) => this.dependencies.itemServices.dietCategoryService.getCategoryCountForDietTemplates(search)
         .get()
         .map(response => {
           const filters: IDynamicFilter<Diet>[] = [];
