@@ -64,7 +64,12 @@
 		"deleted": "Smazáno",
 		"save": "Uložit",
 		"create": "Vytvořit",
-		"edit": "Upravit"
+		"edit": "Upravit",
+		"language": {
+			"default": "Výchozí jazyk (čeština)",
+			"cz": "Čeština",
+			"en": "English"
+		}
 	},
 	"module": {
 		"clients": {

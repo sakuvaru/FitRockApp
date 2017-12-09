@@ -46,7 +46,7 @@ export class EditClientComponent extends ClientsBaseComponent implements OnInit 
                     .enableDelete(false)
                     .onAfterDelete(() => super.navigate([this.getTrainerUrl('clients')]))
                     .onAfterEdit(response => {
-                       // no need to set language because language was not changed for current user
+                        // no need to set language because language was not changed for current user
                     })
                     .onEditFormLoaded(form => {
                         const user = form.item;
@@ -62,6 +62,18 @@ export class EditClientComponent extends ClientsBaseComponent implements OnInit 
                             },
                             menuAvatarUrl: user.avatarUrl
                         });
+                    })
+                    .optionLabelResolver((field, label) => {
+                        if (field.key === 'Language') {
+                            if (label === 'Default') {
+                                return super.translate('shared.language.default');
+                            } else if (label === 'Cz') {
+                                return super.translate('shared.language.cz');
+                            } else if (label === 'En') {
+                                return super.translate('shared.language.en');
+                            }
+                        }
+                        return Observable.of(label);
                     })
                     .build();
             });

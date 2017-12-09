@@ -54,6 +54,18 @@ export class EditMyProfileComponent extends BaseComponent implements OnInit {
                     this.dependencies.coreServices.systemService.reloadPage();
                 }
             })
+            .optionLabelResolver((field, label) => {
+                if (field.key === 'Language') {
+                    if (label === 'Default') {
+                        return super.translate('shared.language.default');
+                    } else if (label === 'Cz') {
+                        return super.translate('shared.language.cz');
+                    } else if (label === 'En') {
+                        return super.translate('shared.language.en');
+                    }
+                }
+                return Observable.of(label);
+            })
             .build();
     }
 }
