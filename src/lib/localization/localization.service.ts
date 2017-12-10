@@ -11,7 +11,15 @@ export class LocalizationService {
         private languageResolver: LanguageResolver
     ) {
         // listen to language changes & update default language
-        this.translateService.setDefaultLang(this.languageResolver.getCurrentLanguage());
+        this.translateService.setDefaultLang(this.languageResolver.getCurrentUiLanguage());
+    }
+
+    getLocale(): string {
+        return this.languageResolver.getCurrentLocale();
+    }
+
+    getUiCulture(): string {
+        return this.languageResolver.getCurrentUiLanguage();
     }
 
     /**

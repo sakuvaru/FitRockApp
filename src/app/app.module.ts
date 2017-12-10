@@ -45,6 +45,9 @@ import { WebComponentsModule } from '../web-components';
 import { AppLanguageResolver } from '../app/core/providers/app-language-resolver';
 import { LocalizationModule, LanguageResolver } from '../lib/localization';
 
+// calendar
+import { CalendarModule as AngularCalendarModule } from 'angular-calendar';
+
 // google map
 import { AgmCoreModule } from '@agm/core';
 
@@ -130,6 +133,9 @@ import { LocationModule } from './modules/locations/location.module';
     LocalizationModule.forRoot({
       languageResolver: { provide: LanguageResolver, useClass: AppLanguageResolver }
     }),
+
+    // calendar
+    AngularCalendarModule.forRoot(),
 
     // web components
     WebComponentsModule,

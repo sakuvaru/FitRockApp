@@ -1,4 +1,5 @@
 
 export abstract class LanguageResolver {
-    abstract getCurrentLanguage(): string;
+    abstract getCurrentUiLanguage(): string;
+    abstract getCurrentLocale(): string;
 }

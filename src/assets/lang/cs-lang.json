@@ -611,6 +611,18 @@
 				"tooltip": "Smazat",
 				"deleted": "Smazáno"
 			}
+		},
+		"calendar": {
+			"delete": {
+				"message": "Opravdu chceš smazat tuto schůzku?",
+				"title": "Potvrzení",
+				"cancel": "Zrušit",
+				"confirm": "Smazat",
+				"tooltip": "Smazat",
+				"deleted": "Smazáno"
+			},
+			"calendarError": "Načítání kalendáře se nezdařilo",
+			"deleteError": "Při mazání schůzky došlo k chybě"
 		}
 	}
 }

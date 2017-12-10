@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
+import { NgModule, ModuleWithProviders } from '@angular/core';
 
 import { ButtonsModule } from './buttons/buttons.module';
 import { DataFormModule } from './data-form/data-form.module';
@@ -41,4 +41,5 @@ import { CalendarModule } from './calendar/calendar.module';
         CalendarModule
     ]
 })
-export class WebComponentsModule { }
+export class WebComponentsModule {
+}

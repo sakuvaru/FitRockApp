@@ -1,6 +1,6 @@
 <p>This is dashboard</p>
 
-<calendar></calendar>
+<calendar [config]="calendarConfig"></calendar>
 
 <h3 *ngIf="currentUser">
     Current user is authenticated: {{currentUser.isAuthenticated}} - {{currentUser.codename}}

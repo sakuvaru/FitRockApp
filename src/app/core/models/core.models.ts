@@ -75,9 +75,9 @@ export class LanguageConfig {
         public language: LanguageEnum,
 
         /**
-         * Locale used for momentjs
+         * Locale
          */
-        public momentJs: string,
+        public locale: string,
 
         /**
          * Translation used for ngx translate service

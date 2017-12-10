@@ -46,9 +46,9 @@ export class EditMyProfileComponent extends BaseComponent implements OnInit {
         this.formConfig = this.dependencies.itemServices.userService.myProfileForm()
             .enableDelete(false)
             .onAfterEdit(response => {
-                if (this.dependencies.coreServices.currentLanguage.isDifferentThanCurrent(response.item.language)) {
+                if (this.dependencies.coreServices.currentLanguageService.isDifferentThanCurrent(response.item.language)) {
                     // language has changed, update it
-                    this.dependencies.coreServices.currentLanguage.setLanguage(response.item.language);
+                    this.dependencies.coreServices.currentLanguageService.setLanguage(response.item.language);
 
                     // reload page to see new translation
                     this.dependencies.coreServices.systemService.reloadPage();

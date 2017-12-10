@@ -9,7 +9,11 @@ export class AppLanguageResolver implements LanguageResolver {
         private currentLanguageService: CurrentLanguageService
     ) { }
 
-    getCurrentLanguage(): string {
+    getCurrentUiLanguage(): string {
         return this.currentLanguageService.getLanguage().uiLanguage;
+    }
+
+    getCurrentLocale(): string {
+        return this.currentLanguageService.getLanguage().locale;
     }
 }

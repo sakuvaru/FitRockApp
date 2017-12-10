@@ -1,13 +1,9 @@
-// common
-import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-import { ComponentDependencyService, BaseComponent, ComponentSetup } from '../../core';
+import { Component, OnInit } from '@angular/core';
 
-// required by component
-import { Log, User, Exercise } from '../../models';
 import { CurrentUser } from '../../../lib/auth';
-import { Observable } from 'rxjs/Rx';
-import { CalendarComponent } from '../../../web-components/calendar/';
+import { CalendarConfig } from '../../../web-components/calendar/calendar.config';
+import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../../core';
+import { Log } from '../../models';
 
 @Component({
     templateUrl: 'dashboard.component.html'
@@ -18,6 +14,8 @@ export class DashboardComponent extends BaseComponent implements OnInit {
     public log: Log;
     public currentUser: CurrentUser | null;
 
+    public calendarConfig: CalendarConfig;
+
     constructor(
         protected dependencies: ComponentDependencyService) {
         super(dependencies);
@@ -25,12 +23,24 @@ export class DashboardComponent extends BaseComponent implements OnInit {
 
     setup(): ComponentSetup | null {
         return {
-            initialized: false
+            initialized: true
         };
     }
 
     ngOnInit(): void {
         super.ngOnInit();
+
+        this.calendarConfig = this.dependencies.webComponentServices.calendarService.calendar(
+            this.currentLanguage ? this.currentLanguage.locale : '',
+            (date) => this.dependencies.itemServices.appointmentService.items()
+                // take only only current month + 1 month and - 1 month
+                .whereGreaterThan('AppointmentDate', this.dependencies.coreServices.timeService.moment(date).add(-1, 'months').toDate())
+                .whereLessThen('AppointmentDate', this.dependencies.coreServices.timeService.moment(date).add(1, 'months').toDate())
+            ,
+            (event) => this.dependencies.itemServices.appointmentService.delete(event.model.id))
+            .onEventEditClick(event => this.dependencies.router.navigate([this.getTrainerUrl(`/clients/edit/${event.model.clientId}/appointments/edit/${event.model.id}`)]))
+            .onEventClick(event => this.dependencies.router.navigate([this.getTrainerUrl(`/clients/edit/${event.model.clientId}/appointments/view/${event.model.id}`)]))
+            .build();
 
         this.setConfig({
             menuTitle: { key: 'menu.main' },

@@ -47,6 +47,7 @@ import {
     GraphService,
     LoadMoreService,
     UploaderService,
+    CalendarService
 } from '../../web-component-services';
 import { AuthenticatedUserService } from '../services/authenticated-user.service';
 import { CurrentLanguageService } from '../services/current-language.service';
@@ -84,7 +85,7 @@ export class ComponentDependencyService {
         // core services
         this.coreServices = new CoreServices();
         this.coreServices.systemService = injector.get(SystemService);
-        this.coreServices.currentLanguage = injector.get(CurrentLanguageService);
+        this.coreServices.currentLanguageService = injector.get(CurrentLanguageService);
         this.coreServices.serverService = injector.get(ServerService);
         this.coreServices.authService = injector.get(AuthService);
         this.coreServices.repositoryClient = injector.get(RepositoryClient);
@@ -118,6 +119,7 @@ export class ComponentDependencyService {
         this.webComponentServices.graphService = injector.get(GraphService);
         this.webComponentServices.dataTableService = injector.get(DataTableService);
         this.webComponentServices.dataFormService = injector.get(DataFormService);
+        this.webComponentServices.calendarService = injector.get(CalendarService);
 
         // item services
         this.itemServices = new ItemServices();
@@ -168,11 +170,12 @@ export class WebComponentServices {
     public graphService: GraphService;
     public dataTableService: DataTableService;
     public dataFormService: DataFormService;
+    public calendarService: CalendarService;
 }
 
 export class CoreServices {
     public systemService: SystemService;
-    public currentLanguage: CurrentLanguageService;
+    public currentLanguageService: CurrentLanguageService;
     public serverService: ServerService;
     public repositoryClient: RepositoryClient;
     public authService: AuthService;

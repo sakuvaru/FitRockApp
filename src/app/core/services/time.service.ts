@@ -18,14 +18,23 @@ export class TimeService {
     }
 
     moment(date: moment.MomentInput, strict?: boolean): moment.Moment {
-        return moment(date).locale(this.currentLanguage.momentJs);
+        if (!this.currentLanguage.locale) {
+            throw Error('Locale has to be set');
+        }
+        return moment(date).locale(this.currentLanguage.locale);
     }
 
     formatDate(date: Date): string {
-        return moment(date).locale(this.currentLanguage.momentJs).format('LL');
+        if (!this.currentLanguage.locale) {
+            throw Error('Locale has to be set');
+        }
+        return moment(date).locale(this.currentLanguage.locale).format('LL');
     }
 
     fromNow(date: Date): string {
-        return moment(date).locale(this.currentLanguage.momentJs).fromNow();
+        if (!this.currentLanguage.locale) {
+            throw Error('Locale has to be set');
+        }
+        return moment(date).locale(this.currentLanguage.locale).fromNow();
     }
 }

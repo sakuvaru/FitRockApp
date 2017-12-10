@@ -48,7 +48,7 @@ export class CurrentLanguageService {
         // parse language from local storage
         const parsedJson = JSON.parse(languageJson) as LanguageConfig;
 
-        return new LanguageConfig(parsedJson.language, parsedJson.momentJs, parsedJson.uiLanguage);
+        return new LanguageConfig(parsedJson.language, parsedJson.locale, parsedJson.uiLanguage);
     }
 
     private storeLanguage(language: LanguageConfig): void {

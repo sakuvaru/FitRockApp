@@ -278,6 +278,9 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
             this.dependencies.coreServices.sharedService.setComponentSetup(setup);
         }
 
+        // init current language
+        this.currentLanguage = this.dependencies.coreServices.currentLanguageService.getLanguage();
+
         // init auth user
         this.authUser = this.dependencies.authenticatedUserService.getUser();
 

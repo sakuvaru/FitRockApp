@@ -10,7 +10,7 @@ import { LanguageResolver } from './language-resolver';
 export class LocalizationPipe extends TranslatePipe implements PipeTransform {
   
     static processTranslateService(translateService: TranslateService, languageResolver: LanguageResolver): TranslateService {
-        translateService.setDefaultLang(languageResolver.getCurrentLanguage());
+        translateService.setDefaultLang(languageResolver.getCurrentUiLanguage());
         return translateService;
     }
 

@@ -22,6 +22,7 @@
         "../node_modules/@covalent/core/common/platform.scss",
         "../node_modules/font-awesome/css/font-awesome.css",
         "../node_modules/ng-pick-datetime/assets/style/picker.min.css",
+        "../node_modules/angular-calendar/css/angular-calendar.css",
         "assets/external/dragula/dragula.min.css", 
         "assets/material/material-theme.scss",
         "assets/theme/main.scss"
