@@ -12,40 +12,38 @@ import { SimpleLayoutComponent } from '../../layouts/simple-layout.component';
 import { AdminLayoutComponent } from '../../layouts/admin-layout.component';
 
 // components
-import { MyFoodsListComponent} from './list/my-foods-list.component';
+import { MyFoodsListComponent } from './list/my-foods-list.component';
 import { AllFoodsListComponent } from './list/all-foods-list.component';
 import { EditFoodComponent } from './edit/edit-food.component';
 import { NewFoodComponent } from './new/new-food.component';
 import { PreviewFoodComponent } from './view/preview-food.component';
 
-const routes: Routes = [
-    {
-        // workouts
-        path: UrlConfig.TrainerMasterPath, component: AdminLayoutComponent, canActivate: [AuthGuardService], children: [
-            {
-                path: 'foods', component: MyFoodsListComponent
-            },
-            {
-                path: 'foods/all', component: AllFoodsListComponent
-            },
-            {
-                path: 'foods/new', component: NewFoodComponent
-            },
-            {
-                path: 'foods/edit/:id', component: EditFoodComponent
-            },
-            {
-                path: 'foods/preview/:id', component: PreviewFoodComponent
-            }
-        ],
-    },
-];
-
 @NgModule({
     declarations: [
     ],
     imports: [
-        RouterModule.forChild(routes)
+        RouterModule.forChild([
+            {
+                // workouts
+                path: UrlConfig.TrainerMasterPath, component: AdminLayoutComponent, canActivate: [AuthGuardService], children: [
+                    {
+                        path: 'foods', component: MyFoodsListComponent
+                    },
+                    {
+                        path: 'foods/all', component: AllFoodsListComponent
+                    },
+                    {
+                        path: 'foods/new', component: NewFoodComponent
+                    },
+                    {
+                        path: 'foods/edit/:id', component: EditFoodComponent
+                    },
+                    {
+                        path: 'foods/preview/:id', component: PreviewFoodComponent
+                    }
+                ],
+            },
+        ])
     ],
     exports: [
         RouterModule

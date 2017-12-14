@@ -16,32 +16,30 @@ import { AppErrorComponent } from './app-error.component';
 import { RedirectComponent } from './redirect.component';
 import { ServerDownComponent } from './server-down.component';
 
-export const routes: Routes = [
-    {
-        path: UrlConfig.Global404, component: Global404Component
-    },
-    {
-        path: UrlConfig.ServerDown, component: ServerDownComponent
-    },
-    {
-        path: UrlConfig.AuthMasterPath, component: SimpleLayoutComponent, children: [
-            { path: UrlConfig.Unauthorized, component: UnauthorizedComponent },
-        ]
-    },
-    {
-        path: UrlConfig.SharedMasterPath, component: SimpleLayoutComponent, children: [
-            { path: UrlConfig.Item404, component: Item404Component },
-            { path: UrlConfig.AppError, component: AppErrorComponent },
-            { path: UrlConfig.Redirect, component: RedirectComponent },
-        ]
-    }
-];
-
 @NgModule({
     declarations: [
     ],
     imports: [
-        RouterModule.forChild(routes)
+        RouterModule.forChild([
+            {
+                path: UrlConfig.Global404, component: Global404Component
+            },
+            {
+                path: UrlConfig.ServerDown, component: ServerDownComponent
+            },
+            {
+                path: UrlConfig.AuthMasterPath, component: SimpleLayoutComponent, children: [
+                    { path: UrlConfig.Unauthorized, component: UnauthorizedComponent },
+                ]
+            },
+            {
+                path: UrlConfig.SharedMasterPath, component: SimpleLayoutComponent, children: [
+                    { path: UrlConfig.Item404, component: Item404Component },
+                    { path: UrlConfig.AppError, component: AppErrorComponent },
+                    { path: UrlConfig.Redirect, component: RedirectComponent },
+                ]
+            }
+        ])
     ],
     exports: [
         RouterModule

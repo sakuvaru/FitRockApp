@@ -12,20 +12,18 @@ import { AppConfig, UrlConfig } from '../../config';
 import { LoginPageComponent } from './login-page.component';
 import { LogoutComponent } from './logout.component';
 
-const routes: Routes = [
-  {
-    path: UrlConfig.AuthMasterPath, component: SimpleLayoutComponent, children: [
-      { path: UrlConfig.Login, component: LoginPageComponent },
-      { path: UrlConfig.Logout, component: LogoutComponent },
-    ]
-  }
-];
-
 @NgModule({
   declarations: [
   ],
   imports: [
-    RouterModule.forChild(routes)
+    RouterModule.forChild([
+      {
+        path: UrlConfig.AuthMasterPath, component: SimpleLayoutComponent, children: [
+          { path: UrlConfig.Login, component: LoginPageComponent },
+          { path: UrlConfig.Logout, component: LogoutComponent },
+        ]
+      }
+    ])
   ],
   exports: [
     RouterModule

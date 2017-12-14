@@ -49,87 +49,85 @@ import { ViewClientAppointmentComponent } from './appointment/view/view-client-a
 // dashboard
 import { ClientDashboardComponent } from './dashboard/client-dashboard.component';
 
-const routes: Routes = [
-    {
-        path: UrlConfig.TrainerMasterPath, component: AdminLayoutComponent, canActivate: [AuthGuardService], children: [
-            // user
-            {
-                path: 'clients', component: ClientsOverviewComponent
-            },
-            {
-                path: 'clients/new', component: NewClientComponent
-            },
-            {
-                path: 'clients/edit/:id', component: EditClientComponent
-            },
-            // workout
-            {
-                path: 'clients/edit/:id/workout', component: ClientWorkoutComponent
-            },
-            {
-                path: 'clients/edit/:id/workout/:workoutId', component: EditClientWorkoutComponent
-            },
-            {
-                path: 'clients/edit/:id/workout/:workoutId/workout-plan', component: EditClientWorkoutPlanComponent
-            },
-            {
-                path: 'clients/edit/:id/new-workout', component: NewClientWorkoutComponent
-            },
-            // diet
-            {
-                path: 'clients/edit/:id/diet', component: ClientDietComponent
-            },
-            {
-                path: 'clients/edit/:id/diet/:dietId', component: EditClientDietComponent
-            },
-            {
-                path: 'clients/edit/:id/diet/:dietId/diet-plan', component: EditClientDietPlanComponent
-            },
-            {
-                path: 'clients/edit/:id/new-diet', component: NewClientDietComponent
-            },
-            // progress
-            {
-                path: 'clients/edit/:id/progress', component: EditClientProgressComponent
-            },
-            // stats
-            {
-                 path: 'clients/edit/:id/stats', component: StatsMainComponent
-            },
-            // chat
-            {
-                path: 'clients/edit/:id/chat', component: ClientChatComponent
-            },
-            // gallery
-            {
-                path: 'clients/edit/:id/gallery', component: UserGalleryComponent
-            },
-            // appointment
-            {
-                path: 'clients/edit/:id/appointments', component: ClientAppointmentListComponent
-            },
-            {
-                path: 'clients/edit/:id/appointments/edit/:appointmentId', component: EditClientAppointmentComponent
-            },
-            {
-                path: 'clients/edit/:id/appointments/view/:appointmentId', component: ViewClientAppointmentComponent
-            },
-            {
-                path: 'clients/edit/:id/appointments/new', component: NewClientAppointmentComponent
-            },
-            // dashboard
-            {
-                path: 'clients/edit/:id/dashboard', component: ClientDashboardComponent
-            },
-        ]
-    }
-];
-
 @NgModule({
     declarations: [
     ],
     imports: [
-        RouterModule.forChild(routes)
+        RouterModule.forChild([
+            {
+                path: UrlConfig.TrainerMasterPath, component: AdminLayoutComponent, canActivate: [AuthGuardService], children: [
+                    // user
+                    {
+                        path: 'clients', component: ClientsOverviewComponent
+                    },
+                    {
+                        path: 'clients/new', component: NewClientComponent
+                    },
+                    {
+                        path: 'clients/edit/:id', component: EditClientComponent
+                    },
+                    // workout
+                    {
+                        path: 'clients/edit/:id/workout', component: ClientWorkoutComponent
+                    },
+                    {
+                        path: 'clients/edit/:id/workout/:workoutId', component: EditClientWorkoutComponent
+                    },
+                    {
+                        path: 'clients/edit/:id/workout/:workoutId/workout-plan', component: EditClientWorkoutPlanComponent
+                    },
+                    {
+                        path: 'clients/edit/:id/new-workout', component: NewClientWorkoutComponent
+                    },
+                    // diet
+                    {
+                        path: 'clients/edit/:id/diet', component: ClientDietComponent
+                    },
+                    {
+                        path: 'clients/edit/:id/diet/:dietId', component: EditClientDietComponent
+                    },
+                    {
+                        path: 'clients/edit/:id/diet/:dietId/diet-plan', component: EditClientDietPlanComponent
+                    },
+                    {
+                        path: 'clients/edit/:id/new-diet', component: NewClientDietComponent
+                    },
+                    // progress
+                    {
+                        path: 'clients/edit/:id/progress', component: EditClientProgressComponent
+                    },
+                    // stats
+                    {
+                        path: 'clients/edit/:id/stats', component: StatsMainComponent
+                    },
+                    // chat
+                    {
+                        path: 'clients/edit/:id/chat', component: ClientChatComponent
+                    },
+                    // gallery
+                    {
+                        path: 'clients/edit/:id/gallery', component: UserGalleryComponent
+                    },
+                    // appointment
+                    {
+                        path: 'clients/edit/:id/appointments', component: ClientAppointmentListComponent
+                    },
+                    {
+                        path: 'clients/edit/:id/appointments/edit/:appointmentId', component: EditClientAppointmentComponent
+                    },
+                    {
+                        path: 'clients/edit/:id/appointments/view/:appointmentId', component: ViewClientAppointmentComponent
+                    },
+                    {
+                        path: 'clients/edit/:id/appointments/new', component: NewClientAppointmentComponent
+                    },
+                    // dashboard
+                    {
+                        path: 'clients/edit/:id/dashboard', component: ClientDashboardComponent
+                    },
+                ]
+            }
+        ])
     ],
     exports: [
         RouterModule

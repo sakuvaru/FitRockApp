@@ -12,19 +12,18 @@ import { DashboardComponent } from './dashboard.component';
 import { SimpleLayoutComponent } from '../../layouts/simple-layout.component';
 import { AdminLayoutComponent } from '../../layouts/admin-layout.component';
 
-const routes: Routes = [
-  {
-    path: UrlConfig.TrainerMasterPath, canActivate: [AuthGuardService], component: AdminLayoutComponent, children: [
-      { path: '', component: DashboardComponent },
-    ]
-  }
-];
 
 @NgModule({
   declarations: [
   ],
   imports: [
-    RouterModule.forChild(routes)
+    RouterModule.forChild([
+      {
+        path: UrlConfig.TrainerMasterPath, canActivate: [AuthGuardService], component: AdminLayoutComponent, children: [
+          { path: '', component: DashboardComponent },
+        ]
+      }
+    ])
   ],
   exports: [
     RouterModule

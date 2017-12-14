@@ -17,30 +17,28 @@ import { MyLocationsComponent } from './list/my-locations.component';
 import { EditLocationComponent } from './edit/edit-location.component';
 import { PreviewLocationComponent } from './view/preview-location.component';
 
-const routes: Routes = [
-    {
-        path: UrlConfig.TrainerMasterPath, component: AdminLayoutComponent, canActivate: [AuthGuardService], children: [
-            { 
-                path: 'locations', component: MyLocationsComponent
-            },
-            {
-                path: 'locations/new', component: NewLocationComponent
-            },
-            {
-                path: 'locations/edit/:id', component: EditLocationComponent
-            },
-            {
-                path: 'locations/view/:id', component: PreviewLocationComponent
-            }
-        ]
-    }
-];
-
 @NgModule({
     declarations: [
     ],
     imports: [
-        RouterModule.forChild(routes)
+        RouterModule.forChild([
+            {
+                path: UrlConfig.TrainerMasterPath, component: AdminLayoutComponent, canActivate: [AuthGuardService], children: [
+                    {
+                        path: 'locations', component: MyLocationsComponent
+                    },
+                    {
+                        path: 'locations/new', component: NewLocationComponent
+                    },
+                    {
+                        path: 'locations/edit/:id', component: EditLocationComponent
+                    },
+                    {
+                        path: 'locations/view/:id', component: PreviewLocationComponent
+                    }
+                ]
+            }
+        ])
     ],
     exports: [
         RouterModule

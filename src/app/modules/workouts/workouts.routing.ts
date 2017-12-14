@@ -22,37 +22,35 @@ import { AddWorkoutExerciseDialogComponent } from './dialogs/add-workout-exercis
 import { SelectWorkoutExerciseDialogComponent } from './dialogs/select-workout-exercise-dialog.component';
 import { EditWorkoutExerciseDialogComponent } from './dialogs/edit-workout-exercise-dialog.component';
 
-const routes: Routes = [
-    {
-        // workouts
-        path: UrlConfig.TrainerMasterPath, component: AdminLayoutComponent, canActivate: [AuthGuardService], children: [
-            {
-                path: 'workouts', component: WorkoutTemplatesComponent
-            },
-            {
-                path: 'workouts/client-workouts', component: ClientWorkoutsComponent
-            },
-            {
-                path: 'workouts/new', component: NewWorkoutComponent
-            },
-            {
-                path: 'workouts/edit/:id', component: EditWorkoutComponent
-            },
-            {
-                path: 'workouts/view/:id', component: WorkoutPlanComponent
-            },
-            {
-                path: 'workouts/edit-plan/:id', component: EditWorkoutPlanComponent
-            }
-        ],
-    },
-];
-
 @NgModule({
     declarations: [
     ],
     imports: [
-        RouterModule.forChild(routes)
+        RouterModule.forChild([
+            {
+                // workouts
+                path: UrlConfig.TrainerMasterPath, component: AdminLayoutComponent, canActivate: [AuthGuardService], children: [
+                    {
+                        path: 'workouts', component: WorkoutTemplatesComponent
+                    },
+                    {
+                        path: 'workouts/client-workouts', component: ClientWorkoutsComponent
+                    },
+                    {
+                        path: 'workouts/new', component: NewWorkoutComponent
+                    },
+                    {
+                        path: 'workouts/edit/:id', component: EditWorkoutComponent
+                    },
+                    {
+                        path: 'workouts/view/:id', component: WorkoutPlanComponent
+                    },
+                    {
+                        path: 'workouts/edit-plan/:id', component: EditWorkoutPlanComponent
+                    }
+                ],
+            },
+        ])
     ],
     exports: [
         RouterModule

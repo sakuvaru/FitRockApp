@@ -17,34 +17,32 @@ import { EditExerciseComponent } from './edit/edit-exercise.component';
 import { NewExerciseComponent } from './new/new-exercise.component';
 import { PreviewExerciseComponent } from './view/preview-exercise.component';
 
-const routes: Routes = [
-    {
-        // workouts
-        path: UrlConfig.TrainerMasterPath, component: AdminLayoutComponent, canActivate: [AuthGuardService], children: [
-            {
-                path: 'exercises', component: MyExerciseListComponent
-            },
-            {
-                path: 'exercises/all', component: AllExerciseListComponent
-            },
-            {
-                path: 'exercises/new', component: NewExerciseComponent
-            },
-            {
-                path: 'exercises/edit/:id', component: EditExerciseComponent
-            },
-            {
-                path: 'exercises/preview/:id', component: PreviewExerciseComponent
-            }
-        ],
-    },
-];
-
 @NgModule({
     declarations: [
     ],
     imports: [
-        RouterModule.forChild(routes)
+        RouterModule.forChild([
+            {
+                // workouts
+                path: UrlConfig.TrainerMasterPath, component: AdminLayoutComponent, canActivate: [AuthGuardService], children: [
+                    {
+                        path: 'exercises', component: MyExerciseListComponent
+                    },
+                    {
+                        path: 'exercises/all', component: AllExerciseListComponent
+                    },
+                    {
+                        path: 'exercises/new', component: NewExerciseComponent
+                    },
+                    {
+                        path: 'exercises/edit/:id', component: EditExerciseComponent
+                    },
+                    {
+                        path: 'exercises/preview/:id', component: PreviewExerciseComponent
+                    }
+                ],
+            },
+        ])
     ],
     exports: [
         RouterModule

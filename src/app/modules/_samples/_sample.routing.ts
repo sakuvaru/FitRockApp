@@ -14,19 +14,17 @@ import { AdminLayoutComponent } from '../../layouts/admin-layout.component';
 // components
 import { SampleComponent } from './_sample.component';
 
-const routes: Routes = [
-    {
-        path: UrlConfig.TrainerMasterPath, component: AdminLayoutComponent, canActivate: [AuthGuardService], children: [
-            { path: 'sampleRoute', component: SampleComponent },
-        ]
-    }
-];
-
 @NgModule({
     declarations: [
     ],
     imports: [
-        RouterModule.forChild(routes)
+        RouterModule.forChild([
+            {
+                path: UrlConfig.TrainerMasterPath, component: AdminLayoutComponent, canActivate: [AuthGuardService], children: [
+                    { path: 'sampleRoute', component: SampleComponent },
+                ]
+            }
+        ])
     ],
     exports: [
         RouterModule

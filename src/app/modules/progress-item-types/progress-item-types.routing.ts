@@ -16,31 +16,29 @@ import { GlobalTypesListComponent } from './list/global-types-list.component';
 import { EditTypeComponent } from './edit/edit-type.component';
 import { NewTypeComponent } from './new/new-type.component';
 
-const routes: Routes = [
-    {
-        // workouts
-        path: UrlConfig.TrainerMasterPath, component: AdminLayoutComponent, canActivate: [AuthGuardService], children: [
-            {
-                path: 'progress-item-types', component: MyTypesListComponent
-            },
-            {
-                path: 'progress-item-types/global', component: GlobalTypesListComponent
-            },
-            {
-                path: 'progress-item-types/new', component: NewTypeComponent
-            },
-            {
-                path: 'progress-item-types/edit/:id', component: EditTypeComponent
-            },
-        ],
-    },
-];
-
 @NgModule({
     declarations: [
     ],
     imports: [
-        RouterModule.forChild(routes)
+        RouterModule.forChild([
+            {
+                // workouts
+                path: UrlConfig.TrainerMasterPath, component: AdminLayoutComponent, canActivate: [AuthGuardService], children: [
+                    {
+                        path: 'progress-item-types', component: MyTypesListComponent
+                    },
+                    {
+                        path: 'progress-item-types/global', component: GlobalTypesListComponent
+                    },
+                    {
+                        path: 'progress-item-types/new', component: NewTypeComponent
+                    },
+                    {
+                        path: 'progress-item-types/edit/:id', component: EditTypeComponent
+                    },
+                ],
+            },
+        ])
     ],
     exports: [
         RouterModule
