@@ -3,20 +3,37 @@ import { Observable } from 'rxjs/Rx';
 
 import { CalendarConfig } from './calendar.config';
 import { CalendarEventModel, CalendarDeleteResponse } from './calendar.models';
-import { Appointment } from '../../app/models';
-import { MultipleItemQuery, DeleteItemQuery } from '../../lib/repository';
+import { Appointment, User } from '../../app/models';
+import {
+    DeleteItemQuery,
+    MultipleItemQuery,
+    ResponseCreate,
+    ResponseEdit,
+    ResponseFormEdit,
+    ResponseFormInsert,
+} from '../../lib/repository';
+import { DataFormEditResponse, DataFormInsertResponse, dataFormBuilderUtils, DataFormEditDefinition, DataFormInsertDefinition, DataFormBuilder } from 'web-components/data-form';
+import { DataTableBuilder } from 'web-components/data-table';
+import { CalendarEventAttendee } from 'web-components/calendar';
 
 export class CalendarBuilder {
 
     private readonly config: CalendarConfig = new CalendarConfig();
 
+    private readonly type: string = 'appointment';
+
     constructor(
         private locale: string,
         private fetchQuery: (date: Date) => MultipleItemQuery<Appointment>,
-        private deleteQuery: (event: CalendarEventModel<Appointment>) => DeleteItemQuery
+        private deleteQuery: (event: CalendarEventModel<Appointment>) => DeleteItemQuery,
+        private editFormBuilder: (event: CalendarEventModel<Appointment>) => DataFormBuilder<Appointment>,
+        private insertFormBuilder: (attendee: CalendarEventAttendee<User>) => DataFormBuilder<Appointment>,
+        private attendeesDataTableBuilder: DataTableBuilder<User>
     ) {
+        // set locale
         this.config.locale = locale;
 
+        // set fetch events functoin
         this.config.fetchEvents = (date) => fetchQuery(date)
             .includeMultiple(['Location', 'Client'])
             .get().map(response => {
@@ -29,7 +46,30 @@ export class CalendarBuilder {
                 ));
             });
 
+        // set delete method
         this.config.delete = (event) => deleteQuery(event).set().map(response => new CalendarDeleteResponse());
+
+        // build forms
+        this.config.editEventFormConfig = (event) => editFormBuilder(event)
+            .wrapInCard(false)
+            .renderButtons(false)
+            .build();
+
+        this.config.insertEventFormConfig = (attendee: CalendarEventAttendee<User>) => insertFormBuilder(attendee)
+            .fieldValueResolver((fieldName, value) => {
+                if (fieldName === 'ClientId') {
+                    return Observable.of(attendee.model.id);
+                }
+                return Observable.of(value);
+            })
+            .wrapInCard(false)
+            .renderButtons(false)
+            .build();
+
+        // build attendees data table
+        this.config.attendeesDataTableConfig = attendeesDataTableBuilder
+            .renderPager(false)
+            .build();
     }
 
     private getColor(item: Appointment): CalendarColor {

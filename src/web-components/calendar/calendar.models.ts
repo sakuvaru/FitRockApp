@@ -16,3 +16,10 @@ export class CalendarDeleteResponse {
     constructor(
     ) { }
 }
+
+export class CalendarEventAttendee<TModel> {
+
+    constructor(
+        public model: TModel,
+    ) { }
+}

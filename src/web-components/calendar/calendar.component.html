@@ -9,26 +9,34 @@
                     <error-message [text]="errorMessage"></error-message>
                 </div>
 
-                <button mat-icon-button color="primary" mwlCalendarPreviousView [(viewDate)]="viewDate" [view]="view" (viewDateChange)="changeDate($event)">
-                    <mat-icon>keyboard_arrow_left</mat-icon>
-                </button>
+                <div fxLayout>
+                    <button mat-icon-button color="primary" mwlCalendarPreviousView [(viewDate)]="viewDate" [view]="view" (viewDateChange)="changeDate($event)">
+                        <mat-icon>keyboard_arrow_left</mat-icon>
+                    </button>
 
-                <button mat-button mwlCalendarToday  [(viewDate)]="viewDate" (viewDateChange)="changeDate($event)">
-                    {{ viewDate | calendarDate:(view + 'ViewTitle'): config.locale }}
-                </button>
+                    <button mat-button mwlCalendarToday [(viewDate)]="viewDate" (viewDateChange)="changeDate($event)">
+                        {{ (viewDate | calendarDate:(view + 'ViewTitle'): config.locale) | titlecase }}
+                    </button>
 
-                <button mat-icon-button color="primary" mwlCalendarNextView [(viewDate)]="viewDate" [view]="view" (viewDateChange)="changeDate($event)">
-                    <mat-icon>keyboard_arrow_right</mat-icon>
-                </button>
+                    <button mat-icon-button color="primary" mwlCalendarNextView [(viewDate)]="viewDate" [view]="view" (viewDateChange)="changeDate($event)">
+                        <mat-icon>keyboard_arrow_right</mat-icon>
+                    </button>
+
+                    <span flex></span>
+
+                    <add-button tooltip="{{'webComponents.calendar.insertEventTooltip' | localize }}" (click)="openSelectAttendeeDialog()"></add-button>
+                </div>
 
                 <div *ngIf="events">
                     <div [ngSwitch]="view">
-                        <mwl-calendar-month-view [locale]="config.locale" [refresh]="calendarRefresh" *ngSwitchCase="'month'" [viewDate]="viewDate" [events]="events" [activeDayIsOpen]="activeDayIsOpen"
-                            (dayClicked)="dayClicked($event.day)" (eventClicked)="eventClicked($event.event)">
+                        <mwl-calendar-month-view [locale]="config.locale" [refresh]="calendarRefresh" *ngSwitchCase="'month'" [viewDate]="viewDate"
+                            [events]="events" [activeDayIsOpen]="activeDayIsOpen" (dayClicked)="dayClicked($event.day)" (eventClicked)="eventClicked($event.event)">
                         </mwl-calendar-month-view>
-                        <mwl-calendar-week-view [locale]="config.locale" [refresh]="calendarRefresh" *ngSwitchCase="'week'" [viewDate]="viewDate" [events]="events" (eventClicked)="eventClicked($event.event)">
+                        <mwl-calendar-week-view [locale]="config.locale" [refresh]="calendarRefresh" *ngSwitchCase="'week'" [viewDate]="viewDate"
+                            [events]="events" (eventClicked)="eventClicked($event.event)">
                         </mwl-calendar-week-view>
-                        <mwl-calendar-day-view [locale]="config.locale" [refresh]="calendarRefresh" *ngSwitchCase="'day'" [viewDate]="viewDate" [events]="events" (eventClicked)="eventClicked($event.event)">
+                        <mwl-calendar-day-view [locale]="config.locale" [refresh]="calendarRefresh" *ngSwitchCase="'day'" [viewDate]="viewDate" [events]="events"
+                            (eventClicked)="eventClicked($event.event)">
                         </mwl-calendar-day-view>
                     </div>
                 </div>

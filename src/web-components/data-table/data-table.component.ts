@@ -373,6 +373,10 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
         }
 
         // map fields
+        if (!this.config.fields) {
+            throw Error(`No fields were defined. Configure 'fields' property of the DataTableConfig class.`);
+        }
+
         this.fieldsWrapper = this.config.fields.map(field => {
             return new DataTableFieldWrapper(field, guidHelper.newGuid());
         });

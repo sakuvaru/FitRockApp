@@ -622,7 +622,11 @@
 				"deleted": "Smazáno"
 			},
 			"calendarError": "Načítání kalendáře se nezdařilo",
-			"deleteError": "Při mazání schůzky došlo k chybě"
+			"deleteError": "Při mazání schůzky došlo k chybě",
+			"editEvent": "Upravit schůzku",
+			"insertEvent": "Vytvořit novou schůzku",
+			"insertEventTooltip": "Nová schůzka",
+			"selectAttendee": "Vyber klienta"
 		}
 	}
 }

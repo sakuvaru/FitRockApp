@@ -1,35 +1,25 @@
 import { Observable } from 'rxjs/Rx';
-import { stringHelper } from '../../lib/utilities';
 
 import {
-    ControlTypeEnum,
-    FormField,
     IItem,
     ResponseCreate,
     ResponseDelete,
     ResponseEdit,
     ResponseFormEdit,
     ResponseFormInsert,
-    ErrorResponse,
-    FormErrorResponse,
-    FormValidationResultEnum,
-    ErrorReasonEnum
 } from '../../lib/repository';
 import {
-    DataFieldDropdownOption,
     DataFormDeleteResponse,
     DataFormEditDefinition,
     DataFormEditResponse,
-    DataFormError,
     DataFormField,
     DataFormFieldChangeResult,
     DataFormInsertDefinition,
     DataFormInsertResponse,
     DataFormSection,
-    DataFormErrorTranslationItem
 } from './data-form-models';
 import { DataFormConfig } from './data-form.config';
-import { DataFormFieldTypeEnum } from './data-form.enums';
+import { dataFormBuilderUtils } from './data-form-builder-utils';
 
 export class DataFormBuilder<TItem extends IItem> {
 
@@ -52,14 +42,14 @@ export class DataFormBuilder<TItem extends IItem> {
         this.config.isInsertForm = isInsertForm;
 
         // assign form definition
-        this.config.formDefinition = this.mapFormDefinition(formDefinition);
+        this.config.formDefinition = dataFormBuilderUtils.mapFormDefinition(type, formDefinition);
 
         // assign save function
-        this.config.saveFunction = this.mapSaveFunction(saveFunction);
+        this.config.saveFunction = dataFormBuilderUtils.mapSaveFunction(type, saveFunction);
 
         // assign delete function if provided
         if (options && options.deleteFunction) {
-            this.config.deleteFunction = this.mapDeleteFunction(options.deleteFunction);
+            this.config.deleteFunction = dataFormBuilderUtils.mapDeleteFunction(options.deleteFunction);
         }
     }
 
@@ -236,212 +226,6 @@ export class DataFormBuilder<TItem extends IItem> {
         return this.config;
     }
 
-    private mapFieldType(controlType: ControlTypeEnum): DataFormFieldTypeEnum {
-        if (controlType === ControlTypeEnum.Boolean) {
-            return DataFormFieldTypeEnum.Boolean;
-        } else if (controlType === ControlTypeEnum.Date) {
-            return DataFormFieldTypeEnum.Date;
-        } else if (controlType === ControlTypeEnum.DateTime) {
-            return DataFormFieldTypeEnum.DateTime;
-        } else if (controlType === ControlTypeEnum.Dropdown) {
-            return DataFormFieldTypeEnum.Dropdown;
-        } else if (controlType === ControlTypeEnum.Hidden) {
-            return DataFormFieldTypeEnum.Hidden;
-        } else if (controlType === ControlTypeEnum.None) {
-            return DataFormFieldTypeEnum.None;
-        } else if (controlType === ControlTypeEnum.Number) {
-            return DataFormFieldTypeEnum.Number;
-        } else if (controlType === ControlTypeEnum.PhoneNumber) {
-            return DataFormFieldTypeEnum.PhoneNumber;
-        } else if (controlType === ControlTypeEnum.RadioBoolean) {
-            return DataFormFieldTypeEnum.RadioBoolean;
-        } else if (controlType === ControlTypeEnum.Text) {
-            return DataFormFieldTypeEnum.Text;
-        } else if (controlType === ControlTypeEnum.TextArea) {
-            return DataFormFieldTypeEnum.TextArea;
-        }
-
-        throw Error(`Unsupported control type '${controlType}' could not be mapped to field type control`);
-    }
-
-    private mapDataFormField(field: FormField): DataFormField {
-        return new DataFormField(
-            field.key,
-            this.mapFieldType(field.controlTypeEnum),
-            field.required,
-            field.value,
-            field.defaultValue,
-            {
-                hint: field.hint,
-                rowNumber: field.rowNumber,
-                width: field.width,
-                options: field.options ? {
-                    extraTranslationData: field.options.extraTranslationData,
-                    listOptions: field.options.listOptions ? field.options.listOptions.map(m => new DataFieldDropdownOption(m.value, m.name, m.extraDataJson)) : undefined,
-                    falseOptionLabel: field.options.falseOptionLabel,
-                    maxAutosizeRows: field.options.maxAutosizeRows,
-                    maxLength: field.options.maxLength,
-                    maxNumberValue: field.options.maxNumberValue,
-                    minAutosizeRows: field.options.minAutosizeRows,
-                    minLength: field.options.minLength,
-                    minNumberValue: field.options.minNumberValue,
-                    trueOptionLabel: field.options.trueOptionLabel,
-                    icon: field.options.icon
-                } : undefined
-            }
-        );
-    }
-
-    private mapDeleteFunction(deleteFunction: (formData: Object) => Observable<ResponseDelete>): (formData: object) => Observable<DataFormDeleteResponse> {
-        return (formData: Object) => deleteFunction(formData).map(response => {
-            if (response instanceof ResponseDelete) {
-                return new DataFormDeleteResponse(response.deletedItemId);
-            }
-            throw Error(`Unexpected response from delete function`);
-        });
-    }
-
-    private mapSaveFunction(saveFunction: (formData: Object) => Observable<ResponseEdit<TItem> | ResponseCreate<TItem>>): (formData: object) => Observable<DataFormInsertResponse | DataFormEditResponse> {
-        return (formData: Object) => this.mapDataFormError(saveFunction(formData).map(response => {
-            if (response instanceof ResponseEdit) {
-                return new DataFormEditResponse(response.item);
-            }
-
-            if (response instanceof ResponseCreate) {
-                return new DataFormInsertResponse(response.item);
-            }
-
-            throw Error(`Unexpected response from save function`);
-        }));
-    }
-
-    private mapFormDefinition(formDefinition: Observable<ResponseFormEdit<TItem> | ResponseFormInsert>): Observable<DataFormEditDefinition | DataFormInsertDefinition> {
-        return this.mapDataFormError(formDefinition.map(response => {
-            if (response instanceof ResponseFormEdit) {
-                return new DataFormEditDefinition(response.fields.map(m => this.mapDataFormField(m)), response.item);
-            }
-
-            if (response instanceof ResponseFormInsert) {
-                return new DataFormInsertDefinition(response.fields.map(m => this.mapDataFormField(m)));
-            }
-
-            throw Error(`Unsupported form definition`);
-        })
-        );
-    }
-
-    private mapDataFormError<TModel>(obs: Observable<TModel>): Observable<any> {
-        return obs.catch(error => {
-            const field = error.formValidation.column;
-            const translationItems: DataFormErrorTranslationItem[] = [];
-            let translationKey: string | undefined;
-
-            if (field) {
-                translationItems.push(new DataFormErrorTranslationItem('label', `form.${stringHelper.toCamelCase(this.config.type)}.${stringHelper.toCamelCase(field)}`));
-            }
-
-            if (error instanceof FormErrorResponse) {
-                const formValidationError = error.formValidation.validationResult;
-
-                if (formValidationError === FormValidationResultEnum.InvalidCodename) {
-                    if (field) {
-                        translationKey = 'form.error.invalidCodenameWithLabel';
-                    } else {
-                        translationKey = 'form.error.invalidCodename';
-                    }
-                }
-
-                if (formValidationError === FormValidationResultEnum.InvalidEmail) {
-                    if (field) {
-                        translationKey = 'form.error.invalidEmailWithLabel';
-                    } else {
-                        translationKey = 'form.error.invalidEmail';
-                    }
-                }
-
-                if (formValidationError === FormValidationResultEnum.NotUnique) {
-                    if (field) {
-                        translationKey = 'form.error.notUniqueWithLabel';
-                    } else {
-                        translationKey = 'form.error.notUnique';
-                    }
-                }
-
-                if (formValidationError === FormValidationResultEnum.NotEditable) {
-                    if (field) {
-                        translationKey = 'form.error.notEditableWithLabel';
-                    } else {
-                        translationKey = 'form.error.notEditable';
-                    }
-                }
-
-                if (formValidationError === FormValidationResultEnum.ConstraintConflict) {
-
-                    if (error.formValidation.messageKey) {
-                        translationItems.push(new DataFormErrorTranslationItem('dependentType', 'type.' + stringHelper.toCamelCase(error.formValidation.messageKey)));
-                        translationKey = 'form.error.constraintConflict';
-                    } else {
-                        translationKey = 'form.error.genericConstraintConflict';
-                    }
-                }
-
-                if (formValidationError === FormValidationResultEnum.FormLoadingError) {
-                    translationKey = 'form.error.formLoadingError';
-                }
-
-                if (formValidationError === FormValidationResultEnum.OneRecordPerDay) {
-                    translationKey = 'form.error.oneRecordPerDay';
-                }
-
-                if (formValidationError === FormValidationResultEnum.Other) {
-                    if (field) {
-                        translationKey = 'form.error.otherWithLabel';
-                    } else {
-                        translationKey = 'form.error.other';
-                    }
-                }
-
-                return Observable.throw(new DataFormError(
-                    translationKey ? translationKey : 'form.error.unknown',
-                    field,
-                    translationItems
-                ));
-            }
-
-            if (error instanceof ErrorResponse) {
-
-                if (error.reason === ErrorReasonEnum.LicenseLimitation) {
-                    translationKey = 'form.error.insufficientLicense';
-                }
-
-                if (error.reason === ErrorReasonEnum.FormError) {
-                    translationKey = 'form.error.formLoadingError';
-                }
-
-                if (error.reason === ErrorReasonEnum.NotAuthorized) {
-                    translationKey = 'form.error.notAuthorized';
-                }
-
-                if (error.reason === ErrorReasonEnum.ServerNotRunning) {
-                    translationKey = 'form.error.serverDown';
-                }
-
-                return Observable.throw(new DataFormError(
-                    translationKey ? translationKey : 'form.error.unknown',
-                    field,
-                    translationItems
-                ));
-            }
-
-            return Observable.throw(error);
-        });
-    }
+    
 }
 
-class FieldTypeWrapper {
-    constructor(
-        public value: string | number | boolean | Date,
-        public fieldType: DataFormFieldTypeEnum
-    ) {
-    }
-}

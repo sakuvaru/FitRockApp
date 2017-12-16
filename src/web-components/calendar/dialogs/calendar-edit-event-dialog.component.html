@@ -1,12 +1,12 @@
 <mat-dialog-actions>
-    <span class="md-title">{{'module.workouts.editWorkoutExercise' | localize }}</span>
+    <span class="md-title">{{'webComponents.calendar.editEvent' | localize }}</span>
     <span flex></span>
     <close-button (click)="close()"></close-button>
 </mat-dialog-actions>
 
 <mat-dialog-content>
     <div class="md-padding">
-        <data-form #dataForm [config]="workoutExerciseForm"></data-form>
+        <data-form #dataForm [config]="formConfig"></data-form>
     </div>
 </mat-dialog-content>
 

@@ -1,17 +1,23 @@
-import { CalendarDeleteResponse } from './calendar.models';
 import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { TdDialogService } from '@covalent/core';
-import { CalendarDateFormatter, CalendarEvent, CalendarEventTitleFormatter } from 'angular-calendar';
+import { CalendarEvent, CalendarEventTitleFormatter } from 'angular-calendar';
 import { EventAction, EventColor } from 'calendar-utils';
 import { isSameDay, isSameMonth } from 'date-fns';
 import { LocalizationService } from 'lib/localization';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Rx';
+import { CalendarEventModel } from 'web-components/calendar';
+import { CalendarEditEventDialogComponent } from 'web-components/calendar/dialogs/calendar-edit-event-dialog.component';
+import { CalendarInsertEventDialogComponent } from 'web-components/calendar/dialogs/calendar-insert-event-dialog.component';
+import {
+    CalendarSelectAttendeeDialogComponent,
+} from 'web-components/calendar/dialogs/calendar-select-attendee-dialog.component';
 
 import { BaseWebComponent } from '../base-web-component.class';
 import { Blue, Purple, Red, Yellow } from './calendar.colors';
 import { CalendarConfig } from './calendar.config';
 import { CalendarColor } from './calendar.enums';
+import { CalendarDeleteResponse, CalendarEventAttendee } from './calendar.models';
 import { CustomEventTitleFormatter } from './custom-event-title.formatter';
 
 @Component({
@@ -32,7 +38,7 @@ export class CalendarComponent extends BaseWebComponent implements OnInit, OnCha
     /**
      * Subject that triggers loading of events
      */
-    private readonly loadEventsSubject = new Subject<void>();
+    private readonly loadEventsSubject = new Subject<LoadEventsArgs>();
 
     /**
      * Subject for deleting item
@@ -44,12 +50,24 @@ export class CalendarComponent extends BaseWebComponent implements OnInit, OnCha
      */
     private readonly calendarRefresh = new Subject<void>();
 
+    /**
+     * Default view
+     */
     public view: string = 'month';
 
+    /**
+     * Highlighted date (uses current date by default)
+     */
     public viewDate: Date = new Date();
 
+    /**
+     * Indicates if row with day data is opened for active day
+     */
     public activeDayIsOpen: boolean = false;
 
+    /**
+     * Collection of events
+     */
     public events?: CalendarModelInternal[];
 
     public currentDateRange: Date = new Date();
@@ -103,8 +121,8 @@ export class CalendarComponent extends BaseWebComponent implements OnInit, OnCha
         this.initCalendar();
     }
 
-    loadEvents(): void {
-        this.loadEventsSubject.next();
+    loadEvents(closeActiveDay: boolean = true): void {
+        this.loadEventsSubject.next(new LoadEventsArgs(closeActiveDay));
     }
 
     eventClicked(event: CalendarModelInternal): void {
@@ -136,6 +154,60 @@ export class CalendarComponent extends BaseWebComponent implements OnInit, OnCha
     changeDate(date: Date): void {
         this.currentDateRange = date;
         this.loadEvents();
+    }
+
+    openSelectAttendeeDialog(): void {
+        const data: any = {};
+
+        // this anonymous property is accessed by the dialog
+        data.dataTableConfig = this.config.attendeesDataTableConfig;
+
+        const dialog = this.dialogService.open(CalendarSelectAttendeeDialogComponent, {
+            data: data,
+            width: '70%'
+        });
+
+        dialog.afterClosed().subscribe(m => {
+            if (dialog.componentInstance.selectedAttendee) {
+                // attendee was selected, open new event dialog
+                this.openNewEventDialog(dialog.componentInstance.selectedAttendee);
+            }
+        });
+    }
+
+    private openNewEventDialog(selectedAttendee: any): void {
+        const data: any = {};
+
+        // this anonymous property is accessed by the dialog
+        data.formConfig = this.config.insertEventFormConfig(new CalendarEventAttendee(selectedAttendee));
+
+        const dialog = this.dialogService.open(CalendarInsertEventDialogComponent, {
+            data: data,
+            width: '70%'
+        });
+
+        dialog.afterClosed().subscribe(m => {
+
+        });
+    }
+
+    private openEditEventDialog(event: CalendarEventModel<any>): void {
+        const data: any = {};
+
+        // this anonymous property is accessed by the dialog
+        data.formConfig = this.config.editEventFormConfig(event);
+
+        const dialog = this.dialogService.open(CalendarEditEventDialogComponent, {
+            data: data,
+            width: '70%'
+        });
+
+        dialog.afterClosed().subscribe(m => {
+            if (dialog.componentInstance.dataChanged) {
+                // reload events because they were modified
+                this.loadEvents(false);
+            }
+        });
     }
 
     private initCalendar(): void {
@@ -233,6 +305,8 @@ export class CalendarComponent extends BaseWebComponent implements OnInit, OnCha
         if (this.config.onEventEditClick) {
             this.config.onEventEditClick(event.meta.eventModel);
         }
+
+        this.openEditEventDialog(event.meta.eventModel);
     }
 
     private handleDelete(event: CalendarModelInternal): void {
@@ -261,12 +335,18 @@ export class CalendarComponent extends BaseWebComponent implements OnInit, OnCha
     }
 
     private subscribeToEventLoads(): void {
+
+        let loadArgs: LoadEventsArgs;
+
         this.loadEventsSubject
             .do(() => {
                 this.resetErrors();
                 this.loaderEnabled = true;
             })
-            .switchMap(() => this.fetchEventsObservable())
+            .switchMap((args) => {
+                loadArgs = args;
+                return this.fetchEventsObservable();
+            })
             .map(events => {
                 this.events = events;
             })
@@ -277,8 +357,10 @@ export class CalendarComponent extends BaseWebComponent implements OnInit, OnCha
                 // refresh calendar
                 this.calendarRefresh.next();
 
-                // make sure active day is closed
-                this.activeDayIsOpen = false;
+                // make sure active day is closed if set
+                if (loadArgs.closeActiveDay) {
+                    this.activeDayIsOpen = false;
+                }
             }, error => this.handleLoadError(error));
     }
 
@@ -341,6 +423,12 @@ class CalendarModelInternal implements CalendarEvent {
     ) {
         Object.assign(this, options);
     }
+}
+
+class LoadEventsArgs {
+    constructor(
+        public closeActiveDay: boolean
+    ) { }
 }
 
 
