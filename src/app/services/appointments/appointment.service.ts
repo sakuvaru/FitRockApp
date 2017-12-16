@@ -33,7 +33,8 @@ export class AppointmentService extends BaseTypeService<Appointment> {
         trainerUserId: number,
         locale: string,
         options: {
-            onEventClick: (event: CalendarEventModel<Appointment>) => void
+            onEventClick: (event: CalendarEventModel<Appointment>) => void,
+            onError: (error) => void
         }): CalendarBuilder {
         return this.calendarService.calendar(
             locale,
@@ -44,7 +45,8 @@ export class AppointmentService extends BaseTypeService<Appointment> {
             ,
             (event) => this.delete(event.model.id),
             (event) => this.buildEditForm(
-                this.editFormQuery(event.model.id).withData('clientId', event.model.clientId)
+                this.editFormQuery(event.model.id).withData('clientId', event.model.clientId),
+                (error) => options.onError(error)
             ),
             (attendee) => this.buildInsertForm({
                 formDefinitionQuery: this.insertFormQuery().withData('clientId', attendee.model.id)

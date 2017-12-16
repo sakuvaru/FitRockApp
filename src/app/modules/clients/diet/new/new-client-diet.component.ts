@@ -74,6 +74,6 @@ export class NewClientDietComponent extends ClientsBaseComponent implements OnIn
                     .onAfterInsert((response) => super.navigate([super.getTrainerUrl('clients/edit/' + this.clientId + '/diet/' + response.item.id + '/diet-plan')]))
                     .build();
             },
-            error => super.handleError(error));
+            error => super.handleAppError(error));
     }
 }

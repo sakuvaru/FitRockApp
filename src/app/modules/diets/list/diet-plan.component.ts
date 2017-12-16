@@ -56,7 +56,7 @@ export class DietPlanComponent extends BaseComponent implements OnInit {
 
         this.assignDiet(response.item);
       },
-      error => super.handleError(error));
+      error => super.handleAppError(error));
   }
 
   private assignDiet(diet: Diet): void {

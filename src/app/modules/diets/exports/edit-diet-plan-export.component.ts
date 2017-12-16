@@ -118,7 +118,7 @@ export class EditDietPlanExportComponent extends BaseComponent implements OnDest
           this.stopGlobalLoader();
         },
         (error) => {
-          super.handleError(error);
+          super.handleAppError(error);
           this.stopGlobalLoader();
         }));
   }

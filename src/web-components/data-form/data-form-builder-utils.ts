@@ -125,6 +125,17 @@ class DataFormBuilderUtils {
 
      mapDataFormError<TModel>(type: string, obs: Observable<TModel>): Observable<any> {
         return obs.catch(error => {
+            
+            // system, unknown error
+            if (!(error instanceof ErrorResponse) || error.reason !== ErrorReasonEnum.FormError) {
+                return Observable.throw(new DataFormError(
+                    error,
+                    'form.error.unknown'
+                ));
+            }
+
+            error = error as ErrorResponse;
+
             const field = error.formValidation.column;
             const translationItems: DataFormErrorTranslationItem[] = [];
             let translationKey: string | undefined;
@@ -200,6 +211,7 @@ class DataFormBuilderUtils {
                 }
 
                 return Observable.throw(new DataFormError(
+                    error,
                     translationKey ? translationKey : 'form.error.unknown',
                     field,
                     translationItems
@@ -225,6 +237,7 @@ class DataFormBuilderUtils {
                 }
 
                 return Observable.throw(new DataFormError(
+                    error,
                     translationKey ? translationKey : 'form.error.unknown',
                     field,
                     translationItems

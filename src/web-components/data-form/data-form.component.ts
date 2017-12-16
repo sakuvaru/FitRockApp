@@ -611,9 +611,19 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
         console.error(error);
 
         if (error instanceof DataFormError) {
+
+            if (this.config.onError) {
+                this.config.onError(error.originalError);
+            }
+
             this.resolveErrorMessage(error);
         } else {
             this.unknownError = true;
+
+            if (this.config.onError) {
+                this.config.onError(error);
+            }
+
         }
 
         this.errorLoadingForm = true;

@@ -95,7 +95,7 @@ export class ClientChatComponent extends ClientsBaseComponent implements OnInit 
 
                 this.formConfig = formConfig;
             },
-            error => super.handleError(error));
+            error => super.handleAppError(error));
     }
 
     private getInitChatMessagesObservable(): Observable<any> {
@@ -115,7 +115,7 @@ export class ClientChatComponent extends ClientsBaseComponent implements OnInit 
                     menuAvatarUrl: this.client.avatarUrl
                 });
             },
-            error => super.handleError(error));
+            error => super.handleAppError(error));
     }
 
     private getChatMessagesObservable(clientId: number, page: number, replaceMessages: boolean, search: string): Observable<any> {
@@ -143,7 +143,7 @@ export class ClientChatComponent extends ClientsBaseComponent implements OnInit 
                     this.allChatMessagesLoaded = true;
                 }
             },
-            error => super.handleError(error));
+            error => super.handleAppError(error));
     }
 
     private loadMoreMessages(): void {

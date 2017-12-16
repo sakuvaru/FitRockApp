@@ -207,6 +207,7 @@ export class DataFormSection {
 
 export class DataFormError { 
     constructor(
+        public originalError: any,
         public translationKey: string,
         public field?: string,
         public dataToTranslate?: DataFormErrorTranslationItem[]

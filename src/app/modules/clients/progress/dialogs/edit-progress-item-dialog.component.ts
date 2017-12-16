@@ -43,7 +43,7 @@ export class EditProgressItemDialogComponent extends BaseComponent implements On
   }
 
   private initForm(): void {
-    this.formConfig = this.dependencies.itemServices.progressItemService.buildEditForm(this.item.id)
+    this.formConfig = this.dependencies.itemServices.progressItemService.buildEditForm(this.item.id, (error) => super.handleAppError(error))
       .wrapInCard(false)
       .onAfterEdit((response) => {
         this.itemWasUpdated = true;

@@ -38,7 +38,7 @@ export class EditTypeComponent extends BaseComponent implements OnInit {
         this.activatedRoute.params
             .takeUntil(this.ngUnsubscribe)
             .map((params: Params) => {
-                this.formConfig = this.dependencies.itemServices.progressItemTypeService.buildEditForm(+params['id'])
+                this.formConfig = this.dependencies.itemServices.progressItemTypeService.buildEditForm(+params['id'], (error) => super.handleAppError(error))
                     .onAfterDelete(() => super.navigate([this.getTrainerUrl('progress-item-types')]))
                     .onEditFormLoaded(form => {
                         this.setConfig({

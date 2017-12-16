@@ -44,7 +44,7 @@ export class EditDietExportComponent extends BaseComponent implements OnInit, On
     }
 
     private initForm(dietId: number): void {
-        this.formConfig = this.dependencies.itemServices.dietService.buildEditForm(dietId)
+        this.formConfig = this.dependencies.itemServices.dietService.buildEditForm(dietId, (error) => super.handleAppError(error))
             .onAfterDelete(() => super.navigate([super.getTrainerUrl('diets')]))
             .onEditFormLoaded(form => {
                 const diet = form.item;

@@ -216,7 +216,7 @@ export class ChatComponent extends BaseComponent implements OnInit {
                     this.allChatMessagesLoaded = true;
                 }
             },
-            error => super.handleError(error));
+            error => super.handleAppError(error));
     }
 
     private loadMoreMessages(): void {

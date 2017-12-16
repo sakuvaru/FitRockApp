@@ -40,7 +40,7 @@ export class EditLocationComponent extends BaseComponent implements OnInit {
         this.activatedRoute.params
             .takeUntil(this.ngUnsubscribe)
             .map((params: Params) => {
-                this.formConfig = this.dependencies.itemServices.locationService.buildEditForm(+params['id'])
+                this.formConfig = this.dependencies.itemServices.locationService.buildEditForm(+params['id'], (error) => super.handleAppError(error))
                     .onAfterDelete(() => super.navigate([this.getTrainerUrl('locations')]))
                     .onEditFormLoaded(form => {
                         this.setConfig({

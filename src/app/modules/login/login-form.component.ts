@@ -43,7 +43,7 @@ export class LoginFormComponent extends BaseComponent implements OnInit {
             .subscribe((fragment: string) => {
                 this.processFailedLogonRedirect();
             },
-            error => super.handleError(error));
+            error => super.handleAppError(error));
     }
 
     private processFailedLogonRedirect() {

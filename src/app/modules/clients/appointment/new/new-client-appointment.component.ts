@@ -74,6 +74,6 @@ export class NewClientAppointmentComponent extends ClientsBaseComponent implemen
                     .build();
 
             },
-            error => super.handleError(error));
+            error => super.handleAppError(error));
     }
 }

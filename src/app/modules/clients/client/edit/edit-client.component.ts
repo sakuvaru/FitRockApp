@@ -42,7 +42,7 @@ export class EditClientComponent extends ClientsBaseComponent implements OnInit 
         return this.clientIdChange
             .takeUntil(this.ngUnsubscribe)
             .map(clientId => {
-                this.formConfig = this.dependencies.itemServices.userService.buildEditForm(clientId)
+                this.formConfig = this.dependencies.itemServices.userService.buildEditForm(clientId, (error) => super.handleAppError(error))
                     .enableDelete(false)
                     .onAfterDelete(() => super.navigate([this.getTrainerUrl('clients')]))
                     .onAfterEdit(response => {

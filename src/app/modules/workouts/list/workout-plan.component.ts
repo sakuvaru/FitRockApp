@@ -58,7 +58,7 @@ export class WorkoutPlanComponent extends BaseComponent implements OnInit {
 
         this.assignWorkout(response.item);
       },
-      error => super.handleError(error));
+      error => super.handleAppError(error));
   }
 
   private assignWorkout(workout: Workout): void {

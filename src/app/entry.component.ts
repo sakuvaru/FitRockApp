@@ -53,7 +53,7 @@ export class EntryComponent extends BaseComponent {
         }
       },
       (error) => {
-        super.handleError(error);
+        super.handleAppError(error);
       });
   }
 

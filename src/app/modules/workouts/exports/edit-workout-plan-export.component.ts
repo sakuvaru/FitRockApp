@@ -116,7 +116,7 @@ export class EditWorkoutPlanExportComponent extends BaseComponent implements OnD
         this.stopGlobalLoader();
       },
       (error) => {
-        super.handleError(error);
+        super.handleAppError(error);
         this.stopGlobalLoader();
       });
   }

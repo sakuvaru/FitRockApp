@@ -40,7 +40,8 @@ export class DashboardComponent extends BaseComponent implements OnInit {
             this.authUser ? this.authUser.id : 0,
             this.currentLanguage ? this.currentLanguage.locale : '',
             {
-                onEventClick: event => this.dependencies.router.navigate([this.getTrainerUrl(`/clients/edit/${event.model.clientId}/appointments/view/${event.model.id}`)])
+                onEventClick: event => this.dependencies.router.navigate([this.getTrainerUrl(`/clients/edit/${event.model.clientId}/appointments/view/${event.model.id}`)]),
+                onError: error => super.handleAppError(error)
             }
         )
             .build();

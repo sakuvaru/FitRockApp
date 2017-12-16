@@ -1,13 +1,13 @@
-import { Component, Input, OnInit, OnDestroy } from '@angular/core';
-import { AppConfig, UrlConfig } from '../../config';
-import { ComponentDependencyService } from './component-dependency.service';
-import { ErrorResponse, ErrorReasonEnum } from '../../../lib/repository';
-import { ComponentConfig } from './component.config';
-import { AdminMenu } from './admin-menu';
-import { MenuItem, ResourceKey, LanguageConfig, AuthenticatedUser } from '../models/core.models';
-import { Observable, Subject } from 'rxjs/Rx';
+import { OnDestroy, OnInit } from '@angular/core';
 import { NavigationExtras } from '@angular/router';
+import { Observable, Subject } from 'rxjs/Rx';
+
+import { ErrorReasonEnum, ErrorResponse } from '../../../lib/repository';
+import { AppConfig, UrlConfig } from '../../config';
+import { AuthenticatedUser, LanguageConfig, MenuItem, ResourceKey } from '../models/core.models';
+import { ComponentDependencyService } from './component-dependency.service';
 import { ComponentSetup } from './component-setup.class';
+import { ComponentConfig } from './component.config';
 
 export abstract class BaseComponent implements OnInit, OnDestroy {
 
@@ -120,7 +120,7 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
         this.dependencies.router.navigate([UrlConfig.getEntryUrl()]);
     }
 
-    navigateToError(): void {
+    navigateToErrorPage(): void {
         this.dependencies.router.navigate([UrlConfig.getAppErrorUrl()]);
     }
 
@@ -156,7 +156,7 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
 
     // --------------------- Error handlers -------------- // 
 
-    protected handleError(error: any): void {
+    protected handleAppError(error: any): void {
         // force stop all loaders
         this.stopAllLoaders(true);
 
@@ -169,6 +169,12 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
             // handle server not running error
             if (error.reason === ErrorReasonEnum.ServerNotRunning) {
                 this.dependencies.router.navigate([UrlConfig.getServerDown()]);
+                return;
+            }
+
+            // handle not found error
+            if (error.reason === ErrorReasonEnum.NotFound) {
+                this.dependencies.router.navigate([UrlConfig.getItem404()]);
                 return;
             }
 
@@ -355,7 +361,7 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
             },
             error => {
                 this.stopAllLoaders();
-                this.handleError(error);
+                this.handleAppError(error);
             }
             );
     }
@@ -392,7 +398,7 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
             },
             error => {
                 this.stopAllLoaders();
-                this.handleError(error);
+                this.handleAppError(error);
             }
             );
     }

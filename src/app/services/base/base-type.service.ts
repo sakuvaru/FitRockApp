@@ -91,32 +91,35 @@ export abstract class BaseTypeService<TItem extends IItem> {
     buildInsertForm(
         options?: {
             formDefinitionQuery?: InsertFormQuery<TItem>,
-            insertQuery?: (formData: Object) => CreateItemQuery<TItem> 
+            insertQuery?: (formData: Object) => CreateItemQuery<TItem>
         }
     ): DataFormBuilder<TItem> {
         // query used to get form definition from server
         const formDefinitionQuery = options && options.formDefinitionQuery ? options.formDefinitionQuery : this.insertFormQuery();
         const createQuery = options && options.insertQuery ? options.insertQuery : (item: TItem) => this.create(item);
-    
+
         return this.dataFormService.insertForm<TItem>(this.type, formDefinitionQuery.get(), (formData) => createQuery(formData).set());
     }
 
-    buildEditForm (
+    buildEditForm(
         formDefinitionQuery: EditFormQuery<TItem>,
-        options?: {
-            editQuery?: (formData: Object) => EditItemQuery<TItem>,
-            deleteQuery?: (formData: Object) => DeleteItemQuery
-        }
-    ): DataFormBuilder<TItem>;   
-    buildEditForm (
-        itemId: number,
+        onError: (error) => void,
         options?: {
             editQuery?: (formData: Object) => EditItemQuery<TItem>,
             deleteQuery?: (formData: Object) => DeleteItemQuery
         }
     ): DataFormBuilder<TItem>;
-    buildEditForm (
+    buildEditForm(
+        itemId: number,
+        onError: (error) => void,
+        options?: {
+            editQuery?: (formData: Object) => EditItemQuery<TItem>,
+            deleteQuery?: (formData: Object) => DeleteItemQuery
+        }
+    ): DataFormBuilder<TItem>;
+    buildEditForm(
         queryOrId: EditFormQuery<TItem> | number,
+        onError: (error) => void,
         options?: {
             editQuery?: (formData: Object) => EditItemQuery<TItem>,
             deleteQuery?: (formData: Object) => DeleteItemQuery
@@ -126,8 +129,8 @@ export abstract class BaseTypeService<TItem extends IItem> {
         let formQuery: EditFormQuery<TItem> | undefined;
         if (queryOrId instanceof EditFormQuery) {
             formQuery = queryOrId;
-        }   
-        
+        }
+
         if (numberHelper.isNumber(queryOrId)) {
             formQuery = this.editFormQuery(+queryOrId);
         }
@@ -138,10 +141,11 @@ export abstract class BaseTypeService<TItem extends IItem> {
 
         const editQuery = options && options.editQuery ? options.editQuery : (formData: Object) => this.edit(formData);
         const deleteQuery = options && options.deleteQuery ? options.deleteQuery : (formData: Object) => this.delete(formData['Id']);
-   
+
         return this.dataFormService.editForm<TItem>(this.type, formQuery.get(), (formData) => editQuery(formData).set(), {
             delete: (formData) => deleteQuery(formData).set()
-        });
+        })
+            .onError(onError);
     }
 
     /* --------------------------- Data table builds ------------------------------- */
