@@ -68,7 +68,7 @@ export class CalendarComponent extends BaseWebComponent implements OnInit, OnCha
     /**
      * Collection of events
      */
-    public events?: CalendarModelInternal[];
+    public events: CalendarModelInternal[] = [];
 
     public currentDateRange: Date = new Date();
 
@@ -348,7 +348,11 @@ export class CalendarComponent extends BaseWebComponent implements OnInit, OnCha
                 return this.fetchEventsObservable();
             })
             .map(events => {
-                this.events = events;
+                if (events) {
+                    this.events = events;
+                } else {
+                    this.events = [];
+                }
             })
             .takeUntil(this.ngUnsubscribe)
             .subscribe(() => {

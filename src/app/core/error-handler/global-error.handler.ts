@@ -1,12 +1,13 @@
-import { ErrorHandler, Injectable, Injector } from '@angular/core';
 import { LocationStrategy, PathLocationStrategy } from '@angular/common';
-import { AppConfig, UrlConfig } from '../../config';
+import { ErrorHandler, Injectable, Injector } from '@angular/core';
 import { Router } from '@angular/router';
-import { LogService } from '../../services/';
+import { AuthService } from 'lib/auth/';
+import { Log } from '../../models';
+import { LogService } from '../../services';
 import { SharedService } from '../services/shared.service';
-import { AuthService } from '../../../lib/auth/';
-import { Log } from '../../models/';
 import * as StackTrace from 'stacktrace-js';
+
+import { AppConfig, UrlConfig } from '../../config';
 
 @Injectable()
 export class GlobalErrorHandler implements ErrorHandler {

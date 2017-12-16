@@ -27,7 +27,8 @@
                     <add-button tooltip="{{'webComponents.calendar.insertEventTooltip' | localize }}" (click)="openSelectAttendeeDialog()"></add-button>
                 </div>
 
-                <div *ngIf="events">
+                <div>
+                    <!-- Using ngIf="events" here caused calendar to not show randomly -->
                     <div [ngSwitch]="view">
                         <mwl-calendar-month-view [locale]="config.locale" [refresh]="calendarRefresh" *ngSwitchCase="'month'" [viewDate]="viewDate"
                             [events]="events" [activeDayIsOpen]="activeDayIsOpen" (dayClicked)="dayClicked($event.day)" (eventClicked)="eventClicked($event.event)">
