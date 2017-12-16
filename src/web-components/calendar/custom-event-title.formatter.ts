@@ -7,6 +7,8 @@ export class CustomEventTitleFormatter extends CalendarEventTitleFormatter {
 
   private locale: string = 'en';
 
+  private readonly defaultLocale: string = 'en';
+
   constructor( @Inject(LocalizationService) private localizationService: LocalizationService) {
     super();
     // set locale
@@ -17,7 +19,7 @@ export class CustomEventTitleFormatter extends CalendarEventTitleFormatter {
 
   month(event: CalendarEvent): string {
     const eventModel = event.meta.eventModel as CalendarEventModel<any>;
-    return `<b>${new Intl.DateTimeFormat(this.locale, {
+    return `<b>${new Intl.DateTimeFormat(this.locale ? this.locale : this.defaultLocale, {
       hour: 'numeric',
       minute: 'numeric'
     }).format(event.start)}</b> <span>${eventModel.eventUsername}</span> - ${event.title}`;
@@ -25,7 +27,7 @@ export class CustomEventTitleFormatter extends CalendarEventTitleFormatter {
 
   week(event: CalendarEvent): string {
     const eventModel = event.meta.eventModel as CalendarEventModel<any>;
-    return `<b>${new Intl.DateTimeFormat(this.locale, {
+    return `<b>${new Intl.DateTimeFormat(this.locale ? this.locale : this.defaultLocale, {
       hour: 'numeric',
       minute: 'numeric'
     }).format(event.start)}</b> ${event.title} <span class="w-calendar-subtitle">${eventModel.eventUsername}</span>`;
@@ -33,7 +35,7 @@ export class CustomEventTitleFormatter extends CalendarEventTitleFormatter {
 
   day(event: CalendarEvent): string {
     const eventModel = event.meta.eventModel as CalendarEventModel<any>;
-    return `<b>${new Intl.DateTimeFormat(this.locale, {
+    return `<b>${new Intl.DateTimeFormat(this.locale ? this.locale : this.defaultLocale, {
       hour: 'numeric',
       minute: 'numeric'
     }).format(event.start)}</b> ${event.title} <span class="w-calendar-subtitle">${eventModel.eventUsername}</span>`;
