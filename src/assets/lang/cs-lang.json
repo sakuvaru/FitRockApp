@@ -511,7 +511,7 @@
 			"workoutId" : "Trénink",
 			"workoutId.hint": "Volitelné: trénink, který se bude cvičit",
 			"locationId": "Místo setkání",
-			"dateCannotBeInPast": "Datum schůzky musí být v budoucnosti. Nevěříme na cestovaní v čase do minulosti, jen budoucnosti :)"
+			"dateCannotBeInPast": "Datum schůzky musí být v budoucnosti"
 		}
 	},
 	"webComponents": {

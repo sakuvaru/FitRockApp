@@ -136,6 +136,11 @@ class DataFormBuilderUtils {
             if (error instanceof FormErrorResponse) {
                 const formValidationError = error.formValidation.validationResult;
 
+                // error with custom message
+                if (formValidationError === FormValidationResultEnum.CustomWithMessageKey) {
+                    translationKey = `form.${stringHelper.toCamelCase(type)}.${error.formValidation.messageKey}`;
+                }
+
                 if (formValidationError === FormValidationResultEnum.InvalidCodename) {
                     if (field) {
                         translationKey = 'form.error.invalidCodenameWithLabel';
