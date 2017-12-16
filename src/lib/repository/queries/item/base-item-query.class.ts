@@ -1,22 +1,8 @@
-// config
-import { RepositoryConfig } from '../../repository.config';
+import { QueryService } from 'lib/repository/services/query.service';
 
-// services
-import { AuthHttp } from 'angular2-jwt';
-
-// models
-import { BaseQuery } from '../base-query.class';
-import { IItem } from '../../interfaces/iitem.interface';
 import { IOption } from '../../interfaces/ioption.interface';
-
-// filters
 import * as Options from '../../models/options';
-
-// responses
-import { ResponseMultiple, ResponseSingle } from '../../models/responses';
-
-// rxjs
-import { Observable } from 'rxjs/Rx';
+import { BaseQuery } from '../base-query.class';
 
 export abstract class BaseItemQuery extends BaseQuery {
 
@@ -26,11 +12,10 @@ export abstract class BaseItemQuery extends BaseQuery {
     abstract get(): any;
 
     constructor(
-        protected authHttp: AuthHttp,
-        protected config: RepositoryConfig,
+        protected queryService: QueryService,
         protected type: string,
     ) {
-        super(authHttp, config);
+        super(queryService);
     }
 
     // options

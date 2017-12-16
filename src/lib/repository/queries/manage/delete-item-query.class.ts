@@ -1,24 +1,8 @@
-// config
-import { RepositoryConfig } from '../../repository.config';
-
-// services
-import { AuthHttp } from 'angular2-jwt';
-import { BaseQuery } from '../base-query.class';
-
-// models
-import { IItem } from '../../interfaces/iitem.interface';
-
-// responses
-import {
-    ResponseDelete, ResponseCreate, ErrorResponse, FormErrorResponse,
-    ResponseEdit, ResponseMultiple, ResponseSingle
-} from '../../models/responses';
-
-// filters
-import * as Options from '../../models/options';
-
-// rxjs
 import { Observable } from 'rxjs/Rx';
+import { QueryService } from 'lib/repository/services/query.service';
+
+import { ResponseDelete } from '../../models/responses';
+import { BaseQuery } from '../base-query.class';
 
 export class DeleteItemQuery extends BaseQuery {
 
@@ -30,12 +14,11 @@ export class DeleteItemQuery extends BaseQuery {
     private _action: string;
 
     constructor(
-        protected authHttp: AuthHttp,
-        protected config: RepositoryConfig,
+        protected queryService: QueryService,
         protected type: string,
         protected itemId: number
     ) {
-        super(authHttp, config);
+        super(queryService);
         this._action = this.defaultAction;
     }
 

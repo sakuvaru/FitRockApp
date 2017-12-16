@@ -49,17 +49,15 @@ export class ErrorResponse {
     }
 }
 
-export class FormErrorResponse {
-
-    public reason: ErrorReasonEnum;
+export class FormErrorResponse extends ErrorResponse {
 
     constructor(
-        private reasonCode: number,
+        public reasonCode: number,
         public error: string,
         public formValidation: FormValidationResult,
         public response?: any
     ) {
-        this.reason = mapReason(reasonCode);
+        super(error, reasonCode, response);
     }
 }
 

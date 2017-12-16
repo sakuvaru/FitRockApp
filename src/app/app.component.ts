@@ -1,11 +1,6 @@
-import { Component, Input, Output, OnInit, EventEmitter, OnDestroy } from '@angular/core';
-import { AuthService } from '../lib/auth';
-import { ActivatedRoute, Params } from '@angular/router';
-import { ComponentDependencyService, BaseComponent, ComponentSetup } from './core';
-import { AppConfig, UrlConfig } from './config';
-import { AuthenticatedUserService } from './core/services/authenticated-user.service';
-import { AuthenticatedUser } from './core/models/core.models';
-import { Observable } from 'rxjs/Rx';
+import { Component } from '@angular/core';
+
+import { BaseComponent, ComponentDependencyService, ComponentSetup } from './core';
 
 /**
  * User is redirected to this component from Auth0 (see AppConfig + UrlConfig)
@@ -14,7 +9,7 @@ import { Observable } from 'rxjs/Rx';
   selector: 'app-root',
   templateUrl: './app.component.html',
 })
-export class AppComponent extends BaseComponent {
+export class AppComponent {
 
   setup(): ComponentSetup | null {
     return null;
@@ -23,6 +18,5 @@ export class AppComponent extends BaseComponent {
   constructor(
     protected dependencies: ComponentDependencyService,
   ) {
-    super(dependencies);
   }
 }

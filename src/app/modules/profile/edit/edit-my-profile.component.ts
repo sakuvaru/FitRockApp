@@ -43,7 +43,7 @@ export class EditMyProfileComponent extends BaseComponent implements OnInit {
     }
 
     private initForm(): void {
-        this.formConfig = this.dependencies.itemServices.userService.myProfileForm((error) => super.handleAppError(error))
+        this.formConfig = this.dependencies.itemServices.userService.myProfileForm()
             .enableDelete(false)
             .onAfterEdit(response => {
                 if (this.dependencies.coreServices.currentLanguageService.isDifferentThanCurrent(response.item.language)) {

@@ -46,7 +46,7 @@ export class EditWorkoutExerciseDialogComponent extends BaseComponent implements
   }
 
   private initForm(): void {
-    this.workoutExerciseForm = this.dependencies.itemServices.workoutExerciseService.buildEditForm(this.workoutExercise.id, (error) => super.handleAppError(error))
+    this.workoutExerciseForm = this.dependencies.itemServices.workoutExerciseService.buildEditForm(this.workoutExercise.id)
       .wrapInCard(false)
       .onAfterEdit((response) => {
         this.workoutExercise = response.item;

@@ -1,15 +1,8 @@
-// config
-import { RepositoryConfig } from '../../repository.config';
-
-// services
-import { AuthHttp } from 'angular2-jwt';
-import { BaseQuery } from '../base-query.class';
-
-// responses
-import { ResponsePost } from '../../models/responses';
-
-// rxjs
 import { Observable } from 'rxjs/Rx';
+import { QueryService } from 'lib/repository/services/query.service';
+
+import { ResponsePost } from '../../models/responses';
+import { BaseQuery } from '../base-query.class';
 
 export class PostQuery<T extends any> extends BaseQuery {
 
@@ -17,12 +10,11 @@ export class PostQuery<T extends any> extends BaseQuery {
     private _data: any = {};
 
     constructor(
-        protected authHttp: AuthHttp,
-        protected config: RepositoryConfig,
+        protected queryService: QueryService,
         protected type: string,
         protected action: string
     ) {
-        super(authHttp, config);
+        super(queryService);
         this._action = this.action;
     }
 

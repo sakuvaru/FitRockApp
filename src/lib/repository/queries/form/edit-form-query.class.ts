@@ -1,24 +1,9 @@
-// config
-import { RepositoryConfig } from '../../repository.config';
-
-// services
-import { AuthHttp } from 'angular2-jwt';
-
-// models
-import { IItem } from '../../interfaces/iitem.interface';
-import { BaseFormQuery } from './base-form-query.class';
-import { IOption } from '../../interfaces/ioption.interface';
-
-// filters
-import * as Options from '../../models/options';
-
-// responses
-import {
-    ResponseFormEdit
-} from '../../models/responses';
-
-// rxjs
 import { Observable } from 'rxjs/Rx';
+import { QueryService } from 'lib/repository/services/query.service';
+
+import { IItem } from '../../interfaces/iitem.interface';
+import { ResponseFormEdit } from '../../models/responses';
+import { BaseFormQuery } from './base-form-query.class';
 
 export class EditFormQuery<TItem extends IItem> extends BaseFormQuery {
 
@@ -26,12 +11,11 @@ export class EditFormQuery<TItem extends IItem> extends BaseFormQuery {
     private _disableCache = false;
 
     constructor(
-        protected authHttp: AuthHttp,
-        protected config: RepositoryConfig,
+        protected queryService: QueryService,
         protected type: string,
         protected itemId: number
     ) {
-        super(authHttp, config, type);
+        super(queryService, type);
         this._action = this._defaultAction;
     }
 

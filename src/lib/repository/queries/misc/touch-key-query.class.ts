@@ -1,18 +1,9 @@
-// config
-import { RepositoryConfig } from '../../repository.config';
-
-// services
-import { AuthHttp } from 'angular2-jwt';
-import { BaseQuery } from '../base-query.class';
-
-// responses
-import { ResponsePost } from '../../models/responses';
-
-// models
-import { CacheKeyType } from '../../models/cache-key-type';
-
-// rxjs
 import { Observable } from 'rxjs/Rx';
+import { QueryService } from 'lib/repository/services/query.service';
+
+import { CacheKeyType } from '../../models/cache-key-type';
+import { ResponsePost } from '../../models/responses';
+import { BaseQuery } from '../base-query.class';
 
 export class TouchKeyQuery extends BaseQuery {
 
@@ -21,13 +12,12 @@ export class TouchKeyQuery extends BaseQuery {
     private _action: string;
 
     constructor(
-        protected authHttp: AuthHttp,
-        protected config: RepositoryConfig,
+        protected queryService: QueryService,
         protected type: string,
         private cacheKeyType: CacheKeyType,
         private itemId?: number
     ) {
-        super(authHttp, config);
+        super(queryService);
         this._action = this._defaultAction;
     }
 

@@ -46,7 +46,7 @@ export class EditDietFoodDialogComponent extends BaseComponent implements OnInit
   }
 
   private initForm(): void {
-    this.dietFoodForm = this.dependencies.itemServices.dietFoodService.buildEditForm(this.dietFood.id, (error) => super.handleAppError(error))
+    this.dietFoodForm = this.dependencies.itemServices.dietFoodService.buildEditForm(this.dietFood.id)
       .wrapInCard(false)
       .fieldLabelResolver((field, originalLabel) => {
         if (field.key === 'UnitValue') {

@@ -127,7 +127,7 @@ class DataFormBuilderUtils {
         return obs.catch(error => {
             
             // system, unknown error
-            if (!(error instanceof ErrorResponse) || error.reason !== ErrorReasonEnum.FormError) {
+            if ((!(error instanceof ErrorResponse)) || error.reason !== ErrorReasonEnum.FormError) {
                 return Observable.throw(new DataFormError(
                     error,
                     'form.error.unknown'

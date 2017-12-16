@@ -1,18 +1,8 @@
-// config
-import { RepositoryConfig } from '../../repository.config';
-
-// services
-import { AuthHttp } from 'angular2-jwt';
-
-// models
-import { BaseMultipleItemQuery } from './base-multiple-item-query.class';
-import { IItem } from '../../interfaces/iitem.interface';
-
-// responses
-import { ResponseMultiple } from '../../models/responses';
-
-// rxjs
 import { Observable } from 'rxjs/Rx';
+import { QueryService } from 'lib/repository/services/query.service';
+
+import { ResponseMultiple } from '../../models/responses';
+import { BaseMultipleItemQuery } from './base-multiple-item-query.class';
 
 export class MultipleItemQueryCustom<TModel> extends BaseMultipleItemQuery {
 
@@ -23,11 +13,10 @@ export class MultipleItemQueryCustom<TModel> extends BaseMultipleItemQuery {
 
 
     constructor(
-        protected authHttp: AuthHttp,
-        protected config: RepositoryConfig,
+        protected queryService: QueryService,
         protected type: string,
     ) {
-        super(authHttp, config, type);
+        super(queryService, type);
         this._action = this.defaultAction;
     }
 

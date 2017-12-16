@@ -40,7 +40,7 @@ export class EditExerciseComponent extends BaseComponent implements OnInit {
         this.activatedRoute.params
             .takeUntil(this.ngUnsubscribe)
             .map((params: Params) => {
-                this.formConfig = this.dependencies.itemServices.exerciseService.buildEditForm(+params['id'], (error) => super.handleAppError(error))
+                this.formConfig = this.dependencies.itemServices.exerciseService.buildEditForm(+params['id'])
                     .onAfterDelete(() => super.navigate([this.getTrainerUrl('exercises')]))
                     .onEditFormLoaded(form => {
                         this.setConfig({

@@ -1,24 +1,10 @@
-// config
-import { RepositoryConfig } from '../../repository.config';
-
-// services
-import { AuthHttp } from 'angular2-jwt';
-import { BaseQuery } from '../base-query.class';
-
-// models
-import { BaseItemQuery } from './base-item-query.class';
-import { IItem } from '../../interfaces/iitem.interface';
-import { ItemCountQuery } from '../count/item-count-query.class';
-
-// responses
-import { ResponseMultiple } from '../../models/responses';
-
-// options
-import * as Options from '../../models/options';
-import { IOption } from '../../interfaces/ioption.interface';
-
-// rxjs
+import { QueryService } from 'lib/repository/services/query.service';
 import { Observable } from 'rxjs/Rx';
+
+import * as Options from '../../models/options';
+import { ResponseMultiple } from '../../models/responses';
+import { ItemCountQuery } from '../count/item-count-query.class';
+import { BaseItemQuery } from './base-item-query.class';
 
 export abstract class BaseMultipleItemQuery extends BaseItemQuery {
 
@@ -28,18 +14,17 @@ export abstract class BaseMultipleItemQuery extends BaseItemQuery {
     private readonly createdByCurrentUserAction = 'getCreatedByCurrentUser';
 
     constructor(
-        protected authHttp: AuthHttp,
-        protected config: RepositoryConfig,
+        protected queryService: QueryService,
         protected type: string,
     ) {
-        super(authHttp, config, type);
+        super(queryService, type);
     }
 
     // execution
     abstract get(): Observable<ResponseMultiple<any>>;
 
     toCountQuery(): ItemCountQuery {
-        const countQuery = new ItemCountQuery(this.authHttp, this.config, this.type);
+        const countQuery = new ItemCountQuery(this.queryService, this.type);
 
         this._options.forEach(option => {
             countQuery.addOption(option);

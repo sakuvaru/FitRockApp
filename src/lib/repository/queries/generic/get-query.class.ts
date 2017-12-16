@@ -1,31 +1,20 @@
-// config
-import { RepositoryConfig } from '../../repository.config';
+import { Observable } from 'rxjs/Rx';
+import { QueryService } from 'lib/repository/services/query.service';
 
-// services
-import { AuthHttp } from 'angular2-jwt';
-import { BaseQuery } from '../base-query.class';
-
-// models
 import { IOption } from '../../interfaces/ioption.interface';
 import * as Options from '../../models/options';
-
-// responses
-import { ResponsePost } from '../../models/responses';
-
-// rxjs
-import { Observable } from 'rxjs/Rx';
+import { BaseQuery } from '../base-query.class';
 
 export class GetQuery<T extends any> extends BaseQuery {
 
     protected options: IOption[] = [];
 
     constructor(
-        protected authHttp: AuthHttp,
-        protected config: RepositoryConfig,
+        protected queryService: QueryService,
         protected controller: string,
         protected action: string,
     ) {
-        super(authHttp, config);
+        super(queryService);
     }
 
     withCustomOption(optionName: string, value: string | boolean | number | Date): this {

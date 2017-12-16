@@ -1,30 +1,19 @@
-// config
-import { RepositoryConfig } from '../../repository.config';
-
-// services
-import { AuthHttp } from 'angular2-jwt';
-import { BaseQuery } from '../base-query.class';
-
-// models
-import { FetchedFile } from '../../models/fetched-file.class';
-
-// responses
-import { ResponseFileSingle } from '../../models/responses';
-
-// rxjs
 import { Observable } from 'rxjs/Rx';
+import { QueryService } from 'lib/repository/services/query.service';
+
+import { ResponseFileSingle } from '../../models/responses';
+import { BaseQuery } from '../base-query.class';
 
 export class SingleFileQuery extends BaseQuery {
 
     private _action: string;
 
     constructor(
-        protected authHttp: AuthHttp,
-        protected config: RepositoryConfig,
+        protected queryService: QueryService,
         protected controller: string,
         protected action: string
     ) {
-        super(authHttp, config);
+        super(queryService);
         this._action = action;
     }
 

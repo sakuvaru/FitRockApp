@@ -45,7 +45,7 @@ export class EditWorkoutExportComponent extends BaseComponent implements OnInit,
     }
 
     private initForm(workoutId: number): void {
-        this.formConfig = this.dependencies.itemServices.workoutService.buildEditForm(workoutId, (error) => super.handleAppError(error))
+        this.formConfig = this.dependencies.itemServices.workoutService.buildEditForm(workoutId)
             .onAfterDelete(() => super.navigate([super.getTrainerUrl('workouts')]))
             .onEditFormLoaded(form => {
                 this.loadWorkout.next(form.item);

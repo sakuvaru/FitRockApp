@@ -1,29 +1,20 @@
-// config
-import { RepositoryConfig } from '../../repository.config';
-
-// services
-import { AuthHttp } from 'angular2-jwt';
-import { BaseQuery } from '../base-query.class';
-
-// responses
-import { IItem } from '../../interfaces/iitem.interface';
-import { ResponseUploadSingle } from '../../models/responses';
-
-// rxjs
 import { Observable } from 'rxjs/Rx';
+import { QueryService } from 'lib/repository/services/query.service';
+
+import { ResponseUploadSingle } from '../../models/responses';
+import { BaseQuery } from '../base-query.class';
 
 export class UploadSingleQuery extends BaseQuery {
 
     private _action: string;
 
     constructor(
-        protected authHttp: AuthHttp,
-        protected config: RepositoryConfig,
+        protected queryService: QueryService,
         protected controller: string,
         private action: string,
         private file: File,
     ) {
-        super(authHttp, config);
+        super(queryService);
         this._action = this.action;
     }
 

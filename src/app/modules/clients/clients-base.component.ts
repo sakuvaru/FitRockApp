@@ -34,7 +34,6 @@ export abstract class ClientsBaseComponent extends BaseComponent implements OnIn
      */
     public client: User;
 
-
     constructor(
         protected componentDependencyService: ComponentDependencyService,
         protected activatedRoute: ActivatedRoute

@@ -1,56 +1,48 @@
-// core models
 import { Headers, RequestOptions } from '@angular/http';
-import { IOption } from '../interfaces/ioption.interface';
 import { Response } from '@angular/http';
-import { IItem } from '../interfaces/iitem.interface';
-import { RepositoryConfig } from '../repository.config';
-import { UpdateItemsRequest } from '../models/update-items-request.class';
-
-// raw responses
-import {
-    IResponseDeleteFile, IResponseFileMultiple, IResponseFileSingle, IResponseUploadMultipleRaw,
-    IResponseUploadSingleRaw, IResponseCountRaw, IResponsePostRaw, IResponseFormEditRaw,
-    IResponseFormInsertRaw, IResponseCreateRaw, IResponseDeleteRaw, IResponseEditRaw, IResponseMultipleRaw,
-    IResponseSingleRaw, IErrorResponseRaw, IFormErrorResponseRaw, IResponseUpdateItemsOrder
-} from '../interfaces/iraw-responses';
-
-// responses
-import {
-    ResponseDeleteFile, ResponseFileMultiple, ResponseFileSingle, ResponseUploadMultiple,
-    ResponseUploadSingle, ResponseCount, ResponsePost, ResponseFormEdit, ResponseFormInsert,
-    ResponseDelete, ResponseCreate, ResponseEdit, ResponseMultiple, ResponseSingle,
-    ErrorResponse, FormErrorResponse, ResponseUpdateItemsOrder
-} from '../models/responses';
-
-// form validation models
-import { FormValidationResult } from '../models/form-validation-result.class';
-import { IFormValidationResult } from '../interfaces/iform-validation-result.interface';
-
-// services
 import { AuthHttp } from 'angular2-jwt';
-import { TypeResolverService } from './type-resolver.service';
-import { ResponseMapService } from './response-map.service';
-
-// enums
-import { ErrorReasonEnum } from '../enums/error-reason.enum';
-
-// rxjs
 import { Observable, Subject } from 'rxjs/Rx';
+
+import { ErrorReasonEnum } from '../enums/error-reason.enum';
+import { IFormValidationResult } from '../interfaces/iform-validation-result.interface';
+import { IItem } from '../interfaces/iitem.interface';
+import { IOption } from '../interfaces/ioption.interface';
+import { IErrorResponseRaw, IFormErrorResponseRaw } from '../interfaces/iraw-responses';
+import { FormValidationResult } from '../models/form-validation-result.class';
+import {
+    ErrorResponse,
+    FormErrorResponse,
+    ResponseCount,
+    ResponseCreate,
+    ResponseDelete,
+    ResponseDeleteFile,
+    ResponseEdit,
+    ResponseFileMultiple,
+    ResponseFileSingle,
+    ResponseFormEdit,
+    ResponseFormInsert,
+    ResponseMultiple,
+    ResponsePost,
+    ResponseSingle,
+    ResponseUpdateItemsOrder,
+    ResponseUploadMultiple,
+    ResponseUploadSingle,
+} from '../models/responses';
+import { UpdateItemsRequest } from '../models/update-items-request.class';
+import { RepositoryConfig } from '../repository.config';
+import { ResponseMapService } from './response-map.service';
 
 export class QueryService {
 
+    private static processingRequestSource = new Subject<boolean>();
+    private static requestErrorSource = new Subject<ErrorResponse>();
+
     private genericErrorMessage = `An error occurred in 'RepositoryService'`;
 
-    // services
     private responseMapService: ResponseMapService;
 
-    // Observable string sources
-    public processingRequestSource = new Subject<boolean>();
-    public requestErrorSource = new Subject<ErrorResponse>();
-
-    // Observable string streams
-    public requestStateChanged$ = this.processingRequestSource.asObservable();
-    public requestErrorChange$ = this.requestErrorSource.asObservable();
+    public requestState: Observable<boolean> = QueryService.processingRequestSource.asObservable();
+    public error: Observable<ErrorResponse> = QueryService.requestErrorSource.asObservable();
 
     constructor(
         protected authHttp: AuthHttp,
@@ -61,15 +53,15 @@ export class QueryService {
 
     // Service message commands
     private finishRequest(): void {
-        this.processingRequestSource.next(false);
+        QueryService.processingRequestSource.next(false);
     }
 
     private startRequest(): void {
-        this.processingRequestSource.next(true);
+        QueryService.processingRequestSource.next(true);
     }
 
     private raiseError(errorResponse: ErrorResponse): void {
-        this.requestErrorSource.next(errorResponse);
+        QueryService.requestErrorSource.next(errorResponse);
     }
 
     private addOptionsToUrl(url: string, options?: IOption[]): string {
@@ -294,19 +286,11 @@ export class QueryService {
 
     /*--------------------- Error handling -------------------- */
 
-     // error handling
-     private handleError(response: Response | any): IErrorResponseRaw | IFormErrorResponseRaw {
-        // raise error
-        this.raiseError(response);
-
-        if (this.config.logErrorsToConsole) {
-            console.error(response);
-        }
-
+    private getError(response: Response | any): ErrorResponse {
         if (response instanceof Response) {
             // Server not running error
             if (response.status === 0) {
-                 // return error response
+                // return error response
                 return new ErrorResponse('Server is not running, please try again later', ErrorReasonEnum.ServerNotRunning, response);
             }
 
@@ -325,7 +309,7 @@ export class QueryService {
                 const iformValidation = iFormErrorResponse.formValidation as IFormValidationResult;
 
                 const formValidation = new FormValidationResult(
-                    iformValidation.validationResult, 
+                    iformValidation.validationResult,
                     iformValidation.message,
                     iformValidation.isInvalid,
                     iformValidation.messageKey,
@@ -340,6 +324,20 @@ export class QueryService {
 
         // return ErrorResponse for unknown error
         return new ErrorResponse(this.genericErrorMessage, ErrorReasonEnum.RepositoryException, response);
+    }
+
+    private handleError(response: Response | any): IErrorResponseRaw | IFormErrorResponseRaw {
+        if (this.config.logErrorsToConsole) {
+            console.error(response);
+        }
+
+        // get error model
+        const error = this.getError(response);
+
+        // raise error
+        this.raiseError(error);
+
+        return error;
     }
 
     /* -------------------- Response methods ------------------ */

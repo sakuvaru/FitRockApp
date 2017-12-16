@@ -103,7 +103,6 @@ export abstract class BaseTypeService<TItem extends IItem> {
 
     buildEditForm(
         formDefinitionQuery: EditFormQuery<TItem>,
-        onError: (error) => void,
         options?: {
             editQuery?: (formData: Object) => EditItemQuery<TItem>,
             deleteQuery?: (formData: Object) => DeleteItemQuery
@@ -111,7 +110,6 @@ export abstract class BaseTypeService<TItem extends IItem> {
     ): DataFormBuilder<TItem>;
     buildEditForm(
         itemId: number,
-        onError: (error) => void,
         options?: {
             editQuery?: (formData: Object) => EditItemQuery<TItem>,
             deleteQuery?: (formData: Object) => DeleteItemQuery
@@ -119,7 +117,6 @@ export abstract class BaseTypeService<TItem extends IItem> {
     ): DataFormBuilder<TItem>;
     buildEditForm(
         queryOrId: EditFormQuery<TItem> | number,
-        onError: (error) => void,
         options?: {
             editQuery?: (formData: Object) => EditItemQuery<TItem>,
             deleteQuery?: (formData: Object) => DeleteItemQuery
@@ -144,8 +141,7 @@ export abstract class BaseTypeService<TItem extends IItem> {
 
         return this.dataFormService.editForm<TItem>(this.type, formQuery.get(), (formData) => editQuery(formData).set(), {
             delete: (formData) => deleteQuery(formData).set()
-        })
-            .onError(onError);
+        });
     }
 
     /* --------------------------- Data table builds ------------------------------- */

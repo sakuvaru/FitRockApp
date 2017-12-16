@@ -18,10 +18,10 @@ export class UserService extends BaseTypeService<User> {
         });
     }
 
-    myProfileForm(onError: (error) => void): DataFormBuilder<User> {
+    myProfileForm(): DataFormBuilder<User> {
         const myProfileFormQuery = super.editFormQuery(-1).withCustomAction('GetMyProfileForm');
 
-        return super.buildEditForm(myProfileFormQuery, onError);
+        return super.buildEditForm(myProfileFormQuery);
     }
 
     clients(): MultipleItemQuery<User> {

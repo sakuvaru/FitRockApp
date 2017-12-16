@@ -22,7 +22,9 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
      */
     protected ngUnsubscribe: Subject<void> = new Subject<void>();
 
-    // snackbar config
+    /**
+     * Duration for snackbar
+     */
     private readonly snackbarDefaultDuration: number = 2500;
 
     // translations
@@ -34,14 +36,25 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
     private dialogDynamicTranslationMessage: string;
     private dialogDynamicTranslationTitle: string;
 
-    // component config
+    /**
+     * Component config
+     */
     protected componentConfig: ComponentConfig = new ComponentConfig();
 
-    // language
+    /**
+     * Current language
+     */
     protected currentLanguage?: LanguageConfig;
 
-    // auth user
+    /**
+     * Current user
+     */
     protected authUser?: AuthenticatedUser;
+
+    /**
+     * Indicates if component subscribed to repository errors
+     */
+    private subscribedToRepositoryErrors: boolean = false;
 
     /**
     * Every child component should setup its base config.
@@ -52,6 +65,7 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
     abstract setup(): ComponentSetup | null | undefined;
 
     constructor(protected dependencies: ComponentDependencyService) {
+        this.setupComponent();
     }
 
     // ----------------------- Lifecycle Events --------------------- // 
@@ -61,7 +75,6 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
      * this method will not be called.
      */
     ngOnInit(): void {
-        this.setupComponent();
     }
 
     /**
@@ -156,6 +169,10 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
 
     // --------------------- Error handlers -------------- // 
 
+    private handleSubscribeError(error: any): void {
+        // no need to do anything here as errors are handled with handleAppError
+    }
+
     protected handleAppError(error: any): void {
         // force stop all loaders
         this.stopAllLoaders(true);
@@ -166,6 +183,11 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
         }
 
         if (error instanceof ErrorResponse) {
+            // don't do anything if its form error as these error should be handled by individual components
+            if (error.reason === ErrorReasonEnum.FormError) {
+                return;
+            }
+
             // handle server not running error
             if (error.reason === ErrorReasonEnum.ServerNotRunning) {
                 this.dependencies.router.navigate([UrlConfig.getServerDown()]);
@@ -284,6 +306,9 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
             this.dependencies.coreServices.sharedService.setComponentSetup(setup);
         }
 
+        // subscribe to repository errors
+        this.subscribeToRepositoryErrors();
+
         // init current language
         this.currentLanguage = this.dependencies.coreServices.currentLanguageService.getLanguage();
 
@@ -313,6 +338,22 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
             currentSetup = { initialized: initialize };
         }
         this.dependencies.coreServices.sharedService.setComponentSetup(currentSetup);
+    }
+
+    private subscribeToRepositoryErrors(): void {
+        if (this.subscribedToRepositoryErrors) {
+            return;
+        }
+
+        this.subscribedToRepositoryErrors = true;
+
+        this.dependencies.coreServices.repositoryClient.queryService.error
+            .map(error => {
+                this.handleAppError(error);
+            })
+            .takeUntil(this.ngUnsubscribe)
+            .subscribe();
+
     }
 
     // --------------- Common method aliases ------------------ //
@@ -361,7 +402,7 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
             },
             error => {
                 this.stopAllLoaders();
-                this.handleAppError(error);
+                this.handleSubscribeError(error);
             }
             );
     }
@@ -398,7 +439,7 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
             },
             error => {
                 this.stopAllLoaders();
-                this.handleAppError(error);
+                this.handleSubscribeError(error);
             }
             );
     }

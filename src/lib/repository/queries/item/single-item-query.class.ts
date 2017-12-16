@@ -1,28 +1,18 @@
-// config
-import { RepositoryConfig } from '../../repository.config';
-
-// services
-import { AuthHttp } from 'angular2-jwt';
-
-// models
-import { BaseSingleItemQuery } from './base-single-item-query.class';
-import { IItem } from '../../interfaces/iitem.interface';
-
-// responses
-import { ResponseSingle } from '../../models/responses';
-
-// rxjs
+import { QueryService } from 'lib/repository/services/query.service';
 import { Observable } from 'rxjs/Rx';
+
+import { IItem } from '../../interfaces/iitem.interface';
+import { ResponseSingle } from '../../models/responses';
+import { BaseSingleItemQuery } from './base-single-item-query.class';
 
 export class SingleItemQuery<TItem extends IItem> extends BaseSingleItemQuery {
 
     constructor(
-        protected authHttp: AuthHttp,
-        protected config: RepositoryConfig,
+        protected queryService: QueryService,
         protected type: string,
         protected action: string
     ) {
-        super(authHttp, config, type);
+        super(queryService, type);
         this._action = action;
     }
 
@@ -42,8 +32,7 @@ export class SingleItemQuery<TItem extends IItem> extends BaseSingleItemQuery {
 
 export class SingleItemQueryInit<TItem extends IItem> {
     constructor(
-        protected authHttp: AuthHttp,
-        protected config: RepositoryConfig,
+        protected queryService: QueryService,
         protected type: string,
     ) {
     }
@@ -51,11 +40,11 @@ export class SingleItemQueryInit<TItem extends IItem> {
     byId(id: number): SingleItemQuery<TItem> {
         const action = 'getbyid/' + id;
 
-        return new SingleItemQuery(this.authHttp, this.config, this.type, action);
+        return new SingleItemQuery(this.queryService, this.type, action);
     }
 
     withCustomAction(action: string): SingleItemQuery<TItem> {
-        return new SingleItemQuery(this.authHttp, this.config, this.type, action);
+        return new SingleItemQuery(this.queryService, this.type, action);
     }
 }
 
