@@ -1,5 +1,4 @@
-import { Component, Input, OnDestroy } from '@angular/core';
-import { TdMediaService } from '@covalent/core';
+import { Component, Input } from '@angular/core';
 
 import { ComponentDependencyService } from '../../core';
 

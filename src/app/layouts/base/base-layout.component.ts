@@ -1,12 +1,8 @@
-
-// common
-import { Component, Input, OnDestroy, ChangeDetectorRef, } from '@angular/core';
-import { TdMediaService } from '@covalent/core';
+import { OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs/Rx';
+
 import { AppConfig, UrlConfig } from '../../config';
-import { stringHelper } from '../../../lib/utilities';
-import { GlobalLoaderStatus, ComponentDependencyService, MenuItemType  } from '../../core';
-import * as moment from 'moment';
+import { ComponentDependencyService, MenuItemType } from '../../core';
 
 export class BaseLayoutComponent implements OnDestroy {
 

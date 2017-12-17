@@ -1,20 +1,13 @@
-
-// common
-import { Component, Input, OnDestroy, ChangeDetectorRef, OnInit, AfterViewInit } from '@angular/core';
-import { TdMediaService } from '@covalent/core';
-import { Subject } from 'rxjs/Rx';
-import { AppConfig, UrlConfig } from '../../config';
-import { stringHelper } from '../../../lib/utilities';
-import { GlobalLoaderStatus, ComponentDependencyService, MenuItemType, MenuItem, AdminMenu } from '../../core';
-import { BaseLayoutComponent } from './base-layout.component';
+import { AfterViewInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { TdMediaService } from '@covalent/core';
+
+import { stringHelper } from '../../../lib/utilities';
+import { AppConfig } from '../../config';
+import { AdminMenu, ComponentDependencyService, GlobalLoaderStatus, MenuItem } from '../../core';
+import { BaseLayoutComponent } from './base-layout.component';
 
 export class BaseAdminLayoutComponent extends BaseLayoutComponent implements OnDestroy, AfterViewInit {
-
-    // Admin search
-    private readonly searchDebounceTime: number = 300;
-    private readonly searchControl = new FormControl();
-    private componentSearchValue: string = '';
 
     // shortcut to media service
     public media: TdMediaService;
@@ -75,9 +68,6 @@ export class BaseAdminLayoutComponent extends BaseLayoutComponent implements OnD
             this.displayUsername = user.firstName + ' ' + user.lastName;
             this.email = user.email;
         }
-
-        // init component search if search is enabled
-        this.initComponentSearch();
 
         // register subscriptions
         this.dependencies.coreServices.sharedService.globalLoaderChanged$
@@ -159,15 +149,6 @@ export class BaseAdminLayoutComponent extends BaseLayoutComponent implements OnD
 
     protected calculateShowComponent(): void {
         this.showComponent = !(!this.componentIsInitialized);
-    }
-
-    protected initComponentSearch(): void {
-        this.searchControl.valueChanges
-            .debounceTime(this.searchDebounceTime)
-            .takeUntil(this.ngUnsubscribe)
-            .subscribe(search => {
-                this.dependencies.coreServices.sharedService.setComponentSearch(search);
-            });
     }
 
     protected handleComponentSearch(search: string): void {

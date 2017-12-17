@@ -26,7 +26,7 @@
 
   <img *ngIf="showAvatar" mat-icon-button class="w-toolbar-avatar w-cursor-pointer" alt="profile image" [routerLink]="getAuthUrl('profile/edit')" matTooltip="{{ 'userMenu.profile' | localize }}" [src]="userAvatarUrl ? userAvatarUrl : defaultAvatarUrl" />
 
-  <mat-menu panelClass="w-feed-menu" #feedsMenu="matMenu" [overlapTrigger]="false">
+  <mat-menu class="w-feed-menu" #feedsMenu="matMenu" [overlapTrigger]="false">
     <td-menu>
       <ng-container *ngFor="let feed of feeds; let last = last">
         <ng-container *ngIf="{ icon: getFeedIcon(feed), image: getFeedImage(feed) }; let data">

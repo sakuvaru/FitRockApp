@@ -57,6 +57,7 @@
 	"shared": {
 		"login": "Přihlášení",
 		"search": "Hledat",
+		"searchClient": "Najít klienta",
 		"updated": "Poslední změna",
 		"close": "Zavřít",
 		"saved": "Uloženo",

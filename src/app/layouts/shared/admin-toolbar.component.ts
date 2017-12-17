@@ -1,10 +1,9 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { ComponentDependencyService, BaseComponent, MenuItemType, ComponentSetup } from '../../core';
-import { AppConfig, UrlConfig } from '../../config';
+import { Component } from '@angular/core';
+import { Observable } from 'rxjs/Rx';
 
-import { StringHelper } from '../../../lib/utilities';
-import { Feed, FeedResult } from '../../models';
-import { Observable, Subscriber } from 'rxjs/Rx';
+import { AppConfig, UrlConfig } from '../../config';
+import { ComponentDependencyService } from '../../core';
+import { Feed } from '../../models';
 import { BaseLayoutComponent } from '../base/base-layout.component';
 
 @Component({

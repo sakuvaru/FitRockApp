@@ -1,10 +1,5 @@
-
-// common
-import { Component, ChangeDetectorRef } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { ComponentDependencyService } from '../core';
-import { AppConfig, UrlConfig } from '../config';
-
-// required by component
 import { BaseAdminLayoutComponent } from './base/base-admin-layout.component';
 
 @Component({
