@@ -52,12 +52,14 @@ export class ClientsOverviewComponent extends ClientsBaseComponent implements On
         { 
           value: (item) => item.getFullName(), 
           name: (item) => super.translate('module.clients.fullName'),
-          sortKey: 'FirstName'
+          sortKey: 'FirstName',
+          hideOnSmallScreen: false
         },
         { 
           value: (item) => item.email,
           name: (item) => super.translate('module.clients.email'),
-          sortKey: 'Email'
+          sortKey: 'Email',
+          hideOnSmallScreen: true
         }
       ])
       .withFilters(

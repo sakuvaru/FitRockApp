@@ -55,7 +55,8 @@ export class ClientDietsComponent extends BaseComponent implements OnInit {
         {
           value: (item) => item.dietName,
           name: (item) => super.translate('module.diets.dietName'),
-          sortKey: 'DietName'
+          sortKey: 'DietName',
+          hideOnSmallScreen: false
         },
         {
           value: (item) => {
@@ -65,17 +66,20 @@ export class ClientDietsComponent extends BaseComponent implements OnInit {
             return '';
           },
           name: (item) => super.translate('module.diets.createdForClient'),
-          sortKey: 'Client.FirstName'
+          sortKey: 'Client.FirstName',
+          hideOnSmallScreen: false
         },
         {
           value: (item) => item.dietCategory.categoryName,
           name: (item) => super.translate('module.diets.dietCategory'),
-          sortKey: 'DietCategory.CategoryName'
+          sortKey: 'DietCategory.CategoryName',
+          hideOnSmallScreen: true
         },
         {
           name: (item) => super.translate('shared.updated'),
           value: (item) => super.fromNow(item.updated),
-          sortKey: 'Updated'
+          sortKey: 'Updated',
+          hideOnSmallScreen: true
         }
       ])
       .withDynamicFilters(

@@ -81,8 +81,8 @@
               <mat-header-cell mat-sort-header *matHeaderCellDef fxHide="false" [fxHide.sm]="fieldWrapper.field.hideOnSmallScreen === true"
                 [fxHide.xs]="fieldWrapper.field.hideOnSmallScreen === true">
                 <ng-container *ngIf="fieldWrapper.field.name(item) as nameResult">
-                  <span *ngIf="fieldWrapper.field.isObservable(nameResult)">{{ nameResult| async }}</span>
-                  <span *ngIf="!fieldWrapper.field.isObservable(nameResult)">{{ nameResult }}</span>
+                  <span class="text-truncate" *ngIf="fieldWrapper.field.isObservable(nameResult)">{{ nameResult| async }}</span>
+                  <span class="text-truncate" *ngIf="!fieldWrapper.field.isObservable(nameResult)">{{ nameResult }}</span>
                 </ng-container>
               </mat-header-cell>
             </ng-container>
@@ -92,8 +92,8 @@
               <mat-header-cell  *matHeaderCellDef fxHide="false" [fxHide.sm]="fieldWrapper.field.hideOnSmallScreen === true"
                 [fxHide.xs]="fieldWrapper.field.hideOnSmallScreen === true">
                 <ng-container *ngIf="fieldWrapper.field.name(item) as nameResult">
-                  <span *ngIf="fieldWrapper.field.isObservable(nameResult)">{{ nameResult| async }}</span>
-                  <span *ngIf="!fieldWrapper.field.isObservable(nameResult)">{{ nameResult }}</span>
+                  <span class="text-truncate" *ngIf="fieldWrapper.field.isObservable(nameResult)">{{ nameResult| async }}</span>
+                  <span class="text-truncate" *ngIf="!fieldWrapper.field.isObservable(nameResult)">{{ nameResult }}</span>
                 </ng-container>
               </mat-header-cell>
             </ng-container>
@@ -101,8 +101,8 @@
               <!-- Cell value -->
               <mat-cell *matCellDef="let item" fxHide="false" [fxHide.sm]="fieldWrapper.field.hideOnSmallScreen === true" [fxHide.xs]="fieldWrapper.field.hideOnSmallScreen === true">
                 <ng-container *ngIf="fieldWrapper.field.value(item) as valueResult">
-                  <span *ngIf="fieldWrapper.field.isObservable(valueResult)">{{ valueResult| async }}</span>
-                  <span *ngIf="!fieldWrapper.field.isObservable(valueResult)">{{ valueResult }}</span>
+                  <span class="text-truncate" *ngIf="fieldWrapper.field.isObservable(valueResult)">{{ valueResult| async }}</span>
+                  <span class="text-truncate" *ngIf="!fieldWrapper.field.isObservable(valueResult)">{{ valueResult }}</span>
                 </ng-container>
               </mat-cell>
 

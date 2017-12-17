@@ -13,7 +13,7 @@ import { DataTableComponent } from './data-table.component';
     imports: [
         CommonModule,
         SharedWebComponentModule,
-        RouterModule, // router needs to be importes so that routerLink can be used within components
+        RouterModule, 
         LoaderModule, 
         FormsModule,
         ReactiveFormsModule,

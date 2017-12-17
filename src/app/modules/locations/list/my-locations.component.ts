@@ -47,12 +47,14 @@ export class MyLocationsComponent extends BaseComponent implements OnInit {
         {
           value: (item) => item.locationName,
           name: (item) => super.translate('module.locations.locationName'),
-          sortKey: 'LocationName'
+          sortKey: 'LocationName',
+          hideOnSmallScreen: false
         },
         {
           name: (item) => super.translate('shared.updated'),
           value: (item) => super.fromNow(item.updated),
-          sortKey: 'Updated'
+          sortKey: 'Updated',
+          hideOnSmallScreen: true
         }
       ])
       .onClick((item) => super.navigate([super.getTrainerUrl('locations/view/') + item.id]))

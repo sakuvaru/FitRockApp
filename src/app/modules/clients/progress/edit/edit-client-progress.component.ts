@@ -176,20 +176,24 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
                             : item.progressItemType.typeName
                     ,
                     name: (item) => super.translate('module.progressItemTypes.typeName'),
+                    hideOnSmallScreen: false
                 },
                 {
                     name: (item) => super.translate('module.progressItemTypes.value'),
                     value: (item) => item.value.toString(),
                     sortKey: 'Value',
+                    hideOnSmallScreen: false
                 },
                 {
                     value: (item) => super.translate('module.progressItemUnits.' + item.progressItemType.progressItemUnit.unitCode),
-                    name: (item) => super.translate('module.progressItemTypes.unit')
+                    name: (item) => super.translate('module.progressItemTypes.unit'),
+                    hideOnSmallScreen: false
                 },
                 {
                     value: (item) => super.formatDate(item.measurementDate),
                     name: (item) => super.translate('module.progressItemTypes.measurementDate'),
-                    sortKey: 'MeasurementDate'
+                    sortKey: 'MeasurementDate',
+                    hideOnSmallScreen: true
                 },
             ])
             .withDynamicFilters(

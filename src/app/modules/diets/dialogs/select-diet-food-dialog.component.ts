@@ -48,12 +48,14 @@ export class SelectDietFoodDialogComponent extends BaseComponent implements OnIn
         {
           value: (item) => item.foodName,
           name: (item) => super.translate('module.foods.foodName'),
-          sortKey: 'FoodName'
+          sortKey: 'FoodName',
+          hideOnSmallScreen: false
         },
         {
           value: (item) => super.translate('module.foodCategories.' + item.foodCategory.codename),
           name: (item) => super.translate('module.foods.foodCategory'),
-          sortKey: 'FoodCategory.CategoryName'
+          sortKey: 'FoodCategory.CategoryName',
+          hideOnSmallScreen: true
         },
       ])
       .withFilters([

@@ -73,17 +73,20 @@ export class ClientAppointmentListComponent extends ClientsBaseComponent impleme
         {
           value: (item) => item.appointmentName,
           name: (item) => super.translate('module.clients.appointments.appointmentName'),
-          sortKey: 'AppointmentName'
+          sortKey: 'AppointmentName',
+          hideOnSmallScreen: false
         },
         {
           value: (item) => item.location.locationName,
           name: (item) => super.translate('module.clients.appointments.where'),
-          sortKey: 'Location.LocationName'
+          sortKey: 'Location.LocationName',
+          hideOnSmallScreen: true
         },
         {
           value: (item) => super.formatDate(item.appointmentDate),
           name: (item) => super.translate('module.clients.appointments.when'),
-          sortKey: 'AppointmentDate'
+          sortKey: 'AppointmentDate',
+          hideOnSmallScreen: true
         },
       ])
       .withFilters([

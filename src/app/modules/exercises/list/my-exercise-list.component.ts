@@ -53,17 +53,20 @@ export class MyExerciseListComponent extends BaseComponent implements OnInit {
         {
           name: (item) => super.translate('module.exercises.exerciseName'),
           value: (item) => item.exerciseName,
-          sortKey: 'ExerciseName'
+          sortKey: 'ExerciseName',
+          hideOnSmallScreen: false
         },
         {
           name: (item) => super.translate('module.exercises.exerciseCategory'),
           value: (item) => item.exerciseCategory.categoryName,
-          sortKey: 'ExerciseCategory.CategoryName'
+          sortKey: 'ExerciseCategory.CategoryName',
+          hideOnSmallScreen: true
         },
         {
           name: (item) => super.translate('shared.updated'),
           value: (item) => super.fromNow(item.updated),
-          sortKey: 'Updated'
+          sortKey: 'Updated',
+          hideOnSmallScreen: true
         }
       ])
       .withDynamicFilters(

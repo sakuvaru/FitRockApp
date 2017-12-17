@@ -50,17 +50,20 @@ export class MyFoodsListComponent extends BaseComponent implements OnInit {
         {
           value: (item) => item.foodName,
           name: (item) => super.translate('module.foods.foodName'),
-          sortKey: 'FoodName'
+          sortKey: 'FoodName',
+          hideOnSmallScreen: false
         },
         {
           value: (item) => item.foodCategory.categoryName,
           name: (item) => super.translate('module.foods.foodCategory'),
-          sortKey: 'FoodCategory.CategoryName'
+          sortKey: 'FoodCategory.CategoryName',
+          hideOnSmallScreen: true
         },
         {
           name: (item) => super.translate('shared.updated'),
           value: (item) => super.fromNow(item.updated),
-          sortKey: 'Updated'
+          sortKey: 'Updated',
+          hideOnSmallScreen: true
         }
       ])
       .withDynamicFilters(search => this.dependencies.itemServices.foodCategoryService.getFoodCategoryWithFoodsCountDto(search, true)

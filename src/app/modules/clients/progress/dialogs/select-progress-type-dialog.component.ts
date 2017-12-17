@@ -48,11 +48,13 @@ export class SelectProgressTypeDialogComponent extends BaseComponent implements 
       .withFields([
         {
           value: (item) => item.isGlobal ? super.translate('module.progressItemTypes.globalTypes.' + item.typeName) : item.typeName,
-          name: (item) => super.translate('module.progressItemTypes.typeName')
+          name: (item) => super.translate('module.progressItemTypes.typeName'),
+          hideOnSmallScreen: false
         },
         {
           value: (item) => super.translate('module.progressItemUnits.' + item.progressItemUnit.unitCode.toString()),
-          name: (item) => super.translate('module.progressItemTypes.unit')
+          name: (item) => super.translate('module.progressItemTypes.unit'),
+          hideOnSmallScreen: true
         }
       ])
       .pageSize(5)

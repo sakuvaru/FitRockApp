@@ -54,17 +54,20 @@ export class WorkoutTemplatesComponent extends BaseComponent implements OnInit {
         {
           name: (item) => super.translate('module.workouts.workoutName'),
           value: (item) => item.workoutName,
-          sortKey: 'WorkoutName'
+          sortKey: 'WorkoutName',
+          hideOnSmallScreen: false
         },
         {
           name: (item) => super.translate('module.workouts.workoutCategory'),
           value: (item) => item.workoutCategory.categoryName,
-          sortKey: 'WorkoutCategory.CategoryName'
+          sortKey: 'WorkoutCategory.CategoryName',
+          hideOnSmallScreen: true
         },
         {
           name: (item) => super.translate('shared.updated'),
           value: (item) => super.fromNow(item.updated),
-          sortKey: 'Updated'
+          sortKey: 'Updated',
+          hideOnSmallScreen: true
         }
       ])
       .withDynamicFilters(

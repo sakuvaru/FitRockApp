@@ -55,16 +55,16 @@ export class AppointmentService extends BaseTypeService<Appointment> {
                 .avatarImage((item) => item.avatarUrl ? item.avatarUrl : AppConfig.DefaultUserAvatarUrl)
                 .withFields([
                     {
-                        hideOnSmallScreen: false,
                         name: (item) => dependencies.localizationService.get('module.clients.appointments.fullName'),
                         value: (item) => item.getFullName(),
-                        sortKey: 'FirstName'
+                        sortKey: 'FirstName',
+                        hideOnSmallScreen: false
                     },
                     {
-                        hideOnSmallScreen: true,
                         name: (item) => dependencies.localizationService.get('module.clients.appointments.email'),
                         value: (item) => item.email,
-                        sortKey: 'Email'
+                        sortKey: 'Email',
+                        hideOnSmallScreen: true
                     },
                 ])
             )
