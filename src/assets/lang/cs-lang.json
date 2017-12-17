@@ -592,7 +592,6 @@
 			"actions": "Akce",
 			"all": "Vše",
 			"showLess": "Zobrazit méně",
-			"showMore": "Další",
 			"noData": "Nejsou zde žádná data"
 		},
 		"dataForm": {
@@ -629,8 +628,8 @@
 			"insertEvent": "Vytvořit novou schůzku",
 			"insertEventTooltip": "Nová schůzka",
 			"selectAttendee": "Vyber klienta",
-			"showFullCalendar": "Zobrazit celý kalendář",
-			"showMobileCalendar": "Zobrazit mobilní kalendář"
+			"showMobileCalendar": "Zobrazit mobilní kalendář",
+			"showFullCalendar": "Zobrazit celý kalendář"
 		}
 	}
 }

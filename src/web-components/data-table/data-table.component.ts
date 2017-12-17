@@ -66,7 +66,7 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
     /**
      * Number of filters shown on small layout
      */
-    public readonly filtersOnSmallLayout: number = 3;
+    public readonly filtersOnSmallLayout: number = 2;
 
     /**
      * Forces all filters to be shown

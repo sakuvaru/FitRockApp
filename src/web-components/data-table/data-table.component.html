@@ -30,12 +30,11 @@
       </div>
       <div tabindex="-1" *ngIf="filtersWrapper.length > filtersWrapperSmallLayout.length && !showFullFilters" (click)="toggleShowFullFilters()"
         class="w-cursor-pointer w-chip mat-chip">
-        <span>+ {{ 'webComponents.dataTable.showMore' | localize }} ({{ filtersWrapper.length - filtersWrapperSmallLayout.length
-          }}) ...</span>
+        <span>+ {{ filtersWrapper.length - filtersWrapperSmallLayout.length }} </span>
       </div>
       <div tabindex="-1" *ngIf="filtersWrapperSmallLayout.length < filtersWrapper.length && showFullFilters" (click)="toggleShowFullFilters()"
         class="w-cursor-pointer w-chip mat-chip">
-        <span>{{ 'webComponents.dataTable.showLess' | localize }} ...</span>
+        <span>{{ 'webComponents.dataTable.showLess' | localize }}</span>
       </div>
     </div>
   </div>
