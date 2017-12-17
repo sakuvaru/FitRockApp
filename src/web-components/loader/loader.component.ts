@@ -10,7 +10,7 @@ export class LoaderComponent extends BaseWebComponent {
 
     @Input() enabled: boolean;
     @Input() color: 'primary' | 'accent' = 'primary';
-    @Input() type: 'linear' | 'circular' = 'linear';
+    @Input() type: 'linear' | 'circular' | 'mat-circle' = 'linear';
 
     constructor(
     ) { super();

@@ -1,4 +1,6 @@
-<ng-template tdLoading [tdLoadingUntil]="!enabled" [tdLoadingType]="type" tdLoadingStrategy="overlay" tdLoadingMode="indeterminate" [tdLoadingColor]="color">
+<ng-template *ngIf="type !== 'mat-circle'" tdLoading [tdLoadingUntil]="!enabled" [tdLoadingType]="type" tdLoadingStrategy="overlay" tdLoadingMode="indeterminate" [tdLoadingColor]="color">
     <!-- Ng content is used to nest content from components -->
     <ng-content></ng-content>
 </ng-template>
+
+<mat-spinner *ngIf="type === 'mat-circle' && enabled" diameter="20" color="accent" mode="indeterminate"></mat-spinner>
