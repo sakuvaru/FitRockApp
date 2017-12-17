@@ -35,7 +35,7 @@ import { CalendarSelectAttendeeDialogComponent } from './dialogs/calendar-select
         CalendarComponent,
         CalendarEditEventDialogComponent, 
         CalendarInsertEventDialogComponent,
-        CalendarSelectAttendeeDialogComponent
+        CalendarSelectAttendeeDialogComponent,
     ],
     exports: [
         CalendarComponent

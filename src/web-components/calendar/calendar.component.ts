@@ -164,7 +164,7 @@ export class CalendarComponent extends BaseWebComponent implements OnInit, OnCha
 
         const dialog = this.dialogService.open(CalendarSelectAttendeeDialogComponent, {
             data: data,
-            width: '70%'
+            panelClass: 'w-dialog-panel'
         });
 
         dialog.afterClosed().subscribe(m => {

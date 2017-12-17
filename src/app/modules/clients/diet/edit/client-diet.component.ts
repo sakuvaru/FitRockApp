@@ -210,7 +210,7 @@ export class ClientDietComponent extends ClientsBaseComponent implements OnInit,
         data.dietFoods = dietFoods;
 
         const dialog = this.dependencies.tdServices.dialogService.open(FoodListDialogComponent, {
-            width: AppConfig.DefaultDialogWidth,
+            panelClass: AppConfig.DefaultDialogPanelClass,
             data: data
         });
     }

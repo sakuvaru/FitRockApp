@@ -46,9 +46,9 @@ export class AppConfig {
     public static HideComponentWhenLoaderIsEnabled = true;
 
     /**
-     * Default width of dialog 
+     * Dialog panel class
      */
-    public static DefaultDialogWidth = '70%';
+    public static DefaultDialogPanelClass = 'w-dialog-panel';
 
     /**
      * Default url to image used as avatar

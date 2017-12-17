@@ -217,7 +217,7 @@ export class ClientWorkoutComponent extends ClientsBaseComponent implements OnIn
         data.workoutExercises = workoutExercises;
 
         const dialog = this.dependencies.tdServices.dialogService.open(WorkoutListDialogComponent, {
-            width: AppConfig.DefaultDialogWidth,
+            panelClass: AppConfig.DefaultDialogPanelClass,
             data: data
         });
     }

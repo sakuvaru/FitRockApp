@@ -7,7 +7,7 @@ Note: in order for overrides to work, this css should be loaded after the materi
 Chips
 */
 
-.mat-chip{
+.mat-chip {
 	 margin-top: 5px!important;
 }
     
@@ -17,7 +17,7 @@ Chips
     background: #C9C9C9;
 }
     
-.mat-chip.w-cursor-pointer{
+.mat-chip.w-cursor-pointer {
 	cursor: pointer!important;
 }
 
@@ -36,5 +36,8 @@ Material card should have no default margin, margin is set with page wrapper or 
 .mat-card {
 	margin: 0!important;
 }
+
+
+
 
 

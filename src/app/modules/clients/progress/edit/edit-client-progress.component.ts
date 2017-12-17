@@ -232,7 +232,7 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
 
     public openAddNewProgressItemTypeDialog(): void {
         const dialog = this.dependencies.tdServices.dialogService.open(NewClientProgressItemTypeDialogComponent, {
-            width: AppConfig.DefaultDialogWidth,
+            panelClass: AppConfig.DefaultDialogPanelClass,
         });
 
         dialog.afterClosed().subscribe(m => {
@@ -245,7 +245,7 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
 
     private openEditProgressItemDialog(progressItem: ProgressItem): void {
         const dialog = this.dependencies.tdServices.dialogService.open(EditProgressItemDialogComponent, {
-            width: AppConfig.DefaultDialogWidth,
+            panelClass: AppConfig.DefaultDialogPanelClass,
             data: progressItem
         });
 
@@ -258,7 +258,7 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
 
     public openSelectTypeDialog(): void {
         const dialog = this.dependencies.tdServices.dialogService.open(SelectProgressTypeDialogComponent, {
-            width: AppConfig.DefaultDialogWidth,
+            panelClass: AppConfig.DefaultDialogPanelClass,
         });
 
         dialog.afterClosed().subscribe(m => {

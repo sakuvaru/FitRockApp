@@ -123,7 +123,7 @@ export class EditWorkoutPlanExportComponent extends BaseComponent implements OnD
 
   private openWorkoutExerciseDialog(workoutExercise: WorkoutExercise): void {
     const dialog = this.dependencies.tdServices.dialogService.open(EditWorkoutExerciseDialogComponent, {
-      width: AppConfig.DefaultDialogWidth,
+      panelClass: AppConfig.DefaultDialogPanelClass,
       data: workoutExercise
     });
 
@@ -155,7 +155,7 @@ export class EditWorkoutPlanExportComponent extends BaseComponent implements OnD
     data.workoutId = this.workout.id;
 
     const dialog = this.dependencies.tdServices.dialogService.open(SelectWorkoutExerciseDialogComponent, {
-      width: AppConfig.DefaultDialogWidth,
+      panelClass: AppConfig.DefaultDialogPanelClass,
       data: data
     });
 
@@ -172,7 +172,7 @@ export class EditWorkoutPlanExportComponent extends BaseComponent implements OnD
 
   private openAddCustomExerciseDialog(): void {
     const dialog = this.dependencies.tdServices.dialogService.open(AddCustomExerciseDialogComponent, {
-      width: AppConfig.DefaultDialogWidth
+      panelClass: AppConfig.DefaultDialogPanelClass
     });
 
     dialog.afterClosed().subscribe(m => {
@@ -190,7 +190,7 @@ export class EditWorkoutPlanExportComponent extends BaseComponent implements OnD
 
     const dialog = this.dependencies.tdServices.dialogService.open(AddWorkoutExerciseDialogComponent, {
       data: data,
-      width: AppConfig.DefaultDialogWidth
+      panelClass: AppConfig.DefaultDialogPanelClass
     });
 
     dialog.afterClosed().subscribe(m => {

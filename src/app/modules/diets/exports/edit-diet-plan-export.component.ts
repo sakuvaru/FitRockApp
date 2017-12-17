@@ -125,7 +125,7 @@ export class EditDietPlanExportComponent extends BaseComponent implements OnDest
 
   private openDietFoodDialog(dietFood: DietFood): void {
     const dialog = this.dependencies.tdServices.dialogService.open(EditDietFoodDialogComponent, {
-      width: AppConfig.DefaultDialogWidth,
+      panelClass: AppConfig.DefaultDialogPanelClass,
       data: dietFood
     });
 
@@ -168,7 +168,7 @@ export class EditDietPlanExportComponent extends BaseComponent implements OnDest
     data.dietId = this.diet.id;
 
     const dialog = this.dependencies.tdServices.dialogService.open(SelectDietFoodDialogComponent, {
-      width: AppConfig.DefaultDialogWidth,
+      panelClass: AppConfig.DefaultDialogPanelClass,
       data: data
     });
 
@@ -184,7 +184,7 @@ export class EditDietPlanExportComponent extends BaseComponent implements OnDest
 
   private openAddCustomFoodDialog(): void {
     const dialog = this.dependencies.tdServices.dialogService.open(AddCustomFoodDialogComponent, {
-      width: AppConfig.DefaultDialogWidth
+      panelClass: AppConfig.DefaultDialogPanelClass
     });
 
     dialog.afterClosed().subscribe(m => {
@@ -202,7 +202,7 @@ export class EditDietPlanExportComponent extends BaseComponent implements OnDest
 
     const dialog = this.dependencies.tdServices.dialogService.open(AddDietFoodDialogComponent, {
       data: data,
-      width: AppConfig.DefaultDialogWidth
+      panelClass: AppConfig.DefaultDialogPanelClass
     });
 
     dialog.afterClosed().subscribe(m => {
