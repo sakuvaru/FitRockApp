@@ -157,7 +157,9 @@
 				"when": "Kdy",
 				"notes": "Poznámky",
 				"workout": "Trénink",
-				"appointmentName": "Název schůzky"
+				"appointmentName": "Název schůzky",
+				"fullName": "Jméno",
+				"email": "E-mail"
 			},
 			"viewClientSubtitle": "{{fullName}}",
 			"clients": "Klienti",

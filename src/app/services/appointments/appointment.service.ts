@@ -1,16 +1,15 @@
 import { Injectable } from '@angular/core';
-import { Appointment } from '../../models';
-import { RepositoryClient, MultipleItemQuery } from '../../../lib/repository';
-import { BaseTypeService } from '../base/base-type.service';
-
-import { CalendarBuilder } from '../../../web-components/calendar';
-import { CalendarService } from 'app/web-component-services';
-import { ComponentDependencyService } from 'app/core';
 import { AppConfig } from 'app/config';
-import { CalendarEventModel } from 'web-components/calendar/calendar.models';
-import { LocalizationService } from 'lib/localization';
 import { TimeService } from 'app/core/services/time.service';
 import { UserService } from 'app/services';
+import { CalendarService } from 'app/web-component-services';
+import { LocalizationService } from 'lib/localization';
+import { CalendarEventModel } from 'web-components/calendar/calendar.models';
+
+import { RepositoryClient } from '../../../lib/repository';
+import { CalendarBuilder } from '../../../web-components/calendar';
+import { Appointment } from '../../models';
+import { BaseTypeService } from '../base/base-type.service';
 
 @Injectable()
 export class AppointmentService extends BaseTypeService<Appointment> {
@@ -45,8 +44,7 @@ export class AppointmentService extends BaseTypeService<Appointment> {
             ,
             (event) => this.delete(event.model.id),
             (event) => this.buildEditForm(
-                this.editFormQuery(event.model.id).withData('clientId', event.model.clientId),
-                (error) => options.onError(error)
+                this.editFormQuery(event.model.id).withData('clientId', event.model.clientId)
             ),
             (attendee) => this.buildInsertForm({
                 formDefinitionQuery: this.insertFormQuery().withData('clientId', attendee.model.id)
@@ -58,13 +56,13 @@ export class AppointmentService extends BaseTypeService<Appointment> {
                 .withFields([
                     {
                         hideOnSmallScreen: false,
-                        name: (item) => dependencies.localizationService.get('Fullname (translate todo)'),
+                        name: (item) => dependencies.localizationService.get('module.apointments.fullName'),
                         value: (item) => item.getFullName(),
                         sortKey: 'FirstName'
                     },
                     {
                         hideOnSmallScreen: true,
-                        name: (item) => dependencies.localizationService.get('E-mail (translate todo)'),
+                        name: (item) => dependencies.localizationService.get('module.appointments.email'),
                         value: (item) => item.email,
                         sortKey: 'Email'
                     },
