@@ -1,49 +1,62 @@
-<div class="push-bottom">
-    <div>
-        <facebook-button (click)="loginWithFacebook()"></facebook-button>  
-        <google-button  class="push-left-sm" (click)="loginWithGoogle()"></google-button>
-    </div>
-</div>
-
 <mat-card>
-    <mat-card-title layout="row" layout-align="start center">
-        <span class="md-title">Login</span>
-    </mat-card-title>
-    <mat-card-subtitle *ngIf="!loginFailed">
-        sign in with your credentials
-    </mat-card-subtitle>
-    <mat-card-subtitle *ngIf="loginFailed" class="tc-red-600">
-        Your login attempt was not successful, please check your username & password
-    </mat-card-subtitle>
-    <mat-divider></mat-divider>
-    <mat-card-content class="push-bottom-none">
-        <form #loginForm="ngForm">
-            <div layout="row">
-                <mat-form-field flex>
-                    <input matInput #userElement #userControl="ngModel" placeholder="Username" type="text" maxlength="30" name="username" [(ngModel)]="username"
-                        required autocomplete="off">
-                    <mat-hint align="start">
-                        <span [hidden]="!userControl.errors?.required || userControl.pristine" class="tc-red-600">Required</span>
-                    </mat-hint>
-                    <mat-hint align="end">{{userElement.value.length}} / 30</mat-hint>
-                </mat-form-field>
+    <mat-card-content>
+        <div class="push-sm">
+            <div class="w-login-page-logo">
+                <img alt="logo" src="http://fuse-angular-material.withinpixels.com/assets/images/logos/fuse.svg">
             </div>
-            <div layout="row" class="push-top-sm">
-                <mat-form-field flex>
-                    <input matInput #passElement #passControl="ngModel" placeholder="Password" type="password" name="password" [(ngModel)]="password"
-                        required autocomplete="off">
-                    <mat-hint align="start">
-                        <span [hidden]="!passControl.errors?.required || passControl.pristine" class="tc-red-600">Required</span>
-                    </mat-hint>
-                    <mat-hint align="end">Something hard to guess</mat-hint>
-                </mat-form-field>
+            <div class="push-top push-bottom w-login-page-title mat-subheading-2">
+                {{ 'module.login.loginTitle' | localize }}
             </div>
-        </form>
-    </mat-card-content>
-    <mat-divider></mat-divider>
-    <mat-card-actions>
-        <div layout="row">
-            <button flex mat-raised-button color="accent" [disabled]="!loginForm.form.valid" (click)="onLogin()" class="text-upper">Sign In</button>
+            <div *ngIf="loginFailed" class="tc-red-600">
+                {{ 'module.login.loginFailed' | localize }}
+            </div>
+            <form #loginForm="ngForm" autocomplete="false">
+                <div layout="row">
+                    <mat-form-field flex>
+                        <input matInput #userElement #userControl="ngModel" placeholder="Username" type="text" maxlength="30" name="username" [(ngModel)]="username"
+                            required autocomplete="off">
+                        <mat-hint align="start">
+                            <span [hidden]="!userControl.errors?.required || userControl.pristine" class="tc-red-600">{{ 'module.login.required' | localize }}</span>
+                        </mat-hint>
+                        <mat-hint align="end">{{userElement.value.length}} / 30</mat-hint>
+                    </mat-form-field>
+                </div>
+                <div layout="row" class="push-top-sm">
+                    <mat-form-field flex>
+                        <input matInput #passElement #passControl="ngModel" placeholder="Password" type="password" name="password" [(ngModel)]="password"
+                            required autocomplete="off">
+                        <mat-hint align="start">
+                            <span [hidden]="!passControl.errors?.required || passControl.pristine" class="tc-red-600">{{ 'module.login.required' | localize }}</span>
+                        </mat-hint>
+                    </mat-form-field>
+                </div>
+                <div layout="row" layout-align="center" class="push-top">
+                    <div flex="65" flex-xs="100" flex-md="100">
+                        <button flex mat-raised-button color="accent" [disabled]="!loginForm.form.valid" (click)="onLogin()" class="w-login-page-sign-in-button">
+                            {{ 'module.login.login' | localize }}
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            <div class="mat-subheading-2 push-top w-login-page-social-separator">
+                {{ 'module.login.or' | localize }}
+            </div>
+
+            <div layout="row" layout-align="center" class="push-top push-bottom w-login-page-social-buttons">
+                <div layout="column" flex="50" flex-xs="100" flex-md="50">
+                    <facebook-button (click)="loginWithFacebook()"></facebook-button>
+                </div>
+                <div layout="column" flex="50" flex-xs="100" flex-md="50">
+                    <google-button class="push-left-sm" (click)="loginWithGoogle()"></google-button>
+                </div>
+            </div>
+
+            <div class="push-top">
+                <div class="w-login-page-forgot-password mat-caption">
+                    <a (click)="alert('todo')">{{ 'module.login.forgotYourPassword' | localize }}</a>
+                </div>
+            </div>
         </div>
-    </mat-card-actions>
+    </mat-card-content>
 </mat-card>

@@ -377,6 +377,14 @@
 				"criticalErrorText": "Vypadá, že jde o zcela neznámou chybu, kterou nelze zpracovat :-(",
 				"loggedErrorText": "Chyba zalogována pod názvem '<em>{{guid}}</em>'"
 			}
+		},
+		"login": {
+			"forgotYourPassword": "Zapomenuté heslo?",
+			"or": "Nebo použij",
+			"required": "Povinné",
+			"loginFailed": "Přihlášení se nezdařilo. Zkontroluj jméno a heslo.",
+			"loginTitle": "Přihlášení",
+			"login": "Přihlásit"
 		}
 	},
 	"form": {

@@ -1,14 +1,7 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { RouterModule } from '@angular/router';
 
-// layouts
-import { SimpleLayoutComponent } from '../../layouts/simple-layout.component';
-import { AdminLayoutComponent } from '../../layouts/admin-layout.component';
-
-// config
-import { AppConfig, UrlConfig } from '../../config';
-
-// components
+import { UrlConfig } from '../../config';
 import { LoginPageComponent } from './login-page.component';
 import { LogoutComponent } from './logout.component';
 
@@ -18,10 +11,10 @@ import { LogoutComponent } from './logout.component';
   imports: [
     RouterModule.forChild([
       {
-        path: UrlConfig.AuthMasterPath, component: SimpleLayoutComponent, children: [
-          { path: UrlConfig.Login, component: LoginPageComponent },
-          { path: UrlConfig.Logout, component: LogoutComponent },
-        ]
+        path: UrlConfig.AuthMasterPath + '/' + UrlConfig.Login, component: LoginPageComponent
+      },
+      {
+        path: UrlConfig.AuthMasterPath + '/' + UrlConfig.Logout, component: LogoutComponent
       }
     ])
   ],

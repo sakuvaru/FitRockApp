@@ -1,0 +1,42 @@
+.w-login-page {
+    background-color: #2e2e2e;
+    height: 100%;
+    padding: 50px;
+
+    .w-login-page-title {
+        text-align: center;
+    }
+
+    .w-login-page-forgot-password {
+        text-align: right;
+
+        a {
+            text-decoration: none;
+            color: $primary;
+        }
+    }
+
+    .w-login-page-sign-in-button {
+        text-transform: uppercase;
+        width: 100%;
+    }
+
+    .w-login-page-social-separator {
+        text-align: center;
+    }
+
+    .w-login-page-social-buttons {
+        button {
+            width: 100%;
+            display: block;
+        }
+    }
+
+    .w-login-page-logo {
+        text-align: center;
+
+        img {
+            height: 150px;
+        }
+    }
+}

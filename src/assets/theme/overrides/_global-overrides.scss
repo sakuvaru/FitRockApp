@@ -1,0 +1,8 @@
+/**
+Makes sure that autofill is not using ugly yellow background
+https://webagility.com/posts/remove-forced-yellow-input-background-in-chrome
+*/
+
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0px 1000px white inset;
+}
