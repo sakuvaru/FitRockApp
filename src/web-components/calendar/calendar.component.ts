@@ -51,9 +51,9 @@ export class CalendarComponent extends BaseWebComponent implements OnInit, OnCha
     private readonly calendarRefresh = new Subject<void>();
 
     /**
-     * Default view
+     * Indicates if full calendar should be shown (even on mobile)
      */
-    public view: string = 'month';
+    public forceShowFullCalendar: boolean = false;
 
     /**
      * Highlighted date (uses current date by default)

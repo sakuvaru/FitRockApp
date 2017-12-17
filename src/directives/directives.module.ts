@@ -1,23 +1,17 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormGroup } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { NgModule } from '@angular/core';
 
-// directives
-import { HideOnMobileDirective } from './hide-on-mobile.directive';
-import { ShowOnMobileDirective } from './show-on-mobile.directive';
+import { TitleDirective } from './text-manipulation/title.directive';
 
 @NgModule({
     imports: [
         CommonModule,
     ],
     declarations: [
-        HideOnMobileDirective,
-        ShowOnMobileDirective
+        TitleDirective
     ],
     exports: [
-        HideOnMobileDirective,
-        ShowOnMobileDirective
+        TitleDirective
     ],
 })
 export class DirectivesModule { }

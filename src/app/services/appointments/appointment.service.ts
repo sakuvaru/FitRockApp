@@ -56,13 +56,13 @@ export class AppointmentService extends BaseTypeService<Appointment> {
                 .withFields([
                     {
                         hideOnSmallScreen: false,
-                        name: (item) => dependencies.localizationService.get('module.apointments.fullName'),
+                        name: (item) => dependencies.localizationService.get('module.clients.appointments.fullName'),
                         value: (item) => item.getFullName(),
                         sortKey: 'FirstName'
                     },
                     {
                         hideOnSmallScreen: true,
-                        name: (item) => dependencies.localizationService.get('module.appointments.email'),
+                        name: (item) => dependencies.localizationService.get('module.clients.appointments.email'),
                         value: (item) => item.email,
                         sortKey: 'Email'
                     },

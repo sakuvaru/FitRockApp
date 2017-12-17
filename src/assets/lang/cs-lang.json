@@ -628,7 +628,9 @@
 			"editEvent": "Upravit schůzku",
 			"insertEvent": "Vytvořit novou schůzku",
 			"insertEventTooltip": "Nová schůzka",
-			"selectAttendee": "Vyber klienta"
+			"selectAttendee": "Vyber klienta",
+			"showFullCalendar": "Zobrazit celý kalendář",
+			"showMobileCalendar": "Zobrazit mobilní kalendář"
 		}
 	}
 }

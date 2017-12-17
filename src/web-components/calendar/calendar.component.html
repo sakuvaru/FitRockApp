@@ -9,36 +9,107 @@
                     <error-message [text]="errorMessage"></error-message>
                 </div>
 
-                <div fxLayout>
-                    <button mat-icon-button color="primary" mwlCalendarPreviousView [(viewDate)]="viewDate" [view]="view" (viewDateChange)="changeDate($event)">
-                        <mat-icon>keyboard_arrow_left</mat-icon>
-                    </button>
+                <div>
+                    <div *ngIf="!forceShowFullCalendar">
+                        <!-- Monthly view -->
+                        <div fxHide.sm="true" fxHide.xs="true">
+                            <div fxLayout>
+                                <button mat-icon-button color="primary" mwlCalendarPreviousView [(viewDate)]="viewDate" [view]="'month'" (viewDateChange)="changeDate($event)">
+                                    <mat-icon>keyboard_arrow_left</mat-icon>
+                                </button>
 
-                    <button mat-button mwlCalendarToday [(viewDate)]="viewDate" (viewDateChange)="changeDate($event)">
-                        {{ (viewDate | calendarDate:(view + 'ViewTitle'): config.locale) | titlecase }}
-                    </button>
+                                <button mat-button mwlCalendarToday [(viewDate)]="viewDate" (viewDateChange)="changeDate($event)">
+                                    {{ (viewDate | calendarDate:('month' + 'ViewTitle'): config.locale) }}
+                                </button>
 
-                    <button mat-icon-button color="primary" mwlCalendarNextView [(viewDate)]="viewDate" [view]="view" (viewDateChange)="changeDate($event)">
-                        <mat-icon>keyboard_arrow_right</mat-icon>
-                    </button>
+                                <button mat-icon-button color="primary" mwlCalendarNextView [(viewDate)]="viewDate" [view]="'month'" (viewDateChange)="changeDate($event)">
+                                    <mat-icon>keyboard_arrow_right</mat-icon>
+                                </button>
 
-                    <span flex></span>
+                                <span flex></span>
 
-                    <add-button tooltip="{{'webComponents.calendar.insertEventTooltip' | localize }}" (click)="openSelectAttendeeDialog()"></add-button>
+                                <add-button tooltip="{{'webComponents.calendar.insertEventTooltip' | localize }}" (click)="openSelectAttendeeDialog()"></add-button>
+                            </div>
+                        </div>
+
+                        <!-- Day view -->
+                        <div fxHide="true" fxHide.sm="false" fxHide.xs="false">
+                            <div fxLayout>
+                                <button (click)="openSelectAttendeeDialog()" mat-button color="primary">{{'webComponents.calendar.insertEventTooltip' | localize }}</button>
+                            </div>
+                            <div fxLayout>
+                                <button mat-button mwlCalendarToday [(viewDate)]="viewDate" (viewDateChange)="changeDate($event)">
+                                    {{ (viewDate | calendarDate:('day' + 'ViewTitle'): config.locale) }}
+                                </button>
+
+                                <span flex></span>
+
+                                <button mat-icon-button color="primary" mwlCalendarPreviousView [(viewDate)]="viewDate" [view]="'day'" (viewDateChange)="changeDate($event)">
+                                    <mat-icon>keyboard_arrow_left</mat-icon>
+                                </button>
+
+                                <button mat-icon-button color="primary" mwlCalendarNextView [(viewDate)]="viewDate" [view]="'day'" (viewDateChange)="changeDate($event)">
+                                    <mat-icon>keyboard_arrow_right</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Monthly view -->
+                    <div *ngIf="forceShowFullCalendar">
+                        <div fxLayout>
+                            <button mat-icon-button color="primary" mwlCalendarPreviousView [(viewDate)]="viewDate" [view]="'month'" (viewDateChange)="changeDate($event)">
+                                <mat-icon>keyboard_arrow_left</mat-icon>
+                            </button>
+
+                            <button mat-button mwlCalendarToday [(viewDate)]="viewDate" (viewDateChange)="changeDate($event)">
+                                {{ (viewDate | calendarDate:('month' + 'ViewTitle'): config.locale) }}
+                            </button>
+
+                            <button mat-icon-button color="primary" mwlCalendarNextView [(viewDate)]="viewDate" [view]="'month'" (viewDateChange)="changeDate($event)">
+                                <mat-icon>keyboard_arrow_right</mat-icon>
+                            </button>
+
+                            <span flex></span>
+
+                            <add-button tooltip="{{'webComponents.calendar.insertEventTooltip' | localize }}" (click)="openSelectAttendeeDialog()"></add-button>
+                        </div>
+                    </div>
                 </div>
 
-                <div>
+                <!-- Calendar -->
+
+                <div *ngIf="!forceShowFullCalendar">
                     <!-- Using ngIf="events" here caused calendar to not show randomly -->
-                    <div [ngSwitch]="view">
-                        <mwl-calendar-month-view [locale]="config.locale" [refresh]="calendarRefresh" *ngSwitchCase="'month'" [viewDate]="viewDate"
-                            [events]="events" [activeDayIsOpen]="activeDayIsOpen" (dayClicked)="dayClicked($event.day)" (eventClicked)="eventClicked($event.event)">
+
+                    <!-- Large layout -->
+                    <div fxHide.sm="true" fxHide.xs="true">
+                        <mwl-calendar-month-view [locale]="config.locale" [refresh]="calendarRefresh" [viewDate]="viewDate" [events]="events" [activeDayIsOpen]="activeDayIsOpen"
+                            (dayClicked)="dayClicked($event.day)" (eventClicked)="eventClicked($event.event)">
                         </mwl-calendar-month-view>
-                        <mwl-calendar-week-view [locale]="config.locale" [refresh]="calendarRefresh" *ngSwitchCase="'week'" [viewDate]="viewDate"
-                            [events]="events" (eventClicked)="eventClicked($event.event)">
-                        </mwl-calendar-week-view>
-                        <mwl-calendar-day-view [locale]="config.locale" [refresh]="calendarRefresh" *ngSwitchCase="'day'" [viewDate]="viewDate" [events]="events"
-                            (eventClicked)="eventClicked($event.event)">
+                    </div>
+
+                    <!-- Mobile layout -->
+                    <div fxHide="true" fxHide.sm="false" fxHide.xs="false">
+                        <mwl-calendar-day-view [locale]="config.locale" [refresh]="calendarRefresh" [viewDate]="viewDate" [events]="events" (eventClicked)="eventClicked($event.event)">
                         </mwl-calendar-day-view>
+
+                        <div class="push-top-sm">
+                            <button mat-button color="primary" (click)="forceShowFullCalendar = true">{{ 'webComponents.calendar.showFullCalendar' | localize }}</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div *ngIf="forceShowFullCalendar">
+                    <!-- Large layout -->
+                    <div>
+                        <mwl-calendar-month-view [locale]="config.locale" [refresh]="calendarRefresh" [viewDate]="viewDate" [events]="events" [activeDayIsOpen]="activeDayIsOpen"
+                            (dayClicked)="dayClicked($event.day)" (eventClicked)="eventClicked($event.event)">
+                        </mwl-calendar-month-view>
+
+                        <div class="push-top-sm">
+                            <button mat-button color="primary" (click)="forceShowFullCalendar = false">{{ 'webComponents.calendar.showMobileCalendar' | localize }}</button>
+                        </div>
                     </div>
                 </div>
 
