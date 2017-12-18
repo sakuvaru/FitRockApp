@@ -4,15 +4,16 @@
     </mat-card-content>
     <mat-divider></mat-divider>
     <mat-card-content>
-        <mat-form-field>
-            <mat-select #copyFromWorkout [disabled]="!workoutTemplates" placeholder="{{'module.clients.workout.copyWorkoutLabel' | localize}}"
-               >
-                <mat-option *ngFor="let workout of workoutTemplates" [value]="workout">
-                    {{ workout.workoutName }}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
-        <button mat-raised-button class="push-left" color="primary" [disabled]="!copyFromWorkout.selected" (click)="newWorkoutFromTemplate(copyFromWorkout)">{{'module.clients.copyFromTemplate' | localize}}</button>
+        <div class="w-site-copy-select-wrapper">
+            <mat-form-field>
+                <mat-select #copyFromWorkout [disabled]="!workoutTemplates" placeholder="{{'module.clients.workout.copyWorkoutLabel' | localize}}">
+                    <mat-option *ngFor="let workout of workoutTemplates" [value]="workout">
+                        {{ workout.workoutName }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <button mat-raised-button class="push-left" color="primary" [disabled]="!copyFromWorkout.selected" (click)="newWorkoutFromTemplate(copyFromWorkout)">{{'module.clients.copyFromTemplate' | localize}}</button>
+        </div>
     </mat-card-content>
 </mat-card>
 
@@ -22,9 +23,13 @@
             <mat-list-item class="w-sort-list-item dragula-move-handle">
                 <span class="tc-red-700">{{i + 1}}. &nbsp;</span>
                 <span>{{workout.workoutName}}</span>
-                <span class="md-caption">&nbsp;(<plural [count]="workout.workoutExercises.length" m0="module.clients.workout.fiveExercises" m1="module.clients.workout.oneExercise" m2="module.clients.workout.twoExercises" m5="module.clients.workout.fiveExercises"></plural>) </span>
+                <span class="md-caption">&nbsp;(
+                    <plural [count]="workout.workoutExercises.length" m0="module.clients.workout.fiveExercises" m1="module.clients.workout.oneExercise"
+                        m2="module.clients.workout.twoExercises" m5="module.clients.workout.fiveExercises"></plural>) </span>
                 <span flex></span>
-                <mat-icon matTooltip="{{'module.clients.workout.workoutList' | localize}}" class="w-cursor-pointer" (click)="openWorkoutListDialog(workout.workoutExercises)"><i class="material-icons">remove_red_eye</i></mat-icon>
+                <mat-icon matTooltip="{{'module.clients.workout.workoutList' | localize}}" class="w-cursor-pointer" (click)="openWorkoutListDialog(workout.workoutExercises)">
+                    <i class="material-icons">remove_red_eye</i>
+                </mat-icon>
                 <edit-button (editAction)="goToEditWorkout(workout)"></edit-button>
                 <delete-button [enableConfirm]="true" (confirm)="deleteWorkout(workout)"></delete-button>
             </mat-list-item>

@@ -4,14 +4,16 @@
     </mat-card-content>
     <mat-divider></mat-divider>
     <mat-card-content>
-        <mat-form-field>
-            <mat-select #copyFromDiet [disabled]="!dietTemplates" placeholder="{{'module.clients.diet.copyDietLabel' | localize}}">
-                <mat-option *ngFor="let diet of dietTemplates" [value]="diet">
-                    {{ diet.dietName }}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
-        <button mat-raised-button class="push-left" color="primary" [disabled]="!copyFromDiet.selected" (click)="newDietFromTemplate(copyFromDiet)">{{'module.clients.copyFromTemplate' | localize}}</button>
+        <div class="w-site-copy-select-wrapper">
+            <mat-form-field>
+                <mat-select #copyFromDiet [disabled]="!dietTemplates" placeholder="{{'module.clients.diet.copyDietLabel' | localize}}">
+                    <mat-option *ngFor="let diet of dietTemplates" [value]="diet">
+                        {{ diet.dietName }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <button mat-raised-button class="push-left" color="primary" [disabled]="!copyFromDiet.selected" (click)="newDietFromTemplate(copyFromDiet)">{{'module.clients.copyFromTemplate' | localize}}</button>
+        </div>
     </mat-card-content>
 </mat-card>
 
@@ -21,9 +23,13 @@
             <mat-list-item class="w-sort-list-item dragula-move-handle">
                 <span class="tc-red-700">{{i + 1}}. &nbsp;</span>
                 <span>{{diet.dietName}}</span>
-                <span class="md-caption">&nbsp;(<plural [count]="diet.dietFoods.length" m0="module.clients.diet.fiveFoods" m1="module.clients.diet.oneFood" m2="module.clients.diet.twoFoods" m5="module.clients.diet.fiveFoods"></plural>) </span>
+                <span class="md-caption">&nbsp;(
+                    <plural [count]="diet.dietFoods.length" m0="module.clients.diet.fiveFoods" m1="module.clients.diet.oneFood"
+                        m2="module.clients.diet.twoFoods" m5="module.clients.diet.fiveFoods"></plural>) </span>
                 <span flex></span>
-                <mat-icon matTooltip="{{'module.clients.diet.foodList' | localize}}" class="w-cursor-pointer" (click)="openFoodListDialog(diet.dietFoods)"><i class="material-icons">remove_red_eye</i></mat-icon>
+                <mat-icon matTooltip="{{'module.clients.diet.foodList' | localize}}" class="w-cursor-pointer" (click)="openFoodListDialog(diet.dietFoods)">
+                    <i class="material-icons">remove_red_eye</i>
+                </mat-icon>
                 <edit-button (editAction)="goToEditDiet(diet)"></edit-button>
                 <delete-button [enableConfirm]="true" (confirm)="deleteDiet(diet)"></delete-button>
             </mat-list-item>
