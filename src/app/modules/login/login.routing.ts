@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { UrlConfig } from '../../config';
 import { LoginPageComponent } from './login-page.component';
 import { LogoutComponent } from './logout.component';
+import { RegisterPageComponent } from './register-page.component';
 
 @NgModule({
   declarations: [
@@ -15,6 +16,9 @@ import { LogoutComponent } from './logout.component';
       },
       {
         path: UrlConfig.AuthMasterPath + '/' + UrlConfig.Logout, component: LogoutComponent
+      },
+      {
+        path: UrlConfig.AuthMasterPath + '/' + UrlConfig.Register, component: RegisterPageComponent
       }
     ])
   ],

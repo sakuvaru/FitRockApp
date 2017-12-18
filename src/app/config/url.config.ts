@@ -9,6 +9,7 @@ export class UrlConfig {
     public static SharedMasterPath = 'shared';
 
     public static Login = 'login';
+    public static Register = 'register';
     public static AppError = 'error';
     public static Unauthorized = 'unauthorized';
     public static Logout = 'logout';

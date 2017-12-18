@@ -5,10 +5,10 @@
                 <img alt="logo" src="http://fuse-angular-material.withinpixels.com/assets/images/logos/fuse.svg">
             </div>
             <div class="push-top push-bottom w-login-page-title mat-subheading-2">
-                {{ 'module.login.loginTitle' | localize }}
+                {{ 'module.login.createAccount' | localize }}
             </div>
             <div *ngIf="registerError" class="push-top-sm push-bottom-md">
-                <error-message text="{{ 'module.login.loginFailed' | localize }}"></error-message>
+                <error-message text="{{ 'module.login.registerError' | localize }}"></error-message>
             </div>
             <form [formGroup]="formGroup" autocomplete="false">
                 <div layout="row">
@@ -26,28 +26,38 @@
                         <input matInput placeholder="{{ 'module.login.password' | localize }}" type="password" name="password" [formControl]="password"
                             required autocomplete="off">
                         <mat-error *ngIf="password.invalid">{{ 'module.login.' + getPasswordError() | localize }}</mat-error>
+                        <mat-hint *ngIf="mismatchPasswordError && !password.invalid" align="start">
+                            <span class="tc-red-600">{{ 'module.login.passwordMismatch' | localize }}</span>
+                        </mat-hint>
+                    </mat-form-field>
+                </div>
+                <div layout="row" class="push-top-sm">
+                    <mat-form-field flex>
+                        <input matInput placeholder="{{ 'module.login.passwordConfirm' | localize }}" type="password" name="passwordConfirm" [formControl]="passwordConfirm"
+                            required autocomplete="off">
+                        <mat-error *ngIf="passwordConfirm.invalid">{{ 'module.login.' + getPasswordConfirmError() | localize }}</mat-error>
+                        <mat-hint *ngIf="mismatchPasswordError && !passwordConfirm.invalid" align="start">
+                            <span class="tc-red-600">{{ 'module.login.passwordMismatch' | localize }}</span>
+                        </mat-hint>
                     </mat-form-field>
                 </div>
                 <div layout="row" layout-align="center" class="push-top">
                     <div flex="65" flex-xs="100" flex-md="100">
-                        <button flex mat-raised-button color="accent" [disabled]="!formGroup.valid" (click)="onLogin()" class="w-login-page-sign-in-button">
-                            {{ 'module.login.login' | localize }}
+                        <button flex mat-raised-button color="accent" [disabled]="!formGroup.valid" (click)="onRegister()" class="w-login-page-sign-in-button">
+                            {{ 'module.login.register' | localize }}
                         </button>
                     </div>
                 </div>
             </form>
 
             <div layout="row" layout-align="center" class="push-top w-login-page-link mat-caption">
-                <div layout="column" flex="50" flex-xs="100" flex-md="50">
-                    <a [routerLink]="getRegisterUrl()">{{ 'module.login.createAccount' | localize }}</a>
-                </div>
-                <div layout="column" flex="50" flex-xs="100" flex-md="50" class="text-right">
-                    <a routerLink="/auth/login">{{ 'module.login.forgotYourPassword' | localize }}</a>
+                <div layout="column" flex="100" flex-xs="100" flex-md="100">
+                    <a [routerLink]="getLoginUrl()">{{ 'module.login.loginWithExistingAccount' | localize }}</a>
                 </div>
             </div>
 
             <div class="mat-subheading-2 push-top w-login-page-social-separator">
-                {{ 'module.login.or' | localize }}
+                {{ 'module.login.orRegister' | localize }}
             </div>
 
             <div layout="row" layout-align="center" class="push-top push-bottom w-login-page-social-buttons">

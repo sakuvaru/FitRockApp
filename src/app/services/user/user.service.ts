@@ -5,7 +5,7 @@ import { BaseTypeService } from '../base/base-type.service';
 
 // required by service
 import { User, UserFilterWithCount } from '../../models';
-import { EditFormQuery, RepositoryClient, MultipleItemQuery, CreateItemQuery, ResponseSingle, MultipleItemQueryCustom } from '../../../lib/repository';
+import { EditFormQuery, RepositoryClient, MultipleItemQuery, CreateItemQuery, ResponseSingle, MultipleItemQueryCustom, ResponsePost } from '../../../lib/repository';
 import { DataFormBuilder } from '../../../web-components/data-form';
 
 @Injectable()
@@ -34,6 +34,13 @@ export class UserService extends BaseTypeService<User> {
 
     getAuthUser(): Observable<ResponseSingle<User>> {
         return super.item().withCustomAction('getAuthUser').get();
+    }
+
+    createAccount(email: string, password: string): Observable<ResponsePost<any>> {
+        return super.post<any>('createAccount')
+            .withJsonOption('Email', email)
+            .withJsonOption('Password', password)
+            .set();
     }
 
 }

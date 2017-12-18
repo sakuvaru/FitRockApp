@@ -1,29 +1,30 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 
-// core module
 import { CoreModule } from '../../core';
-
-// router
-import { LoginRouter } from './login.routing';
-
-// componets
 import { LoginFormComponent } from './login-form.component';
 import { LoginPageComponent } from './login-page.component';
+import { LoginRouter } from './login.routing';
 import { LogoutComponent } from './logout.component';
+import { RegisterFormComponent } from './register-form.component';
+import { RegisterPageComponent } from './register-page.component';
 
 @NgModule({
     imports: [
         CommonModule,
         FormsModule,
         LoginRouter,
-        CoreModule
+        CoreModule,
+        ReactiveFormsModule
     ],
     declarations: [
         LoginPageComponent,
         LoginFormComponent,
-        LogoutComponent
+        LogoutComponent,
+        RegisterPageComponent,
+        RegisterFormComponent
     ],
     exports: [
         LoginFormComponent

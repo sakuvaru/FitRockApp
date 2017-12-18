@@ -1,9 +1,9 @@
-// common
-import { Component, Input, Output, OnInit, EventEmitter, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-import { ComponentDependencyService, BaseComponent, ComponentSetup } from '../../core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UrlConfig } from '../../config/url.config';
+import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../../core';
 
-// required by component
 @Component({
     selector: 'login-form',
     templateUrl: 'login-form.component.html'
@@ -15,9 +15,13 @@ export class LoginFormComponent extends BaseComponent implements OnInit {
     @Output() onLoginEvent = new EventEmitter();
     @Output() onLogoutEvent = new EventEmitter();
 
-    // properties
-    public username: string;
-    public password: string;
+    public email = new FormControl('', [Validators.required, Validators.email]);
+    public password = new FormControl('', [Validators.required]);
+
+    public formGroup = new FormGroup({
+        email: this.email,
+        password: this.password,
+    });
 
     public loginFailed: boolean;
 
@@ -31,7 +35,7 @@ export class LoginFormComponent extends BaseComponent implements OnInit {
         return {
             initialized: true
         };
-      }
+    }
 
     ngOnInit() {
         super.ngOnInit();
@@ -65,7 +69,7 @@ export class LoginFormComponent extends BaseComponent implements OnInit {
     onLogin() {
         this.startGlobalLoader();
         this.onLoginEvent.emit();
-        const success = this.dependencies.coreServices.authService.authenticate(this.username, this.password);
+        const success = this.dependencies.coreServices.authService.authenticate(this.email.value, this.password.value);
     }
 
     onLogout() {
@@ -84,5 +88,15 @@ export class LoginFormComponent extends BaseComponent implements OnInit {
         this.startGlobalLoader();
         this.onLoginEvent.emit();
         this.dependencies.coreServices.authService.loginWithFacebook();
+    }
+
+    getRegisterUrl(): string {
+        return super.getAuthUrl(UrlConfig.Register);
+    }
+
+    getEmailError() {
+        return this.email.hasError('required') ? 'missingValue' :
+            this.email.hasError('email') ? 'invalidEmail' :
+                '';
     }
 }

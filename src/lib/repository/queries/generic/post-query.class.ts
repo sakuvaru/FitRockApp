@@ -31,7 +31,7 @@ export class PostQuery<T extends any> extends BaseQuery {
 
     /**
      * Sets field & value. Should not be combined with 'withJsonData' method
-     * as it could override its data
+     * as it could override its data. Can be called multiple times to set multiple fields.
      * @param field Name of the field in JSON body
      * @param value Value of the field
      */

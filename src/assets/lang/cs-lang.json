@@ -379,12 +379,22 @@
 			}
 		},
 		"login": {
+			"invalidEmail": "Nevalidní e-mail",
 			"forgotYourPassword": "Zapomenuté heslo?",
 			"or": "Nebo použij",
 			"required": "Povinné",
 			"loginFailed": "Přihlášení se nezdařilo. Zkontroluj jméno a heslo.",
 			"loginTitle": "Přihlášení",
-			"login": "Přihlásit"
+			"login": "Přihlásit",
+			"createAccount": "Vytvořit účet",
+			"register": "Registrovat",
+			"orRegister": "Nebo se zaregistruj pomocí",
+			"email": "E-mail",
+			"password": "Heslo",
+			"passwordConfirm": "Potvrzení hesla",
+			"registerError": "Chyba při zpracování registrace",
+			"loginWithExistingAccount": "Přihlásit s existujicím ůčtem",
+			"passwordMismatch": "Hesla se neshodují"
 		}
 	},
 	"form": {

@@ -13,9 +13,9 @@ export class LoginPageComponent extends BaseComponent {
         protected dependencies: ComponentDependencyService) {
         super(dependencies);
 
-        // go to dashboard if user is already logged
+        // redirect to entry url if user is already logged
         if (this.dependencies.coreServices.authService.isAuthenticated()) {
-            this.dependencies.router.navigate([UrlConfig.getTrainerUrl('')]);
+            this.dependencies.router.navigate([UrlConfig.getEntryUrl()]);
         }
     }
 
