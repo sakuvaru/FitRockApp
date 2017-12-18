@@ -99,4 +99,8 @@ export class LoginFormComponent extends BaseComponent implements OnInit {
             this.email.hasError('email') ? 'invalidEmail' :
                 '';
     }
+
+    getPasswordError() {
+        return this.password.hasError('required') ? 'required' : '';
+    }
 }
