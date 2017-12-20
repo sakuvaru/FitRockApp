@@ -60,7 +60,7 @@ export class EditClientComponent extends ClientsBaseComponent implements OnInit 
                             componentTitle: {
                                 'key': 'module.clients.editClient'
                             },
-                            menuAvatarUrl: user.avatarUrl
+                            menuAvatarUrl: super.getAvatarOrGravatarFromFormItem(user)
                         });
                     })
                     .optionLabelResolver((field, label) => {

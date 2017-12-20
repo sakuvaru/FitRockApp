@@ -65,7 +65,7 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
                     componentTitle: {
                         'key': 'module.clients.submenu.progress'
                     },
-                    menuAvatarUrl: client.avatarUrl
+                    menuAvatarUrl: client.getAvatarOrGravatarUrl()
                 });
             });
 

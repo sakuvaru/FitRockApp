@@ -55,7 +55,7 @@ export class EditClientWorkoutPlanComponent extends ClientsBaseComponent impleme
           key: 'module.clients.viewClientSubtitle',
           data: { 'fullName': client.getFullName() }
         },
-        menuAvatarUrl: client.avatarUrl
+        menuAvatarUrl: client.getAvatarOrGravatarUrl()
       });
     });
   }

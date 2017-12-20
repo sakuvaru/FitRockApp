@@ -138,7 +138,6 @@ export class RegisterFormComponent extends BaseComponent implements OnInit {
     private handleRegistrationSuccess(): void {
         // try authentication user right away after registration
         this.dependencies.coreServices.authService.authenticate(this.email.value, this.password.value);
-        //super.navigateToMainPage();
     }
 
     private resetErrors(): void {

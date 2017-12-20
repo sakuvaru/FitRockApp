@@ -113,7 +113,7 @@ export class ClientWorkoutComponent extends ClientsBaseComponent implements OnIn
                     componentTitle: {
                         'key': 'module.clients.submenu.workout'
                     },
-                    menuAvatarUrl: client.avatarUrl
+                    menuAvatarUrl: client.getAvatarOrGravatarUrl()
                 });
             });
 

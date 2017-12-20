@@ -72,6 +72,29 @@ export abstract class ClientsBaseComponent extends BaseComponent implements OnIn
             .subscribe();
     }
 
+    /**
+     * Gets avatar or gravatar from form item
+     * @param formItem Form item
+     */
+    getAvatarOrGravatarFromFormItem(formItem: any): string | undefined {
+        if (!formItem) {
+            return undefined;
+        }
+
+        const avatarUrl = formItem.avatarUrl;
+        const gravatarUrl = formItem.gravatarUrl;
+
+        if (avatarUrl) {
+            return avatarUrl;
+        }
+
+        if (gravatarUrl) {
+            return gravatarUrl;
+        }
+
+        return undefined;
+    }
+
     private initClientSubscription(userId: number): void {
         this.activatedRoute.params
             .takeUntil(this.ngUnsubscribe)

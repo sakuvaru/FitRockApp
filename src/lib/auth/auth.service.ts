@@ -43,7 +43,8 @@ export class AuthService {
         }
 
         // log error
-        console.error(response.description);
+        console.warn('Authentication failed:');
+        console.warn(response);
 
         // redirect back to logon page & add a random hash (hash needs to be added to URL for lifecycle check)
         this.router.navigate([UrlConfig.getLoginUrl()], { queryParams: { result: 'error' }, fragment: guidHelper.newGuid() });
@@ -69,7 +70,11 @@ export class AuthService {
             decodedToken['email_verified'], 
             decodedToken['picture'], 
             decodedToken['email'], 
-            decodedToken['nickname']);
+            decodedToken['nickname'],
+            decodedToken['given_name'],
+            decodedToken['family_name'],
+            decodedToken['gender'] === 'female' ? true : false,
+        );
     }
 
     public authenticate(username: string, password: string): boolean {

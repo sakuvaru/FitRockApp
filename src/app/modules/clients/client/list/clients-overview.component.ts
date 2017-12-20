@@ -78,7 +78,13 @@ export class ClientsOverviewComponent extends ClientsBaseComponent implements On
       )
       .allFilter()
       .onClick((item) => super.navigate([super.getTrainerUrl('clients/edit/' + item.id + '/dashboard')]))
-      .avatarImage((item) => item.avatarUrl ? item.avatarUrl : AppConfig.DefaultUserAvatarUrl)
+      .avatarImage((item) => {
+        const avatarOrGravatar = item.getAvatarOrGravatarUrl();
+        if (avatarOrGravatar) {
+          return avatarOrGravatar;
+        }
+        return AppConfig.DefaultUserAvatarUrl;
+      })
       .build();
   }
 }

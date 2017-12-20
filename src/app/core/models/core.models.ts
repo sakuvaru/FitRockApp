@@ -29,8 +29,8 @@ export class MenuItem {
             imageUrl?: string
         }
     ) {
-        if (options) { 
-             Object.assign(this, options);
+        if (options) {
+            Object.assign(this, options);
         }
     }
 }
@@ -50,11 +50,24 @@ export class AuthenticatedUser {
         public trainerId: number,
         public isClient: boolean,
         public avatarUrl: string,
-        public language: LanguageEnum
-    ) {}
+        public language: LanguageEnum,
+        public gravatarUrl: string
+    ) { }
+
+    /**
+    * Gets either avatar or gravatar url.
+    * Avatar has priority
+    */
+    getAvatarOrGravatarUrl(): string {
+        if (this.avatarUrl) {
+            return this.avatarUrl;
+        }
+
+        return this.gravatarUrl;
+    }
 }
 
-export class GlobalLoaderStatus  {
+export class GlobalLoaderStatus {
     constructor(
         /**
          * Indicates if loader should be shown
@@ -64,7 +77,7 @@ export class GlobalLoaderStatus  {
          * Indicates if loader should be hidden no matter what
          */
         public forceDisable
-    ) {}
+    ) { }
 }
 
 export class LanguageConfig {

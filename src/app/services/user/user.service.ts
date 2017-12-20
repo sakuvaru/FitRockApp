@@ -25,7 +25,16 @@ export class UserService extends BaseTypeService<User> {
     }
 
     clients(): MultipleItemQuery<User> {
-        return super.items().withCustomAction('getClients');
+        return super.items().withCustomAction('GetClients');
+    }
+
+    saveUserLoginData(gravatarUrl: string, firstName: string, lastName: string, isFemale: boolean): Observable<ResponsePost<any>> {
+        return super.post<any>('SaveUserLoginData')
+            .withJsonOption('GravatarUrl', gravatarUrl)
+            .withJsonOption('FirstName', firstName)
+            .withJsonOption('LastName', lastName)
+            .withJsonOption('IsFemale', isFemale)
+            .set();
     }
 
     createClient(item: User): CreateItemQuery<User> {
@@ -37,7 +46,7 @@ export class UserService extends BaseTypeService<User> {
     }
 
     createAccount(email: string, password: string): Observable<ResponsePost<any>> {
-        return super.post<any>('createAccount')
+        return super.post<any>('CreateAccount')
             .withJsonOption('Email', email)
             .withJsonOption('Password', password)
             .set();

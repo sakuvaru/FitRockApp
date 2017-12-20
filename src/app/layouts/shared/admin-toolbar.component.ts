@@ -37,7 +37,7 @@ export class AdminToolbarComponent extends BaseLayoutComponent {
 
     private initUserAvatar(): void {
         const authUser = this.dependencies.authenticatedUserService.getUser();
-        this.userAvatarUrl = authUser ? authUser.avatarUrl : undefined;
+        this.userAvatarUrl = authUser ? authUser.getAvatarOrGravatarUrl() : undefined;
         this.showAvatar = true;
 
         // listen to user changes and update avatar accordingly

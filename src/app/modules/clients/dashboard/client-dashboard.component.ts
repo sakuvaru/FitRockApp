@@ -127,7 +127,7 @@ export class ClientDashboardComponent extends ClientsBaseComponent implements On
           componentTitle: {
             'key': 'module.clients.submenu.dashboard'
           },
-          menuAvatarUrl: client.avatarUrl
+          menuAvatarUrl: client.getAvatarOrGravatarUrl()
         });
       });
   }

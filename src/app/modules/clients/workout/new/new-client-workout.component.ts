@@ -53,7 +53,8 @@ export class NewClientWorkoutComponent extends ClientsBaseComponent implements O
                 menuTitle: {
                     key: 'module.clients.viewClientSubtitle',
                     data: { 'fullName': client.getFullName() }
-                }
+                },
+                menuAvatarUrl: client.getAvatarOrGravatarUrl()
             });
         });
     }

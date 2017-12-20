@@ -55,7 +55,7 @@ export class EditClientDietPlanComponent extends ClientsBaseComponent implements
           key: 'module.clients.viewClientSubtitle',
           data: { 'fullName': client.getFullName() }
         },
-        menuAvatarUrl: client.avatarUrl
+        menuAvatarUrl: client.getAvatarOrGravatarUrl()
       });
     });
   }

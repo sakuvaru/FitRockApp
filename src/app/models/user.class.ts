@@ -23,6 +23,19 @@ export class User extends BaseItem {
     public avatarUrl: string;
     public language: LanguageEnum;
     public languageString: string;
+    public gravatarUrl: string;
+
+    /**
+     * Gets either avatar or gravatar url.
+     * Avatar has priority
+     */
+    getAvatarOrGravatarUrl(): string | undefined {
+        if (this.avatarUrl) {
+            return this.avatarUrl;
+        }
+
+        return this.gravatarUrl;
+    }
 
     getFullName(): string {
         return this.firstName + ' ' + this.lastName;

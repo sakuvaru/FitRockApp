@@ -117,7 +117,7 @@ export class UserGalleryComponent extends ClientsBaseComponent implements OnInit
                     componentTitle: {
                         'key': 'module.clients.submenu.gallery'
                     },
-                    menuAvatarUrl: client.avatarUrl
+                    menuAvatarUrl: client.getAvatarOrGravatarUrl()
                 });
             });
     }
