@@ -4,7 +4,7 @@ export enum ErrorReasonEnum {
     LicenseLimitation = 2,
     NotAuthorized = 3,
     CoreException = 4,
-    RepositoryException = 5,
+    AuthException = 5,
     NotFound = 404,
     Other = 99
 }

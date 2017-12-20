@@ -7,7 +7,7 @@ import { ErrorReasonEnum } from '../enums/error-reason.enum';
 import { IFormValidationResult } from '../interfaces/iform-validation-result.interface';
 import { IItem } from '../interfaces/iitem.interface';
 import { IOption } from '../interfaces/ioption.interface';
-import { IErrorResponseRaw, IFormErrorResponseRaw } from '../interfaces/iraw-responses';
+import { IErrorResponseRaw, IFormErrorResponseRaw, IAuthErrorResponseRaw } from '../interfaces/iraw-responses';
 import { FormValidationResult } from '../models/form-validation-result.class';
 import {
     ErrorResponse,
@@ -31,6 +31,7 @@ import {
 import { UpdateItemsRequest } from '../models/update-items-request.class';
 import { RepositoryConfig } from '../repository.config';
 import { ResponseMapService } from './response-map.service';
+import { AuthErrorResponse } from '../models/responses';
 
 export class QueryService {
 
@@ -300,25 +301,38 @@ export class QueryService {
                 return new ErrorResponse(response.statusText || '', ErrorReasonEnum.NotFound, response);
             }
 
-            // create either 'FormResponse' or generic 'ErrorResponse'
-            const iFormErrorResponse = response.json() as IFormErrorResponseRaw;
-            const iErrorResponse = response.json() as IErrorResponseRaw;
+            const json = response.json();
+            const iErrorResponse = json as IErrorResponseRaw;
 
-            // form validation error because 'formValidation' property exists
-            if (iFormErrorResponse.formValidation) {
-                const iformValidation = iFormErrorResponse.formValidation as IFormValidationResult;
 
-                const formValidation = new FormValidationResult(
-                    iformValidation.validationResult,
-                    iformValidation.message,
-                    iformValidation.isInvalid,
-                    iformValidation.messageKey,
-                    iformValidation.column
-                );
+            if (json.formValidation) {
 
-                // return form validation error
-                return new FormErrorResponse(iFormErrorResponse.reason, iFormErrorResponse.error, formValidation, response);
+                // create either 'FormResponse' or generic 'ErrorResponse'
+                const iFormErrorResponse = json as IFormErrorResponseRaw;
+
+                // form validation error because 'formValidation' property exists
+                if (iFormErrorResponse.formValidation) {
+                    const iformValidation = iFormErrorResponse.formValidation as IFormValidationResult;
+
+                    const formValidation = new FormValidationResult(
+                        iformValidation.validationResult,
+                        iformValidation.message,
+                        iformValidation.isInvalid,
+                        iformValidation.messageKey,
+                        iformValidation.column
+                    );
+
+                    // return form validation error
+                    return new FormErrorResponse(iFormErrorResponse.reason, iFormErrorResponse.error, formValidation, response);
+                }
             }
+
+            if (iErrorResponse.reason === 5) {
+                const iAuthErrorResponse = json as IAuthErrorResponseRaw;
+
+                return new AuthErrorResponse(iAuthErrorResponse.reason, iAuthErrorResponse.error, iAuthErrorResponse.authError, response);
+            }
+
             return new ErrorResponse(iErrorResponse.error, iErrorResponse.reason, response);
         }
 

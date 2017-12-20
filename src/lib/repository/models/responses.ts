@@ -18,7 +18,6 @@ export function mapReason(reasonCode: number): ErrorReasonEnum {
     if (reasonCode === 2) {
         return ErrorReasonEnum.LicenseLimitation;
     }
-
     if (reasonCode === 3) {
         return ErrorReasonEnum.NotAuthorized;
     }
@@ -26,9 +25,8 @@ export function mapReason(reasonCode: number): ErrorReasonEnum {
         return ErrorReasonEnum.CoreException;
     }
     if (reasonCode === 5) {
-        return ErrorReasonEnum.RepositoryException;
+        return ErrorReasonEnum.AuthException;
     }
-
     if (reasonCode === 404) {
         return ErrorReasonEnum.NotFound;
     }
@@ -48,6 +46,19 @@ export class ErrorResponse {
         this.reason = mapReason(reasonCode);
     }
 }
+
+
+export class AuthErrorResponse extends ErrorResponse {
+    
+        constructor(
+            public reasonCode: number,
+            public error: string,
+            public authError: number,    
+            public response?: any,
+        ) {
+            super(error, reasonCode, response);
+        }
+    }
 
 export class FormErrorResponse extends ErrorResponse {
 

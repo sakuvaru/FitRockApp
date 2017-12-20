@@ -53,7 +53,7 @@ export class AuthService {
 
     public getCurrentUser(): CurrentUser | null {
         if (!this.isAuthenticated()) {
-            return new CurrentUser(false);
+            return null;
         }
 
         const idToken = this.tokenService.getIdToken();
@@ -64,7 +64,12 @@ export class AuthService {
 
         const decodedToken = this.jwtHelper.decodeToken(idToken);
 
-        return new CurrentUser(true, decodedToken['email'], decodedToken['nickname']);
+        return new CurrentUser(
+            true, 
+            decodedToken['email_verified'], 
+            decodedToken['picture'], 
+            decodedToken['email'], 
+            decodedToken['nickname']);
     }
 
     public authenticate(username: string, password: string): boolean {

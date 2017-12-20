@@ -25,6 +25,10 @@ export interface IFormErrorResponseRaw extends IErrorResponseRaw {
     formValidation: IFormValidationResult;
 }
 
+export interface IAuthErrorResponseRaw extends IErrorResponseRaw {
+    authError: number;
+}
+
 export interface IResponseMultipleRaw extends IItemResponseBase {
     itemsPerPage: number;
     page: number;

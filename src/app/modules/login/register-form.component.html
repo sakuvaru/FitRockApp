@@ -10,6 +10,9 @@
             <div *ngIf="registerError" class="push-top-sm push-bottom-md">
                 <error-message text="{{ 'module.login.registerError' | localize }}"></error-message>
             </div>
+            <div *ngIf="userAlreadyExistsError" class="push-top-sm push-bottom-md">
+                    <error-message text="{{ 'module.login.userAlreadyExistsError' | localize }}"></error-message>
+                </div>
             <form [formGroup]="formGroup" autocomplete="false">
                 <div layout="row">
                     <mat-form-field flex>

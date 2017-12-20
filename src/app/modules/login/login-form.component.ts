@@ -23,7 +23,7 @@ export class LoginFormComponent extends BaseComponent implements OnInit {
         password: this.password,
     });
 
-    public loginFailed: boolean;
+    public loginFailed: boolean = false;
 
     constructor(
         private activatedRoute: ActivatedRoute,
@@ -67,9 +67,10 @@ export class LoginFormComponent extends BaseComponent implements OnInit {
 
     // event emitters
     onLogin() {
+        this.resetErrors();
         this.startGlobalLoader();
         this.onLoginEvent.emit();
-        const success = this.dependencies.coreServices.authService.authenticate(this.email.value, this.password.value);
+        this.dependencies.coreServices.authService.authenticate(this.email.value, this.password.value);
     }
 
     onLogout() {
@@ -79,12 +80,14 @@ export class LoginFormComponent extends BaseComponent implements OnInit {
     }
 
     loginWithGoogle() {
+        this.resetErrors();
         this.startGlobalLoader();
         this.onLoginEvent.emit();
         this.dependencies.coreServices.authService.loginWithGoogle();
     }
 
     loginWithFacebook() {
+        this.resetErrors();
         this.startGlobalLoader();
         this.onLoginEvent.emit();
         this.dependencies.coreServices.authService.loginWithFacebook();
@@ -102,5 +105,9 @@ export class LoginFormComponent extends BaseComponent implements OnInit {
 
     getPasswordError() {
         return this.password.hasError('required') ? 'required' : '';
+    }
+
+    private resetErrors(): void {
+        this.loginFailed = false;
     }
 }

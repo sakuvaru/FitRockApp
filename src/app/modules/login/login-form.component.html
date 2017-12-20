@@ -7,7 +7,7 @@
             <div class="push-top push-bottom w-login-page-title mat-subheading-2">
                 {{ 'module.login.loginTitle' | localize }}
             </div>
-            <div *ngIf="registerError" class="push-top-sm push-bottom-md">
+            <div *ngIf="loginFailed" class="push-top-sm push-bottom-md">
                 <error-message text="{{ 'module.login.loginFailed' | localize }}"></error-message>
             </div>
             <form [formGroup]="formGroup" autocomplete="false">

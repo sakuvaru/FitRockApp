@@ -188,6 +188,11 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
                 return;
             }
 
+            // don't handle auth exception as they are handled by register form directly
+            if (error.reason === ErrorReasonEnum.AuthException) {
+                return;
+            }
+
             // handle server not running error
             if (error.reason === ErrorReasonEnum.ServerNotRunning) {
                 this.dependencies.router.navigate([UrlConfig.getServerDown()]);

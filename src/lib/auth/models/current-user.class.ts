@@ -4,8 +4,10 @@ export class CurrentUser {
 
     constructor(
         public isAuthenticated: boolean,
-        public email?: string,
-        public nickname?: string
+        public emailVerified: boolean,
+        public picture: string,
+        public email: string,
+        public nickname: string
     ) {
         // codename = e-mail
         this.codename = email;

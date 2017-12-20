@@ -38,6 +38,7 @@ export class AppointmentService extends BaseTypeService<Appointment> {
         return this.calendarService.calendar(
             locale,
             (date) => this.items()
+                .byCurrentUser()
                 // take only only current month + 1 month and - 1 month
                 .whereGreaterThan('AppointmentDate', dependencies.timeService.moment(date).add(-1, 'months').toDate())
                 .whereLessThen('AppointmentDate', dependencies.timeService.moment(date).add(1, 'months').toDate())
@@ -51,7 +52,9 @@ export class AppointmentService extends BaseTypeService<Appointment> {
             }),
             (dependencies.userService.buildDataTable(
                 (query, search) => query.whereEquals('TrainerUserId', trainerUserId).whereLikeMultiple(['FirstName', 'LastName'], search)
-            )
+            , {
+                customQuery: dependencies.userService.clients()
+            })
                 .avatarImage((item) => item.avatarUrl ? item.avatarUrl : AppConfig.DefaultUserAvatarUrl)
                 .withFields([
                     {

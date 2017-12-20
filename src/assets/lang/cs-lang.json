@@ -394,7 +394,8 @@
 			"passwordConfirm": "Potvrzení hesla",
 			"registerError": "Chyba při zpracování registrace",
 			"loginWithExistingAccount": "Přihlásit s existujicím ůčtem",
-			"passwordMismatch": "Hesla se neshodují"
+			"passwordMismatch": "Hesla se neshodují",
+			"userAlreadyExistsError": "Tento uživatel již existuje"
 		}
 	},
 	"form": {

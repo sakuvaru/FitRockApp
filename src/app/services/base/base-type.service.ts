@@ -153,11 +153,14 @@ export abstract class BaseTypeService<TItem extends IItem> {
     buildDataTable(
         query: (query: MultipleItemQuery<TItem>, search: string) => MultipleItemQuery<TItem>,
         options?: {
-            enableDelete?: boolean
+            enableDelete?: boolean,
+            customQuery?: MultipleItemQuery<TItem>;
         }
     ): DataTableBuilder<TItem> {
 
-        const resolvedQuery = (search: string) => query(this.items(), search);
+        const itemsQuery = options && options.customQuery ? options.customQuery : this.items();
+
+        const resolvedQuery = (search: string) => query(itemsQuery, search);
 
         // build data table
         const dataTable = this.dataTableService.dataTable<TItem>(resolvedQuery);

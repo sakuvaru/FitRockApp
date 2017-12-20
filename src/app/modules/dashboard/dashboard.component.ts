@@ -91,7 +91,7 @@ export class DashboardComponent extends BaseComponent implements OnInit {
             componentTitle: { key: 'menu.dashboard' }
         });
 
-        this.dependencies.itemServices.userService.item().byId(1).get().subscribe(response => console.log(response));
+        this.dependencies.itemServices.userService.item().byId(this.authUser ? this.authUser.id : 0).get().subscribe(response => console.log(response));
 
         super.subscribeToObservable(this.dependencies.itemServices.logService.items().limit(5).orderByDesc('id').get()
             .takeUntil(this.ngUnsubscribe)

@@ -5,6 +5,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../../core';
 import { UrlConfig } from 'app/config';
+import { ErrorResponse, AuthErrorResponse } from 'lib/repository';
 
 @Component({
     selector: 'register-form',
@@ -26,6 +27,8 @@ export class RegisterFormComponent extends BaseComponent implements OnInit {
     });
 
     public registerError: boolean = false;
+
+    public userAlreadyExistsError: boolean = false;
 
     public mismatchPasswordError: boolean = false;
 
@@ -71,11 +74,28 @@ export class RegisterFormComponent extends BaseComponent implements OnInit {
     }
 
     onRegister(): void {
+        this.resetErrors();
+
         super.subscribeToObservable(
             this.dependencies.itemServices.userService.createAccount(this.email.value, this.password.value)
+                .map((response) => {
+                    this.handleRegistrationSuccess();
+                })
                 .catch(error => {
                     console.warn('Registration failed');
-                    this.registerError = true;
+                    if (error instanceof AuthErrorResponse) {
+                        // get error type
+                        const errorType = error.authError;
+                       
+                        if (errorType === 0) {
+                            // user already exists error
+                            this.userAlreadyExistsError = true;
+                        } else {
+                            this.registerError = true;
+                        }
+                    } else {
+                        this.registerError = true;
+                    }
 
                     return Observable.of(error);
                 })
@@ -87,11 +107,13 @@ export class RegisterFormComponent extends BaseComponent implements OnInit {
     }
 
     loginWithGoogle() {
+        this.resetErrors();
         super.startGlobalLoader();
         this.dependencies.coreServices.authService.loginWithGoogle();
     }
 
     loginWithFacebook() {
+        this.resetErrors();
         super.startGlobalLoader();
         this.dependencies.coreServices.authService.loginWithFacebook();
     }
@@ -108,6 +130,20 @@ export class RegisterFormComponent extends BaseComponent implements OnInit {
 
     getPasswordConfirmError() {
         return this.passwordConfirm.hasError('required') ? 'required' : '';
+    }
+
+    /**
+     * Called whe registration was successful
+     */
+    private handleRegistrationSuccess(): void {
+        // try authentication user right away after registration
+        this.dependencies.coreServices.authService.authenticate(this.email.value, this.password.value);
+        //super.navigateToMainPage();
+    }
+
+    private resetErrors(): void {
+        this.registerError = false;
+        this.userAlreadyExistsError = false;
     }
 }
 
