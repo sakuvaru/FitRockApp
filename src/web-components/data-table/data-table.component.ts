@@ -899,6 +899,9 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
         this.errorMessage = this.translations.loadingDataError;
 
         this.loaderEnabled = false;
+
+        // resubscribe to load subject
+        this.subscribeToReloadData();
     }
 
     // local storage & last state
