@@ -32,7 +32,7 @@
         </ng-container>
         <!-- using display none because otherwise the search control could not be initialized -->
         <div [style.display]="enableComponentSearch ? 'block' : 'none'" class="md-body-2">
-          <td-search-input (searchDebounce)="handleComponentSearch($event)" showUnderline="true" debounce="200" placeholder="{{ 'shared.searchClient' | localize }}"></td-search-input>
+          <td-search-input (searchDebounce)="handleComponentSearch($event)" [showUnderline]="false" debounce="200" placeholder="{{ 'shared.searchClient' | localize }}"></td-search-input>
         </div>
       </mat-toolbar>
 
