@@ -47,7 +47,7 @@ export class DataTableBuilder<TItem extends IItem> {
         /**
          * Query
          */
-        private query: (search: string) => MultipleItemQuery<TItem>
+        private readonly query: (search: string) => MultipleItemQuery<TItem>
     ) {
         this.config = new DataTableConfig();
 
@@ -154,7 +154,7 @@ export class DataTableBuilder<TItem extends IItem> {
             dynamicFilters.forEach(dynamicFilter => {
                 // resolve filter query using the 'base' query
                 const filterQuery = (filterSearch) => {
-                    return dynamicFilter.query(this.query(filterSearch));
+                    return dynamicFilter.query(this.query(search));
                 };
 
                 returnfilters.push(
@@ -201,7 +201,9 @@ export class DataTableBuilder<TItem extends IItem> {
 
         filters.forEach(filter => {
             // resolve filter query using the 'base' query
-            const filterQuery = (search) => filter.query(this.query(search));
+            const filterQuery = (search) => {
+                return filter.query(this.query(search));
+            };
 
             // resolve count query using the 'base' query
             let countQuery;
