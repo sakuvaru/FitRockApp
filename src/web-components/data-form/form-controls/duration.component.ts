@@ -41,13 +41,11 @@ export class DurationComponent extends BaseFormControlComponent implements OnIni
   }
 
   ngOnInit() {
-    this.setCustomValidator();
     super.ngOnInit();
     this.initControl();
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    this.setCustomValidator();
     super.ngOnChanges(changes);
     this.initControl();
   }
@@ -60,19 +58,27 @@ export class DurationComponent extends BaseFormControlComponent implements OnIni
     this.durationInitialized = true;
 
     this.initDurationValues();
-    
+
     this.hoursControl.valueChanges
       .takeUntil(this.ngUnsubscribe)
       .subscribe(value => {
         this.updateDurationValue();
-        this.hours = value;
+
+        if (!this.isValidNumber(value)) {
+          this.hoursControl.setErrors({ 'invalidDurationNumber': 'invalidDurationNumber' });
+          this.formGroup.controls[this.field.key].setErrors({ 'invalidDurationNumber': 'invalidDurationNumber' });
+        }
       });
 
-      this.minutesControl.valueChanges
+    this.minutesControl.valueChanges
       .takeUntil(this.ngUnsubscribe)
       .subscribe(value => {
         this.updateDurationValue();
-        this.minutes = value;
+
+        if (!this.isValidNumber(value)) {
+          this.minutesControl.setErrors({ 'invalidDurationNumber': 'invalidDurationNumber' });
+          this.formGroup.controls[this.field.key].setErrors({ 'invalidDurationNumber': 'invalidDurationNumber' });
+        }
       });
   }
 
@@ -138,45 +144,38 @@ export class DurationComponent extends BaseFormControlComponent implements OnIni
     this.minutesControl.setValue(calculatedMinutes);
   }
 
-  private setCustomValidator(): void {
-    if (this.customValidator) {
-      // no need to set validator if its already been assigned
-      return;
+  private isValidNumber(value: number): boolean {
+    let isValid = true;
+    let errorMessageKey: string = 'form.error.unknown';
+    const translationData: any = {};
+
+    if (!numberHelper.isNumber(value)) {
+      // field is not a number
+      // if (min value <= 0 || max value >= 0) && number is 0, its all good
+      if ((this.getMinNumberValue() <= 0 || this.getMaxNumberValue() >= 0) && (value === 0 || !value)) {
+        isValid = true;
+      } else {
+        isValid = false;
+        errorMessageKey = 'form.error.valueIsNotANumber';
+      }
+    } else {
+      // field is a number, but check its min & max values
+      const maxValue = this.getMaxNumberValue();
+      const minValue = this.getMinNumberValue();
+
+      if (value > maxValue) {
+        isValid = false;
+        errorMessageKey = 'form.error.invalidMaxNumberValue';
+        translationData.number = maxValue;
+      }
+      if (value < minValue) {
+        isValid = false;
+        errorMessageKey = 'form.error.invalidMinNumberValue';
+        translationData.number = minValue;
+      }
     }
 
-    this.customValidator = (value) => {
-      let isValid = true;
-      let errorMessageKey: string = 'form.error.unknown';
-      const translationData: any = {};
-
-      if (!numberHelper.isNumber(value)) {
-        // field is not a number
-        // if (min value <= 0 || max value >= 0) && number is 0, its all good
-        if ((this.getMinNumberValue() <= 0 || this.getMaxNumberValue() >= 0) && (value === 0 || !value)) {
-          isValid = true;
-        } else {
-          isValid = false;
-          errorMessageKey = 'form.error.valueIsNotANumber';
-        }
-      } else {
-        // field is a number, but check its min & max values
-        const maxValue = this.getMaxNumberValue();
-        const minValue = this.getMinNumberValue();
-
-        if (value > maxValue) {
-          isValid = false;
-          errorMessageKey = 'form.error.invalidMaxNumberValue';
-          translationData.number = maxValue;
-        }
-        if (value < minValue) {
-          isValid = false;
-          errorMessageKey = 'form.error.invalidMinNumberValue';
-          translationData.number = minValue;
-        }
-      }
-
-      return new ValueValidationResult(isValid, errorMessageKey, translationData);
-    };
+    return isValid;
   }
 
   private getMaxNumberValue(): number {
@@ -184,7 +183,7 @@ export class DurationComponent extends BaseFormControlComponent implements OnIni
   }
 
   private getMinNumberValue(): number {
-      return this.miniumNumberValue;
+    return this.miniumNumberValue;
   }
 }
 

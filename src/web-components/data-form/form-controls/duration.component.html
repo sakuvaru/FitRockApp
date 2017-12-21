@@ -3,14 +3,19 @@
   <input type="hidden" [required]="field.required" [formControlName]="field.key" [id]="field.key">
 
   <mat-form-field [hintLabel]="field.hint" flex>
-    <input [formControl]="hoursControl"  matInput [required]="field.required" [placeholder]="field.label" type="number">
+    <input [formControl]="hoursControl" matInput [required]="field.required" [placeholder]="field.label" type="number">
     <mat-hint *ngIf="showLengthHint" [ngClass]="{'tc-red-600': elem.value.length > maximumNumberValue}" align="end">{{elem.value.length}} / {{maximumNumberValue}}</mat-hint>
-    <mat-error>{{customError}}</mat-error>
+    <mat-error *ngIf="hoursControl.hasError('invalidDurationNumber')">
+      {{ 'form.error.invalidDurationNumber' | localize }}
+    </mat-error>
     <mat-hint>{{ 'form.shared.hours' | localize }}</mat-hint>
   </mat-form-field>
   <mat-form-field [hintLabel]="field.hint" flex>
-    <input [formControl]="minutesControl"  matInput type="number">
+    <input [formControl]="minutesControl" matInput type="number">
     <mat-hint>{{ 'form.shared.minutes' | localize }}</mat-hint>
+    <mat-error *ngIf="minutesControl.hasError('invalidDurationNumber')">
+      {{ 'form.error.invalidDurationNumber' | localize }}
+    </mat-error>
   </mat-form-field>
 
 </div>

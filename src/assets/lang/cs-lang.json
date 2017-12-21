@@ -423,7 +423,8 @@
 			"valueIsNotANumber": "Pole musí obsahovat číslo",
 			"invalidMaxNumberValue": "Maximální povolená hodnota je '{{number}}'",
 			"invalidMinNumberValue": "Minimiální povolená hodnota je '{{number}}'",
-			"oneRecordPerDay": "Záznam s tímto časem může existovat pouze jedenkrát za den. Můžeš upravit existující záznam nebo změnit datum."
+			"oneRecordPerDay": "Záznam s tímto časem může existovat pouze jedenkrát za den. Můžeš upravit existující záznam nebo změnit datum.",
+			"invalidDurationNumber": "Špatná hodnota"
 		},
 		"shared": {
 			"save": "Uložit",
