@@ -9,6 +9,7 @@ import {
 } from '../../../lib/repository';
 
 import { numberHelper } from '../../../lib/utilities';
+import * as clone from 'clone';
 
 // forms
 import { DataFormService } from '../../web-component-services';
@@ -158,9 +159,21 @@ export abstract class BaseTypeService<TItem extends IItem> {
         }
     ): DataTableBuilder<TItem> {
 
-        const itemsQuery = options && options.customQuery ? options.customQuery : this.items();
+        /**
+         * This is VERY important because if the query is passed as a property, it gets passed as reference and
+         * will can be changed in some circumstances (happened with dynamic filters...) which results in multiple parameters
+         * (i.e. limit, whereEquals ...) to be added to the same query.
+         * which then fails. It is important for this function to return cloned query each time to avoid any unwanted
+         * modifications.
+         */
+        const getClonedQuery = () => {
+            if (options && options.customQuery) {
+                return clone(options.customQuery);
+            }
+            return clone(this.items());
+        };
 
-        const resolvedQuery = (search: string) => query(itemsQuery, search);
+        const resolvedQuery = (search: string) => query(getClonedQuery(), search);
 
         // build data table
         const dataTable = this.dataTableService.dataTable<TItem>(resolvedQuery);
