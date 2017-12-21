@@ -395,7 +395,8 @@
 			"registerError": "Chyba při zpracování registrace",
 			"loginWithExistingAccount": "Přihlásit s existujicím ůčtem",
 			"passwordMismatch": "Hesla se neshodují",
-			"userAlreadyExistsError": "Tento uživatel již existuje"
+			"userAlreadyExistsError": "Tento uživatel již existuje",
+			"missingLogonDetails": "Vyplň jméno a heslo"
 		}
 	},
 	"form": {

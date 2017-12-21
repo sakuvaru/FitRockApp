@@ -10,6 +10,9 @@
             <div *ngIf="loginFailed" class="push-top-sm push-bottom-md">
                 <error-message text="{{ 'module.login.loginFailed' | localize }}"></error-message>
             </div>
+            <div *ngIf="missingLogonDetails" class="push-top-sm push-bottom-md">
+                <error-message text="{{ 'module.login.missingLogonDetails' | localize }}"></error-message>
+            </div>
             <form [formGroup]="formGroup" autocomplete="false">
                 <div layout="row">
                     <mat-form-field flex>
@@ -30,7 +33,7 @@
                 </div>
                 <div layout="row" layout-align="center" class="push-top">
                     <div flex="65" flex-xs="100" flex-md="100">
-                        <button flex mat-raised-button color="accent" [disabled]="!formGroup.valid" (click)="onLogin()" class="w-login-page-sign-in-button">
+                        <button flex mat-raised-button color="accent" (click)="onLogin()" class="w-login-page-sign-in-button">
                             {{ 'module.login.login' | localize }}
                         </button>
                     </div>

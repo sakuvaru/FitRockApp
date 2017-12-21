@@ -25,6 +25,8 @@ export class LoginFormComponent extends BaseComponent implements OnInit {
 
     public loginFailed: boolean = false;
 
+    public missingLogonDetails: boolean = false;
+
     constructor(
         private activatedRoute: ActivatedRoute,
         protected dependencies: ComponentDependencyService) {
@@ -50,6 +52,7 @@ export class LoginFormComponent extends BaseComponent implements OnInit {
             error => super.handleAppError(error));
     }
 
+
     private processFailedLogonRedirect() {
         const result = this.activatedRoute.snapshot.queryParams['result'];
 
@@ -67,6 +70,11 @@ export class LoginFormComponent extends BaseComponent implements OnInit {
 
     // event emitters
     onLogin() {
+        if (!this.password.value || !this.email.value) {
+            this.missingLogonDetails = true;
+            return;
+        }
+
         this.resetErrors();
         this.startGlobalLoader();
         this.onLoginEvent.emit();
@@ -98,7 +106,7 @@ export class LoginFormComponent extends BaseComponent implements OnInit {
     }
 
     getEmailError() {
-        return this.email.hasError('required') ? 'missingValue' :
+        return this.email.hasError('required') ? 'required' :
             this.email.hasError('email') ? 'invalidEmail' :
                 '';
     }
@@ -109,5 +117,6 @@ export class LoginFormComponent extends BaseComponent implements OnInit {
 
     private resetErrors(): void {
         this.loginFailed = false;
+        this.missingLogonDetails = false;
     }
 }
