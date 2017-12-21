@@ -1,6 +1,6 @@
-<div class="container" fxLayout fxLayout.sm="column">
+<div fxFlexFill class="container" fxLayout fxLayout.sm="column">
     <div fxFlex="50%" class="push-sm">
-        <mat-card>
+        <mat-card fxFlex>
             <mat-card-content class="push-top">
                 <h3>{{'module.clients.progress.newProgressItemRecord' | localize}}</h3>
                 <data-form #progressItemForm *ngIf="progressItemTypes && progressItemTypes.length > 0" [config]="formConfig"></data-form>
@@ -9,7 +9,7 @@
         </mat-card>
     </div>
     <div fxFlex="50%" class="push-sm">
-        <mat-card>
+        <mat-card fxFlex>
             <mat-card-content>
                 <button mat-raised-button color="primary" (click)="openSelectTypeDialog()">{{'module.clients.progress.assignProgressItemType' | localize}}</button>
                 <button mat-button class="push-left" (click)="openAddNewProgressItemTypeDialog()">{{'module.clients.progress.newProgressItemType' | localize}}</button>
