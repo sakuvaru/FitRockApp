@@ -20,6 +20,15 @@ export abstract class BaseItemQuery extends BaseQuery {
 
     // options
 
+    getOptions(): IOption[] {
+        return this._options;
+    }
+
+    resetOptions(): this {
+        this._options = [];
+        return this;
+    }
+
     orderBy(field: string): this {
         this._options.push(new Options.OrderBy(field));
         return this;
