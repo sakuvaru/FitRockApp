@@ -10,5 +10,6 @@ export enum ControlTypeEnum {
     Hidden = 7,
     Number = 8,
     PhoneNumber = 9,
-    DateTime = 10
+    DateTime = 10,
+    Duration = 11
 }

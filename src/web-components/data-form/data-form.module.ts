@@ -23,6 +23,7 @@ import { PhoneNumberComponent } from './form-controls/phone-number.component';
 import { RadioBooleanComponent } from './form-controls/radio-boolean.component';
 import { TextAreaComponent } from './form-controls/text-area.component';
 import { TextComponent } from './form-controls/text.component';
+import { DurationComponent } from './form-controls/duration.component';
 
 @NgModule({
     imports: [
@@ -53,6 +54,7 @@ import { TextComponent } from './form-controls/text.component';
         NumberComponent,
         PhoneNumberComponent,
         DateTimeComponent,
+        DurationComponent
     ],
     exports: [
         DataFormComponent,

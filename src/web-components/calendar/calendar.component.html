@@ -10,19 +10,20 @@
                 </div>
 
                 <div>
+                    <!-- Large screen -->
                     <div *ngIf="!forceShowFullCalendar">
                         <!-- Monthly view -->
                         <div fxHide.sm="true" fxHide.xs="true">
                             <div fxLayout>
-                                <button mat-icon-button color="primary" mwlCalendarPreviousView [(viewDate)]="viewDate" [view]="'month'" (viewDateChange)="changeDate($event)">
+                                <button mat-icon-button color="primary" mwlCalendarPreviousView [(viewDate)]="viewDate" [view]="largeScreenActiveView" (viewDateChange)="changeDate($event)">
                                     <mat-icon>keyboard_arrow_left</mat-icon>
                                 </button>
 
                                 <button mat-button mwlCalendarToday [(viewDate)]="viewDate" (viewDateChange)="changeDate($event)">
-                                    {{ (viewDate | calendarDate:('month' + 'ViewTitle'): config.locale) }}
+                                    {{ (viewDate | calendarDate:(largeScreenActiveView + 'ViewTitle'): config.locale) }}
                                 </button>
 
-                                <button mat-icon-button color="primary" mwlCalendarNextView [(viewDate)]="viewDate" [view]="'month'" (viewDateChange)="changeDate($event)">
+                                <button mat-icon-button color="primary" mwlCalendarNextView [(viewDate)]="viewDate" [view]="largeScreenActiveView" (viewDateChange)="changeDate($event)">
                                     <mat-icon>keyboard_arrow_right</mat-icon>
                                 </button>
 
@@ -32,6 +33,7 @@
                             </div>
                         </div>
 
+                        <!-- Mobile view -->
                         <!-- Day view -->
                         <div fxHide="true" fxHide.sm="false" fxHide.xs="false">
                             <div fxLayout>
@@ -55,7 +57,7 @@
                         </div>
                     </div>
 
-                    <!-- Monthly view -->
+                    <!-- Monthly view on mobile -->
                     <div *ngIf="forceShowFullCalendar">
                         <div fxLayout>
                             <button mat-icon-button color="primary" mwlCalendarPreviousView [(viewDate)]="viewDate" [view]="'month'" (viewDateChange)="changeDate($event)">
@@ -83,10 +85,24 @@
                     <!-- Using ngIf="events" here caused calendar to not show randomly -->
 
                     <!-- Large layout -->
-                    <div fxHide.sm="true" fxHide.xs="true">
-                        <mwl-calendar-month-view [locale]="config.locale" [refresh]="calendarRefresh" [viewDate]="viewDate" [events]="events" [activeDayIsOpen]="activeDayIsOpen"
-                            (dayClicked)="dayClicked($event.day)" (eventClicked)="eventClicked($event.event)">
-                        </mwl-calendar-month-view>
+                    <div [ngSwitch]="largeScreenActiveView">
+                        <div fxHide.sm="true" fxHide.xs="true">
+                            <mwl-calendar-month-view *ngSwitchCase="'month'" [locale]="config.locale" [refresh]="calendarRefresh" [viewDate]="viewDate"
+                                [events]="events" [activeDayIsOpen]="activeDayIsOpen" (dayClicked)="dayClicked($event.day)" (eventClicked)="eventClicked($event.event)">
+                            </mwl-calendar-month-view>
+                            <mwl-calendar-day-view *ngSwitchCase="'day'" [locale]="config.locale" [refresh]="calendarRefresh" [viewDate]="viewDate" [events]="events"
+                                (eventClicked)="eventClicked($event.event)">
+                            </mwl-calendar-day-view>
+                        </div>
+
+                        <div class="push-top-sm">
+                            <button *ngIf="largeScreenActiveView === 'day'" mat-button color="primary" (click)="largeScreenActiveView = 'month'">
+                                {{ 'webComponents.calendar.showFullCalendar' | localize }}
+                            </button>
+                            <button *ngIf="largeScreenActiveView === 'month'" mat-button color="primary" (click)="largeScreenActiveView = 'day'">
+                                {{ 'webComponents.calendar.showDayCalendar' | localize }}
+                            </button>
+                        </div>
                     </div>
 
                     <!-- Mobile layout -->

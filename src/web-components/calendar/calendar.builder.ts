@@ -41,6 +41,7 @@ export class CalendarBuilder {
                     item,
                     item.appointmentName,
                     new Date(item.appointmentDate),
+                    new Date(item.appointmentEndDate),
                     this.getColor(item),
                     item.client.getFullName()
                 ));

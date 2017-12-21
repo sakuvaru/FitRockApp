@@ -431,7 +431,9 @@
 			"required": "povinné",
 			"delete": "Smazat",
 			"deleted": "Smazáno",
-			"noValue": "Prázdné ..."
+			"noValue": "Prázdné ...",
+			"hours": "Hodin",
+			"minutes": "Minut"
 		},
 		"user": {
 			"email": "E-mail",
@@ -533,7 +535,8 @@
 			"workoutId" : "Trénink",
 			"workoutId.hint": "Volitelné: trénink, který se bude cvičit",
 			"locationId": "Místo setkání",
-			"dateCannotBeInPast": "Datum schůzky musí být v budoucnosti"
+			"dateCannotBeInPast": "Datum schůzky musí být v budoucnosti",
+			"appointmentLength": "Délka schůzky"
 		}
 	},
 	"webComponents": {
@@ -649,7 +652,8 @@
 			"insertEventTooltip": "Nová schůzka",
 			"selectAttendee": "Vyber klienta",
 			"showMobileCalendar": "Zobrazit mobilní kalendář",
-			"showFullCalendar": "Zobrazit celý kalendář"
+			"showFullCalendar": "Zobrazit celý kalendář",
+			"showDayCalendar": "Zobrazit denní rozvrh"
 		}
 	}
 }

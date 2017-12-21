@@ -66,6 +66,11 @@ export class CalendarComponent extends BaseWebComponent implements OnInit, OnCha
     public activeDayIsOpen: boolean = false;
 
     /**
+     * Indicates what view is active on large devices
+     */
+    public largeScreenActiveView: string = 'month';
+
+    /**
      * Collection of events
      */
     public events: CalendarModelInternal[] = [];
@@ -279,6 +284,7 @@ export class CalendarComponent extends BaseWebComponent implements OnInit, OnCha
                 return events.map(eventModel => new CalendarModelInternal({
                     title: eventModel.name,
                     start: eventModel.date,
+                    end: eventModel.endDate,
                     actions: [
                         {
                             label: '<i class="fa fa-fw fa-pencil"></i>',

@@ -62,6 +62,9 @@ export class DataFormFieldComponent extends BaseWebComponent {
     return this.field.fieldType === DataFormFieldTypeEnum.DateTime;
   }
 
+  isDurationField(): boolean {
+    return this.field.fieldType === DataFormFieldTypeEnum.Duration;
+  }
 }
 
 

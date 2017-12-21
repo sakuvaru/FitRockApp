@@ -1,5 +1,5 @@
-import { Observable } from 'rxjs/Rx';
 import { QueryService } from 'lib/repository/services/query.service';
+import { Observable } from 'rxjs/Rx';
 
 import { IItem } from '../../interfaces/iitem.interface';
 import { ResponseMultiple } from '../../models/responses';

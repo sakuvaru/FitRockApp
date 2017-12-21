@@ -3,6 +3,9 @@
         <mat-card>
             <mat-card-content *ngIf="appointment">
                 <p class="md-headline">{{ appointment.appointmentName }}</p>
+                <p *ngIf="client">
+                    <strong>{{ client.getFullName()}}</strong>
+                </p>
                 <p>
                     <span class="md-caption">{{ 'module.clients.appointments.when' | localize }}:</span> {{ formatDate(appointment.appointmentDate)
                     }}

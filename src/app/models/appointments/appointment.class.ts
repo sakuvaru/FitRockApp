@@ -10,8 +10,11 @@ export class Appointment extends BaseItem {
     public workoutId: number | undefined;
     public clientId: number;
     public locationId: number;
+    public appointmentLength: number;
+    public appointmentEndDate: Date;
 
     public location: Location;
     public workout: Workout | undefined;
     public client: User;
+
 }

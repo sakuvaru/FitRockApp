@@ -38,3 +38,6 @@
   <df-date-time [fields]="fields" [field]="field" [formGroup]="formGroup" [config]="config"></df-date-time>
 </ng-container>
 
+<ng-container *ngIf="isDurationField()">
+  <df-duration [fields]="fields" [field]="field" [formGroup]="formGroup" [config]="config"></df-duration>
+</ng-container>

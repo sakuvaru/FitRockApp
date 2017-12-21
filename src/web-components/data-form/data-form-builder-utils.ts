@@ -52,6 +52,8 @@ class DataFormBuilderUtils {
             return DataFormFieldTypeEnum.Text;
         } else if (controlType === ControlTypeEnum.TextArea) {
             return DataFormFieldTypeEnum.TextArea;
+        } else if (controlType === ControlTypeEnum.Duration) {
+            return DataFormFieldTypeEnum.Duration;
         }
 
         throw Error(`Unsupported control type '${controlType}' could not be mapped to field type control`);
@@ -85,7 +87,7 @@ class DataFormBuilderUtils {
         );
     }
 
-     mapDeleteFunction(deleteFunction: (formData: Object) => Observable<ResponseDelete>): (formData: object) => Observable<DataFormDeleteResponse> {
+    mapDeleteFunction(deleteFunction: (formData: Object) => Observable<ResponseDelete>): (formData: object) => Observable<DataFormDeleteResponse> {
         return (formData: Object) => deleteFunction(formData).map(response => {
             if (response instanceof ResponseDelete) {
                 return new DataFormDeleteResponse(response.deletedItemId);
@@ -94,7 +96,7 @@ class DataFormBuilderUtils {
         });
     }
 
-     mapSaveFunction(type: string, saveFunction: (formData: Object) => Observable<ResponseEdit<any> | ResponseCreate<any>>): (formData: object) => Observable<DataFormInsertResponse | DataFormEditResponse> {
+    mapSaveFunction(type: string, saveFunction: (formData: Object) => Observable<ResponseEdit<any> | ResponseCreate<any>>): (formData: object) => Observable<DataFormInsertResponse | DataFormEditResponse> {
         return (formData: Object) => this.mapDataFormError(type, saveFunction(formData).map(response => {
             if (response instanceof ResponseEdit) {
                 return new DataFormEditResponse(response.item);
@@ -108,7 +110,7 @@ class DataFormBuilderUtils {
         }));
     }
 
-     mapFormDefinition(type: string, formDefinition: Observable<ResponseFormEdit<any> | ResponseFormInsert>): Observable<DataFormEditDefinition | DataFormInsertDefinition> {
+    mapFormDefinition(type: string, formDefinition: Observable<ResponseFormEdit<any> | ResponseFormInsert>): Observable<DataFormEditDefinition | DataFormInsertDefinition> {
         return this.mapDataFormError(type, formDefinition.map(response => {
             if (response instanceof ResponseFormEdit) {
                 return new DataFormEditDefinition(response.fields.map(m => this.mapDataFormField(m)), response.item);
@@ -123,9 +125,9 @@ class DataFormBuilderUtils {
         );
     }
 
-     mapDataFormError<TModel>(type: string, obs: Observable<TModel>): Observable<any> {
+    mapDataFormError<TModel>(type: string, obs: Observable<TModel>): Observable<any> {
         return obs.catch(error => {
-            
+
             // system, unknown error
             if ((!(error instanceof ErrorResponse)) || error.reason !== ErrorReasonEnum.FormError) {
                 return Observable.throw(new DataFormError(

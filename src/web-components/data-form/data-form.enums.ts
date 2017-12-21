@@ -21,6 +21,7 @@ export enum DataFormFieldTypeEnum {
     Hidden,
     Number,
     PhoneNumber,
-    DateTime
+    DateTime,
+    Duration
 }
 

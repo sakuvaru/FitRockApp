@@ -127,6 +127,10 @@ export class FormField implements IFormField {
             this.controlTypeEnum = ControlTypeEnum.DateTime;
             this.value = new Date(rawValue);
             this.defaultValue = new Date(defaultValue);
+        } else if (controlType === 'Duration') {
+            this.controlTypeEnum = ControlTypeEnum.Duration;
+            this.value = +rawValue;
+            this.defaultValue = +defaultValue;
         } else {
             this.controlTypeEnum = ControlTypeEnum.Unknown;
         }

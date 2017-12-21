@@ -6,6 +6,7 @@ export class CalendarEventModel<TModel> {
         public model: TModel,
         public name: string,
         public date: Date,
+        public endDate: Date,
         public color: CalendarColor,
         public eventUsername?: string
     ) { }
