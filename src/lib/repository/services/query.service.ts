@@ -337,7 +337,7 @@ export class QueryService {
         }
 
         // return ErrorResponse for unknown error
-        return new ErrorResponse(this.genericErrorMessage, ErrorReasonEnum.RepositoryException, response);
+        return new ErrorResponse(this.genericErrorMessage, ErrorReasonEnum.Other, response);
     }
 
     private handleError(response: Response | any): IErrorResponseRaw | IFormErrorResponseRaw {
