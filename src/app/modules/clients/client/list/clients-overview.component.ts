@@ -1,4 +1,5 @@
 // common
+import { DataTableMode } from '../../../../../web-components/data-table/data-table-mode.enum';
 import { Component, Input, Output, OnInit, EventEmitter, AfterContentInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { ComponentDependencyService, BaseComponent, ComponentConfig, ComponentSetup } from '../../../../core';
@@ -35,6 +36,14 @@ export class ClientsOverviewComponent extends ClientsBaseComponent implements On
     super.initClientSubscriptions();
   }
 
+  changeMode(): void {
+    if (this.config.mode === DataTableMode.Standard) {
+      this.config.mode = DataTableMode.Tiles;
+    } else {
+      this.config.mode = DataTableMode.Standard;
+    }
+  }
+
   private init(): void {
     this.setConfig({
       menuTitle: { key: 'menu.clients' },
@@ -49,13 +58,13 @@ export class ClientsOverviewComponent extends ClientsBaseComponent implements On
       },
     )
       .withFields([
-        { 
-          value: (item) => item.getFullName(), 
+        {
+          value: (item) => item.getFullName(),
           name: (item) => super.translate('module.clients.fullName'),
           sortKey: 'FirstName',
           hideOnSmallScreen: false
         },
-        { 
+        {
           value: (item) => item.email,
           name: (item) => super.translate('module.clients.email'),
           sortKey: 'Email',
@@ -63,18 +72,18 @@ export class ClientsOverviewComponent extends ClientsBaseComponent implements On
         }
       ])
       .withFilters(
-        [
-          {
-            name: super.translate('module.clients.activeClients'),
-            guid: 'ActiveClients',
-            query: query => query.whereEquals('IsActive', true),
-          },
-          {
-            name: super.translate('module.clients.inactiveClients'),
-            guid: 'InactiveClients',
-            query: query => query.whereEquals('IsActive', false),
-          }
-        ]
+      [
+        {
+          name: super.translate('module.clients.activeClients'),
+          guid: 'ActiveClients',
+          query: query => query.whereEquals('IsActive', true),
+        },
+        {
+          name: super.translate('module.clients.inactiveClients'),
+          guid: 'InactiveClients',
+          query: query => query.whereEquals('IsActive', false),
+        }
+      ]
       )
       .allFilter()
       .onClick((item) => super.navigate([super.getTrainerUrl('clients/edit/' + item.id + '/dashboard')]))

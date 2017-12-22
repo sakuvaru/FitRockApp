@@ -4,9 +4,9 @@ export class StringHelper {
      * Converts first char of the text to lowercase
      * @param text text
      */
-    firstCharToLowerCase(text): string | undefined {
+    firstCharToLowerCase(text): string {
         if (!text) {
-            return undefined;
+            return '';
         }
         return text.charAt(0).toLowerCase() + text.slice(1);
     }
@@ -15,7 +15,7 @@ export class StringHelper {
      * Converts string to camel case
      * @param text text
      */
-    toCamelCase(text): string | undefined {
+    toCamelCase(text): string {
         return this.firstCharToLowerCase(text);
     }
 
@@ -23,9 +23,9 @@ export class StringHelper {
      * capitalizeTxt('this is a test'); // returns 'This is a test'
      * @param text text to capitalize
      */
-    capitalizeText(text): string | undefined {
+    capitalizeText(text): string {
         if (!text) {
-            return undefined;
+            return '';
         }
         return text.charAt(0).toUpperCase() + text.slice(1);
     }

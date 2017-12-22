@@ -17,6 +17,7 @@ import {
 import { DataTableSortEnum } from './data-table-sort.enum';
 import { DataTableConfig } from './data-table.config';
 import { IDataTableButton, IDataTableField, IDataTableSort } from './data-table.interfaces';
+import { DataTableMode } from './data-table-mode.enum';
 
 // export table config
 export { DataTableConfig };
@@ -53,6 +54,24 @@ export class DataTableBuilder<TItem extends IItem> {
 
         // set default properties
         this.config.noDataImageUrl = AppConfig.NoDataImageUrl;
+    }
+
+    /**
+    * Number by which tiles will be grouped by
+    */
+    groupByItemsCount(number: number = 4): this {
+        this.config.groupByItemsCount = number;
+        return this;
+    }
+
+    /**
+     * Data table mode.
+     * Tiles mode is a simple mode that displays only item's name (first column or the result defined by itemName property)
+     * and/or image
+     */
+    mode(mode: DataTableMode): this {
+        this.config.mode = mode;
+        return this;
     }
 
     /**
@@ -184,13 +203,13 @@ export class DataTableBuilder<TItem extends IItem> {
         return this;
     }
 
-     /**
-     * Page size options
-     */
-     pageSizeOptions(options: number[]): this {
-         this.config.pageSizeOptions = options;
-         return this;
-     }
+    /**
+    * Page size options
+    */
+    pageSizeOptions(options: number[]): this {
+        this.config.pageSizeOptions = options;
+        return this;
+    }
 
     /**
     * Sets up filters

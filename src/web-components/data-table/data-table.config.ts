@@ -11,6 +11,7 @@ import {
     DynamicFilter,
 } from './data-table-models';
 import { IDataTableSort, IFilter } from './data-table.interfaces';
+import { DataTableMode } from './data-table-mode.enum';
 
 export class DataTableConfig {
 
@@ -104,6 +105,18 @@ export class DataTableConfig {
      * Indicates if pager is rendered
      */
     public renderPager: boolean = true;
+
+    /**
+     * Number by which tiles will be grouped by
+     */
+    public groupByItemsCount: number = 4;
+
+    /**
+     * Data table mode.
+     * Tiles mode is a simple mode that displays only item's name (first column or the result defined by itemName property)
+     * and/or image
+     */
+    public mode: DataTableMode = DataTableMode.Standard;
 
     constructor(
         /**

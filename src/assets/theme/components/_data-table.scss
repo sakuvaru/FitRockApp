@@ -1,3 +1,16 @@
+.w-data-table-titles {
+
+    .w-data-table-paginator {
+        margin-top: 15px;
+        background-color: #ffffff;
+        @include box-shadow();
+    }
+
+    .w-data-table-clickable-tile {
+        cursor: pointer;
+    }
+}
+
 .w-data-table {
 
     background-color: #ffffff;

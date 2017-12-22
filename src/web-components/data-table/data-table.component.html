@@ -39,10 +39,11 @@
     </div>
   </div>
 
-</div>
 
-<div class="w-data-table">
-  <ng-container *ngIf="config">
+</div>
+<ng-container *ngIf="config && config.mode === 0">
+
+  <div class="w-data-table">
 
     <loader [enabled]="loaderEnabled" type="linear"></loader>
 
@@ -78,25 +79,24 @@
 
               <!-- Sortable header -->
               <ng-container *ngIf="fieldWrapper.field.sortKey">
-              <mat-header-cell mat-sort-header *matHeaderCellDef fxHide="false" [fxHide.sm]="fieldWrapper.field.hideOnSmallScreen === true"
-                [fxHide.xs]="fieldWrapper.field.hideOnSmallScreen === true">
-                <ng-container *ngIf="fieldWrapper.field.name(item) as nameResult">
-                  <span class="text-truncate" *ngIf="fieldWrapper.field.isObservable(nameResult)">{{ nameResult| async }}</span>
-                  <span class="text-truncate" *ngIf="!fieldWrapper.field.isObservable(nameResult)">{{ nameResult }}</span>
-                </ng-container>
-              </mat-header-cell>
-            </ng-container>
-            
+                <mat-header-cell mat-sort-header *matHeaderCellDef fxHide="false" [fxHide.sm]="fieldWrapper.field.hideOnSmallScreen === true"
+                  [fxHide.xs]="fieldWrapper.field.hideOnSmallScreen === true">
+                  <ng-container *ngIf="fieldWrapper.field.name(item) as nameResult">
+                    <span class="text-truncate" *ngIf="fieldWrapper.field.isObservable(nameResult)">{{ nameResult| async }}</span>
+                    <span class="text-truncate" *ngIf="!fieldWrapper.field.isObservable(nameResult)">{{ nameResult }}</span>
+                  </ng-container>
+                </mat-header-cell>
+              </ng-container>
+
               <!-- Header without sort -->
               <ng-container *ngIf="!fieldWrapper.field.sortKey">
-              <mat-header-cell  *matHeaderCellDef fxHide="false" [fxHide.sm]="fieldWrapper.field.hideOnSmallScreen === true"
-                [fxHide.xs]="fieldWrapper.field.hideOnSmallScreen === true">
-                <ng-container *ngIf="fieldWrapper.field.name(item) as nameResult">
-                  <span class="text-truncate" *ngIf="fieldWrapper.field.isObservable(nameResult)">{{ nameResult| async }}</span>
-                  <span class="text-truncate" *ngIf="!fieldWrapper.field.isObservable(nameResult)">{{ nameResult }}</span>
-                </ng-container>
-              </mat-header-cell>
-            </ng-container>
+                <mat-header-cell *matHeaderCellDef fxHide="false" [fxHide.sm]="fieldWrapper.field.hideOnSmallScreen === true" [fxHide.xs]="fieldWrapper.field.hideOnSmallScreen === true">
+                  <ng-container *ngIf="fieldWrapper.field.name(item) as nameResult">
+                    <span class="text-truncate" *ngIf="fieldWrapper.field.isObservable(nameResult)">{{ nameResult| async }}</span>
+                    <span class="text-truncate" *ngIf="!fieldWrapper.field.isObservable(nameResult)">{{ nameResult }}</span>
+                  </ng-container>
+                </mat-header-cell>
+              </ng-container>
 
               <!-- Cell value -->
               <mat-cell *matCellDef="let item" fxHide="false" [fxHide.sm]="fieldWrapper.field.hideOnSmallScreen === true" [fxHide.xs]="fieldWrapper.field.hideOnSmallScreen === true">
@@ -165,11 +165,8 @@
 
           <!-- Rows -->
           <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-          <ng-container *ngIf="isClickable">
+          <ng-container>
             <mat-row matRipple (click)="handleOnClick(item)" *matRowDef="let item; columns: displayedColumns;"></mat-row>
-          </ng-container>
-          <ng-container *ngIf="!isClickable">
-            <mat-row (click)="handleOnClick(item)" *matRowDef="let item; columns: displayedColumns;"></mat-row>
           </ng-container>
 
         </mat-table>
@@ -177,10 +174,65 @@
 
     </div>
 
-  </ng-container>
+    <!-- Paginator -->
+    <mat-paginator *ngIf="config && config.renderPager" #paginator style="margin-right:35px" [style.display]="totalItems === 0 ? 'none' : 'block'"
+      [length]="totalItems" [pageIndex]="paginatorPageIndex" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions">
+    </mat-paginator>
 
-  <!-- Paginator -->
-  <mat-paginator *ngIf="config && config.renderPager" #paginator style="margin-right:35px" [style.display]="totalItems === 0 ? 'none' : 'block'" [length]="totalItems" [pageIndex]="paginatorPageIndex"
-    [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions">
-  </mat-paginator>
-</div>
+  </div>
+</ng-container>
+
+<!-- Data table with thumbs -->
+<ng-container *ngIf="config && config.mode === 1">
+
+  <div class="w-data-table-titles">
+
+    <div class="push-sm">
+      <loader [enabled]="loaderEnabled" type="linear"></loader>
+
+      <error-message *ngIf="errorMessage" [text]="errorMessage"></error-message>
+
+      <!-- Search -->
+      <div class="w-data-table-filter">
+        <mat-form-field floatPlaceholder="never" [ngClass]="config.wrapInCard ? 'text-sm' : ''" flex>
+          <input matInput placeholder="{{ 'webComponents.dataTable.searchPlaceholder' | localize }}" [formControl]="searchControl"
+            [value]="search" />
+          <span matPrefix>
+            <mat-icon>search</mat-icon>
+          </span>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <ng-container *ngIf="groupedItems">
+      <ng-container *ngFor="let group of groupedItems">
+        <div fxLayout fxLayout.sm="column" fxLayout.xs="column" fxLayout.md="column">
+          <ng-container *ngFor="let item of group.items; let last = last">
+            <div [fxFlex]="(100 / this.config.groupByItemsCount)" fxFlex.sm="100%" fxFlex.xs="100%">
+              <div class="push-sm">
+                <mat-card [class.w-data-table-clickable-tile]="isClickable" (click)="isClickable ? handleOnClick(item) : undefined">
+                  <ng-container *ngIf="config.avatar(item) as avatar">
+                    <img mat-card-image *ngIf="avatar.isImage()" alt="avatar" [src]="avatar.imageUrl" />
+                  </ng-container>
+                  <mat-card-content>
+                    <div class="text-center">
+                      {{ getPreviewItemName(item) | async}}
+                    </div>
+                  </mat-card-content>
+                </mat-card>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </ng-container>
+    </ng-container>
+
+    <!-- Paginator -->
+    <div class="w-data-table-paginator">
+      <mat-paginator *ngIf="config && config.renderPager" style="margin-right:35px" #tilesPaginator [style.display]="totalItems === 0 ? 'none' : 'block'"
+        [length]="totalItems" [pageIndex]="paginatorPageIndex" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions">
+      </mat-paginator>
+    </div>
+
+  </div>
+</ng-container>

@@ -9,6 +9,7 @@ import * as _ from 'underscore';
 
 import { guidHelper, observableHelper } from '../../lib/utilities';
 import { BaseWebComponent } from '../base-web-component.class';
+import { DataTableMode } from './data-table-mode.enum';
 import {
     DataTableButton,
     DataTableButtonWrapper,
@@ -42,6 +43,11 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
      * Loaders should switch map based on this subject
      */
     private reloadDataSubject = new Subject<boolean>();
+
+    /**
+     * Loaded items
+     */
+    public items?: any[];
 
     /**
      * Indicates if loader is enabled
@@ -98,6 +104,11 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
         }
         return false;
     }
+
+    /**
+     * Grouped items
+     */
+    public groupedItems?: GroupedItems[];
 
     /**
      * Indicates if any data was already loaded
@@ -260,6 +271,11 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
     private paginatorSubscribed: boolean = false;
 
     /**
+     * Indicates if tiles paginator has been suscribed to changes
+     */
+    private tilesPaginatorSubscribed: boolean = false;
+
+    /**
      * Variable that holds current sort
      */
     private currentSort: IDataTableSort | undefined;
@@ -292,12 +308,23 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
      * Paginator is registered this way because it is under *ngIf
      */
     private _paginator: MatPaginator;
-    @ViewChild(MatPaginator) set paginator(content: MatPaginator) {
+    @ViewChild('paginator') set paginator(content: MatPaginator) {
         if (content && !this.paginatorSubscribed) {
             this._paginator = content;
             this.subscribeToPagerChanges();
         }
-    } 
+    }
+    
+    /**
+     * Paginator is registered this way because it is under *ngIf
+     */
+    private _tilesPaginator: MatPaginator;
+    @ViewChild('tilesPaginator') set tilesPaginator(content: MatPaginator) {
+        if (content && !this.tilesPaginatorSubscribed) {
+            this._tilesPaginator = content;
+            this.subscribeToTilesPagerChanges();
+        }
+    }
 
     /**
      * Sort header
@@ -349,6 +376,68 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
 
         // trigger action
         button.action(item);
+    }
+
+    getPreviewItemName(item: any): Observable<string> {
+        const getFirstFieldValue = (dataItem: any) => {
+            if (!dataItem) {
+                throw Error(`Cannot get first column because item is undefined`);
+            }
+
+            if (!this.config.fields[0]) {
+                throw Error(`First field is undefined`);
+            }
+
+            const value = this.config.fields[0].value(item);
+
+            if (value instanceof Observable) {
+                return value;
+            }
+
+            return Observable.of(value);
+        };
+
+        // try getting the objet preview name using given function
+        if (this.config.itemName) {
+            return Observable.of(this.config.itemName(item));
+        }
+
+        // get first field value
+        return getFirstFieldValue(item);
+    }
+
+    getGroupedItems(items: any[]): GroupedItems[] | undefined {
+        if (!items) {
+            return undefined;
+        }
+
+        const groupByItemsCount: number = this.config.groupByItemsCount;
+        const groupedItems: GroupedItems[] = [];
+        let currentItemIndex: number = 0;
+        let currentGroupIndex: number = 0;
+
+        items.forEach(item => {
+            if (currentItemIndex === groupByItemsCount) {
+                currentItemIndex = 0;
+            }
+
+            if (currentItemIndex === 0) {
+                currentGroupIndex++;
+                groupedItems.push(new GroupedItems(groupByItemsCount, currentGroupIndex, [item]));
+            } else {
+                const existingGroup = groupedItems.find(m => m.groupIndex === currentGroupIndex);
+
+                if (!existingGroup) {
+                    throw Error(`Could not find group with index '${currentGroupIndex}'. This is an internal error.`);
+                }
+                existingGroup.items.push(item);
+            }
+
+            currentItemIndex++;
+
+        });
+
+        return groupedItems;
     }
 
     /**
@@ -705,7 +794,26 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
         this._paginator.page.map(pageChange => {
             this.currentPage = pageChange.pageIndex + 1;
             this.pageSize = pageChange.pageSize;
+            this.reloadData();
+        })
+            .takeUntil(this.ngUnsubscribe)
+            .subscribe();
+    }
 
+    private subscribeToTilesPagerChanges(): void {
+        if (!this._tilesPaginator) {
+            throw Error('Could not init paginator. Make sure the paginator is registered after its been initialized in template');
+        }
+
+        // mark paginator as subscribed so that there are no multiple subscriptions
+        this.tilesPaginatorSubscribed = true;
+
+        // set translations
+        this._tilesPaginator._intl.itemsPerPageLabel = '';
+
+        this._tilesPaginator.page.map(pageChange => {
+            this.currentPage = pageChange.pageIndex + 1;
+            this.pageSize = pageChange.pageSize;
             this.reloadData();
         })
             .takeUntil(this.ngUnsubscribe)
@@ -752,6 +860,10 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
 
                 this.dataSource = new DataTableSource(response.items);
 
+                // set items
+                this.items = response.items;
+                this.groupedItems = this.getGroupedItems(this.items);
+
                 // save current state
                 if (this.config.rememberState) {
                     this.saveCurrentState(this.config.getHash());
@@ -788,49 +900,30 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
     }
 
     private deleteConfirmation(action: Observable<DataTableDeleteResponse>, item: any): void {
-        // try getting the objet preview name
-        const previewName = this.config.itemName ? this.config.itemName(item) : undefined;
-
-        if (previewName) {
-            this.localizationService
-                .get('webComponents.dataTable.delete.messageWithName', { 'name': previewName })
-                .map(message => {
-                    this.dialogService.openConfirm({
-                        message: message,
-                        disableClose: false, // defaults to false
-                        title: this.translations.delete.title,
-                        cancelButton: this.translations.delete.cancel,
-                        acceptButton: this.translations.delete.confirm,
-                    }).afterClosed()
-                        .takeUntil(this.ngUnsubscribe)
-                        .subscribe((accept: boolean) => {
-                            if (accept) {
-                                this.deleteItem(action);
-                            } else {
-                                // user did not accepted delete
-                            }
-                        });
-                })
-                .takeUntil(this.ngUnsubscribe)
-                .subscribe();
-
-        } else {
-            this.dialogService.openConfirm({
-                message: this.translations.delete.messageGeneric,
-                disableClose: false, // defaults to false
-                title: this.translations.delete.title,
-                cancelButton: this.translations.delete.cancel,
-                acceptButton: this.translations.delete.confirm,
-            }).afterClosed()
-                .takeUntil(this.ngUnsubscribe)
-                .subscribe((accept: boolean) => {
-                    if (accept) {
-                        this.deleteItem(action);
-                    } else {
-                        // user did not accepted delete
-                    }
-                });
-        }
+        this.getPreviewItemName(item)
+            .flatMap(previewName => {
+                return this.localizationService
+                    .get('webComponents.dataTable.delete.messageWithName', { 'name': previewName })
+                    .map(message => {
+                        this.dialogService.openConfirm({
+                            message: message,
+                            disableClose: false, // defaults to false
+                            title: this.translations.delete.title,
+                            cancelButton: this.translations.delete.cancel,
+                            acceptButton: this.translations.delete.confirm,
+                        }).afterClosed()
+                            .takeUntil(this.ngUnsubscribe)
+                            .subscribe((accept: boolean) => {
+                                if (accept) {
+                                    this.deleteItem(action);
+                                } else {
+                                    // user did not accepted delete
+                                }
+                            });
+                    });
+            })
+            .takeUntil(this.ngUnsubscribe)
+            .subscribe();
     }
 
     private deleteItem(action: Observable<DataTableDeleteResponse>): void {
@@ -994,6 +1087,22 @@ class LocalStorageHelper {
 
     saveSearchedDataToLocalStorage(hash: number, search: string) {
         localStorage.setItem(this.localStorageSearchedData + '_' + hash, search);
+    }
+}
+
+class GroupedItems {
+    constructor(
+        public groupItemsCount: number,
+        public groupIndex: number,
+        public items: any[]
+    ) { }
+
+    fillEmptySpace(): boolean {
+        return this.groupItemsCount !== this.items.length;
+    }
+
+    getMissingItemsCount(): number {
+        return this.groupItemsCount - this.items.length;
     }
 }
 
