@@ -18,7 +18,7 @@ export class TitleDirective implements OnInit, AfterViewInit {
     }
 
     makeTitle(): void {
-        console.log(this.el);
+        // console.log(this.el);
     }
 }
 

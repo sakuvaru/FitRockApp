@@ -73,6 +73,17 @@ export class EditClientComponent extends ClientsBaseComponent implements OnInit 
                                 return super.translate('shared.language.en');
                             }
                         }
+                        if (field.key === 'FitnessLevel') {
+                            if (label === 'Beginner') {
+                                return super.translate('form.user.beginner');
+                            } else if (label === 'Intermediate') {
+                                return super.translate('form.user.intermediate');
+                            } else if (label === 'FitnessCompetitor') {
+                                return super.translate('form.user.fitnessCompetitor');
+                            } else if (label === 'Advanced') {
+                                return super.translate('form.user.advanced');
+                            }
+                        }
                         return Observable.of(label);
                     })
                     .build();
