@@ -77,7 +77,8 @@ export class AuthenticatedUserService {
             userAs.isClient,
             userAs.avatarUrl,
             userAs.language,
-            userAs.gravatarUrl
+            userAs.gravatarUrl,
+            userAs.license
         );
     }
 }

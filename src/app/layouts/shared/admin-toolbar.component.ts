@@ -17,6 +17,7 @@ export class AdminToolbarComponent extends BaseLayoutComponent {
 
     public defaultAvatarUrl: string = AppConfig.DefaultUserAvatarUrl;
     public showAvatar: boolean = false;
+    public license: string | undefined;
     public userAvatarUrl?: string;
 
     public readonly limitFeedsCount: number = 8;
@@ -31,14 +32,15 @@ export class AdminToolbarComponent extends BaseLayoutComponent {
         protected dependencies: ComponentDependencyService
     ) {
         super(dependencies);
-        this.initUserAvatar();
+        this.initUser();
         this.subscribeToFeedObservables();
     }
 
-    private initUserAvatar(): void {
+    private initUser(): void {
         const authUser = this.dependencies.authenticatedUserService.getUser();
         this.userAvatarUrl = authUser ? authUser.getAvatarOrGravatarUrl() : undefined;
         this.showAvatar = true;
+        this.license = authUser ? authUser.license : undefined;
 
         // listen to user changes and update avatar accordingly
         this.dependencies.coreServices.sharedService.authenticatedUserChanged$

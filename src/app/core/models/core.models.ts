@@ -51,7 +51,8 @@ export class AuthenticatedUser {
         public isClient: boolean,
         public avatarUrl: string,
         public language: LanguageEnum,
-        public gravatarUrl: string
+        public gravatarUrl: string,
+        public license: string
     ) { }
 
     /**

@@ -8,6 +8,10 @@
     !-->
   <span flex></span>
 
+  <span class="mat-caption">
+    {{ license }} 
+  </span>
+
   <button mat-icon-button [matMenuTriggerFor]="feedsMenu" matTooltip="{{ 'userMenu.notifications' | localize }}">
     <td-notification-count [notifications]="feedsCount">
       <mat-icon>notifications</mat-icon>

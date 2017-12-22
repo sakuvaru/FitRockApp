@@ -57,7 +57,8 @@ export class EntryComponent extends BaseComponent {
                 user.isClient,
                 user.avatarUrl,
                 user.language,
-                currentUser.picture // this is the gravatar url
+                currentUser.picture, // this is the gravatar url
+                user.licenseString
               );
 
               // store user in authenticated user service

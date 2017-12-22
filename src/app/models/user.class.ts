@@ -24,6 +24,8 @@ export class User extends BaseItem {
     public language: LanguageEnum;
     public languageString: string;
     public gravatarUrl: string;
+    public license: number;
+    public licenseString: string;
 
     /**
      * Gets either avatar or gravatar url.
