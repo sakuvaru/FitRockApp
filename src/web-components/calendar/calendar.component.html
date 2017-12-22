@@ -95,7 +95,7 @@
                             </mwl-calendar-day-view>
                         </div>
 
-                        <div class="push-top-sm">
+                        <div class="push-top-sm" fxHide.sm="true" fxHide.xs="true">
                             <button *ngIf="largeScreenActiveView === 'day'" mat-button color="primary" (click)="largeScreenActiveView = 'month'">
                                 {{ 'webComponents.calendar.showFullCalendar' | localize }}
                             </button>
