@@ -52,16 +52,16 @@ export class ClientChatComponent extends ClientsBaseComponent implements OnInit 
         super.subscribeToObservable(this.getChatMessagesObservable(this.clientId, this.chatMessagesPage, true, this.chatMessagesSearch));
     }
 
-    private getComponentObservables(): Observable<any>[] {
-        const observables: Observable<any>[] = [];
+    private getComponentObservables(): Observable<void>[] {
+        const observables: Observable<void>[] = [];
         observables.push(this.getFormObservable());
         observables.push(this.getInitChatMessagesObservable());
+        observables.push(this.getInitComponentConfigObservable());
         return observables;
     }
 
-    private getFormObservable(): Observable<any> {
+    private getFormObservable(): Observable<void> {
         return this.clientIdChange
-            .takeUntil(this.ngUnsubscribe)
             .map(clientId => {
                 const formConfig = this.dependencies.itemServices.chatMessageService.buildInsertForm()
                     .fieldValueResolver((fieldName, value) => {
@@ -83,31 +83,32 @@ export class ClientChatComponent extends ClientsBaseComponent implements OnInit 
                     .build();
 
                 this.formConfig = formConfig;
-            },
-            error => super.handleAppError(error));
+            });
     }
 
-    private getInitChatMessagesObservable(): Observable<any> {
+    private getInitComponentConfigObservable(): Observable<void> {
         return this.clientChange
-            .takeUntil(this.ngUnsubscribe)
-            .switchMap(client => this.getChatMessagesObservable(client.id, this.chatMessagesPage, true, this.chatMessagesSearch))
-            .map(response => {
-                this.setConfig({
-                    menuItems: new ClientMenuItems(this.clientId).menuItems,
-                    menuTitle: {
-                        key: 'module.clients.viewClientSubtitle',
-                        data: { 'fullName': this.client.getFullName() }
-                    },
-                    componentTitle: {
-                        'key': 'module.clients.submenu.chat'
-                    },
-                    menuAvatarUrl: this.client.avatarUrl
-                });
-            },
-            error => super.handleAppError(error));
+        .map(client => {
+            this.setConfig({
+                menuItems: new ClientMenuItems(client.id).menuItems,
+                menuTitle: {
+                    key: 'module.clients.viewClientSubtitle',
+                    data: { 'fullName': client.getFullName() }
+                },
+                componentTitle: {
+                    'key': 'module.clients.submenu.chat'
+                },
+                menuAvatarUrl: client.getAvatarOrGravatarUrl()
+            });
+        });
     }
 
-    private getChatMessagesObservable(clientId: number, page: number, replaceMessages: boolean, search: string): Observable<any> {
+    private getInitChatMessagesObservable(): Observable<void> {
+        return this.clientChange
+            .flatMap(client => this.getChatMessagesObservable(client.id, this.chatMessagesPage, true, this.chatMessagesSearch));
+    }
+
+    private getChatMessagesObservable(clientId: number, page: number, replaceMessages: boolean, search: string): Observable<void> {
         return this.dependencies.itemServices.chatMessageService.getConversationMessages(clientId)
             .includeMultiple(['Sender', 'Recipient'])
             .orderByDesc('Created')
@@ -115,7 +116,6 @@ export class ClientChatComponent extends ClientsBaseComponent implements OnInit 
             .pageSize(this.chatMessagesPageSize)
             .whereLike('Message', search ? search : '')
             .get()
-            .takeUntil(this.ngUnsubscribe)
             .map(response => {
                 this.chatMessagesPage = page + 1;
                 if (!response.isEmpty()) {
@@ -131,12 +131,10 @@ export class ClientChatComponent extends ClientsBaseComponent implements OnInit 
                     }
                     this.allChatMessagesLoaded = true;
                 }
-            },
-            error => super.handleAppError(error));
+            });
     }
 
     private loadMoreMessages(): void {
-        super.subscribeToObservable(this.getChatMessagesObservable(this.clientId, this.chatMessagesPage, false, this.chatMessagesSearch)
-            .takeUntil(this.ngUnsubscribe));
+        super.subscribeToObservable(this.getChatMessagesObservable(this.clientId, this.chatMessagesPage, false, this.chatMessagesSearch));
     }
 }

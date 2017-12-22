@@ -65,7 +65,7 @@ export class ViewClientAppointmentComponent extends ClientsBaseComponent impleme
             componentTitle: {
               'key': 'module.clients.appointments.viewAppointmentWithName', data: { 'appointmentName': this.appointment.appointmentName }
             },
-            menuAvatarUrl: this.client.avatarUrl
+            menuAvatarUrl: this.client.getAvatarOrGravatarUrl()
           });
         })
       );

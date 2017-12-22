@@ -51,7 +51,7 @@ export class ClientAppointmentListComponent extends ClientsBaseComponent impleme
         componentTitle: {
           'key': 'module.clients.submenu.appointments'
         },
-        menuAvatarUrl: client.avatarUrl
+        menuAvatarUrl: client.getAvatarOrGravatarUrl()
       });
 
       this.initList(client.id);

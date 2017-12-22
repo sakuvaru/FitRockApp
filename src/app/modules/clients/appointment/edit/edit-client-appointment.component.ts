@@ -70,7 +70,7 @@ export class EditClientAppointmentComponent extends ClientsBaseComponent impleme
           componentTitle: {
             'key': 'module.clients.appointments.editAppointmentWithName', data: { 'appointmentName': appointment.appointmentName }
           },
-          menuAvatarUrl: this.client.avatarUrl
+          menuAvatarUrl: this.client.getAvatarOrGravatarUrl()
         });
 
       })

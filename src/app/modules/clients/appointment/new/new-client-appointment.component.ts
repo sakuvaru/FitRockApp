@@ -53,7 +53,8 @@ export class NewClientAppointmentComponent extends ClientsBaseComponent implemen
                 menuTitle: {
                     key: 'module.clients.viewClientSubtitle',
                     data: { 'fullName': client.getFullName() }
-                }
+                },
+                menuAvatarUrl: this.client.getAvatarOrGravatarUrl()
             });
         });
     }
