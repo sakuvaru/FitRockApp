@@ -1,16 +1,13 @@
-// common
-import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-import { ComponentDependencyService, BaseComponent, ComponentSetup } from '../../core';
-import { AppConfig, UrlConfig } from '../../config';
-
-// required by component
-import { ChatMenuItems } from './menu.items';
-import { User, ChatMessage } from '../../models';
-import { DataFormConfig } from '../../../web-components/data-form';
-import { FormControl } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
 import * as _ from 'underscore';
+
+import { DataFormConfig } from '../../../web-components/data-form';
+import { AppConfig } from '../../config';
+import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../../core';
+import { ChatMessage } from '../../models';
+import { ChatMenuItems } from './menu.items';
 
 @Component({
     templateUrl: 'chat.component.html'
@@ -24,9 +21,6 @@ export class ChatComponent extends BaseComponent implements OnInit {
     public chatMessagesPageSize: number = 10;
     public chatMessagesSearch: string = '';
     public allChatMessagesLoaded: boolean = false;
-
-    private readonly debounceTime = 300;
-    public searchControl = new FormControl();
 
     public noConversationFound: boolean = false;
     public noUserFound: boolean = false;
@@ -53,22 +47,14 @@ export class ChatComponent extends BaseComponent implements OnInit {
         super.ngOnInit();
         super.subscribeToObservables(this.getComponentObservables());
 
-        // init chat search
-        this.initSearch();
-
         // make sure the menu is initialized by searching for all users at the init
         this.dependencies.coreServices.sharedService.setComponentSearch('');
     }
 
-    private initSearch(): void {
-        this.searchControl.valueChanges
-            .debounceTime(this.debounceTime)
-            .subscribe(searchTerm => {
-                // reset page to 1 when searching
-                this.chatMessagesPage = 1;
-                this.chatMessagesSearch = searchTerm;
+    private searchConversation(search: string): void {
+        this.chatMessagesPage = 1;
+                this.chatMessagesSearch = search;
                 super.subscribeToObservable(this.getChatMessagesObservable(this.activeChatUserId, this.chatMessagesPage, true, this.chatMessagesSearch));
-            });
     }
 
     private getComponentObservables(): Observable<any>[] {

@@ -1,11 +1,7 @@
-<div>
-    <mat-form-field flex>
-        <input matInput placeholder="{{'shared.search' | localize}}" [formControl]="searchControl" [value]="chatMessagesSearch"
-        />
-        <span matPrefix>
-            <mat-icon>search</mat-icon>
-        </span>
-    </mat-form-field>
+<div fxLayout="row">
+    <div fxLayout="column" fxFlex="20%" fxFlex.md="20%" fxFlex.sm="100%" fxFlex.xs="100%">
+        <td-search-input (searchDebounce)="searchConversation($event)" [showUnderline]="true" debounce="200" placeholder="{{ 'shared.search' | localize }}"></td-search-input>
+    </div>
 </div>
 
 <mat-card>
