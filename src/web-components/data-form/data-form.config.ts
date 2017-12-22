@@ -146,6 +146,11 @@ export class DataFormConfig {
      */
     public renderButtons: boolean = true;
 
+    /**
+     * Custom text shown on button. If none is set, default texts will be used
+     */
+    public customButtonSaveText?: Observable<string>;
+
     constructor(
         /**
         * Type of the form

@@ -397,6 +397,9 @@
 			"passwordMismatch": "Hesla se neshodují",
 			"userAlreadyExistsError": "Tento uživatel již existuje",
 			"missingLogonDetails": "Vyplň jméno a heslo"
+		},
+		"chat": {
+			"send": "Odeslat"
 		}
 	},
 	"form": {

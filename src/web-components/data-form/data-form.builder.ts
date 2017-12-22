@@ -222,6 +222,14 @@ export class DataFormBuilder<TItem extends IItem> {
         return this;
     }
 
+    /**
+    * Custom text shown on button. If none is set, default texts will be used
+    */
+    customButtonSaveText(text: Observable<string>): this {
+        this.config.customButtonSaveText = text;
+        return this;
+    }
+
     build(): DataFormConfig {
         return this.config;
     }

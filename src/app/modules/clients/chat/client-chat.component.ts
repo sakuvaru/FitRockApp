@@ -73,6 +73,7 @@ export class ClientChatComponent extends ClientsBaseComponent implements OnInit 
                         }
                         return Observable.of(value);
                     })
+                    .customButtonSaveText(super.translate('module.chat.send'))
                     .wrapInCard(false)
                     .onAfterInsert((response) => {
                         // reload messages

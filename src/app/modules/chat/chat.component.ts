@@ -53,8 +53,8 @@ export class ChatComponent extends BaseComponent implements OnInit {
 
     private searchConversation(search: string): void {
         this.chatMessagesPage = 1;
-                this.chatMessagesSearch = search;
-                super.subscribeToObservable(this.getChatMessagesObservable(this.activeChatUserId, this.chatMessagesPage, true, this.chatMessagesSearch));
+        this.chatMessagesSearch = search;
+        super.subscribeToObservable(this.getChatMessagesObservable(this.activeChatUserId, this.chatMessagesPage, true, this.chatMessagesSearch));
     }
 
     private getComponentObservables(): Observable<any>[] {
@@ -163,6 +163,7 @@ export class ChatComponent extends BaseComponent implements OnInit {
                 }
                 return Observable.of(value);
             })
+            .customButtonSaveText(super.translate('module.chat.send'))
             .wrapInCard(false)
             .onAfterInsert((response) => {
                 // reload messages

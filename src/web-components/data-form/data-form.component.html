@@ -37,8 +37,22 @@
                 <mat-divider *ngIf="config.renderButtons"></mat-divider>
                 <mat-card-actions *ngIf="config.renderButtons">
                     <div fxFlex layout="row" class="push-left push-right push-top-sm push-bottom-sm">
-                        <button *ngIf="isInsertForm" mat-raised-button color="accent" (click)="handleInsertItem()" [disabled]="!formGroup.valid">{{ 'webComponents.dataForm.insert' | localize }}</button>
-                        <button *ngIf="isEditForm" mat-raised-button color="accent" (click)="handleEditItem()" [disabled]="!formGroup.valid">{{ 'webComponents.dataForm.save' | localize }}</button>
+                        <button *ngIf="isInsertForm" mat-raised-button color="accent" (click)="handleInsertItem()" [disabled]="!formGroup.valid">
+                            <ng-container *ngIf="config.customButtonSaveText">
+                                {{ config.customButtonSaveText | async }}
+                            </ng-container>
+                            <ng-container *ngIf="!config.customButtonSaveText">
+                                {{ 'webComponents.dataForm.insert' | localize }}
+                            </ng-container>
+                        </button>
+                        <button *ngIf="isEditForm" mat-raised-button color="accent" (click)="handleEditItem()" [disabled]="!formGroup.valid">
+                            <ng-container *ngIf="config.customButtonSaveText">
+                                {{ config.customButtonSaveText | async }}
+                            </ng-container>
+                            <ng-container *ngIf="!config.customButtonSaveText">
+                                {{ 'webComponents.dataForm.save' | localize }}
+                            </ng-container>
+                        </button>
                         <div style="margin-top:10px; margin-left: 6px">
                             <loader [enabled]="loaderEnabled" type="mat-circle"></loader>
                         </div>
@@ -84,8 +98,22 @@
                 <mat-divider *ngIf="config.renderButtons"></mat-divider>
 
                 <div *ngIf="config.renderButtons" fxFlex layout="row" class="push-left push-right push-top-sm push-bottom-sm">
-                    <button *ngIf="isInsertForm" mat-raised-button color="accent" (click)="handleInsertItem()" [disabled]="!formGroup.valid">{{ 'webComponents.dataForm.insert' | localize }}</button>
-                    <button *ngIf="isEditForm" mat-raised-button color="accent" (click)="handleEditItem()" [disabled]="!formGroup.valid">{{ 'webComponents.dataForm.save' | localize }}</button>
+                    <button *ngIf="isInsertForm" mat-raised-button color="accent" (click)="handleInsertItem()" [disabled]="!formGroup.valid">
+                        <ng-container *ngIf="config.customButtonSaveText">
+                            {{ config.customButtonSaveText | async }}
+                        </ng-container>
+                        <ng-container *ngIf="!config.customButtonSaveText">
+                            {{ 'webComponents.dataForm.insert' | localize }}
+                        </ng-container>
+                    </button>
+                    <button *ngIf="isEditForm" mat-raised-button color="accent" (click)="handleEditItem()" [disabled]="!formGroup.valid">
+                        <ng-container *ngIf="config.customButtonSaveText">
+                            {{ config.customButtonSaveText | async }}
+                        </ng-container>
+                        <ng-container *ngIf="!config.customButtonSaveText">
+                            {{ 'webComponents.dataForm.save' | localize }}
+                        </ng-container>
+                    </button>
                     <div style="margin-top:10px; margin-left: 6px">
                         <loader [enabled]="loaderEnabled" type="mat-circle"></loader>
                     </div>
