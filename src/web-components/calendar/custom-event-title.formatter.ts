@@ -26,7 +26,7 @@ export class CustomEventTitleFormatter extends CalendarEventTitleFormatter {
       return '';
     }
 
-    return `(${hour}:${minutes})`;
+    return `(${hour === 0 ? '' : hour + 'h'}${minutes === 0 ? '' : ':' + minutes + 'm'})`;
   }
 
   // you can override any of the methods defined in the parent class
