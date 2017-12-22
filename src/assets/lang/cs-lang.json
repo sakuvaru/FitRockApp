@@ -525,10 +525,11 @@
 			"locationName": "Název lokace",
 			"locationName.hint": "Např. 'Brno Fitko' , 'Outdoor', 'Kancelář' apod.",
 			"address": "Adresa",
+			"address.hint": "Mapa se zobrazí automaticky na základě této adresy",
 			"lat": "Zeměpisná šířka",
-			"lat.hint": "Nepovinné, lze použít pro zpřesnění lokace",
+			"lat.hint": "Nepovinné, lze použít pro zadání přesné lokace",
 			"lng": "Zeměpisná délka",
-			"lng.hint": "Nepovinné, lze použít pro zpřesnění lokace",
+			"lng.hint": "Nepovinné, lze použít pro zadání přesné lokace",
 			"locationType": "Typ lokace"
 		},
 		"appointment": {
