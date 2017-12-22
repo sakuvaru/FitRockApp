@@ -24,6 +24,7 @@ import { RadioBooleanComponent } from './form-controls/radio-boolean.component';
 import { TextAreaComponent } from './form-controls/text-area.component';
 import { TextComponent } from './form-controls/text.component';
 import { DurationComponent } from './form-controls/duration.component';
+import { EmailComponent } from './form-controls/email.component';
 
 @NgModule({
     imports: [
@@ -54,7 +55,8 @@ import { DurationComponent } from './form-controls/duration.component';
         NumberComponent,
         PhoneNumberComponent,
         DateTimeComponent,
-        DurationComponent
+        DurationComponent,
+        EmailComponent
     ],
     exports: [
         DataFormComponent,

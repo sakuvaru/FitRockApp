@@ -54,6 +54,8 @@ class DataFormBuilderUtils {
             return DataFormFieldTypeEnum.TextArea;
         } else if (controlType === ControlTypeEnum.Duration) {
             return DataFormFieldTypeEnum.Duration;
+        }  else if (controlType === ControlTypeEnum.Email) {
+            return DataFormFieldTypeEnum.Email;
         }
 
         throw Error(`Unsupported control type '${controlType}' could not be mapped to field type control`);

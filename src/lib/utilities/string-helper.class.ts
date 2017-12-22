@@ -4,9 +4,9 @@ export class StringHelper {
      * Converts first char of the text to lowercase
      * @param text text
      */
-    firstCharToLowerCase(text) {
+    firstCharToLowerCase(text): string | undefined {
         if (!text) {
-            return null;
+            return undefined;
         }
         return text.charAt(0).toLowerCase() + text.slice(1);
     }
@@ -15,7 +15,7 @@ export class StringHelper {
      * Converts string to camel case
      * @param text text
      */
-    toCamelCase(text) {
+    toCamelCase(text): string | undefined {
         return this.firstCharToLowerCase(text);
     }
 
@@ -23,11 +23,20 @@ export class StringHelper {
      * capitalizeTxt('this is a test'); // returns 'This is a test'
      * @param text text to capitalize
      */
-    capitalizeText(text) {
+    capitalizeText(text): string | undefined {
         if (!text) {
-            return null;
+            return undefined;
         }
         return text.charAt(0).toUpperCase() + text.slice(1);
+    }
+
+    isValidEmail(email): boolean {
+        if (!email) {
+            return false;
+        }
+
+        const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(email.toLowerCase());
     }
 
     /**

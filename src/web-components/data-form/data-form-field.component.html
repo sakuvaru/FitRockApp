@@ -41,3 +41,7 @@
 <ng-container *ngIf="isDurationField()">
   <df-duration [fields]="fields" [field]="field" [formGroup]="formGroup" [config]="config"></df-duration>
 </ng-container>
+
+<ng-container *ngIf="isEmailField()">
+  <df-email [fields]="fields" [field]="field" [formGroup]="formGroup" [config]="config"></df-email>
+</ng-container>

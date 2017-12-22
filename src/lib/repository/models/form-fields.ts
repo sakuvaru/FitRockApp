@@ -131,6 +131,8 @@ export class FormField implements IFormField {
             this.controlTypeEnum = ControlTypeEnum.Duration;
             this.value = +rawValue;
             this.defaultValue = +defaultValue;
+        } else if (controlType === 'Email') {
+            this.controlTypeEnum = ControlTypeEnum.Email;    
         } else {
             this.controlTypeEnum = ControlTypeEnum.Unknown;
         }
