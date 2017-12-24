@@ -5,6 +5,7 @@ import { UrlConfig } from '../../config';
 import { LoginPageComponent } from './login-page.component';
 import { LogoutComponent } from './logout.component';
 import { RegisterPageComponent } from './register-page.component';
+import { ResetPasswordPageComponent } from './reset-password-page.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,9 @@ import { RegisterPageComponent } from './register-page.component';
       },
       {
         path: UrlConfig.AuthMasterPath + '/' + UrlConfig.Register, component: RegisterPageComponent
+      },
+      {
+        path: UrlConfig.AuthMasterPath + '/' + UrlConfig.ResetPassword, component: ResetPasswordPageComponent
       }
     ])
   ],

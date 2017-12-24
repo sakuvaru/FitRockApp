@@ -59,4 +59,10 @@ export class AppConfig {
      * No data image url
      */
     public static NoDataImageUrl = AppConfig.ServerUrl + '/system/images/empty.png';
+
+    
+     /**
+     * App logo url
+     */
+    public static AppLogoUrl = 'http://fuse-angular-material.withinpixels.com/assets/images/logos/fuse.svg';
 }

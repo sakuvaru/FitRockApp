@@ -1,12 +1,10 @@
-// service common
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { BaseTypeService } from '../base/base-type.service';
 
-// required by service
-import { User, UserFilterWithCount } from '../../models';
-import { EditFormQuery, RepositoryClient, MultipleItemQuery, CreateItemQuery, ResponseSingle, MultipleItemQueryCustom, ResponsePost } from '../../../lib/repository';
+import { CreateItemQuery, MultipleItemQuery, RepositoryClient, ResponsePost, ResponseSingle } from '../../../lib/repository';
 import { DataFormBuilder } from '../../../web-components/data-form';
+import { User } from '../../models';
+import { BaseTypeService } from '../base/base-type.service';
 
 @Injectable()
 export class UserService extends BaseTypeService<User> {
@@ -49,6 +47,12 @@ export class UserService extends BaseTypeService<User> {
         return super.post<any>('CreateAccount')
             .withJsonOption('Email', email)
             .withJsonOption('Password', password)
+            .set();
+    }
+
+    resetPassword(email: string): Observable<ResponsePost<any>> {
+        return super.post<any>('ResetPassword')
+            .withJsonOption('Email', email)
             .set();
     }
 

@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../../core';
-import { UrlConfig } from 'app/config';
+import { UrlConfig, AppConfig } from 'app/config';
 import { ErrorResponse, AuthErrorResponse } from 'lib/repository';
 
 @Component({
@@ -12,6 +12,10 @@ import { ErrorResponse, AuthErrorResponse } from 'lib/repository';
     templateUrl: 'register-form.component.html'
 })
 export class RegisterFormComponent extends BaseComponent implements OnInit {
+
+    public readonly emailLength: number = 50;
+
+    public readonly appLogo: string = AppConfig.AppLogoUrl;
 
     private readonly passwordMismatchError: string = 'passwordMismatch';
     private readonly customError: string = 'customError';

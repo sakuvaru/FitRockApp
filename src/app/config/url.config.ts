@@ -9,6 +9,7 @@ export class UrlConfig {
     public static SharedMasterPath = 'shared';
 
     public static Login = 'login';
+    public static ResetPassword = 'reset-password';
     public static Register = 'register';
     public static AppError = 'error';
     public static Unauthorized = 'unauthorized';
@@ -40,6 +41,10 @@ export class UrlConfig {
 
     public static getLoginUrl(): string {
         return UrlConfig.getAuthUrl(UrlConfig.Login);
+    }
+
+    public static getResetPasswordUrl(): string {
+        return UrlConfig.getAuthUrl(UrlConfig.ResetPassword);
     }
 
     public static getLogoutUrl(): string {

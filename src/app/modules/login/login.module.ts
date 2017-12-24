@@ -10,6 +10,8 @@ import { LoginRouter } from './login.routing';
 import { LogoutComponent } from './logout.component';
 import { RegisterFormComponent } from './register-form.component';
 import { RegisterPageComponent } from './register-page.component';
+import { ResetPasswordPageComponent } from './reset-password-page.component';
+import { ResetPasswordFormComponent } from './reset-password-form.component';
 
 @NgModule({
     imports: [
@@ -24,7 +26,9 @@ import { RegisterPageComponent } from './register-page.component';
         LoginFormComponent,
         LogoutComponent,
         RegisterPageComponent,
-        RegisterFormComponent
+        RegisterFormComponent,
+        ResetPasswordPageComponent,
+        ResetPasswordFormComponent
     ],
     exports: [
         LoginFormComponent

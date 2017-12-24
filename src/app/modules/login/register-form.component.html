@@ -2,7 +2,7 @@
     <mat-card-content>
         <div class="push-sm">
             <div class="w-login-page-logo">
-                <img alt="logo" src="http://fuse-angular-material.withinpixels.com/assets/images/logos/fuse.svg">
+                <img alt="logo" src="{{ appLogo }}">
             </div>
             <div class="push-top push-bottom w-login-page-title mat-subheading-2">
                 {{ 'module.login.createAccount' | localize }}
@@ -16,12 +16,12 @@
             <form [formGroup]="formGroup" autocomplete="false">
                 <div layout="row">
                     <mat-form-field flex>
-                        <input #emailElem matInput placeholder="{{ 'module.login.email' | localize }}" type="text" maxlength="30" name="email" [formControl]="email"
+                        <input #emailElem matInput placeholder="{{ 'module.login.email' | localize }}" type="text" maxlength="{{ emailLength }}" name="email" [formControl]="email"
                             required autocomplete="off">
                         <mat-hint align="start">
                         </mat-hint>
                         <mat-error *ngIf="email.invalid">{{ 'module.login.' + getEmailError() | localize }}</mat-error>
-                        <mat-hint align="end">{{emailElem.value.length}} / 30</mat-hint>
+                        <mat-hint align="end">{{emailElem.value.length}} / {{ emailLength }}</mat-hint>
                     </mat-form-field>
                 </div>
                 <div layout="row" class="push-top-sm">

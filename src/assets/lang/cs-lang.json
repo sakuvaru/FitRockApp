@@ -396,7 +396,12 @@
 			"loginWithExistingAccount": "Přihlásit s existujicím ůčtem",
 			"passwordMismatch": "Hesla se neshodují",
 			"userAlreadyExistsError": "Tento uživatel již existuje",
-			"missingLogonDetails": "Vyplň jméno a heslo"
+			"missingLogonDetails": "Vyplň jméno a heslo",
+			"resetPasswordTitle": "Zapomenuté heslo",
+			"resetPasswordFailed": "Akce se nezdařilo, kontaktuj nás prosím pokud se tahle chyba opakuje",
+			"missingEmail": "E-mail musí být vyplněný",
+			"resetPasswordSend": "Pokud tento účet existuje, tak e-mail na změnu hesla byl odeslán přes službu Auth0",
+			"resetPassword": "Změnit heslo"
 		},
 		"chat": {
 			"send": "Odeslat"

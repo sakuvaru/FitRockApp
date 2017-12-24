@@ -3,12 +3,17 @@ import { ActivatedRoute } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { UrlConfig } from '../../config/url.config';
 import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../../core';
+import { AppConfig } from 'app/config';
 
 @Component({
     selector: 'login-form',
     templateUrl: 'login-form.component.html'
 })
 export class LoginFormComponent extends BaseComponent implements OnInit {
+
+    public readonly emailLength: number = 50;
+
+    public readonly appLogo: string = AppConfig.AppLogoUrl;
 
     // event outputs
     @Output() onLoginFailedEvent = new EventEmitter();
@@ -103,6 +108,10 @@ export class LoginFormComponent extends BaseComponent implements OnInit {
 
     getRegisterUrl(): string {
         return super.getAuthUrl(UrlConfig.Register);
+    }
+
+    getResetPasswordUrl(): string {
+        return super.getAuthUrl(UrlConfig.ResetPassword);
     }
 
     getEmailError() {
