@@ -54,6 +54,7 @@ import { CurrentLanguageService } from '../services/current-language.service';
 import { SharedService } from '../services/shared.service';
 import { SystemService } from '../services/system.service';
 import { TimeService } from '../services/time.service';
+import { RememberService } from '../services/remember.service';
 
 @Injectable()
 export class ComponentDependencyService {
@@ -92,6 +93,7 @@ export class ComponentDependencyService {
         this.coreServices.localizationService = injector.get(LocalizationService);
         this.coreServices.sharedService = injector.get(SharedService);
         this.coreServices.timeService = injector.get(TimeService);
+        this.coreServices.rememberService = injector.get(RememberService);
 
         // helpers
         this.helpers = new Helpers();
@@ -182,6 +184,7 @@ export class CoreServices {
     public sharedService: SharedService;
     public localizationService: LocalizationService;
     public timeService: TimeService;
+    public rememberService: RememberService;
 }
 
 export class MdServices {

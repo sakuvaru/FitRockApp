@@ -17,6 +17,7 @@ import { CurrentLanguageService } from './services/current-language.service';
 import { SharedService } from './services/shared.service';
 import { SystemService } from './services/system.service';
 import { TimeService } from './services/time.service';
+import { RememberService } from './services/remember.service';
 
 @NgModule({
     imports: [
@@ -42,7 +43,8 @@ import { TimeService } from './services/time.service';
         CurrentLanguageService,
         AppLanguageResolver,
         SystemService,
-        TimeService
+        TimeService,
+        RememberService
     ],
     exports: [
         CommonModule,

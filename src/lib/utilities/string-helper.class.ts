@@ -11,10 +11,10 @@ export class StringHelper {
         return text.charAt(0).toLowerCase() + text.slice(1);
     }
 
-     /**
-     * Converts string to camel case
-     * @param text text
-     */
+    /**
+    * Converts string to camel case
+    * @param text text
+    */
     toCamelCase(text): string {
         return this.firstCharToLowerCase(text);
     }
@@ -48,7 +48,7 @@ export class StringHelper {
         if (!text) {
             return hash;
         }
-        
+
         for (i = 0; i < text.length; i++) {
             chr = text.charCodeAt(i);
             hash = ((hash << 5) - hash) + chr;
@@ -69,11 +69,11 @@ export class StringHelper {
         return text.indexOf(contains) !== -1;
     }
 
-     /**
-     * Returns true if text contains one of the given inputs
-     * @param text text
-     * @param contains text array
-     */
+    /**
+    * Returns true if text contains one of the given inputs
+    * @param text text
+    * @param contains text array
+    */
     containsAny(text: string, containsArr: string[]): boolean {
         if (!text || !containsArr || !Array.isArray(containsArr)) {
             return false;
@@ -114,6 +114,17 @@ export class StringHelper {
         }
 
         return shortenedText;
+    }
+
+    /**
+     * Checks if given value is string
+     * @param value Value to check
+     */
+    isString(value: any): boolean {
+        if (typeof value === 'string' || value instanceof String) {
+            return true;
+        }
+        return false;
     }
 
 }

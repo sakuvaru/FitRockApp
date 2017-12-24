@@ -14,6 +14,8 @@ export class ClientsOverviewComponent extends ClientsBaseComponent implements On
 
   public config: DataTableConfig;
 
+  private readonly rememberDataTableStateName: string = 'clients_overview_data_table_mode';
+
   @ViewChild('clientsDataTable') clientsDataTable: DataTableComponent;
 
   constructor(
@@ -35,11 +37,15 @@ export class ClientsOverviewComponent extends ClientsBaseComponent implements On
     super.initClientSubscriptions();
   }
 
-  changeMode(): void {
-    if (this.config.mode === DataTableMode.Standard) {
-      this.config.mode = DataTableMode.Tiles;
+  toggleMode(): void {
+    this.clientsDataTable.toggleMode();
+
+    if (this.clientsDataTable.config.mode === DataTableMode.Standard) {
+      // remember last active mode
+      this.dependencies.coreServices.rememberService.set(this.rememberDataTableStateName, 'standard');
     } else {
-      this.config.mode = DataTableMode.Standard;
+      // remember last active mode
+      this.dependencies.coreServices.rememberService.set(this.rememberDataTableStateName, 'other');
     }
   }
 
@@ -49,6 +55,8 @@ export class ClientsOverviewComponent extends ClientsBaseComponent implements On
       menuItems: new ClientOverviewMenuItems().menuItems,
       componentTitle: { key: 'module.clients.allClients' }
     });
+
+    // get last remembered
 
     this.config = this.dependencies.itemServices.userService.buildDataTable(
       (query, search) => {
@@ -85,7 +93,9 @@ export class ClientsOverviewComponent extends ClientsBaseComponent implements On
       ]
       )
       .groupByItemsCount(5)
-      .mode(DataTableMode.Tiles)
+      .mode(
+      this.dependencies.coreServices.rememberService.get<string>(this.rememberDataTableStateName, 'tiles') === 'standard' ? DataTableMode.Standard : DataTableMode.Tiles
+      ) 
       .allFilter()
       .onClick((item) => super.navigate([super.getTrainerUrl('clients/edit/' + item.id + '/dashboard')]))
       .avatarImage((item) => {
@@ -100,7 +110,7 @@ export class ClientsOverviewComponent extends ClientsBaseComponent implements On
       // configure component actions after config is set up
       super.setConfig({
         actions: [{
-          action: () => this.clientsDataTable.toggleMode(),
+          action: () => this.toggleMode(),
           icon: () => this.config.mode === DataTableMode.Standard ? 'view_module' : 'view_headline',
           tooltip: () => this.config.mode === DataTableMode.Standard ? super.translate('shared.tiles') : super.translate('shared.list')
         }]
