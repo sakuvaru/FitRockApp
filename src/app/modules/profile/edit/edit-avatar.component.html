@@ -2,6 +2,6 @@
     <uploader [config]="uploaderConfig"></uploader>
 </div>
 
-<div class="push-top" *ngIf="avatarSrc">
-    <img alt="avatar" [src]="avatarSrc" />
+<div class="push-top" *ngIf="avatarSrc || gravatarUrl">
+    <img class="w-site-avatar-preview" alt="avatar" [src]="avatarSrc ? avatarSrc : gravatarUrl" />
 </div>

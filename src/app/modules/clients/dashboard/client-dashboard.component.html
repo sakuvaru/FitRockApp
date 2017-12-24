@@ -82,7 +82,7 @@
 
                     <mat-nav-list *ngIf="chatMessages && chatMessages.length > 0">
                         <mat-list-item *ngFor="let chatMessage of chatMessages" [routerLink]="getChatMessageUrl()">
-                            <img matListAvatar [src]="chatMessage.sender.avatarUrl ? chatMessage.sender.avatarUrl : defaultAvatarUrl" alt="avatar for {{ chatMessage.sender.getFullName() }}">
+                            <img matListAvatar [src]="chatMessage.sender.getAvatarOrGravatarUrl() ? chatMessage.sender.getAvatarOrGravatarUrl() : defaultAvatarUrl" alt="avatar for {{ chatMessage.sender.getFullName() }}">
                             <div matLine> {{ chatMessage.message }}</div>
                         </mat-list-item>
                     </mat-nav-list>

@@ -1,14 +1,12 @@
-// common
-import { Component, Input, Output, OnInit, EventEmitter, OnDestroy, AfterViewInit } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-import { ComponentDependencyService, BaseComponent, ComponentConfig, ComponentSetup } from '../../../core';
-import { AppConfig, UrlConfig } from '../../../config';
-
-// required by component
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
+
+import { AppConfig } from '../../../config';
+import { ComponentDependencyService, ComponentSetup } from '../../../core';
+import { Appointment, ChatMessage, Diet, Workout } from '../../../models';
 import { ClientsBaseComponent } from '../clients-base.component';
 import { ClientMenuItems } from '../menu.items';
-import { User, Appointment, Workout, Diet, ChatMessage } from '../../../models';
 
 @Component({
   templateUrl: 'client-dashboard.component.html'
@@ -20,7 +18,7 @@ export class ClientDashboardComponent extends ClientsBaseComponent implements On
 
   public appointment?: Appointment;
   public workouts?: Workout[];
-  public  diets?: Diet[];
+  public diets?: Diet[];
   public chatMessages?: ChatMessage[];
 
   constructor(

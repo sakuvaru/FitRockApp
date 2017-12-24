@@ -113,7 +113,7 @@ export class ChatComponent extends BaseComponent implements OnInit {
 
                 this.activeChatUserId = activeUser.id;
 
-                // update component config with users name
+                // update component config with user's name
                 super.setConfig({
                     componentTitle: { key: activeUser.getFullName() }
                 });

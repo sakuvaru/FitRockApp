@@ -17,7 +17,8 @@ export class EditAvatarComponent extends BaseComponent implements OnInit {
 
     public uploaderConfig: UploaderConfig;
 
-    public avatarSrc: string;
+    public avatarSrc?: string;
+    public gravatarUrl?: string;
 
     constructor(
         protected dependencies: ComponentDependencyService) {
@@ -74,6 +75,7 @@ export class EditAvatarComponent extends BaseComponent implements OnInit {
             .get()
             .map(response => {
                 this.avatarSrc = response.item.avatarUrl;
+                this.gravatarUrl = response.item.gravatarUrl;
             });
     }
 }

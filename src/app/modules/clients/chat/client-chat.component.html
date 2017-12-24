@@ -12,7 +12,7 @@
     <mat-card-content>
         <ng-container *ngFor="let chatMessage of chatMessages">
             <comment [text]="chatMessage.message" [date]="formatDate(chatMessage.created)" [name]="chatMessage.sender.getFullName()"
-                [avatarUrl]="chatMessage.sender.avatarUrl ? chatMessage.sender.avatarUrl : defaultAvatarUrl"></comment>
+                [avatarUrl]="chatMessage.sender.getAvatarOrGravatarUrl() ? chatMessage.sender.getAvatarOrGravatarUrl() : defaultAvatarUrl"></comment>
         </ng-container>
     </mat-card-content>
 </mat-card>
