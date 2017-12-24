@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AuthenticatedUser } from '../models/core.models';
 import { SharedService } from './shared.service';
+import { LanguageEnum } from 'lib/repository';
 
 /// Service that provides the currently authenticated user
 /// Has to be initialized after the user is logged in using the 'setUser' method
@@ -34,6 +35,20 @@ export class AuthenticatedUserService {
         const user = this.getUser();
         if (user) {
             user.avatarUrl = avatarUrl;
+            this.setUser(user);
+        }
+    }
+
+     /**
+     * Updates language of current user in local storage.
+     * This method should be called each time language is changed to ensure
+     * auth user is up to date
+     * @param language New language
+     */
+    updateLanguage(language: LanguageEnum): void {
+        const user = this.getUser();
+        if (user) {
+            user.language = language;
             this.setUser(user);
         }
     }

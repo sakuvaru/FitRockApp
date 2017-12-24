@@ -50,7 +50,10 @@ export class EditMyProfileComponent extends BaseComponent implements OnInit {
                     // language has changed, update it
                     this.dependencies.coreServices.currentLanguageService.setLanguage(response.item.language);
 
-                    // reload page to see new translation
+                    // update language of auth user
+                    this.dependencies.authenticatedUserService.updateLanguage(response.item.language);
+                    
+                    // finally reload page
                     this.dependencies.coreServices.systemService.reloadPage();
                 }
             })

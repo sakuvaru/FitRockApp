@@ -37,7 +37,6 @@ export class EntryComponent extends BaseComponent {
       .flatMap(userGravatarResponse => {
         return this.dependencies.itemServices.userService
           .getAuthUser()
-          .takeUntil(this.ngUnsubscribe)
           .map(response => {
             if (response == null) {
               // invalid response
