@@ -1,5 +1,5 @@
 import { AppConfig, UrlConfig } from '../../config';
-import { MenuItem, MenuItemType, ResourceKey } from '../models/core.models';
+import { MenuItem, MenuItemType, ResourceKey, ComponentAction } from '../models/core.models';
 
 export class ComponentConfig {
 
@@ -10,6 +10,7 @@ export class ComponentConfig {
     private readonly default_menuTitle: ResourceKey = { key: 'menu.main' };
     private readonly default_appName: string = AppConfig.AppName;
     private readonly default_menuAvatarUrl: string = '';
+    private readonly default_actions: ComponentAction[] = [];
 
     public componentTitle?: ResourceKey = this.default_componentTitle;
     public menuItems?: MenuItem[] = this.default_menuItems;
@@ -17,6 +18,7 @@ export class ComponentConfig {
     public menuTitle?: ResourceKey = this.default_menuTitle;
     public enableSearch = false;
     public menuAvatarUrl?: string = this.default_menuAvatarUrl;
+    public actions?: ComponentAction[] = this.default_actions;
 
     constructor(options?: {
         componentTitle?: ResourceKey,
@@ -25,7 +27,7 @@ export class ComponentConfig {
         menuTitle?: ResourceKey,
         enableSearch?: boolean,
         menuAvatarUrl?: string,
-
+        actions?: ComponentAction[]
     }) {
         if (options) {
             Object.assign(this, options);
@@ -47,6 +49,9 @@ export class ComponentConfig {
         }
         if (!this.menuAvatarUrl) {
             this.menuAvatarUrl = this.default_menuAvatarUrl;
+        }
+        if (!this.actions) {
+            this.actions = this.default_actions;
         }
     }
 }

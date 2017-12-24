@@ -66,6 +66,8 @@
 		"save": "Uložit",
 		"create": "Vytvořit",
 		"edit": "Upravit",
+		"list": "List",
+		"tiles": "Dlaždice",
 		"language": {
 			"default": "Výchozí jazyk (čeština)",
 			"cz": "Čeština",

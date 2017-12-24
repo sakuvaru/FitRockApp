@@ -1,10 +1,9 @@
 import { AfterViewInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
-import { FormControl } from '@angular/forms';
 import { TdMediaService } from '@covalent/core';
 
 import { stringHelper } from '../../../lib/utilities';
 import { AppConfig } from '../../config';
-import { AdminMenu, ComponentDependencyService, GlobalLoaderStatus, MenuItem } from '../../core';
+import { AdminMenu, ComponentAction, ComponentDependencyService, GlobalLoaderStatus, MenuItem } from '../../core';
 import { BaseLayoutComponent } from './base-layout.component';
 
 export class BaseAdminLayoutComponent extends BaseLayoutComponent implements OnDestroy, AfterViewInit {
@@ -19,13 +18,13 @@ export class BaseAdminLayoutComponent extends BaseLayoutComponent implements OnD
 
     // Component configuration & data
     public globalLoaderStatus: GlobalLoaderStatus = new GlobalLoaderStatus(false, false);
-    public componentIsInitialized: boolean;
-    public enableComponentSearch: boolean;
-    public componentTitle: string;
-    public menuTitle: string;
-    public menuAvatarUrl: string;
+    public componentIsInitialized: boolean = false;
+    public enableComponentSearch: boolean = false;
+    public componentTitle?: string;
+    public menuTitle?: string;
+    public menuAvatarUrl?: string;
+    public actions?: ComponentAction[];
 
-    // calculated data
     public displayUsername: string;
     public email: string;
 
@@ -90,9 +89,16 @@ export class BaseAdminLayoutComponent extends BaseLayoutComponent implements OnD
             .takeUntil(this.ngUnsubscribe)
             .subscribe(
             componentConfig => {
+                // set component search
                 this.enableComponentSearch = componentConfig.enableSearch;
+
+                // set menu items
                 this.menuItems = componentConfig.menuItems;
 
+                // set actions
+                this.actions = componentConfig.actions;
+
+                // set component avatar
                 if (componentConfig.menuAvatarUrl) {
                     this.menuAvatarUrl = componentConfig.menuAvatarUrl;
                 } else {

@@ -312,6 +312,10 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
         if (content && !this.paginatorSubscribed) {
             this._paginator = content;
             this.subscribeToPagerChanges();
+
+            // unsubsribe from tiles paginator because switching back and forth between modes
+            // would cause pager to not register changes
+            this.unsubscribeFromTilesPaginator();
         }
     }
     
@@ -323,6 +327,10 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
         if (content && !this.tilesPaginatorSubscribed) {
             this._tilesPaginator = content;
             this.subscribeToTilesPagerChanges();
+
+            // unsubsribe from tiles paginator because switching back and forth between modes
+            // would cause pager to not register changes
+            this.unsubscribeFromPaginator();
         }
     }
 
@@ -404,40 +412,14 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
 
         // get first field value
         return getFirstFieldValue(item);
-    }
-
-    getGroupedItems(items: any[]): GroupedItems[] | undefined {
-        if (!items) {
-            return undefined;
+    }   
+    
+    toggleMode(): void {
+        if (this.config.mode === DataTableMode.Standard) {
+            this.config.mode = DataTableMode.Tiles;
+        } else {
+            this.config.mode = DataTableMode.Standard;
         }
-
-        const groupByItemsCount: number = this.config.groupByItemsCount;
-        const groupedItems: GroupedItems[] = [];
-        let currentItemIndex: number = 0;
-        let currentGroupIndex: number = 0;
-
-        items.forEach(item => {
-            if (currentItemIndex === groupByItemsCount) {
-                currentItemIndex = 0;
-            }
-
-            if (currentItemIndex === 0) {
-                currentGroupIndex++;
-                groupedItems.push(new GroupedItems(groupByItemsCount, currentGroupIndex, [item]));
-            } else {
-                const existingGroup = groupedItems.find(m => m.groupIndex === currentGroupIndex);
-
-                if (!existingGroup) {
-                    throw Error(`Could not find group with index '${currentGroupIndex}'. This is an internal error.`);
-                }
-                existingGroup.items.push(item);
-            }
-
-            currentItemIndex++;
-
-        });
-
-        return groupedItems;
     }
 
     /**
@@ -765,6 +747,22 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
             error => this.handleError(error));
     }
 
+    private unsubscribeFromPaginator(): void {
+        if (this._paginator) {
+            this._paginator.page.unsubscribe();
+
+            this.paginatorSubscribed = false;
+        }
+    }
+
+    private unsubscribeFromTilesPaginator(): void {
+        if (this._tilesPaginator) {
+            this._tilesPaginator.page.unsubscribe();
+
+            this.tilesPaginatorSubscribed = false;
+        }
+    }
+
     private subscribeToSortChanges(): void {
         this._matSort.sortChange
             .debounceTime(this.debounceTime) // this also prevents the arrow animation from breaking
@@ -873,6 +871,41 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
                 this.anyDataLoaded = true;
             });
     }
+
+    private getGroupedItems(items: any[]): GroupedItems[] | undefined {
+        if (!items) {
+            return undefined;
+        }
+
+        const groupByItemsCount: number = this.config.groupByItemsCount;
+        const groupedItems: GroupedItems[] = [];
+        let currentItemIndex: number = 0;
+        let currentGroupIndex: number = 0;
+
+        items.forEach(item => {
+            if (currentItemIndex === groupByItemsCount) {
+                currentItemIndex = 0;
+            }
+
+            if (currentItemIndex === 0) {
+                currentGroupIndex++;
+                groupedItems.push(new GroupedItems(groupByItemsCount, currentGroupIndex, [item]));
+            } else {
+                const existingGroup = groupedItems.find(m => m.groupIndex === currentGroupIndex);
+
+                if (!existingGroup) {
+                    throw Error(`Could not find group with index '${currentGroupIndex}'. This is an internal error.`);
+                }
+                existingGroup.items.push(item);
+            }
+
+            currentItemIndex++;
+
+        });
+
+        return groupedItems;
+    }
+
 
     private setCurrentSort(sort: Sort): void {
         if (!sort) {

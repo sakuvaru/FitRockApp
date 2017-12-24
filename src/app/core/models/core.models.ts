@@ -1,5 +1,5 @@
+import { Observable } from 'rxjs/Rx';
 import { LanguageEnum } from '../../../lib/repository';
-
 
 export class ResourceKey {
 
@@ -100,6 +100,14 @@ export class LanguageConfig {
         public uiLanguage: string
     ) {
     }
+}
+
+export class ComponentAction {
+    constructor(
+        public icon: () => string,
+        public action: () => void,
+        public tooltip?: () => Observable<string>
+    ) { }
 }
 
 

@@ -1,14 +1,11 @@
-// common
-import { DataTableMode } from '../../../../../web-components/data-table/data-table-mode.enum';
-import { Component, Input, Output, OnInit, EventEmitter, AfterContentInit } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-import { ComponentDependencyService, BaseComponent, ComponentConfig, ComponentSetup } from '../../../../core';
-import { AppConfig, UrlConfig } from '../../../../config';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
-// required by component
+import { DataTableMode, DataTableConfig, DataTableComponent } from '../../../../../web-components/data-table';
+import { AppConfig } from '../../../../config';
+import { ComponentDependencyService, ComponentSetup } from '../../../../core';
 import { ClientsBaseComponent } from '../../clients-base.component';
 import { ClientOverviewMenuItems } from '../../menu.items';
-import { DataTableConfig } from '../../../../../web-components/data-table';
 
 @Component({
   templateUrl: 'clients-overview.component.html'
@@ -16,6 +13,8 @@ import { DataTableConfig } from '../../../../../web-components/data-table';
 export class ClientsOverviewComponent extends ClientsBaseComponent implements OnInit {
 
   public config: DataTableConfig;
+
+  @ViewChild('clientsDataTable') clientsDataTable: DataTableComponent;
 
   constructor(
     protected activatedRoute: ActivatedRoute,
@@ -26,7 +25,7 @@ export class ClientsOverviewComponent extends ClientsBaseComponent implements On
 
   setup(): ComponentSetup | null {
     return {
-      initialized: true
+      initialized: true,
     };
   }
 
@@ -48,7 +47,7 @@ export class ClientsOverviewComponent extends ClientsBaseComponent implements On
     this.setConfig({
       menuTitle: { key: 'menu.clients' },
       menuItems: new ClientOverviewMenuItems().menuItems,
-      componentTitle: { key: 'module.clients.allClients' },
+      componentTitle: { key: 'module.clients.allClients' }
     });
 
     this.config = this.dependencies.itemServices.userService.buildDataTable(
@@ -85,6 +84,8 @@ export class ClientsOverviewComponent extends ClientsBaseComponent implements On
         }
       ]
       )
+      .groupByItemsCount(5)
+      .mode(DataTableMode.Tiles)
       .allFilter()
       .onClick((item) => super.navigate([super.getTrainerUrl('clients/edit/' + item.id + '/dashboard')]))
       .avatarImage((item) => {
@@ -95,5 +96,14 @@ export class ClientsOverviewComponent extends ClientsBaseComponent implements On
         return AppConfig.DefaultUserAvatarUrl;
       })
       .build();
+
+      // configure component actions after config is set up
+      super.setConfig({
+        actions: [{
+          action: () => this.clientsDataTable.toggleMode(),
+          icon: () => this.config.mode === DataTableMode.Standard ? 'view_module' : 'view_headline',
+          tooltip: () => this.config.mode === DataTableMode.Standard ? super.translate('shared.tiles') : super.translate('shared.list')
+        }]
+      });
   }
 }

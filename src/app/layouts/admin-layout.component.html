@@ -66,6 +66,12 @@
           <mat-icon>arrow_back</mat-icon>
         </button>
         <h1>{{componentTitle}}</h1>
+        <span flex></span>
+        <div *ngIf="actions && actions.length > 0" class="push-right-sm">
+          <button *ngFor="let action of actions" mat-icon-button (click)="action.action()" [matTooltip]="action.tooltip ? (action.tooltip() | async) : undefined">
+            <mat-icon>{{ action.icon() }}</mat-icon>
+          </button>
+        </div>
       </div>
 
       <loader [enabled]="showLoading" type="linear"></loader>

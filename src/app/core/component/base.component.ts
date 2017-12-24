@@ -1,5 +1,6 @@
 import { OnDestroy, OnInit } from '@angular/core';
 import { NavigationExtras } from '@angular/router';
+import { ComponentAction } from 'app/core';
 import { Observable, Subject } from 'rxjs/Rx';
 
 import { ErrorReasonEnum, ErrorResponse } from '../../../lib/repository';
@@ -158,7 +159,8 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
             appName?: string,
             menuTitle?: ResourceKey,
             enableSearch?: boolean,
-            menuAvatarUrl?: string
+            menuAvatarUrl?: string,
+            actions?: ComponentAction[]
         }): void {
         if (options) {
             Object.assign(this.componentConfig, options);
