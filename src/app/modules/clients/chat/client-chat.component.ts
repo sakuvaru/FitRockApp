@@ -33,10 +33,11 @@ export class ClientChatComponent extends ClientsBaseComponent implements OnInit 
 
     }
 
-    setup(): ComponentSetup | null {
-        return {
-            initialized: false
-        };
+    setup(): ComponentSetup {
+        return new ComponentSetup({
+            initialized: true,
+            isNested: false
+        });
     }
 
     ngOnInit(): void {

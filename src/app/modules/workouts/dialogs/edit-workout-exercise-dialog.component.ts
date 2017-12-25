@@ -29,14 +29,15 @@ export class EditWorkoutExerciseDialogComponent extends BaseComponent implements
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     super(dependencies);
-    
+
     this.workoutExercise = data;
   }
 
-  setup(): ComponentSetup | null {
-    return {
-        initialized: true
-    };
+  setup(): ComponentSetup {
+    return new ComponentSetup({
+      initialized: true,
+      isNested: true
+    });
   }
 
   ngOnInit() {

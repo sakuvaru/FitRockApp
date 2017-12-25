@@ -25,10 +25,11 @@ export class EditClientComponent extends ClientsBaseComponent implements OnInit 
         super(componentDependencyService, activatedRoute);
     }
 
-    setup(): ComponentSetup | null {
-        return {
-            initialized: false
-        };
+    setup(): ComponentSetup {
+        return new ComponentSetup({
+            initialized: true,
+            isNested: false
+        });
     }
 
     ngOnInit(): void {

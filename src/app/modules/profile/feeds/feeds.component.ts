@@ -1,15 +1,11 @@
 // common
-import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-import { ComponentDependencyService, BaseComponent, ComponentSetup } from '../../../core';
-import { AppConfig, UrlConfig } from '../../../config';
-
-// requied by component
-import { MyProfileMenuItems } from '../menu.items';
-import { Feed, FeedResult } from '../../../models';
+import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
-import { StringHelper } from '../../../../lib/utilities';
+
 import { LoadMoreConfig } from '../../../../web-components/load-more';
+import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
+import { Feed, FeedResult } from '../../../models';
+import { MyProfileMenuItems } from '../menu.items';
 
 @Component({
     templateUrl: 'feeds.component.html'
@@ -23,10 +19,11 @@ export class FeedsComponent extends BaseComponent implements OnInit {
         super(dependencies);
     }
 
-    setup(): ComponentSetup | null {
-        return {
-            initialized: true
-        };
+    setup(): ComponentSetup {
+        return new ComponentSetup({
+            initialized: true,
+            isNested: false
+        });
     }
 
     ngOnInit() {

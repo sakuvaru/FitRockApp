@@ -25,10 +25,11 @@ export class NewClientDietComponent extends ClientsBaseComponent implements OnIn
         super(componentDependencyService, activatedRoute);
     }
 
-    setup(): ComponentSetup | null {
-        return {
-            initialized: false
-        };
+    setup(): ComponentSetup {
+        return new ComponentSetup({
+            initialized: true,
+            isNested: false
+        });
     }
 
     ngOnInit() {

@@ -6,7 +6,7 @@ import { AppConfig, UrlConfig } from '../../../config';
 
 // required by component
 import { FoodOverviewItems } from '../menu.items';
-import { IDynamicFilter, DataTableConfig} from '../../../../web-components/data-table';
+import { IDynamicFilter, DataTableConfig } from '../../../../web-components/data-table';
 import { Food, FoodCategoryWithFoodsCountDto } from '../../../models';
 import { Observable } from 'rxjs/Rx';
 
@@ -22,10 +22,11 @@ export class MyFoodsListComponent extends BaseComponent implements OnInit {
     super(dependencies);
   }
 
-  setup(): ComponentSetup | null {
-    return {
-      initialized: true
-    };
+  setup(): ComponentSetup {
+    return new ComponentSetup({
+      initialized: true,
+      isNested: false
+    });
   }
 
   ngOnInit() {

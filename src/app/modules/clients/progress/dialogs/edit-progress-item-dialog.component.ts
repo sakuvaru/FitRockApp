@@ -30,11 +30,12 @@ export class EditProgressItemDialogComponent extends BaseComponent implements On
 
   }
 
-  setup(): ComponentSetup | null {
-    return {
-        initialized: true
-    };
-}
+  setup(): ComponentSetup {
+    return new ComponentSetup({
+      initialized: true,
+      isNested: true
+    });
+  }
 
   ngOnInit() {
     super.ngOnInit();

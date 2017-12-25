@@ -28,16 +28,17 @@ export class NewClientProgressItemTypeDialogComponent extends ClientsBaseCompone
         super(componentDependencyService, activatedRoute);
     }
 
-    setup(): ComponentSetup | null {
-        return {
-            initialized: true
-        };
+    setup(): ComponentSetup {
+        return new ComponentSetup({
+            initialized: true,
+            isNested: true
+        });
     }
 
     ngOnInit() {
         super.ngOnInit();
 
-        
+
         this.initForm();
     }
 

@@ -12,8 +12,11 @@ import { AppConfig, UrlConfig } from './config';
 })
 export class EntryComponent extends BaseComponent {
 
-  setup(): ComponentSetup | null {
-    return null;
+  setup(): ComponentSetup {
+    return new ComponentSetup({
+      initialized: true,
+      isNested: false
+    });
   }
 
   constructor(

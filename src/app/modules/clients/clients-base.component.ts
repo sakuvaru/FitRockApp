@@ -1,17 +1,12 @@
-// common
-import { Component, Input, Output, OnInit, EventEmitter, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-// Note: importing from barrel caused 'Cannot resolve app parameters' error while building the app
-import { ComponentDependencyService } from '../../core/component/component-dependency.service';
+import { OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Subject } from 'rxjs/Rx';
+
 import { BaseComponent } from '../../core/component/base.component';
-import { ComponentSetup } from '../../core/component/component-setup.class';
-
-// required by component
+import { ComponentDependencyService } from '../../core/component/component-dependency.service';
 import { User } from '../../models';
-import { ClientMenuItems } from './menu.items';
-import { GraphConfig, MultiSeries, BaseGraph, SingleSeries, LineChart, VerticalBarChart } from '../../../web-components/graph';
-import { Observable, Subject } from 'rxjs/Rx';
 
+// Note: importing from barrel caused 'Cannot resolve app parameters' error while building the app
 export abstract class ClientsBaseComponent extends BaseComponent implements OnInit, OnDestroy {
 
     /**

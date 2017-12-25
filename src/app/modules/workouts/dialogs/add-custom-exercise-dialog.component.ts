@@ -26,13 +26,14 @@ export class AddCustomExerciseDialogComponent extends BaseComponent implements O
     protected dependencies: ComponentDependencyService,
   ) {
     super(dependencies);
-    
+
   }
 
-  setup(): ComponentSetup | null {
-    return {
-        initialized: true
-    };
+  setup(): ComponentSetup {
+    return new ComponentSetup({
+      initialized: true,
+      isNested: true
+    });
   }
 
   ngOnInit() {

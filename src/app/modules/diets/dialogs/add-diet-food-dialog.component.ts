@@ -31,16 +31,17 @@ export class AddDietFoodDialogComponent extends BaseComponent implements OnInit 
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     super(dependencies);
-    
+
 
     this.dietId = data.dietId;
     this.food = data.food;
   }
 
-  setup(): ComponentSetup | null {
-    return {
-        initialized: true
-    };
+  setup(): ComponentSetup {
+    return new ComponentSetup({
+      initialized: true,
+      isNested: true
+    });
   }
 
   ngOnInit() {

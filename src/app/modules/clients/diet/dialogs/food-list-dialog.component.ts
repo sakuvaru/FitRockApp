@@ -23,11 +23,12 @@ export class FoodListDialogComponent extends BaseComponent implements OnInit {
     this.dietFoods = data.dietFoods;
   }
 
-  setup(): ComponentSetup | null {
-    return {
-        initialized: true
-    };
-}
+  setup(): ComponentSetup {
+    return new ComponentSetup({
+      initialized: false,
+      isNested: true
+    });
+  }
 
   ngOnInit() {
     super.ngOnInit();

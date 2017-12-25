@@ -25,10 +25,11 @@ export class NewClientWorkoutComponent extends ClientsBaseComponent implements O
         super(componentDependencyService, activatedRoute);
     }
 
-    setup(): ComponentSetup | null {
-        return {
-            initialized: false
-        };
+    setup(): ComponentSetup {
+        return new ComponentSetup({
+            initialized: true,
+            isNested: false
+        });
     }
 
     ngOnInit() {

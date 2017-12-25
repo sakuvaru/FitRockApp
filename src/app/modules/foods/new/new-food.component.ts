@@ -21,11 +21,12 @@ export class NewFoodComponent extends BaseComponent implements OnInit {
         super(componentDependencyService);
     }
 
-    setup(): ComponentSetup | null {
-        return {
-            initialized: true
-        };
-      }
+    setup(): ComponentSetup {
+        return new ComponentSetup({
+            initialized: true,
+            isNested: false
+        });
+    }
 
     ngOnInit() {
         super.ngOnInit();

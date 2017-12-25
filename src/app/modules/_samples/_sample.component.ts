@@ -1,10 +1,6 @@
-// common
-import { Component, Input, Output, OnInit, EventEmitter, OnDestroy, AfterViewInit } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-import { ComponentDependencyService, BaseComponent, ComponentConfig, ComponentSetup } from '../../core';
-import { AppConfig, UrlConfig } from '../../config';
+import { Component } from '@angular/core';
 
-// required by component
+import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../../core';
 
 @Component({
     template: ''
@@ -15,7 +11,10 @@ export class SampleComponent extends BaseComponent {
         super(dependencies);
     }
 
-    setup(): ComponentSetup | null {
-        return null;
-      }
+    setup(): ComponentSetup {
+        return new ComponentSetup({
+            initialized: true,
+            isNested: false
+        });
+    }
 }

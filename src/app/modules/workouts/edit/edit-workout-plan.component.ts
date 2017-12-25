@@ -22,10 +22,11 @@ export class EditWorkoutPlanComponent extends BaseComponent implements OnInit, O
     super(dependencies);
   }
 
-  setup(): ComponentSetup | null {
-    return {
-        initialized: true
-    };
+  setup(): ComponentSetup {
+    return new ComponentSetup({
+      initialized: true,
+      isNested: false
+    });
   }
 
   ngOnInit() {

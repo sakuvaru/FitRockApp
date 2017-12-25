@@ -1,14 +1,11 @@
-// common
-import { Component, Input, Output, OnInit, EventEmitter, OnDestroy, OnChanges, SimpleChanges } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-import { ComponentDependencyService, BaseComponent, ComponentSetup } from '../../../core';
-import { AppConfig, UrlConfig } from '../../../config';
-
-// required by component
-import { DataFormConfig } from '../../../../web-components/data-form';
-import { Workout } from '../../../models';
 import 'rxjs/add/operator/switchMap';
-import { Observable } from 'rxjs/Rx';
+
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+
+import { DataFormConfig } from '../../../../web-components/data-form';
+import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
+import { Workout } from '../../../models';
 
 @Component({
     templateUrl: 'edit-workout-export.component.html',
@@ -29,9 +26,12 @@ export class EditWorkoutExportComponent extends BaseComponent implements OnInit,
         super(componentDependencyService);
     }
 
-    setup(): ComponentSetup | null {
-        return null;
-      }
+    setup(): ComponentSetup {
+        return new ComponentSetup({
+            initialized: true,
+            isNested: true
+        });
+    }
 
     ngOnChanges(changes: SimpleChanges) {
         const workoutId = changes.workoutId.currentValue;

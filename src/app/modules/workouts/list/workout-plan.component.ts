@@ -23,10 +23,11 @@ export class WorkoutPlanComponent extends BaseComponent implements OnInit {
     super(dependencies);
   }
 
-  setup(): ComponentSetup | null {
-    return {
-        initialized: false
-    };
+  setup(): ComponentSetup {
+    return new ComponentSetup({
+      initialized: false,
+      isNested: false
+    });
   }
 
   ngOnInit() {

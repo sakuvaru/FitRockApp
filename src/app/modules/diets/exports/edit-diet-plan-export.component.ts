@@ -51,9 +51,12 @@ export class EditDietPlanExportComponent extends BaseComponent implements OnDest
     super.subscribeToObservable(this.getInitObsevable());
   }
 
-  setup(): ComponentSetup | null {
-    return null;
-  }
+  setup(): ComponentSetup {
+    return new ComponentSetup({
+        initialized: true,
+        isNested: true
+    });
+}
 
   ngOnDestroy() {
     super.ngOnDestroy();

@@ -22,10 +22,11 @@ export class NewClientComponent extends ClientsBaseComponent implements OnInit {
         super(componentDependencyService, activatedRoute);
     }
 
-    setup(): ComponentSetup | null {
-        return {
-            initialized: true
-        };
+    setup(): ComponentSetup {
+        return new ComponentSetup({
+            initialized: true,
+            isNested: false
+        });
     }
 
     ngOnInit(): void {

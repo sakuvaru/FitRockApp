@@ -17,10 +17,11 @@ export class ResetPasswordPageComponent extends BaseComponent {
             this.dependencies.router.navigate([UrlConfig.getEntryUrl()]);
         }
     }
-
-    setup(): ComponentSetup | null {
-        return {
-            initialized: true
-        };
-      }
+    
+    setup(): ComponentSetup {
+        return new ComponentSetup({
+            initialized: true,
+            isNested: false
+        });
+    }
 }

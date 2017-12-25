@@ -23,11 +23,12 @@ export class WorkoutListDialogComponent extends BaseComponent implements OnInit 
     this.workoutExercises = data.workoutExercises;
   }
 
-  setup(): ComponentSetup | null {
-    return {
-        initialized: true
-    };
-}
+  setup(): ComponentSetup {
+    return new ComponentSetup({
+      initialized: true,
+      isNested: true
+    });
+  }
 
   ngOnInit() {
     super.ngOnInit();

@@ -7,7 +7,7 @@ import { AppConfig, UrlConfig } from '../../../config';
 // required by component
 import { Food } from '../../../models';
 import { MAT_DIALOG_DATA } from '@angular/material';
-import { DataFormConfig} from '../../../../web-components/data-form';
+import { DataFormConfig } from '../../../../web-components/data-form';
 import { Observable, Subject } from 'rxjs/Rx';
 
 @Component({
@@ -16,7 +16,7 @@ import { Observable, Subject } from 'rxjs/Rx';
 export class AddCustomFoodDialogComponent extends BaseComponent implements OnInit {
 
   public foodForm: DataFormConfig;
-  
+
   /**
    * Accessed by parent component
    */
@@ -26,13 +26,14 @@ export class AddCustomFoodDialogComponent extends BaseComponent implements OnIni
     protected dependencies: ComponentDependencyService,
   ) {
     super(dependencies);
-    
+
   }
 
-  setup(): ComponentSetup | null {
-    return {
-        initialized: true
-    };
+  setup(): ComponentSetup {
+    return new ComponentSetup({
+      initialized: true,
+      isNested: true
+    });
   }
 
   ngOnInit() {

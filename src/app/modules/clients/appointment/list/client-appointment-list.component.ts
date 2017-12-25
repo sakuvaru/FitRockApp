@@ -26,11 +26,12 @@ export class ClientAppointmentListComponent extends ClientsBaseComponent impleme
     super(componentDependencyService, activatedRoute);
   }
 
-  setup(): ComponentSetup | null {
-    return {
-      initialized: true
-    };
-  }
+  setup(): ComponentSetup {
+    return new ComponentSetup({
+        initialized: true,
+        isNested: false
+    });
+}
 
   ngOnInit(): void {
     super.ngOnInit();

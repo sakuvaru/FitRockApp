@@ -39,9 +39,9 @@ export class EditWorkoutPlanExportComponent extends BaseComponent implements OnD
     protected dependencies: ComponentDependencyService) {
     super(dependencies);
 
-     // set handle for dragula
-     const that = this;
-     this.dragulaService.setOptions(this.dragulaBag, {
+    // set handle for dragula
+    const that = this;
+    this.dragulaService.setOptions(this.dragulaBag, {
       moves: function (el: any, container: any, handle: any): any {
         return stringHelper.contains(el.className, that.dragulaHandle);
       }
@@ -50,8 +50,11 @@ export class EditWorkoutPlanExportComponent extends BaseComponent implements OnD
     super.subscribeToObservable(this.getInitObservable());
   }
 
-  setup(): ComponentSetup | null {
-    return null;
+  setup(): ComponentSetup {
+    return new ComponentSetup({
+      initialized: true,
+      isNested: true
+    });
   }
 
   ngOnDestroy() {

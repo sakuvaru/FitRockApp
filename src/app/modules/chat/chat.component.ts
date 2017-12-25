@@ -37,10 +37,11 @@ export class ChatComponent extends BaseComponent implements OnInit {
         super(componentDependencyService);
     }
 
-    setup(): ComponentSetup | null {
-        return {
-            initialized: false
-        };
+    setup(): ComponentSetup {
+        return new ComponentSetup({
+            initialized: false,
+            isNested: false
+        });
     }
 
     ngOnInit(): void {

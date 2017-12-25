@@ -1,13 +1,10 @@
 // common
-import { Component, Input, Output, OnInit, EventEmitter, ViewChild, OnChanges, SimpleChanges } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-import { ComponentDependencyService, BaseComponent, ComponentSetup } from '../../../../core';
-import { AppConfig, UrlConfig } from '../../../../config';
-
-// required by component
-import { ProgressItemType } from '../../../../models';
-import { GraphConfig, MultiSeries, BaseGraph, SingleSeries, LineChart, VerticalBarChart, GraphComponent } from '../../../../../web-components/graph';
+import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
+
+import { BaseGraph, GraphComponent, GraphConfig, LineChart } from '../../../../../web-components/graph';
+import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../../../../core';
+import { ProgressItemType } from '../../../../models';
 
 @Component({
     selector: 'user-stats',
@@ -28,8 +25,11 @@ export class UserStatsComponent extends BaseComponent implements OnInit, OnChang
         super(componentDependencyService);
     }
 
-    setup(): ComponentSetup | null {
-        return null;
+    setup(): ComponentSetup {
+        return new ComponentSetup({
+            initialized: true,
+            isNested: true
+        });
     }
 
     ngOnInit() {

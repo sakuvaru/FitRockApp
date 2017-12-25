@@ -28,9 +28,12 @@ export class EditDietExportComponent extends BaseComponent implements OnInit, On
         super(componentDependencyService);
     }
 
-    setup(): ComponentSetup | null {
-        return null;
-      }
+    setup(): ComponentSetup {
+        return new ComponentSetup({
+            initialized: true,
+            isNested: true
+        });
+    }
 
     ngOnChanges(changes: SimpleChanges) {
         const dietId = changes.dietId.currentValue;

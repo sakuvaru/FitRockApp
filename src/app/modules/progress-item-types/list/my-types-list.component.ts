@@ -21,10 +21,11 @@ export class MyTypesListComponent extends BaseComponent implements OnInit {
     super(dependencies);
   }
 
-  setup(): ComponentSetup | null {
-    return {
-      initialized: true
-    };
+  setup(): ComponentSetup {
+    return new ComponentSetup({
+      initialized: true,
+      isNested: false
+    });
   }
 
   ngOnInit() {

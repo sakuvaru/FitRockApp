@@ -13,9 +13,10 @@ export class Global404Component extends BaseComponent {
     super(dependencies);
   }
 
-  setup(): ComponentSetup | null {
-    return {
-        initialized: true
-    };
+  setup(): ComponentSetup {
+    return new ComponentSetup({
+      initialized: true,
+      isNested: false
+    });
   }
 }

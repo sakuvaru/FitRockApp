@@ -37,10 +37,11 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
         super(componentDependencyService, activatedRoute);
     }
 
-    setup(): ComponentSetup | null {
-        return {
-            initialized: false
-        };
+    setup(): ComponentSetup {
+        return new ComponentSetup({
+            initialized: false,
+            isNested: false
+        });
     }
 
     ngOnInit(): void {
@@ -167,7 +168,7 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
                     .includeMultiple(['ProgressItemType', 'ProgressItemType.ProgressItemUnit'])
                     .whereEquals('ClientId', clientId);
             }
-        , { enableDelete: true })
+            , { enableDelete: true })
             .withFields([
                 {
                     value: (item) =>

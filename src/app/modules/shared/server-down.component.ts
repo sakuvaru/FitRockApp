@@ -20,14 +20,15 @@ export class ServerDownComponent extends BaseComponent implements OnInit {
     super(dependencies);
   }
 
-  setup(): ComponentSetup | null {
-    return {
-      initialized: true
-    };
+  setup(): ComponentSetup {
+    return new ComponentSetup({
+      initialized: true,
+      isNested: false
+    });
   }
 
   ngOnInit() {
-    
+
     const delay = 15000; // every 15 sec.
 
     // check if server is available periodically
@@ -35,7 +36,7 @@ export class ServerDownComponent extends BaseComponent implements OnInit {
       .flatMap(() => this.dependencies.coreServices.repositoryClient.get(AppConfig.ServerCheckerController)
         .set()
         .map(response => this.appOnline = true)
-        ._catch(err =>  Observable.of(true))) // catch error in order to keep subscriptions live
+        ._catch(err => Observable.of(true))) // catch error in order to keep subscriptions live
       .takeUntil(this.ngUnsubscribe)
       .subscribe(response => {
         // app is online, redirect back to main page

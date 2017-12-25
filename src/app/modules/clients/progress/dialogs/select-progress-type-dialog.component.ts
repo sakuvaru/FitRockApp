@@ -26,10 +26,11 @@ export class SelectProgressTypeDialogComponent extends BaseComponent implements 
 
   }
 
-  setup(): ComponentSetup | null {
-    return {
-      initialized: true
-    };
+  setup(): ComponentSetup {
+    return new ComponentSetup({
+      initialized: true,
+      isNested: true
+    });
   }
 
   ngOnInit() {

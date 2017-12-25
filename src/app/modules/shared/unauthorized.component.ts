@@ -20,9 +20,10 @@ export class UnauthorizedComponent extends BaseComponent {
     this.loginUrl = '/' + UrlConfig.getLoginUrl();
   }
 
-  setup(): ComponentSetup | null {
-    return {
-        initialized: true
-    };
+  setup(): ComponentSetup {
+    return new ComponentSetup({
+      initialized: true,
+      isNested: false
+    });
   }
 }

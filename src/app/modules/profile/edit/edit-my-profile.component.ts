@@ -23,11 +23,11 @@ export class EditMyProfileComponent extends BaseComponent implements OnInit {
     }
 
     setup(): ComponentSetup {
-        return {
-            initialized: true
-        };
+        return new ComponentSetup({
+            initialized: true,
+            isNested: false
+        });
     }
-
     ngOnInit() {
         super.ngOnInit();
         this.initMenu();

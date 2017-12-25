@@ -25,11 +25,12 @@ export class EditAvatarComponent extends BaseComponent implements OnInit {
         super(dependencies);
     }
 
-    setup(): ComponentSetup | null {
-        return {
-            initialized: false
-        };
-      }
+    setup(): ComponentSetup {
+        return new ComponentSetup({
+            initialized: true,
+            isNested: false
+        });
+    }
 
     ngOnInit() {
         super.ngOnInit();

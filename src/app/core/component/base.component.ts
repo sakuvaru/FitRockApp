@@ -24,6 +24,13 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
     protected ngUnsubscribe: Subject<void> = new Subject<void>();
 
     /**
+     * Indicates if current component is nested (= BaseComponent is used within another BaseComponent)
+     * All components that can be nested need to have this enabled to prevent issues such as multiple 
+     * subscriptions to repository errors
+     */
+    protected isNestedComponent: boolean = false;
+
+    /**
      * Duration for snackbar
      */
     private readonly snackbarDefaultDuration: number = 2500;
@@ -63,7 +70,7 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
     * different purpose then the ComponentConfig which can be set at any time during the component lifecycle.
     * If no setup is provided, default setup will be used
     */
-    abstract setup(): ComponentSetup | null | undefined;
+    abstract setup(): ComponentSetup;
 
     constructor(protected dependencies: ComponentDependencyService) {
         this.setupComponent();
@@ -313,9 +320,18 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
             this.dependencies.coreServices.sharedService.setComponentSetup(setup);
         }
 
-        // subscribe to repository errors
-        this.subscribeToRepositoryErrors();
+        // shared setup
+        this.sharedSetup(setup);
 
+        // nested vs non-nested setup
+        if (setup.isNested) {
+            this.setupNestedComponent(setup);
+        } else {
+            this.setupNonNestedComponent(setup);
+        }
+    }
+
+    private sharedSetup(setup: ComponentSetup): void {
         // init current language
         this.currentLanguage = this.dependencies.coreServices.currentLanguageService.getLanguage();
 
@@ -332,17 +348,32 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
         }
 
         // translations
-        this.dependencies.coreServices.localizationService.get('shared.saved').subscribe(text => this.snackbarSavedText = text);
+        this.dependencies.coreServices.localizationService.get('shared.saved')
+            .takeUntil(this.ngUnsubscribe)
+            .subscribe(text => this.snackbarSavedText = text);
 
-        this.dependencies.coreServices.localizationService.get('shared.deleted').subscribe(text => this.snackbarDeletedText = text);
+        this.dependencies.coreServices.localizationService.get('shared.deleted')
+            .takeUntil(this.ngUnsubscribe)
+            .subscribe(text => this.snackbarDeletedText = text);
     }
 
-    protected initializeComponent(initialize: boolean = true): void {
-        let currentSetup = this.setup();
+    private setupNestedComponent(setup: ComponentSetup): void {
+        // no special logic needed for nested component right now
+    }
+
+    private setupNonNestedComponent(setup: ComponentSetup): void {
+        // subscribe to repository errors only for non nested components as otherwise
+        // the repository could have multiple subscriptions which would result in multiple
+        // errors occuring
+        this.subscribeToRepositoryErrors();
+    }
+
+    private initializeComponent(initialize: boolean = true): void {
+        const currentSetup = this.setup();
         if (currentSetup) {
             currentSetup.initialized = initialize;
         } else {
-            currentSetup = { initialized: initialize };
+            throw Error(`Component was not initialized`);
         }
         this.dependencies.coreServices.sharedService.setComponentSetup(currentSetup);
     }
@@ -364,6 +395,7 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
     }
 
     // --------------- Common method aliases ------------------ //
+
     translate(key: string, data?: any): Observable<string> {
         return this.dependencies.coreServices.localizationService.get(key, data);
     }

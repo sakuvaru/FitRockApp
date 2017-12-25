@@ -33,11 +33,12 @@ export class EditDietFoodDialogComponent extends BaseComponent implements OnInit
     this.dietFood = data;
   }
 
-  setup(): ComponentSetup | null {
-    return {
-        initialized: true
-    };
-  }
+  setup(): ComponentSetup {
+    return new ComponentSetup({
+        initialized: true,
+        isNested: true
+    });
+}
 
   ngOnInit() {
     super.ngOnInit();

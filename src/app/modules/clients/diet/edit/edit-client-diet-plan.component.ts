@@ -25,11 +25,12 @@ export class EditClientDietPlanComponent extends ClientsBaseComponent implements
     super(componentDependencyService, activatedRoute);
   }
 
-  setup(): ComponentSetup | null {
-    return {
-        initialized: false
-    };
-}
+  setup(): ComponentSetup {
+    return new ComponentSetup({
+      initialized: false,
+      isNested: false
+    });
+  }
 
   ngOnInit() {
     super.ngOnInit();
