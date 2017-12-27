@@ -434,6 +434,7 @@
 			"invalidMaxNumberValue": "Maximální povolená hodnota je '{{number}}'",
 			"invalidMinNumberValue": "Minimiální povolená hodnota je '{{number}}'",
 			"oneRecordPerDay": "Záznam s tímto časem může existovat pouze jedenkrát za den. Můžeš upravit existující záznam nebo změnit datum.",
+			"futureConstraint": "Záznam nemůže být vytvořen v budoucnosti. Zvol dnešní nebo dřívější datum.",
 			"invalidDurationNumber": "Špatná hodnota"
 		},
 		"shared": {

@@ -12,5 +12,6 @@ export enum FormValidationResultEnum {
     OneRecordPerDay,
     CustomWithMessageKey,
     ConstraintConflict,
-    FormLoadingError
+    FormLoadingError,
+    FutureConstraint
 }

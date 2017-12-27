@@ -206,6 +206,10 @@ class DataFormBuilderUtils {
                     translationKey = 'form.error.oneRecordPerDay';
                 }
 
+                if (formValidationError === FormValidationResultEnum.FutureConstraint) {
+                    translationKey = 'form.error.futureConstraint';
+                }
+
                 if (formValidationError === FormValidationResultEnum.Other) {
                     if (field) {
                         translationKey = 'form.error.otherWithLabel';
