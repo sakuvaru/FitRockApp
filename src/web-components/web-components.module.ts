@@ -16,6 +16,7 @@ import { MessagesModule } from './messages/messages.module';
 import { TextModule } from './text/text.module';
 import { UploaderModule } from './uploader/uploader.module';
 import { CalendarModule } from './calendar/calendar.module';
+import { BoxesModule } from './boxes/boxes.module';
 
 @NgModule({
     imports: [
@@ -38,7 +39,8 @@ import { CalendarModule } from './calendar/calendar.module';
         DataTableModule,
         DataFormModule,
         LayoutModule,
-        CalendarModule
+        CalendarModule,
+        BoxesModule
     ]
 })
 export class WebComponentsModule {

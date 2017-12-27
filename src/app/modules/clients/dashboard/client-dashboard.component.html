@@ -73,68 +73,17 @@
                 </mat-card-content>
             </mat-card>
 
-            <mat-card>
-                <mat-card-content>
-
-                    <p class="md-title primary">
-                        {{ 'module.clients.dashboard.latestMessages' | localize }}
-                    </p>
-
-                    <mat-nav-list *ngIf="chatMessages && chatMessages.length > 0">
-                        <mat-list-item *ngFor="let chatMessage of chatMessages" [routerLink]="getChatMessageUrl()">
-                            <img matListAvatar [src]="chatMessage.sender.getAvatarOrGravatarUrl() ? chatMessage.sender.getAvatarOrGravatarUrl() : defaultAvatarUrl" alt="avatar for {{ chatMessage.sender.getFullName() }}">
-                            <div matLine> {{ chatMessage.message }}</div>
-                        </mat-list-item>
-                    </mat-nav-list>
-
-                    <info-message *ngIf="!chatMessages || chatMessages.length === 0" text="{{ 'module.clients.dashboard.noChatMessages' | localize }}"></info-message>
-
-                </mat-card-content>
-            </mat-card>
-
+            <list-box [config]="chatMessagesListBox"></list-box>
         </div>
     </div>
 
-    <div fxFlexFill fxLayout fxLayout.sm="column" fxLayout.xs="column">
+    <div fxFlexFill fxLayout fxLayout.md="column" fxLayout.sm="column" fxLayout.xs="column">
         <div fxFlex="50%" class="push-sm">
-            <mat-card fxFlex>
-                <mat-card-content>
-
-                    <p class="md-title primary">
-                        {{ 'module.clients.dashboard.diets' | localize }}
-                    </p>
-
-                    <mat-nav-list *ngIf="diets && diets.length > 0">
-                        <a mat-list-item *ngFor="let diet of diets" [routerLink]="getDietUrl(diet)">
-                            {{ diet.dietName }}
-                        </a>
-                    </mat-nav-list>
-
-                    <info-message *ngIf="!diets || diets.length === 0" text="{{ 'module.clients.dashboard.noDiets' | localize }}"></info-message>
-
-                </mat-card-content>
-            </mat-card>
+            <list-box [config]="dietsListBox"></list-box>
         </div>
         <div fxFlex="50%" class="push-sm">
-            <mat-card fxFlex>
-                <mat-card-content>
-
-                    <p class="md-title primary">
-                        {{ 'module.clients.dashboard.workouts' | localize }}
-                    </p>
-
-                    <mat-nav-list *ngIf="workouts && workouts.length > 0">
-                        <a mat-list-item *ngFor="let workout of workouts" [routerLink]="getWorkoutUrl(workout)">
-                            {{ workout.workoutName }}
-                        </a>
-                    </mat-nav-list>
-
-                    <info-message *ngIf="!workouts || workouts.length === 0" text="{{ 'module.clients.dashboard.noWorkouts' | localize }}"></info-message>
-
-                </mat-card-content>
-            </mat-card>
+            <list-box [config]="workoutsListBox"></list-box>
         </div>
-
     </div>
 
     <div fxLayout fxLayout.sm="column" fxLayout.xs="column">

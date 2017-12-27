@@ -7,6 +7,7 @@ import { ComponentDependencyService, ComponentSetup } from '../../../core';
 import { Appointment, ChatMessage, Diet, Workout } from '../../../models';
 import { ClientsBaseComponent } from '../clients-base.component';
 import { ClientMenuItems } from '../menu.items';
+import { ListBoxItem, ListBoxConfig } from 'web-components/boxes';
 
 @Component({
   templateUrl: 'client-dashboard.component.html'
@@ -17,9 +18,10 @@ export class ClientDashboardComponent extends ClientsBaseComponent implements On
   public readonly googleApiKey: string = AppConfig.GoogleApiKey;
 
   public appointment?: Appointment;
-  public workouts?: Workout[];
-  public diets?: Diet[];
-  public chatMessages?: ChatMessage[];
+
+  public chatMessagesListBox?: ListBoxConfig;
+  public dietsListBox?: ListBoxConfig;
+  public workoutsListBox?: ListBoxConfig;
 
   constructor(
     protected activatedRoute: ActivatedRoute,
@@ -42,7 +44,7 @@ export class ClientDashboardComponent extends ClientsBaseComponent implements On
     super.initClientSubscriptions();
   }
 
-  private getComponentObservables(): Observable<any>[] {
+  private getComponentObservables(): Observable<void>[] {
     const observables: Observable<any>[] = [];
     observables.push(this.getInitMenuObservable());
     observables.push(this.getInitAppointmentObservable());
@@ -52,48 +54,75 @@ export class ClientDashboardComponent extends ClientsBaseComponent implements On
     return observables;
   }
 
-  private getInitWorkoutsObservable(): Observable<any> {
+  private getInitWorkoutsObservable(): Observable<void> {
     return this.clientIdChange
-      .switchMap(clientId => {
-        return this.dependencies.itemServices.workoutService.items()
+    .map(clientId => {
+      this.workoutsListBox = new ListBoxConfig(
+        this.dependencies.itemServices.workoutService.items()
           .byCurrentUser()
           .whereEquals('ClientId', clientId)
           .orderByDesc('Id')
-          .get();
-      })
-      .map(response => {
-        this.workouts = response.items;
-      });
+          .get()
+        .map(response => {
+          return response.items.map(item => new ListBoxItem(
+            item.workoutName,
+            this.getWorkoutUrl(item),
+          ));
+        }),
+        super.translate('module.clients.dashboard.workouts'),
+        {
+          noDataMessage: super.translate('module.clients.dashboard.noWorkouts')
+        }
+      );
+    });
   }
 
-  private getInitDietsObservable(): Observable<any> {
+  private getInitDietsObservable(): Observable<void> {
     return this.clientIdChange
-      .switchMap(clientId => {
-        return this.dependencies.itemServices.dietService.items()
+    .map(clientId => {
+      this.dietsListBox = new ListBoxConfig(
+        this.dependencies.itemServices.dietService.items()
           .byCurrentUser()
           .whereEquals('ClientId', clientId)
           .orderByDesc('Id')
-          .get();
-      })
-      .map(response => {
-        this.diets = response.items;
-      });
+          .get()
+        .map(response => {
+          return response.items.map(item => new ListBoxItem(
+            item.dietName,
+            this.getDietUrl(item),
+          ));
+        }),
+        super.translate('module.clients.dashboard.diets'),
+        {
+          noDataMessage: super.translate('module.clients.dashboard.noDiets')
+        }
+      );
+    });
   }
 
-  private getInitChatMessagesObservable(): Observable<any> {
+  private getInitChatMessagesObservable(): Observable<void> {
     return this.clientIdChange
-      .switchMap(clientId => {
-        return this.dependencies.itemServices.chatMessageService.getConversationMessages(clientId)
+      .map(clientId => {
+        this.chatMessagesListBox = new ListBoxConfig(
+          this.dependencies.itemServices.chatMessageService.getConversationMessages(clientId)
           .limit(6)
           .orderByDesc('Id')
-          .get();
-      })
-      .map(response => {
-        this.chatMessages = response.items;
+          .get()
+          .map(response => {
+            return response.items.map(item => new ListBoxItem(
+              item.message,
+              this.getChatMessageUrl(),
+              item.sender.getAvatarOrGravatarUrl() ? item.sender.getAvatarOrGravatarUrl() : this.defaultAvatarUrl
+            ));
+          }),
+          super.translate('module.clients.dashboard.latestMessages'),
+          {
+            noDataMessage: super.translate('module.clients.dashboard.noChatMessages'),          }
+        );
       });
   }
 
-  private getInitAppointmentObservable(): Observable<any> {
+  private getInitAppointmentObservable(): Observable<void> {
     const dateNow = new Date();
     dateNow.setSeconds(0);
     dateNow.setMilliseconds(0);
@@ -114,7 +143,7 @@ export class ClientDashboardComponent extends ClientsBaseComponent implements On
       });
   }
   
-  private getInitMenuObservable(): Observable<any> {
+  private getInitMenuObservable(): Observable<void> {
     return this.clientChange
       .map(client => {
         this.setConfig({
