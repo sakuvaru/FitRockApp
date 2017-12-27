@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
+import { InfoBoxConfig, InfoBoxLine, InfoBoxLineType, ListBoxConfig, ListBoxItem, MapBoxConfig } from 'web-components/boxes';
 
 import { AppConfig } from '../../../config';
 import { ComponentDependencyService, ComponentSetup } from '../../../core';
-import { Appointment, ChatMessage, Diet, Workout } from '../../../models';
+import { Appointment, Diet, Workout } from '../../../models';
 import { ClientsBaseComponent } from '../clients-base.component';
 import { ClientMenuItems } from '../menu.items';
-import { ListBoxItem, ListBoxConfig } from 'web-components/boxes';
 
 @Component({
   templateUrl: 'client-dashboard.component.html'
@@ -19,9 +19,12 @@ export class ClientDashboardComponent extends ClientsBaseComponent implements On
 
   public appointment?: Appointment;
 
+  public appointmentInfoBox?: InfoBoxConfig;
+
   public chatMessagesListBox?: ListBoxConfig;
   public dietsListBox?: ListBoxConfig;
   public workoutsListBox?: ListBoxConfig;
+  public appointmentMapBox?: MapBoxConfig;
 
   constructor(
     protected activatedRoute: ActivatedRoute,
@@ -123,10 +126,66 @@ export class ClientDashboardComponent extends ClientsBaseComponent implements On
   }
 
   private getInitAppointmentObservable(): Observable<void> {
-    const dateNow = new Date();
-    dateNow.setSeconds(0);
-    dateNow.setMilliseconds(0);
+    return this.clientIdChange
+    .map(clientId => {
+      const dateNow = new Date();
+      dateNow.setSeconds(0);
+      dateNow.setMilliseconds(0);
 
+      this.appointmentInfoBox = new InfoBoxConfig(
+        this.dependencies.itemServices.appointmentService.items()
+        .limit(1)
+        .byCurrentUser()
+        .whereEquals('ClientId', clientId)
+        .whereGreaterThan('AppointmentDate', dateNow)
+        .orderByAsc('AppointmentDate')
+        .includeMultiple(['Workout', 'Location', 'Client'])
+        .get()
+        .map(response => {
+          const appointment = response.firstItem();
+          if (!appointment) {
+            return [];
+          }
+
+          // also init map
+          this.appointmentMapBox = new MapBoxConfig(
+            super.translate('module.clients.dashboard.nextAppointmentMap'),
+            this.googleApiKey,
+            appointment.location.address,
+            appointment.location.lat,
+            appointment.location.lng,
+            {
+              zoom: 10
+            }
+          );
+
+          const lines: InfoBoxLine[] = [
+            new InfoBoxLine(super.formatDate(appointment.appointmentDate), InfoBoxLineType.Title),
+            new InfoBoxLine(appointment.client.getFullName(), InfoBoxLineType.Body2),
+            new InfoBoxLine(appointment.location.address, InfoBoxLineType.Body1)
+          ];
+
+          const workout = appointment.workout;
+          if (workout) {
+            lines.push(new InfoBoxLine(super.translate('module.clients.appointments.workout').map(notes => notes + ': ' + workout.workoutName), InfoBoxLineType.Body1));
+          }
+
+          if (appointment.notes) {
+            lines.push(new InfoBoxLine(super.translate('module.clients.appointments.notes').map(notes => notes + ': ' + appointment.notes), InfoBoxLineType.Caption));
+          }
+
+          return lines;
+
+        }),
+        super.translate('module.clients.dashboard.nextAppointment'),
+        {
+          noDataMessage: super.translate('module.clients.dashboard.noAppointment')
+        }
+      );
+        
+    });
+
+    /*
     return this.clientIdChange
       .switchMap(clientId => {
         return this.dependencies.itemServices.appointmentService.items()
@@ -141,6 +200,7 @@ export class ClientDashboardComponent extends ClientsBaseComponent implements On
       .map(response => {
         this.appointment = response.firstItem();
       });
+      */
   }
   
   private getInitMenuObservable(): Observable<void> {

@@ -3,6 +3,17 @@ import { Observable } from 'rxjs/Rx';
 export class ObservableHelper {
 
     /**
+     * Returns true if given parameter is an Observable, false otherwise
+     * @param value Value to check
+     */
+    isObservable(value: any): boolean {
+        if (value instanceof Observable) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
     * https://www.learnrxjs.io/operators/combination/zip.html
     * @param observables Observables to zip
     */

@@ -1,0 +1,16 @@
+<ng-container>
+    <mat-card class="w-boxes-info-box">
+        <loader [enabled]="loaderEnabled"></loader>
+        <mat-card-content *ngIf="config">
+            <p *ngIf="config.title" class="md-title primary">
+                {{ config.title | async }}
+            </p>
+
+            <map [apiKey]="config.apiKey" [address]="config.address" [lat]="config.lat" [lng]="config.lng"></map>
+
+            <info-message *ngIf="config.noDataMessage && (!config.address && !config.lat && !config.lng)" text="{{ config.noDataMessage | async }}"></info-message>
+            <no-data-message *ngIf="!config.noDataMessage && (!config.address && !config.lat && !config.lng)"></no-data-message>
+
+        </mat-card-content>
+    </mat-card>
+</ng-container>

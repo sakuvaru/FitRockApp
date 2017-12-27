@@ -1,0 +1,26 @@
+<ng-container *ngIf="config">
+
+    <mat-card class="w-boxes-info-box">
+        <loader [enabled]="loaderEnabled"></loader>
+        <mat-card-content>
+            <p *ngIf="config.title" class="md-title primary">
+                {{ config.title | async }}
+            </p>
+
+            <ng-container *ngIf="lines">
+                <p *ngFor="let line of lines">
+                    <span *ngIf="line.type === 0" class="mat-caption">{{ isObservable(line.text) ? (line.text | async) : line.text }}</span>
+                    <span *ngIf="line.type === 1" class="mat-title">{{ isObservable(line.text) ? (line.text | async) : line.text }}</span>
+                    <span *ngIf="line.type === 2" class="mat-body-1">{{ isObservable(line.text) ? (line.text | async) : line.text }}</span>
+                    <span *ngIf="line.type === 3" class="mat-body-2">{{ isObservable(line.text) ? (line.text | async) : line.text }}</span>
+                    <span *ngIf="line.type === 4" class="mat-subheading-1">{{ isObservable(line.text) ? (line.text | async) : line.text }}</span>
+                    <span *ngIf="line.type === 5" class="mat-subheading-2">{{ isObservable(line.text) ? (line.text | async) : line.text }}</span>
+                </p>
+            </ng-container>
+
+            <info-message *ngIf="config.noDataMessage && lines && lines.length === 0" text="{{ config.noDataMessage | async }}"></info-message>
+            <no-data-message *ngIf="!config.noDataMessage && lines && lines.length === 0"></no-data-message>
+
+        </mat-card-content>
+    </mat-card>
+</ng-container>

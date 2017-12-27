@@ -4,28 +4,28 @@ import { observableHelper } from 'lib/utilities';
 import { Observable, Subject } from 'rxjs/Rx';
 
 import { BaseWebComponent } from '../../base-web-component.class';
-import { ListBoxConfig, ListBoxItem } from './list-box.models';
+import { InfoBoxConfig, InfoBoxLine } from './info-box.models';
 
 @Component({
-    selector: 'list-box',
-    templateUrl: 'list-box.component.html'
+    selector: 'info-box',
+    templateUrl: 'info-box.component.html'
 })
-export class ListBoxComponent extends BaseWebComponent implements OnInit, OnChanges {
+export class InfoBoxComponent extends BaseWebComponent implements OnInit, OnChanges {
 
     /**
      * Config
      */
-    @Input() config: ListBoxConfig;
+    @Input() config: InfoBoxConfig;
 
     /**
      * Used for loading items
      */
-    private loadItems$ = new Subject<void>();
+    private loadItem$ = new Subject<void>();
 
     /**
-     * Items
+     * Lines
      */
-    public items?: ListBoxItem[];
+    public lines: InfoBoxLine[] | undefined;
 
     /**
      * Indicates if list box is initialized
@@ -44,37 +44,37 @@ export class ListBoxComponent extends BaseWebComponent implements OnInit, OnChan
     }
 
     ngOnInit(): void {
-        this.initListBox();
+        this.initInfoBox();
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        this.initListBox();
+        this.initInfoBox();
     }
 
-    loadItems(): void {
-        this.loadItems$.next();
+    loadItem(): void {
+        this.loadItem$.next();
     }
 
-    private initListBox(): void {
+    private initInfoBox(): void {
         if (this.initialized || !this.config) {
             return;
         }
 
         this.initialized = true;
 
-        this.subscribeToLoadItems();
+        this.subscribeToLoadItem();
 
-        this.loadItems();
+        this.loadItem();
     }
 
-    private subscribeToLoadItems(): void {
-        this.loadItems$
+    private subscribeToLoadItem(): void {
+        this.loadItem$
             .do(() => {
                 this.loaderEnabled = true;
             })
-            .switchMap(() => this.config.items)
+            .switchMap(() => this.config.lines)
             .map(items => {
-                this.items = items;
+                this.lines = items;
 
                 this.loaderEnabled = false;
             })

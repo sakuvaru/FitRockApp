@@ -1,6 +1,13 @@
 <div>
     <div fxFlexFill fxLayout fxLayout.sm="column" fxLayout.xs="column" fxLayout.md="column">
         <div fxFlex="33%" class="push-sm">
+            <div fxLayout="column" flex>
+                <info-box [config]="appointmentInfoBox"></info-box>
+            </div>
+            <div class="push-top-sm" fxLayout="column" flex>
+                <map-box [config]="appointmentMapBox"></map-box>
+            </div>
+            <!--
             <mat-card fxFlex>
                 <mat-card-content>
                     <p class="md-title primary">
@@ -41,6 +48,7 @@
 
                 </mat-card-content>
             </mat-card>
+        -->
         </div>
         <div fxFlex="67%" class="push-sm">
 

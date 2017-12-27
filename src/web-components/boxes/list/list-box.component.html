@@ -12,7 +12,7 @@
                 <mat-list-item *ngFor="let item of items" (click)="item.linkUrl ? redirectTo(item.linkUrl) : undefined">
                     <img *ngIf="item.imageUrl" matListAvatar [src]="item.imageUrl" alt="list image for {{ item.text }}">
                     <mat-icon *ngIf="item.icon" md-list-icon>{{ item.icon }}</mat-icon>
-                    <div matLine>{{ item.text }}</div>
+                    <div matLine>{{ isObservable(item.text) ? (item.text | async) : item.text }}</div>
                 </mat-list-item>
             </mat-nav-list>
 
@@ -21,5 +21,5 @@
 
         </mat-card-content>
     </mat-card>
-    
+
 </ng-container>
