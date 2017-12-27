@@ -37,6 +37,11 @@ export class ListBoxComponent extends BaseWebComponent implements OnInit, OnChan
     */
     public loaderEnabled: boolean = false;
 
+    /**
+     * Indicates if error occured
+     */
+    private errorOccured: boolean = false;
+
     constructor(
         private router: Router
     ) {
@@ -71,6 +76,7 @@ export class ListBoxComponent extends BaseWebComponent implements OnInit, OnChan
         this.loadItems$
             .do(() => {
                 this.loaderEnabled = true;
+                this.resetErrors();
             })
             .switchMap(() => this.config.items)
             .map(items => {
@@ -79,7 +85,17 @@ export class ListBoxComponent extends BaseWebComponent implements OnInit, OnChan
                 this.loaderEnabled = false;
             })
             .takeUntil(this.ngUnsubscribe)
-            .subscribe();
+            .subscribe(() => undefined, err => this.handleError(err));
+    }
+
+    private handleError(error: any): void {
+        console.error(error);
+        this.errorOccured = true;
+        this.loaderEnabled = false;
+    }
+
+    private resetErrors(): void {
+        this.errorOccured = false;
     }
 
     private redirectTo(url: string): void {

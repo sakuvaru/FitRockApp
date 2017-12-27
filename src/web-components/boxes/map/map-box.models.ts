@@ -12,7 +12,12 @@ export class MapBoxConfig {
         public lng?: number,
         private options?: {
             zoom?: number,
+            noDataMessage?: Observable<string>;
         }
-    )  { }
+    )  { 
+        if (options) {
+            Object.assign(this, options);
+        }
+    }
 }
 

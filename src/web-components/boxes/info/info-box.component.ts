@@ -37,6 +37,11 @@ export class InfoBoxComponent extends BaseWebComponent implements OnInit, OnChan
     */
     public loaderEnabled: boolean = false;
 
+    /**
+     * Indicates if error occured
+     */
+    private errorOccured: boolean = false;
+
     constructor(
         private router: Router
     ) {
@@ -79,7 +84,17 @@ export class InfoBoxComponent extends BaseWebComponent implements OnInit, OnChan
                 this.loaderEnabled = false;
             })
             .takeUntil(this.ngUnsubscribe)
-            .subscribe();
+            .subscribe(() => undefined, err => this.handleError(err));
+    }
+
+    private handleError(error: any): void {
+        console.error(error);
+        this.errorOccured = true;
+        this.loaderEnabled = false;
+    }
+
+    private resetErrors(): void {
+        this.errorOccured = false;
     }
 
     private redirectTo(url: string): void {

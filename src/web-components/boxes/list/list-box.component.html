@@ -16,6 +16,7 @@
                 </mat-list-item>
             </mat-nav-list>
 
+            <error-message *ngIf="errorOccured" [text]="'webComponents.boxes.boxLoadingError' | localize"></error-message>
             <info-message *ngIf="config.noDataMessage && items && items.length === 0" text="{{ config.noDataMessage | async }}"></info-message>
             <no-data-message *ngIf="!config.noDataMessage && items && items.length === 0"></no-data-message>
 

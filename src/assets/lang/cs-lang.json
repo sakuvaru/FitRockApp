@@ -668,6 +668,9 @@
 			"showMobileCalendar": "Zobrazit mobilní kalendář",
 			"showFullCalendar": "Zobrazit celý kalendář",
 			"showDayCalendar": "Zobrazit denní rozvrh"
+		},
+		"boxes": {
+			"boxLoadingError": "Nastala chyba při nahrávání dat"
 		}
 	}
 }

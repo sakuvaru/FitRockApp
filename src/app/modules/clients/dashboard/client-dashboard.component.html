@@ -4,51 +4,10 @@
             <div fxLayout="column" flex>
                 <info-box [config]="appointmentInfoBox"></info-box>
             </div>
-            <div class="push-top-sm" fxLayout="column" flex>
+            <div *ngIf="appointmentMapBox" class="push-top-sm" fxLayout="column" flex>
                 <map-box [config]="appointmentMapBox"></map-box>
             </div>
-            <!--
-            <mat-card fxFlex>
-                <mat-card-content>
-                    <p class="md-title primary">
-                        {{ 'module.clients.dashboard.nextAppointment' | localize }}
-                    </p>
 
-                    <ng-container *ngIf="appointment">
-                        <p class="md-subhead">{{ appointment.appointmentName }}</p>
-                        <p>
-                            <span class="md-caption">{{ 'module.clients.appointments.when' | localize }}:</span> {{ formatDate(appointment.appointmentDate)
-                            }}
-                        </p>
-                        <p>
-                            <span class="md-caption">{{ 'module.clients.appointments.where' | localize }}:</span> {{ appointment.location.address
-                            }}
-                        </p>
-                        <p *ngIf="appointment.workout">
-                            <span class="md-caption">{{ 'module.clients.appointments.workout' | localize }}:</span> {{ appointment.workout.workoutName
-                            }}
-                        </p>
-                        <p *ngIf="appointment.notes">
-                            <span class="md-caption">{{ 'module.clients.appointments.notes' | localize }}:</span>
-                        </p>
-                        <p *ngIf="appointment.notes" class="md-caption">
-                            {{ appointment.notes }}
-                        </p>
-                    </ng-container>
-
-                    <info-message *ngIf="!appointment" text="{{ 'module.clients.dashboard.noAppointment' | localize }}"></info-message>
-                </mat-card-content>
-                <mat-card-content *ngIf="appointment">
-
-                    <p class="md-title primary">
-                        {{ 'module.clients.dashboard.nextAppointmentMap' | localize }}
-                    </p>
-
-                    <map [apiKey]="googleApiKey" [address]="appointment.location.address" [lat]="appointment.location.lat" [lng]="appointment.location.lng"></map>
-
-                </mat-card-content>
-            </mat-card>
-        -->
         </div>
         <div fxFlex="67%" class="push-sm">
 

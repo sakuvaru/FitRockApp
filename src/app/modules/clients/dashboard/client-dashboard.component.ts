@@ -155,7 +155,8 @@ export class ClientDashboardComponent extends ClientsBaseComponent implements On
             appointment.location.lat,
             appointment.location.lng,
             {
-              zoom: 10
+              zoom: 10,
+              noDataMessage:  super.translate('module.clients.dashboard.noAppointment'),
             }
           );
 
@@ -167,7 +168,7 @@ export class ClientDashboardComponent extends ClientsBaseComponent implements On
 
           const workout = appointment.workout;
           if (workout) {
-            lines.push(new InfoBoxLine(super.translate('module.clients.appointments.workout').map(notes => notes + ': ' + workout.workoutName), InfoBoxLineType.Body1));
+            lines.push(new InfoBoxLine(super.translate('module.clients.appointments.workout').map(notes => notes + ': ' + workout.workoutName), InfoBoxLineType.Body1, this.getWorkoutUrl(workout)));
           }
 
           if (appointment.notes) {

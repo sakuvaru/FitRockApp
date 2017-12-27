@@ -20,6 +20,10 @@ export class InfoBoxConfig {
         private options?: {
             noDataMessage?: Observable<string>,
         }
-    )  { }
+    )  {
+        if (options) {
+            Object.assign(this, options);
+        }
+    }
 }
 
