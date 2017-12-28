@@ -9,31 +9,33 @@
 
             <ng-container *ngIf="lines">
                 <p *ngFor="let line of lines">
-                    <ng-container *ngIf="{ text: isObservable(line.text) ? (line.text | async) : line.text }; let data">
-                        <span *ngIf="line.type === 0" class="mat-caption">
-                            <a *ngIf="line.linkUrl" [routerLink]="line.linkUrl">{{ data.text }}</a>
-                            <span *ngIf="!line.linkUrl">{{ data.text }}</span>
-                        </span>
-                        <span *ngIf="line.type === 1" class="mat-title">
-                            <a *ngIf="line.linkUrl" [routerLink]="line.linkUrl">{{ data.text }}</a>
-                            <span *ngIf="!line.linkUrl">{{ data.text }}</span>
-                        </span>
-                        <span *ngIf="line.type === 2" class="mat-body-1">
-                            <a *ngIf="line.linkUrl" [routerLink]="line.linkUrl">{{ data.text }}</a>
-                            <span *ngIf="!line.linkUrl">{{ data.text }}</span>
-                        </span>
-                        <span *ngIf="line.type === 3" class="mat-body-2">
-                            <a *ngIf="line.linkUrl" [routerLink]="line.linkUrl">{{ data.text }}</a>
-                            <span *ngIf="!line.linkUrl">{{ data.text }}</span>
-                        </span>
-                        <span *ngIf="line.type === 4" class="mat-subheading-1">
-                            <a *ngIf="line.linkUrl" [routerLink]="line.linkUrl">{{ data.text }}</a>
-                            <span *ngIf="!line.linkUrl">{{ data.text }}</span>
-                        </span>
-                        <span *ngIf="line.type === 5" class="mat-subheading-2">
-                            <a *ngIf="line.linkUrl" [routerLink]="line.linkUrl">{{ data.text }}</a>
-                            <span *ngIf="!line.linkUrl">{{ data.text }}</span>
-                        </span>
+                    <ng-container *ngFor="let part of line.parts">
+                        <ng-container *ngIf="{ text: isObservable(part.text) ? (part.text | async) : part.text }; let data">
+                            <span *ngIf="part.type === 0" class="mat-caption">
+                                <a *ngIf="part.linkUrl" [routerLink]="part.linkUrl">{{ data.text }}</a>
+                                <span *ngIf="!part.linkUrl">{{ data.text }}</span>
+                            </span>
+                            <span *ngIf="part.type === 1" class="mat-title">
+                                <a *ngIf="part.linkUrl" [routerLink]="part.linkUrl">{{ data.text }}</a>
+                                <span *ngIf="!part.linkUrl">{{ data.text }}</span>
+                            </span>
+                            <span *ngIf="part.type === 2" class="mat-body-1">
+                                <a *ngIf="part.linkUrl" [routerLink]="part.linkUrl">{{ data.text }}</a>
+                                <span *ngIf="!part.linkUrl">{{ data.text }}</span>
+                            </span>
+                            <span *ngIf="part.type === 3" class="mat-body-2">
+                                <a *ngIf="part.linkUrl" [routerLink]="part.linkUrl">{{ data.text }}</a>
+                                <span *ngIf="!part.linkUrl">{{ data.text }}</span>
+                            </span>
+                            <span *ngIf="part.type === 4" class="mat-subheading-1">
+                                <a *ngIf="part.linkUrl" [routerLink]="part.linkUrl">{{ data.text }}</a>
+                                <span *ngIf="!part.linkUrl">{{ data.text }}</span>
+                            </span>
+                            <span *ngIf="part.type === 5" class="mat-subheading-2">
+                                <a *ngIf="part.linkUrl" [routerLink]="part.linkUrl">{{ data.text }}</a>
+                                <span *ngIf="!part.linkUrl">{{ data.text }}</span>
+                            </span>
+                        </ng-container>
                     </ng-container>
                 </p>
             </ng-container>

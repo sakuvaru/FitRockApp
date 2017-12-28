@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
-import { InfoBoxConfig, InfoBoxLine, InfoBoxLineType, ListBoxConfig, ListBoxItem, MapBoxConfig } from 'web-components/boxes';
+import { InfoBoxConfig, InfoBoxLine, InfoBoxText, InfoBoxLineType, ListBoxConfig, ListBoxItem, MapBoxConfig } from 'web-components/boxes';
 
 import { AppConfig } from '../../../config';
 import { ComponentDependencyService, ComponentSetup } from '../../../core';
@@ -35,10 +35,10 @@ export class ClientDashboardComponent extends ClientsBaseComponent implements On
 
   setup(): ComponentSetup {
     return new ComponentSetup({
-        initialized: false,
-        isNested: false
+      initialized: false,
+      isNested: false
     });
-}
+  }
 
   ngOnInit(): void {
     super.ngOnInit();
@@ -59,48 +59,48 @@ export class ClientDashboardComponent extends ClientsBaseComponent implements On
 
   private getInitWorkoutsObservable(): Observable<void> {
     return this.clientIdChange
-    .map(clientId => {
-      this.workoutsListBox = new ListBoxConfig(
-        this.dependencies.itemServices.workoutService.items()
-          .byCurrentUser()
-          .whereEquals('ClientId', clientId)
-          .orderByDesc('Id')
-          .get()
-        .map(response => {
-          return response.items.map(item => new ListBoxItem(
-            item.workoutName,
-            this.getWorkoutUrl(item),
-          ));
-        }),
-        super.translate('module.clients.dashboard.workouts'),
-        {
-          noDataMessage: super.translate('module.clients.dashboard.noWorkouts')
-        }
-      );
-    });
+      .map(clientId => {
+        this.workoutsListBox = new ListBoxConfig(
+          this.dependencies.itemServices.workoutService.items()
+            .byCurrentUser()
+            .whereEquals('ClientId', clientId)
+            .orderByDesc('Id')
+            .get()
+            .map(response => {
+              return response.items.map(item => new ListBoxItem(
+                item.workoutName,
+                this.getWorkoutUrl(item),
+              ));
+            }),
+          super.translate('module.clients.dashboard.workouts'),
+          {
+            noDataMessage: super.translate('module.clients.dashboard.noWorkouts')
+          }
+        );
+      });
   }
 
   private getInitDietsObservable(): Observable<void> {
     return this.clientIdChange
-    .map(clientId => {
-      this.dietsListBox = new ListBoxConfig(
-        this.dependencies.itemServices.dietService.items()
-          .byCurrentUser()
-          .whereEquals('ClientId', clientId)
-          .orderByDesc('Id')
-          .get()
-        .map(response => {
-          return response.items.map(item => new ListBoxItem(
-            item.dietName,
-            this.getDietUrl(item),
-          ));
-        }),
-        super.translate('module.clients.dashboard.diets'),
-        {
-          noDataMessage: super.translate('module.clients.dashboard.noDiets')
-        }
-      );
-    });
+      .map(clientId => {
+        this.dietsListBox = new ListBoxConfig(
+          this.dependencies.itemServices.dietService.items()
+            .byCurrentUser()
+            .whereEquals('ClientId', clientId)
+            .orderByDesc('Id')
+            .get()
+            .map(response => {
+              return response.items.map(item => new ListBoxItem(
+                item.dietName,
+                this.getDietUrl(item),
+              ));
+            }),
+          super.translate('module.clients.dashboard.diets'),
+          {
+            noDataMessage: super.translate('module.clients.dashboard.noDiets')
+          }
+        );
+      });
   }
 
   private getInitChatMessagesObservable(): Observable<void> {
@@ -108,102 +108,95 @@ export class ClientDashboardComponent extends ClientsBaseComponent implements On
       .map(clientId => {
         this.chatMessagesListBox = new ListBoxConfig(
           this.dependencies.itemServices.chatMessageService.getConversationMessages(clientId)
-          .limit(6)
-          .orderByDesc('Id')
-          .get()
-          .map(response => {
-            return response.items.map(item => new ListBoxItem(
-              item.message,
-              this.getChatMessageUrl(),
-              item.sender.getAvatarOrGravatarUrl() ? item.sender.getAvatarOrGravatarUrl() : this.defaultAvatarUrl
-            ));
-          }),
+            .limit(6)
+            .orderByDesc('Id')
+            .get()
+            .map(response => {
+              return response.items.map(item => new ListBoxItem(
+                item.message,
+                this.getChatMessageUrl(),
+                item.sender.getAvatarOrGravatarUrl() ? item.sender.getAvatarOrGravatarUrl() : this.defaultAvatarUrl
+              ));
+            }),
           super.translate('module.clients.dashboard.latestMessages'),
           {
-            noDataMessage: super.translate('module.clients.dashboard.noChatMessages'),          }
+            noDataMessage: super.translate('module.clients.dashboard.noChatMessages'),
+          }
         );
       });
   }
 
   private getInitAppointmentObservable(): Observable<void> {
     return this.clientIdChange
-    .map(clientId => {
-      const dateNow = new Date();
-      dateNow.setSeconds(0);
-      dateNow.setMilliseconds(0);
+      .map(clientId => {
+        const dateNow = new Date();
+        dateNow.setSeconds(0);
+        dateNow.setMilliseconds(0);
 
-      this.appointmentInfoBox = new InfoBoxConfig(
-        this.dependencies.itemServices.appointmentService.items()
-        .limit(1)
-        .byCurrentUser()
-        .whereEquals('ClientId', clientId)
-        .whereGreaterThan('AppointmentDate', dateNow)
-        .orderByAsc('AppointmentDate')
-        .includeMultiple(['Workout', 'Location', 'Client'])
-        .get()
-        .map(response => {
-          const appointment = response.firstItem();
-          if (!appointment) {
-            return [];
+        this.appointmentInfoBox = new InfoBoxConfig(
+          this.dependencies.itemServices.appointmentService.items()
+            .limit(1)
+            .byCurrentUser()
+            .whereEquals('ClientId', clientId)
+            .whereGreaterThan('AppointmentDate', dateNow)
+            .orderByAsc('AppointmentDate')
+            .includeMultiple(['Workout', 'Location', 'Client'])
+            .get()
+            .map(response => {
+              const appointment = response.firstItem();
+              if (!appointment) {
+                return [];
+              }
+
+              // also init map
+              this.appointmentMapBox = new MapBoxConfig(
+                super.translate('module.clients.dashboard.nextAppointmentMap'),
+                this.googleApiKey,
+                appointment.location.address,
+                appointment.location.lat,
+                appointment.location.lng,
+                {
+                  zoom: 10,
+                  noDataMessage: super.translate('module.clients.dashboard.noAppointment'),
+                }
+              );
+
+              const lines: InfoBoxLine[] = [
+                new InfoBoxLine([new InfoBoxText(super.formatDate(appointment.appointmentDate), InfoBoxLineType.Title)]),
+                new InfoBoxLine([new InfoBoxText(appointment.client.getFullName(), InfoBoxLineType.Body2)]),
+                new InfoBoxLine([new InfoBoxText(appointment.location.address, InfoBoxLineType.Body1)])
+              ];
+
+              const workout = appointment.workout;
+              if (workout) {
+                lines.push(new InfoBoxLine([
+                  new InfoBoxText(super.translate('module.clients.appointments.workout').map(workoutTitle => workoutTitle + ': '), InfoBoxLineType.Body1),
+                  new InfoBoxText(workout.workoutName, InfoBoxLineType.Body1, this.getWorkoutUrl(workout)),
+                ]
+                ));
+              }
+
+              if (appointment.notes) {
+                lines.push(new InfoBoxLine(
+                  [
+                    new InfoBoxText(super.translate('module.clients.appointments.notes').map(notes => notes + ': '), InfoBoxLineType.Caption),
+                    new InfoBoxText(appointment.notes, InfoBoxLineType.Caption)
+                  ]
+                ));
+              }
+
+              return lines;
+
+            }),
+          super.translate('module.clients.dashboard.nextAppointment'),
+          {
+            noDataMessage: super.translate('module.clients.dashboard.noAppointment')
           }
+        );
 
-          // also init map
-          this.appointmentMapBox = new MapBoxConfig(
-            super.translate('module.clients.dashboard.nextAppointmentMap'),
-            this.googleApiKey,
-            appointment.location.address,
-            appointment.location.lat,
-            appointment.location.lng,
-            {
-              zoom: 10,
-              noDataMessage:  super.translate('module.clients.dashboard.noAppointment'),
-            }
-          );
-
-          const lines: InfoBoxLine[] = [
-            new InfoBoxLine(super.formatDate(appointment.appointmentDate), InfoBoxLineType.Title),
-            new InfoBoxLine(appointment.client.getFullName(), InfoBoxLineType.Body2),
-            new InfoBoxLine(appointment.location.address, InfoBoxLineType.Body1)
-          ];
-
-          const workout = appointment.workout;
-          if (workout) {
-            lines.push(new InfoBoxLine(super.translate('module.clients.appointments.workout').map(notes => notes + ': ' + workout.workoutName), InfoBoxLineType.Body1, this.getWorkoutUrl(workout)));
-          }
-
-          if (appointment.notes) {
-            lines.push(new InfoBoxLine(super.translate('module.clients.appointments.notes').map(notes => notes + ': ' + appointment.notes), InfoBoxLineType.Caption));
-          }
-
-          return lines;
-
-        }),
-        super.translate('module.clients.dashboard.nextAppointment'),
-        {
-          noDataMessage: super.translate('module.clients.dashboard.noAppointment')
-        }
-      );
-        
-    });
-
-    /*
-    return this.clientIdChange
-      .switchMap(clientId => {
-        return this.dependencies.itemServices.appointmentService.items()
-          .limit(1)
-          .byCurrentUser()
-          .whereEquals('ClientId', clientId)
-          .whereGreaterThan('AppointmentDate', dateNow)
-          .orderByAsc('AppointmentDate')
-          .includeMultiple(['Workout', 'Location'])
-          .get();
-      })
-      .map(response => {
-        this.appointment = response.firstItem();
       });
-      */
   }
-  
+
   private getInitMenuObservable(): Observable<void> {
     return this.clientChange
       .map(client => {
@@ -228,7 +221,7 @@ export class ClientDashboardComponent extends ClientsBaseComponent implements On
   private getWorkoutUrl(workout: Workout): string {
     return super.getTrainerUrl('clients/edit/' + this.clientId + '/workout/' + workout.id + '/workout-plan');
   }
-  
+
   private getAppointmentUrl(appointment: Appointment): string {
     return super.getTrainerUrl('clients/edit/' + this.clientId + '/appointments/view/' + appointment.id);
   }
