@@ -52,11 +52,11 @@ export class UrlConfig {
     }
 
     public static getItem404(): string {
-        return UrlConfig.getAppUrl(UrlConfig.Item404);
+        return UrlConfig.getAppUrl(UrlConfig.SharedMasterPath + '/' + UrlConfig.Item404);
     }
 
     public static getAppErrorUrl(): string {
-        return UrlConfig.getAppUrl(UrlConfig.AppError);
+        return UrlConfig.getAppUrl(UrlConfig.SharedMasterPath + '/' + UrlConfig.AppError);
     }
 
     public static getAppUrl(action: string): string {

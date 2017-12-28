@@ -63,8 +63,7 @@ export class InfoBoxComponent extends BaseWebComponent implements OnInit, OnChan
     resolveAction(obs: Observable<void>): void {
         obs
             .takeUntil(this.ngUnsubscribe)
-            .subscribe()
-            .unsubscribe();
+            .subscribe();
     }
 
     redirectTo(url: string): void {

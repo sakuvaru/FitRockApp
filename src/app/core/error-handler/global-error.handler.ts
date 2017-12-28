@@ -2,19 +2,31 @@ import { LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { ErrorHandler, Injectable, Injector } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'lib/auth/';
-import { Log } from '../../models';
-import { LogService } from '../../services';
-import { SharedService } from '../services/shared.service';
 import * as StackTrace from 'stacktrace-js';
 
 import { AppConfig, UrlConfig } from '../../config';
+import { Log } from '../../models';
+import { LogService } from '../../services';
+import { SharedService } from '../services/shared.service';
 
 @Injectable()
 export class GlobalErrorHandler implements ErrorHandler {
 
+    /**
+    * The handlerError is called twice for some reason. This property should
+    * be used to ensure that only 1 log is logged in database.
+    */
+    private errorProcessing: boolean = false;
+
     constructor(private injector: Injector) { }
 
     handleError(error) {
+        if (this.errorProcessing) {
+            // don't handle error as other error is currently processing
+            return;
+        }
+        this.errorProcessing = true;
+
         const logService = this.injector.get(LogService);
         const sharedService = this.injector.get(SharedService);
         const authService = this.injector.get(AuthService);
@@ -43,45 +55,57 @@ export class GlobalErrorHandler implements ErrorHandler {
                 // log on the server
                 logService.logError(message, url, userName, stackString)
                     .subscribe((response) => {
+                        this.errorProcessing = false;
+
                         // notify shared service about the error
                         sharedService.setError(response.item);
 
-                        if (!AppConfig.DevModeEnabled) {
+                        if (AppConfig.RedirectToErrorPageOnError) {
                             this.navigateToErrorPage(response.item.guid);
                         }
                     },
                     (logError) => {
+                        this.errorProcessing = false;
+
                         // notify shared service about the error
                         sharedService.setError(new Log().errorMessage = logError);
 
-                        if (!AppConfig.DevModeEnabled) {
+                        if (AppConfig.RedirectToErrorPageOnError) {
                             // redirect only if dev mode is disabled
                             this.navigateToErrorPage();
                         }
-                    });
+                    })
+                    ;
             });
         } catch (logError) {
             // parsing error failed, log raw error message
             logService.logError(message, url, userName, error)
                 .subscribe((response) => {
+                    this.errorProcessing = false;
+
                     // notify shared service about the error
                     sharedService.setError(response.item);
 
-                    if (!AppConfig.DevModeEnabled) {
+                    if (AppConfig.RedirectToErrorPageOnError) {
                         this.navigateToErrorPage(response.item.guid);
                     }
                 }, (innerError) => {
+                    this.errorProcessing = false;
+
                     // notify shared service about the error
                     sharedService.setError(new Log().errorMessage = innerError);
 
-                    if (!AppConfig.DevModeEnabled) {
+                    if (AppConfig.RedirectToErrorPageOnError) {
                         // redirect only if dev mode is disabled
                         this.navigateToErrorPage();
                     }
                 });
         }
 
-        throw error;
+        // if the 'throw error' is used, the application will become unresponsive and the handle error would be called twice.
+        // just log the error to console.
+        console.error(error);
+        // throw error;
     }
 
     private redirectToErrorPage(): void {

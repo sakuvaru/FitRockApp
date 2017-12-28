@@ -6,6 +6,7 @@ import { AppConfig } from '../../../../config';
 import { ComponentDependencyService, ComponentSetup } from '../../../../core';
 import { ClientsBaseComponent } from '../../clients-base.component';
 import { ClientOverviewMenuItems } from '../../menu.items';
+import { guidHelper } from 'lib/utilities';
 
 @Component({
   templateUrl: 'clients-overview.component.html'
@@ -36,6 +37,8 @@ export class ClientsOverviewComponent extends ClientsBaseComponent implements On
     super.ngOnInit();
     this.init();
     super.initClientSubscriptions();
+
+    throw Error('Error: ' + guidHelper.newGuid());
   }
 
   toggleMode(): void {
@@ -56,8 +59,6 @@ export class ClientsOverviewComponent extends ClientsBaseComponent implements On
       menuItems: new ClientOverviewMenuItems().menuItems,
       componentTitle: { key: 'module.clients.allClients' }
     });
-
-    // get last remembered
 
     this.config = this.dependencies.itemServices.userService.buildDataTable(
       (query, search) => {

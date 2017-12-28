@@ -4,6 +4,7 @@ import { ControllerModel } from '../../lib/repository';
 export class AppConfig {
     // dev
     public static DevModeEnabled = true;
+    public static RedirectToErrorPageOnError = false;
 
     // app
     public static AppName = 'Fit Rock';
