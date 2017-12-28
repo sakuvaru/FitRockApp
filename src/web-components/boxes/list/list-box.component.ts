@@ -40,7 +40,7 @@ export class ListBoxComponent extends BaseWebComponent implements OnInit, OnChan
     /**
      * Indicates if error occured
      */
-    private errorOccured: boolean = false;
+    public errorOccured: boolean = false;
 
     constructor(
         private router: Router
@@ -58,6 +58,21 @@ export class ListBoxComponent extends BaseWebComponent implements OnInit, OnChan
 
     loadItems(): void {
         this.loadItems$.next();
+    }
+
+    resolveAction(obs: Observable<void>): void {
+        obs
+            .takeUntil(this.ngUnsubscribe)
+            .subscribe()
+            .unsubscribe();
+    }
+
+    redirectTo(url: string): void {
+        this.router.navigate([url]);
+    }
+
+    isObservable(value: string | Observable<string>): boolean {
+        return observableHelper.isObservable(value);
     }
 
     private initListBox(): void {
@@ -96,13 +111,5 @@ export class ListBoxComponent extends BaseWebComponent implements OnInit, OnChan
 
     private resetErrors(): void {
         this.errorOccured = false;
-    }
-
-    private redirectTo(url: string): void {
-        this.router.navigate([url]);
-    }
-
-    private isObservable(value: string | Observable<string>): boolean {
-        return observableHelper.isObservable(value);
     }
 }

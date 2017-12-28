@@ -1,5 +1,6 @@
 import { Observable } from 'rxjs/Rx';
 import { InfoBoxLineType } from './info-box-line-type.enum';
+import { ActionButton } from '../shared/shared.models';
 
 export class InfoBoxText {
     constructor(
@@ -19,12 +20,14 @@ export class InfoBoxLine {
 export class InfoBoxConfig {
 
     public noDataMessage?: Observable<string>;
+    public actions?: ActionButton[];
 
     constructor(
         public lines: Observable<InfoBoxLine[]>,
         public title: Observable<string>,
         private options?: {
             noDataMessage?: Observable<string>,
+            actions?: ActionButton[]
         }
     )  {
         if (options) {

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
-import { InfoBoxConfig, InfoBoxLine, InfoBoxText, InfoBoxLineType, ListBoxConfig, ListBoxItem, MapBoxConfig } from 'web-components/boxes';
+import { ActionButton, InfoBoxConfig, InfoBoxLine, InfoBoxText, InfoBoxLineType, ListBoxConfig, ListBoxItem, MapBoxConfig } from 'web-components/boxes';
 
 import { AppConfig } from '../../../config';
 import { ComponentDependencyService, ComponentSetup } from '../../../core';
@@ -127,6 +127,8 @@ export class ClientDashboardComponent extends ClientsBaseComponent implements On
   }
 
   private getInitAppointmentObservable(): Observable<void> {
+    let appointment: Appointment | undefined;
+
     return this.clientIdChange
       .map(clientId => {
         const dateNow = new Date();
@@ -143,7 +145,7 @@ export class ClientDashboardComponent extends ClientsBaseComponent implements On
             .includeMultiple(['Workout', 'Location', 'Client'])
             .get()
             .map(response => {
-              const appointment = response.firstItem();
+              appointment = response.firstItem();
               if (!appointment) {
                 return [];
               }
@@ -156,7 +158,7 @@ export class ClientDashboardComponent extends ClientsBaseComponent implements On
                 appointment.location.lat,
                 appointment.location.lng,
                 {
-                  zoom: 10,
+                  zoom: 13,
                   noDataMessage: super.translate('module.clients.dashboard.noAppointment'),
                 }
               );
@@ -190,7 +192,15 @@ export class ClientDashboardComponent extends ClientsBaseComponent implements On
             }),
           super.translate('module.clients.dashboard.nextAppointment'),
           {
-            noDataMessage: super.translate('module.clients.dashboard.noAppointment')
+            noDataMessage: super.translate('module.clients.dashboard.noAppointment'),
+            actions: [ 
+              new ActionButton('edit', Observable.of(undefined)
+              .map(() => {
+                if (appointment) {
+                  this.dependencies.router.navigate([this.getAppointmentEditUrl(appointment)]);
+                }
+              }))
+            ]
           }
         );
 
@@ -222,8 +232,12 @@ export class ClientDashboardComponent extends ClientsBaseComponent implements On
     return super.getTrainerUrl('clients/edit/' + this.clientId + '/workout/' + workout.id + '/workout-plan');
   }
 
-  private getAppointmentUrl(appointment: Appointment): string {
+  private getAppointmentViewUrl(appointment: Appointment): string {
     return super.getTrainerUrl('clients/edit/' + this.clientId + '/appointments/view/' + appointment.id);
+  }
+
+  private getAppointmentEditUrl(appointment: Appointment): string {
+    return super.getTrainerUrl('clients/edit/' + this.clientId + '/appointments/edit/' + appointment.id);
   }
 
   private getChatMessageUrl(): string {

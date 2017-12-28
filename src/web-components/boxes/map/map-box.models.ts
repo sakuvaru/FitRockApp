@@ -1,8 +1,10 @@
 import { Observable } from 'rxjs/Rx';
+import { ActionButton } from '../shared/shared.models';
 
 export class MapBoxConfig {
 
     public noDataMessage?: Observable<string>;
+    public actions?: ActionButton[];
 
     constructor(
         public title: Observable<string>,
@@ -12,7 +14,8 @@ export class MapBoxConfig {
         public lng?: number,
         private options?: {
             zoom?: number,
-            noDataMessage?: Observable<string>;
+            noDataMessage?: Observable<string>,
+            actions?: ActionButton[]
         }
     )  { 
         if (options) {

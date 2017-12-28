@@ -1,4 +1,5 @@
 import { Observable } from 'rxjs/Rx';
+import { ActionButton } from '../shared/shared.models';
 
 export class ListBoxItem {
     constructor(
@@ -12,12 +13,14 @@ export class ListBoxItem {
 export class ListBoxConfig {
 
     public noDataMessage?: Observable<string>;
+    public actions?: ActionButton[];
 
     constructor(
         public items: Observable<ListBoxItem[]>,
         public title: Observable<string>,
         private options?: {
-            noDataMessage?: Observable<string>
+            noDataMessage?: Observable<string>,
+            actions?: ActionButton[]
         }
     )  { 
         if (options) {

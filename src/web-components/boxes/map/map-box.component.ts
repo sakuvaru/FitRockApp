@@ -41,6 +41,13 @@ export class MapBoxComponent extends BaseWebComponent implements OnInit, OnChang
         this.initInfoBox();
     }
 
+    resolveAction(obs: Observable<void>): void {
+        obs
+            .takeUntil(this.ngUnsubscribe)
+            .subscribe()
+            .unsubscribe();
+    }
+
     private initInfoBox(): void {
         if (this.initialized || !this.config) {
             return;

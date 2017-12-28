@@ -3,9 +3,17 @@
     <mat-card class="w-boxes-info-box">
         <loader [enabled]="loaderEnabled"></loader>
         <mat-card-content>
-            <p *ngIf="config.title" class="md-title primary">
-                {{ config.title | async }}
-            </p>
+            <div fxLayout="row">
+                <span fxFlexAlign="center" *ngIf="config.title" class="md-title primary">
+                    {{ config.title | async }}
+                </span>
+                <span flex></span>
+                <span fxFlexAlign="center" *ngIf="config.actions">
+                    <button class="w-boxes-title-icon" mat-icon-button *ngFor="let action of config.actions" (click)="resolveAction(action.action)">
+                        <mat-icon>{{ action.icon }}</mat-icon>
+                    </button>
+                </span>
+            </div>
 
             <ng-container *ngIf="lines">
                 <p *ngFor="let line of lines">
