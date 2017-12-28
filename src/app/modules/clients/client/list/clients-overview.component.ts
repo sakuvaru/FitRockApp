@@ -37,8 +37,6 @@ export class ClientsOverviewComponent extends ClientsBaseComponent implements On
     super.ngOnInit();
     this.init();
     super.initClientSubscriptions();
-
-    throw Error('Error: ' + guidHelper.newGuid());
   }
 
   toggleMode(): void {
