@@ -128,7 +128,7 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
     }
 
     public get isDeleteEnabled(): boolean {
-        if (this.config.deleteFunction) {
+        if (this.config.deleteFunction && this.config.enableDelete) {
             return true;
         }
         return false;
