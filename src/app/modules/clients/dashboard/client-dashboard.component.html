@@ -10,36 +10,6 @@
 
         </div>
         <div fxFlex="67%" class="push-sm">
-
-            <mat-card *ngIf="client && client.trainerPrivateNotes">
-                <mat-card-content>
-
-                    <p class="md-title primary">
-                        {{ 'module.clients.dashboard.privateNotes' | localize }}
-                        <span class="md-caption">({{ 'module.clients.dashboard.privateNotesHint' | localize }} )</span>
-                    </p>
-
-                    <p>
-                        {{ client.trainerPrivateNotes }}
-                    </p>
-
-                </mat-card-content>
-            </mat-card>
-
-            <mat-card *ngIf="client && client.trainerPublicNotes">
-                <mat-card-content>
-
-                    <p class="md-title primary">
-                        {{ 'module.clients.dashboard.publicNotes' | localize }}
-                    </p>
-
-                    <p>
-                        {{ client.trainerPublicNotes }}
-                    </p>
-
-                </mat-card-content>
-            </mat-card>
-
             <list-box [config]="chatMessagesListBox"></list-box>
         </div>
     </div>
@@ -56,6 +26,18 @@
     <div fxLayout fxLayout.sm="column" fxLayout.xs="column">
         <div fxFlex="100%" class="push-sm">
             <user-stats [userId]="clientId"></user-stats>
+        </div>
+    </div>
+
+    <div *ngIf="client && client.trainerPrivateNotes" fxLayout fxLayout.sm="column" fxLayout.xs="column">
+        <div fxFlex="100%" class="push-sm">
+            <info-box [config]="privateNotesInfoBox"></info-box>
+        </div>
+    </div>
+
+    <div *ngIf="client && client.trainerPublicNotes" fxLayout fxLayout.sm="column" fxLayout.xs="column">
+        <div fxFlex="100%" class="push-sm">
+            <info-box [config]="publicNotesInfoBox"></info-box>
         </div>
     </div>
 </div>

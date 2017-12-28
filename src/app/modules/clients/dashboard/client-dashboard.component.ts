@@ -17,14 +17,13 @@ export class ClientDashboardComponent extends ClientsBaseComponent implements On
   public readonly defaultAvatarUrl: string = AppConfig.DefaultUserAvatarUrl;
   public readonly googleApiKey: string = AppConfig.GoogleApiKey;
 
-  public appointment?: Appointment;
-
   public appointmentInfoBox?: InfoBoxConfig;
-
   public chatMessagesListBox?: ListBoxConfig;
   public dietsListBox?: ListBoxConfig;
   public workoutsListBox?: ListBoxConfig;
   public appointmentMapBox?: MapBoxConfig;
+  public privateNotesInfoBox?: InfoBoxConfig;
+  public publicNotesInfoBox?: InfoBoxConfig;
 
   constructor(
     protected activatedRoute: ActivatedRoute,
@@ -193,13 +192,13 @@ export class ClientDashboardComponent extends ClientsBaseComponent implements On
           super.translate('module.clients.dashboard.nextAppointment'),
           {
             noDataMessage: super.translate('module.clients.dashboard.noAppointment'),
-            actions: [ 
+            actions: [
               new ActionButton('edit', Observable.of(undefined)
-              .map(() => {
-                if (appointment) {
-                  this.dependencies.router.navigate([this.getAppointmentEditUrl(appointment)]);
-                }
-              }))
+                .map(() => {
+                  if (appointment) {
+                    this.dependencies.router.navigate([this.getAppointmentEditUrl(appointment)]);
+                  }
+                }))
             ]
           }
         );
@@ -210,6 +209,7 @@ export class ClientDashboardComponent extends ClientsBaseComponent implements On
   private getInitMenuObservable(): Observable<void> {
     return this.clientChange
       .map(client => {
+        // set component config
         this.setConfig({
           menuItems: new ClientMenuItems(client.id).menuItems,
           menuTitle: {
@@ -221,6 +221,21 @@ export class ClientDashboardComponent extends ClientsBaseComponent implements On
           },
           menuAvatarUrl: client.getAvatarOrGravatarUrl()
         });
+
+        // set info boxes
+        this.privateNotesInfoBox = new InfoBoxConfig(
+          Observable.of([
+            new InfoBoxLine([new InfoBoxText(client.trainerPrivateNotes, InfoBoxLineType.Body1)])
+          ]),
+          super.translate('module.clients.dashboard.privateNotes'),
+        );
+
+        this.publicNotesInfoBox = new InfoBoxConfig(
+          Observable.of([
+            new InfoBoxLine([new InfoBoxText(client.trainerPublicNotes, InfoBoxLineType.Body1)])
+          ]),
+          super.translate('module.clients.dashboard.publicNotes'),
+        );
       });
   }
 

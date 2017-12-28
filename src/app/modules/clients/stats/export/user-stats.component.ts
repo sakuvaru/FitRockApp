@@ -1,10 +1,10 @@
-// common
 import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 
 import { BaseGraph, GraphComponent, GraphConfig, LineChart, MultiSeries } from '../../../../../web-components/graph';
 import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../../../../core';
 import { ProgressItemType } from '../../../../models';
+import { stringHelper } from 'lib/utilities';
 
 @Component({
     selector: 'user-stats',
@@ -59,8 +59,8 @@ export class UserStatsComponent extends BaseComponent implements OnInit, OnChang
                 .map(response => {
                     this.idOfActiveType = progressItemId;
                     return new LineChart(response.data.items, {
-                        xAxisLabel: super.translate(response.data.xAxisLabel),
-                        yAxisLabel: super.translate(response.data.yAxisLabel)
+                        xAxisLabel: super.translate(response.data.xAxisLabel).map(text => stringHelper.capitalizeText(text)),
+                        yAxisLabel: super.translate(response.data.yAxisLabel).map(text => stringHelper.capitalizeText(text))
                     });
                 })
         )

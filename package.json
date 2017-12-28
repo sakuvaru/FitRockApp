@@ -31,9 +31,11 @@
     "@ngx-translate/core": "9.0.2",
     "@ngx-translate/http-loader": "2.0.1",
     "@swimlane/ngx-charts": "7.0.1",
+    "angular-calendar": "0.22.3",
     "angular-modal-gallery": "4.0.1",
     "angular2-jwt": "0.2.3",
     "angular2-text-mask": "8.0.4",
+    "clone": "2.1.1",
     "core-js": "2.5.3",
     "d3": "4.12.2",
     "font-awesome": "4.7.0",
@@ -45,9 +47,7 @@
     "rxjs": "5.5.6",
     "stacktrace-js": "2.0.0",
     "underscore": "1.8.3",
-    "zone.js": "0.8.18",
-    "angular-calendar": "0.22.3",
-    "clone": "2.1.1"
+    "zone.js": "0.8.18"
   },
   "devDependencies": {
     "@angular/cli": "1.6.2",
