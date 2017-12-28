@@ -124,9 +124,9 @@
                       <a *ngIf="!button.tooltip" mat-icon-button>
                         <mat-icon>{{button.icon}}</mat-icon>
                       </a>
-                      <a *ngIf="button.tooltip" mat-icon-button matTooltip="{{ button.tooltip(item) | async }}">
+                      <button *ngIf="button.tooltip" mat-icon-button matTooltip="{{ button.tooltip(item) | async }}">
                         <mat-icon>{{button.icon}}</mat-icon>
-                      </a>
+                      </button>
                     </span>
                   </ng-container>
                 </div>
@@ -166,7 +166,7 @@
           <!-- Rows -->
           <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
           <ng-container>
-            <mat-row matRipple (click)="handleOnClick(item)" *matRowDef="let item; columns: displayedColumns;"></mat-row>
+            <mat-row  (click)="handleOnClick(item)" *matRowDef="let item; columns: displayedColumns;"></mat-row>
           </ng-container>
 
         </mat-table>
