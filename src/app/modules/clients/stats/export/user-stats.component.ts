@@ -2,7 +2,7 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 
-import { BaseGraph, GraphComponent, GraphConfig, LineChart } from '../../../../../web-components/graph';
+import { BaseGraph, GraphComponent, GraphConfig, LineChart, MultiSeries } from '../../../../../web-components/graph';
 import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../../../../core';
 import { ProgressItemType } from '../../../../models';
 
@@ -64,6 +64,18 @@ export class UserStatsComponent extends BaseComponent implements OnInit, OnChang
                     });
                 })
         )
+            .dataResolver(data => {
+                data = data as MultiSeries[];
+
+                data.forEach(series => {
+                    series.series.forEach(singleSeries => {
+                        const seriesDate = new Date(singleSeries.name);
+                        singleSeries.name = super.formatDate(seriesDate);
+                    });
+                });
+
+                return Observable.of(data);
+            })
             .build();
     }
 

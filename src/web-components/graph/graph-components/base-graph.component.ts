@@ -1,5 +1,5 @@
 import { EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { Observable } from 'rxjs/Rx';
+import { Observable, Subject } from 'rxjs/Rx';
 
 import { LocalizationService } from '../../../lib/localization';
 import { BaseWebComponent } from '../../base-web-component.class';
@@ -18,6 +18,11 @@ export abstract class BaseGraphComponent extends BaseWebComponent implements OnI
      * Loader change 
      */
     @Output() loaderChanged = new EventEmitter<boolean>();
+
+    /**
+     * Subject for loading graph
+     */
+    private loadGraph$ = new Subject<void>();
 
     /**
      * This will contain graph data
@@ -55,15 +60,11 @@ export abstract class BaseGraphComponent extends BaseWebComponent implements OnI
 
 
     ngOnInit() {
-        if (this.config) {
-            this.initGraph(this.config);
-        }
+        this.initGraph(this.config);
     }
 
     ngOnChanges(changes: SimpleChanges) {
-        if (changes.config.currentValue) {
-            this.initGraph(changes.config.currentValue);
-        }
+        this.initGraph(changes.config.currentValue);
     }
 
     /**
@@ -71,30 +72,34 @@ export abstract class BaseGraphComponent extends BaseWebComponent implements OnI
      * @param config Graph config
      */
     forceReinitialization(config: GraphConfig<BaseGraph>): void {
+        this.config = config;
+
         this.initialized = false;
+
+        // unsubscribe from load observable
+        this.loadGraph$.unsubscribe();
+        this.loadGraph$ = new Subject<void>();
+
+        // init graph
         this.initGraph(config);
     }
 
     /**
-     * Reloads graph data
+     * Loads graph data
      */
-    reloadData(): void {
-        this.initialized = false;
-        this.initGraph(this.config);
+    loadGraph(): void {
+        this.loadGraph$.next();
     }
 
     protected initGraph(config: GraphConfig<BaseGraph>): void {
-        if (this.initialized) {
+        if (this.initialized || !this.config) {
             return;
         }
 
+        this.initialized = true;
+
         // set properties
         this.config = config;
-
-        // loader
-        if (this.config.enableLocalLoader) {
-            this.loaderChanged.next(true);
-        }
 
         // init wrapper styles
         this.initWrapperStyle(config);
@@ -104,31 +109,56 @@ export abstract class BaseGraphComponent extends BaseWebComponent implements OnI
             .takeUntil(this.ngUnsubscribe)
             .subscribe();
 
-        // init graph
-        this.config.graph
-            .switchMap(graph => {
+        // subscribe to data loader
+        this.subscribeToLoadGraph();
 
-                // assign graph
-                this.graph = graph;
+        // load graph data
+        this.loadGraph();
+    }
 
-                // assign graph data
-                this.graphData = graph.data;
-
-                return this.specializedGraphInit(graph);
+    private subscribeToLoadGraph(): void {
+        this.loadGraph$
+            .do(() => {
+                // start loader
+                if (this.config.enableLocalLoader) {
+                    this.loaderChanged.next(true);
+                }
             })
-            .map(graph => {
-                // loader
+            .switchMap(() => this.getLoadGraphObservable())
+            .takeUntil(this.ngUnsubscribe)
+            .subscribe(() => {
+                // stop loader
                 if (this.config.enableLocalLoader) {
                     this.loaderChanged.next(false);
                 }
-
-                // set graph as initialized
-                this.initialized = true;
-            })
-            .takeUntil(this.ngUnsubscribe)
-            .subscribe();
+            });
     }
 
+    private getLoadGraphObservable(): Observable<void> {
+        // init graph
+        return this.config.graph
+            .switchMap(graph => {
+               // return Observable.of(graph);
+                return this.specializedGraphInit(graph);
+            })
+            .switchMap(graph => {
+                // assign graph
+                this.graph = graph;
+
+                // data does not need to be resolved using custom function
+                if (!this.config.dataResolver) {
+                    return Observable.of(graph.data);
+                }
+
+                // use data resolver
+                return this.config.dataResolver(graph.data);
+            })
+            .map(graphData => {
+                // assign graph data
+                this.graphData = graphData;
+            });
+
+    }
     private initWrapperStyle(config: GraphConfig<BaseGraph>): void {
         const style: any = {};
         style.width = config.width;

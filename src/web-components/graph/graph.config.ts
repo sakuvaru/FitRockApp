@@ -2,6 +2,7 @@ import { Observable } from 'rxjs/Rx';
 
 import { GraphTypeEnum } from './graph-type.enum';
 import { BaseGraph } from './graph-types';
+import { MultiSeries, SingleSeries } from './graph-models';
 
 export class GraphConfig<TGraph extends BaseGraph> {
 
@@ -47,6 +48,11 @@ export class GraphConfig<TGraph extends BaseGraph> {
     public scheme = {
         domain: ['#f44336', '#A10A28', '#C7B42C', '#AAAAAA']
     };
+
+    /**
+     * Can be used to manipulate/translate data in graph (e.g. for dates localization)
+     */
+    public dataResolver?: (data: MultiSeries[] | SingleSeries[]) => Observable<MultiSeries[] | SingleSeries[]>;
 
     constructor(
         /**

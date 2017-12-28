@@ -166,7 +166,7 @@
           <!-- Rows -->
           <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
           <ng-container>
-            <mat-row  (click)="handleOnClick(item)" *matRowDef="let item; columns: displayedColumns;"></mat-row>
+            <mat-row (click)="handleOnClick(item)" *matRowDef="let item; columns: displayedColumns;"></mat-row>
           </ng-container>
 
         </mat-table>

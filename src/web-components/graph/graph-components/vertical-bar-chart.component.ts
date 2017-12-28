@@ -1,4 +1,5 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { observableHelper } from 'lib/utilities';
 import { Observable } from 'rxjs/Rx';
 
 import { LocalizationService } from '../../../lib/localization';
@@ -45,17 +46,27 @@ export class VerticalBarGraphComponent extends BaseGraphComponent implements OnI
     }
 
     private getLabelsObservable(graph: VerticalBarChart): Observable<VerticalBarChart> {
-        const obs: Observable<any> = Observable.of(true);
+        const observables: Observable<void>[] = [];
 
         if (graph.xAxisLabel) {
-            obs.merge(graph.xAxisLabel
-                .map(label => this.xAxisLabel = label));
+            observables.push(graph.xAxisLabel
+                .map(label => {
+                    this.xAxisLabel = label;
+                }));
         }
 
         if (graph.yAxisLabel) {
-            obs.merge(graph.yAxisLabel
-                .map(label => this.yAxisLabel = label));
+            observables.push(graph.yAxisLabel
+                .map(label => {
+                    this.yAxisLabel = label;
+                }));
         }
+
+        if (observables.length === 0) {
+            return Observable.of(graph);
+        }
+
+        const obs = observableHelper.zipObservables(observables);
 
         return obs.map(() => graph);
     }

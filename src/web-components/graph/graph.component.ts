@@ -43,7 +43,7 @@ export class GraphComponent extends BaseWebComponent {
      */
     reloadData(): void {
         if (this.graphComponent) {
-            this.graphComponent.reloadData();
+            this.graphComponent.loadGraph();
         }
     }
 

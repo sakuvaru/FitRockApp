@@ -1,5 +1,6 @@
 import { Observable } from 'rxjs/Rx';
 
+import { MultiSeries, SingleSeries } from './graph-models';
 import { GraphTypeEnum } from './graph-type.enum';
 import { BaseGraph } from './graph-types';
 import { GraphConfig } from './graph.config';
@@ -18,6 +19,10 @@ export class GraphBuilder<TGraph extends BaseGraph> {
         );
     }
 
+    dataResolver(resolver: (data: MultiSeries[] | SingleSeries[]) => Observable<MultiSeries[] | SingleSeries[]>): this {
+        this.config.dataResolver = resolver;
+        return this;
+    }
     
     /**
      * Indicates if graph is wrapped in card

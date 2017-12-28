@@ -5,6 +5,7 @@ import { LocalizationService } from '../../../lib/localization';
 import { LineChart } from '../graph-types';
 import { GraphConfig } from '../graph.config';
 import { BaseGraphComponent } from './base-graph.component';
+import { observableHelper } from 'lib/utilities';
 
 @Component({
     selector: 'line-chart',
@@ -45,19 +46,27 @@ export class LineChartGraphComponent extends BaseGraphComponent implements OnIni
     }
 
     private getLabelsObservable(graph: LineChart): Observable<LineChart> {
-        let obs: Observable<any> = Observable.of(true);
+        const observables: Observable<void>[] = [];
 
         if (graph.xAxisLabel) {
-            obs = graph.xAxisLabel
+            observables.push(graph.xAxisLabel
                 .map(label => {
                     this.xAxisLabel = label;
-                });
+                }));
         }
 
         if (graph.yAxisLabel) {
-            obs = obs.merge(graph.yAxisLabel
-                .map(label => this.yAxisLabel = label));
+            observables.push(graph.yAxisLabel
+                .map(label => {
+                    this.yAxisLabel = label;
+                }));
         }
+
+        if (observables.length === 0) {
+            return Observable.of(graph);
+        }
+
+        const obs = observableHelper.zipObservables(observables);
 
         return obs.map(() => graph);
     }
