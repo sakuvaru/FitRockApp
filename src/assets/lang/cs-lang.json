@@ -134,7 +134,7 @@
 				"fiveFoods": "jídel",
 				"foodList": "Přehled jídel"
 			},
-			"progress":{
+			"progress": {
 				"newProgressItem": "Nová sledovaná hodnota",
 				"newProgressItemType": "Nový typ měření",
 				"assignProgressItemType": "Přiřadit typ měření",
@@ -217,6 +217,31 @@
 			"new": "Nový cvik",
 			"exerciseCategory": "Kategorie"
 		},
+		"exerciseCategories": {
+			"categories": {
+				"Biceps": "Biceps",
+				"Triceps": "Triceps",
+				"Back": "Záda",
+				"Legs": "Nohy a lýtka",
+				"Shoulders": "Ramena",
+				"Chest": "Hrudník",
+				"Wrist": "Zápěstí",
+				"Abs": "Břicho"
+			}
+		},
+		"dietCategories": {
+			"categories": {
+				"fatLoss": "Redukce tuků",
+				"muscleGain": "Nabírání svalů (lean)",
+				"strengthGain": "Max. síla",
+				"maintainCondition": "Udržovaní kondice",
+				"muscleLoss": "Redukce svalů",
+				"increaseEndurance": "Vytrvalost",
+				"weightGain": "Bulking",
+				"weightLoss": "Redukce váhy",
+				"Other": "Jiné"
+			}
+		},
 		"diets": {
 			"submenu": {
 				"dietTemplates": "Šablony",
@@ -272,57 +297,84 @@
 			"gallon": "galon",
 			"pluralTwo": {
 				"mg": "miligramy",
-			"unit": "kusy",
-			"teaspoon": "čajové lžičky",
-			"pound": "libry",
-			"kg": "kilogramy",
-			"grams": "gramy",
-			"ml": "mililitry",
-			"l": "litry",
-			"dl": "decilitry",
-			"pint": "pinty",
-			"cup": "hrnky",
-			"oz": "unce",
-			"tablespoon": "lžíce",
-			"gallon": "galony"
+				"unit": "kusy",
+				"teaspoon": "čajové lžičky",
+				"pound": "libry",
+				"kg": "kilogramy",
+				"grams": "gramy",
+				"ml": "mililitry",
+				"l": "litry",
+				"dl": "decilitry",
+				"pint": "pinty",
+				"cup": "hrnky",
+				"oz": "unce",
+				"tablespoon": "lžíce",
+				"gallon": "galony"
 			},
 			"pluralFive": {
 				"mg": "miligramů",
-			"unit": "kusů",
-			"teaspoon": "čajových lžiček",
-			"pound": "liber",
-			"kg": "kilogramů",
-			"grams": "gramů",
-			"ml": "mililitrů",
-			"l": "litrů",
-			"dl": "decilitrů",
-			"pint": "pint",
-			"cup": "hrnků",
-			"oz": "uncí",
-			"tablespoon": "lžíc",
-			"gallon": "galonů"
+				"unit": "kusů",
+				"teaspoon": "čajových lžiček",
+				"pound": "liber",
+				"kg": "kilogramů",
+				"grams": "gramů",
+				"ml": "mililitrů",
+				"l": "litrů",
+				"dl": "decilitrů",
+				"pint": "pint",
+				"cup": "hrnků",
+				"oz": "uncí",
+				"tablespoon": "lžíc",
+				"gallon": "galonů"
+			}
+		},
+		"workoutCategories": {
+			"categories": {
+				"bulking": "Bulking",
+				"fatLoss": "Redukce tuku",
+				"strengthGain": "Maximální síla",
+				"muscleDefinition": "Definice svalů",
+				"leanMuscleGain": "Lean gain",
+				"fullBody": "Fullbody",
+				"abWorkout": "Břicho",
+				"homeBased": "Domácí trénink",
+				"cardioWorkout": "Kardio",
+				"armsWorkout": "Ruce",
+				"backWorkout": "Záda",
+				"legWorkout": "Nohy",
+				"shoulderWorkout": "Ramena",
+				"chestWorkout": "Hrudník",
+				"maximumIntensity": "Maximální intenzita",
+				"other": "Jiný"
 			}
 		},
 		"foodCategories": {
-			"fruits": "Ovoce",
-			"dairy": "Mléčné výrobky",
-			"water": "Voda",
-			"sugaryfoods": "sladkosti",
-			"meat": "Maso",
-			"grainsbeanslegumes": "Fazole a luštěniny",
-			"vegetables": "Zelenina"
+			"categories": {
+				"dairy": "Mléčné výrobky",
+				"meat": "Maso",
+				"seafood": "Mořské plody",
+				"egg": "Vejce",
+				"fatsOils": "Oleje a tuky",
+				"grains": "Zrniny",
+				"fruits": "Ovoce",
+				"vegetables": "Zelenina",
+				"nuts": "Ořechy",
+				"sugaryFoods": "Cukrové výrobky",
+				"foodSupplements": "Suplementy",
+				"other": "Jiný"
+			}
 		},
-		"progressItemTypes":{
-			"submenu":{
+		"progressItemTypes": {
+			"submenu": {
 				"overview": "Typy hodnot",
 				"new": "Vytvořit nový typ",
 				"edit": "Upravit typ",
 				"globalTypes": "Globální typy",
 				"myTypes": "Moje typy"
 			},
-			"globalTypes":{
+			"globalTypes": {
 				"Weight": "Váha",
-				"WaistCircumference" : "Obvod pasu",
+				"WaistCircumference": "Obvod pasu",
 				"LegsCircumference": "Obvod stehen",
 				"ArmsCircumference": "Obvod paží",
 				"ChestCircumference": "Obvod hrudníku",
@@ -334,10 +386,10 @@
 			"value": "Naměřená hodnota",
 			"measurementDate": "Datum záznamu"
 		},
-		"progressItems":{
+		"progressItems": {
 			"xAxisDateLabel": "Datum"
 		},
-		"progressItemUnits":{
+		"progressItemUnits": {
 			"cm": "centimetry",
 			"inches": "palce",
 			"kg": "kilogramy",
@@ -507,11 +559,14 @@
 			"foodCategoryId": "Kategorie",
 			"description": "Bližší popis",
 			"kcal": "Kcal",
-			"fats": "Tuky",
-			"carbs": "Sacharidy",
-			"proteins": "Proteiny"
+			"fat": "Tuky (g)",
+			"cho": "Sacharidy (g)",
+			"prot": "Bílkoviny (g)",
+			"foodUnitMeasurementValue": "Množství",
+			"sugar": "Cukr (g)",
+			"nacl": "Sůl (g)"
 		},
-		"progressItem":{
+		"progressItem": {
 			"progressItemTypeId": "Typ",
 			"valueWithUnit": "{{unit}}",
 			"value": "Hodnota měření",
@@ -523,10 +578,8 @@
 			"progressItemUnitId": "Jednotka",
 			"progressItemUnitId.hint": "Například 'cm', 'kg' ..."
 		},
-		"progressItemUnit":{
-			
-		},
-		"chatMessage":{
+		"progressItemUnit": {},
+		"chatMessage": {
 			"message": "Zpráva"
 		},
 		"location": {
@@ -546,7 +599,7 @@
 			"appointmentDate": "Datum a čas schůzky",
 			"notes": "Poznámky ke schůzce",
 			"notes.hint": "Co si vzít s sebou, upřesnění lokace apod.",
-			"workoutId" : "Trénink",
+			"workoutId": "Trénink",
 			"workoutId.hint": "Volitelné: trénink, který se bude cvičit",
 			"locationId": "Místo setkání",
 			"dateCannotBeInPast": "Datum schůzky musí být v budoucnosti",
@@ -577,7 +630,7 @@
 		"graph": {
 			"legend": "Typ"
 		},
-		"messages":{
+		"messages": {
 			"noDataTitle": "Nejsou zde žádná data"
 		},
 		"loadMore": {

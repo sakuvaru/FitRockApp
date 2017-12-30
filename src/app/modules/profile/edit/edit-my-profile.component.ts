@@ -9,6 +9,7 @@ import { MyProfileMenuItems } from '../menu.items';
 import { DataFormConfig } from '../../../../web-components/data-form';
 import { User } from '../../../models';
 import { Observable } from 'rxjs/Rx';
+import { languageHelper } from 'lib/repository';
 
 @Component({
     templateUrl: 'edit-my-profile.component.html'
@@ -46,12 +47,12 @@ export class EditMyProfileComponent extends BaseComponent implements OnInit {
         this.formConfig = this.dependencies.itemServices.userService.myProfileForm()
             .enableDelete(false)
             .onAfterEdit(response => {
-                if (this.dependencies.coreServices.currentLanguageService.isDifferentThanCurrent(response.item.language)) {
+                if (this.dependencies.coreServices.currentLanguageService.isDifferentThanCurrent(response.item.getLanguageEnum())) {
                     // language has changed, update it
-                    this.dependencies.coreServices.currentLanguageService.setLanguage(response.item.language);
+                    this.dependencies.coreServices.currentLanguageService.setLanguage(response.item.getLanguageEnum());
 
                     // update language of auth user
-                    this.dependencies.authenticatedUserService.updateLanguage(response.item.language);
+                    this.dependencies.authenticatedUserService.updateLanguage(response.item.getLanguageEnum());
                     
                     // finally reload page
                     this.dependencies.coreServices.systemService.reloadPage();

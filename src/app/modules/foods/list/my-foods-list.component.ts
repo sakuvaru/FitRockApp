@@ -55,9 +55,8 @@ export class MyFoodsListComponent extends BaseComponent implements OnInit {
           hideOnSmallScreen: false
         },
         {
-          value: (item) => item.foodCategory.categoryName,
+          value: (item) =>  super.translate('module.foodCategories.categories.' + item.foodCategory.codename),
           name: (item) => super.translate('module.foods.foodCategory'),
-          sortKey: 'FoodCategory.CategoryName',
           hideOnSmallScreen: true
         },
         {
@@ -74,7 +73,7 @@ export class MyFoodsListComponent extends BaseComponent implements OnInit {
           response.items.forEach(category => {
             filters.push(({
               guid: category.id.toString(),
-              name: Observable.of(category.codename),
+              name:  super.translate('module.foodCategories.categories.' + category.codename),
               query: (query) => query.whereEquals('FoodCategoryId', category.id),
               count: category.foodsCount
             }));

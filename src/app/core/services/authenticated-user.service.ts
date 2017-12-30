@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AuthenticatedUser } from '../models/core.models';
 import { SharedService } from './shared.service';
-import { LanguageEnum } from 'lib/repository';
+import { LanguageEnum, languageHelper } from 'lib/repository';
 
 /// Service that provides the currently authenticated user
 /// Has to be initialized after the user is logged in using the 'setUser' method
@@ -91,7 +91,7 @@ export class AuthenticatedUserService {
             userAs.trainerId,
             userAs.isClient,
             userAs.avatarUrl,
-            userAs.language,
+            languageHelper.getLanguage(userAs.language),
             userAs.gravatarUrl,
             userAs.license
         );

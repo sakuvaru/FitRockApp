@@ -1,6 +1,6 @@
 <mat-card *ngIf="diet">
   <mat-card-title>{{diet.dietName}}</mat-card-title>
-  <mat-card-subtitle>{{diet.dietCategory.categoryName}}</mat-card-subtitle>
+  <mat-card-subtitle>{{ 'module.diets.dietCategories.categories' + diet.dietCategory.codename | localize}}</mat-card-subtitle>
   <mat-card-content *ngIf="diet.description">
     {{diet.description}}
   </mat-card-content>

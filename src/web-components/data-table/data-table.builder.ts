@@ -260,9 +260,9 @@ export class DataTableBuilder<TItem extends IItem> {
     /**
      * Indicates if all filters is used when filters are present
      */
-    allFilter(name?: Observable<string>): this {
+    allFilter(name?: Observable<string>, resolver?: (search: string) => ItemCountQuery): this {
         // resolve filter query using the 'base' query
-        const filterQuery = (search) => this.query(search).toCountQuery();
+        const filterQuery = (search) => resolver ? resolver(search) : this.query(search).toCountQuery();
 
         this.config.allFilter =
             new AllFilter(
@@ -289,7 +289,6 @@ export class DataTableBuilder<TItem extends IItem> {
 
         return this;
     }
-
 
     /**
      * Url of image to be used if there are no data

@@ -58,7 +58,7 @@ export class EntryComponent extends BaseComponent {
                 user.trainerUserId,
                 user.isClient,
                 user.avatarUrl,
-                user.language,
+                user.getLanguageEnum(),
                 currentUser.picture, // this is the gravatar url
                 user.licenseString
               );

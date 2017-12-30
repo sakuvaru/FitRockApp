@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { LanguageConfig } from '../models/core.models';
-import { LanguageEnum } from '../../../lib/repository';
+import { LanguageEnum, languageHelper } from '../../../lib/repository';
 
 @Injectable()
 export class CurrentLanguageService {
@@ -23,8 +23,8 @@ export class CurrentLanguageService {
         const currentLanguage = this.getLanguage();
 
         // if current language is the same as default language, it means its all good
-        if (languageEnum === this.defaultLanguage.language) {
-            return false; // they are not different
+        if (languageEnum === LanguageEnum.Default) {
+            return languageEnum === this.defaultLanguage.language;
         }
 
         return currentLanguage.language !== languageEnum;
@@ -53,7 +53,7 @@ export class CurrentLanguageService {
         // parse language from local storage
         const parsedJson = JSON.parse(languageJson) as LanguageConfig;
 
-        return new LanguageConfig(parsedJson.language, parsedJson.locale, parsedJson.uiLanguage);
+        return new LanguageConfig(languageHelper.getLanguage(parsedJson.language), parsedJson.locale, parsedJson.uiLanguage);
     }
 
     private storeLanguage(language: LanguageConfig): void {

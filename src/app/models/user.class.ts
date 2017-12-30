@@ -1,4 +1,4 @@
-import { BaseItem, LanguageEnum } from '../../lib/repository';
+import { BaseItem, LanguageEnum, languageHelper } from '../../lib/repository';
 
 export class User extends BaseItem {
 
@@ -21,11 +21,14 @@ export class User extends BaseItem {
     public trainer: User;
     public isActive: boolean;
     public avatarUrl: string;
-    public language: LanguageEnum;
-    public languageString: string;
+    public language: number;
     public gravatarUrl: string;
     public license: number;
     public licenseString: string;
+
+    getLanguageEnum(): LanguageEnum {
+        return languageHelper.getLanguage(this.language);
+    }
 
     /**
      * Gets either avatar or gravatar url.

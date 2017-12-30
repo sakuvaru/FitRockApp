@@ -1,6 +1,5 @@
 export enum LanguageEnum {
     Default = 0,
-    En = 1,
-    Cz = 2,
-    
+    Cz = 1,
+    En = 2,
 }

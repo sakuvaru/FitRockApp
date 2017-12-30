@@ -1,14 +1,9 @@
-// common
-import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-import { ComponentDependencyService, BaseComponent, ComponentConfig, ComponentSetup } from '../../../core';
-import { AppConfig, UrlConfig } from '../../../config';
+import { Component, OnInit } from '@angular/core';
 
-// required by component
-import { DietsOverviewMenuItems } from '../menu.items';
 import { DataTableConfig, IDynamicFilter } from '../../../../web-components/data-table';
-import { DietCategoryWithDietsCountDto, Diet, DietCategory } from '../../../models';
-import { Observable } from 'rxjs/Rx';
+import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
+import { Diet } from '../../../models';
+import { DietsOverviewMenuItems } from '../menu.items';
 
 @Component({
   templateUrl: 'client-diets.component.html'
@@ -71,9 +66,8 @@ export class ClientDietsComponent extends BaseComponent implements OnInit {
           hideOnSmallScreen: false
         },
         {
-          value: (item) => item.dietCategory.categoryName,
+          value: (item) => super.translate('module.dietCategories.categories.' + item.dietCategory.codename),
           name: (item) => super.translate('module.diets.dietCategory'),
-          sortKey: 'DietCategory.CategoryName',
           hideOnSmallScreen: true
         },
         {
@@ -91,7 +85,7 @@ export class ClientDietsComponent extends BaseComponent implements OnInit {
           response.items.forEach(category => {
             filters.push(({
               guid: category.id.toString(),
-              name: Observable.of(category.codename),
+              name: super.translate('module.dietCategories.categories.' + category.codename),
               query: (query) => {
                 return query.whereEquals('DietCategoryId', category.id);
               },

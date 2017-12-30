@@ -43,7 +43,7 @@ export abstract class BaseItemCountQuery extends BaseQuery {
         return this;
     }
 
-    WhereLikeMultiple(fields: string[], value: string | number | boolean): this {
+    whereLikeMultiple(fields: string[], value: string | number | boolean): this {
         this._options.push(new Options.WhereLikeMultiple(fields, value));
         return this;
     }

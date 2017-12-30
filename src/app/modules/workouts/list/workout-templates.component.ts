@@ -60,8 +60,7 @@ export class WorkoutTemplatesComponent extends BaseComponent implements OnInit {
         },
         {
           name: (item) => super.translate('module.workouts.workoutCategory'),
-          value: (item) => item.workoutCategory.categoryName,
-          sortKey: 'WorkoutCategory.CategoryName',
+          value: (item) => super.translate('module.workoutCategories.categories.' + item.workoutCategory.codename), 
           hideOnSmallScreen: true
         },
         {
@@ -79,7 +78,7 @@ export class WorkoutTemplatesComponent extends BaseComponent implements OnInit {
           response.items.forEach(category => {
             filters.push(({
               guid: category.id.toString(),
-              name: Observable.of(category.codename),
+              name: super.translate('module.workoutCategories.categories.' + category.codename), 
               query: (query) => {
                 return query.whereEquals('WorkoutCategoryId', category.id);
               },

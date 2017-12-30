@@ -173,15 +173,15 @@ export class DataFormInsertDefinition extends DataFormAbstractDefinition {
     }
 }
 
-export class DataFormEditResponse {
+export class DataFormEditResponse<TModel> {
     constructor(
-        public item: any
+        public item: TModel
     ) { }
 }
 
-export class DataFormInsertResponse {
+export class DataFormInsertResponse<TModel> {
     constructor(
-        public item: any
+        public item: TModel
     ) { }
 }
 

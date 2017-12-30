@@ -153,7 +153,7 @@ export class DataFormBuilder<TItem extends IItem> {
     /**
      * Callback for saving a new item
      */
-    onAfterInsert(resolver: (response: DataFormInsertResponse) => void): this {
+    onAfterInsert(resolver: (response: DataFormInsertResponse<TItem>) => void): this {
         this.config.onAfterInsert = resolver;
         return this;
     }
@@ -161,7 +161,7 @@ export class DataFormBuilder<TItem extends IItem> {
     /**
     * Callback for saving an item
     */
-    onAfterEdit(resolver: (response: DataFormEditResponse) => void): this {
+    onAfterEdit(resolver: (response: DataFormEditResponse<TItem>) => void): this {
         this.config.onAfterEdit = resolver;
         return this;
     }

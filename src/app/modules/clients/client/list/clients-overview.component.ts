@@ -28,10 +28,10 @@ export class ClientsOverviewComponent extends ClientsBaseComponent implements On
 
   setup(): ComponentSetup {
     return new ComponentSetup({
-        initialized: true,
-        isNested: false
+      initialized: true,
+      isNested: false
     });
-}
+  }
 
   ngOnInit(): void {
     super.ngOnInit();
@@ -62,7 +62,7 @@ export class ClientsOverviewComponent extends ClientsBaseComponent implements On
       (query, search) => {
         return this.dependencies.itemServices.userService.clients()
           .whereLikeMultiple(['FirstName', 'LastName'], search);
-      },
+      }
     )
       .withFields([
         {
@@ -83,20 +83,26 @@ export class ClientsOverviewComponent extends ClientsBaseComponent implements On
         {
           name: super.translate('module.clients.activeClients'),
           guid: 'ActiveClients',
-          query: query => query.whereEquals('IsActive', true),
+          query: query => query
+            .whereEquals('IsActive', true)
+            .whereEquals('TrainerUserId', this.authUser ? this.authUser.id : 0),
         },
         {
           name: super.translate('module.clients.inactiveClients'),
           guid: 'InactiveClients',
-          query: query => query.whereEquals('IsActive', false),
+          query: query => query
+            .whereEquals('IsActive', false)
+            .whereEquals('TrainerUserId', this.authUser ? this.authUser.id : 0),
         }
       ]
       )
       .groupByItemsCount(5)
       .mode(
       this.dependencies.coreServices.rememberService.get<string>(this.rememberDataTableStateName, 'tiles') === 'standard' ? DataTableMode.Standard : DataTableMode.Tiles
-      ) 
-      .allFilter()
+      )
+      .allFilter(undefined, (search) => this.dependencies.itemServices.userService.count()
+        .whereLikeMultiple(['FirstName', 'LastName'], search)
+        .whereEquals('TrainerUserId', this.authUser ? this.authUser.id : 0))
       .onClick((item) => super.navigate([super.getTrainerUrl('clients/edit/' + item.id + '/dashboard')]))
       .avatarImage((item) => {
         const avatarOrGravatar = item.getAvatarOrGravatarUrl();
@@ -107,13 +113,13 @@ export class ClientsOverviewComponent extends ClientsBaseComponent implements On
       })
       .build();
 
-      // configure component actions after config is set up
-      super.setConfig({
-        actions: [{
-          action: () => this.toggleMode(),
-          icon: () => this.config.mode === DataTableMode.Standard ? 'view_module' : 'view_headline',
-          tooltip: () => this.config.mode === DataTableMode.Standard ? super.translate('shared.tiles') : super.translate('shared.list')
-        }]
-      });
+    // configure component actions after config is set up
+    super.setConfig({
+      actions: [{
+        action: () => this.toggleMode(),
+        icon: () => this.config.mode === DataTableMode.Standard ? 'view_module' : 'view_headline',
+        tooltip: () => this.config.mode === DataTableMode.Standard ? super.translate('shared.tiles') : super.translate('shared.list')
+      }]
+    });
   }
 }

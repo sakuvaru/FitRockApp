@@ -55,8 +55,7 @@ export class SelectWorkoutExerciseDialogComponent extends BaseComponent implemen
         },
         {
           name: (item) => super.translate('module.exercises.exerciseCategory'),
-          value: (item) => item.exerciseCategory.categoryName,
-          sortKey: 'ExerciseCategory.CategoryName',
+          value: (item) =>  super.translate('module.exerciseCategories.categories.' + item.exerciseCategory.codename),
           hideOnSmallScreen: true
         },
         {

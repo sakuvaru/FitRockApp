@@ -1,6 +1,6 @@
 <mat-card *ngIf="workout">
   <mat-card-title>{{workout.workoutName}}</mat-card-title>
-  <mat-card-subtitle>{{workout.workoutCategory.categoryName}}</mat-card-subtitle>
+  <mat-card-subtitle>{{ 'module.workoutCategories.categories.' + item.workoutCategory.codename | localize }}</mat-card-subtitle>
   <mat-card-content *ngIf="workout.description">
     {{workout.description}}
   </mat-card-content>

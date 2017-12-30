@@ -58,8 +58,7 @@ export class AllExerciseListComponent extends BaseComponent implements OnInit {
         },
         {
           name: (item) => super.translate('module.exercises.exerciseCategory'),
-          value: (item) => item.exerciseCategory.categoryName,
-          sortKey: 'ExerciseCategory.CategoryName',
+          value: (item) => super.translate('module.exerciseCategories.categories.' + item.exerciseCategory.codename),
           hideOnSmallScreen: true
         },
         {
@@ -78,7 +77,7 @@ export class AllExerciseListComponent extends BaseComponent implements OnInit {
             response.items.forEach(category => {
               filters.push(({
                 guid: category.id.toString(),
-                name: Observable.of(category.codename),
+                name: super.translate('module.exerciseCategories.categories.' + category.codename),
                 query: (query) => query.whereEquals('ExerciseCategoryId', category.id),
                 count: category.exercisesCount
               }));

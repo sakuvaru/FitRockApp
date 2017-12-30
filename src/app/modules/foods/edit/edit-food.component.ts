@@ -1,15 +1,11 @@
-// common
-import { Component, Input, Output, OnInit, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { ComponentDependencyService, BaseComponent, ComponentSetup } from '../../../core';
-import { AppConfig, UrlConfig } from '../../../config';
 
-// required by component
-import { FoodMenuItems } from '../menu.items';
 import { DataFormConfig } from '../../../../web-components/data-form';
-import { Food } from '../../../models';
-import 'rxjs/add/operator/switchMap';
-import { Observable } from 'rxjs/Rx';
+import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
+import { FoodMenuItems } from '../menu.items';
+import { Observable } from 'rxjs/Observable';
+import { stringHelper } from 'lib/utilities';
 
 @Component({
     templateUrl: 'edit-food.component.html'
@@ -44,6 +40,15 @@ export class EditFoodComponent extends BaseComponent implements OnInit {
             .map((params: Params) => {
                 this.formConfig = this.dependencies.itemServices.foodService.buildEditForm(+params['id'])
                     .onAfterDelete(() => super.navigate([this.getTrainerUrl('foods')]))
+                    .optionLabelResolver((field, originalLabel) => {
+                        if (field.key === 'FoodCategoryId') {
+                            return super.translate('module.foodCategories.categories.' + originalLabel);
+                        } else if (field.key === 'FoodUnitId') {
+                            return super.translate('module.foodUnits.' + originalLabel).map(text => stringHelper.capitalizeText(text));
+                        }
+
+                        return Observable.of(originalLabel);
+                    })
                     .onEditFormLoaded(form => {
                         this.setConfig({
                             menuItems: new FoodMenuItems(form.item.id).menuItems,
