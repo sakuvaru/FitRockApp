@@ -95,6 +95,8 @@ export class DashboardComponent extends BaseComponent implements OnInit {
         this.dependencies.itemServices.userService.item().byId(this.authUser ? this.authUser.id : 0).get().subscribe(response => {
         } );
 
+        this.dependencies.itemServices.userService.items().byCurrentUser().toCountQuery().get().subscribe(response => console.log(response));
+
         super.subscribeToObservable(this.dependencies.itemServices.logService.items().limit(5).orderByDesc('id').get()
             .takeUntil(this.ngUnsubscribe)
             .map(

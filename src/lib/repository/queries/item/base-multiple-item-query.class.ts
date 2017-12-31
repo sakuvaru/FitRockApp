@@ -13,6 +13,8 @@ export abstract class BaseMultipleItemQuery extends BaseItemQuery {
      */
     private readonly createdByCurrentUserAction = 'getCreatedByCurrentUser';
 
+    private useCurrentUserQuery: boolean = false;
+
     constructor(
         protected queryService: QueryService,
         protected type: string,
@@ -24,11 +26,15 @@ export abstract class BaseMultipleItemQuery extends BaseItemQuery {
     abstract get(): Observable<ResponseMultiple<any>>;
 
     toCountQuery(): ItemCountQuery {
-        const countQuery = new ItemCountQuery(this.queryService, this.type);
+        let countQuery = new ItemCountQuery(this.queryService, this.type);
 
         this._options.forEach(option => {
             countQuery.addOption(option);
         });
+
+        if (this.useCurrentUserQuery) {
+            countQuery = countQuery.byCurrentUser();
+        }
 
         return countQuery;
     }
@@ -42,12 +48,14 @@ export abstract class BaseMultipleItemQuery extends BaseItemQuery {
     }
 
     // custom action
+
     withCustomAction(action: string): this {
         this._action = action;
         return this;
     }
 
     byCurrentUser(): this {
+        this.useCurrentUserQuery = true;
         this._action = this.createdByCurrentUserAction;
         return this;
     }
