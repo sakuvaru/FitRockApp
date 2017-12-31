@@ -71,7 +71,7 @@ export class MyExerciseListComponent extends BaseComponent implements OnInit {
       ])
       .withDynamicFilters(
       search =>
-        this.dependencies.itemServices.exerciseCategoyService.getCategoriesWithExercisesCount(search, true)
+        this.dependencies.itemServices.exerciseCategoyService.getCategoriesWithExercisesCount(search, false)
           .get()
           .map(response => {
             const filters: IDynamicFilter<Exercise>[] = [];

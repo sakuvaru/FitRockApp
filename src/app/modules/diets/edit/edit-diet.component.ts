@@ -1,13 +1,9 @@
-// common
-import { Component, Input, Output, OnInit, EventEmitter, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-import { ComponentDependencyService, BaseComponent, ComponentSetup } from '../../../core';
-import { AppConfig, UrlConfig } from '../../../config';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
-// required by component
-import { DietMenuItems } from '../menu.items';
+import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
 import { Diet } from '../../../models';
-import 'rxjs/add/operator/switchMap';
+import { DietMenuItems } from '../menu.items';
 
 @Component({
     templateUrl: 'edit-diet.component.html'

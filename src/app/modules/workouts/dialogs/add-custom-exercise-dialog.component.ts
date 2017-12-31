@@ -50,6 +50,13 @@ export class AddCustomExerciseDialogComponent extends BaseComponent implements O
         this.close();
       }))
       .renderButtons(false)
+      .optionLabelResolver((field, label) => {
+        if (field.key === 'ExerciseCategoryId') {
+            return super.translate(`module.exerciseCategories.categories.${label}`);
+        }
+
+        return Observable.of(label);
+    })
       .build();
   }
 

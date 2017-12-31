@@ -1,13 +1,10 @@
-// common
-import { Component, Input, Output, OnInit, EventEmitter, Inject } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-import { ComponentDependencyService, BaseComponent, ComponentConfig, ComponentSetup } from '../../../core';
-import { AppConfig, UrlConfig } from '../../../config';
-
-// required by component
-import { DataTableConfig } from '../../../../web-components/data-table';
-import { Food } from '../../../models';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material';
+import { IDynamicFilter } from 'web-components/data-table/data-table.builder';
+
+import { DataTableConfig } from '../../../../web-components/data-table';
+import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
+import { Food } from '../../../models';
 
 @Component({
   templateUrl: 'select-diet-food-dialog.component.html'
@@ -53,23 +50,25 @@ export class SelectDietFoodDialogComponent extends BaseComponent implements OnIn
           hideOnSmallScreen: false
         },
         {
-          value: (item) => super.translate('module.foodCategories.' + item.foodCategory.codename),
+          value: (item) => super.translate('module.foodCategories.categories.' + item.foodCategory.codename),
           name: (item) => super.translate('module.foods.foodCategory'),
           hideOnSmallScreen: true
         },
       ])
-      .withFilters([
-        {
-          guid: 'allFoods',
-          name: super.translate('module.diets.allFoods'),
-          query: query => query
-        },
-        {
-          guid: 'myFoods',
-          name: super.translate('module.diets.myFoods'),
-          query: query => query.byCurrentUser().whereEquals('IsGlobal', false)
-        }
-      ])
+      .withDynamicFilters(search => this.dependencies.itemServices.foodCategoryService.getFoodCategoryWithFoodsCountDto(search, true)
+        .get()
+        .map(response => {
+          const filters: IDynamicFilter<Food>[] = [];
+          response.items.forEach(category => {
+            filters.push(({
+              guid: category.id.toString(),
+              name: super.translate('module.foodCategories.categories.' + category.codename),
+              query: (query) => query.whereEquals('FoodCategoryId', category.id),
+              count: category.foodsCount
+            }));
+          });
+          return filters;
+        }))
       .pageSize(5)
       .renderPager(false)
       .onClick((item: Food) => {

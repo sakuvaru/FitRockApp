@@ -66,7 +66,7 @@ export class MyFoodsListComponent extends BaseComponent implements OnInit {
           hideOnSmallScreen: true
         }
       ])
-      .withDynamicFilters(search => this.dependencies.itemServices.foodCategoryService.getFoodCategoryWithFoodsCountDto(search, true)
+      .withDynamicFilters(search => this.dependencies.itemServices.foodCategoryService.getFoodCategoryWithFoodsCountDto(search, false)
         .get()
         .map(response => {
           const filters: IDynamicFilter<Food>[] = [];

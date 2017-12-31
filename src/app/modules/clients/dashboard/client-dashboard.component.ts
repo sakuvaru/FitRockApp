@@ -192,17 +192,21 @@ export class ClientDashboardComponent extends ClientsBaseComponent implements On
           super.translate('module.clients.dashboard.nextAppointment'),
           {
             noDataMessage: super.translate('module.clients.dashboard.noAppointment'),
-            actions: [
+            actions: [appointment ? (
               new ActionButton('edit', Observable.of(undefined)
                 .map(() => {
                   if (appointment) {
                     this.dependencies.router.navigate([this.getAppointmentEditUrl(appointment)]);
                   }
                 }))
+            ) :
+              new ActionButton('add', Observable.of(undefined)
+                .map(() => {
+                  this.dependencies.router.navigate([this.getNewAppointmentUrl()]);
+                }))
             ]
           }
         );
-
       });
   }
 
@@ -253,6 +257,10 @@ export class ClientDashboardComponent extends ClientsBaseComponent implements On
 
   private getAppointmentEditUrl(appointment: Appointment): string {
     return super.getTrainerUrl('clients/edit/' + this.clientId + '/appointments/edit/' + appointment.id);
+  }
+
+  private getNewAppointmentUrl(): string {
+    return super.getTrainerUrl('clients/edit/' + this.clientId + '/appointments/new');
   }
 
   private getChatMessageUrl(): string {

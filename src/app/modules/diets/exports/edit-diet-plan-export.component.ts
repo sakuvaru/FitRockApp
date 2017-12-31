@@ -1,21 +1,17 @@
-// common
-import { Component, Input, Output, OnInit, EventEmitter, OnDestroy, AfterViewInit, OnChanges, SimpleChanges } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-import { ComponentDependencyService, BaseComponent, ComponentConfig, ComponentSetup } from '../../../core';
-import { AppConfig, UrlConfig } from '../../../config';
-
-// required by component
-import { Diet, DietFood, Food } from '../../../models';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { DragulaService } from 'ng2-dragula';
-import { Subscription } from 'rxjs/Rx';
-import { CacheKeyType } from '../../../../lib/repository';
+import { Observable } from 'rxjs/Rx';
+import * as _ from 'underscore';
+
 import { stringHelper } from '../../../../lib/utilities';
-import { SelectDietFoodDialogComponent } from '../dialogs/select-diet-food-dialog.component';
-import { EditDietFoodDialogComponent } from '../dialogs/edit-diet-food-dialog.component';
+import { AppConfig } from '../../../config';
+import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
+import { Diet, DietFood, Food } from '../../../models';
 import { AddCustomFoodDialogComponent } from '../dialogs/add-custom-food-dialog.component';
 import { AddDietFoodDialogComponent } from '../dialogs/add-diet-food-dialog.component';
-import * as _ from 'underscore';
-import { Observable } from 'rxjs/Rx';
+import { EditDietFoodDialogComponent } from '../dialogs/edit-diet-food-dialog.component';
+import { SelectDietFoodDialogComponent } from '../dialogs/select-diet-food-dialog.component';
 
 @Component({
   templateUrl: 'edit-diet-plan-export.component.html',

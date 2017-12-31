@@ -9,6 +9,7 @@ import { Food } from '../../../models';
 import { MAT_DIALOG_DATA } from '@angular/material';
 import { DataFormConfig } from '../../../../web-components/data-form';
 import { Observable, Subject } from 'rxjs/Rx';
+import { stringHelper } from 'lib/utilities';
 
 @Component({
   templateUrl: 'add-custom-food-dialog.component.html'
@@ -49,6 +50,26 @@ export class AddCustomFoodDialogComponent extends BaseComponent implements OnIni
         this.newFood = response.item;
         this.close();
       }))
+      .optionLabelResolver((field, originalLabel) => {
+        if (field.key === 'FoodCategoryId') {
+          return super.translate('module.foodCategories.categories.' + originalLabel);
+        } else if (field.key === 'FoodUnitId') {
+          return super.translate('module.foodUnits.' + originalLabel).map(text => stringHelper.capitalizeText(text));
+        }
+
+        return Observable.of(originalLabel);
+      })
+      .fieldValueResolver((fieldName, value) => {
+        if (fieldName === 'Language') {
+          const language = this.currentLanguage;
+          if (!language) {
+            throw Error(`Language has to be set in order to create new foods`);
+          }
+          return Observable.of(language.language.toString());
+        }
+
+        return Observable.of(value);
+      })
       .renderButtons(false)
       .build();
   }

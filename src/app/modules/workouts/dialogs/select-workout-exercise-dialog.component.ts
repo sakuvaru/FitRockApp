@@ -57,12 +57,6 @@ export class SelectWorkoutExerciseDialogComponent extends BaseComponent implemen
           name: (item) => super.translate('module.exercises.exerciseCategory'),
           value: (item) =>  super.translate('module.exerciseCategories.categories.' + item.exerciseCategory.codename),
           hideOnSmallScreen: true
-        },
-        {
-          name: (item) => super.translate('shared.updated'),
-          value: (item) => super.fromNow(item.updated),
-          sortKey: 'Updated',
-          hideOnSmallScreen: true
         }
       ])
       .withDynamicFilters(
@@ -74,7 +68,7 @@ export class SelectWorkoutExerciseDialogComponent extends BaseComponent implemen
             response.items.forEach(category => {
               filters.push(({
                 guid: category.id.toString(),
-                name: Observable.of(category.codename),
+                name: super.translate('module.exerciseCategories.categories.' + category.codename),
                 query: (query) => query.whereEquals('ExerciseCategoryId', category.id),
                 count: category.exercisesCount
               }));
