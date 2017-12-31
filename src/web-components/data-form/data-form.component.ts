@@ -301,7 +301,7 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
         this.initFormSubject.next(true);
     }
 
-    private editItem(): Observable<DataFormEditResponse> {
+    private editItem(): Observable<DataFormEditResponse<any>> {
         if (!this.config.saveFunction) {
             throw Error(`Form save function is not defined`);
         }
@@ -351,7 +351,7 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
             });
     }
 
-    private insertItem(): Observable<DataFormInsertResponse> {
+    private insertItem(): Observable<DataFormInsertResponse<any>> {
         if (!this.config.saveFunction) {
             throw Error(`Form save function is not defined`);
         }
@@ -790,7 +790,7 @@ class DataFormRow {
 
 class ResponseWrapper {
     constructor(
-        public response: DataFormEditResponse | DataFormDeleteResponse | DataFormInsertResponse
+        public response: DataFormEditResponse<any> | DataFormDeleteResponse | DataFormInsertResponse<any>
     ) { }
 }
 

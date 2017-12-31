@@ -98,7 +98,7 @@ class DataFormBuilderUtils {
         });
     }
 
-    mapSaveFunction(type: string, saveFunction: (formData: Object) => Observable<ResponseEdit<any> | ResponseCreate<any>>): (formData: object) => Observable<DataFormInsertResponse | DataFormEditResponse> {
+    mapSaveFunction(type: string, saveFunction: (formData: Object) => Observable<ResponseEdit<any> | ResponseCreate<any>>): (formData: object) => Observable<DataFormInsertResponse<any> | DataFormEditResponse<any>> {
         return (formData: Object) => this.mapDataFormError(type, saveFunction(formData).map(response => {
             if (response instanceof ResponseEdit) {
                 return new DataFormEditResponse(response.item);

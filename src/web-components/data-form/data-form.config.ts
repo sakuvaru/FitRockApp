@@ -43,7 +43,7 @@ export class DataFormConfig {
     /**
      * Save function for handling create/edit actions
      */
-    public saveFunction: (formData: Object) => Observable<DataFormInsertResponse | DataFormEditResponse>;
+    public saveFunction: (formData: Object) => Observable<DataFormInsertResponse<any> | DataFormEditResponse<any>>;
 
     /**
      * Function to be executed when deleting an existing item in the form
@@ -84,12 +84,12 @@ export class DataFormConfig {
     /**
      * Callback for saving a new item
      */
-    public onAfterInsert?: (response: DataFormInsertResponse) => void;
+    public onAfterInsert?: (response: DataFormInsertResponse<any>) => void;
     
     /**
      * Callback for saving an item
      */
-    public onAfterEdit?: (response: DataFormEditResponse) => void;
+    public onAfterEdit?: (response: DataFormEditResponse<any>) => void;
 
     /**
      * Callback for errors
