@@ -8,9 +8,9 @@ import { Observable } from 'rxjs/Observable';
 import { stringHelper } from 'lib/utilities';
 
 @Component({
-    templateUrl: 'edit-food.component.html'
+    templateUrl: 'edit-dish.component.html'
 })
-export class EditFoodComponent extends BaseComponent implements OnInit {
+export class EditDishComponent extends BaseComponent implements OnInit {
 
     public formConfig: DataFormConfig;
 
@@ -39,7 +39,7 @@ export class EditFoodComponent extends BaseComponent implements OnInit {
             .takeUntil(this.ngUnsubscribe)
             .map((params: Params) => {
                 this.formConfig = this.dependencies.itemServices.foodService.buildEditForm(+params['id'])
-                    .onAfterDelete(() => super.navigate([this.getTrainerUrl('foods')]))
+                    .onAfterDelete(() => super.navigate([this.getTrainerUrl('foods/dishes')]))
                     .optionLabelResolver((field, originalLabel) => {
                         if (field.key === 'FoodCategoryId') {
                             return super.translate('module.foodCategories.categories.' + originalLabel);
@@ -56,7 +56,7 @@ export class EditFoodComponent extends BaseComponent implements OnInit {
                                 key: form.item.foodName
                             },
                             componentTitle: {
-                                'key': 'module.foods.submenu.editFood'
+                                'key': 'module.foods.submenu.editDish'
                             }
                         });
                     })

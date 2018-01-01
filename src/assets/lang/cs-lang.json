@@ -272,10 +272,13 @@
 			"submenu": {
 				"myFoods": "Moje potraviny",
 				"allFoods": "Všechny potraviny",
-				"edit": "Upravit záznam",
+				"editDish": "Upravit jídlo",
+				"editFood": "Upravit potravinu",
 				"preview": "Náhled",
 				"overview": "Přehled",
-				"new": "Nové jídlo"
+				"newFood": "Nová potravina",
+				"newDish": "Nové jídlo",
+				"myDishes": "Moje jídla"
 			},
 			"foodName": "Název",
 			"foodCategory": "Kategorie"

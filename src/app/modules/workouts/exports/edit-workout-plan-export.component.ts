@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DragulaService } from 'ng2-dragula';
+import { Observable } from 'rxjs/Rx';
 import * as _ from 'underscore';
 
 import { stringHelper } from '../../../../lib/utilities';

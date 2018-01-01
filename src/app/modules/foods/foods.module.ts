@@ -1,22 +1,17 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { NgModule } from '@angular/core';
 
-// core module
 import { CoreModule } from '../../core';
-
-// components
-import { MyFoodsListComponent} from './list/my-foods-list.component';
-import { AllFoodsListComponent } from './list/all-foods-list.component';
+import { SharedModule } from '../shared/shared.module';
 import { EditFoodComponent } from './edit/edit-food.component';
+import { FoodsRouter } from './foods.routing';
+import { AllFoodsListComponent } from './list/all-foods-list.component';
+import { MyDishesListComponent } from './list/my-dishes-list.component';
+import { MyFoodsListComponent } from './list/my-foods-list.component';
 import { NewFoodComponent } from './new/new-food.component';
 import { PreviewFoodComponent } from './view/preview-food.component';
-
-// router
-import { FoodsRouter } from './foods.routing';
-
-// modules
-import { SharedModule} from '../shared/shared.module';
+import { NewDishComponent } from './new/new-dish.component';
+import { EditDishComponent } from './edit/edit-dish.component';
 
 @NgModule({
     imports: [
@@ -30,7 +25,10 @@ import { SharedModule} from '../shared/shared.module';
         AllFoodsListComponent,
         EditFoodComponent,
         NewFoodComponent,
-        PreviewFoodComponent
+        PreviewFoodComponent,
+        MyDishesListComponent,
+        NewDishComponent,
+        EditDishComponent
     ]
 })
 export class FoodsModule { }

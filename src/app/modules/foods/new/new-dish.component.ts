@@ -1,20 +1,15 @@
-// common
-import { Observable } from 'rxjs/Rx';
-import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-import { ComponentDependencyService, BaseComponent, ComponentSetup } from '../../../core';
-import { AppConfig, UrlConfig } from '../../../config';
-
-// required by component
-import { DataFormConfig } from '../../../../web-components/data-form';
-import { NewFoodMenuItems } from '../menu.items';
-import { Food } from '../../../models';
+import { Component, OnInit } from '@angular/core';
 import { stringHelper } from 'lib/utilities';
+import { Observable } from 'rxjs/Rx';
+
+import { DataFormConfig } from '../../../../web-components/data-form';
+import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
+import { NewDishMenuItems } from '../menu.items';
 
 @Component({
-    templateUrl: 'new-food.component.html'
+    templateUrl: 'new-dish.component.html'
 })
-export class NewFoodComponent extends BaseComponent implements OnInit {
+export class NewDishComponent extends BaseComponent implements OnInit {
 
     public formConfig: DataFormConfig;
 
@@ -34,8 +29,8 @@ export class NewFoodComponent extends BaseComponent implements OnInit {
         super.ngOnInit();
 
         this.setConfig({
-            componentTitle: { key: 'module.foods.submenu.newFood' },
-            menuItems: new NewFoodMenuItems().menuItems
+            componentTitle: { key: 'module.foods.submenu.newDish' },
+            menuItems: new NewDishMenuItems().menuItems
         });
 
         this.initForm();
@@ -43,7 +38,7 @@ export class NewFoodComponent extends BaseComponent implements OnInit {
 
     private initForm(): void {
         this.formConfig = this.dependencies.itemServices.foodService.buildInsertForm()
-            .onAfterInsert((response) => this.navigate([this.getTrainerUrl('foods/edit'), response.item.id]))
+            .onAfterInsert((response) => this.navigate([this.getTrainerUrl('foods/dishes/edit'), response.item.id]))
             .optionLabelResolver((field, originalLabel) => {
                 if (field.key === 'FoodCategoryId') {
                     return super.translate('module.foodCategories.categories.' + originalLabel);
@@ -61,8 +56,8 @@ export class NewFoodComponent extends BaseComponent implements OnInit {
                     }
                     return Observable.of(language.language.toString());
                 } else if (fieldName === 'IsDishFood') {
-                    return Observable.of(false);
-                }   
+                    return Observable.of(true);
+                }
 
                 return Observable.of(value);
             })

@@ -45,6 +45,7 @@ export class MyFoodsListComponent extends BaseComponent implements OnInit {
       return query
         .include('FoodCategory')
         .byCurrentUser()
+        .whereEquals('IsDishFood', false)
         .whereLike('FoodName', search);
     })
       .withFields([
@@ -66,7 +67,7 @@ export class MyFoodsListComponent extends BaseComponent implements OnInit {
           hideOnSmallScreen: true
         }
       ])
-      .withDynamicFilters(search => this.dependencies.itemServices.foodCategoryService.getFoodCategoryWithFoodsCountDto(search, false)
+      .withDynamicFilters(search => this.dependencies.itemServices.foodCategoryService.getFoodCategoryWithFoodsCountDto(search, true, false, false, false)
         .get()
         .map(response => {
           const filters: IDynamicFilter<Food>[] = [];
