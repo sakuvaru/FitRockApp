@@ -25,6 +25,7 @@ import { DataTableSortEnum } from './data-table-sort.enum';
 import { DataTableSource } from './data-table-source.class';
 import { DataTableConfig } from './data-table.config';
 import { IDataTableSort, IFilter } from './data-table.interfaces';
+import { truncate } from 'fs';
 
 @Component({
     selector: 'data-table',
@@ -367,8 +368,8 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
         this.initDataTable();
     }
 
-    reloadData(): void {
-        this.reloadDataSubject.next(true);
+    reloadData(recalculateFilters: boolean = true): void {
+        this.reloadDataSubject.next(recalculateFilters);
     }
 
     handleOnClick(item: any): void {
@@ -487,7 +488,7 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
                 .takeUntil(this.ngUnsubscribe)
                 .subscribe(filtersResolved => {
                     // at this point all filters should be initialized
-                    this.reloadData();
+                    this.reloadData(false);
                 },
                 error => this.handleError(error));
         } else {
@@ -505,6 +506,20 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
         return true;
     }
 
+    private useStaticFilters(): boolean {
+        if (this.config.filters && this.config.filters.length > 0) {
+            return true;
+        }
+        return false;
+    }
+
+    private userDynamicFilters(): boolean {
+        if (this.config.dynamicFilters) {
+            return true;
+        }
+        return false;
+    }
+
     private getInitFiltersObservable(): Observable<boolean> {
         if ((!this.config.filters || this.config.filters.length === 0) && !this.config.dynamicFilters) {
             // no filters are configured
@@ -516,12 +531,12 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
             return Observable.of(false);
         }
 
-        if (this.config.filters && this.config.filters.length > 0) {
+        if (this.useStaticFilters()) {
             // static filters are used
             return this.initStaticFilters();
         }
 
-        if (this.config.dynamicFilters) {
+        if (this.userDynamicFilters()) {
             // dynamic filters
             return this.initDynamicFilters();
         }
@@ -599,11 +614,6 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
                     allFilter.resolvedCount = totalCount;
                 }
 
-                // replace filters with temp filters and reset temp filters
-                this.filtersWrapper = this.tempFiltersWrapper;
-
-                this.tempFiltersWrapper = [];
-
                 return Observable.of(true);
             });
     }
@@ -662,13 +672,27 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
                 // sort filters based on priority
                 this.tempFiltersWrapper = this.tempFiltersWrapper.sort((n1, n2) => n1.filter.priority - n2.filter.priority);
 
-                // replace filters with temp filters and reset temp filters
+                return Observable.of(true);
+            });
+    }
+
+    private activateTempFilters(): void {
+        if (this.useStaticFilters()) {
+            // assign filters only when temp filters are available (static filters do not recreate filters on recalculate)
+            if (this.tempFiltersWrapper && this.tempFiltersWrapper.length > 0) {
                 this.filtersWrapper = this.tempFiltersWrapper;
 
                 this.tempFiltersWrapper = [];
+                return;  
+            }
+        }
 
-                return Observable.of(true);
-            });
+        if (this.userDynamicFilters()) {
+            this.filtersWrapper = this.tempFiltersWrapper;
+
+            this.tempFiltersWrapper = [];
+            return;
+        }
     }
 
     private recalculateFilters(): Observable<void> {
@@ -829,7 +853,7 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
         // try getting active filter
         let activeFilter: IFilter | undefined;
         if (this.activeFilterGuid) {
-            const activeFilterWrapper = this.filtersWrapper.find(m => m.filter.guid === this.activeFilterGuid);
+            const activeFilterWrapper = this.tempFiltersWrapper.find(m => m.filter.guid === this.activeFilterGuid);
             if (!activeFilterWrapper) {
                 // filter might not be available because it has been removed due to searched term (dynamic filters)
             } else {
@@ -837,8 +861,8 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
             }
         } else {
             // use the 'first' active filter is none is set & filters are used
-            if (this.filtersWrapper.length > 0) {
-                activeFilter = this.filtersWrapper[0].filter;
+            if (this.tempFiltersWrapper.length > 0) {
+                activeFilter = this.tempFiltersWrapper[0].filter;
                 this.activeFilterGuid = activeFilter.guid;
             }
         }
@@ -846,11 +870,9 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
         // filter || default load function
         if (activeFilter) {
             // use filter observable
-            console.log('filter used');
             dataObs = activeFilter.filter(this.currentPage, this.pageSize, this.search, this.limit, this.currentSort);
         } else {
             // get data from filter if its set
-            console.log('filter not used');
             dataObs = this.config.getData(this.currentPage, this.pageSize, this.search, this.limit, this.currentSort);
         }
 
@@ -863,6 +885,10 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
                 // set items
                 this.items = response.items;
                 this.groupedItems = this.getGroupedItems(this.items);
+
+                // set filters
+                // this is used here beacuse we want both items & filters to appear at the same time
+                this.activateTempFilters();
 
                 // save current state
                 if (this.config.rememberState) {
@@ -1077,7 +1103,9 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
             using previous search
             */
             // Execute before data
-            .switchMap(bool => this.recalculateFilters())
+            .switchMap(recalculateFilters => {
+                return recalculateFilters ? this.recalculateFilters() : Observable.of(undefined);
+            })
             // execute after filters are recalculated
             .switchMap(() => this.getLoadDataObservable()) 
             .takeUntil(this.ngUnsubscribe)
