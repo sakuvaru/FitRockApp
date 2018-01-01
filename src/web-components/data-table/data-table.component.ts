@@ -846,11 +846,11 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
         // filter || default load function
         if (activeFilter) {
             // use filter observable
-            console.warn('filter used');
+            console.log('filter used');
             dataObs = activeFilter.filter(this.currentPage, this.pageSize, this.search, this.limit, this.currentSort);
         } else {
             // get data from filter if its set
-            console.warn('filter not used');
+            console.log('filter not used');
             dataObs = this.config.getData(this.currentPage, this.pageSize, this.search, this.limit, this.currentSort);
         }
 
