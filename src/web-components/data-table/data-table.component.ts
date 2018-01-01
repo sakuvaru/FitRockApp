@@ -738,7 +738,7 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
             .debounceTime(this.debounceTime)
             .takeUntil(this.ngUnsubscribe)
             .subscribe(searchTerm => {
-                // udate searched variable
+                // update searched variable
                 this.search = searchTerm;
 
                 // reload data
@@ -846,9 +846,11 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
         // filter || default load function
         if (activeFilter) {
             // use filter observable
+            console.warn('filter used');
             dataObs = activeFilter.filter(this.currentPage, this.pageSize, this.search, this.limit, this.currentSort);
         } else {
             // get data from filter if its set
+            console.warn('filter not used');
             dataObs = this.config.getData(this.currentPage, this.pageSize, this.search, this.limit, this.currentSort);
         }
 
@@ -1068,7 +1070,16 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
                 // reset errors
                 this.resetErrors();
             })
-            .switchMap(bool => this.recalculateFilters().zip(this.getLoadDataObservable())) // zip on this level becase we want to execute both at the same time
+            /*
+            The order of recalcualte filters & load data observable is important. The filters need to be recalculated
+            before items are loaded because otherwise it would cause an issue when dynamic filter is enabled and searched is performed.
+            The search would use 'old' value and therefore filters would show correct counts, but actual data table would contain data
+            using previous search
+            */
+            // Execute before data
+            .switchMap(bool => this.recalculateFilters())
+            // execute after filters are recalculated
+            .switchMap(() => this.getLoadDataObservable()) 
             .takeUntil(this.ngUnsubscribe)
             .subscribe(() => {
 
