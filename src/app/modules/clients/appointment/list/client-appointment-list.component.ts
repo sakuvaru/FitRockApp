@@ -95,11 +95,13 @@ export class ClientAppointmentListComponent extends ClientsBaseComponent impleme
           name: super.translate('module.clients.appointments.upcomingAppointments'),
           guid: 'upcomingAppointments',
           query: query => query.whereGreaterThan('AppointmentDate', dateNow),
+          priority: 1
         },
         {
           name: super.translate('module.clients.appointments.oldAppointments'),
           guid: 'oldAppointments',
           query: query => query.whereLessThen('AppointmentDate', dateNow),
+          priority: 2
         }
       ])
       .onClick((item) => super.navigate([super.getTrainerUrl('clients/edit/') + this.clientId + '/appointments/view/' + item.id]))

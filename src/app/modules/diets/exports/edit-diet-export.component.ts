@@ -55,6 +55,13 @@ export class EditDietExportComponent extends BaseComponent implements OnInit, On
                 // set loaded workout
                 this.loadDiet.next(diet);
             })
+            .optionLabelResolver((field, originalLabel) => {
+                if (field.key === 'DietCategoryId') {
+                    return super.translate('module.dietCategories.categories.' + originalLabel);
+                }
+
+                return Observable.of(originalLabel);
+            })
             .build();
     }
 }

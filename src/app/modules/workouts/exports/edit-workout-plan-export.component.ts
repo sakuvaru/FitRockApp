@@ -1,21 +1,16 @@
-// common
-import { Component, Input, Output, OnInit, EventEmitter, OnDestroy, AfterViewInit, OnChanges, SimpleChanges } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-import { ComponentDependencyService, BaseComponent, ComponentConfig, ComponentSetup } from '../../../core';
-import { AppConfig, UrlConfig } from '../../../config';
-
-// required by component
-import { Workout, WorkoutExercise, Exercise } from '../../../models';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { DragulaService } from 'ng2-dragula';
-import { Subscription } from 'rxjs/Rx';
-import { CacheKeyType } from '../../../../lib/repository';
-import { stringHelper } from '../../../../lib/utilities';
-import { SelectWorkoutExerciseDialogComponent } from '../dialogs/select-workout-exercise-dialog.component';
-import { EditWorkoutExerciseDialogComponent } from '../dialogs/edit-workout-exercise-dialog.component';
-import { AddWorkoutExerciseDialogComponent } from '../dialogs/add-workout-exercise-dialog.component';
-import { AddCustomExerciseDialogComponent } from '../dialogs/add-custom-exercise-dialog.component';
 import * as _ from 'underscore';
-import { Observable } from 'rxjs/Rx';
+
+import { stringHelper } from '../../../../lib/utilities';
+import { AppConfig } from '../../../config';
+import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
+import { Exercise, Workout, WorkoutExercise } from '../../../models';
+import { AddCustomExerciseDialogComponent } from '../dialogs/add-custom-exercise-dialog.component';
+import { AddWorkoutExerciseDialogComponent } from '../dialogs/add-workout-exercise-dialog.component';
+import { EditWorkoutExerciseDialogComponent } from '../dialogs/edit-workout-exercise-dialog.component';
+import { SelectWorkoutExerciseDialogComponent } from '../dialogs/select-workout-exercise-dialog.component';
 
 @Component({
   templateUrl: 'edit-workout-plan-export.component.html',

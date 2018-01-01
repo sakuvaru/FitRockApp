@@ -1,7 +1,6 @@
-import 'rxjs/add/operator/switchMap';
-
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs/Rx';
 
 import { DataFormConfig } from '../../../../web-components/data-form';
 import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
@@ -49,6 +48,13 @@ export class EditWorkoutExportComponent extends BaseComponent implements OnInit,
             .onAfterDelete(() => super.navigate([super.getTrainerUrl('workouts')]))
             .onEditFormLoaded(form => {
                 this.loadWorkout.next(form.item);
+            })
+            .optionLabelResolver((field, label) => {
+                if (field.key === 'WorkoutCategoryId') {
+                    return super.translate(`module.workoutCategories.categories.${label}`);
+                }
+
+                return Observable.of(label);
             })
             .build();
     }

@@ -70,7 +70,7 @@ export class ClientWorkoutsComponent extends BaseComponent implements OnInit {
         },
         {
           name: (item) => super.translate('module.workouts.workoutCategory'),
-          value: (item) => super.translate('module.workoutCategories.categories' + item.workoutCategory.codename),
+          value: (item) => super.translate('module.workoutCategories.categories.' + item.workoutCategory.codename),
           hideOnSmallScreen: true
         },
         {

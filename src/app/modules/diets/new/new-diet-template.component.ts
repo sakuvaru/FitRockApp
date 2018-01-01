@@ -43,6 +43,13 @@ export class NewDietTemplateComponent extends BaseComponent implements OnInit {
     private initForm(): void {
         this.formConfig = this.dependencies.itemServices.dietService.buildInsertForm()
             .onAfterInsert((response) => this.navigate([this.getTrainerUrl('diets/edit-plan'), response.item.id]))
+            .optionLabelResolver((field, originalLabel) => {
+                if (field.key === 'DietCategoryId') {
+                    return super.translate('module.dietCategories.categories.' + originalLabel);
+                }
+
+                return Observable.of(originalLabel);
+            })
             .build();
     }
 }
