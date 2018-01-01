@@ -39,9 +39,9 @@
     </ng-container>
 
     <div class="push-bottom push-top" *ngIf="noFilesSelected || uploadSuccessful || uploadFailed || extensionNotAllowed">
-      <info-message *ngIf="noFilesSelected" title="{{ 'webComponents.uploader.noFilesSelected' | localize }}"></info-message>
-      <error-message *ngIf="uploadFailed" title="{{ 'webComponents.uploader.uploadFailed' | localize }}"></error-message>
-      <error-message *ngIf="extensionNotAllowed" title="{{ 'webComponents.uploader.extensionNotAllowed' | localize:extensionsNotAllowedParam }}"></error-message>
+      <info-message *ngIf="noFilesSelected" text="{{ 'webComponents.uploader.noFilesSelected' | localize }}"></info-message>
+      <error-message *ngIf="uploadFailed" text="{{ 'webComponents.uploader.uploadFailed' | localize }}"></error-message>
+      <error-message *ngIf="extensionNotAllowed" text="{{ 'webComponents.uploader.extensionNotAllowed' | localize:extensionsNotAllowedParam }}"></error-message>
     </div>
 
     <loader [enabled]="loaderEnabled" type="linear" class="push-bottom-sm"></loader>
