@@ -1,15 +1,11 @@
-// common
-import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-import { ComponentDependencyService, BaseComponent, ComponentSetup } from '../../../../core';
-import { AppConfig, UrlConfig } from '../../../../config';
-
-// required by component
-import { ClientsBaseComponent } from '../../clients-base.component';
-import { DataFormConfig } from '../../../../../web-components/data-form';
-import { NewClientAppointmentMenuItems } from '../../menu.items';
-import { Appointment } from '../../../../models';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
+
+import { DataFormConfig } from '../../../../../web-components/data-form';
+import { ComponentDependencyService, ComponentSetup } from '../../../../core';
+import { ClientsBaseComponent } from '../../clients-base.component';
+import { NewClientAppointmentMenuItems } from '../../menu.items';
 
 @Component({
     templateUrl: 'new-client-appointment.component.html'
@@ -39,14 +35,14 @@ export class NewClientAppointmentComponent extends ClientsBaseComponent implemen
         super.initClientSubscriptions();
     }
 
-    private getObservables(): Observable<any>[] {
-        const observables: Observable<any>[] = [];
+    private getObservables(): Observable<void>[] {
+        const observables: Observable<void>[] = [];
         observables.push(this.getClientObservable());
         observables.push(this.getFormObservable());
         return observables;
     }
 
-    private getClientObservable(): Observable<any> {
+    private getClientObservable(): Observable<void> {
         return this.clientChange.map(client => {
             this.setConfig({
                 componentTitle: { key: 'module.clients.appointments.newAppointment' },
@@ -55,12 +51,12 @@ export class NewClientAppointmentComponent extends ClientsBaseComponent implemen
                     key: 'module.clients.viewClientSubtitle',
                     data: { 'fullName': client.getFullName() }
                 },
-                menuAvatarUrl: this.client.getAvatarOrGravatarUrl()
+                menuAvatarUrl: client.getAvatarOrGravatarUrl()
             });
         });
     }
 
-    private getFormObservable(): Observable<any> {
+    private getFormObservable(): Observable<void> {
         return this.clientIdChange
             .map(clientId => {
                 this.formConfig = this.dependencies.itemServices.appointmentService.buildInsertForm({
@@ -74,8 +70,6 @@ export class NewClientAppointmentComponent extends ClientsBaseComponent implemen
                     })
                     .onAfterInsert((response) => super.navigate([super.getTrainerUrl('clients/edit/' + clientId + '/appointments/edit/' + response.item.id)]))
                     .build();
-
-            },
-            error => super.handleAppError(error));
+            });
     }
 }

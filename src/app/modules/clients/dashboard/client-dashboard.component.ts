@@ -145,6 +145,25 @@ export class ClientDashboardComponent extends ClientsBaseComponent implements On
             .get()
             .map(response => {
               appointment = response.firstItem();
+
+              // first set box action
+              if (this.appointmentInfoBox) {
+                const action = appointment ? (
+                  new ActionButton('edit', Observable.of(undefined)
+                    .map(() => {
+                      if (appointment) {
+                        this.dependencies.router.navigate([this.getAppointmentEditUrl(appointment)]);
+                      }
+                    }))
+                ) :
+                  new ActionButton('add', Observable.of(undefined)
+                    .map(() => {
+                      this.dependencies.router.navigate([this.getNewAppointmentUrl()]);
+                    }));
+            
+                this.appointmentInfoBox.actions = [action];
+              }
+
               if (!appointment) {
                 return [];
               }
@@ -185,25 +204,14 @@ export class ClientDashboardComponent extends ClientsBaseComponent implements On
                   ]
                 ));
               }
-
+         
               return lines;
 
             }),
           super.translate('module.clients.dashboard.nextAppointment'),
           {
             noDataMessage: super.translate('module.clients.dashboard.noAppointment'),
-            actions: [appointment ? (
-              new ActionButton('edit', Observable.of(undefined)
-                .map(() => {
-                  if (appointment) {
-                    this.dependencies.router.navigate([this.getAppointmentEditUrl(appointment)]);
-                  }
-                }))
-            ) :
-              new ActionButton('add', Observable.of(undefined)
-                .map(() => {
-                  this.dependencies.router.navigate([this.getNewAppointmentUrl()]);
-                }))
+            actions: [
             ]
           }
         );

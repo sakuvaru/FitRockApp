@@ -1,15 +1,11 @@
-// common
-import { Component, Input, Output, OnInit, EventEmitter, OnDestroy, AfterViewInit } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-import { ComponentDependencyService, BaseComponent, ComponentConfig, ComponentSetup } from '../../../../core';
-import { AppConfig, UrlConfig } from '../../../../config';
-
-// required by component
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
+
+import { DataFormConfig } from '../../../../../web-components/data-form';
+import { ComponentDependencyService, ComponentSetup } from '../../../../core';
 import { ClientsBaseComponent } from '../../clients-base.component';
 import { ClientEditAppointmentMenuItems } from '../../menu.items';
-import { DataFormConfig, DataFormComponent} from '../../../../../web-components/data-form';
-import { Appointment } from '../../../../models';
 
 @Component({
   templateUrl: 'edit-client-appointment.component.html'
