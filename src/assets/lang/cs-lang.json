@@ -219,14 +219,14 @@
 		},
 		"exerciseCategories": {
 			"categories": {
-				"Biceps": "Biceps",
-				"Triceps": "Triceps",
-				"Back": "Záda",
-				"Legs": "Nohy a lýtka",
-				"Shoulders": "Ramena",
-				"Chest": "Hrudník",
-				"Wrist": "Zápěstí",
-				"Abs": "Břicho"
+				"biceps": "Biceps",
+				"triceps": "Triceps",
+				"back": "Záda",
+				"legs": "Nohy a lýtka",
+				"shoulders": "Ramena",
+				"chest": "Hrudník",
+				"wrist": "Zápěstí",
+				"abs": "Břicho"
 			}
 		},
 		"dietCategories": {
@@ -373,13 +373,13 @@
 				"myTypes": "Moje typy"
 			},
 			"globalTypes": {
-				"Weight": "Váha",
-				"WaistCircumference": "Obvod pasu",
-				"LegsCircumference": "Obvod stehen",
-				"ArmsCircumference": "Obvod paží",
-				"ChestCircumference": "Obvod hrudníku",
-				"BodyFat": "Procento tělesného tuku",
-				"LeanMuscleMass": "Čistá svalová hmota"
+				"weight": "Váha",
+				"waistCircumference": "Obvod pasu",
+				"legsCircumference": "Obvod stehen",
+				"armsCircumference": "Obvod paží",
+				"chestCircumference": "Obvod hrudníku",
+				"bodyFat": "Procento tělesného tuku",
+				"leanMuscleMass": "Čistá svalová hmota"
 			},
 			"typeName": "Název sledovaného typu",
 			"unit": "Jednotka měření",
