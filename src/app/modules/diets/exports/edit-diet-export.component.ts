@@ -1,13 +1,10 @@
-// common
-import { Component, Input, Output, OnInit, EventEmitter, OnDestroy, OnChanges, SimpleChanges } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-import { ComponentDependencyService, BaseComponent, ComponentSetup } from '../../../core';
-import { AppConfig, UrlConfig } from '../../../config';
-
-// required by component
-import { DataFormConfig } from '../../../../web-components/data-form';
-import { Diet } from '../../../models';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
+
+import { DataFormConfig } from '../../../../web-components/data-form';
+import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
+import { Diet } from '../../../models';
 
 @Component({
     templateUrl: 'edit-diet-export.component.html',

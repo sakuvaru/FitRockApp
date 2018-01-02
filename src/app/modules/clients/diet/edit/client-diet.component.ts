@@ -1,17 +1,15 @@
-// common
-import { Component, Input, Output, OnInit, EventEmitter, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-import { ComponentDependencyService, BaseComponent, ComponentSetup } from '../../../../core';
-import { AppConfig, UrlConfig } from '../../../../config';
-
-// required by component
-import { ClientsBaseComponent } from '../../clients-base.component';
-import { ClientMenuItems } from '../../menu.items';
-import { User, Diet, DietFood } from '../../../../models';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { DragulaService } from 'ng2-dragula';
 import { Observable, Subscription } from 'rxjs/Rx';
 import * as _ from 'underscore';
+
 import { stringHelper } from '../../../../../lib/utilities';
+import { AppConfig } from '../../../../config';
+import { ComponentDependencyService, ComponentSetup } from '../../../../core';
+import { Diet, DietFood } from '../../../../models';
+import { ClientsBaseComponent } from '../../clients-base.component';
+import { ClientMenuItems } from '../../menu.items';
 import { FoodListDialogComponent } from '../dialogs/food-list-dialog.component';
 
 @Component({

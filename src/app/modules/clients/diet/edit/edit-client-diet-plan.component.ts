@@ -1,14 +1,11 @@
-// common
-import { Component, Input, Output, OnInit, EventEmitter, OnDestroy, AfterViewInit } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-import { ComponentDependencyService, BaseComponent, ComponentConfig, ComponentSetup } from '../../../../core';
-import { AppConfig, UrlConfig } from '../../../../config';
-
-// required by component
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
+
+import { ComponentDependencyService, ComponentSetup } from '../../../../core';
+import { Diet } from '../../../../models';
 import { ClientsBaseComponent } from '../../clients-base.component';
 import { ClientEditDietMenuItems } from '../../menu.items';
-import { Diet } from '../../../../models';
 
 @Component({
   templateUrl: 'edit-client-diet-plan.component.html'

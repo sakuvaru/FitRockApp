@@ -1,11 +1,7 @@
-// common
-import { Component, Input, Output, OnInit, EventEmitter, Inject } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-import { ComponentDependencyService, BaseComponent, ComponentConfig, ComponentSetup } from '../../../../core';
-import { AppConfig, UrlConfig } from '../../../../config';
-
-// required by component
+import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material';
+
+import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../../../../core';
 import { DietFood } from '../../../../models';
 
 @Component({
@@ -25,7 +21,7 @@ export class FoodListDialogComponent extends BaseComponent implements OnInit {
 
   setup(): ComponentSetup {
     return new ComponentSetup({
-      initialized: false,
+      initialized: true,
       isNested: true
     });
   }
