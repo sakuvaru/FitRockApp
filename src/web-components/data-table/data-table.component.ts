@@ -25,7 +25,6 @@ import { DataTableSortEnum } from './data-table-sort.enum';
 import { DataTableSource } from './data-table-source.class';
 import { DataTableConfig } from './data-table.config';
 import { IDataTableSort, IFilter } from './data-table.interfaces';
-import { truncate } from 'fs';
 
 @Component({
     selector: 'data-table',
@@ -319,7 +318,7 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
             this.unsubscribeFromTilesPaginator();
         }
     }
-    
+
     /**
      * Paginator is registered this way because it is under *ngIf
      */
@@ -413,8 +412,8 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
 
         // get first field value
         return getFirstFieldValue(item);
-    }   
-    
+    }
+
     toggleMode(): void {
         if (this.config.mode === DataTableMode.Standard) {
             this.config.mode = DataTableMode.Tiles;
@@ -621,23 +620,41 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
     private initStaticFilters(): Observable<boolean> {
         const filters = this.config.filters;
 
-        // prepare all filter
-        const allFilter = this.config.allFilter;
-        if (allFilter && this.config.filters && this.config.filters.length > 0) {
-            // change the text for all filter
-            filters.push(new Filter(
-                this.allFilterGuid,
-                allFilter.name ? allFilter.name : this.localizationService.get('webComponents.dataTable.all'),
-                allFilter.filter,
-                allFilter.count,
-                0
-            ));
-        }
-
         const observables: Observable<any>[] = [];
 
-        filters.forEach(filter => {
+        // prepare observable for getting all filter
+        if (this.config.allFilter && filters && filters.length) {
+            const allFilter = new Filter(
+                this.allFilterGuid,
+                this.config.allFilter.name ? this.config.allFilter.name : this.localizationService.get('webComponents.dataTable.all'),
+                this.config.allFilter.filter,
+                this.config.allFilter.count,
+                0
+            );
 
+            observables.push(
+                allFilter.count(this.search)
+                .flatMap(response => {
+                    // create filter wrapper and set its count
+                    const filterWrapper = new FilterWrapper('', response.count, allFilter);
+
+                    return Observable.of(filterWrapper);
+                })
+                .flatMap(filterWrapper => {
+                    // resolve name and set it
+                    return allFilter.name.map(name => {
+                        filterWrapper.resolvedName = name;
+                        return filterWrapper;
+                    });
+                })
+                .map(filterWrapper => {
+                    // add filter to local variable
+                    this.tempFiltersWrapper.push(filterWrapper);
+                })
+            );
+        }
+
+        filters.forEach(filter => {
             let filterObs;
 
             if (filter instanceof Filter) {
@@ -678,13 +695,10 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
 
     private activateTempFilters(): void {
         if (this.useStaticFilters()) {
-            // assign filters only when temp filters are available (static filters do not recreate filters on recalculate)
-            if (this.tempFiltersWrapper && this.tempFiltersWrapper.length > 0) {
-                this.filtersWrapper = this.tempFiltersWrapper;
-
-                this.tempFiltersWrapper = [];
-                return;  
-            }
+            this.filtersWrapper = this.tempFiltersWrapper;
+            console.log(this.filtersWrapper);
+            this.tempFiltersWrapper = [];
+            return;
         }
 
         if (this.userDynamicFilters()) {
@@ -713,9 +727,12 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
     }
 
     private recalculateStaticFilters(): Observable<void> {
-
         const observables: Observable<void>[] = [];
 
+        // logic is the same for initialization, so use that
+        return this.initStaticFilters().map(r => undefined);
+
+        /*
         this.filtersWrapper.forEach(filterWrapper => {
             if (filterWrapper.filter instanceof Filter) {
                 observables.push(
@@ -727,8 +744,9 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
             }
 
         });
+        */
 
-        return observableHelper.zipObservables(observables);
+        // return observableHelper.zipObservables(observables);
     }
 
     private recalculateDynamicFilters(): Observable<void> {
@@ -1107,7 +1125,7 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
                 return recalculateFilters ? this.recalculateFilters() : Observable.of(undefined);
             })
             // execute after filters are recalculated
-            .switchMap(() => this.getLoadDataObservable()) 
+            .switchMap(() => this.getLoadDataObservable())
             .takeUntil(this.ngUnsubscribe)
             .subscribe(() => {
 

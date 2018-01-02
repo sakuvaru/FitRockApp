@@ -86,6 +86,7 @@ export class ClientsOverviewComponent extends ClientsBaseComponent implements On
           query: query => query
             .whereEquals('IsActive', true)
             .whereEquals('TrainerUserId', this.authUser ? this.authUser.id : 0),
+          priority: 1
         },
         {
           name: super.translate('module.clients.inactiveClients'),
@@ -93,7 +94,8 @@ export class ClientsOverviewComponent extends ClientsBaseComponent implements On
           query: query => query
             .whereEquals('IsActive', false)
             .whereEquals('TrainerUserId', this.authUser ? this.authUser.id : 0),
-        }
+          priority: 2
+        },
       ]
       )
       .groupByItemsCount(5)
