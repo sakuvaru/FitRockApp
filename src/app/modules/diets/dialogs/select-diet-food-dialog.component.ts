@@ -55,7 +55,7 @@ export class SelectDietFoodDialogComponent extends BaseComponent implements OnIn
           hideOnSmallScreen: true
         },
       ])
-      .withDynamicFilters(search => this.dependencies.itemServices.foodCategoryService.getFoodCategoryWithFoodsCountDto(search, true)
+      .withDynamicFilters(search => this.dependencies.itemServices.foodCategoryService.getFoodCategoryWithFoodsCountDto(search, false, false, false, false)
         .get()
         .map(response => {
           const filters: IDynamicFilter<Food>[] = [];

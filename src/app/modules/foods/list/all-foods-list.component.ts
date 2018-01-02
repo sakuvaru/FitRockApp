@@ -1,14 +1,9 @@
-// common
-import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-import { ComponentDependencyService, BaseComponent, ComponentConfig, ComponentSetup } from '../../../core';
-import { AppConfig, UrlConfig } from '../../../config';
+import { Component, OnInit } from '@angular/core';
 
-// required by component
+import { DataTableConfig, IDynamicFilter } from '../../../../web-components/data-table';
+import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
+import { Food } from '../../../models';
 import { FoodOverviewItems } from '../menu.items';
-import { IDynamicFilter, DataTableConfig } from '../../../../web-components/data-table';
-import { Food, FoodCategoryWithFoodsCountDto } from '../../../models';
-import { Observable } from 'rxjs/Rx';
 
 @Component({
   templateUrl: 'all-foods-list.component.html'
