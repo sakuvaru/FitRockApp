@@ -1,15 +1,10 @@
-// common
-import { Component, Input, Output, OnInit, EventEmitter, Inject } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-import { ComponentDependencyService, BaseComponent, ComponentConfig, ComponentSetup } from '../../../core';
-import { AppConfig, UrlConfig } from '../../../config';
-
-// required by component
-import { Food, DietFood } from '../../../models';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material';
+import { Observable } from 'rxjs/Rx';
+
 import { DataFormConfig } from '../../../../web-components/data-form';
-import { Observable, Subject } from 'rxjs/Rx';
-import { stringHelper } from '../../../../lib/utilities';
+import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
+import { DietFood, Food } from '../../../models';
 
 @Component({
   templateUrl: 'add-diet-food-dialog.component.html'

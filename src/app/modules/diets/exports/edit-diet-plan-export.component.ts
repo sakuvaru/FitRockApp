@@ -8,7 +8,8 @@ import { stringHelper } from '../../../../lib/utilities';
 import { AppConfig } from '../../../config';
 import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
 import { Diet, DietFood, Food } from '../../../models';
-import { AddCustomFoodDialogComponent } from '../dialogs/add-custom-food-dialog.component';
+import { AddNewFoodDialogComponent } from '../dialogs/add-new-food-dialog.component';
+import { AddNewDishDialogComponent } from '../dialogs/add-new-dish-dialog.component';
 import { AddDietFoodDialogComponent } from '../dialogs/add-diet-food-dialog.component';
 import { EditDietFoodDialogComponent } from '../dialogs/edit-diet-food-dialog.component';
 import { SelectDietFoodDialogComponent } from '../dialogs/select-diet-food-dialog.component';
@@ -175,14 +176,29 @@ export class EditDietPlanExportComponent extends BaseComponent implements OnDest
       // open new add diet food dialog if some food was selected
       if (dialog.componentInstance.selectedFood) {
         this.openAddDietFoodDialog(dialog.componentInstance.selectedFood);
-      } else if (dialog.componentInstance.openAddCustomFoodDialog) {
-        this.openAddCustomFoodDialog();
+      } else if (dialog.componentInstance.openAddNewFoodDialog) {
+        this.openNewFoodDialog();
+      } else if (dialog.componentInstance.openAddNewDishDialog) {
+        this.openNewDishDialog();
       }
     });
   }
 
-  private openAddCustomFoodDialog(): void {
-    const dialog = this.dependencies.tdServices.dialogService.open(AddCustomFoodDialogComponent, {
+  private openNewDishDialog(): void {
+    const dialog = this.dependencies.tdServices.dialogService.open(AddNewDishDialogComponent, {
+      panelClass: AppConfig.DefaultDialogPanelClass
+    });
+
+    dialog.afterClosed().subscribe(m => {
+      // open add diet food dialog if new custom food was created 
+      if (dialog.componentInstance.newFood) {
+        this.openAddDietFoodDialog(dialog.componentInstance.newFood);
+      }
+    });
+  }
+
+  private openNewFoodDialog(): void {
+    const dialog = this.dependencies.tdServices.dialogService.open(AddNewFoodDialogComponent, {
       panelClass: AppConfig.DefaultDialogPanelClass
     });
 

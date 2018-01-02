@@ -17,7 +17,8 @@ import { EditDietPlanComponent } from './edit/edit-diet-plan.component';
 import { AddDietFoodDialogComponent} from './dialogs/add-diet-food-dialog.component';
 import { SelectDietFoodDialogComponent} from './dialogs/select-diet-food-dialog.component';
 import { EditDietFoodDialogComponent } from './dialogs/edit-diet-food-dialog.component';
-import { AddCustomFoodDialogComponent } from './dialogs/add-custom-food-dialog.component';
+import { AddNewFoodDialogComponent } from './dialogs/add-new-food-dialog.component';
+import { AddNewDishDialogComponent } from './dialogs/add-new-dish-dialog.component';
 
 // exports
 import { EditDietPlanExportComponent } from './exports/edit-diet-plan-export.component';
@@ -37,11 +38,11 @@ import { SharedModule} from '../shared/shared.module';
         SharedModule
     ],
     entryComponents: [
-        AddCustomFoodDialogComponent, 
         AddDietFoodDialogComponent,
         SelectDietFoodDialogComponent,
         EditDietFoodDialogComponent,
-        AddCustomFoodDialogComponent,
+        AddNewFoodDialogComponent,
+        AddNewDishDialogComponent
     ],
     declarations: [
         ClientDietsComponent,
@@ -53,7 +54,8 @@ import { SharedModule} from '../shared/shared.module';
         AddDietFoodDialogComponent,
         SelectDietFoodDialogComponent,
         EditDietFoodDialogComponent,
-        AddCustomFoodDialogComponent,
+        AddNewFoodDialogComponent,
+        AddNewDishDialogComponent,
         EditDietPlanExportComponent,
         EditDietExportComponent
     ],

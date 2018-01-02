@@ -1,29 +1,15 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { RouterModule } from '@angular/router';
 
-// guard
 import { AuthGuardService } from '../../../lib/auth';
-
-// config
-import { AppConfig, UrlConfig } from '../../config';
-
-// shared templates
-import { SimpleLayoutComponent } from '../../layouts/simple-layout.component';
+import { UrlConfig } from '../../config';
 import { AdminLayoutComponent } from '../../layouts/admin-layout.component';
-
-// components
+import { EditDietPlanComponent } from './edit/edit-diet-plan.component';
+import { EditDietComponent } from './edit/edit-diet.component';
 import { ClientDietsComponent } from './list/client-diets.component';
+import { DietPlanComponent } from './list/diet-plan.component';
 import { DietTemplatesComponent } from './list/diet-templates.component';
 import { NewDietTemplateComponent } from './new/new-diet-template.component';
-import { EditDietComponent } from './edit/edit-diet.component';
-import { DietPlanComponent } from './list/diet-plan.component';
-import { EditDietPlanComponent } from './edit/edit-diet-plan.component';
-
-// dialogs
-import { AddDietFoodDialogComponent } from './dialogs/add-diet-food-dialog.component';
-import { SelectDietFoodDialogComponent } from './dialogs/select-diet-food-dialog.component';
-import { EditDietFoodDialogComponent } from './dialogs/edit-diet-food-dialog.component';
-import { AddCustomFoodDialogComponent } from './dialogs/add-custom-food-dialog.component';
 
 @NgModule({
     declarations: [

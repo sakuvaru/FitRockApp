@@ -1,20 +1,15 @@
-// common
-import { Component, Input, Output, OnInit, EventEmitter, Inject } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-import { ComponentDependencyService, BaseComponent, ComponentConfig, ComponentSetup } from '../../../core';
-import { AppConfig, UrlConfig } from '../../../config';
-
-// required by component
-import { Food } from '../../../models';
-import { MAT_DIALOG_DATA } from '@angular/material';
-import { DataFormConfig } from '../../../../web-components/data-form';
-import { Observable, Subject } from 'rxjs/Rx';
+import { Component, OnInit } from '@angular/core';
 import { stringHelper } from 'lib/utilities';
+import { Observable } from 'rxjs/Rx';
+
+import { DataFormConfig } from '../../../../web-components/data-form';
+import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
+import { Food } from '../../../models';
 
 @Component({
-  templateUrl: 'add-custom-food-dialog.component.html'
+  templateUrl: 'add-new-food-dialog.component.html'
 })
-export class AddCustomFoodDialogComponent extends BaseComponent implements OnInit {
+export class AddNewFoodDialogComponent extends BaseComponent implements OnInit {
 
   public foodForm: DataFormConfig;
 

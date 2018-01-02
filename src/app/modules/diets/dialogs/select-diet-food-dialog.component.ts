@@ -15,7 +15,8 @@ export class SelectDietFoodDialogComponent extends BaseComponent implements OnIn
   public config?: DataTableConfig;
 
   public selectedFood?: Food;
-  public openAddCustomFoodDialog: boolean = false;
+  public openAddNewFoodDialog: boolean = false;
+  public openAddNewDishDialog: boolean = false;
 
   constructor(
     protected dependencies: ComponentDependencyService,
@@ -79,8 +80,13 @@ export class SelectDietFoodDialogComponent extends BaseComponent implements OnIn
       .build();
   }
 
-  public addCustomFood(): void {
-    this.openAddCustomFoodDialog = true;
+  public newFood(): void {
+    this.openAddNewFoodDialog = true;
+    this.close();
+  }
+
+  public newDish(): void {
+    this.openAddNewDishDialog = true;
     this.close();
   }
 
