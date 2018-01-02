@@ -45,7 +45,7 @@ export class FoodMenuItems {
         this.menuItems = [
             new MenuItem({ key: 'menu.shared.back' }, MenuItemType.trainer, 'foods', { icon: 'arrow_back' }),
             new MenuItem({ key: 'module.foods.submenu.preview' }, MenuItemType.trainer, 'foods/preview/' + foodId, { icon: 'pageview' }),
-            new MenuItem({ key: 'module.foods.submenu.edit' }, MenuItemType.trainer, 'foods/edit/' + foodId, { icon: 'edit' })
+            new MenuItem({ key: 'module.foods.submenu.editFood' }, MenuItemType.trainer, 'foods/edit/' + foodId, { icon: 'edit' })
         ];
     }
 }
