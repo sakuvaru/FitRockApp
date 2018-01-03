@@ -13,9 +13,12 @@ export * from './workouts/exercise-category.service';
 export * from './diets/diet.service';
 export * from './diets/diet-food.service';
 export * from './diets/diet-category.service';
-export * from './diets/food.service';
-export * from './diets/food-category.service';
-export * from './diets/food-unit.service';
+
+// foods
+export * from './foods/food.service';
+export * from './foods/food-category.service';
+export * from './foods/food-unit.service';
+export * from './foods/food-dish.service';
 
 // progress
 export * from './progress/progress-item.service';

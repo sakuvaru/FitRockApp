@@ -12,9 +12,12 @@ export * from './workouts/exercise-category.class';
 export * from './diets/diet.class';
 export * from './diets/diet-category.class';
 export * from './diets/diet-food.class';
-export * from './diets/food.class';
-export * from './diets/food-category.class';
-export * from './diets/food-unit.class';
+
+// foods
+export * from './foods/food.class';
+export * from './foods/food-category.class';
+export * from './foods/food-unit.class';
+export * from './foods/food-dish.class';
 
 // progress
 export * from './progress/progress-item.class';

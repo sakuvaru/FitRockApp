@@ -27,6 +27,7 @@ import {
     FeedService,
     FileService,
     FoodCategoryService,
+    FoodDishService,
     FoodService,
     FoodUnitService,
     LocationService,
@@ -41,20 +42,20 @@ import {
     WorkoutService,
 } from '../../services';
 import {
+    CalendarService,
     DataFormService,
     DataTableService,
     GalleryService,
     GraphService,
     LoadMoreService,
     UploaderService,
-    CalendarService
 } from '../../web-component-services';
 import { AuthenticatedUserService } from '../services/authenticated-user.service';
 import { CurrentLanguageService } from '../services/current-language.service';
+import { RememberService } from '../services/remember.service';
 import { SharedService } from '../services/shared.service';
 import { SystemService } from '../services/system.service';
 import { TimeService } from '../services/time.service';
-import { RememberService } from '../services/remember.service';
 
 @Injectable()
 export class ComponentDependencyService {
@@ -214,9 +215,12 @@ export class ItemServices {
     public dietService: DietService;
     public dietFoodService: DietFoodService;
     public dietCategoryService: DietCategoryService;
+
+    // foods
     public foodService: FoodService;
     public foodUnitService: FoodUnitService;
     public foodCategoryService: FoodCategoryService;
+    public foodDishService: FoodDishService;
 
     // progress
     public progressItemService: ProgressItemService;
