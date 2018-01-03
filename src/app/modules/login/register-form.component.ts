@@ -30,6 +30,8 @@ export class RegisterFormComponent extends BaseComponent implements OnInit {
         passwordConfirm: this.passwordConfirm
     });
 
+    public loginFailed: boolean = false;
+
     public registerError: boolean = false;
 
     public userAlreadyExistsError: boolean = false;
@@ -142,7 +144,14 @@ export class RegisterFormComponent extends BaseComponent implements OnInit {
      */
     private handleRegistrationSuccess(): void {
         // try authentication user right away after registration
-        this.dependencies.coreServices.authService.authenticate(this.email.value, this.password.value);
+        this.dependencies.coreServices.authService.login(this.email.value, this.password.value, callback => {
+            if (!callback.isSuccessful) {
+                this.loginFailed = true;
+            } else {
+                // redirect user to entry page
+                this.dependencies.router.navigate([UrlConfig.getEntryUrl()]);
+            }
+        });
     }
 
     private resetErrors(): void {

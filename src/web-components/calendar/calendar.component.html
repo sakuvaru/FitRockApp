@@ -20,7 +20,8 @@
                                 </button>
 
                                 <button mat-button mwlCalendarToday [(viewDate)]="viewDate" (viewDateChange)="changeDate($event)">
-                                    {{ (viewDate | calendarDate:(largeScreenActiveView + 'ViewTitle'): config.locale) }}
+                                    <ng-container *ngIf="largeScreenActiveView === 'day'">{{ getDayDate(viewDate) }}</ng-container>
+                                    <ng-container *ngIf="largeScreenActiveView === 'month'">{{ getMonthDate(viewDate) }}</ng-container>
                                 </button>
 
                                 <button mat-icon-button color="primary" mwlCalendarNextView [(viewDate)]="viewDate" [view]="largeScreenActiveView" (viewDateChange)="changeDate($event)">
@@ -41,7 +42,7 @@
                             </div>
                             <div fxLayout>
                                 <button mat-button mwlCalendarToday [(viewDate)]="viewDate" (viewDateChange)="changeDate($event)">
-                                    {{ (viewDate | calendarDate:('day' + 'ViewTitle'): config.locale) }}
+                                    <ng-container>{{ getDayDate(viewDate) }}</ng-container>
                                 </button>
 
                                 <span flex></span>
@@ -65,7 +66,7 @@
                             </button>
 
                             <button mat-button mwlCalendarToday [(viewDate)]="viewDate" (viewDateChange)="changeDate($event)">
-                                {{ (viewDate | calendarDate:('month' + 'ViewTitle'): config.locale) }}
+                                <ng-container>{{ getMonthDate(viewDate) }}</ng-container>
                             </button>
 
                             <button mat-icon-button color="primary" mwlCalendarNextView [(viewDate)]="viewDate" [view]="'month'" (viewDateChange)="changeDate($event)">

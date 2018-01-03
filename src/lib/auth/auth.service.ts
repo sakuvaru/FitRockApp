@@ -1,15 +1,14 @@
 import { Injectable } from '@angular/core';
-import { TokenService } from './token.service';
 import { Http } from '@angular/http';
-import { JwtHelper } from 'angular2-jwt';
-import { AppConfig, UrlConfig } from '../../app/config';
-import { Auth0ErrorResponse } from './models/auth0-error-response.class';
-import { CurrentUser } from './models/current-user.class';
 import { Router } from '@angular/router';
-import { guidHelper } from '../../lib/utilities';
+import { JwtHelper } from 'angular2-jwt';
+import * as Auth0 from 'auth0-js';
 
-// auth0 class exposed by auth0 js
-declare let auth0: any;
+import { AppConfig, UrlConfig } from '../../app/config';
+import { guidHelper } from '../../lib/utilities';
+import { Auth0LoginCallback } from './models/auth0-login-callback.class';
+import { TokenService } from './token.service';
+import { Auth0User } from 'lib/auth/models/auth0-user.class';
 
 /*
 Authentication service requirements:
@@ -24,7 +23,7 @@ can be called in 'app.component.ts' (all requests) or in a specific callback pag
 export class AuthService {
 
     // Configure Auth0
-    private auth0 = new auth0.WebAuth({
+    private auth0 = new Auth0.WebAuth({
         domain: AppConfig.Auth0_Domain,
         clientID: AppConfig.Auth0_ClientId,
         redirectUri: AppConfig.Auth0_RedirectUri,
@@ -37,22 +36,16 @@ export class AuthService {
     constructor(private tokenService: TokenService, private http: Http, private router: Router) {
     }
 
-    private handleAuthenticationError(response: Auth0ErrorResponse): boolean {
-        if (response == null) {
-            throw Error('Response from Auth0 is missing');
-        }
-
+    private handleAuthenticationError(error: Auth0.Auth0Error): void {
         // log error
         console.warn('Authentication failed:');
-        console.warn(response);
+        console.warn(error);
 
         // redirect back to logon page & add a random hash (hash needs to be added to URL for lifecycle check)
         this.router.navigate([UrlConfig.getLoginUrl()], { queryParams: { result: 'error' }, fragment: guidHelper.newGuid() });
-
-        return false;
     }
 
-    public getCurrentUser(): CurrentUser | null {
+    getAuth0UserFromLocalStorage(): Auth0User | null {
         if (!this.isAuthenticated()) {
             return null;
         }
@@ -65,7 +58,7 @@ export class AuthService {
 
         const decodedToken = this.jwtHelper.decodeToken(idToken);
 
-        return new CurrentUser(
+        return new Auth0User(
             true, 
             decodedToken['email_verified'], 
             decodedToken['picture'], 
@@ -77,23 +70,37 @@ export class AuthService {
         );
     }
 
-    public authenticate(username: string, password: string): boolean {
-        this.auth0.redirect.loginWithCredentials({
-            connection: AppConfig.Auth0_UserPasswordConnectionName,
-            username,
-            password
-        }, errorResponse => {
-            if (errorResponse) {
-                this.handleAuthenticationError(errorResponse as Auth0ErrorResponse);
-                return errorResponse;
-            }
-            return errorResponse;
-        });
+    login(username: string, password: string, callback: (result: Auth0LoginCallback) => void): void {
+        this.auth0.client.login( {
+            realm: AppConfig.Auth0_UserPasswordConnectionName,
+            username: username,
+            password: password 
+        }, (error, authResult) => {
+            
+            let isSuccessful: boolean = false;
+            let token: string | null = null;
 
-        return true;
+            if (error) {
+                isSuccessful = false;
+            }
+
+            if (!authResult) {
+                isSuccessful = false;
+            }
+            
+            if (authResult.idToken) {
+                token = authResult.idToken;
+                if (token) {
+                    this.tokenService.setIdToken(token);
+                    isSuccessful = true;
+                }
+            }
+
+            callback(new Auth0LoginCallback(error, isSuccessful, token));
+        });
     }
 
-    public handleAuthentication(): void {
+    handleAuthentication(): void {
         this.auth0.parseHash({ _idTokenVerification: false }, (err, authResult) => {
             if (err) {
                 this.handleAuthenticationError(err);
@@ -106,25 +113,25 @@ export class AuthService {
         });
     }
 
-    public loginWithGoogle(): void {
+    loginWithGoogle(): void {
         this.auth0.authorize({
             connection: AppConfig.Auth0_GoogleConnectionName,
         });
     }
 
-    public loginWithFacebook(): void {
+    loginWithFacebook(): void {
         this.auth0.authorize({
             connection: AppConfig.Auth0_FacebookConnectionName,
         });
     }
 
-    public logout(): void {
+    logout(): void {
         // to logout simply remove tokens
         this.tokenService.removeAccessToken();
         this.tokenService.removeIdToken();
     }
 
-    public isAuthenticated(): boolean {
+    isAuthenticated(): boolean {
         const idToken = this.tokenService.getIdToken();
 
         if (!idToken) {
@@ -140,3 +147,5 @@ export class AuthService {
         return true;
     }
 }
+
+

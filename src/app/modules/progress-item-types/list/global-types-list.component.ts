@@ -1,13 +1,8 @@
-// common
-import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-import { ComponentDependencyService, BaseComponent, ComponentConfig, ComponentSetup } from '../../../core';
-import { AppConfig, UrlConfig } from '../../../config';
+import { Component, OnInit } from '@angular/core';
 
-// required by component
-import { ProgressItemTypesOverviewMenuItem } from '../menu.items';
 import { DataTableConfig } from '../../../../web-components/data-table';
-import { ProgressItemType } from '../../../models';
+import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
+import { ProgressItemTypesOverviewMenuItem } from '../menu.items';
 
 @Component({
   templateUrl: 'global-types-list.component.html'

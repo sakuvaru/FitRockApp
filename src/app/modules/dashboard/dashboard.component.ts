@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { LanguageEnum } from 'lib/repository';
 
-import { CurrentUser } from '../../../lib/auth';
+import { Auth0User } from '../../../lib/auth';
 import { CalendarConfig } from '../../../web-components/calendar/calendar.config';
 import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../../core';
 import { Log } from '../../models';
@@ -13,7 +13,7 @@ export class DashboardComponent extends BaseComponent implements OnInit {
 
     public logs: Log[];
     public log: Log;
-    public currentUser: CurrentUser | null;
+    public currentUser: Auth0User | null;
 
     public calendarConfig: CalendarConfig;
 
@@ -105,7 +105,7 @@ export class DashboardComponent extends BaseComponent implements OnInit {
                 this.logs = response.items;
             }));
 
-        this.currentUser = this.dependencies.coreServices.authService.getCurrentUser();
+        this.currentUser = this.dependencies.coreServices.authService.getAuth0UserFromLocalStorage();
     }
 
     onLogout(): void {

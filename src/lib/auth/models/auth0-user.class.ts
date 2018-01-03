@@ -1,6 +1,4 @@
-export class CurrentUser {
-
-    public codename;
+export class Auth0User {
 
     constructor(
         public isAuthenticated: boolean,
@@ -12,7 +10,5 @@ export class CurrentUser {
         public lastName: string,
         public isFemale: boolean
     ) {
-        // codename = e-mail
-        this.codename = email;
     }
 }

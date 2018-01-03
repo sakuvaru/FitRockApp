@@ -41,7 +41,7 @@ export class CalendarConfig {
     /**
      * Locale used for localization of calendar
      */
-    public locale?: string;
+    public locale: string = 'en';
 
     /**
      * Edit event form config

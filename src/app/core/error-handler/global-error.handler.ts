@@ -37,7 +37,7 @@ export class GlobalErrorHandler implements ErrorHandler {
 
         let userName: string = '';
         if (authService.isAuthenticated()) {
-            const currentUser = authService.getCurrentUser();
+            const currentUser = authService.getAuth0UserFromLocalStorage();
             if (currentUser && currentUser.email) {
                 userName = currentUser.email;
             }

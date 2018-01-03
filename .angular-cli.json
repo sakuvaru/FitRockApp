@@ -28,7 +28,7 @@
         "assets/theme/main.scss"
       ],
       "scripts": [
-        "assets/external/auth0/auth0.min.js"
+        "../node_modules/auth0-js/build/auth0.min.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {

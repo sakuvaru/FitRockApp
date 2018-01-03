@@ -6,7 +6,12 @@ import { HttpModule } from '@angular/http';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { APP_BASE_HREF } from '@angular/common';
+import { APP_BASE_HREF, registerLocaleData } from '@angular/common';
+
+// include additional locales for Angular - https://angular.io/guide/i18n#i18n-pipes
+// required for 'cs' and all other languages besides english
+import localeCs from '@angular/common/locales/cs';
+registerLocaleData(localeCs);
 
 // Auth redirect component
 import { EntryComponent } from './entry.component';

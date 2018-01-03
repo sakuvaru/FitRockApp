@@ -19,6 +19,7 @@ import { CalendarConfig } from './calendar.config';
 import { CalendarColor } from './calendar.enums';
 import { CalendarDeleteResponse, CalendarEventAttendee } from './calendar.models';
 import { CustomEventTitleFormatter } from './custom-event-title.formatter';
+import * as moment from 'moment';
 
 @Component({
     selector: 'calendar',
@@ -402,6 +403,17 @@ export class CalendarComponent extends BaseWebComponent implements OnInit, OnCha
         }
 
         return Yellow;
+    }
+
+    private getDayDate(date: Date): string {
+        const momentDate = moment(date).locale(this.config.locale);
+        return momentDate.format('LL').toString();
+    }
+
+    private getMonthDate(date: Date): string {
+        const momentDate = moment(date).locale(this.config.locale);
+
+         return momentDate.format('MMMM YYYY').toString();
     }
 }
 

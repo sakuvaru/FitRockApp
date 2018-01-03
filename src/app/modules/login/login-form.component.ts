@@ -15,11 +15,6 @@ export class LoginFormComponent extends BaseComponent implements OnInit {
 
     public readonly appLogo: string = AppConfig.AppLogoUrl;
 
-    // event outputs
-    @Output() onLoginFailedEvent = new EventEmitter();
-    @Output() onLoginEvent = new EventEmitter();
-    @Output() onLogoutEvent = new EventEmitter();
-
     public email = new FormControl('', [Validators.required, Validators.email]);
     public password = new FormControl('', [Validators.required]);
 
@@ -65,7 +60,6 @@ export class LoginFormComponent extends BaseComponent implements OnInit {
         // auth service will redirect back to logon page with query param 'result=error' and radnom fragment (hash) if login fails
         if (result === 'error') {
             this.loginFailed = true;
-            this.onLoginFailedEvent.emit();
         } else {
             this.loginFailed = false;
         }
@@ -75,7 +69,7 @@ export class LoginFormComponent extends BaseComponent implements OnInit {
     }
 
     // event emitters
-    onLogin() {
+    onLogin(): void {
         if (!this.password.value || !this.email.value) {
             this.missingLogonDetails = true;
             return;
@@ -83,27 +77,31 @@ export class LoginFormComponent extends BaseComponent implements OnInit {
 
         this.resetErrors();
         this.startGlobalLoader();
-        this.onLoginEvent.emit();
-        this.dependencies.coreServices.authService.authenticate(this.email.value, this.password.value);
+
+        this.dependencies.coreServices.authService.login(this.email.value, this.password.value, callback => {
+            if (!callback.isSuccessful) {
+                this.loginFailed = true;
+            } else {
+                // redirect user to entry page
+                this.dependencies.router.navigate([UrlConfig.getEntryUrl()]);
+            }
+        });
     }
 
     onLogout() {
         this.startGlobalLoader();
-        this.onLogoutEvent.emit();
         this.dependencies.coreServices.authService.logout();
     }
 
     loginWithGoogle() {
         this.resetErrors();
         this.startGlobalLoader();
-        this.onLoginEvent.emit();
         this.dependencies.coreServices.authService.loginWithGoogle();
     }
 
     loginWithFacebook() {
         this.resetErrors();
         this.startGlobalLoader();
-        this.onLoginEvent.emit();
         this.dependencies.coreServices.authService.loginWithFacebook();
     }
 

@@ -23,9 +23,8 @@ export class EntryComponent extends BaseComponent {
     protected dependencies: ComponentDependencyService,
   ) {
     super(dependencies);
-
     // try getting current user out of the auth service
-    const currentUser = this.dependencies.coreServices.authService.getCurrentUser();
+    const currentUser = this.dependencies.coreServices.authService.getAuth0UserFromLocalStorage();
 
     // if user is not authenticated, just redirect him to logon page
     if (!currentUser) {
@@ -69,10 +68,14 @@ export class EntryComponent extends BaseComponent {
               // store user language ui preference
               this.dependencies.coreServices.currentLanguageService.setLanguage(authUser.language);
 
+              console.log(authUser);
+              console.log(this.dependencies.coreServices.currentLanguageService.getLanguage());
+
               // redirect user
               this.redirectUser(user.isClient);
             }
-          });
+          })
+          .takeUntil(this.ngUnsubscribe);
       }).subscribe(() => undefined,
       (error) => {
         super.handleAppError(error);
@@ -80,10 +83,16 @@ export class EntryComponent extends BaseComponent {
   }
 
   private redirectUser(isClient: boolean): void {
+    console.warn('clients are redirected to same page as trainers for now');
+
+    this.navigate([UrlConfig.TrainerMasterPath]);
+    return;
+    /*
     if (!isClient) {
       this.navigate([UrlConfig.TrainerMasterPath]);
     } else {
       this.navigate([UrlConfig.ClientMasterPath]);
     }
+    */
   }
 }

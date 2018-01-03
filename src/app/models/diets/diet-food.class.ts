@@ -1,6 +1,6 @@
 import { BaseItem } from '../../../lib/repository';
 import { Diet } from './diet.class';
-import { Food } from './food.class';
+import { Food } from '../foods/food.class';
 
 export class DietFood extends BaseItem {
     public unitValue: string;

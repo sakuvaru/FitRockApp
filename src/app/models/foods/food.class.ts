@@ -1,7 +1,7 @@
 import { BaseItem, LanguageEnum, languageHelper } from '../../../lib/repository';
 import { FoodUnit } from './food-unit.class';
 import { FoodCategory } from './food-category.class';
-import { DietFood } from './diet-food.class';
+import { DietFood } from '../diets/diet-food.class';
 
 export class Food extends BaseItem {
     public foodName: string;
