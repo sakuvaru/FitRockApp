@@ -6,6 +6,7 @@ import { LoginPageComponent } from './login-page.component';
 import { LogoutComponent } from './logout.component';
 import { RegisterPageComponent } from './register-page.component';
 import { ResetPasswordPageComponent } from './reset-password-page.component';
+import { ProcessExternalLoginComponent } from './process-external-login.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,9 @@ import { ResetPasswordPageComponent } from './reset-password-page.component';
       },
       {
         path: UrlConfig.AuthMasterPath + '/' + UrlConfig.ResetPassword, component: ResetPasswordPageComponent
+      },
+      {
+        path: UrlConfig.ProcessExternalLogin, component: ProcessExternalLoginComponent
       }
     ])
   ],

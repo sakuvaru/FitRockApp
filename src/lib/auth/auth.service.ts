@@ -3,12 +3,11 @@ import { Http } from '@angular/http';
 import { Router } from '@angular/router';
 import { JwtHelper } from 'angular2-jwt';
 import * as Auth0 from 'auth0-js';
+import { Auth0User } from 'lib/auth/models/auth0-user.class';
 
-import { AppConfig, UrlConfig } from '../../app/config';
-import { guidHelper } from '../../lib/utilities';
+import { AppConfig } from '../../app/config';
 import { Auth0LoginCallback } from './models/auth0-login-callback.class';
 import { TokenService } from './token.service';
-import { Auth0User } from 'lib/auth/models/auth0-user.class';
 
 /*
 Authentication service requirements:
@@ -34,15 +33,6 @@ export class AuthService {
     private jwtHelper = new JwtHelper();
 
     constructor(private tokenService: TokenService, private http: Http, private router: Router) {
-    }
-
-    private handleAuthenticationError(error: Auth0.Auth0Error): void {
-        // log error
-        console.warn('Authentication failed:');
-        console.warn(error);
-
-        // redirect back to logon page & add a random hash (hash needs to be added to URL for lifecycle check)
-        this.router.navigate([UrlConfig.getLoginUrl()], { queryParams: { result: 'error' }, fragment: guidHelper.newGuid() });
     }
 
     getAuth0UserFromLocalStorage(): Auth0User | null {
@@ -88,7 +78,7 @@ export class AuthService {
                 isSuccessful = false;
             }
             
-            if (authResult.idToken) {
+            if (authResult && authResult.idToken) {
                 token = authResult.idToken;
                 if (token) {
                     this.tokenService.setIdToken(token);
@@ -100,16 +90,28 @@ export class AuthService {
         });
     }
 
-    handleAuthentication(): void {
-        this.auth0.parseHash({ _idTokenVerification: false }, (err, authResult) => {
-            if (err) {
-                this.handleAuthenticationError(err);
+    handleExternalAuthentication(callback: (result: Auth0LoginCallback) => void): void {
+        this.auth0.parseHash({ _idTokenVerification: false }, (error, authResult) => {
+            let isSuccessful: boolean = false;
+            let token: string | null = null;
+
+            if (error) {
+                isSuccessful = false;
             }
-            if (authResult && authResult.accessToken && authResult.idToken) {
-                window.location.hash = '';
-                this.tokenService.setAccessToken(authResult.accessToken);
-                this.tokenService.setIdToken(authResult.idToken);
+
+            if (!authResult) {
+                isSuccessful = false;
             }
+            
+            if (authResult && authResult.idToken) {
+                token = authResult.idToken;
+                if (token) {
+                    this.tokenService.setIdToken(token);
+                    isSuccessful = true;
+                }
+            }
+
+            callback(new Auth0LoginCallback(error, isSuccessful, token));
         });
     }
 

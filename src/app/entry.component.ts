@@ -68,9 +68,6 @@ export class EntryComponent extends BaseComponent {
               // store user language ui preference
               this.dependencies.coreServices.currentLanguageService.setLanguage(authUser.language);
 
-              console.log(authUser);
-              console.log(this.dependencies.coreServices.currentLanguageService.getLanguage());
-
               // redirect user
               this.redirectUser(user.isClient);
             }
@@ -84,7 +81,6 @@ export class EntryComponent extends BaseComponent {
 
   private redirectUser(isClient: boolean): void {
     console.warn('clients are redirected to same page as trainers for now');
-
     this.navigate([UrlConfig.TrainerMasterPath]);
     return;
     /*

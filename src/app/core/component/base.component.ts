@@ -341,12 +341,6 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
         // stop loaders on component init 
         this.dependencies.coreServices.sharedService.setGlobalLoader(false, false);
 
-        // authenticate user when logging-in (handles the params in URL and extracts token
-        // more info: https://auth0.com/docs/quickstart/spa/angular2/02-custom-login
-        if (!this.dependencies.coreServices.authService.isAuthenticated()) {
-            this.dependencies.coreServices.authService.handleAuthentication();
-        }
-
         // translations
         this.dependencies.coreServices.localizationService.get('shared.saved')
             .takeUntil(this.ngUnsubscribe)

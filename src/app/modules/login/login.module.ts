@@ -12,6 +12,7 @@ import { RegisterFormComponent } from './register-form.component';
 import { RegisterPageComponent } from './register-page.component';
 import { ResetPasswordPageComponent } from './reset-password-page.component';
 import { ResetPasswordFormComponent } from './reset-password-form.component';
+import { ProcessExternalLoginComponent } from './process-external-login.component';
 
 @NgModule({
     imports: [
@@ -28,7 +29,8 @@ import { ResetPasswordFormComponent } from './reset-password-form.component';
         RegisterPageComponent,
         RegisterFormComponent,
         ResetPasswordPageComponent,
-        ResetPasswordFormComponent
+        ResetPasswordFormComponent,
+        ProcessExternalLoginComponent
     ],
     exports: [
         LoginFormComponent

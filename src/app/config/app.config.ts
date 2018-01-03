@@ -21,7 +21,7 @@ export class AppConfig {
     // auth0 config
     public static Auth0_Domain = 'fitrock.eu.auth0.com'; // domain for Auth0 authentication
     public static Auth0_ClientId = 'xL8rULh2SRyNvrkIoBpySaqUxyMHDyI2'; // id of Auth0 client
-    public static Auth0_RedirectUri = 'http://localhost:4200/' + UrlConfig.EntryPath; // call back URL (needs to be set in Auth0 client settings)
+    public static Auth0_RedirectUri = 'http://localhost:4200/' + UrlConfig.ProcessExternalLogin; // call back URL (needs to be set in Auth0 client settings)
     public static Auth0_ResponseType = 'token id_token'; // get token & id_token from response
     public static Auth0_Scope = 'openid profile email'; // scope identifying attributes returned in id_token
     public static Auth0_UserPasswordConnectionName = 'Username-Password-Authentication';

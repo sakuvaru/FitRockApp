@@ -19,6 +19,7 @@ export class UrlConfig {
     public static ServerDown = 'server-down';
     public static Redirect = 'redirect';
     public static RedirectAfterLogout = UrlConfig.Login;
+    public static ProcessExternalLogin = UrlConfig.AuthMasterPath + '/' + 'process-login';
     public static Default = 'login';
 
     public static AppErrorLogGuidQueryString = 'q';
