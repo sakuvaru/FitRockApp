@@ -50,12 +50,15 @@ import {
     LoadMoreService,
     UploaderService,
 } from '../../web-component-services';
-import { AuthenticatedUserService } from '../services/authenticated-user.service';
-import { CurrentLanguageService } from '../services/current-language.service';
-import { RememberService } from '../services/remember.service';
-import { SharedService } from '../services/shared.service';
-import { SystemService } from '../services/system.service';
-import { TimeService } from '../services/time.service';
+import {
+    AuthenticatedUserService,
+    CurrentLanguageService,
+    NavigateService,
+    RememberService,
+    SharedService,
+    SystemService,
+    TimeService,
+} from '../services';
 
 @Injectable()
 export class ComponentDependencyService {
@@ -66,9 +69,6 @@ export class ComponentDependencyService {
      */
     public authenticatedUserService: AuthenticatedUserService;
 
-    // url handling
-    public router: Router;
-
     public itemServices: ItemServices;
     public fileService: FileService;
     public coreServices: CoreServices;
@@ -78,9 +78,6 @@ export class ComponentDependencyService {
     public helpers: Helpers;
 
     constructor(private injector: Injector) {
-        // use Angular's injector to get service instances
-        this.router = injector.get(Router);
-
         // authenticated user service (note: has to be initialized when logging in)
         this.authenticatedUserService = injector.get(AuthenticatedUserService);
 
@@ -95,6 +92,7 @@ export class ComponentDependencyService {
         this.coreServices.sharedService = injector.get(SharedService);
         this.coreServices.timeService = injector.get(TimeService);
         this.coreServices.rememberService = injector.get(RememberService);
+        this.coreServices.navigateService = injector.get(NavigateService);
 
         // helpers
         this.helpers = new Helpers();
@@ -186,6 +184,7 @@ export class CoreServices {
     public localizationService: LocalizationService;
     public timeService: TimeService;
     public rememberService: RememberService;
+    public navigateService: NavigateService;
 }
 
 export class MdServices {

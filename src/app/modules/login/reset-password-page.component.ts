@@ -14,7 +14,7 @@ export class ResetPasswordPageComponent extends BaseComponent {
 
         // redirect to entry url if user is already logged
         if (this.dependencies.coreServices.authService.isAuthenticated()) {
-            this.dependencies.router.navigate([UrlConfig.getEntryUrl()]);
+            this.dependencies.coreServices.navigateService.entryPage();
         }
     }
     

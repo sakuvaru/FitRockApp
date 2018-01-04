@@ -1,11 +1,9 @@
-// common
-import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-import { ComponentDependencyService, BaseComponent, ComponentSetup } from '../../core';
-import { AppConfig, UrlConfig } from '../../config';
-
-// required
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
+
+import { AppConfig } from '../../config';
+import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../../core';
 
 @Component({
   templateUrl: 'server-down.component.html'
@@ -41,7 +39,7 @@ export class ServerDownComponent extends BaseComponent implements OnInit {
       .subscribe(response => {
         // app is online, redirect back to main page
         if (this.appOnline) {
-          super.navigateToMainPage();
+          this.dependencies.coreServices.navigateService.entryPage();
         }
       },
       err => {

@@ -150,7 +150,7 @@ export class AdminToolbarComponent extends BaseLayoutComponent {
                         console.warn('Cannot navigate to feed with id = ' + feed.id);
                     }
 
-                    this.dependencies.router.navigate([feedUrl]);
+                    this.dependencies.coreServices.navigateService.navigate([feedUrl]);
                 });
         } else {
             console.warn('Cannot click on invalid feed');

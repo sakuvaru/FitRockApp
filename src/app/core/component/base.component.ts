@@ -116,33 +116,18 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
      */
     forceRefresh(url: string): void {
         const redirectHandlerUrl = this.getAppUrl(UrlConfig.Redirect);
-        this.dependencies.router.navigate([redirectHandlerUrl], { queryParams: { 'url': url }, queryParamsHandling: 'merge' });
+        this.dependencies.coreServices.navigateService.navigate(
+            [redirectHandlerUrl], 
+            { 
+                queryParams: { 
+                    'url': url 
+                }, 
+                queryParamsHandling: 'merge' 
+            });
     }
 
     navigate(commands: any[], extras?: NavigationExtras): void {
-        this.dependencies.router.navigate(commands, extras);
-    }
-
-    navigateTo404(): void {
-        this.dependencies.router.navigate([UrlConfig.getItem404()]);
-    }
-
-    navigateToLogonPage(): void {
-        this.dependencies.router.navigate([UrlConfig.getLoginUrl()]);
-    }
-
-    navigateToMainPage(): void {
-        const currentUser = this.dependencies.authenticatedUserService.getUser();
-        if (currentUser == null) {
-            // user is not authenticated, redirect him to login page
-            this.navigateToLogonPage();
-            return;
-        }
-        this.dependencies.router.navigate([UrlConfig.getEntryUrl()]);
-    }
-
-    navigateToErrorPage(): void {
-        this.dependencies.router.navigate([UrlConfig.getAppErrorUrl()]);
+        this.dependencies.coreServices.navigateService.navigate(commands, extras);
     }
 
     // -------------------- Component config ------------------ //
@@ -204,19 +189,19 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
 
             // handle server not running error
             if (error.reason === ErrorReasonEnum.ServerNotRunning) {
-                this.dependencies.router.navigate([UrlConfig.getServerDown()]);
+                this.dependencies.coreServices.navigateService.serverDownPage();
                 return;
             }
 
             // handle not found error
             if (error.reason === ErrorReasonEnum.NotFound) {
-                this.dependencies.router.navigate([UrlConfig.getItem404()]);
+                this.dependencies.coreServices.navigateService.item404();
                 return;
             }
 
             // handle situation where user was logged out (e.g. due to long inactivity)
             if (error.reason === ErrorReasonEnum.NotAuthorized) {
-                this.dependencies.router.navigate([UrlConfig.getLoginUrl()]);
+                this.dependencies.coreServices.navigateService.loginPage();
                 return;
             }
 
@@ -263,7 +248,7 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
     }
 
     getAppUrl(action: string): string {
-        return '/' + UrlConfig.getAppUrl(action);
+        return '/' + UrlConfig.getActionUrl(action);
     }
 
     getAuthUrl(action?: string): string {

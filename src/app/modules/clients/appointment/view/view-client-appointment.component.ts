@@ -52,7 +52,7 @@ export class ViewClientAppointmentComponent extends ClientsBaseComponent impleme
         .map(response => {
           // check if appointment is assigned to current client
           if (response.item.clientId !== this.clientId) {
-            super.navigateTo404();
+            this.dependencies.coreServices.navigateService.item404();
           }
 
           this.appointment = response.item;

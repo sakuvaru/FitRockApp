@@ -41,7 +41,7 @@ export class DashboardComponent extends BaseComponent implements OnInit {
             this.authUser ? this.authUser.id : 0,
             this.currentLanguage ? this.currentLanguage.locale : '',
             {
-                onEventClick: event => this.dependencies.router.navigate([this.getTrainerUrl(`/clients/edit/${event.model.clientId}/appointments/view/${event.model.id}`)]),
+                onEventClick: event => this.dependencies.coreServices.navigateService.navigate([this.getTrainerUrl(`/clients/edit/${event.model.clientId}/appointments/view/${event.model.id}`)]),
                 onError: error => super.handleAppError(error)
             }
         )
@@ -82,7 +82,7 @@ export class DashboardComponent extends BaseComponent implements OnInit {
                 ])
             )
         )
-            .onEventClick(event => this.dependencies.router.navigate([this.getTrainerUrl(`/clients/edit/${event.model.clientId}/appointments/view/${event.model.id}`)]))
+            .onEventClick(event => this.dependencies.navigate([this.getTrainerUrl(`/clients/edit/${event.model.clientId}/appointments/view/${event.model.id}`)]))
             .build();
 
             */

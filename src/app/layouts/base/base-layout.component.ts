@@ -73,7 +73,7 @@ export class BaseLayoutComponent implements OnDestroy {
         const activeColor = 'accent';
 
         const url = this.getMenuItemUrl(action, type);
-        const currentUrl = this.dependencies.router.url;
+        const currentUrl = this.dependencies.coreServices.navigateService.getCurrentUrl();
 
         if (currentUrl === url) {
             return activeColor;

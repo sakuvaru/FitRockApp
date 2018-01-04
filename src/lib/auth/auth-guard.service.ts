@@ -1,19 +1,19 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { CanActivate } from '@angular/router';
+import { NavigateService } from 'app/core/services';
+
 import { AuthService } from './auth.service';
-import { UrlConfig } from '../../app/config';
 
 @Injectable()
 export class AuthGuardService implements CanActivate {
 
-    constructor(private authService: AuthService, private router: Router) { }
+    constructor(private authService: AuthService, private navigateService: NavigateService) { }
 
-    canActivate() {
+    canActivate(): boolean {
         if (this.authService.isAuthenticated()) {
             return true;
         } else {
-            this.router.navigate([UrlConfig.getUnAuthorizedUrl()]);
+            this.navigateService.unauthorizedPage();
             return false;
         }
     }

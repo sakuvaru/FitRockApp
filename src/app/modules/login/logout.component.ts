@@ -17,7 +17,7 @@ export class LogoutComponent extends BaseComponent {
         this.dependencies.coreServices.authService.logout();
 
         // redirect after logging-out
-        this.dependencies.router.navigate([UrlConfig.getLogoutUrl()]);
+        this.dependencies.coreServices.navigateService.logoutPage();
     }
 
     setup(): ComponentSetup {

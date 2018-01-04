@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
 import { ActionButton, InfoBoxConfig, InfoBoxLine, InfoBoxText, InfoBoxLineType, ListBoxConfig, ListBoxItem, MapBoxConfig } from 'web-components/boxes';
 
-import { AppConfig } from '../../../config';
+import { AppConfig, UrlConfig } from '../../../config';
 import { ComponentDependencyService, ComponentSetup } from '../../../core';
 import { Appointment, Diet, Workout } from '../../../models';
 import { ClientsBaseComponent } from '../clients-base.component';
@@ -68,7 +68,7 @@ export class ClientDashboardComponent extends ClientsBaseComponent implements On
             .map(response => {
               return response.items.map(item => new ListBoxItem(
                 item.workoutName,
-                this.getWorkoutUrl(item),
+                UrlConfig.getWorkoutUrl(item.client.id, item.id)
               ));
             }),
           super.translate('module.clients.dashboard.workouts'),
@@ -91,7 +91,7 @@ export class ClientDashboardComponent extends ClientsBaseComponent implements On
             .map(response => {
               return response.items.map(item => new ListBoxItem(
                 item.dietName,
-                this.getDietUrl(item),
+                UrlConfig.getDietUrl(item.client.id, item.id),
               ));
             }),
           super.translate('module.clients.dashboard.diets'),
@@ -113,7 +113,7 @@ export class ClientDashboardComponent extends ClientsBaseComponent implements On
             .map(response => {
               return response.items.map(item => new ListBoxItem(
                 item.message,
-                this.getChatMessageUrl(),
+                UrlConfig.getChatMessageUrl(item.senderUserId),
                 item.sender.getAvatarOrGravatarUrl() ? item.sender.getAvatarOrGravatarUrl() : this.defaultAvatarUrl
               ));
             }),
@@ -152,13 +152,13 @@ export class ClientDashboardComponent extends ClientsBaseComponent implements On
                   new ActionButton('edit', Observable.of(undefined)
                     .map(() => {
                       if (appointment) {
-                        this.dependencies.router.navigate([this.getAppointmentEditUrl(appointment)]);
+                        this.dependencies.coreServices.navigateService.navigate([UrlConfig.getAppointmentEditUrl(appointment.clientId, appointment.id)]);
                       }
                     }))
                 ) :
                   new ActionButton('add', Observable.of(undefined)
                     .map(() => {
-                      this.dependencies.router.navigate([this.getNewAppointmentUrl()]);
+                      this.dependencies.coreServices.navigateService.navigate([UrlConfig.getNewAppointmentUrl(this.clientId)]);
                     }));
             
                 this.appointmentInfoBox.actions = [action];
@@ -191,7 +191,7 @@ export class ClientDashboardComponent extends ClientsBaseComponent implements On
               if (workout) {
                 lines.push(new InfoBoxLine([
                   new InfoBoxText(super.translate('module.clients.appointments.workout').map(workoutTitle => workoutTitle + ': '), InfoBoxLineType.Body1),
-                  new InfoBoxText(workout.workoutName, InfoBoxLineType.Body1, this.getWorkoutUrl(workout)),
+                  new InfoBoxText(workout.workoutName, InfoBoxLineType.Body1, UrlConfig.getWorkoutUrl(workout.client.id, workout.id)),
                 ]
                 ));
               }
@@ -251,27 +251,5 @@ export class ClientDashboardComponent extends ClientsBaseComponent implements On
       });
   }
 
-  private getDietUrl(diet: Diet): string {
-    return super.getTrainerUrl('clients//edit/' + this.clientId + '/diet/' + diet.id + '/diet-plan');
-  }
-
-  private getWorkoutUrl(workout: Workout): string {
-    return super.getTrainerUrl('clients/edit/' + this.clientId + '/workout/' + workout.id + '/workout-plan');
-  }
-
-  private getAppointmentViewUrl(appointment: Appointment): string {
-    return super.getTrainerUrl('clients/edit/' + this.clientId + '/appointments/view/' + appointment.id);
-  }
-
-  private getAppointmentEditUrl(appointment: Appointment): string {
-    return super.getTrainerUrl('clients/edit/' + this.clientId + '/appointments/edit/' + appointment.id);
-  }
-
-  private getNewAppointmentUrl(): string {
-    return super.getTrainerUrl('clients/edit/' + this.clientId + '/appointments/new');
-  }
-
-  private getChatMessageUrl(): string {
-    return super.getTrainerUrl('clients/edit/' + this.clientId + '/chat');
-  }
+ 
 }

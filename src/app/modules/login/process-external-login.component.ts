@@ -20,15 +20,10 @@ export class ProcessExternalLoginComponent extends BaseComponent {
     super(dependencies);
     
     this.dependencies.coreServices.authService.handleExternalAuthentication(callback => {
-      console.log(callback);
       if (callback.isSuccessful) {
-        this.navigate([UrlConfig.getEntryUrl()]);
+        this.dependencies.coreServices.navigateService.loginPage();
       } else {
-        this.navigate([UrlConfig.getLoginUrl()], { 
-          queryParams: { 
-            loginResult: 'externalFail'
-          }
-        });
+        this.dependencies.coreServices.navigateService.loginPage({externalLoginError: true});
       }
     });
   }

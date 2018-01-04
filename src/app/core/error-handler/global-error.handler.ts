@@ -8,6 +8,7 @@ import { AppConfig, UrlConfig } from '../../config';
 import { Log } from '../../models';
 import { LogService } from '../../services';
 import { SharedService } from '../services/shared.service';
+import { NavigateService } from 'app/core/services';
 
 @Injectable()
 export class GlobalErrorHandler implements ErrorHandler {
@@ -109,14 +110,17 @@ export class GlobalErrorHandler implements ErrorHandler {
     }
 
     private redirectToErrorPage(): void {
-        window.location.href = UrlConfig.getAppErrorUrl();
+        window.location.href = UrlConfig.getErrorUrl();
     }
 
     private navigateToErrorPage(logGuid?: string): void {
-        const router = this.injector.get(Router);
-        const param = {};
-        param[UrlConfig.AppErrorLogGuidQueryString] = logGuid;
+        const navigateService = this.injector.get(NavigateService);
 
-        router.navigate([UrlConfig.getAppErrorUrl()], { queryParams: param });
+        const params = {};
+        params[UrlConfig.AppErrorLogGuidQueryString] = logGuid;
+
+        navigateService.errorPage({
+            queryParams: params
+        });
     }
 }

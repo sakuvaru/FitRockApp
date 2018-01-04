@@ -83,7 +83,7 @@ export class LoginFormComponent extends BaseComponent implements OnInit {
                 this.loginFailed = true;
             } else {
                 // redirect user to entry page
-                this.dependencies.router.navigate([UrlConfig.getEntryUrl()]);
+                this.dependencies.coreServices.navigateService.entryPage();
             }
         });
     }

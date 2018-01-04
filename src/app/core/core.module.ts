@@ -18,6 +18,7 @@ import { SharedService } from './services/shared.service';
 import { SystemService } from './services/system.service';
 import { TimeService } from './services/time.service';
 import { RememberService } from './services/remember.service';
+import { NavigateService } from './services/navigate.service';
 
 @NgModule({
     imports: [
@@ -44,7 +45,8 @@ import { RememberService } from './services/remember.service';
         AppLanguageResolver,
         SystemService,
         TimeService,
-        RememberService
+        RememberService,
+        NavigateService
     ],
     exports: [
         CommonModule,
