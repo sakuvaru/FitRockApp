@@ -22,12 +22,13 @@ export class CurrentLanguageService {
     isDifferentThanCurrent(languageEnum: LanguageEnum): boolean {
         const currentLanguage = this.getLanguage();
 
-        // if current language is the same as default language, it means its all good
-        if (languageEnum === LanguageEnum.Default) {
-            return languageEnum === this.defaultLanguage.language;
+        const languageToCompare = languageEnum === LanguageEnum.Default ? this.defaultLanguage.language : languageEnum;
+
+        if (currentLanguage.language === languageToCompare) {
+            return false;
         }
 
-        return currentLanguage.language !== languageEnum;
+        return true;
     }
 
     setLanguage(languageEnum: LanguageEnum): void {
