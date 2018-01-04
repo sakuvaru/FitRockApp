@@ -33,7 +33,6 @@
     "@swimlane/ngx-charts": "7.0.1",
     "angular-calendar": "0.23.1",
     "angular-modal-gallery": "4.0.1",
-    "angular2-jwt": "0.2.3",
     "angular2-text-mask": "8.0.4",
     "auth0-js": "9.0.2",
     "clone": "2.1.1",
@@ -48,7 +47,8 @@
     "rxjs": "5.5.6",
     "stacktrace-js": "2.0.0",
     "underscore": "1.8.3",
-    "zone.js": "0.8.19"
+    "zone.js": "0.8.19",
+    "jwt-decode": "2.2.0"
   },
   "devDependencies": {
     "@types/auth0-js": "8.11.1",

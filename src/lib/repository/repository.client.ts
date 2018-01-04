@@ -1,6 +1,5 @@
-import { AuthHttp } from 'angular2-jwt';
-
 import { IItem } from './interfaces/iitem.interface';
+import { IRepositoryHttpService } from './interfaces/irepository-http.service';
 import { CacheKeyType } from './models/cache-key-type';
 import { ControllerModel } from './models/controller-model.class';
 import { ItemCountQuery } from './queries/count/item-count-query.class';
@@ -30,10 +29,10 @@ export class RepositoryClient {
     public queryService: QueryService;
 
     constructor(
-        protected authHttp: AuthHttp,
+        protected httpService: IRepositoryHttpService,
         protected config: RepositoryConfig
     ) {
-        this.queryService = new QueryService(authHttp, config);
+        this.queryService = new QueryService(httpService, config);
     }
 
     /* ------------ Item queries ---------- */

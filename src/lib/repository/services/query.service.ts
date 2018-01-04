@@ -1,13 +1,13 @@
-import { Headers, RequestOptions } from '@angular/http';
 import { Response } from '@angular/http';
-import { AuthHttp } from 'angular2-jwt';
+import { Headers, RequestOptions } from '@angular/http';
 import { Observable, Subject } from 'rxjs/Rx';
 
 import { ErrorReasonEnum } from '../enums/error-reason.enum';
 import { IFormValidationResult } from '../interfaces/iform-validation-result.interface';
 import { IItem } from '../interfaces/iitem.interface';
 import { IOption } from '../interfaces/ioption.interface';
-import { IErrorResponseRaw, IFormErrorResponseRaw, IAuthErrorResponseRaw } from '../interfaces/iraw-responses';
+import { IAuthErrorResponseRaw, IErrorResponseRaw, IFormErrorResponseRaw } from '../interfaces/iraw-responses';
+import { IRepositoryHttpService } from '../interfaces/irepository-http.service';
 import { FormValidationResult } from '../models/form-validation-result.class';
 import {
     ErrorResponse,
@@ -28,10 +28,10 @@ import {
     ResponseUploadMultiple,
     ResponseUploadSingle,
 } from '../models/responses';
+import { AuthErrorResponse } from '../models/responses';
 import { UpdateItemsRequest } from '../models/update-items-request.class';
 import { RepositoryConfig } from '../repository.config';
 import { ResponseMapService } from './response-map.service';
-import { AuthErrorResponse } from '../models/responses';
 
 export class QueryService {
 
@@ -46,7 +46,7 @@ export class QueryService {
     public error: Observable<ErrorResponse> = QueryService.requestErrorSource.asObservable();
 
     constructor(
-        protected authHttp: AuthHttp,
+        protected httpService: IRepositoryHttpService,
         protected config: RepositoryConfig
     ) {
         this.responseMapService = new ResponseMapService(config);
@@ -255,7 +255,7 @@ export class QueryService {
     }
 
     getSingleFile(url: string): Observable<ResponseFileSingle> {
-        return this.authHttp.get(url)
+        return this.httpService.get(url)
             .map(response => {
                 return this.responseMapService.mapSingleFileResponse(response);
             })
@@ -357,7 +357,7 @@ export class QueryService {
     /* -------------------- Response methods ------------------ */
 
     private getResponse(url: string): Observable<Response> {
-        return this.authHttp.get(url)
+        return this.httpService.get(url)
             .do(() => this.startRequest())
             .catch(response => {
                 return Observable.throw(this.handleError(response));
@@ -368,7 +368,7 @@ export class QueryService {
     }
 
     private getPostResponse(url: string, data: any, requestOptions?: RequestOptions): Observable<Response> {
-        return this.authHttp.post(url, data, requestOptions)
+        return this.httpService.post(url, data, requestOptions)
             .do(() => this.startRequest())
             .catch(response => {
                 return Observable.throw(this.handleError(response));
@@ -379,7 +379,7 @@ export class QueryService {
     }
 
     private getDeleteResponse(url: string, requestOptions?: RequestOptions): Observable<Response> {
-        return this.authHttp.delete(url, requestOptions)
+        return this.httpService.delete(url, requestOptions)
             .do(() => this.startRequest())
             .catch(response => {
                 return Observable.throw(this.handleError(response));

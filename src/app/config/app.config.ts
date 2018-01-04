@@ -29,7 +29,6 @@ export class AppConfig {
     public static Auth0_FacebookConnectionName = 'facebook';
     public static Auth0_AccessTokenStorageName = 'access_token';
     public static Auth0_IdTokenStorageName = 'id_token';
-    public static Auth0_NoJwtError = true;
 
     /**
      * Api key for goole project

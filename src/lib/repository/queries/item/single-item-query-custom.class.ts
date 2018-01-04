@@ -1,9 +1,7 @@
-import { AuthHttp } from 'angular2-jwt';
-import { Observable } from 'rxjs/Rx';
 import { QueryService } from 'lib/repository/services/query.service';
+import { Observable } from 'rxjs/Rx';
 
 import { ResponseSingle } from '../../models/responses';
-import { RepositoryConfig } from '../../repository.config';
 import { BaseSingleItemQuery } from './base-single-item-query.class';
 
 export class SingleItemQueryCustom<TModel> extends BaseSingleItemQuery {

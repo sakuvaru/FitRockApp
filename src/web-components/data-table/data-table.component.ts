@@ -696,14 +696,12 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
     private activateTempFilters(): void {
         if (this.useStaticFilters()) {
             this.filtersWrapper = this.tempFiltersWrapper;
-            console.log(this.filtersWrapper);
             this.tempFiltersWrapper = [];
             return;
         }
 
         if (this.userDynamicFilters()) {
             this.filtersWrapper = this.tempFiltersWrapper;
-
             this.tempFiltersWrapper = [];
             return;
         }

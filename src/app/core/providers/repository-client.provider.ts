@@ -1,22 +1,36 @@
-// core
 import { NgModule } from '@angular/core';
 import { Http } from '@angular/http';
+import { TokenService } from 'lib/auth';
+import { RepositoryHttpService } from 'lib/repository/services/repository-http.service';
 
-// config
-import { RepositoryConfig, TypeResolver, RepositoryClient } from '../../../lib/repository';
-import { AppConfig, UrlConfig } from '../../config';
-
-// services
-import { AuthHttp } from 'angular2-jwt';
-
-// models
+import { RepositoryClient, RepositoryConfig, TypeResolver } from '../../../lib/repository';
+import { AppConfig } from '../../config';
 import {
-    User, Log, Workout, WorkoutCategory, Exercise, ExerciseCategory, WorkoutExercise,
-    Diet, DietCategory, DietFood, Food, FoodCategory, FoodUnit, ProgressItem, ProgressItemType,
-    ProgressItemUnit, ChatMessage, Feed, FileRecord, Appointment, Location, FoodDish 
+    Appointment,
+    ChatMessage,
+    Diet,
+    DietCategory,
+    DietFood,
+    Exercise,
+    ExerciseCategory,
+    Feed,
+    FileRecord,
+    Food,
+    FoodCategory,
+    FoodDish,
+    FoodUnit,
+    Location,
+    Log,
+    ProgressItem,
+    ProgressItemType,
+    ProgressItemUnit,
+    User,
+    Workout,
+    WorkoutCategory,
+    WorkoutExercise,
 } from '../../models';
 
-export function RepositoryClientFactory(authHttp: AuthHttp) {
+export function RepositoryClientFactory(http: Http, tokenService: TokenService) {
 
     const apiUrl = AppConfig.RepositoryUrl;
     const typeEndpoint = AppConfig.RepositoryTypeEndpoint;
@@ -48,7 +62,9 @@ export function RepositoryClientFactory(authHttp: AuthHttp) {
     ];
 
     return new RepositoryClient(
-        authHttp,
+        new RepositoryHttpService(http, () => tokenService.getIdToken(), {
+            throwErrorOnMissingJwtToken: false
+        }),
         new RepositoryConfig(apiUrl, typeEndpoint, apiEndpoint, typeResolvers, {
             logErrorsToConsole: AppConfig.DevModeEnabled
         })
@@ -58,7 +74,7 @@ export function RepositoryClientFactory(authHttp: AuthHttp) {
 export let RepositoryClientProvider = {
     provide: RepositoryClient,
     useFactory: RepositoryClientFactory,
-    deps: [AuthHttp]
+    deps: [Http, TokenService]
 };
 
 @NgModule({

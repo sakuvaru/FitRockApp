@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { Router } from '@angular/router';
-import { JwtHelper } from 'angular2-jwt';
+import * as jwtDecode from 'jwt-decode';
 import * as Auth0 from 'auth0-js';
 import { Auth0User } from 'lib/auth/models/auth0-user.class';
 
@@ -30,9 +30,7 @@ export class AuthService {
         scope: AppConfig.Auth0_Scope
     });
 
-    private jwtHelper = new JwtHelper();
-
-    constructor(private tokenService: TokenService, private http: Http, private router: Router) {
+    constructor(private tokenService: TokenService, private http: Http, private router: Router) { 
     }
 
     getAuth0UserFromLocalStorage(): Auth0User | null {
@@ -46,7 +44,7 @@ export class AuthService {
             return null;
         }
 
-        const decodedToken = this.jwtHelper.decodeToken(idToken);
+        const decodedToken = this.decodeToken(idToken);
 
         return new Auth0User(
             true, 
@@ -141,12 +139,29 @@ export class AuthService {
             return false;
         }
 
-        if (this.jwtHelper.isTokenExpired(idToken)) {
-            // token is not valid or expired
+        return this.isTokenExpired(idToken);
+    }
+
+    private decodeToken(token: string): any {
+        return jwtDecode(token);
+    }
+
+    private isTokenExpired(token: string): boolean {
+        let isExpiredToken = false;
+        
+        const dateNow = new Date();
+
+        const decodedToken = this.decodeToken(token);
+
+        if (!decodedToken) {
             return false;
         }
+        
+        if (decodedToken.exp < dateNow.getTime()) {
+             isExpiredToken = true;
+        }
 
-        return true;
+        return isExpiredToken;
     }
 }
 

@@ -1,26 +1,41 @@
-// core models
-import { Headers, RequestOptions } from '@angular/http';
-import { IOption } from '../interfaces/ioption.interface';
-import { AuthHttp } from 'angular2-jwt';
 import { Response } from '@angular/http';
+
 import { IItem } from '../interfaces/iitem.interface';
+import {
+    IResponseCountRaw,
+    IResponseCreateRaw,
+    IResponseDeleteFile,
+    IResponseDeleteRaw,
+    IResponseEditRaw,
+    IResponseFileMultiple,
+    IResponseFileSingle,
+    IResponseFormEditRaw,
+    IResponseFormInsertRaw,
+    IResponseMultipleRaw,
+    IResponsePostRaw,
+    IResponseSingleRaw,
+    IResponseUpdateItemsOrder,
+    IResponseUploadMultipleRaw,
+    IResponseUploadSingleRaw,
+} from '../interfaces/iraw-responses';
+import {
+    ResponseCount,
+    ResponseCreate,
+    ResponseDelete,
+    ResponseDeleteFile,
+    ResponseEdit,
+    ResponseFileMultiple,
+    ResponseFileSingle,
+    ResponseFormEdit,
+    ResponseFormInsert,
+    ResponseMultiple,
+    ResponsePost,
+    ResponseSingle,
+    ResponseUpdateItemsOrder,
+    ResponseUploadMultiple,
+    ResponseUploadSingle,
+} from '../models/responses';
 import { RepositoryConfig } from '../repository.config';
-
-// responses
-import { ResponseDeleteFile, ResponseFileMultiple, ResponseFileSingle, ResponseUploadMultiple,
-    ResponseUploadSingle, ResponseCount, ResponsePost, ResponseFormEdit, ResponseFormInsert,
-    ResponseDelete, ResponseCreate, ResponseEdit, ResponseMultiple, ResponseSingle,
-    ErrorResponse, FormErrorResponse, ResponseUpdateItemsOrder
-    } from '../models/responses';
-
-// raw responses
-import { IResponseDeleteFile, IResponseFileMultiple, IResponseFileSingle, IResponseUploadMultipleRaw,
-    IResponseUploadSingleRaw, IResponseCountRaw, IResponsePostRaw, IResponseFormEditRaw,
-    IResponseFormInsertRaw, IResponseCreateRaw, IResponseDeleteRaw, IResponseEditRaw, IResponseMultipleRaw,
-    IResponseSingleRaw, IErrorResponseRaw, IFormErrorResponseRaw, IResponseUpdateItemsOrder
-    } from '../interfaces/iraw-responses';
-
-// services
 import { MapService } from './map.service';
 import { TypeResolverService } from './type-resolver.service';
 
