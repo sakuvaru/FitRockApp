@@ -48,7 +48,8 @@
     "stacktrace-js": "2.0.0",
     "underscore": "1.8.3",
     "zone.js": "0.8.19",
-    "jwt-decode": "2.2.0"
+    "jwt-decode": "2.2.0",
+    "@angular/material-moment-adapter": "5.0.3"
   },
   "devDependencies": {
     "@types/auth0-js": "8.11.1",
