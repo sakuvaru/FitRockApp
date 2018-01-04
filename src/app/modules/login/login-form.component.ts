@@ -55,10 +55,10 @@ export class LoginFormComponent extends BaseComponent implements OnInit {
 
 
     private processFailedLogonRedirect() {
-        const result = this.activatedRoute.snapshot.queryParams['result'];
+        const result = this.activatedRoute.snapshot.queryParams['loginResult'];
 
         // auth service will redirect back to logon page with query param 'result=error' and radnom fragment (hash) if login fails
-        if (result === 'error') {
+        if (result === 'externalFail') {
             this.loginFailed = true;
         } else {
             this.loginFailed = false;
