@@ -11,6 +11,6 @@ export class Diet extends BaseItem {
     public dietCategoryId: number;
 
     public dietCategory: DietCategory;
-    public client: User;
+    public client?: User;
     public dietFoods: DietFood[];
 }

@@ -68,7 +68,7 @@ export class ClientDashboardComponent extends ClientsBaseComponent implements On
             .map(response => {
               return response.items.map(item => new ListBoxItem(
                 item.workoutName,
-                UrlConfig.getWorkoutUrl(item.client.id, item.id)
+                UrlConfig.getWorkoutUrl(item.clientId ? item.clientId : 0, item.id)
               ));
             }),
           super.translate('module.clients.dashboard.workouts'),
@@ -91,7 +91,7 @@ export class ClientDashboardComponent extends ClientsBaseComponent implements On
             .map(response => {
               return response.items.map(item => new ListBoxItem(
                 item.dietName,
-                UrlConfig.getDietUrl(item.client.id, item.id),
+                UrlConfig.getDietUrl(item.clientId ? item.clientId : 0, item.id),
               ));
             }),
           super.translate('module.clients.dashboard.diets'),

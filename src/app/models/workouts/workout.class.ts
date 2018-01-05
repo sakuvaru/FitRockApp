@@ -9,7 +9,8 @@ export class Workout extends BaseItem {
     public description: string;
     public workoutCategoryId: number;
     public workoutCategory: WorkoutCategory;
-    public client: User;
+    public clientId?: number;
+    public client?: User;
     public order: number;
     public workoutExercises: WorkoutExercise[];
 }
