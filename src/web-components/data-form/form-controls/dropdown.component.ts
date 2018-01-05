@@ -45,6 +45,8 @@ export class DropdownComponent extends BaseFormControlComponent implements OnIni
       return;
     }
 
+    this.listOptionsResolved = true;
+
     if (this.field.options && this.field.options.listOptions) {
       this.field.options.listOptions.forEach(option => {
 
@@ -87,7 +89,6 @@ export class DropdownComponent extends BaseFormControlComponent implements OnIni
             });
         }
       });
-      this.listOptionsResolved = true;
     }
   }
 

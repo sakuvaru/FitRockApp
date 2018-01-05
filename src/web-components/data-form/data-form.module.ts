@@ -25,6 +25,8 @@ import { TextAreaComponent } from './form-controls/text-area.component';
 import { TextComponent } from './form-controls/text.component';
 import { DurationComponent } from './form-controls/duration.component';
 import { EmailComponent } from './form-controls/email.component';
+import { MultipleChoiceComponent } from './form-controls/multiple-choice.component';
+import { MultipleChoiceDialogComponent } from './dialogs/multiple-choice-dialog.component';
 
 @NgModule({
     imports: [
@@ -38,6 +40,9 @@ import { EmailComponent } from './form-controls/email.component';
         MessagesModule,
         TextMaskModule,
         DateTimePickerModule
+    ],
+    entryComponents: [
+        MultipleChoiceDialogComponent
     ],
     declarations: [
         DataFormComponent,
@@ -56,7 +61,10 @@ import { EmailComponent } from './form-controls/email.component';
         PhoneNumberComponent,
         DateTimeComponent,
         DurationComponent,
-        EmailComponent
+        EmailComponent,
+        MultipleChoiceComponent,
+        // dialogs
+        MultipleChoiceDialogComponent
     ],
     exports: [
         DataFormComponent,

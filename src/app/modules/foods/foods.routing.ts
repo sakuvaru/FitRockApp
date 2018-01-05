@@ -12,6 +12,7 @@ import { NewFoodComponent } from './new/new-food.component';
 import { PreviewFoodComponent } from './view/preview-food.component';
 import { NewDishComponent } from './new/new-dish.component';
 import { EditDishComponent } from './edit/edit-dish.component';
+import { PreviewDishComponent } from './view/preview-dish.component';
 
 @NgModule({
     declarations: [
@@ -37,6 +38,9 @@ import { EditDishComponent } from './edit/edit-dish.component';
                     },
                     {
                         path: 'foods/dishes', component: MyDishesListComponent
+                    },
+                    {
+                        path: 'foods/dishes/preview/:id', component: PreviewDishComponent
                     },
                     {
                         path: 'foods/dishes/new', component: NewDishComponent

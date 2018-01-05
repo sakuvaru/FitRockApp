@@ -221,5 +221,19 @@ export class DataFormErrorTranslationItem {
     ) { }
 }
 
+export class DataFormMultipleChoiceFieldConfig {
+    constructor(
+        public optionsResolver: (field: DataFormField, item: any) => Observable<DataFormMultipleChoiceOption[]>
+    ) { }
+}
+
+export class DataFormMultipleChoiceOption {
+    constructor(
+        public id: number,
+        public title: string,
+        public subTitle?: string,
+    ) { }
+}
+
 
 

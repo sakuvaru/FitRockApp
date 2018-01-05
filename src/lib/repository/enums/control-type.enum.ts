@@ -12,5 +12,6 @@ export enum ControlTypeEnum {
     PhoneNumber = 9,
     DateTime = 10,
     Duration = 11,
-    Email = 12
+    Email = 12,
+    MultipleChoice = 13
 }

@@ -2,6 +2,7 @@ import { BaseItem, LanguageEnum, languageHelper } from '../../../lib/repository'
 import { FoodUnit } from './food-unit.class';
 import { FoodCategory } from './food-category.class';
 import { DietFood } from '../diets/diet-food.class';
+import { FoodDish } from './food-dish.class';
 
 export class Food extends BaseItem {
     public foodName: string;
@@ -20,7 +21,7 @@ export class Food extends BaseItem {
     public language: LanguageEnum;
     public IsDishFood: boolean;
 
-    public dishFoods: DietFood[];
+    public FoodDishes: FoodDish[];
     public foodUnit: FoodUnit;
     public foodCategory: FoodCategory;
 

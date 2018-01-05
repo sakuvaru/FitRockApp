@@ -137,6 +137,8 @@ export class FormField implements IFormField {
             this.defaultValue = +defaultValue;
         } else if (controlType === 'Email') {
             this.controlTypeEnum = ControlTypeEnum.Email;    
+        } else if (controlType === 'MultipleChoice') {
+            this.controlTypeEnum = ControlTypeEnum.MultipleChoice;    
         } else {
             this.controlTypeEnum = ControlTypeEnum.Unknown;
         }

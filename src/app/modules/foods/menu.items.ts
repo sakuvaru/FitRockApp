@@ -44,8 +44,21 @@ export class FoodMenuItems {
     constructor(foodId: number) {
         this.menuItems = [
             new MenuItem({ key: 'menu.shared.back' }, MenuItemType.trainer, 'foods', { icon: 'arrow_back' }),
-            new MenuItem({ key: 'module.foods.submenu.preview' }, MenuItemType.trainer, 'foods/preview/' + foodId, { icon: 'pageview' }),
+            new MenuItem({ key: 'module.foods.submenu.previewFood' }, MenuItemType.trainer, 'foods/preview/' + foodId, { icon: 'pageview' }),
             new MenuItem({ key: 'module.foods.submenu.editFood' }, MenuItemType.trainer, 'foods/edit/' + foodId, { icon: 'edit' })
+        ];
+    }
+}
+
+export class DishMenuItems {
+
+    menuItems: MenuItem[];
+
+    constructor(foodId: number) {
+        this.menuItems = [
+            new MenuItem({ key: 'menu.shared.back' }, MenuItemType.trainer, 'foods/dishes', { icon: 'arrow_back' }),
+            new MenuItem({ key: 'module.foods.submenu.previewDish' }, MenuItemType.trainer, 'foods/dishes/preview/' + foodId, { icon: 'pageview' }),
+            new MenuItem({ key: 'module.foods.submenu.editDish' }, MenuItemType.trainer, 'foods/dishes/edit/' + foodId, { icon: 'edit' })
         ];
     }
 }

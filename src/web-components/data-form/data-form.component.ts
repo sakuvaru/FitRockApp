@@ -6,7 +6,7 @@ import { Observable, Subject } from 'rxjs/Rx';
 import * as _ from 'underscore';
 
 import { LocalizationService } from '../../lib/localization';
-import { observableHelper } from '../../lib/utilities';
+import { observableHelper, numberHelper, booleanHelper } from '../../lib/utilities';
 import { BaseWebComponent } from '../base-web-component.class';
 import {
     DataFormDeleteResponse,
@@ -216,11 +216,16 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
             // prepare field observables
             const fieldObservables: Observable<void>[] = [];
 
+            let item: any | undefined;
+            if (definition instanceof DataFormEditDefinition) {
+                item = definition.item;
+            }
+
             // clear fields
             this.clearFields();
 
             definition.fields.forEach(field => {
-                fieldObservables.push(this.resolveField(field)
+                fieldObservables.push(this.resolveField(field, item)
                     .map(resolvedField => {
                         // add resolved field to fields
                         this.fields.push(resolvedField);
@@ -579,13 +584,13 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
             .subscribe();
     }
 
-    private resolveField(field: DataFormField): Observable<DataFormField> {
+    private resolveField(field: DataFormField, item: any | undefined): Observable<DataFormField> {
         // resolve field using custom values
         if (!this.config.fieldValueResolver) {
             return Observable.of(field);
         }
 
-        return this.config.fieldValueResolver(field.key, field.value)
+        return this.config.fieldValueResolver(field.key, field.value, item)
             .map(newValue => {
                 const resolvedValue = this.getFieldValueSetByResolver(newValue);
 
@@ -732,7 +737,7 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
      * @param fieldName Name of field
      * @param value Value
      */
-    private getFieldValueSetByResolver(value: string | boolean | number | Date): string {
+    private getFieldValueSetByResolver(value: string | boolean | number | Date): string | number | Date {
         // boolean field needs to return 'string' with 'false' value otherwise the JSON .NET mapping
         // does not map the object
         if (!value) {
@@ -740,6 +745,10 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
                 return 'false';
             }
             return '';
+        }
+
+        if (numberHelper.isNumber(value)) {
+            return +value;
         }
 
         return value.toString().trim();

@@ -119,7 +119,7 @@ export class DataFormConfig {
     /**
      * Resolver used to change the value of certain fields manually
      */
-    public fieldValueResolver?: (fieldName: string, value: any) => Observable<string | boolean | number | Date>;
+    public fieldValueResolver?: (fieldName: string, value: any, item: any) => Observable<string | boolean | number | Date>;
 
     /**
      * Indicates if local loader is enabled
@@ -150,6 +150,11 @@ export class DataFormConfig {
      * Custom text shown on button. If none is set, default texts will be used
      */
     public customButtonSaveText?: Observable<string>;
+
+    /**
+     * Class used for dialogs within form
+     */
+    public dialogPanelClass?: string;
 
     constructor(
         /**

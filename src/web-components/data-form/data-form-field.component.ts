@@ -69,6 +69,10 @@ export class DataFormFieldComponent extends BaseWebComponent {
   isEmailField(): boolean {
     return this.field.fieldType === DataFormFieldTypeEnum.Email;
   }
+
+  isMultipleChoiceField(): boolean {
+    return this.field.fieldType === DataFormFieldTypeEnum.MultipleChoice;
+  }
 }
 
 

@@ -3,7 +3,7 @@ import { ActivatedRoute, Params } from '@angular/router';
 
 import { DataFormConfig } from '../../../../web-components/data-form';
 import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
-import { FoodMenuItems } from '../menu.items';
+import { DishMenuItems } from '../menu.items';
 import { Observable } from 'rxjs/Observable';
 import { stringHelper } from 'lib/utilities';
 
@@ -38,7 +38,17 @@ export class EditDishComponent extends BaseComponent implements OnInit {
         this.activatedRoute.params
             .takeUntil(this.ngUnsubscribe)
             .map((params: Params) => {
-                this.formConfig = this.dependencies.itemServices.foodService.buildEditForm(+params['id'])
+                this.formConfig = this.dependencies.itemServices.foodService.buildEditForm(
+                        this.dependencies.itemServices.foodService.editFormQuery(+params['id'])
+                            .include('FoodDishes')
+                    )
+                    .fieldValueResolver((fieldName, value, item) => {
+                        if (fieldName === 'FoodDishes' && item) {
+                            console.log(item);
+                        }
+
+                        return Observable.of(value);
+                    })
                     .onAfterDelete(() => super.navigate([this.getTrainerUrl('foods/dishes')]))
                     .optionLabelResolver((field, originalLabel) => {
                         if (field.key === 'FoodCategoryId') {
@@ -51,7 +61,7 @@ export class EditDishComponent extends BaseComponent implements OnInit {
                     })
                     .onEditFormLoaded(form => {
                         this.setConfig({
-                            menuItems: new FoodMenuItems(form.item.id).menuItems,
+                            menuItems: new DishMenuItems(form.item.id).menuItems,
                             menuTitle: {
                                 key: form.item.foodName
                             },

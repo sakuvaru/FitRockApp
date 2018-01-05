@@ -23,6 +23,8 @@ import { dataFormBuilderUtils } from './data-form-builder-utils';
 
 export class DataFormBuilder<TItem extends IItem> {
 
+    private readonly dialogClass: string = 'w-dialog-panel';
+
     private config: DataFormConfig;
 
     constructor(
@@ -36,6 +38,9 @@ export class DataFormBuilder<TItem extends IItem> {
         }
     ) {
         this.config = new DataFormConfig(type);
+
+        // assign dialog calss
+        this.dialogPanelClass(this.dialogClass);
 
         // set form status
         this.config.isEditForm = isEditForm;
@@ -65,7 +70,7 @@ export class DataFormBuilder<TItem extends IItem> {
     /**
     * Resolver used to change the value of certain fields manually
     */
-    fieldValueResolver(resolver: (fieldName: string, value: string | number | boolean | Date) => Observable<string | boolean | number | Date>): this {
+    fieldValueResolver(resolver: (fieldName: string, value: string | number | boolean | Date, item: TItem | undefined) => Observable<string | boolean | number | Date>): this {
         this.config.fieldValueResolver = resolver;
         return this;
     }
@@ -227,6 +232,14 @@ export class DataFormBuilder<TItem extends IItem> {
     */
     customButtonSaveText(text: Observable<string>): this {
         this.config.customButtonSaveText = text;
+        return this;
+    }
+
+    /**
+     * Class used for dialogs within form
+     */
+    dialogPanelClass(className: string): this {
+        this.config.dialogPanelClass = className;
         return this;
     }
 

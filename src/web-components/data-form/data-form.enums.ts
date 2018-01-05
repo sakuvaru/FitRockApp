@@ -23,6 +23,7 @@ export enum DataFormFieldTypeEnum {
     PhoneNumber,
     DateTime,
     Duration,
-    Email
+    Email,
+    MultipleChoice
 }
 

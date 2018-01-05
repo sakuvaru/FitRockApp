@@ -191,7 +191,7 @@ export class ClientDashboardComponent extends ClientsBaseComponent implements On
               if (workout) {
                 lines.push(new InfoBoxLine([
                   new InfoBoxText(super.translate('module.clients.appointments.workout').map(workoutTitle => workoutTitle + ': '), InfoBoxLineType.Body1),
-                  new InfoBoxText(workout.workoutName, InfoBoxLineType.Body1, UrlConfig.getWorkoutUrl(workout.client.id, workout.id)),
+                  new InfoBoxText(workout.workoutName, InfoBoxLineType.Body1, UrlConfig.getWorkoutUrl(workout.clientId ? workout.clientId : 0, workout.id)),
                 ]
                 ));
               }

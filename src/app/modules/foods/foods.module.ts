@@ -12,6 +12,7 @@ import { NewFoodComponent } from './new/new-food.component';
 import { PreviewFoodComponent } from './view/preview-food.component';
 import { NewDishComponent } from './new/new-dish.component';
 import { EditDishComponent } from './edit/edit-dish.component';
+import { PreviewDishComponent } from './view/preview-dish.component';
 
 @NgModule({
     imports: [
@@ -28,7 +29,8 @@ import { EditDishComponent } from './edit/edit-dish.component';
         PreviewFoodComponent,
         MyDishesListComponent,
         NewDishComponent,
-        EditDishComponent
+        EditDishComponent,
+        PreviewDishComponent
     ]
 })
 export class FoodsModule { }

@@ -45,3 +45,8 @@
 <ng-container *ngIf="isEmailField()">
   <df-email [fields]="fields" [field]="field" [formGroup]="formGroup" [config]="config"></df-email>
 </ng-container>
+
+<ng-container *ngIf="isMultipleChoiceField()">
+  <df-multiple-choice [fields]="fields" [field]="field" [formGroup]="formGroup" [config]="config"></df-multiple-choice>
+</ng-container>
+

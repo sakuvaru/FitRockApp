@@ -76,7 +76,7 @@ export class MyDishesListComponent extends BaseComponent implements OnInit {
           });
           return filters;
         }))
-      .onClick((item) => super.navigate([super.getTrainerUrl('foods/preview/') + item.id]))
+      .onClick((item) => super.navigate([super.getTrainerUrl('foods/dishes/preview/') + item.id]))
       .build();
   }
 }

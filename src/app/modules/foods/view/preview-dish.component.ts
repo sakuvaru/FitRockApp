@@ -4,12 +4,12 @@ import { Observable } from 'rxjs/Rx';
 
 import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
 import { Food } from '../../../models';
-import { FoodMenuItems } from '../menu.items';
+import { DishMenuItems } from '../menu.items';
 
 @Component({
-    templateUrl: 'preview-food.component.html'
+    templateUrl: 'preview-dish.component.html'
 })
-export class PreviewFoodComponent extends BaseComponent implements OnInit {
+export class PreviewDishComponent extends BaseComponent implements OnInit {
 
     public food: Food;
 
@@ -45,22 +45,22 @@ export class PreviewFoodComponent extends BaseComponent implements OnInit {
 
                 if (this.food.createdByUserId === this.dependencies.authenticatedUserService.getUserId()) {
                     this.setConfig({
-                        menuItems: new FoodMenuItems(this.food.id).menuItems,
+                        menuItems: new DishMenuItems(this.food.id).menuItems,
                         menuTitle: {
                             key: this.food.foodName
                         },
                         componentTitle: {
-                            'key': 'module.foods.submenu.previewFood'
+                            'key': 'module.foods.submenu.previewDish'
                         }
                     });
                 } else {
                     this.setConfig({
-                        menuItems: new FoodMenuItems(response.item.id).menuItems,
+                        menuItems: new DishMenuItems(response.item.id).menuItems,
                         menuTitle: {
                             key: response.item.foodName
                         },
                         componentTitle: {
-                            'key': 'module.foods.submenu.previewFood'
+                            'key': 'module.foods.submenu.previewDish'
                         }
                     });
                 }
