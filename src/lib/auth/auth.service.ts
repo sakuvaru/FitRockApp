@@ -47,7 +47,6 @@ export class AuthService {
         const decodedToken = this.decodeToken(idToken);
 
         return new Auth0User(
-            true, 
             decodedToken['email_verified'], 
             decodedToken['picture'], 
             decodedToken['email'], 

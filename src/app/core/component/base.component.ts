@@ -344,7 +344,9 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
         // subscribe to repository errors only for non nested components as otherwise
         // the repository could have multiple subscriptions which would result in multiple
         // errors occuring
-        this.subscribeToRepositoryErrors();
+        if (this.shouldSubscribeToRepositoryErrors(setup)) {
+          //  this.subscribeToRepositoryErrors();
+        }
     }
 
     private initializeComponent(initialize: boolean = true): void {
@@ -355,6 +357,13 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
             throw Error(`Component was not initialized`);
         }
         this.dependencies.coreServices.sharedService.setComponentSetup(currentSetup);
+    }
+
+    private shouldSubscribeToRepositoryErrors(setup: ComponentSetup): boolean {
+        if (setup.disableRepositoryErrors) {
+            return false;
+        }
+        return true;
     }
 
     private subscribeToRepositoryErrors(): void {

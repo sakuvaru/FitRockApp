@@ -1,7 +1,6 @@
 export class Auth0User {
 
     constructor(
-        public isAuthenticated: boolean,
         public emailVerified: boolean,
         public picture: string,
         public email: string,

@@ -1,11 +1,7 @@
-import { Component, Input, Output, OnInit, EventEmitter, OnDestroy } from '@angular/core';
-import { AuthService } from '../lib/auth';
-import { ActivatedRoute, Params } from '@angular/router';
-import { ComponentDependencyService, BaseComponent, ComponentSetup } from './core';
-import { AuthenticatedUserService } from './core/services/authenticated-user.service';
+import { Component } from '@angular/core';
+
+import { BaseComponent, ComponentDependencyService, ComponentSetup } from './core';
 import { AuthenticatedUser } from './core/models/core.models';
-import { Observable } from 'rxjs/Rx';
-import { AppConfig, UrlConfig } from './config';
 
 @Component({
   template: '',
@@ -15,7 +11,8 @@ export class EntryComponent extends BaseComponent {
   setup(): ComponentSetup {
     return new ComponentSetup({
       initialized: true,
-      isNested: false
+      isNested: false,
+      disableRepositoryErrors: true
     });
   }
 
@@ -28,7 +25,7 @@ export class EntryComponent extends BaseComponent {
 
     // if user is not authenticated, just redirect him to logon page
     if (!currentUser) {
-      this.navigate([UrlConfig.getLoginUrl()]);
+      this.dependencies.coreServices.navigateService.loginPage();
       return;
     }
 
@@ -45,7 +42,7 @@ export class EntryComponent extends BaseComponent {
               throw Error('Invalid user response from server, please report this error');
             } else if (!response.item) {
               // redirect him to logon screen
-              this.navigate([UrlConfig.getLoginUrl()]);
+              this.dependencies.coreServices.navigateService.loginPage();
             } else {
               // user is authenticated, update auth user
               const user = response.item;
@@ -81,7 +78,7 @@ export class EntryComponent extends BaseComponent {
 
   private redirectUser(isClient: boolean): void {
     console.warn('clients are redirected to same page as trainers for now');
-    this.navigate([UrlConfig.TrainerMasterPath]);
+    this.dependencies.coreServices.navigateService.trainerPage('');
     return;
     /*
     if (!isClient) {
