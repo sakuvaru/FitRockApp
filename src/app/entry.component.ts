@@ -28,7 +28,7 @@ export class EntryComponent extends BaseComponent {
       this.dependencies.coreServices.navigateService.loginPage();
       return;
     }
-
+    
     // save user's gravatar and then user 
     this.dependencies.itemServices.userService
       .saveUserLoginData(currentUser.picture, currentUser.firstName, currentUser.lastName, currentUser.isFemale)

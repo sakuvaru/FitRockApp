@@ -8,7 +8,7 @@ export class User extends BaseItem {
     public isClient: boolean;
     public isAdmin: boolean;
     public trainerUserId: number;
-    public birthDate: Date;
+    public birthDate?: Date;
     public phoneNumber: string;
     public isFemale: boolean;
     public city: string;

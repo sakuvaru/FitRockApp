@@ -105,8 +105,10 @@ export class FormField implements IFormField {
             this.controlTypeEnum = ControlTypeEnum.Dropdown;
         } else if (controlType === 'Date') {
             this.controlTypeEnum = ControlTypeEnum.Date;
-            this.value = new Date(rawValue);
-            this.defaultValue = new Date(defaultValue);
+            if (rawValue) {
+                this.value = new Date(rawValue);
+                this.defaultValue = new Date(defaultValue);
+            }
         } else if (controlType === 'Boolean') {
             this.controlTypeEnum = ControlTypeEnum.Boolean;
         } else if (controlType === 'RadioBoolean') {
@@ -125,8 +127,10 @@ export class FormField implements IFormField {
             this.controlTypeEnum = ControlTypeEnum.PhoneNumber;
         } else if (controlType === 'DateTime') {
             this.controlTypeEnum = ControlTypeEnum.DateTime;
-            this.value = new Date(rawValue);
-            this.defaultValue = new Date(defaultValue);
+            if (rawValue) {
+                this.value = new Date(rawValue);
+                this.defaultValue = new Date(defaultValue);
+            }
         } else if (controlType === 'Duration') {
             this.controlTypeEnum = ControlTypeEnum.Duration;
             this.value = +rawValue;
