@@ -138,7 +138,12 @@ export class AuthService {
             return false;
         }
 
-        return this.isTokenExpired(idToken);
+        if (this.isTokenExpired(idToken)) {
+            // token is expired
+            return false;
+        }
+
+        return true;
     }
 
     private decodeToken(token: string): any {
@@ -146,21 +151,18 @@ export class AuthService {
     }
 
     private isTokenExpired(token: string): boolean {
-        let isExpiredToken = false;
-        
-        const dateNow = new Date();
-
+        const current_time = Date.now().valueOf() / 1000; // why value of? -> https://github.com/auth0/jwt-decode/issues/53
         const decodedToken = this.decodeToken(token);
 
         if (!decodedToken) {
-            return false;
-        }
-        
-        if (decodedToken.exp < dateNow.getTime()) {
-             isExpiredToken = true;
+            return true;
         }
 
-        return isExpiredToken;
+        if ( decodedToken.exp < current_time) {
+            return true;
+        }
+
+        return false;
     }
 }
 
