@@ -49,12 +49,12 @@ export abstract class BaseFormControlComponent extends BaseWebComponent implemen
     /**
      * Return value used for insert forms
      */
-    protected abstract getInsertValue(): string | boolean | number | Date | undefined;
+    protected abstract getInsertValue(): string | boolean | number | Date | Object | undefined;
 
     /**
      * Return value used for edit forms
      */
-    protected abstract getEditValue(): string | boolean | number | Date | undefined;
+    protected abstract getEditValue(): string | boolean | number | Date | Object | undefined;
 
     public get showLengthHint(): boolean {
         if (!this.field.options) {

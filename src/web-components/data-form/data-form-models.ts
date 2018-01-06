@@ -58,12 +58,12 @@ export class DataFormField {
         /** 
          * Value of field
         */
-        public value?: string | boolean | Date | number,
+        public value?: string | boolean | Date | number | Object,
 
         /**
         * Default value of the field
         */
-        public defaultValue?: string | number | Date | boolean,
+        public defaultValue?: string | number | Date | boolean | Object,
 
         optional?: {
             options?: DataFormFieldOptions,

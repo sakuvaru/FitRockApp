@@ -68,9 +68,9 @@ export class EditDishComponent extends BaseComponent implements OnInit {
     }
 
     private getMultipleChoiceFoodOption(dish: FoodDish): DataFormMultipleChoiceItem<NewChildFoodVirtualModel> {
-        return new DataFormMultipleChoiceItem(
+        return new DataFormMultipleChoiceItem<NewChildFoodVirtualModel>(
             dish.id.toString(),
-            dish,
+            new NewChildFoodVirtualModel(dish.food.id, dish.amount, dish.id),
             Observable.of(dish.food.foodName),
             this.getFoodOptionMetaLines(dish.food, dish.amount)
         );

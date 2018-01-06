@@ -68,6 +68,9 @@ export class MultipleChoiceComponent extends BaseFormControlComponent implements
       .takeUntil(this.ngUnsubscribe)
       .subscribe(items => {
         this.multipleChoiceItems = items;
+
+        // update field's json value
+        this.updateControlValueWithJson();
       });
 
     // subscribe to value change observable
@@ -105,8 +108,8 @@ export class MultipleChoiceComponent extends BaseFormControlComponent implements
     this.multipleChoiceConfig.onDialogClick(this.field, this.field.internalProperties.item);
   }
 
-  protected getInsertValue(): string {
-    return '';
+  protected getInsertValue(): any[] {
+    return this.getFieldValue();
 
     /*
     const defaultFieldValue = this.field.defaultValue;
@@ -123,8 +126,11 @@ export class MultipleChoiceComponent extends BaseFormControlComponent implements
     */
   }
 
-  protected getEditValue(): string {
-    return '';
+  protected getEditValue(): any[] {
+    // make sure the control value is up-to-date because this can be called AFTER the multiple items are loaded
+    this.updateControlValueWithJson();
+
+    return this.getFieldValue();
 
     /*
     const fieldValue = this.field.value;
@@ -141,8 +147,16 @@ export class MultipleChoiceComponent extends BaseFormControlComponent implements
     */
   }
 
+  private getFieldValue(): any[] {
+    if (!this.multipleChoiceItems) {
+      return [];
+    }
+
+    return this.multipleChoiceItems.map(item => item.rawValue);
+  }
+
   private updateControlValueWithJson(): void {
-    this.formGroup.controls[this.field.key].setValue(this.multipleChoiceItems.map(item => item.rawValue));
+    this.formGroup.controls[this.field.key].setValue(this.getFieldValue());
   }
 
   private removeItem(identifier: string): void {
