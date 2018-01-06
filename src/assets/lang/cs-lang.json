@@ -283,9 +283,13 @@
 				"myDishes": "Moje jídla"
 			},
 			"foodName": "Název",
+			"foodAmountTextLineA": "<strong>{{ amount }}</strong>/{{ foodUnit }}",
+			"foodAmountTextLineB": "B: <u>{{ proteins }}</u>, T: <u>{{ fats }}</u>, S: <u>{{ carbs }}</u> = <strong>{{ kcal }}</strong> kcal",
+			"foodAmountTextComplete": "Množství: {{ amount }}/{{ foodUnit }}. B: {{ proteins }}, T: {{ fats }}, S: {{ carbs }} = {{ kcal }} kcal",
 			"foodCategory": "Kategorie"
 		},
 		"foodUnits": {
+			"portion": "porce",
 			"mg": "miligram",
 			"unit": "kus",
 			"teaspoon": "čajová lžička",
@@ -553,7 +557,7 @@
 			"description": "Popis"
 		},
 		"dietFood": {
-			"unitValue": "Množství",
+			"amount": "Množství",
 			"notes": "Poznámky",
 			"eatTime": "Čas",
 			"eatTime.hint": "Např. 'po probuzení', '9:00', 'po tréninku' apod."

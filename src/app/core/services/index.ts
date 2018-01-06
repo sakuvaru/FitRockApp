@@ -5,3 +5,4 @@ export * from './remember.service';
 export * from './shared.service';
 export * from './time.service';
 export * from './system.service';
+export * from './localization-helper.service';

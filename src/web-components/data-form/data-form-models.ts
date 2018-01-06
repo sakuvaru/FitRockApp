@@ -2,6 +2,14 @@ import { Observable } from 'rxjs/Observable';
 
 import { DataFormFieldTypeEnum, DataFormSectionSize } from './data-form.enums';
 
+export class DataFormInternalProperties {
+
+    /**
+     * Item loaded by the form (if available - e.g. edit form)
+     */
+    public item?: any;
+}
+
 export class DataFormField {
 
     /**
@@ -28,6 +36,8 @@ export class DataFormField {
      * Width of the field
      */
     public width?: number;
+
+    public internalProperties: DataFormInternalProperties = new DataFormInternalProperties();
 
     constructor(
         /**
@@ -221,19 +231,23 @@ export class DataFormErrorTranslationItem {
     ) { }
 }
 
-export class DataFormMultipleChoiceFieldConfig {
+export class DataFormMultipleChoiceFieldConfig<TModel> {
     constructor(
-        public optionsResolver: (field: DataFormField, item: any) => Observable<DataFormMultipleChoiceOption[]>
+        public assignedItems: (field: DataFormField, item: any) => Observable<DataFormMultipleChoiceItem<TModel>[]>,
+        public onDialogClick: (field: DataFormField, item: any) => void,
+        public addItem: Observable<DataFormMultipleChoiceItem<TModel>>
     ) { }
 }
 
-export class DataFormMultipleChoiceOption {
+export class DataFormMultipleChoiceItem<TModel> {
     constructor(
-        public id: number,
-        public title: string,
-        public subTitle?: string,
+        public identifier: string,
+        public rawValue: TModel,
+        public itemName: Observable<string>,
+        public metaLines?: Observable<string>[]
     ) { }
 }
+
 
 
 

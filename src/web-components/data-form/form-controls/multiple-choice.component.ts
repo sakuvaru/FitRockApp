@@ -1,9 +1,11 @@
-import { ChangeDetectorRef, Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { ChangeDetectorRef, Component, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { MatDialog, MatSelectionList } from '@angular/material';
+import * as _ from 'underscore';
 
 import { LocalizationService } from '../../../lib/localization';
+import { DataFormMultipleChoiceFieldConfig, DataFormMultipleChoiceItem } from '../data-form-models';
+import { DataFormFieldTypeEnum } from '../data-form.enums';
 import { BaseFormControlComponent } from './base-form-control.component';
-import { MatDialog } from '@angular/material';
-import { MultipleChoiceDialogComponent } from '../dialogs/multiple-choice-dialog.component';
 
 @Component({
   selector: 'df-multiple-choice',
@@ -11,6 +13,19 @@ import { MultipleChoiceDialogComponent } from '../dialogs/multiple-choice-dialog
 })
 
 export class MultipleChoiceComponent extends BaseFormControlComponent implements OnInit, OnChanges {
+
+  public multipleChoiceItems: DataFormMultipleChoiceItem<any>[] = [];
+
+  private multipleChoiceInitialized: boolean = false;
+
+  private multipleChoiceConfig: DataFormMultipleChoiceFieldConfig<any> | undefined;
+
+  private _selectionList?: MatSelectionList;
+  @ViewChild('selectionList') set selectionList(content: MatSelectionList) {
+    if (content) {
+      this._selectionList = content;
+    }
+  }
 
   constructor(
     protected cdr: ChangeDetectorRef,
@@ -22,26 +37,77 @@ export class MultipleChoiceComponent extends BaseFormControlComponent implements
 
   ngOnInit() {
     super.ngOnInit();
+    this.initMultipleChoice();
   }
 
   ngOnChanges(changes: SimpleChanges) {
     super.ngOnChanges(changes);
+    this.initMultipleChoice();
   }
 
-  openDialog(): void {
-    const dialogRef = this.dialog.open(MultipleChoiceDialogComponent, {
-      panelClass: this.config.dialogPanelClass,
-      data: { name: 'Test' }
-    });
+  initMultipleChoice(): void {
+    if (this.multipleChoiceInitialized) {
+      return;
+    }
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-    });
+    this.multipleChoiceInitialized = true;
+
+    // try getting the configuration for multiple choice field
+    if (!this.config.multipleChoiceResolver) {
+      throw Error(`Field '${this.field.key}' of '${this.field.fieldType}' type is missing multiple choice resolver`);
+    }
+
+    const multipleChoiceConfig = this.config.multipleChoiceResolver(this.field, this.field.internalProperties.item);
+
+    if (!multipleChoiceConfig) {
+      throw Error(`Field '${this.field.key}' of '${DataFormFieldTypeEnum[this.field.fieldType]}' type does not contain required configuration object`);
+    }
+
+    // get multiple choice items
+    multipleChoiceConfig.assignedItems(this.field, this.field.internalProperties.item)
+      .takeUntil(this.ngUnsubscribe)
+      .subscribe(items => {
+        this.multipleChoiceItems = items;
+      });
+
+    // subscribe to value change observable
+    multipleChoiceConfig.addItem
+      .takeUntil(this.ngUnsubscribe)
+      .subscribe(newItem => {
+        // set value to field
+        this.multipleChoiceItems.push(newItem);
+
+        // update field's json value
+        this.updateControlValueWithJson();
+      });
+
+
+    // set config
+    this.multipleChoiceConfig = multipleChoiceConfig;
+  }
+
+  removeSelected(): void {
+    if (this._selectionList && this._selectionList.selectedOptions) {
+      this._selectionList.selectedOptions.selected.forEach(selectedOption => {
+        this.removeItem(selectedOption.value);
+      });
+    }
+
+    // update field's json value
+    this.updateControlValueWithJson();
+  }
+
+  multipleChoiceButtonClick(): void {
+    if (!this.multipleChoiceConfig) {
+      throw Error(`Incorrect configuration for '${this.field.key}'`);
+    }
+
+    this.multipleChoiceConfig.onDialogClick(this.field, this.field.internalProperties.item);
   }
 
   protected getInsertValue(): string {
     return '';
-    
+
     /*
     const defaultFieldValue = this.field.defaultValue;
 
@@ -59,7 +125,7 @@ export class MultipleChoiceComponent extends BaseFormControlComponent implements
 
   protected getEditValue(): string {
     return '';
-    
+
     /*
     const fieldValue = this.field.value;
 
@@ -73,5 +139,19 @@ export class MultipleChoiceComponent extends BaseFormControlComponent implements
 
     return fieldValue as string;
     */
+  }
+
+  private updateControlValueWithJson(): void {
+    this.formGroup.controls[this.field.key].setValue(this.multipleChoiceItems.map(item => item.rawValue));
+  }
+
+  private removeItem(identifier: string): void {
+    if (!this.multipleChoiceConfig) {
+      throw Error(`Incorrect configuration for '${this.field.key}'`);
+    }
+
+    const selectedItem = this.multipleChoiceItems.find(m => m.identifier === identifier);
+
+    this.multipleChoiceItems = _.reject(this.multipleChoiceItems, function (item) { return item.identifier === identifier; });
   }
 }

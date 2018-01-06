@@ -23,8 +23,6 @@ export class EntryComponent extends BaseComponent {
     // try getting current user out of the auth service
     const currentUser = this.dependencies.coreServices.authService.getAuth0UserFromLocalStorage();
 
-    console.log(currentUser);
-
     // if user is not authenticated, just redirect him to logon page
     if (!currentUser) {
       this.dependencies.coreServices.navigateService.loginPage();

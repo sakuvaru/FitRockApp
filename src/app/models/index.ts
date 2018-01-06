@@ -18,6 +18,7 @@ export * from './foods/food.class';
 export * from './foods/food-category.class';
 export * from './foods/food-unit.class';
 export * from './foods/food-dish.class';
+export * from './foods/food-misc.models';
 
 // progress
 export * from './progress/progress-item.class';

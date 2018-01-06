@@ -1,0 +1,15 @@
+<mat-dialog-actions>
+    <span class="md-title">{{'module.diets.selectFood' | localize}}</span>
+    <span flex></span>
+    <close-button (click)="close()"></close-button>
+</mat-dialog-actions>
+
+<mat-dialog-content>
+    <data-table #dataTable [config]="config"></data-table>
+    <button mat-raised-button color="accent"></button>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <div flex></div>
+    <data-table-pager [dataTable]="dataTable"></data-table-pager>
+</mat-dialog-actions>

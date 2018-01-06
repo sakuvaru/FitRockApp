@@ -146,7 +146,7 @@ export class EditDietPlanExportComponent extends BaseComponent implements OnDest
         }
 
         // update data
-        dietFoodToUpdate[0].unitValue = dialog.componentInstance.dietFood.unitValue;
+        dietFoodToUpdate[0].amount = dialog.componentInstance.dietFood.amount;
         dietFoodToUpdate[0].eatTime = dialog.componentInstance.dietFood.eatTime;
         dietFoodToUpdate[0].notes = dialog.componentInstance.dietFood.notes;
       }
@@ -201,7 +201,6 @@ export class EditDietPlanExportComponent extends BaseComponent implements OnDest
     const dialog = this.dependencies.tdServices.dialogService.open(AddNewFoodDialogComponent, {
       panelClass: AppConfig.DefaultDialogPanelClass
     });
-
     dialog.afterClosed().subscribe(m => {
       // open add diet food dialog if new custom food was created 
       if (dialog.componentInstance.newFood) {

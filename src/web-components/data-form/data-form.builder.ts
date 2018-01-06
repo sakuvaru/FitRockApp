@@ -17,6 +17,7 @@ import {
     DataFormInsertDefinition,
     DataFormInsertResponse,
     DataFormSection,
+    DataFormMultipleChoiceFieldConfig
 } from './data-form-models';
 import { DataFormConfig } from './data-form.config';
 import { dataFormBuilderUtils } from './data-form-builder-utils';
@@ -243,10 +244,16 @@ export class DataFormBuilder<TItem extends IItem> {
         return this;
     }
 
+    /**
+     * Required configuration for multiple choice fields
+     */
+    multipleChoiceResolver(resolver: (field: DataFormField, item: TItem) => DataFormMultipleChoiceFieldConfig | undefined): this {
+        this.config.multipleChoiceResolver = resolver;
+        return this;
+    }
+
     build(): DataFormConfig {
         return this.config;
     }
-
-    
 }
 

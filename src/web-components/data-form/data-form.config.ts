@@ -9,6 +9,7 @@ import {
     DataFormInsertDefinition,
     DataFormInsertResponse,
     DataFormSection,
+    DataFormMultipleChoiceFieldConfig
 } from './data-form-models';
 
 export class DataFormConfig {
@@ -155,6 +156,11 @@ export class DataFormConfig {
      * Class used for dialogs within form
      */
     public dialogPanelClass?: string;
+
+    /**
+     * Required configuration for multiple choice fields
+     */
+    public multipleChoiceResolver?: (field: DataFormField, item: any) => DataFormMultipleChoiceFieldConfig | undefined;
 
     constructor(
         /**

@@ -216,6 +216,7 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
             // prepare field observables
             const fieldObservables: Observable<void>[] = [];
 
+            // prepare item (if available)
             let item: any | undefined;
             if (definition instanceof DataFormEditDefinition) {
                 item = definition.item;
@@ -225,6 +226,9 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
             this.clearFields();
 
             definition.fields.forEach(field => {
+                // pass item to field so that its accessible easily
+                field.internalProperties.item = item;
+
                 fieldObservables.push(this.resolveField(field, item)
                     .map(resolvedField => {
                         // add resolved field to fields
@@ -665,7 +669,7 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
         }
 
         // resolve translations
-        const translationObs = extraTranslations && extraTranslations.length > 0 
+        const translationObs = extraTranslations && extraTranslations.length > 0
             ? observableHelper.zipObservables(extraTranslations)
             : Observable.of(undefined);
 

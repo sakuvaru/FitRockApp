@@ -67,7 +67,6 @@ export abstract class BaseFormControlComponent extends BaseWebComponent implemen
             return true;
         }
         return false;
-
     }
 
     constructor(

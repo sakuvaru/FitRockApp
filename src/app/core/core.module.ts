@@ -19,6 +19,7 @@ import { SystemService } from './services/system.service';
 import { TimeService } from './services/time.service';
 import { RememberService } from './services/remember.service';
 import { NavigateService } from './services/navigate.service';
+import { LocalizationHelperService } from './services/localization-helper.service';
 
 @NgModule({
     imports: [
@@ -46,7 +47,8 @@ import { NavigateService } from './services/navigate.service';
         SystemService,
         TimeService,
         RememberService,
-        NavigateService
+        NavigateService,
+        LocalizationHelperService
     ],
     exports: [
         CommonModule,

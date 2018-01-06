@@ -13,6 +13,7 @@ import { PreviewFoodComponent } from './view/preview-food.component';
 import { NewDishComponent } from './new/new-dish.component';
 import { EditDishComponent } from './edit/edit-dish.component';
 import { PreviewDishComponent } from './view/preview-dish.component';
+import { SelectFoodDialogComponent } from './dialogs/select-food-dialog.component';
 
 @NgModule({
     imports: [
@@ -20,6 +21,9 @@ import { PreviewDishComponent } from './view/preview-dish.component';
         CommonModule,
         FoodsRouter,
         SharedModule
+    ],
+    entryComponents: [
+        SelectFoodDialogComponent
     ],
     declarations: [
         MyFoodsListComponent,
@@ -30,7 +34,8 @@ import { PreviewDishComponent } from './view/preview-dish.component';
         MyDishesListComponent,
         NewDishComponent,
         EditDishComponent,
-        PreviewDishComponent
+        PreviewDishComponent,
+        SelectFoodDialogComponent
     ]
 })
 export class FoodsModule { }

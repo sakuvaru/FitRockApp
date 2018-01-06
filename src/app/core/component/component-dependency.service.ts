@@ -58,6 +58,7 @@ import {
     SharedService,
     SystemService,
     TimeService,
+    LocalizationHelperService
 } from '../services';
 
 @Injectable()
@@ -93,6 +94,7 @@ export class ComponentDependencyService {
         this.coreServices.timeService = injector.get(TimeService);
         this.coreServices.rememberService = injector.get(RememberService);
         this.coreServices.navigateService = injector.get(NavigateService);
+        this.coreServices.localizationHelperService = injector.get(LocalizationHelperService);
 
         // helpers
         this.helpers = new Helpers();
@@ -185,6 +187,7 @@ export class CoreServices {
     public timeService: TimeService;
     public rememberService: RememberService;
     public navigateService: NavigateService;
+    public localizationHelperService: LocalizationHelperService;
 }
 
 export class MdServices {
