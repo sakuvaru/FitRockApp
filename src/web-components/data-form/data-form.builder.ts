@@ -247,7 +247,7 @@ export class DataFormBuilder<TItem extends IItem> {
     /**
      * Required configuration for multiple choice fields
      */
-    multipleChoiceResolver(resolver: (field: DataFormField, item: TItem) => DataFormMultipleChoiceFieldConfig | undefined): this {
+    multipleChoiceResolver<TConfigModel>(resolver: (field: DataFormField, item: TItem) => DataFormMultipleChoiceFieldConfig<TConfigModel> | undefined): this {
         this.config.multipleChoiceResolver = resolver;
         return this;
     }

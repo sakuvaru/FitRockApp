@@ -92,11 +92,11 @@ export class DropdownComponent extends BaseFormControlComponent implements OnIni
     }
   }
 
-  protected getInsertValue(): string | number | boolean | Date | undefined  {
+  protected getInsertValue(): string | number | boolean | Date | undefined | object  {
     return this.field.defaultValue;
   }
 
-  protected getEditValue(): string | number | boolean | Date | undefined  {
+  protected getEditValue(): string | number | boolean | Date | undefined | object {
     return this.field.value;
   }
 }

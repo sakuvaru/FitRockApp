@@ -25,7 +25,7 @@ export class HiddenComponent extends BaseFormControlComponent implements OnInit,
     super.ngOnChanges(changes);
   }
 
-  protected getInsertValue(): string | number | boolean | Date | undefined  {
+  protected getInsertValue(): string | number | boolean | Date | undefined | object {
     // set value only if standard 'value' is not set (value could be set for e.g. hidden field)
     if (!this.field.value) {
       return this.field.defaultValue;
@@ -33,7 +33,7 @@ export class HiddenComponent extends BaseFormControlComponent implements OnInit,
     return this.field.value;
   }
 
-  protected getEditValue(): string | number | boolean | Date | undefined {
+  protected getEditValue(): string | number | boolean | Date | undefined | object {
     return this.field.value;
   }
 }

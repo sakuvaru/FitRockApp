@@ -160,7 +160,7 @@ export class DataFormConfig {
     /**
      * Required configuration for multiple choice fields
      */
-    public multipleChoiceResolver?: (field: DataFormField, item: any) => DataFormMultipleChoiceFieldConfig | undefined;
+    public multipleChoiceResolver?: (field: DataFormField, item: any) => DataFormMultipleChoiceFieldConfig<any> | undefined;
 
     constructor(
         /**

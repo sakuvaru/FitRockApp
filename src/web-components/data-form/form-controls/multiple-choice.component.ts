@@ -84,7 +84,6 @@ export class MultipleChoiceComponent extends BaseFormControlComponent implements
         this.updateControlValueWithJson();
       });
 
-
     // set config
     this.multipleChoiceConfig = multipleChoiceConfig;
   }
