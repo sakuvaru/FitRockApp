@@ -108,7 +108,9 @@ export class EditDishComponent extends BaseComponent implements OnInit {
                                         : Observable.of([]);
                                 },
                                 onDialogClick: (xField, xItem) => this.openSelectFoodDialog(),
-                                addItem: this.dishValueChange
+                                addItem: this.dishValueChange,
+                                addItemButtonText: super.translate('module.foods.addFood'),
+                                removeItemButtonText: super.translate('module.foods.removeSelected')
                             };
                         }
 

@@ -235,7 +235,9 @@ export class DataFormMultipleChoiceFieldConfig<TModel> {
     constructor(
         public assignedItems: (field: DataFormField, item: any) => Observable<DataFormMultipleChoiceItem<TModel>[]>,
         public onDialogClick: (field: DataFormField, item: any) => void,
-        public addItem: Observable<DataFormMultipleChoiceItem<TModel>>
+        public addItem: Observable<DataFormMultipleChoiceItem<TModel>>,
+        public addItemButtonText: Observable<string>,
+        public removeItemButtonText: Observable<string>
     ) { }
 }
 

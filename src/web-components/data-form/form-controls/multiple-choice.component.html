@@ -1,19 +1,21 @@
 <div *ngIf="initialized" [formGroup]="formGroup">
 
-  <div style="width: 100%">
-    <mat-selection-list #selectionList>
-      <mat-list-option *ngFor="let multipleChoiceItem of multipleChoiceItems" [value]="multipleChoiceItem.identifier">
-        <h4 matLine [innerHtml]="multipleChoiceItem.itemName | async"></h4>
-        <p matLine *ngFor="let line of multipleChoiceItem.metaLines" class="force-caption-font multiple-choice-item-margin" [innerHtml]="line | async">
-        </p>
-      </mat-list-option>
-    </mat-selection-list>
-  </div>
+  <ng-container *ngIf="multipleChoiceConfig">
+    <div style="width: 100%">
+      <mat-selection-list #selectionList>
+        <mat-list-option *ngFor="let multipleChoiceItem of multipleChoiceItems" [value]="multipleChoiceItem.identifier">
+          <h4 matLine [innerHtml]="multipleChoiceItem.itemName | async"></h4>
+          <p matLine *ngFor="let line of multipleChoiceItem.metaLines" class="force-caption-font multiple-choice-item-margin" [innerHtml]="line | async">
+          </p>
+        </mat-list-option>
+      </mat-selection-list>
+    </div>
 
-  <div class="push-top push-left push-right push-top-sm" style="width: 100%">
-    <button mat-raised-button color="primary" (click)="multipleChoiceButtonClick()">Přidat potravinu</button>
-    <button mat-raised-button color="accent" (click)="removeSelected()">Odstranit vybrané </button>
-  </div>
+    <div class="push-top push-left push-right push-top-sm" style="width: 100%">
+      <button mat-raised-button color="primary" (click)="multipleChoiceButtonClick()">{{ multipleChoiceConfig.addItemButtonText | async }}</button>
+      <button mat-raised-button color="accent" (click)="removeSelected()">{{ multipleChoiceConfig.removeItemButtonText | async }}</button>
+    </div>
+  </ng-container>
 
   <input type="hidden" [formControlName]="field.key" [id]="field.key">
 
