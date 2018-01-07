@@ -102,7 +102,7 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
             })
             .clearFormAfterSave(true)
             .onFieldValueChange((fields, changedField, newValue) => {
-                const changeResult = Observable.of(new DataFormFieldChangeResult(newValue));
+                const changeResult = Observable.of(undefined);
                 // set extra translation value for measurement value based on currently selected type
                 // process for changing the measurement type
                 if (changedField.key !== 'ProgressItemTypeId') {

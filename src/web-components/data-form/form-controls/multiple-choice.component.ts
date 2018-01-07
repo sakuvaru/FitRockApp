@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs/Rx';
 import { ChangeDetectorRef, Component, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { MatDialog, MatSelectionList } from '@angular/material';
 import * as _ from 'underscore';
@@ -69,23 +70,45 @@ export class MultipleChoiceComponent extends BaseFormControlComponent implements
       .subscribe(items => {
         this.multipleChoiceItems = items;
 
+        // see if anything changed
+        this.reloadItemTranslations();
+
         // update field's json value
         this.updateControlValueWithJson();
       });
 
     // subscribe to value change observable
-    multipleChoiceConfig.addItem
+    multipleChoiceConfig.itemChange
       .takeUntil(this.ngUnsubscribe)
-      .subscribe(newItem => {
-        // set value to field
-        this.multipleChoiceItems.push(newItem);
+      .subscribe(changedItem => {
+        // try to find  existing item 
+        let item = this.multipleChoiceItems.find(m => m.identifier === changedItem.identifier);
+
+        if (item) {
+          // edit existing item
+          item = changedItem;
+        } else {
+          // add new item
+          this.multipleChoiceItems.push(changedItem);
+        }
 
         // update field's json value
         this.updateControlValueWithJson();
       });
 
+    // see if anything changed
+    this.reloadItemTranslations();
+
     // set config
     this.multipleChoiceConfig = multipleChoiceConfig;
+  }
+
+  editSelected(): void {
+    if (!this.multipleChoiceConfig) {
+      throw Error(`Incorrect configuration for '${this.field.key}'`);
+    }
+
+    this.multipleChoiceConfig.onEditSelected(this.getSelectedItems());
   }
 
   removeSelected(): void {
@@ -144,6 +167,27 @@ export class MultipleChoiceComponent extends BaseFormControlComponent implements
 
     return fieldValue as string;
     */
+  }
+
+  private reloadItemTranslations(): void {
+  }
+
+  private getSelectedItems(): DataFormMultipleChoiceItem<any>[] {
+    if (!this._selectionList) {
+      return [];
+    }
+
+    const items: DataFormMultipleChoiceItem<any>[] = [];
+    this._selectionList.selectedOptions.selected.map(m => {
+      const item = this.multipleChoiceItems.find(s => s.identifier === m.value);
+      if (!item) {
+        throw Error(`Cannot fetch full object of selected items for item '${m.value}'`);
+      }
+
+      items.push(item);
+    });
+
+    return items;
   }
 
   private getFieldValue(): any[] {

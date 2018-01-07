@@ -61,9 +61,10 @@ export class DataFormBuilder<TItem extends IItem> {
 
     /**
     * Called when a value in a field changes.
-    * Can be used to modify the field or value
+    * Can be used to modify the field or value.
+    * 
     */
-    onFieldValueChange(callback: (fields: DataFormField[], changedField: DataFormField, newValue: string | Date | number | boolean) => Observable<DataFormFieldChangeResult | void>): this {
+    onFieldValueChange(callback: (fields: DataFormField[], changedField: DataFormField, newValue: string | Date | number | boolean | object | undefined) => Observable<DataFormFieldChangeResult | void>): this {
         this.config.onFieldValueChange = callback;
         return this;
     }
@@ -71,7 +72,7 @@ export class DataFormBuilder<TItem extends IItem> {
     /**
     * Resolver used to change the value of certain fields manually
     */
-    fieldValueResolver(resolver: (fieldName: string, value: string | number | boolean | Date, item: TItem | undefined) => Observable<string | boolean | number | Date>): this {
+    fieldValueResolver(resolver: (fieldName: string, value: string | number | boolean | Date, item: TItem | undefined) => Observable<string | boolean | number | Date | object>): this {
         this.config.fieldValueResolver = resolver;
         return this;
     }
@@ -151,7 +152,7 @@ export class DataFormBuilder<TItem extends IItem> {
     /**
     * Callback for when the form has fetched data
     */
-    onEditFormLoaded(resolver: (form: DataFormEditDefinition) => void): this {
+    onEditFormLoaded(resolver: (form: DataFormEditDefinition<TItem>) => void): this {
         this.config.onEditFormLoaded = resolver;
         return this;
     }

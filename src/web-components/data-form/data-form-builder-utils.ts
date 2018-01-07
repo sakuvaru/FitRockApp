@@ -114,7 +114,7 @@ class DataFormBuilderUtils {
         }));
     }
 
-    mapFormDefinition(type: string, formDefinition: Observable<ResponseFormEdit<any> | ResponseFormInsert>): Observable<DataFormEditDefinition | DataFormInsertDefinition> {
+    mapFormDefinition(type: string, formDefinition: Observable<ResponseFormEdit<any> | ResponseFormInsert>): Observable<DataFormEditDefinition<any> | DataFormInsertDefinition> {
         return this.mapDataFormError(type, formDefinition.map(response => {
             if (response instanceof ResponseFormEdit) {
                 return new DataFormEditDefinition(response.fields.map(m => this.mapDataFormField(m)), response.item);

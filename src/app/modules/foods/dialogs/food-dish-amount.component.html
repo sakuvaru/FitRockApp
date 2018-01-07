@@ -1,0 +1,22 @@
+<mat-dialog-actions>
+    <span class="mat-title">{{ 'module.foods.setAmount' | localize }}</span>
+    <span flex></span>
+    <close-button (click)="close()"></close-button>
+</mat-dialog-actions>
+
+<form>
+    <mat-dialog-content>
+        <mat-form-field>
+            <input name="amount" matInput tabindex="1" type="number" min="1" [(ngModel)]="amount" placeholder="{{ 'module.foods.amount' | localize }}">
+            <span *ngIf="amount === 1" class="mat-caption" matSuffix> ({{ 'module.foodUnits.' + unitCode | localize }})</span>
+            <span *ngIf="amount > 1 && amount < 5" class="mat-caption" matSuffix> ({{ 'module.foodUnits.pluralTwo.' + unitCode | localize }})</span>
+            <span *ngIf="amount > 4  || !amount" class="mat-caption" matSuffix> ({{ 'module.foodUnits.pluralFive.' + unitCode | localize }})</span>
+        </mat-form-field>
+    </mat-dialog-content>
+
+    <mat-dialog-actions>
+        <button mat-raised-button (click)="confirm()" color="accent" [disabled]="!amount || amount <= 0">{{ 'shared.confirm' | localize }}</button>
+        <button mat-button (click)="cancel()">{{ 'shared.cancel' | localize }}</button>
+        <div flex></div>
+    </mat-dialog-actions>
+</form>

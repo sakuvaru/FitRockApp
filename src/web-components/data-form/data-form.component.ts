@@ -6,7 +6,7 @@ import { Observable, Subject } from 'rxjs/Rx';
 import * as _ from 'underscore';
 
 import { LocalizationService } from '../../lib/localization';
-import { observableHelper, numberHelper, booleanHelper } from '../../lib/utilities';
+import { observableHelper, numberHelper, booleanHelper, stringHelper } from '../../lib/utilities';
 import { BaseWebComponent } from '../base-web-component.class';
 import {
     DataFormDeleteResponse,
@@ -210,7 +210,7 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
             throw Error(`Could not init form because declaration of definition is missing`);
         }
 
-        let xDefinition: DataFormEditDefinition | DataFormInsertDefinition;
+        let xDefinition: DataFormEditDefinition<any> | DataFormInsertDefinition;
 
         return this.config.formDefinition.flatMap(definition => {
             // prepare field observables
@@ -627,8 +627,6 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
 
             this.resolveErrorMessage(error);
         } else {
-            this.unknownError = true;
-
             if (this.config.onError) {
                 this.config.onError(error);
             }
@@ -741,7 +739,7 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
      * @param fieldName Name of field
      * @param value Value
      */
-    private getFieldValueSetByResolver(value: string | boolean | number | Date): string | number | Date {
+    private getFieldValueSetByResolver(value: string | boolean | number | Date | object | undefined): boolean | string | number | Date | object | undefined {
         // boolean field needs to return 'string' with 'false' value otherwise the JSON .NET mapping
         // does not map the object
         if (!value) {
@@ -755,7 +753,11 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
             return +value;
         }
 
-        return value.toString().trim();
+        if (stringHelper.isString(value)) {
+            return value.toString().trim();
+        }
+
+        return value;
     }
 }
 

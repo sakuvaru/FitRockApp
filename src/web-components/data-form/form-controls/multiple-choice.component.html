@@ -1,6 +1,15 @@
 <div *ngIf="initialized" [formGroup]="formGroup">
 
   <ng-container *ngIf="multipleChoiceConfig">
+
+    <p class="push-left push-right">
+      {{ field.label }}
+    </p>
+
+    <div class="push-top push-left push-right push-top-sm" style="width: 100%">
+      <button mat-raised-button color="primary" (click)="multipleChoiceButtonClick()">{{ multipleChoiceConfig.addButtonText | async }}</button>
+    </div>
+
     <div style="width: 100%">
       <mat-selection-list #selectionList>
         <mat-list-option *ngFor="let multipleChoiceItem of multipleChoiceItems" [value]="multipleChoiceItem.identifier">
@@ -11,10 +20,11 @@
       </mat-selection-list>
     </div>
 
-    <div class="push-top push-left push-right push-top-sm" style="width: 100%">
-      <button mat-raised-button color="primary" (click)="multipleChoiceButtonClick()">{{ multipleChoiceConfig.addItemButtonText | async }}</button>
-      <button mat-raised-button color="accent" (click)="removeSelected()">{{ multipleChoiceConfig.removeItemButtonText | async }}</button>
+    <div *ngIf="multipleChoiceItems && multipleChoiceItems.length > 0 && selectionList.selectedOptions.selected.length > 0" class="push-top push-left push-right push-top-sm" style="width: 100%">
+      <button mat-button color="primary" (click)="editSelected()">{{ multipleChoiceConfig.editButtonText | async }}</button>
+      <button mat-button color="accent" (click)="removeSelected()">{{ multipleChoiceConfig.removeButtonText | async }}</button>
     </div>
+
   </ng-container>
 
   <input type="hidden" [formControlName]="field.key" [id]="field.key">

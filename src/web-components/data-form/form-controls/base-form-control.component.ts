@@ -153,8 +153,9 @@ export abstract class BaseFormControlComponent extends BaseWebComponent implemen
     /**
      * Use this method to check value changes & to determines whether the value is valid or not
      */
-    private getSubscribeToChangesObservable(): Observable<any> {
+    private getSubscribeToChangesObservable(): Observable<void> {
         const control = this.getQuestionControl();
+
         return control.valueChanges
             .flatMap(newValue => {
                 // run field change callback if defined
@@ -162,8 +163,17 @@ export abstract class BaseFormControlComponent extends BaseWebComponent implemen
                     const changeResultObs = this.config.onFieldValueChange(this.fields, this.field, newValue)
                         .map(result => {
                             if (result && (result instanceof DataFormFieldChangeResult)) {
-                                // new value was returned
-                                return result.value;
+                                if (result.changedFields) {
+                                    // replace fields
+                                    result.changedFields.forEach(replaceField => {
+                                        // update control
+                                        const fieldControl = this.formGroup.controls[replaceField.key];
+                                        // set value of field only if its different (can prevent recursion)
+                                        if (fieldControl.value !== replaceField.newValue) {
+                                            fieldControl.setValue(replaceField.newValue);
+                                        }
+                                    });
+                                }
                             }
 
                             return newValue;
@@ -180,6 +190,7 @@ export abstract class BaseFormControlComponent extends BaseWebComponent implemen
 
                 if (!valueValidation.isValid) {
                     this.localizationService.get(valueValidation.errorMessageKey, valueValidation.translationData)
+                        .takeUntil(this.ngUnsubscribe)
                         .subscribe(translatedErrorMessage => {
                             // set custom error so that it can be displayed in the html template
                             this.customError = translatedErrorMessage;

@@ -68,6 +68,8 @@
 		"edit": "Upravit",
 		"list": "List",
 		"tiles": "Dlaždice",
+		"cancel": "Zrušit",
+		"confirm": "Potvrdit",
 		"language": {
 			"default": "Výchozí jazyk (čeština)",
 			"cz": "Čeština",
@@ -288,7 +290,10 @@
 			"foodAmountTextComplete": "Množství: {{ amount }}/{{ foodUnit }}. B: {{ proteins }}, T: {{ fats }}, S: {{ carbs }} = {{ kcal }} kcal",
 			"foodCategory": "Kategorie",
 			"addFood": "Přidat jídlo",
-			"removeSelected": "Odstranit vybrané"
+			"removeSelected": "Odstranit vybrané",
+			"setAmount": "Zadej množství",
+			"amount": "Množství",
+			"editFoodDishes": "Upravit potraviny v jídle"
 		},
 		"foodUnits": {
 			"portion": "porce",
@@ -575,7 +580,8 @@
 			"prot": "Bílkoviny (g)",
 			"foodUnitMeasurementValue": "Množství",
 			"sugar": "Cukr (g)",
-			"nacl": "Sůl (g)"
+			"nacl": "Sůl (g)",
+			"assignedFoodsVirtual": "Složení"
 		},
 		"progressItem": {
 			"progressItemTypeId": "Typ",
@@ -615,6 +621,10 @@
 			"locationId": "Místo setkání",
 			"dateCannotBeInPast": "Datum schůzky musí být v budoucnosti",
 			"appointmentLength": "Délka schůzky"
+		},
+		"foodDish": {
+			"notes": "Poznámky k potravině",
+			"amount": "Množství"
 		}
 	},
 	"webComponents": {

@@ -23,7 +23,7 @@ export class DataFormConfig {
     /**
     * Form definition query
     */
-    public formDefinition: Observable<DataFormEditDefinition | DataFormInsertDefinition>;
+    public formDefinition: Observable<DataFormEditDefinition<any> | DataFormInsertDefinition>;
 
     /**
      * List of fields (questions) assigned to the form
@@ -115,12 +115,12 @@ export class DataFormConfig {
     /**
     * Called when a value in a field changes
     */
-    public onFieldValueChange?: (fields: DataFormField[], changedField: DataFormField, newValue: string | boolean | number) => Observable<DataFormFieldChangeResult | void>;
+    public onFieldValueChange?: (fields: DataFormField[], changedField: DataFormField, newValue: string | boolean | number | object | Date | undefined) => Observable<DataFormFieldChangeResult | void>;
 
     /**
      * Resolver used to change the value of certain fields manually
      */
-    public fieldValueResolver?: (fieldName: string, value: any, item: any) => Observable<string | boolean | number | Date>;
+    public fieldValueResolver?: (fieldName: string, value: any, item: any) => Observable<string | boolean | number | Date | object>;
 
     /**
      * Indicates if local loader is enabled

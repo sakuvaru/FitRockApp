@@ -11,21 +11,24 @@ export class LocalizationHelperService {
 
   translateFoodAmountAndUnit(amount: number, foodUnit: string): Observable<string> {
     // first translate food unit in proper format
-    let foodUnitTranslationString: string = '';
+    let foodUnitTranslationString: string = 'module.foodUnits.pluralFive.' + foodUnit;
+
+    amount = +amount;
 
     // prepare translation params
     const translateParams: any = {
       amount: amount,
     };
-
     if (amount === 0) {
       foodUnitTranslationString = 'module.foodUnits.pluralFive.' + foodUnit;
-    } else if (amount === 1) {
+    }  
+    
+    if (amount === 1) {
       foodUnitTranslationString = 'module.foodUnits.' + foodUnit;
-    } else if (amount >= 2 && amount < 5) {
+    } 
+    
+    if (amount >= 2 && amount < 5) {
       foodUnitTranslationString = 'module.foodUnits.pluralTwo.' + foodUnit;
-    } else if (amount >= 5) {
-      foodUnitTranslationString = 'module.foodUnits.pluralFive.' + foodUnit;
     }
 
     return this.localizationService.get(foodUnitTranslationString)

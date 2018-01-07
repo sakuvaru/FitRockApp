@@ -165,11 +165,11 @@ export abstract class DataFormAbstractDefinition {
     ) { }
 }
 
-export class DataFormEditDefinition extends DataFormAbstractDefinition {
+export class DataFormEditDefinition<TModel> extends DataFormAbstractDefinition {
 
     constructor(
         public fields: DataFormField[],
-        public item: any
+        public item: TModel
     ) {
         super(fields);
     }
@@ -201,9 +201,16 @@ export class DataFormDeleteResponse {
     ) { }
 }
 
+export class DataFormChangeField {
+    constructor(
+        public key: string,
+        public newValue: boolean | string | object | undefined | Date | number
+    ) { }
+}
+
 export class DataFormFieldChangeResult {
     constructor(
-        public value: string | number | Date | boolean
+        public changedFields: DataFormChangeField[]
     ) { }
 }
 
@@ -232,13 +239,28 @@ export class DataFormErrorTranslationItem {
 }
 
 export class DataFormMultipleChoiceFieldConfig<TModel> {
+
+    public assignedItems: (field: DataFormField, item: any) => Observable<DataFormMultipleChoiceItem<TModel>[]>;
+    public onDialogClick: (field: DataFormField, item: any) => void;
+    public onEditSelected: (selectedItems: DataFormMultipleChoiceItem<TModel>[]) => void;
+    public itemChange: Observable<DataFormMultipleChoiceItem<TModel>>;
+    public addButtonText: Observable<string>;
+    public removeButtonText: Observable<string>;
+    public editButtonText: Observable<string>;
+
     constructor(
-        public assignedItems: (field: DataFormField, item: any) => Observable<DataFormMultipleChoiceItem<TModel>[]>,
-        public onDialogClick: (field: DataFormField, item: any) => void,
-        public addItem: Observable<DataFormMultipleChoiceItem<TModel>>,
-        public addItemButtonText: Observable<string>,
-        public removeItemButtonText: Observable<string>
-    ) { }
+        data: {
+             assignedItems: (field: DataFormField, item: any) => Observable<DataFormMultipleChoiceItem<TModel>[]>,
+             onDialogClick: (field: DataFormField, item: any) => void,
+             onEditSelected: (selectedItems: DataFormMultipleChoiceItem<TModel>[]) => void,
+             itemChange: Observable<DataFormMultipleChoiceItem<TModel>>,
+             addButtonText: Observable<string>,
+             removeButtonText: Observable<string>,
+             editButtonText: Observable<string>
+        }
+    ) { 
+        Object.assign(this, data);
+    }
 }
 
 export class DataFormMultipleChoiceItem<TModel> {

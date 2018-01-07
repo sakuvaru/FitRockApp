@@ -1,0 +1,34 @@
+<mat-dialog-actions>
+    <span class="mat-title">{{ 'module.foods.editFoodDishes' | localize }}</span>
+    <span flex></span>
+    <close-button (click)="close()"></close-button>
+</mat-dialog-actions>
+
+<mat-dialog-content>
+
+    <ng-container *ngFor="let item of items; let i = index">
+        <div class="push-top">
+            <div class="push-bottom-md">
+                {{ item.itemName | async }}
+            </div>
+
+            <mat-form-field>
+                <input [(ngModel)]="items[i].rawValue.amount" floatLabel="never" matInput tabindex="1" type="number"
+                    min="1"  placeholder="{{ 'module.foods.amount' | localize }}">
+                <span *ngIf="item.rawValue.amount === 1" class="mat-caption" matSuffix> ({{ 'module.foodUnits.' + item.rawValue.unitCode | localize }})</span>
+                <span *ngIf="item.rawValue.amount > 1 && item.rawValue.amount < 5" class="mat-caption" matSuffix> ({{ 'module.foodUnits.pluralTwo.' + item.rawValue.unitCode | localize }})</span>
+                <span *ngIf="item.rawValue.amount > 4  || !item.rawValue.amount" class="mat-caption" matSuffix> ({{ 'module.foodUnits.pluralFive.' + item.rawValue.unitCode | localize }})</span>
+            </mat-form-field>
+        </div>
+    </ng-container>
+
+    <ng-container *ngFor="let wrapper of wrappers2">
+        <h3>{{ wrapper.title }}</h3>
+        <data-form [config]="wrapper.formConfig"></data-form>
+    </ng-container>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button mat-raised-button color="accent" class="text-upper" (click)="confirm()">{{'shared.confirm' | localize }}</button>
+    <div flex></div>
+</mat-dialog-actions>

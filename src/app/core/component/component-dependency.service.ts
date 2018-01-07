@@ -140,9 +140,13 @@ export class ComponentDependencyService {
         this.itemServices.dietService = injector.get(DietService);
         this.itemServices.dietCategoryService = injector.get(DietCategoryService);
         this.itemServices.dietFoodService = injector.get(DietFoodService);
+
+
+        // food services
         this.itemServices.foodCategoryService = injector.get(FoodCategoryService);
         this.itemServices.foodService = injector.get(FoodService);
         this.itemServices.foodUnitService = injector.get(FoodUnitService);
+        this.itemServices.foodDishService = injector.get(FoodDishService);
 
         // progress services
         this.itemServices.progressItemService = injector.get(ProgressItemService);

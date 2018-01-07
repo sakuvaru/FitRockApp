@@ -6,9 +6,11 @@ import { stringHelper } from 'lib/utilities';
 import { Observable, Subject } from 'rxjs/Rx';
 
 import { guidHelper } from '../../../../lib/utilities';
-import { DataFormConfig, DataFormMultipleChoiceItem } from '../../../../web-components/data-form';
+import { DataFormConfig, DataFormMultipleChoiceItem, DataFormMultipleChoiceFieldConfig, DataFormFieldChangeResult, DataFormField, DataFormChangeField } from '../../../../web-components/data-form';
 import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
 import { SelectFoodDialogComponent } from '../dialogs/select-food-dialog.component';
+import { EditFoodDishDialogComponent } from '../dialogs/edit-food-dish-dialog.component';
+import { FoodDishAmountDialogComponent } from '../dialogs/food-dish-amount.component';
 import { DishMenuItems } from '../menu.items';
 
 @Component({
@@ -38,7 +40,6 @@ export class EditDishComponent extends BaseComponent implements OnInit {
 
     ngOnInit(): void {
         super.ngOnInit();
-
         this.initForm();
     }
 
@@ -57,7 +58,7 @@ export class EditDishComponent extends BaseComponent implements OnInit {
     }
 
     private createVirtualFoodOption(food: Food, amount: number): DataFormMultipleChoiceItem<NewChildFoodVirtualModel> {
-        const virtualModel = new NewChildFoodVirtualModel(food.id, amount);
+        const virtualModel = new NewChildFoodVirtualModel(food.id, amount, food.foodUnit.unitCode, food);
 
         return new DataFormMultipleChoiceItem(
             guidHelper.newGuid(),
@@ -70,10 +71,53 @@ export class EditDishComponent extends BaseComponent implements OnInit {
     private getMultipleChoiceFoodOption(dish: FoodDish): DataFormMultipleChoiceItem<NewChildFoodVirtualModel> {
         return new DataFormMultipleChoiceItem<NewChildFoodVirtualModel>(
             dish.id.toString(),
-            new NewChildFoodVirtualModel(dish.food.id, dish.amount, dish.id),
+            new NewChildFoodVirtualModel(dish.food.id, dish.amount, dish.food.foodUnit.unitCode, dish.food, dish.id),
             Observable.of(dish.food.foodName),
             this.getFoodOptionMetaLines(dish.food, dish.amount)
         );
+    }
+
+    private openEditFoodDishDialog(selectedItems: DataFormMultipleChoiceItem<NewChildFoodVirtualModel>[]): void {
+        const data: any = {
+            items: selectedItems
+        };
+
+        const dialog = this.dependencies.tdServices.dialogService.open(EditFoodDishDialogComponent, {
+            panelClass: AppConfig.DefaultDialogPanelClass,
+            data: data
+        });
+        dialog.afterClosed()
+            .takeUntil(this.ngUnsubscribe)
+            .subscribe(m => {
+                if (dialog.componentInstance.items && dialog.componentInstance.items.length > 0) {
+                    dialog.componentInstance.items.forEach(item => {
+                        // refresh metalines
+                        item.metaLines = this.getFoodOptionMetaLines(item.rawValue.food, item.rawValue.amount);
+                        this.dishValueChange.next(item);
+                    });
+                }
+            });
+    }
+
+    private openAmountDialog(selectedFood: Food): void {
+        const data: any = {
+            unitCode: selectedFood.foodUnit.unitCode
+        };
+
+        const dialog = this.dependencies.tdServices.dialogService.open(FoodDishAmountDialogComponent, {
+            panelClass: AppConfig.DefaultDialogPanelClass,
+            data: data
+        });
+        dialog.afterClosed()
+            .takeUntil(this.ngUnsubscribe)
+            .subscribe(m => {
+                // check if amount was set
+                if (dialog.componentInstance.amount) {
+                    this.dishValueChange.next(
+                        this.createVirtualFoodOption(selectedFood, dialog.componentInstance.amount)
+                    );
+                }
+            });
     }
 
     private openSelectFoodDialog(): void {
@@ -83,13 +127,14 @@ export class EditDishComponent extends BaseComponent implements OnInit {
             panelClass: AppConfig.DefaultDialogPanelClass,
             data: data
         });
-        dialog.afterClosed().subscribe(m => {
-            if (dialog.componentInstance.selectedFood) {
-                this.dishValueChange.next(
-                    this.createVirtualFoodOption(dialog.componentInstance.selectedFood, 99)
-                );
-            }
-        });
+        dialog.afterClosed()
+            .takeUntil(this.ngUnsubscribe)
+            .subscribe(m => {
+                if (dialog.componentInstance.selectedFood) {
+                    // open amount dialog
+                    this.openAmountDialog(dialog.componentInstance.selectedFood);
+                }
+            });
     }
 
     private initForm(): void {
@@ -101,17 +146,19 @@ export class EditDishComponent extends BaseComponent implements OnInit {
                 )
                     .multipleChoiceResolver((field, item) => {
                         if (field.key === 'AssignedFoodsVirtual') {
-                            return {
+                            return new DataFormMultipleChoiceFieldConfig<NewChildFoodVirtualModel>({
                                 assignedItems: (yField, yItem) => {
                                     return yItem && yItem.childFoods
                                         ? Observable.of(yItem.childFoods.map((dish: FoodDish) => this.getMultipleChoiceFoodOption(dish)))
                                         : Observable.of([]);
                                 },
+                                onEditSelected: (selectedItems) => this.openEditFoodDishDialog(selectedItems),
                                 onDialogClick: (xField, xItem) => this.openSelectFoodDialog(),
-                                addItem: this.dishValueChange,
-                                addItemButtonText: super.translate('module.foods.addFood'),
-                                removeItemButtonText: super.translate('module.foods.removeSelected')
-                            };
+                                itemChange: this.dishValueChange,
+                                addButtonText: super.translate('module.foods.addFood'),
+                                removeButtonText: super.translate('module.foods.removeSelected'),
+                                editButtonText: super.translate('shared.edit')
+                            });
                         }
 
                         return undefined;
@@ -128,7 +175,6 @@ export class EditDishComponent extends BaseComponent implements OnInit {
                     })
                     .onEditFormLoaded(form => {
                         this.item = form.item;
-
                         this.setConfig({
                             menuItems: new DishMenuItems(form.item.id).menuItems,
                             menuTitle: {
@@ -138,6 +184,88 @@ export class EditDishComponent extends BaseComponent implements OnInit {
                                 'key': 'module.foods.submenu.editDish'
                             }
                         });
+                    })
+                    .fieldValueResolver((fieldName, value, item) => {
+                        // make sure assigned foods are assigned for calculation by 'onFieldValueChange'
+                        if (item) {
+                            const models = item.childFoods.map((dish: FoodDish) =>
+                                this.getMultipleChoiceFoodOption(dish))
+                                .map(s => s.rawValue);
+
+                            if (item && fieldName === 'AssignedFoodsVirtual') {
+                                return Observable.of(models);
+                            }
+
+                            if (models) {
+                                const calculations = this.dependencies.itemServices.foodService.aggregateFoods(models.map(m => m.food));
+
+                                if (fieldName === 'Kcal') {
+                                    return Observable.of(calculations.kcal);
+                                }
+                                if (fieldName === 'Cho') {
+                                    return Observable.of(calculations.cho);
+                                }
+                                if (fieldName === 'Fat') {
+                                    return Observable.of(calculations.fat);
+                                }
+                                if (fieldName === 'Sugar') {
+                                    return Observable.of(calculations.sugar);
+                                }
+                                if (fieldName === 'Prot') {
+                                    return Observable.of(calculations.prot);
+                                }
+                                if (fieldName === 'Nacl') {
+                                    return Observable.of(calculations.nacl);
+                                }
+                            }
+                        }
+
+                        return Observable.of(value);
+                    })
+                    .onFieldValueChange((fields, changedField, newValue) => {
+                        const newFields: DataFormChangeField[] = [];
+
+                        if (changedField.key === 'AssignedFoodsVirtual') {
+
+                            // recalculate dish components
+                            const assignedFoods = newValue as NewChildFoodVirtualModel[];
+                            const kcalField = fields.find(m => m.key === 'Kcal');
+                            const choField = fields.find(m => m.key === 'Cho');
+                            const fatField = fields.find(m => m.key === 'Fat');
+                            const sugarField = fields.find(m => m.key === 'Sugar');
+                            const protField = fields.find(m => m.key === 'Prot');
+                            const naclField = fields.find(m => m.key === 'Nacl');
+
+                            if (assignedFoods) {
+                                const calculation = this.dependencies.itemServices.foodService.aggregateFoods(assignedFoods.map(m => m.food));
+
+                                if (kcalField) {
+                                    newFields.push(new DataFormChangeField(kcalField.key, calculation.kcal));
+                                }
+
+                                if (choField) {
+                                    newFields.push(new DataFormChangeField(choField.key, calculation.cho));
+                                }
+
+                                if (fatField) {
+                                    newFields.push(new DataFormChangeField(fatField.key, calculation.fat));
+                                }
+
+                                if (sugarField) {
+                                    newFields.push(new DataFormChangeField(sugarField.key, calculation.sugar));
+                                }
+
+                                if (protField) {
+                                    newFields.push(new DataFormChangeField(protField.key, calculation.prot));
+                                }
+
+                                if (naclField) {
+                                    newFields.push(new DataFormChangeField(naclField.key, calculation.nacl));
+                                }
+                            }
+                        }
+
+                        return Observable.of(new DataFormFieldChangeResult(newFields));
                     })
                     .build();
             })

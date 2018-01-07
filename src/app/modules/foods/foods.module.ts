@@ -14,6 +14,8 @@ import { NewDishComponent } from './new/new-dish.component';
 import { EditDishComponent } from './edit/edit-dish.component';
 import { PreviewDishComponent } from './view/preview-dish.component';
 import { SelectFoodDialogComponent } from './dialogs/select-food-dialog.component';
+import { EditFoodDishDialogComponent } from './dialogs/edit-food-dish-dialog.component';
+import { FoodDishAmountDialogComponent } from './dialogs/food-dish-amount.component';
 
 @NgModule({
     imports: [
@@ -23,7 +25,9 @@ import { SelectFoodDialogComponent } from './dialogs/select-food-dialog.componen
         SharedModule
     ],
     entryComponents: [
-        SelectFoodDialogComponent
+        SelectFoodDialogComponent,
+        EditFoodDishDialogComponent,
+        FoodDishAmountDialogComponent
     ],
     declarations: [
         MyFoodsListComponent,
@@ -35,7 +39,9 @@ import { SelectFoodDialogComponent } from './dialogs/select-food-dialog.componen
         NewDishComponent,
         EditDishComponent,
         PreviewDishComponent,
-        SelectFoodDialogComponent
+        SelectFoodDialogComponent,
+        EditFoodDishDialogComponent,
+        FoodDishAmountDialogComponent
     ]
 })
 export class FoodsModule { }
