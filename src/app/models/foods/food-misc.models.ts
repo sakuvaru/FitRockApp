@@ -9,3 +9,10 @@ export class NewChildFoodVirtualModel {
         public foodDishId?: number,
     ) { }
 }
+
+export class FoodWithAmountModel {
+    constructor(
+        public food: Food,
+        public amount: number
+    ) { }
+}

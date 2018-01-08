@@ -132,20 +132,6 @@ export class MultipleChoiceComponent extends BaseFormControlComponent implements
 
   protected getInsertValue(): any[] {
     return this.getFieldValue();
-
-    /*
-    const defaultFieldValue = this.field.defaultValue;
-
-    if (!defaultFieldValue) {
-      return '';
-    }
-
-    if (!((typeof defaultFieldValue === 'string') || (defaultFieldValue instanceof String))) {
-      throw Error(`Text field expected default value to be 'String', but other type was given`);
-    }
-
-    return defaultFieldValue as string;
-    */
   }
 
   protected getEditValue(): any[] {
@@ -153,20 +139,6 @@ export class MultipleChoiceComponent extends BaseFormControlComponent implements
     this.updateControlValueWithJson();
 
     return this.getFieldValue();
-
-    /*
-    const fieldValue = this.field.value;
-
-    if (!fieldValue) {
-      return '';
-    }
-
-    if (!((typeof fieldValue === 'string') || (fieldValue instanceof String))) {
-      throw Error(`Text field expected value to be 'String', but other type was given`);
-    }
-
-    return fieldValue as string;
-    */
   }
 
   private reloadItemTranslations(): void {
@@ -202,13 +174,22 @@ export class MultipleChoiceComponent extends BaseFormControlComponent implements
     this.formGroup.controls[this.field.key].setValue(this.getFieldValue());
   }
 
+  private deselectAll(): void {
+    if (this._selectionList) {
+      this._selectionList.deselectAll();
+    }
+  }
+
   private removeItem(identifier: string): void {
     if (!this.multipleChoiceConfig) {
       throw Error(`Incorrect configuration for '${this.field.key}'`);
     }
 
     const selectedItem = this.multipleChoiceItems.find(m => m.identifier === identifier);
-
+   
     this.multipleChoiceItems = _.reject(this.multipleChoiceItems, function (item) { return item.identifier === identifier; });
+    
+    // make sure to unselect items (because otherwise removed items would still be present)
+    this.deselectAll();
   }
 }

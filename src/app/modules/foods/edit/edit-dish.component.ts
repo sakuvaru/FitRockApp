@@ -44,16 +44,19 @@ export class EditDishComponent extends BaseComponent implements OnInit {
     }
 
     private getFoodOptionMetaLines(food: Food, amount: number): Observable<string>[] {
+        // calculate food with amount to get proper nutrition distribution
+        const foodCalculation = this.dependencies.itemServices.foodService.calculateFoodWithAmount(food, amount);
+
         return [
             this.dependencies.coreServices.localizationHelperService.translateFoodAmountAndUnit(
                 amount,
                 food.foodUnit.unitCode
             ),
             this.dependencies.coreServices.localizationHelperService.translateFoodComposition(
-                food.prot,
-                food.fat,
-                food.cho,
-                food.kcal)
+                foodCalculation.prot,
+                foodCalculation.fat,
+                foodCalculation.cho,
+                foodCalculation.kcal)
         ];
     }
 
@@ -197,7 +200,14 @@ export class EditDishComponent extends BaseComponent implements OnInit {
                             }
 
                             if (models) {
-                                const calculations = this.dependencies.itemServices.foodService.aggregateFoods(models.map(m => m.food));
+                                const calculations = this.dependencies.itemServices.foodService.aggregateFoodsNutrition(
+                                    models.map(s => {
+                                        return {
+                                            food: s.food,
+                                            amount: s.amount
+                                        };
+                                    })
+                                );
 
                                 if (fieldName === 'Kcal') {
                                     return Observable.of(calculations.kcal);
@@ -237,7 +247,14 @@ export class EditDishComponent extends BaseComponent implements OnInit {
                             const naclField = fields.find(m => m.key === 'Nacl');
 
                             if (assignedFoods) {
-                                const calculation = this.dependencies.itemServices.foodService.aggregateFoods(assignedFoods.map(m => m.food));
+                                const calculation = this.dependencies.itemServices.foodService.aggregateFoodsNutrition(
+                                    assignedFoods.map(s => {
+                                        return {
+                                            food: s.food,
+                                            amount: s.amount
+                                        };
+                                    })
+                                );
 
                                 if (kcalField) {
                                     newFields.push(new DataFormChangeField(kcalField.key, calculation.kcal));
