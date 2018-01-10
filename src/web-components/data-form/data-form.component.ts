@@ -603,9 +603,6 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
                 const resolvedValue = this.getFieldValueSetByResolver(newValue);
 
                 // set field value
-                console.log(field.key);
-                console.log(field.value);
-                console.log(newValue);
                 field.value = resolvedValue;
 
                 // do not 'change default value' as this is overwrite

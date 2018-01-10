@@ -61,6 +61,12 @@
                     </div>
                 </mat-card-actions>
             </mat-card>
+
+            <!-- Hidden save button used so that forms can be submitted by hitting enter. 
+                 This is useful if buttons are not rendered in the form -->
+            <button *ngIf="!config.renderButtons && isInsertForm" (click)="handleInsertItem()" class="w-hide" type="submit">Hidden submit</button>
+            <button *ngIf="!config.renderButtons && isEditForm" (click)="handleEditItem()" class="w-hide" type="submit">Hidden submit</button>
+
         </form>
     </div>
 </ng-container>
@@ -121,6 +127,11 @@
                     <delete-button [enableConfirm]="false" *ngIf="isDeleteEnabled" (confirm)="handleDeleteItem()"></delete-button>
                 </div>
             </div>
+
+            <!-- Hidden save button used so that forms can be submitted by hitting enter. 
+                 This is useful if buttons are not rendered in the form -->
+            <button *ngIf="!config.renderButtons && isInsertForm" (click)="handleInsertItem()" class="w-hide" type="submit">Hidden submit</button>
+            <button *ngIf="!config.renderButtons && isEditForm" (click)="handleEditItem()" class="w-hide" type="submit">Hidden submit</button>
         </form>
 
     </div>
