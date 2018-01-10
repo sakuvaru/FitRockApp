@@ -47,7 +47,7 @@ export class AddDietFoodDialogComponent extends BaseComponent implements OnInit 
 
   private initForm(): void {
     this.dietFoodForm = this.dependencies.itemServices.dietFoodService.buildInsertForm()
-      .fieldValueResolver((fieldName, value) => {
+      .fieldValueResolver((fieldName, value, item) => {
         if (fieldName === 'FoodId') {
           return Observable.of(this.food.id);
         } else if (fieldName === 'DietId') {

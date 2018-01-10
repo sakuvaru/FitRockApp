@@ -83,7 +83,7 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
     public rows: DataFormRow[] = [];
 
     /**
-     * Temp fields
+     * Fields
      */
     private fields: DataFormField[] = [];
 
@@ -184,7 +184,7 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
     }
 
     reloadForm(): void {
-        this.initForm();
+        this.loadForm();
     }
 
     private initDataForm(): void {
@@ -202,7 +202,7 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
         this.subscribeToInitForm();
 
         // init form
-        this.initForm();
+        this.loadForm();
     }
 
     private getInitFormObservable(): Observable<void> {
@@ -245,8 +245,7 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
             return fieldObservable;
         })
             .map(() => {
-                // at this point, all fields should be assigned to fields
-                // create rows out of fields
+                // at this point, all fields should be ready
                 this.rows = this.getRows(this.fields);
 
                 // init form group
@@ -276,6 +275,11 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
                     throw Error(`Unsupported form definition response`);
                 }
 
+
+                // this is important as it prevents issues when multiple fields were changed
+                // using e.g. field value resolver. This change could edit field that was already checked and since
+                // all fields are passed to datafield it would cause an error
+                this.cdr.detectChanges();
             });
     }
 
@@ -306,7 +310,7 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
         }
     }
 
-    private initForm() {
+    private loadForm() {
         this.initFormSubject.next(true);
     }
 
@@ -599,6 +603,9 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
                 const resolvedValue = this.getFieldValueSetByResolver(newValue);
 
                 // set field value
+                console.log(field.key);
+                console.log(field.value);
+                console.log(newValue);
                 field.value = resolvedValue;
 
                 // do not 'change default value' as this is overwrite
@@ -613,7 +620,7 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
         if (!this.config.isInsertForm) {
             throw Error(`Only insert forms can be cleared after save`);
         }
-        this.initForm();
+        this.loadForm();
     }
 
     private handleLoadError(error: DataFormError | any): void {
