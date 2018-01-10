@@ -64,8 +64,8 @@
 
             <!-- Hidden save button used so that forms can be submitted by hitting enter. 
                  This is useful if buttons are not rendered in the form -->
-            <button *ngIf="!config.renderButtons && isInsertForm" (click)="handleInsertItem()" class="w-hide" type="submit">Hidden submit</button>
-            <button *ngIf="!config.renderButtons && isEditForm" (click)="handleEditItem()" class="w-hide" type="submit">Hidden submit</button>
+            <button *ngIf="!config.renderButtons && isInsertForm" (click)="handleInsertItem()" style="display:none" type="submit">Hidden submit</button>
+            <button *ngIf="!config.renderButtons && isEditForm" (click)="handleEditItem()" style="display:none" type="submit">Hidden submit</button>
 
         </form>
     </div>
@@ -130,8 +130,8 @@
 
             <!-- Hidden save button used so that forms can be submitted by hitting enter. 
                  This is useful if buttons are not rendered in the form -->
-            <button *ngIf="!config.renderButtons && isInsertForm" (click)="handleInsertItem()" class="w-hide" type="submit">Hidden submit</button>
-            <button *ngIf="!config.renderButtons && isEditForm" (click)="handleEditItem()" class="w-hide" type="submit">Hidden submit</button>
+            <button *ngIf="!config.renderButtons && isInsertForm" (click)="handleInsertItem()" style="display:none" type="submit">Hidden submit</button>
+            <button *ngIf="!config.renderButtons && isEditForm" (click)="handleEditItem()" style="display:none" type="submit">Hidden submit</button>
         </form>
 
     </div>
