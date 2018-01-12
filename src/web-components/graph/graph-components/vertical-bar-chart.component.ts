@@ -42,33 +42,7 @@ export class VerticalBarGraphComponent extends BaseGraphComponent implements OnI
     }
 
     specializedGraphInit(graph: VerticalBarChart): Observable<VerticalBarChart> {
-        return this.getLabelsObservable(graph);
-    }
-
-    private getLabelsObservable(graph: VerticalBarChart): Observable<VerticalBarChart> {
-        const observables: Observable<void>[] = [];
-
-        if (graph.xAxisLabel) {
-            observables.push(graph.xAxisLabel
-                .map(label => {
-                    this.xAxisLabel = label;
-                }));
-        }
-
-        if (graph.yAxisLabel) {
-            observables.push(graph.yAxisLabel
-                .map(label => {
-                    this.yAxisLabel = label;
-                }));
-        }
-
-        if (observables.length === 0) {
-            return Observable.of(graph);
-        }
-
-        const obs = observableHelper.zipObservables(observables);
-
-        return obs.map(() => graph);
+        return Observable.of(graph);
     }
 }
 

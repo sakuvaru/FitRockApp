@@ -46,7 +46,7 @@ export class GraphConfig<TGraph extends BaseGraph> {
      * Graph color scheme
      */
     public scheme = {
-        domain: ['#f44336', '#A10A28', '#C7B42C', '#AAAAAA']
+        domain: ['#f44336', '#3f51b5', '#8b008b', '#00ced1', '#fff600', '#ffa07a']
     };
 
     /**

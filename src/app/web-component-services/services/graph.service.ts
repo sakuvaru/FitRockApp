@@ -1,5 +1,6 @@
-import { LineChart, VerticalBarChart, GraphBuilder, GraphTypeEnum } from '../../../web-components/graph';
 import { Observable } from 'rxjs/Rx';
+
+import { GraphBuilder, GraphTypeEnum, LineChart, PieChart, VerticalBarChart } from '../../../web-components/graph';
 
 export class GraphService {
 
@@ -13,5 +14,11 @@ export class GraphService {
         graph: Observable<VerticalBarChart>,
     ): GraphBuilder<VerticalBarChart> {
         return new GraphBuilder<VerticalBarChart>(graph, GraphTypeEnum.VerticalBarChart);
+    }
+
+    pieChart(
+        graph: Observable<PieChart>,
+    ): GraphBuilder<PieChart> {
+        return new GraphBuilder<PieChart>(graph, GraphTypeEnum.PieChart);
     }
 }

@@ -23,19 +23,25 @@ export class LineChart extends BaseGraph {
     public gradient = false;
     public showXAxisLabel = true;
     public showYAxisLabel = true;
-    public autoScale = true;
+    public legend = false;
+
 
     constructor(
         public data: MultiSeries[],
         options?: {
             xAxisLabel?: Observable<string>,
-            yAxisLabel?: Observable<string>
+            yAxisLabel?: Observable<string>,
+            showXAxis?: boolean,
+            showYAxis?: boolean,
+            gradient?: boolean,
+            autoScale?: boolean,
+            legend?: boolean
         }
     ) {
         super();
         if (options) {
             Object.assign(this, options);
-        } 
+        }
     }
 }
 
@@ -62,6 +68,29 @@ export class VerticalBarChart extends BaseGraph {
             yAxisLabel?: Observable<string>
         }
 
+    ) {
+        super();
+        if (options) {
+            Object.assign(this, options);
+        }
+    }
+}
+
+export class PieChart extends BaseGraph {
+
+    public readonly type: GraphTypeEnum = GraphTypeEnum.PieChart;
+
+    // options
+    public gradient = false;
+    public autoScale = true;
+
+    public showLabels: boolean = true;
+
+    constructor(
+        public data: SingleSeries[],
+        options?: {
+            showLabels: boolean,
+        }
     ) {
         super();
         if (options) {

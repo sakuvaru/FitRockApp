@@ -9,6 +9,7 @@ import { LoaderModule } from '../loader/loader.module';
 import { SharedWebComponentModule } from '../shared-web-components.module';
 import { LineChartGraphComponent } from './graph-components/line-chart.component';
 import { VerticalBarGraphComponent } from './graph-components/vertical-bar-chart.component';
+import { PieChartComponent } from './graph-components/pie-chart.component';
 import { GraphComponent } from './graph.component';
 
 @NgModule({
@@ -17,14 +18,15 @@ import { GraphComponent } from './graph.component';
         SharedWebComponentModule,
         RouterModule, // router needs to be importes so that routerLink can be used within components
         LoaderModule, // loader module is used within graph
-        BrowserModule, // ngx 
-        BrowserAnimationsModule, // ngx
-        NgxChartsModule // ngx
+        BrowserModule, 
+        BrowserAnimationsModule, 
+        NgxChartsModule,
     ],
     declarations: [
         GraphComponent,
         VerticalBarGraphComponent,
         LineChartGraphComponent,
+        PieChartComponent
     ],
     exports: [
         GraphComponent

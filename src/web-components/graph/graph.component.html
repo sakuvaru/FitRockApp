@@ -6,6 +6,7 @@
       <mat-card-content class="pad-top-sm">
         <line-chart #graphComponent *ngIf="config.graphType === 0" [config]="config" (loaderChanged)="onLoaderChanged($event)"></line-chart>
         <vertical-bar-chart #graphComponent *ngIf="config.graphType === 1" [config]="config" (loaderChanged)="onLoaderChanged($event)"></vertical-bar-chart>
+        <pie-chart #graphComponent *ngIf="config.graphType === 2" [config]="config" (loaderChanged)="onLoaderChanged($event)"></pie-chart>
       </mat-card-content>
     </mat-card>
 
@@ -17,6 +18,7 @@
     <div>
       <line-chart #graphComponent *ngIf="config.graphType === 0" [config]="config" (loaderChanged)="onLoaderChanged($event)"></line-chart>
       <vertical-bar-chart #graphComponent *ngIf="config.graphType === 1" [config]="config" (loaderChanged)="onLoaderChanged($event)"></vertical-bar-chart>
+      <pie-chart #graphComponent *ngIf="config.graphType === 2" [config]="config" (loaderChanged)="onLoaderChanged($event)"></pie-chart>
     </div>
 
   </ng-container>

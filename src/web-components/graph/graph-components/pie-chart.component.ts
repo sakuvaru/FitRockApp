@@ -1,32 +1,22 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { observableHelper } from 'lib/utilities';
 import { Observable } from 'rxjs/Rx';
 
 import { LocalizationService } from '../../../lib/localization';
-import { LineChart } from '../graph-types';
+import { PieChart } from '../graph-types';
 import { GraphConfig } from '../graph.config';
 import { BaseGraphComponent } from './base-graph.component';
-import { observableHelper } from 'lib/utilities';
 
 @Component({
-    selector: 'line-chart',
-    templateUrl: 'line-chart.component.html'
+    selector: 'pie-chart',
+    templateUrl: 'pie-chart.component.html'
 })
-export class LineChartGraphComponent extends BaseGraphComponent implements OnInit, OnChanges {
+export class PieChartComponent extends BaseGraphComponent implements OnInit, OnChanges {
 
     /**
      * Graph configuration
      */
-    @Input() config: GraphConfig<LineChart>;
-
-    /**
-     * X axis label
-     */
-    public xAxisLabel: string;
-
-    /**
-     * Y axis label
-     */
-    public yAxisLabel: string;
+    @Input() config: GraphConfig<PieChart>;
 
     constructor(
         protected localizationService: LocalizationService
@@ -41,7 +31,7 @@ export class LineChartGraphComponent extends BaseGraphComponent implements OnIni
         super.ngOnChanges(changes);
     }
 
-    specializedGraphInit(graph: LineChart): Observable<LineChart> {
+    specializedGraphInit(graph: PieChart): Observable<PieChart> {
         return Observable.of(graph);
     }
 }

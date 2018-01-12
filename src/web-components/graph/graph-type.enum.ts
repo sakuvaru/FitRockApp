@@ -10,5 +10,6 @@ export enum GraphTypeEnum {
     */
 
     LineChart = 0,
-    VerticalBarChart = 1
+    VerticalBarChart = 1,
+    PieChart = 2
 }

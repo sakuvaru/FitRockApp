@@ -2,7 +2,7 @@
     <div [ngStyle]="wrapperStyle">
         <ngx-charts-line-chart [results]="graphData" [view]="graph.view" [scheme]="config.scheme" [gradient]="graph.gradient" [xAxis]="graph.showXAxis"
             [yAxis]="graph.showYAxis" [legend]="config.showLegend" [showXAxisLabel]="graph.showXAxisLabel" [showYAxisLabel]="graph.showYAxisLabel"
-            [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel" [autoScale]="graph.autoScale" [legendTitle]="legendTitle" (select)="onSelect($event)">
+            [xAxisLabel]="graph.xAxisLabel | async" [yAxisLabel]="graph.yAxisLabel | async" [autoScale]="graph.autoScale" [legendTitle]="legendTitle" (select)="onSelect($event)">
         </ngx-charts-line-chart>
     </div>
 </ng-container>

@@ -2,7 +2,7 @@
     <div [ngStyle]="wrapperStyle">
         <ngx-charts-bar-vertical [results]="graphData" [view]="graph.view" [scheme]="config.scheme" [gradient]="graph.gradient" [xAxis]="graph.showXAxis"
             [yAxis]="graph.showYAxis" [legend]="config.showLegend" [showXAxisLabel]="graph.showXAxisLabel" [showYAxisLabel]="graph.showYAxisLabel"
-            [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel" [legendTitle]="legendTitle" (select)="onSelect($event)">
+            [xAxisLabel]="graph.xAxisLabel | async" [yAxisLabel]="graph.yAxisLabel | async" [legendTitle]="legendTitle" (select)="onSelect($event)">
         </ngx-charts-bar-vertical>
     </div>
 </ng-container>

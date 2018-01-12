@@ -3,6 +3,7 @@ import { Food, FoodWithAmountModel } from '../../models';
 import { RepositoryClient, PostQuery } from '../../../lib/repository';
 import { BaseTypeService } from '../base/base-type.service';
 import { numberHelper } from 'lib/utilities';
+import { SingleSeriesResponse } from '../../services/progress/progress-models';
 
 @Injectable()
 export class FoodService extends BaseTypeService<Food> {
@@ -12,6 +13,13 @@ export class FoodService extends BaseTypeService<Food> {
             type: 'Food',
             allowDelete: true
         });
+    }
+
+    getNutritionDistribution(foodId: number): PostQuery<SingleSeriesResponse> {
+        const query = this.post<SingleSeriesResponse>('GetNutritionDistribution')
+            .withJsonOption('FoodId', foodId);
+
+        return query;
     }
 
     calculateFoodWithAmount(food: Food, amount: number, roundTo: number = 0): {
