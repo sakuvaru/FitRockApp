@@ -40,6 +40,15 @@ export class StringHelper {
     }
 
     /**
+     * Removes everything in text before given string
+     * @param text Text
+     * @param beforeString String to match
+     */
+    removeEverythingBefore(text: string, beforeString: string): string {
+        return text.substring(text.indexOf(beforeString) + 1);
+    }
+
+    /**
      * Gets hash from given string
      * @param text text to hash
      */
