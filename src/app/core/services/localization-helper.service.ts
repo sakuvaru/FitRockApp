@@ -52,7 +52,7 @@ export class LocalizationHelperService {
     return this.localizationService.get('module.foods.foodAmountTextLineB', translateParams);
   }
 
-  translateFoodAmountComplete(amount: number, foodUnit: string, proteins?: number, fats?: number, carbs?: number, kcal?: number): Observable<string> {
+  translateFoodCompositionComplete(amount: number, foodUnit: string, proteins?: number, fats?: number, carbs?: number, kcal?: number): Observable<string> {
     // first translate food unit in proper format
     let foodUnitTranslationString: string = '';
 

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Food, FoodWithAmountModel } from '../../models';
 import { RepositoryClient, PostQuery } from '../../../lib/repository';
 import { BaseTypeService } from '../base/base-type.service';
+import { numberHelper } from 'lib/utilities';
 
 @Injectable()
 export class FoodService extends BaseTypeService<Food> {
@@ -13,7 +14,7 @@ export class FoodService extends BaseTypeService<Food> {
         });
     }
 
-    calculateFoodWithAmount(food: Food, amount: number): {
+    calculateFoodWithAmount(food: Food, amount: number, roundTo: number = 0): {
         kcal: number,
         fat: number,
         sugar: number,
@@ -63,12 +64,12 @@ export class FoodService extends BaseTypeService<Food> {
         kcal = (fat * 9) + ((prot + cho) * 4);
 
         return {
-            cho: cho,
-            fat: fat,
-            kcal: kcal,
-            nacl: nacl,
-            prot: prot,
-            sugar: sugar,
+            cho: numberHelper.roundTo(cho, roundTo),
+            fat: numberHelper.roundTo(fat, roundTo),
+            kcal: numberHelper.roundTo(kcal, roundTo),
+            nacl: numberHelper.roundTo(nacl, roundTo),
+            prot: numberHelper.roundTo(prot, roundTo),
+            sugar: numberHelper.roundTo(sugar, roundTo),
             resultCanBeIncorrectDueToMissingNutrition: resultCanBeIncorrectDueToMissingNutrition
         };
     }
@@ -77,7 +78,7 @@ export class FoodService extends BaseTypeService<Food> {
      * Calculates total number of kcal from given foods
      * @param foods foods
      */
-    aggregateFoodsNutrition(foodsWithAmount: FoodWithAmountModel[]): {
+    aggregateFoodsNutrition(foodsWithAmount: FoodWithAmountModel[], roundTo: number = 0): {
         kcal: number,
         fat: number,
         sugar: number,
@@ -111,12 +112,12 @@ export class FoodService extends BaseTypeService<Food> {
         }
 
         return {
-            cho: cho,
-            fat: fat,
-            kcal: kcal,
-            nacl: nacl,
-            prot: prot,
-            sugar: sugar,
+            cho: numberHelper.roundTo(cho, roundTo),
+            fat: numberHelper.roundTo(fat, roundTo),
+            kcal: numberHelper.roundTo(kcal, roundTo),
+            nacl: numberHelper.roundTo(nacl, roundTo),
+            prot: numberHelper.roundTo(prot, roundTo),
+            sugar: numberHelper.roundTo(sugar, roundTo),
             resultCanBeIncorrectDueToMissingNutrition: resultCanBeIncorrectDueToMissingNutrition
         };
     }

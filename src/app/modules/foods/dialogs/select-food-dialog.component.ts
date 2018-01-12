@@ -36,6 +36,7 @@ export class SelectFoodDialogComponent extends BaseComponent implements OnInit {
       (query, search) => {
         return query
           .includeMultiple(['FoodCategory', 'FoodUnit'])
+          .whereEquals('IsDishFood', false)
           .whereLike('FoodName', search);
       },
     )
