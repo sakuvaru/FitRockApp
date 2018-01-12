@@ -226,14 +226,19 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
             this.clearFields();
 
             definition.fields.forEach(field => {
-                // pass item to field so that its accessible easily
-                field.internalProperties.item = item;
+                // ignore fields
+                if (!this.config.ignoreFields.find(m => m === field.key)) {
+                    // this means that field is not in the ignore list
+                    // pass item to field so that its accessible easily
+                    field.internalProperties.item = item;
 
-                fieldObservables.push(this.resolveField(field, item)
-                    .map(resolvedField => {
-                        // add resolved field to fields
-                        this.fields.push(resolvedField);
-                    }));
+                    fieldObservables.push(this.resolveField(field, item)
+                        .map(resolvedField => {
+                            // add resolved field to fields
+                            this.fields.push(resolvedField);
+                        }));
+                }
+
             });
 
             // zip all observables
@@ -812,4 +817,3 @@ class ResponseWrapper {
         public response: DataFormEditResponse<any> | DataFormDeleteResponse | DataFormInsertResponse<any>
     ) { }
 }
-

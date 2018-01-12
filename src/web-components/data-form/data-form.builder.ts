@@ -78,6 +78,14 @@ export class DataFormBuilder<TItem extends IItem> {
     }
 
     /**
+     * List of field keys that will be ignored by the form
+     */
+    ignoreFields(fieldKeys: string[]): this {
+        this.config.ignoreFields = fieldKeys;
+        return this;
+    }
+
+    /**
      * Indicates if action buttons (save, edit, delete) are rendered
      */
     renderButtons(render: boolean): this {

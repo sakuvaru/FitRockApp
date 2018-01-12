@@ -49,6 +49,9 @@ export class EditFoodComponent extends BaseComponent implements OnInit {
 
                         return Observable.of(originalLabel);
                     })
+                    .ignoreFields([
+                        'AssignedFoodsVirtual'
+                    ])
                     .onEditFormLoaded(form => {
                         this.setConfig({
                             menuItems: new FoodMenuItems(form.item.id).menuItems,

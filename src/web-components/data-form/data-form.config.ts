@@ -14,6 +14,10 @@ import {
 
 export class DataFormConfig {
 
+    /**
+     * List of field keys that will be ignored by the form
+     */
+    public ignoreFields: string[] = [];
 
     /**
      * Indicates if form is wrapped in card
