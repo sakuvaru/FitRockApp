@@ -3,6 +3,7 @@ import { QueryService } from 'lib/repository/services/query.service';
 import { IOption } from '../../interfaces/ioption.interface';
 import * as Options from '../../models/options';
 import { BaseQuery } from '../base-query.class';
+import { FieldValue } from '../../models/field-value.class';
 
 export abstract class BaseItemQuery extends BaseQuery {
 
@@ -56,6 +57,11 @@ export abstract class BaseItemQuery extends BaseQuery {
 
     whereEquals(field: string, value: string | number | boolean): this {
         this._options.push(new Options.WhereEquals(field, value));
+        return this;
+    }
+
+    whereEqualsWithOr(conditions: FieldValue[]): this {
+        this._options.push(new Options.WhereEqualsWithOr(conditions));
         return this;
     }
 

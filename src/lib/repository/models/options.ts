@@ -1,4 +1,5 @@
 import { IOption } from '../interfaces/ioption.interface';
+import { FieldValue } from './field-value.class';
 
 export class CustomOption implements IOption {
     constructor(
@@ -183,6 +184,24 @@ export class WhereEquals implements IOption {
 
     public GetParamValue(): string {
         return processParamValue(this.value);
+    }
+}
+
+export class WhereEqualsWithOr implements IOption {
+    constructor(
+        public conditions: FieldValue[]
+    ) {
+        if (!conditions || conditions.length === 0) {
+            throw Error(`Conditions cannot be empty`);
+        }
+    }
+
+    public GetParam(): string {
+        return 'whereequalswithor.' + this.conditions.map(m => m.field).join('+');
+    }
+
+    public GetParamValue(): string {
+        return this.conditions.map(m => processParamValue(m.value)).join('+');
     }
 }
 

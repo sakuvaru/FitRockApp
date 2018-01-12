@@ -14,6 +14,11 @@ export class SelectDietFoodDialogComponent extends BaseComponent implements OnIn
   public selectable: boolean = true;
   public config?: DataTableConfig;
 
+  /**
+   * Indicates if foods or food dishes are fetched
+   */
+  public takeFoodDishes: boolean = false;
+
   public selectedFood?: Food;
   public openAddNewFoodDialog: boolean = false;
   public openAddNewDishDialog: boolean = false;
@@ -24,6 +29,7 @@ export class SelectDietFoodDialogComponent extends BaseComponent implements OnIn
   ) {
     super(dependencies);
 
+    this.takeFoodDishes = data.takeFoodDishes;
   }
 
   setup(): ComponentSetup {
@@ -40,7 +46,15 @@ export class SelectDietFoodDialogComponent extends BaseComponent implements OnIn
       (query, search) => {
         return query
           .include('FoodCategory')
-          .whereLike('FoodName', search);
+          .whereEquals('IsDishFood', this.takeFoodDishes)
+          .whereLike('FoodName', search)
+          .whereEqualsWithOr([{
+            field: 'CreatedByUserId',
+            value: this.authUser ? this.authUser.id : 0
+          }, {
+            field: 'IsGlobal',
+            value: true
+          }]);
       },
     )
       .withFields([
@@ -56,7 +70,7 @@ export class SelectDietFoodDialogComponent extends BaseComponent implements OnIn
           hideOnSmallScreen: true
         },
       ])
-      .withDynamicFilters(search => this.dependencies.itemServices.foodCategoryService.getFoodCategoryWithFoodsCountDto(search, false, false, false, false)
+      .withDynamicFilters(search => this.dependencies.itemServices.foodCategoryService.getFoodCategoryWithFoodsCountDto(search, this.takeFoodDishes ? true : false, false, this.takeFoodDishes, false)
         .get()
         .map(response => {
           const filters: IDynamicFilter<Food>[] = [];
