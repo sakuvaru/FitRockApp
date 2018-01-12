@@ -52,7 +52,11 @@ export class PreviewFoodComponent extends BaseComponent implements OnInit {
                         .set()
                         .map(response => {
                             return new PieChart(response.data.items, {
-                                showLabels: true
+                                showLabels: true,
+                                labelFormatting: (value) => {
+                                    // remove everything before 'g'
+                                    return stringHelper.removeEverythingBefore(value, 'g');
+                                }
                             });
                         })
                 )
@@ -67,7 +71,7 @@ export class PreviewFoodComponent extends BaseComponent implements OnInit {
                         data.forEach(series => {
                             observables.push(
                                 super.translate('module.foods.nutrition.' + series.name.toLowerCase())
-                                .map(translation => series.name = translation)
+                                .map(translation => series.name = `${series.value}g ` + translation)
                             );
                         });
 

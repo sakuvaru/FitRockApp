@@ -38,8 +38,7 @@ export class PreviewDishComponent extends BaseComponent implements OnInit {
             .takeUntil(this.ngUnsubscribe)
             .switchMap((params: Params) => this.dependencies.itemServices.foodService.item()
                 .byId(+params['id'])
-                .get()
-                .takeUntil(this.ngUnsubscribe))
+                .get())
             .map(response => {
                 this.food = response.item;
 
