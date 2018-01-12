@@ -83,13 +83,15 @@ export class PieChart extends BaseGraph {
     // options
     public gradient = false;
     public autoScale = true;
+    public labelFormatting?: (value: any) => string;
 
     public showLabels: boolean = true;
 
     constructor(
         public data: SingleSeries[],
         options?: {
-            showLabels: boolean,
+            showLabels?: boolean,
+            labelFormatting?: (value: any) => string;
         }
     ) {
         super();
