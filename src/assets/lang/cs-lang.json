@@ -278,8 +278,8 @@
 				"allFoods": "Všechny potraviny",
 				"editMeal": "Upravit jídlo",
 				"editFood": "Upravit potravinu",
-				"previewMeal": "Náhled",
-				"previewFood": "Náhled",
+				"previewMeal": "Jídlo",
+				"previewFood": "Potravina",
 				"overview": "Přehled",
 				"newFood": "Nová potravina",
 				"newMeal": "Nové jídlo",
@@ -308,7 +308,8 @@
 			"description": "Popis",
 			"kcalWithKj": "{{kcal}} kcal ({{kj}} kJ)",
 			"foodIsUsedIn": "Jídla, kde je potravina použita",
-			"mealComposition": "Složení"
+			"mealComposition": "Složení",
+			"foodInfo": "Informace"
 		},
 		"foodUnits": {
 			"portion": "porce",

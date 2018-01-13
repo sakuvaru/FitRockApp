@@ -25,7 +25,7 @@ export class EntryComponent extends BaseComponent {
 
     // if user is not authenticated, just redirect him to logon page
     if (!currentUser) {
-      this.dependencies.coreServices.navigateService.loginPage();
+      this.dependencies.coreServices.navigateService.loginPage().navigate();
       return;
     }
     
@@ -42,7 +42,7 @@ export class EntryComponent extends BaseComponent {
               throw Error('Invalid user response from server, please report this error');
             } else if (!response.item) {
               // redirect him to logon screen
-              this.dependencies.coreServices.navigateService.loginPage();
+              this.dependencies.coreServices.navigateService.loginPage().navigate();
             } else {
               // user is authenticated, update auth user
               const user = response.item;
@@ -78,7 +78,7 @@ export class EntryComponent extends BaseComponent {
 
   private redirectUser(isClient: boolean): void {
     console.warn('clients are redirected to same page as trainers for now');
-    this.dependencies.coreServices.navigateService.trainerPage('');
+    this.dependencies.coreServices.navigateService.trainerPage('').navigate();
     return;
     /*
     if (!isClient) {

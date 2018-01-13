@@ -39,7 +39,7 @@ export class ServerDownComponent extends BaseComponent implements OnInit {
       .subscribe(response => {
         // app is online, redirect back to main page
         if (this.appOnline) {
-          this.dependencies.coreServices.navigateService.entryPage();
+          this.dependencies.coreServices.navigateService.entryPage().navigate();
         }
       },
       err => {

@@ -1,5 +1,10 @@
 <div fxFlexFill fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayout.md="column">
         <div fxLayout="column" fxFlex="50%" class="push-sm">
+
+            <h2 *ngIf="food" class="mat-headline">
+                {{ food.foodName }}
+            </h2>
+
             <div fxLayoutAlign="space-between start" fxLayout="row" fxHide.sm fxHide.xs>
                 <div fxFlex="18%" fxLayout="row" flex>
                     <div class="w-full-width">

@@ -149,7 +149,7 @@ export class RegisterFormComponent extends BaseComponent implements OnInit {
                 this.loginFailed = true;
             } else {
                 // redirect user to entry page
-                this.dependencies.coreServices.navigateService.entryPage();
+                this.dependencies.coreServices.navigateService.entryPage().navigate();
             }
         });
     }

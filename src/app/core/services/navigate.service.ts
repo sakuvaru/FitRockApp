@@ -21,68 +21,67 @@ export class NavigateService {
 
   loginPage(options?: {
     externalLoginError?: boolean
-  }): void {
+  }): NavigateResult {
     if (options && options.externalLoginError) {
-      this.navigate([UrlConfig.getLoginUrl()], {
+      this.getNavigateResult(UrlConfig.getLoginUrl(), {
         queryParams: {
           loginResult: 'externalFail'
         }
       });
-      return;
     }
-    this.navigate([UrlConfig.getLoginUrl()]);
+    return this.getNavigateResult(UrlConfig.getLoginUrl());
   }
 
-  errorPage(navigationExtras?: NavigationExtras): void {
-    this.router.navigate([UrlConfig.getErrorUrl()], navigationExtras);
+  errorPage(navigationExtras?: NavigationExtras): NavigateResult {
+    return this.getNavigateResult(UrlConfig.getErrorUrl());
   }
 
-  entryPage(navigationExtras?: NavigationExtras): void {
-    this.router.navigate([UrlConfig.getEntryUrl()], navigationExtras);
+  entryPage(navigationExtras?: NavigationExtras): NavigateResult {
+    return this.getNavigateResult(UrlConfig.getEntryUrl());
   }
 
-  unauthorizedPage(navigationExtras?: NavigationExtras): void {
-    this.router.navigate([UrlConfig.getUnauthorizedUrl()], navigationExtras);
+  unauthorizedPage(navigationExtras?: NavigationExtras): NavigateResult {
+    return this.getNavigateResult(UrlConfig.getUnauthorizedUrl());
   }
 
-  notFound404(navigationExtras?: NavigationExtras): void {
-    this.router.navigate([UrlConfig.getItem404Url()], navigationExtras);
+  notFound404(navigationExtras?: NavigationExtras): NavigateResult {
+    return this.getNavigateResult(UrlConfig.getItem404Url());
   }
 
-  serverDownPage(navigationExtras?: NavigationExtras): void {
-    this.router.navigate([UrlConfig.getServerDownUrl()], navigationExtras);
+  serverDownPage(navigationExtras?: NavigationExtras): NavigateResult {
+    return this.getNavigateResult(UrlConfig.getServerDownUrl());
   }
 
-  logoutPage(navigationExtras?: NavigationExtras): void {
-    this.router.navigate([UrlConfig.getLogoutUrl()], navigationExtras);
+  logoutPage(navigationExtras?: NavigationExtras): NavigateResult {
+    return this.getNavigateResult(UrlConfig.getLogoutUrl());
   }
 
-  resetPasswordPage(navigationExtras?: NavigationExtras): void {
-    this.router.navigate([UrlConfig.getResetPasswordUrl()], navigationExtras);
+  resetPasswordPage(navigationExtras?: NavigationExtras): NavigateResult {
+    return this.getNavigateResult(UrlConfig.getResetPasswordUrl());
   }
 
-  item404(navigationExtras?: NavigationExtras): void {
-    this.router.navigate([UrlConfig.getItem404Url()], navigationExtras);
+  item404(navigationExtras?: NavigationExtras): NavigateResult {
+    return this.getNavigateResult(UrlConfig.getItem404Url());
   }
 
-  action(action: string, navigationExtras?: NavigationExtras): void {
-    this.router.navigate([UrlConfig.getActionUrl(action)], navigationExtras);
+  action(action: string, navigationExtras?: NavigationExtras): NavigateResult {
+    return this.getNavigateResult(UrlConfig.getActionUrl(action));
   }
 
-  trainerPage(action: string, navigationExtras?: NavigationExtras): void {
-    this.router.navigate([UrlConfig.getTrainerUrl(action)], navigationExtras);
+  trainerPage(action: string, navigationExtras?: NavigationExtras): NavigateResult {
+    return this.getNavigateResult(UrlConfig.getTrainerUrl(action));
   }
 
-  clientPage(action: string, navigationExtras?: NavigationExtras): void {
-    this.router.navigate([UrlConfig.getClientUrl(action)], navigationExtras);
+  clientPage(action: string, navigationExtras?: NavigationExtras): NavigateResult {
+    return this.getNavigateResult(UrlConfig.getClientUrl(action));
   }
 
-  authPage(action: string, navigationExtras?: NavigationExtras): void {
-    this.router.navigate([UrlConfig.getAuthUrl(action)], navigationExtras);
+  authPage(action: string, navigationExtras?: NavigationExtras): NavigateResult {
+    return this.getNavigateResult(UrlConfig.getAuthUrl(action));
   }
 
-  mealPreviewPage(foodId: number, navigationExtras?: NavigationExtras): void {
-    this.router.navigate([UrlConfig.getTrainerUrl('/foods/meals/preview/' + foodId)], navigationExtras);
+  mealPreviewPage(foodId: number, navigationExtras?: NavigationExtras): NavigateResult {
+    return this.getNavigateResult(UrlConfig.getTrainerUrl('/foods/meals/preview/' + foodId));
   }
 
   foodPreviewPage(foodId: number, navigationExtras?: NavigationExtras): NavigateResult {
@@ -90,6 +89,6 @@ export class NavigateService {
   }
 
   private getNavigateResult(url, navigationExtras?: NavigationExtras): NavigateResult {
-    return new NavigateResult((xUrl) => this.router.navigate(xUrl, navigationExtras), url);
+    return new NavigateResult((xUrl) => this.router.navigate([xUrl], navigationExtras), url);
   }
 }

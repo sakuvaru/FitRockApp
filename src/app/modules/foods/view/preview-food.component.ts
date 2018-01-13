@@ -75,7 +75,7 @@ export class PreviewFoodComponent extends BaseComponent implements OnInit {
                         hideOnSmallScreen: false
                     }])
                     .onClick(item => {
-                        this.dependencies.coreServices.navigateService.mealPreviewPage(item.parentFoodId);
+                        this.dependencies.coreServices.navigateService.mealPreviewPage(item.parentFoodId).navigate();
                     })
                     .title(super.translate('module.foods.foodIsUsedIn'))
                     .build();
@@ -125,7 +125,7 @@ export class PreviewFoodComponent extends BaseComponent implements OnInit {
         }
 
         this.foodOverviewBox = this.dependencies.webComponentServices.boxService.tableBox(
-            Observable.of(food.foodName),
+            super.translate('module.foods.foodInfo'),
             Observable.of(overviewLines)
         );
     }

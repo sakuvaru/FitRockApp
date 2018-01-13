@@ -121,6 +121,6 @@ export class GlobalErrorHandler implements ErrorHandler {
 
         navigateService.errorPage({
             queryParams: params
-        });
+        }).navigate();
     }
 }

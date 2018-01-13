@@ -21,9 +21,9 @@ export class ProcessExternalLoginComponent extends BaseComponent {
     
     this.dependencies.coreServices.authService.handleExternalAuthentication(callback => {
       if (callback.isSuccessful) {
-        this.dependencies.coreServices.navigateService.loginPage();
+        this.dependencies.coreServices.navigateService.loginPage().navigate();
       } else {
-        this.dependencies.coreServices.navigateService.loginPage({externalLoginError: true});
+        this.dependencies.coreServices.navigateService.loginPage({externalLoginError: true}).navigate();
       }
     });
   }

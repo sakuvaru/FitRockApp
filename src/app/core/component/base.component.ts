@@ -189,19 +189,19 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
 
             // handle server not running error
             if (error.reason === ErrorReasonEnum.ServerNotRunning) {
-                this.dependencies.coreServices.navigateService.serverDownPage();
+                this.dependencies.coreServices.navigateService.serverDownPage().navigate();
                 return;
             }
 
             // handle not found error
             if (error.reason === ErrorReasonEnum.NotFound) {
-                this.dependencies.coreServices.navigateService.item404();
+                this.dependencies.coreServices.navigateService.item404().navigate();
                 return;
             }
 
             // handle situation where user was logged out (e.g. due to long inactivity)
             if (error.reason === ErrorReasonEnum.NotAuthorized) {
-                this.dependencies.coreServices.navigateService.loginPage();
+                this.dependencies.coreServices.navigateService.loginPage().navigate();
                 return;
             }
 

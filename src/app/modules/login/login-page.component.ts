@@ -14,7 +14,7 @@ export class LoginPageComponent extends BaseComponent {
 
         // redirect to entry url if user is already logged
         if (this.dependencies.coreServices.authService.isAuthenticated()) {
-            this.dependencies.coreServices.navigateService.entryPage();
+            this.dependencies.coreServices.navigateService.entryPage().navigate();
         }
     }
 

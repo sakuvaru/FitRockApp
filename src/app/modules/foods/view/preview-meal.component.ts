@@ -114,7 +114,7 @@ export class PreviewMealComponent extends BaseComponent implements OnInit {
         }
 
         this.foodOverviewBox = this.dependencies.webComponentServices.boxService.tableBox(
-            Observable.of(food.foodName),
+            super.translate('module.foods.foodInfo'),
             Observable.of(overviewLines)
         );
     }
