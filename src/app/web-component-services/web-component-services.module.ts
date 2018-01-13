@@ -8,6 +8,7 @@ import {
     GraphService,
     LoadMoreService,
     UploaderService,
+    BoxService
 } from './index';
 
 @NgModule({
@@ -22,7 +23,8 @@ import {
         UploaderService,
         DataTableService,
         DataFormService,
-        CalendarService
+        CalendarService,
+        BoxService
     ],
 })
 export class WebComponentServicesModule { }

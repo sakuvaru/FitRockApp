@@ -49,6 +49,7 @@ import {
     GraphService,
     LoadMoreService,
     UploaderService,
+    BoxService
 } from '../../web-component-services';
 import {
     AuthenticatedUserService,
@@ -123,6 +124,8 @@ export class ComponentDependencyService {
         this.webComponentServices.dataTableService = injector.get(DataTableService);
         this.webComponentServices.dataFormService = injector.get(DataFormService);
         this.webComponentServices.calendarService = injector.get(CalendarService);
+        this.webComponentServices.boxService = injector.get(BoxService);
+
 
         // item services
         this.itemServices = new ItemServices();
@@ -178,6 +181,7 @@ export class WebComponentServices {
     public dataTableService: DataTableService;
     public dataFormService: DataFormService;
     public calendarService: CalendarService;
+    public boxService: BoxService;
 }
 
 export class CoreServices {

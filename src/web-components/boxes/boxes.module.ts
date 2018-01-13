@@ -2,13 +2,14 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { SharedWebComponentModule } from '../shared-web-components.module';
-import { ListBoxComponent } from './list/list-box.component';
-import { MessagesModule } from '../messages/messages.module';
 import { LoaderModule } from '../loader/loader.module';
-import { InfoBoxComponent } from './info/info-box.component';
-import { MapBoxComponent } from './map/map-box.component';
 import { MapModule } from '../map/map.module';
+import { MessagesModule } from '../messages/messages.module';
+import { SharedWebComponentModule } from '../shared-web-components.module';
+import { InfoBoxComponent } from './info/info-box.component';
+import { ListBoxComponent } from './list/list-box.component';
+import { MapBoxComponent } from './map/map-box.component';
+import { MiniBoxComponent } from './mini/mini-box.component';
 
 @NgModule({
     imports: [
@@ -22,12 +23,14 @@ import { MapModule } from '../map/map.module';
     declarations: [
         ListBoxComponent,
         InfoBoxComponent,
-        MapBoxComponent
+        MapBoxComponent,
+        MiniBoxComponent
     ],
     exports: [
         ListBoxComponent,
         InfoBoxComponent,
-        MapBoxComponent
+        MapBoxComponent,
+        MiniBoxComponent
     ]
 })
 export class BoxesModule { }

@@ -8,3 +8,42 @@
     height: 100%;
 }
 
+.w-boxes-mini-box {
+    /* Box should fill all available width, not height */
+    width: 100%;
+
+    .mini-box-primary {
+        background-color: $primary;
+        color: $primary-contrast;
+    }
+
+    .mini-box-accent {
+        background-color: $accent;
+        color: $primary-contrast;
+    }
+
+    .mini-box-blue {
+        background-color: #3f51b5;
+        color: #ffffff;
+    }
+
+    .mini-box-purple {
+        background-color: #8b008b;
+        color: #ffffff;
+    }
+
+    .mini-box-orange {
+        background-color: #ffa07a;
+        color: #1a1a1a;
+    }
+
+    .mini-box-yellow {
+        background-color: #fff500;
+        color: #1a1a1a;
+    }
+
+    .mini-box-cyan {
+        background-color: #00ced1;
+        color: #1a1a1a;
+    }
+}

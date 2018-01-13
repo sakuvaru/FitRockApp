@@ -5,5 +5,6 @@ export * from './services/uploader.service';
 export * from './services/data-table.service';
 export * from './services/data-form.service';
 export * from './services/calendar.service';
+export * from './services/box.service';
 
 

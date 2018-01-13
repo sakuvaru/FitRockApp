@@ -289,6 +289,7 @@
 				"prot": "Bílkoviny",
 				"fat": "Tuky",
 				"cho": "Sacharidy (bez cukru)",
+				"choShort": "Sacharidy",
 				"sugar": "Cukr",
 				"nacl": "Sůl"
 			},

@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { stringHelper, observableHelper } from 'lib/utilities';
+import { observableHelper } from 'lib/utilities';
 import { Observable } from 'rxjs/Rx';
 
+import { InfoBoxConfig, InfoBoxLine, InfoBoxLineType, MiniBoxConfig, BoxColors } from '../../../../web-components/boxes';
 import { GraphConfig, PieChart, SingleSeries } from '../../../../web-components/graph';
 import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
 import { Food } from '../../../models';
@@ -14,6 +15,13 @@ import { FoodMenuItems } from '../menu.items';
 export class PreviewFoodComponent extends BaseComponent implements OnInit {
 
     public food?: Food;
+    public foodInfoBox?: InfoBoxConfig;
+
+    public protMiniBox?: MiniBoxConfig;
+    public fatMiniBox?: MiniBoxConfig;
+    public choMiniBox?: MiniBoxConfig;
+    public naclMiniBox?: MiniBoxConfig;
+    public sugarMiniBox?: MiniBoxConfig;
 
     public foodGraph?: GraphConfig<PieChart>;
 
@@ -44,6 +52,38 @@ export class PreviewFoodComponent extends BaseComponent implements OnInit {
         super.subscribeToObservables(observables);
     }
 
+    private initFoodBoxes(food: Food): void {
+        this.protMiniBox = this.dependencies.webComponentServices.boxService.miniBox(
+            Observable.of(food.prot ? food.prot.toString() : '0'),
+            super.translate('module.foods.nutrition.prot'),
+            BoxColors.Primary
+        );
+
+        this.fatMiniBox = this.dependencies.webComponentServices.boxService.miniBox(
+            Observable.of(food.fat ? food.fat.toString() : '0'),
+            super.translate('module.foods.nutrition.fat'),
+            BoxColors.Accent
+        );
+
+        this.choMiniBox = this.dependencies.webComponentServices.boxService.miniBox(
+            Observable.of(food.cho ? food.cho.toString() : '0'),
+            super.translate('module.foods.nutrition.choShort'),
+            BoxColors.Purple
+        );
+
+        this.naclMiniBox = this.dependencies.webComponentServices.boxService.miniBox(
+            Observable.of(food.nacl ? food.nacl.toString() : '0'),
+            super.translate('module.foods.nutrition.nacl'),
+            BoxColors.Yellow
+        );
+
+        this.sugarMiniBox = this.dependencies.webComponentServices.boxService.miniBox(
+            Observable.of(food.sugar ? food.sugar.toString() : '0'),
+            super.translate('module.foods.nutrition.sugar'),
+            BoxColors.Cyan
+        );
+    }
+
     private getGraphConfig(): Observable<void> {
         return this.activatedRoute.params
             .map(params => {
@@ -52,15 +92,11 @@ export class PreviewFoodComponent extends BaseComponent implements OnInit {
                         .set()
                         .map(response => {
                             return new PieChart(response.data.items, {
-                                showLabels: true,
-                                labelFormatting: (value) => {
-                                    // remove everything before 'g'
-                                    return stringHelper.removeEverythingBefore(value, 'g');
-                                }
+                                showLabels: true
                             });
                         })
                 )
-                    .showLegend(true)
+                    .showLegend(false)
                     .dataResolver(data => {
                         data = data as SingleSeries[];
 
@@ -71,7 +107,7 @@ export class PreviewFoodComponent extends BaseComponent implements OnInit {
                         data.forEach(series => {
                             observables.push(
                                 super.translate('module.foods.nutrition.' + series.name.toLowerCase())
-                                .map(translation => series.name = `${series.value}g ` + translation)
+                                .map(translation => series.name = translation)
                             );
                         });
 
@@ -89,6 +125,9 @@ export class PreviewFoodComponent extends BaseComponent implements OnInit {
                 .get()
                 .map(response => {
                     this.food = response.item;
+
+                    // init food info boxes
+                    this.initFoodBoxes(this.food);
 
                     if (this.food.createdByUserId === this.dependencies.authenticatedUserService.getUserId()) {
                         this.setConfig({
