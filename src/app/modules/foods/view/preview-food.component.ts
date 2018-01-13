@@ -74,6 +74,9 @@ export class PreviewFoodComponent extends BaseComponent implements OnInit {
                         sortKey: 'ParentFood.FoodName',
                         hideOnSmallScreen: false
                     }])
+                    .onClick(item => {
+                        this.dependencies.coreServices.navigateService.mealPreviewPage(item.foodId);
+                    })
                     .title(super.translate('module.foods.foodIsUsedIn'))
                     .build();
             });

@@ -79,4 +79,12 @@ export class NavigateService {
   authPage(action: string, navigationExtras?: NavigationExtras): void {
     this.router.navigate([UrlConfig.getAuthUrl(action)], navigationExtras);
   }
+
+  mealPreviewPage(foodId: number, navigationExtras?: NavigationExtras): void {
+    this.router.navigate([UrlConfig.getTrainerUrl('/foods/meals/preview/' + foodId)], navigationExtras);
+  }
+
+  foodPreviewPage(foodId: number, navigationExtras?: NavigationExtras): void {
+    this.router.navigate([UrlConfig.getTrainerUrl('/foods/preview/' + foodId)], navigationExtras);
+  }
 }

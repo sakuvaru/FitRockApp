@@ -39,7 +39,7 @@ export class AllFoodsListComponent extends BaseComponent implements OnInit {
     this.config = this.dependencies.itemServices.foodService.buildDataTable((query, search) => {
       return query
         .include('FoodCategory')
-        .whereEquals('IsDishFood', false)
+        .whereEquals('IsMeal', false)
         .whereEquals('IsApproved', true)
         .whereLike('FoodName', search);
     })

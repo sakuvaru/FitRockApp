@@ -46,7 +46,7 @@ export class SelectDietFoodDialogComponent extends BaseComponent implements OnIn
       (query, search) => {
         return query
           .include('FoodCategory')
-          .whereEquals('IsDishFood', this.takeFoodDishes)
+          .whereEquals('IsMeal', this.takeFoodDishes)
           .whereLike('FoodName', search)
           .whereEqualsWithOr([{
             field: 'CreatedByUserId',

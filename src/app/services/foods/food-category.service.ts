@@ -13,12 +13,12 @@ export class FoodCategoryService extends BaseTypeService<FoodCategory> {
         });
     }
 
-    getFoodCategoryWithFoodsCountDto(foodName: string, byCurrentUser: boolean, takeOnlyGlobal: boolean, isDishFood: boolean, takeOnlyApproved: boolean): MultipleItemQueryCustom<FoodCategoryWithFoodsCountDto> {
+    getFoodCategoryWithFoodsCountDto(foodName: string, byCurrentUser: boolean, takeOnlyGlobal: boolean, IsMeal: boolean, takeOnlyApproved: boolean): MultipleItemQueryCustom<FoodCategoryWithFoodsCountDto> {
         return this.customItems<FoodCategoryWithFoodsCountDto>()
             .withCustomOption('foodName', foodName)
             .withCustomOption('byCurrentUser', byCurrentUser)
             .withCustomOption('takeOnlyGlobal', takeOnlyGlobal)
-            .withCustomOption('isDishFood', isDishFood)
+            .withCustomOption('IsMeal', IsMeal)
             .withCustomOption('takeOnlyApproved', takeOnlyApproved)
             .withCustomAction('FoodCategoryWithFoodsCountDto');
     }

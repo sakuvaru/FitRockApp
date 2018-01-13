@@ -60,7 +60,7 @@ export class NewFoodComponent extends BaseComponent implements OnInit {
                         throw Error(`Language has to be set in order to create new foods`);
                     }
                     return Observable.of(language.language.toString());
-                } else if (fieldName === 'IsDishFood') {
+                } else if (fieldName === 'IsMeal') {
                     return Observable.of(false);
                 }   
 

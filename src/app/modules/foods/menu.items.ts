@@ -7,7 +7,7 @@ export class FoodOverviewItems {
     constructor() {
         this.menuItems = [
             new MenuItem({ key: 'module.foods.submenu.myFoods' }, MenuItemType.trainer, 'foods', { icon: 'free_breakfast' }),
-            new MenuItem({ key: 'module.foods.submenu.myDishes' }, MenuItemType.trainer, 'foods/dishes', { icon: 'local_dining' }),
+            new MenuItem({ key: 'module.foods.submenu.myMeals' }, MenuItemType.trainer, 'foods/meals', { icon: 'local_dining' }),
             new MenuItem({ key: 'module.foods.submenu.allFoods' }, MenuItemType.trainer, 'foods/all', { icon: 'list' }),
         ];
     }
@@ -25,14 +25,14 @@ export class NewFoodMenuItems {
     }
 }
 
-export class NewDishMenuItems {
+export class NewMealMenuItems {
 
     menuItems: MenuItem[];
 
     constructor() {
         this.menuItems = [
-            new MenuItem({ key: 'menu.shared.back' }, MenuItemType.trainer, 'foods/dishes', { icon: 'arrow_back' }),
-            new MenuItem({ key: 'module.foods.submenu.newDish' }, MenuItemType.trainer, 'foods/dishes/new', { icon: 'create' }),
+            new MenuItem({ key: 'menu.shared.back' }, MenuItemType.trainer, 'foods/meals', { icon: 'arrow_back' }),
+            new MenuItem({ key: 'module.foods.submenu.newMeal' }, MenuItemType.trainer, 'foods/meals/new', { icon: 'create' }),
         ];
     }
 }
@@ -50,15 +50,15 @@ export class FoodMenuItems {
     }
 }
 
-export class DishMenuItems {
+export class MealMenuItems {
 
     menuItems: MenuItem[];
 
     constructor(foodId: number) {
         this.menuItems = [
-            new MenuItem({ key: 'menu.shared.back' }, MenuItemType.trainer, 'foods/dishes', { icon: 'arrow_back' }),
-            new MenuItem({ key: 'module.foods.submenu.previewDish' }, MenuItemType.trainer, 'foods/dishes/preview/' + foodId, { icon: 'pageview' }),
-            new MenuItem({ key: 'module.foods.submenu.editDish' }, MenuItemType.trainer, 'foods/dishes/edit/' + foodId, { icon: 'edit' })
+            new MenuItem({ key: 'menu.shared.back' }, MenuItemType.trainer, 'foods/meals', { icon: 'arrow_back' }),
+            new MenuItem({ key: 'module.foods.submenu.previewMeal' }, MenuItemType.trainer, 'foods/meals/preview/' + foodId, { icon: 'pageview' }),
+            new MenuItem({ key: 'module.foods.submenu.editMeal' }, MenuItemType.trainer, 'foods/meals/edit/' + foodId, { icon: 'edit' })
         ];
     }
 }

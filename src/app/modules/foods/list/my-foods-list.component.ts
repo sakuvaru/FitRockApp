@@ -45,7 +45,7 @@ export class MyFoodsListComponent extends BaseComponent implements OnInit {
       return query
         .include('FoodCategory')
         .byCurrentUser()
-        .whereEquals('IsDishFood', false)
+        .whereEquals('IsMeal', false)
         .whereLike('FoodName', search);
     })
       .withFields([

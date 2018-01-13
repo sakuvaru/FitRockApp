@@ -19,7 +19,7 @@ export class Food extends BaseItem {
     public sugar?: number;
     public nacl?: number;
     public language: LanguageEnum;
-    public isDishFood: boolean;
+    public isMeal: boolean;
 
     public childFoods: FoodDish[];
     public foodDishes: FoodDish[];

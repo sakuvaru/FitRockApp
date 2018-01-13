@@ -4,12 +4,12 @@ import { Observable } from 'rxjs/Rx';
 
 import { DataFormConfig } from '../../../../web-components/data-form';
 import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
-import { NewDishMenuItems } from '../menu.items';
+import { NewMealMenuItems } from '../menu.items';
 
 @Component({
-    templateUrl: 'new-dish.component.html'
+    templateUrl: 'new-meal.component.html'
 })
-export class NewDishComponent extends BaseComponent implements OnInit {
+export class NewMealComponent extends BaseComponent implements OnInit {
 
     public formConfig: DataFormConfig;
 
@@ -29,8 +29,8 @@ export class NewDishComponent extends BaseComponent implements OnInit {
         super.ngOnInit();
 
         this.setConfig({
-            componentTitle: { key: 'module.foods.submenu.newDish' },
-            menuItems: new NewDishMenuItems().menuItems
+            componentTitle: { key: 'module.foods.submenu.newMeal' },
+            menuItems: new NewMealMenuItems().menuItems
         });
 
         this.initForm();
@@ -38,7 +38,7 @@ export class NewDishComponent extends BaseComponent implements OnInit {
 
     private initForm(): void {
         this.formConfig = this.dependencies.itemServices.foodService.buildInsertForm()
-            .onAfterInsert((response) => this.navigate([this.getTrainerUrl('foods/dishes/edit'), response.item.id]))
+            .onAfterInsert((response) => this.navigate([this.getTrainerUrl('foods/meals/edit'), response.item.id]))
             .optionLabelResolver((field, originalLabel) => {
                 if (field.key === 'FoodCategoryId') {
                     return super.translate('module.foodCategories.categories.' + originalLabel);
@@ -55,7 +55,7 @@ export class NewDishComponent extends BaseComponent implements OnInit {
                         throw Error(`Language has to be set in order to create new foods`);
                     }
                     return Observable.of(language.language.toString());
-                } else if (fieldName === 'IsDishFood') {
+                } else if (fieldName === 'IsMeal') {
                     return Observable.of(true);
                 }
 

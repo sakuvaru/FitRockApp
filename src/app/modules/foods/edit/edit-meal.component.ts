@@ -11,12 +11,12 @@ import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../..
 import { SelectFoodDialogComponent } from '../dialogs/select-food-dialog.component';
 import { EditFoodDishDialogComponent } from '../dialogs/edit-food-dish-dialog.component';
 import { FoodDishAmountDialogComponent } from '../dialogs/food-dish-amount.component';
-import { DishMenuItems } from '../menu.items';
+import { MealMenuItems } from '../menu.items';
 
 @Component({
-    templateUrl: 'edit-dish.component.html'
+    templateUrl: 'edit-meal.component.html'
 })
-export class EditDishComponent extends BaseComponent implements OnInit {
+export class EditMealComponent extends BaseComponent implements OnInit {
 
     public formConfig: DataFormConfig;
 
@@ -71,12 +71,12 @@ export class EditDishComponent extends BaseComponent implements OnInit {
         );
     }
 
-    private getMultipleChoiceFoodOption(dish: FoodDish): DataFormMultipleChoiceItem<NewChildFoodVirtualModel> {
+    private getMultipleChoiceFoodOption(foodDish: FoodDish): DataFormMultipleChoiceItem<NewChildFoodVirtualModel> {
         return new DataFormMultipleChoiceItem<NewChildFoodVirtualModel>(
-            dish.id.toString(),
-            new NewChildFoodVirtualModel(dish.food.id, dish.amount, dish.food.foodUnit.unitCode, dish.food, dish.id),
-            Observable.of(dish.food.foodName),
-            this.getFoodOptionMetaLines(dish.food, dish.amount)
+            foodDish.id.toString(),
+            new NewChildFoodVirtualModel(foodDish.food.id, foodDish.amount, foodDish.food.foodUnit.unitCode, foodDish.food, foodDish.id),
+            Observable.of(foodDish.food.foodName),
+            this.getFoodOptionMetaLines(foodDish.food, foodDish.amount)
         );
     }
 
@@ -166,7 +166,7 @@ export class EditDishComponent extends BaseComponent implements OnInit {
 
                         return undefined;
                     })
-                    .onAfterDelete(() => super.navigate([this.getTrainerUrl('foods/dishes')]))
+                    .onAfterDelete(() => super.navigate([this.getTrainerUrl('foods/meals')]))
                     .optionLabelResolver((field, originalLabel) => {
                         if (field.key === 'FoodCategoryId') {
                             return super.translate('module.foodCategories.categories.' + originalLabel);
@@ -179,12 +179,12 @@ export class EditDishComponent extends BaseComponent implements OnInit {
                     .onEditFormLoaded(form => {
                         this.item = form.item;
                         this.setConfig({
-                            menuItems: new DishMenuItems(form.item.id).menuItems,
+                            menuItems: new MealMenuItems(form.item.id).menuItems,
                             menuTitle: {
                                 key: form.item.foodName
                             },
                             componentTitle: {
-                                'key': 'module.foods.submenu.editDish'
+                                'key': 'module.foods.submenu.editMeal'
                             }
                         });
                     })

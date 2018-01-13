@@ -6,13 +6,13 @@ import { UrlConfig } from '../../config';
 import { AdminLayoutComponent } from '../../layouts/admin-layout.component';
 import { EditFoodComponent } from './edit/edit-food.component';
 import { AllFoodsListComponent } from './list/all-foods-list.component';
-import { MyDishesListComponent } from './list/my-dishes-list.component';
+import { MyMealsListComponent } from './list/my-meals-list.component';
 import { MyFoodsListComponent } from './list/my-foods-list.component';
 import { NewFoodComponent } from './new/new-food.component';
 import { PreviewFoodComponent } from './view/preview-food.component';
-import { NewDishComponent } from './new/new-dish.component';
-import { EditDishComponent } from './edit/edit-dish.component';
-import { PreviewDishComponent } from './view/preview-dish.component';
+import { NewMealComponent } from './new/new-meal.component';
+import { EditMealComponent } from './edit/edit-meal.component';
+import { PreviewMealComponent } from './view/preview-meal.component';
 
 @NgModule({
     declarations: [
@@ -37,16 +37,16 @@ import { PreviewDishComponent } from './view/preview-dish.component';
                         path: 'foods/preview/:id', component: PreviewFoodComponent
                     },
                     {
-                        path: 'foods/dishes', component: MyDishesListComponent
+                        path: 'foods/meals', component: MyMealsListComponent
                     },
                     {
-                        path: 'foods/dishes/preview/:id', component: PreviewDishComponent
+                        path: 'foods/meals/preview/:id', component: PreviewMealComponent
                     },
                     {
-                        path: 'foods/dishes/new', component: NewDishComponent
+                        path: 'foods/meals/new', component: NewMealComponent
                     },
                     {
-                        path: 'foods/dishes/edit/:id', component: EditDishComponent
+                        path: 'foods/meals/edit/:id', component: EditMealComponent
                     }
                 ],
             },

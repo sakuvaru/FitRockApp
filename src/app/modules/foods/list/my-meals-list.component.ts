@@ -6,9 +6,9 @@ import { Food } from '../../../models';
 import { FoodOverviewItems } from '../menu.items';
 
 @Component({
-  templateUrl: 'my-dishes-list.component.html'
+  templateUrl: 'my-meals-list.component.html'
 })
-export class MyDishesListComponent extends BaseComponent implements OnInit {
+export class MyMealsListComponent extends BaseComponent implements OnInit {
 
   public config: DataTableConfig;
 
@@ -32,7 +32,7 @@ export class MyDishesListComponent extends BaseComponent implements OnInit {
 
   private init() {
     this.setConfig({
-      menuTitle: { key: 'module.foods.submenu.myDishes' },
+      menuTitle: { key: 'module.foods.submenu.myMeals' },
       menuItems: new FoodOverviewItems().menuItems,
       componentTitle: { key: 'module.foods.submenu.overview' },
     });
@@ -40,7 +40,7 @@ export class MyDishesListComponent extends BaseComponent implements OnInit {
       return query
         .include('FoodCategory')
         .byCurrentUser()
-        .whereEquals('IsDishFood', true)
+        .whereEquals('IsMeal', true)
         .whereLike('FoodName', search);
     })
       .withFields([
@@ -76,7 +76,7 @@ export class MyDishesListComponent extends BaseComponent implements OnInit {
           });
           return filters;
         }))
-      .onClick((item) => super.navigate([super.getTrainerUrl('foods/dishes/preview/') + item.id]))
+      .onClick((item) => super.navigate([super.getTrainerUrl('foods/meals/preview/') + item.id]))
       .build();
   }
 }

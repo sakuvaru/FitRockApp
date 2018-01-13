@@ -276,14 +276,14 @@
 			"submenu": {
 				"myFoods": "Moje potraviny",
 				"allFoods": "Všechny potraviny",
-				"editDish": "Upravit jídlo",
+				"editMeal": "Upravit jídlo",
 				"editFood": "Upravit potravinu",
-				"previewDish": "Náhled",
+				"previewMeal": "Náhled",
 				"previewFood": "Náhled",
 				"overview": "Přehled",
 				"newFood": "Nová potravina",
-				"newDish": "Nové jídlo",
-				"myDishes": "Moje jídla"
+				"newMeal": "Nové jídlo",
+				"myMeals": "Moje jídla"
 			},
 			"nutrition": {
 				"prot": "Bílkoviny",
