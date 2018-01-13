@@ -63,16 +63,4 @@ export class MealMenuItems {
     }
 }
 
-export class FoodPreviewMenuItems {
-
-    menuItems: MenuItem[];
-
-    constructor(foodId: number) {
-        this.menuItems = [
-            new MenuItem({ key: 'menu.shared.back' }, MenuItemType.trainer, 'foods', { icon: 'arrow_back' }),
-            new MenuItem({ key: 'module.foods.submenu.preview' }, MenuItemType.trainer, 'foods/preview/' + foodId, { icon: 'pageview' })
-        ];
-    }
-}
-
 

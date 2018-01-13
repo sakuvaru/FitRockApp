@@ -8,7 +8,7 @@ import { GraphConfig, PieChart, SingleSeries } from '../../../../web-components/
 import { DataTableConfig } from '../../../../web-components/data-table';
 import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
 import { Food } from '../../../models';
-import { FoodMenuItems } from '../menu.items';
+import { MealMenuItems } from '../menu.items';
 
 @Component({
     templateUrl: 'preview-food.component.html'
@@ -178,22 +178,22 @@ export class PreviewFoodComponent extends BaseComponent implements OnInit {
 
                     if (this.food.createdByUserId === this.dependencies.authenticatedUserService.getUserId()) {
                         this.setConfig({
-                            menuItems: new FoodMenuItems(this.food.id).menuItems,
+                            menuItems: new MealMenuItems(this.food.id).menuItems,
                             menuTitle: {
                                 key: this.food.foodName
                             },
                             componentTitle: {
-                                'key': 'module.foods.submenu.previewFood'
+                                'key': 'module.foods.submenu.previewMeal'
                             }
                         });
                     } else {
                         this.setConfig({
-                            menuItems: new FoodMenuItems(response.item.id).menuItems,
+                            menuItems: new MealMenuItems(response.item.id).menuItems,
                             menuTitle: {
                                 key: response.item.foodName
                             },
                             componentTitle: {
-                                'key': 'module.foods.submenu.previewFood'
+                                'key': 'module.foods.submenu.previewMeal'
                             }
                         });
                     }

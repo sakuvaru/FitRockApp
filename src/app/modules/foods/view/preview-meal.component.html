@@ -1,5 +1,77 @@
-<mat-card>
-    <mat-card-content *ngIf="food">
-        {{food.foodName}} -> todo
-    </mat-card-content>
-</mat-card>
+<div fxFlexFill fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayout.md="column">
+        <div fxLayout="column" fxFlex="50%" class="push-sm">
+            <div fxLayoutAlign="space-between start" fxLayout="row" fxHide.sm fxHide.xs>
+                <div fxFlex="18%" fxLayout="row" flex>
+                    <div class="w-full-width">
+                        <mini-box [config]="protMiniBox"></mini-box>
+                    </div>
+                </div>
+                <div fxFlex="18%" fxLayout="row" flex>
+                    <div class="w-full-width">
+                        <mini-box [config]="fatMiniBox"></mini-box>
+                    </div>
+                </div>
+                <div fxFlex="18%" fxLayout="row" flex>
+                    <div class="w-full-width">
+                        <mini-box [config]="choMiniBox"></mini-box>
+                    </div>
+                </div>
+                <div fxFlex="18%" fxLayout="row" flex>
+                    <div class="w-full-width">
+                        <mini-box [config]="sugarMiniBox"></mini-box>
+                    </div>
+                </div>
+                <div fxFlex="18%" fxLayout="row" flex>
+                    <div class="w-full-width">
+                        <mini-box [config]="naclMiniBox"></mini-box>
+                    </div>
+                </div>
+            </div>
+            <div fxLayoutAlign="space-between start" fxFlex="50%" class="push-sm" fxHide fxShow.sm fxShow.xs>
+                <div fxFlex="30%" fxLayout="row" flex>
+                    <div class="w-full-width">
+                        <mini-box [config]="protMiniBox"></mini-box>
+                    </div>
+                </div>
+                <div fxFlex="30%" fxLayout="row" flex>
+                    <div class="w-full-width">
+                        <mini-box [config]="fatMiniBox"></mini-box>
+                    </div>
+                </div>
+                <div fxFlex="30%" fxLayout="row" flex>
+                    <div class="w-full-width">
+                        <mini-box [config]="choMiniBox"></mini-box>
+                    </div>
+                </div>
+            </div>
+            <div fxLayoutAlign="space-between start" fxFlex="50%" class="push-sm" fxHide fxShow.sm fxShow.xs>
+                <div fxFlex="48%" fxLayout="row" flex>
+                    <div class="w-full-width">
+                        <mini-box [config]="sugarMiniBox"></mini-box>
+                    </div>
+                </div>
+                <div fxFlex="48%" fxLayout="row" flex>
+                    <div class="w-full-width">
+                        <mini-box [config]="naclMiniBox"></mini-box>
+                    </div>
+                </div>
+            </div>
+            <div fxLayout="column" class="push-top" flex>
+                <div class="w-full-height">
+                    <table-box [config]="foodOverviewBox"></table-box>
+                </div>
+            </div>
+        </div>
+    
+        <div fxFlex="50%" class="push-sm">
+            <div fxLayout="column" flex>
+                <graph #graph [config]="foodGraph"></graph>
+            </div>
+        </div>
+    </div>
+    
+    <div fxLayout="row" class="push-top push-left-sm push-right-sm">
+        <div  fxFlex="100%" fxLayout="column" flex>
+            <data-table [config]="usedInDishesDataForm"></data-table>
+        </div>
+    </div>

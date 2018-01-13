@@ -82,7 +82,7 @@ export class ClientDashboardComponent extends ClientsBaseComponent implements On
   private getInitDietsObservable(): Observable<void> {
     return this.clientIdChange
       .map(clientId => {
-        this.dietsListBox = new ListBoxConfig(
+        this.dietsListBox = this.dependencies.webComponentServices.boxService.listBox(
           this.dependencies.itemServices.dietService.items()
             .byCurrentUser()
             .whereEquals('ClientId', clientId)
@@ -105,7 +105,7 @@ export class ClientDashboardComponent extends ClientsBaseComponent implements On
   private getInitChatMessagesObservable(): Observable<void> {
     return this.clientIdChange
       .map(clientId => {
-        this.chatMessagesListBox = new ListBoxConfig(
+        this.chatMessagesListBox = this.dependencies.webComponentServices.boxService.listBox(
           this.dependencies.itemServices.chatMessageService.getConversationMessages(clientId)
             .limit(6)
             .orderByDesc('Id')
@@ -134,7 +134,7 @@ export class ClientDashboardComponent extends ClientsBaseComponent implements On
         dateNow.setSeconds(0);
         dateNow.setMilliseconds(0);
 
-        this.appointmentInfoBox = new InfoBoxConfig(
+        this.appointmentInfoBox = this.dependencies.webComponentServices.boxService.infoBox(
           this.dependencies.itemServices.appointmentService.items()
             .limit(1)
             .byCurrentUser()
@@ -169,7 +169,7 @@ export class ClientDashboardComponent extends ClientsBaseComponent implements On
               }
 
               // also init map
-              this.appointmentMapBox = new MapBoxConfig(
+              this.appointmentMapBox = this.dependencies.webComponentServices.boxService.mapBox(
                 super.translate('module.clients.dashboard.nextAppointmentMap'),
                 this.googleApiKey,
                 appointment.location.address,
@@ -235,14 +235,14 @@ export class ClientDashboardComponent extends ClientsBaseComponent implements On
         });
 
         // set info boxes
-        this.privateNotesInfoBox = new InfoBoxConfig(
+        this.privateNotesInfoBox = this.dependencies.webComponentServices.boxService.infoBox(
           Observable.of([
             new InfoBoxLine([new InfoBoxText(client.trainerPrivateNotes, InfoBoxLineType.Body1)])
           ]),
           super.translate('module.clients.dashboard.privateNotes'),
         );
 
-        this.publicNotesInfoBox = new InfoBoxConfig(
+        this.publicNotesInfoBox = this.dependencies.webComponentServices.boxService.infoBox(
           Observable.of([
             new InfoBoxLine([new InfoBoxText(client.trainerPublicNotes, InfoBoxLineType.Body1)])
           ]),

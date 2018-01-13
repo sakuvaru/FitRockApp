@@ -9,7 +9,8 @@ import {
     ListBoxItem,
     MiniBoxConfig,
     TableBoxLine,
-    TableBoxConfig
+    TableBoxConfig,
+    MapBoxConfig
 } from '../../../web-components/boxes';
 
 export class BoxService {
@@ -50,5 +51,20 @@ export class BoxService {
     ): TableBoxConfig {
         return new TableBoxConfig(title, lines);
     }
+
+    mapBox(
+         title: Observable<string>,
+         apiKey: string,
+         address: string,
+         lat?: number,
+         lng?: number,
+         options?: {
+            zoom?: number,
+            noDataMessage?: Observable<string>,
+            actions?: ActionButton[]
+        }
+   ): MapBoxConfig {
+       return new MapBoxConfig(title, apiKey, address, lat, lng, options);
+   }
 
 }
