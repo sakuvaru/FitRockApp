@@ -291,6 +291,14 @@ export class DataTableBuilder<TItem extends IItem> {
     }
 
     /**
+     * Title of the data table
+     */
+    title(title: Observable<string>): this {
+        this.config.title = title;
+        return this;
+    }
+
+    /**
      * Url of image to be used if there are no data
      */
     noDataImageUrl(imageUrl: string): this {

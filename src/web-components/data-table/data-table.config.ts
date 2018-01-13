@@ -21,6 +21,11 @@ export class DataTableConfig {
     private _hash?: number;
 
     /**
+     * Title of the data table
+     */
+    public title?: Observable<string>;
+
+    /**
      * Fields
      */
     public fields: DataTableField<any>[] = [];

@@ -306,7 +306,8 @@
 			"editFoodDishes": "Upravit potraviny v jídle",
 			"measurementUnit": "Jednotka měření",
 			"description": "Popis",
-			"kcalWithKj": "{{kcal}} kcal ({{kj}} kJ)"
+			"kcalWithKj": "{{kcal}} kcal ({{kj}} kJ)",
+			"foodIsUsedIn": "Jídla, kde je potravina použita"
 		},
 		"foodUnits": {
 			"portion": "porce",

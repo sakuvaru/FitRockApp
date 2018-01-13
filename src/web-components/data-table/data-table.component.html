@@ -47,6 +47,10 @@
 
     <loader [enabled]="loaderEnabled" type="linear"></loader>
 
+    <div fxFlexAlign="center" *ngIf="config.title" class="mat-title primary pad-top pad-left pad-right">
+        {{ config.title | async }}
+    </div>
+
     <error-message *ngIf="errorMessage" [text]="errorMessage"></error-message>
 
     <!-- Search -->
