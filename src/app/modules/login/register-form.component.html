@@ -18,7 +18,7 @@
             </div>
             <form [formGroup]="formGroup" autocomplete="false">
                 <div layout="row">
-                    <mat-form-field flex>
+                    <mat-form-field fxFlex>
                         <input #emailElem matInput placeholder="{{ 'module.login.email' | localize }}" type="text" maxlength="{{ emailLength }}"
                             name="email" [formControl]="email" required autocomplete="off">
                         <mat-hint align="start">
@@ -28,7 +28,7 @@
                     </mat-form-field>
                 </div>
                 <div layout="row" class="push-top-sm">
-                    <mat-form-field flex>
+                    <mat-form-field fxFlex>
                         <input matInput placeholder="{{ 'module.login.password' | localize }}" type="password" name="password" [formControl]="password"
                             required autocomplete="off">
                         <mat-error *ngIf="password.invalid">{{ 'module.login.' + getPasswordError() | localize }}</mat-error>
@@ -37,8 +37,8 @@
                         </mat-hint>
                     </mat-form-field>
                 </div>
-                <div layout="row" class="push-top-sm">
-                    <mat-form-field flex>
+                <div layout="row" fxFlex="push-top-sm">
+                    <mat-form-field fxFlex>
                         <input matInput placeholder="{{ 'module.login.passwordConfirm' | localize }}" type="password" name="passwordConfirm" [formControl]="passwordConfirm"
                             required autocomplete="off">
                         <mat-error *ngIf="passwordConfirm.invalid">{{ 'module.login.' + getPasswordConfirmError() | localize }}</mat-error>
@@ -48,8 +48,8 @@
                     </mat-form-field>
                 </div>
                 <div layout="row" layout-align="center" class="push-top">
-                    <div flex="65" flex-xs="100" flex-md="100">
-                        <button flex mat-raised-button color="accent" [disabled]="!formGroup.valid" (click)="onRegister()" class="w-login-page-sign-in-button">
+                    <div fxFlex="65" fxFlex.xs="100" fxFlex.md="100">
+                        <button fxFlex mat-raised-button color="accent" [disabled]="!formGroup.valid" (click)="onRegister()" class="w-login-page-sign-in-button">
                             {{ 'module.login.register' | localize }}
                         </button>
                     </div>
@@ -57,7 +57,7 @@
             </form>
 
             <div layout="row" layout-align="center" class="push-top w-login-page-link mat-caption">
-                <div layout="column" flex="100" flex-xs="100" flex-md="100">
+                <div layout="column" fxFlex="100" fxFlex.xs="100" fxFlex.md="100">
                     <a [routerLink]="getLoginUrl()">{{ 'module.login.loginWithExistingAccount' | localize }}</a>
                 </div>
             </div>
@@ -67,10 +67,10 @@
             </div>
 
             <div layout="row" layout-align="center" class="push-top push-bottom w-login-page-social-buttons">
-                <div layout="column" flex="50" flex-xs="100" flex-md="50">
+                <div layout="column" fxFlex="50" fxFlex.xs="100" fxFlex.md="50">
                     <facebook-button (click)="loginWithFacebook()"></facebook-button>
                 </div>
-                <div layout="column" flex="50" flex-xs="100" flex-md="50">
+                <div layout="column" fxFlex="50" fxFlex.xs="100" fxFlex.md="50">
                     <google-button class="push-left-sm" (click)="loginWithGoogle()"></google-button>
                 </div>
             </div>

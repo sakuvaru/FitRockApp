@@ -11,7 +11,7 @@
                             <strong>{{ line.text | async }}:</strong>
                         </div>
                     </div>
-                    <div fxLayout="column" flex class="push-sm">
+                    <div fxLayout="column" fxFlex class="push-sm">
                         <div *ngFor="let line of lines" fxLayout="row" class="push-top-sm">
                             {{ line.value | async }}
                         </div>
