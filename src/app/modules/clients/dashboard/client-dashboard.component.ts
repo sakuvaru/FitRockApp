@@ -67,8 +67,10 @@ export class ClientDashboardComponent extends ClientsBaseComponent implements On
             .get()
             .map(response => {
               return response.items.map(item => new ListBoxItem(
-                item.workoutName,
-                UrlConfig.getWorkoutUrl(item.clientId ? item.clientId : 0, item.id)
+                Observable.of(item.workoutName),
+                {
+                  linkUrl: UrlConfig.getWorkoutUrl(item.clientId ? item.clientId : 0, item.id)
+                }
               ));
             }),
           super.translate('module.clients.dashboard.workouts'),
@@ -90,8 +92,10 @@ export class ClientDashboardComponent extends ClientsBaseComponent implements On
             .get()
             .map(response => {
               return response.items.map(item => new ListBoxItem(
-                item.dietName,
-                UrlConfig.getDietUrl(item.clientId ? item.clientId : 0, item.id),
+                Observable.of(item.dietName),
+                {
+                  linkUrl: UrlConfig.getDietUrl(item.clientId ? item.clientId : 0, item.id)
+                }
               ));
             }),
           super.translate('module.clients.dashboard.diets'),
@@ -112,9 +116,11 @@ export class ClientDashboardComponent extends ClientsBaseComponent implements On
             .get()
             .map(response => {
               return response.items.map(item => new ListBoxItem(
-                item.message,
-                UrlConfig.getChatMessageUrl(item.senderUserId),
-                item.sender.getAvatarOrGravatarUrl() ? item.sender.getAvatarOrGravatarUrl() : this.defaultAvatarUrl
+                Observable.of(item.message),
+                {
+                  linkUrl: UrlConfig.getChatMessageUrl(item.senderUserId),
+                  imageUrl: item.sender.getAvatarOrGravatarUrl() ? item.sender.getAvatarOrGravatarUrl() : this.defaultAvatarUrl
+                }
               ));
             }),
           super.translate('module.clients.dashboard.latestMessages'),

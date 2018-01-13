@@ -307,7 +307,8 @@
 			"measurementUnit": "Jednotka měření",
 			"description": "Popis",
 			"kcalWithKj": "{{kcal}} kcal ({{kj}} kJ)",
-			"foodIsUsedIn": "Jídla, kde je potravina použita"
+			"foodIsUsedIn": "Jídla, kde je potravina použita",
+			"mealComposition": "Složení"
 		},
 		"foodUnits": {
 			"portion": "porce",

@@ -2,12 +2,27 @@ import { Observable } from 'rxjs/Rx';
 import { ActionButton } from '../shared/shared.models';
 
 export class ListBoxItem {
+
+    public extra?:  Observable<string>;
+    public secondLine?: Observable<string>;
+    public linkUrl?: string;
+    public imageUrl?: string;
+    public icon?: string;
+
     constructor(
-        public text: string | Observable<string>,
-        public linkUrl?: string,
-        public imageUrl?: string, 
-        public icon?: string,
-    ) { }
+        public firstLine: Observable<string>,
+        private options?: {
+            extra?:  Observable<string>
+            secondLine?: Observable<string>,
+            linkUrl?: string,
+            imageUrl?: string,
+            icon?: string
+        }
+    ) {
+        if (options) {
+            Object.assign(this, options);
+        }
+    }
 }
 
 export class ListBoxConfig {
@@ -22,7 +37,7 @@ export class ListBoxConfig {
             noDataMessage?: Observable<string>,
             actions?: ActionButton[]
         }
-    )  { 
+    ) {
         if (options) {
             Object.assign(this, options);
         }

@@ -1,6 +1,5 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
-import { observableHelper } from 'lib/utilities';
 import { Observable, Subject } from 'rxjs/Rx';
 
 import { BaseWebComponent } from '../../base-web-component.class';
@@ -68,10 +67,6 @@ export class ListBoxComponent extends BaseWebComponent implements OnInit, OnChan
 
     redirectTo(url: string): void {
         this.router.navigate([url]);
-    }
-
-    isObservable(value: string | Observable<string>): boolean {
-        return observableHelper.isObservable(value);
     }
 
     private initListBox(): void {

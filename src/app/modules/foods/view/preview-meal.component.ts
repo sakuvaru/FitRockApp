@@ -3,7 +3,7 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { observableHelper } from 'lib/utilities';
 import { Observable } from 'rxjs/Rx';
 
-import { BoxColors, InfoBoxConfig, MiniBoxConfig, TableBoxConfig, TableBoxLine } from '../../../../web-components/boxes';
+import { BoxColors, InfoBoxConfig, MiniBoxConfig, TableBoxConfig, TableBoxLine, ListBoxConfig, ListBoxItem } from '../../../../web-components/boxes';
 import { GraphConfig, PieChart, SingleSeries } from '../../../../web-components/graph';
 import { DataTableConfig } from '../../../../web-components/data-table';
 import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
@@ -26,7 +26,7 @@ export class PreviewMealComponent extends BaseComponent implements OnInit {
 
     public foodOverviewBox?: TableBoxConfig;
 
-    public usedInDishesDataForm?: DataTableConfig;
+    public mealFoodsBox?: ListBoxConfig;
 
     public foodGraph?: GraphConfig<PieChart>;
 
@@ -53,34 +53,23 @@ export class PreviewMealComponent extends BaseComponent implements OnInit {
         const observables: Observable<any>[] = [];
         observables.push(this.getItemObservable());
         observables.push(this.getGraphConfig());
-        observables.push(this.initUsedInFoodsDataForm());
 
         super.subscribeToObservables(observables);
     }
 
-    private initUsedInFoodsDataForm(): Observable<void> {
-        return this.activatedRoute.params
-            .map(params => {
-                this.usedInDishesDataForm = this.dependencies.itemServices.foodDishService.buildDataTable(
-                    (query, search) => query
-                        .byCurrentUser()
-                        .whereLike('ParentFood.FoodName', search)
-                        .whereEquals('FoodId', +params['id'])
-                        .include('ParentFood')
-                )
-                    .withFields([{
-                        name: item => super.translate('module.foods.foodName'),
-                        value: item => item.parentFood.foodName,
-                        sortKey: 'ParentFood.FoodName',
-                        hideOnSmallScreen: false
-                    }])
-                    .onClick(item => {
-                        this.dependencies.coreServices.navigateService.mealPreviewPage(item.parentFoodId);
-                    })
-                    .title(super.translate('module.foods.foodIsUsedIn'))
-                    .build();
-            });
-
+    private initMealFoods(food: Food): void {
+        this.mealFoodsBox = this.dependencies.webComponentServices.boxService.listBox(
+            Observable.of(food.childFoods.map(m => new ListBoxItem(
+                Observable.of(m.food.foodName),
+                {
+                    secondLine: this.dependencies.coreServices.localizationHelperService.translateFoodAmountAndUnit(
+                        m.amount, m.food.foodUnit.unitCode
+                    ),
+                    extra: this.dependencies.coreServices.localizationHelperService.translateKcalWithKj(m.food.kcal ? m.food.kcal : 0),
+                    linkUrl: this.dependencies.coreServices.navigateService.foodPreviewPage(m.food.id).getUrl()
+                }))),
+            super.translate('module.foods.mealComposition')
+        );
     }
 
     private initFoodBoxes(food: Food): void {
@@ -168,13 +157,14 @@ export class PreviewMealComponent extends BaseComponent implements OnInit {
         return this.activatedRoute.params
             .switchMap((params: Params) => this.dependencies.itemServices.foodService.item()
                 .byId(+params['id'])
-                .includeMultiple(['FoodCategory', 'FoodUnit'])
+                .includeMultiple(['FoodCategory', 'FoodUnit', 'ChildFoods', 'ChildFoods.Food', 'ChildFoods.Food.FoodUnit'])
                 .get()
                 .map(response => {
                     this.food = response.item;
 
                     // init food info boxes
                     this.initFoodBoxes(this.food);
+                    this.initMealFoods(this.food);
 
                     if (this.food.createdByUserId === this.dependencies.authenticatedUserService.getUserId()) {
                         this.setConfig({

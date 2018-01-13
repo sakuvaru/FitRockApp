@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { UrlConfig } from 'app/config';
 import { Diet, Workout, Appointment } from 'app/models';
+import { NavigateResult } from '../models/core.models';
 
 @Injectable()
 export class NavigateService {
@@ -84,7 +85,11 @@ export class NavigateService {
     this.router.navigate([UrlConfig.getTrainerUrl('/foods/meals/preview/' + foodId)], navigationExtras);
   }
 
-  foodPreviewPage(foodId: number, navigationExtras?: NavigationExtras): void {
-    this.router.navigate([UrlConfig.getTrainerUrl('/foods/preview/' + foodId)], navigationExtras);
+  foodPreviewPage(foodId: number, navigationExtras?: NavigationExtras): NavigateResult {
+    return this.getNavigateResult(UrlConfig.getTrainerUrl('/foods/preview/' + foodId));
+  }
+
+  private getNavigateResult(url, navigationExtras?: NavigationExtras): NavigateResult {
+    return new NavigateResult((xUrl) => this.router.navigate(xUrl, navigationExtras), url);
   }
 }

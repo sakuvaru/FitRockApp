@@ -110,4 +110,19 @@ export class ComponentAction {
     ) { }
 }
 
+export class NavigateResult {
+    constructor(
+        private navigateMethod: (string) => void,
+        private url: string
+    ) { }
+
+    navigate(): void {
+        this.navigateMethod(this.url);
+    }
+
+    getUrl(): string {
+        return this.url;
+    }   
+}
+
 
