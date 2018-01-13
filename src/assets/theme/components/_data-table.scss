@@ -36,18 +36,24 @@
     }
 
     /**
-    Aligns last columns to right
+    Aligns last columns to right (but only if there are more then 1 columns)
     */
-    .mat-row .mat-cell:last-of-type{
+    .mat-row .mat-cell:first-of-type:not(:last-of-type) {
+        text-align: left;
+    }
+    .mat-row .mat-cell:last-of-type:not(:first-of-type) {
         text-align: right;
     }
 
-    .mat-header-row .mat-header-cell:last-of-type {
-        text-align: right;
+    .mat-header-row .mat-header-cell:first-of-type:not(:last-of-type) {
+        text-align: left;
     }
+    .mat-header-row .mat-header-cell:last-of-type:not(:first-of-type) {
+        text-align: right;
 
-    .mat-header-row .mat-header-cell:last-of-type > .mat-sort-header-container {
-        justify-content: flex-end; /* applies the flex on the div in case sort header is used */
+        .mat-sort-header-container {
+            justify-content: flex-end; /* applies the flex on the div in case sort header is used */
+        }
     }
 
     /**

@@ -73,11 +73,6 @@ export class PreviewFoodComponent extends BaseComponent implements OnInit {
                         value: item => item.parentFood.foodName,
                         sortKey: 'ParentFood.FoodName',
                         hideOnSmallScreen: false
-                    }, {
-                        name: item => super.translate('module.foods.foodName'),
-                        value: item => item.parentFood.foodName,
-                        sortKey: 'ParentFood.FoodName',
-                        hideOnSmallScreen: false
                     }])
                     .title(super.translate('module.foods.foodIsUsedIn'))
                     .build();
