@@ -56,12 +56,10 @@
                 </div>
             </div>
         </div>
-        <div fxLayout="column" class="push-top">
-            <mat-card>
-                <mat-card-content>
-                    asef
-                </mat-card-content>
-            </mat-card>
+        <div fxLayout="column" class="push-top" flex>
+            <div class="w-full-height">
+                <table-box [config]="foodOverviewBox"></table-box>
+            </div>
         </div>
     </div>
 
@@ -69,5 +67,11 @@
         <div fxLayout="column" flex>
             <graph #graph [config]="foodGraph"></graph>
         </div>
+    </div>
+</div>
+
+<div fxLayout="row" class="push-top push-left-sm push-right-sm">
+    <div  fxFlex="100%" fxLayout="column" flex>
+        <data-table [config]="usedInDishesDataForm"></data-table>
     </div>
 </div>

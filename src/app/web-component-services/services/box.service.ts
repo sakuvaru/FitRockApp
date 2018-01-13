@@ -8,6 +8,8 @@ import {
     ListBoxConfig,
     ListBoxItem,
     MiniBoxConfig,
+    TableBoxLine,
+    TableBoxConfig
 } from '../../../web-components/boxes';
 
 export class BoxService {
@@ -40,6 +42,13 @@ export class BoxService {
          color: BoxColors
     ): MiniBoxConfig {
         return new MiniBoxConfig(title, text, color);
+    }
+
+    tableBox(
+         title: Observable<string>,
+         lines: Observable<TableBoxLine[]>,
+    ): TableBoxConfig {
+        return new TableBoxConfig(title, lines);
     }
 
 }

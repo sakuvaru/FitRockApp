@@ -291,10 +291,11 @@
 				"cho": "Sacharidy (bez cukru)",
 				"choShort": "Sacharidy",
 				"sugar": "Cukr",
-				"nacl": "Sůl"
+				"nacl": "Sůl",
+				"kcal": "Kcal"
 			},
 			"foodName": "Název",
-			"foodAmountTextLineA": "<strong>{{ amount }}</strong>/{{ foodUnit }}",
+			"foodAmountTextLineA": "{{ amount }} {{ foodUnit }}",
 			"foodAmountTextLineB": "B: <u>{{ proteins }}</u>, T: <u>{{ fats }}</u>, S: <u>{{ carbs }}</u> = <strong>{{ kcal }}</strong> kcal",
 			"foodAmountTextComplete": "Množství: {{ amount }}/{{ foodUnit }}. B: {{ proteins }}, T: {{ fats }}, S: {{ carbs }} = {{ kcal }} kcal",
 			"foodCategory": "Kategorie",
@@ -302,7 +303,10 @@
 			"removeSelected": "Odstranit vybrané",
 			"setAmount": "Zadej množství",
 			"amount": "Množství",
-			"editFoodDishes": "Upravit potraviny v jídle"
+			"editFoodDishes": "Upravit potraviny v jídle",
+			"measurementUnit": "Jednotka měření",
+			"description": "Popis",
+			"kcalWithKj": "{{kcal}} kcal ({{kj}} kJ)"
 		},
 		"foodUnits": {
 			"portion": "porce",

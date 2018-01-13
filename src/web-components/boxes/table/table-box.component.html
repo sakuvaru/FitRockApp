@@ -1,0 +1,23 @@
+<ng-container *ngIf="config">
+    <div *ngIf="config.lines | async; let lines" class="w-boxes-table-box">
+        <mat-card class="w-boxes-table-box">
+            <mat-card-content>
+                <span fxFlexAlign="center" *ngIf="config.title" class="mat-title primary">
+                    {{ config.title | async }}
+                </span>
+                <div fxFlexFill fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayout.md="column">
+                    <div fxLayout="column" fxFlex="initial" class="push-sm">
+                        <div *ngFor="let line of lines" fxLayout="row" class="push-top-sm">
+                            <strong>{{ line.text | async }}:</strong>
+                        </div>
+                    </div>
+                    <div fxLayout="column" flex class="push-sm">
+                        <div *ngFor="let line of lines" fxLayout="row" class="push-top-sm">
+                            {{ line.value | async }}
+                        </div>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</ng-container>

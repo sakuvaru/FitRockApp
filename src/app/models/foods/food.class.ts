@@ -11,7 +11,7 @@ export class Food extends BaseItem {
     public foodUnitMeasurementValue: number;
     public isGlobal: boolean;
     public isApproved: boolean;
-    public description: string;
+    public description?: string;
     public kcal?: number;
     public fat?: number;
     public cho?: number;
@@ -28,5 +28,13 @@ export class Food extends BaseItem {
 
     getLanguageEnum(): LanguageEnum {
         return languageHelper.getLanguage(this.language);
+    }
+
+    getKj(): number {
+        if (!this.kcal) {
+            return 0;
+        }
+
+        return 4.184 * this.kcal;
     }
 }

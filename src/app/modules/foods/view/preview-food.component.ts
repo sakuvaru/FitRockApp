@@ -3,8 +3,9 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { observableHelper } from 'lib/utilities';
 import { Observable } from 'rxjs/Rx';
 
-import { InfoBoxConfig, InfoBoxLine, InfoBoxLineType, MiniBoxConfig, BoxColors } from '../../../../web-components/boxes';
+import { BoxColors, InfoBoxConfig, MiniBoxConfig, TableBoxConfig, TableBoxLine } from '../../../../web-components/boxes';
 import { GraphConfig, PieChart, SingleSeries } from '../../../../web-components/graph';
+import { DataTableConfig } from '../../../../web-components/data-table';
 import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
 import { Food } from '../../../models';
 import { FoodMenuItems } from '../menu.items';
@@ -22,6 +23,10 @@ export class PreviewFoodComponent extends BaseComponent implements OnInit {
     public choMiniBox?: MiniBoxConfig;
     public naclMiniBox?: MiniBoxConfig;
     public sugarMiniBox?: MiniBoxConfig;
+
+    public foodOverviewBox?: TableBoxConfig;
+
+    public usedInDishesDataForm?: DataTableConfig;
 
     public foodGraph?: GraphConfig<PieChart>;
 
@@ -48,8 +53,35 @@ export class PreviewFoodComponent extends BaseComponent implements OnInit {
         const observables: Observable<any>[] = [];
         observables.push(this.getItemObservable());
         observables.push(this.getGraphConfig());
+        observables.push(this.initUsedInFoodsDataForm());
 
         super.subscribeToObservables(observables);
+    }
+
+    private initUsedInFoodsDataForm(): Observable<void> {
+        return this.activatedRoute.params
+            .map(params => {
+                this.usedInDishesDataForm = this.dependencies.itemServices.foodDishService.buildDataTable(
+                    (query, search) => query
+                        .byCurrentUser()
+                        .whereLike('ParentFood.FoodName', search)
+                        .whereEquals('FoodId', +params['id'])
+                        .include('ParentFood')
+                )
+                    .withFields([{
+                        name: item => super.translate('module.foods.foodName'),
+                        value: item => item.parentFood.foodName,
+                        sortKey: 'ParentFood.FoodName',
+                        hideOnSmallScreen: false
+                    }, {
+                        name: item => super.translate('module.foods.foodName'),
+                        value: item => item.parentFood.foodName,
+                        sortKey: 'ParentFood.FoodName',
+                        hideOnSmallScreen: false
+                    }])
+                    .build();
+            });
+
     }
 
     private initFoodBoxes(food: Food): void {
@@ -82,6 +114,21 @@ export class PreviewFoodComponent extends BaseComponent implements OnInit {
             super.translate('module.foods.nutrition.sugar'),
             BoxColors.Cyan
         );
+
+        const overviewLines = [
+            new TableBoxLine(super.translate('module.foods.foodCategory'), super.translate('module.foodCategories.categories.' + food.foodCategory.codename)),
+            new TableBoxLine(super.translate('module.foods.measurementUnit'), this.dependencies.coreServices.localizationHelperService.translateFoodAmountAndUnit(food.foodUnitMeasurementValue, food.foodUnit.unitCode)),
+            new TableBoxLine(super.translate('module.foods.nutrition.kcal'), this.dependencies.coreServices.localizationHelperService.translateKcalWithKj(food.kcal ? food.kcal : 0))
+        ];
+
+        if (food.description) {
+            overviewLines.push(new TableBoxLine(super.translate('module.foods.description'), Observable.of(food.description)));
+        }
+
+        this.foodOverviewBox = this.dependencies.webComponentServices.boxService.tableBox(
+            Observable.of(food.foodName),
+            Observable.of(overviewLines)
+        );
     }
 
     private getGraphConfig(): Observable<void> {
@@ -107,7 +154,7 @@ export class PreviewFoodComponent extends BaseComponent implements OnInit {
                         data.forEach(series => {
                             observables.push(
                                 super.translate('module.foods.nutrition.' + series.name.toLowerCase())
-                                .map(translation => series.name = translation)
+                                    .map(translation => series.name = translation)
                             );
                         });
 
@@ -122,6 +169,7 @@ export class PreviewFoodComponent extends BaseComponent implements OnInit {
         return this.activatedRoute.params
             .switchMap((params: Params) => this.dependencies.itemServices.foodService.item()
                 .byId(+params['id'])
+                .includeMultiple(['FoodCategory', 'FoodUnit'])
                 .get()
                 .map(response => {
                     this.food = response.item;

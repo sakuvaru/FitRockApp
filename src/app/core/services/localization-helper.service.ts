@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { LocalizationService } from 'lib/localization';
 import { Observable } from 'rxjs/Rx';
+import { numberHelper } from 'lib/utilities';
 
 @Injectable()
 export class LocalizationHelperService {
@@ -8,6 +9,13 @@ export class LocalizationHelperService {
   constructor(
     private localizationService: LocalizationService
   ) { }
+
+  translateKcalWithKj(kcal: number): Observable<string> {
+    return this.localizationService.get('module.foods.kcalWithKj', {
+      kcal: kcal,
+      kj: numberHelper.roundTo((4.184 * kcal), 0)
+    });
+  }
 
   translateFoodAmountAndUnit(amount: number, foodUnit: string): Observable<string> {
     // first translate food unit in proper format

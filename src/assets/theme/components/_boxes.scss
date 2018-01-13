@@ -8,6 +8,11 @@
     height: 100%;
 }
 
+.w-boxes-table-box {
+    /* Box should fill all available height */
+    height: 100%;
+}
+
 .w-boxes-mini-box {
     /* Box should fill all available width, not height */
     width: 100%;

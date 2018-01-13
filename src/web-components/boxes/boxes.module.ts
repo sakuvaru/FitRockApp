@@ -10,6 +10,7 @@ import { InfoBoxComponent } from './info/info-box.component';
 import { ListBoxComponent } from './list/list-box.component';
 import { MapBoxComponent } from './map/map-box.component';
 import { MiniBoxComponent } from './mini/mini-box.component';
+import { TableBoxComponent } from './table/table-box.component';
 
 @NgModule({
     imports: [
@@ -24,13 +25,15 @@ import { MiniBoxComponent } from './mini/mini-box.component';
         ListBoxComponent,
         InfoBoxComponent,
         MapBoxComponent,
-        MiniBoxComponent
+        MiniBoxComponent,
+        TableBoxComponent
     ],
     exports: [
         ListBoxComponent,
         InfoBoxComponent,
         MapBoxComponent,
-        MiniBoxComponent
+        MiniBoxComponent,
+        TableBoxComponent
     ]
 })
 export class BoxesModule { }
