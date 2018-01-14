@@ -127,6 +127,7 @@ export class MapService {
             hint: formField.hint,
             rowNumber: formField.rowNumber,
             width: formField.width,
+            disabled: formField.disabled,
             options: formField.options ? new FormFieldOptions({
                 falseOptionLabel: formField.options.falseOptionLabel,
                 trueOptionLabel: formField.options.trueOptionLabel,

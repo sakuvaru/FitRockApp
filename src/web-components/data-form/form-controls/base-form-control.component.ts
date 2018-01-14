@@ -84,6 +84,10 @@ export abstract class BaseFormControlComponent extends BaseWebComponent implemen
         this.initField();
     }
 
+    disableField(): void {
+        this.formGroup.controls[this.field.key].disable();
+    }
+
     private initField(): void {
         if ((!this.config || !this.field || !this.formGroup)) {
             // inpur properties are not yet ready 
@@ -104,6 +108,11 @@ export abstract class BaseFormControlComponent extends BaseWebComponent implemen
 
         // init field value
         this.initFieldValue();
+
+        // disabled attribute
+        if (this.field.disabled) {
+            this.disableField();
+        }
     }
 
     private initFieldValue(): void {

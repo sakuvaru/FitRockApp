@@ -63,6 +63,11 @@ export interface IFormField {
     rowNumber?: number;
 
     /**
+     * Indicates if field is disabled
+     */
+    disabled?: boolean;
+
+    /**
      * Indicates if length hint should be shown
      */
     showLengthHint(): boolean;

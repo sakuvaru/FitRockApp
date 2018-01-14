@@ -63,6 +63,11 @@ export class FormField implements IFormField {
      */
     public rowNumber?: number;
 
+    /**
+     * Indicates if field is disabled
+     */
+    public disabled?: boolean;
+
     constructor(constructorOptions: {
         // required
         key: string,
@@ -76,6 +81,7 @@ export class FormField implements IFormField {
         hint?: string,
         width?: number,
         rowNumber?: number,
+        disabled?: boolean
     }) {
         Object.assign(this, constructorOptions);
 

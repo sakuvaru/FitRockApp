@@ -70,6 +70,7 @@ class DataFormBuilderUtils {
             field.required,
             field.value,
             field.defaultValue,
+            field.disabled,
             {
                 hint: field.hint,
                 rowNumber: field.rowNumber,

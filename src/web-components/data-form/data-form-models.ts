@@ -65,6 +65,11 @@ export class DataFormField {
         */
         public defaultValue?: string | number | Date | boolean | Object,
 
+        /**
+        * Indicates if field is disabled
+        */
+        public disabled?: boolean,
+
         optional?: {
             options?: DataFormFieldOptions,
             hint?: string,
