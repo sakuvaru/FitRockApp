@@ -23,3 +23,7 @@ export * from './mini/mini-box.models';
 export * from './table/table-box.component';
 export * from './table/table-box.models';
 
+// Number box
+export * from './number/number-box.component';
+export * from './number/number-box.models';
+

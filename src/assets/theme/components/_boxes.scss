@@ -1,59 +1,67 @@
-.w-boxes-list-box {
-    /* Box should fill all available height */
-    height: 100%;
-}
-
-.w-boxes-info-box {
-    /* Box should fill all available height */
-    height: 100%;
-}
-
-.w-boxes-table-box {
-    /* Box should fill all available height */
-    height: 100%;
-}
-
-.w-boxes-mini-box {
-    /* Box should fill all available width, not height */
-    width: 100%;
-
-    .mini-box-primary {
+.w-boxes {
+    .box-primary {
         background-color: $primary;
         color: $primary-contrast;
     }
 
-    .mini-box-accent {
+    .box-accent {
         background-color: $accent;
         color: $primary-contrast;
     }
 
-    .mini-box-blue {
+    .box-blue {
         background-color: #3f51b5;
         color: #ffffff;
     }
 
-    .mini-box-purple {
+    .box-purple {
         background-color: #8b008b;
         color: #ffffff;
     }
 
-    .mini-box-orange {
+    .box-orange {
         background-color: #ffa07a;
         color: #1a1a1a;
     }
 
-    .mini-box-yellow {
+    .box-yellow {
         background-color: #fff500;
         color: #1a1a1a;
     }
 
-    .mini-box-cyan {
+    .box-cyan {
         background-color: #00ced1;
         color: #1a1a1a;
     }
 }
 
-.w-boxes-caption {
+.w-boxes.w-boxes-info-box {
+    /* Box should fill all available height */
+    height: 100%;
+}
+
+.w-boxes.w-boxes-table-box {
+    /* Box should fill all available height */
+    height: 100%;
+}
+
+.w-boxes.w-boxes-mini-box {
+    /* Box should fill all available width, not height */
+    width: 100%;
+}
+
+.w-boxes.w-boxes-number-box {
+    /* Box should fill all available width, not height */
+    width: 100%;
+}
+
+.w-boxes.w-boxes-caption {
     font-size: 12px!important;
     color: #6b6b6b!important;
 }
+
+.w-boxes.w-boxes-list-box {
+    /* Box should fill all available height */
+    height: 100%;
+}
+

@@ -1,9 +1,10 @@
 <ng-container *ngIf="config">
-    <div class="w-boxes w-boxes-mini-box">
+    <div class="w-boxes w-boxes-number-box">
         <mat-card [ngClass]="[getClassName()]">
             <mat-card-content>
                 <div class="text-center mat-title">
-                    {{ config.title | async }}
+                    <count-up *ngIf="config.animate" [endVal]="config.number | async" [startVal]="config.startNumber"></count-up>
+                    <span *ngIf="!config.animate">{{ config.number | async }}</span>
                 </div>
                 <div class="text-center mat-body-1">
                     {{ config.text | async }}

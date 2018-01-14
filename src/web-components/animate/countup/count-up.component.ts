@@ -99,7 +99,6 @@ export class CountUpComponent extends BaseWebComponent implements AfterViewInit,
         }
 
         if (this.endVal && this.endVal > 0) {
-            console.log(this.endVal);
             this.countUp = this.createCountUp(this.startVal, this.endVal, this.decimals, this.duration);
             this.animate();
             this.initialized = true;

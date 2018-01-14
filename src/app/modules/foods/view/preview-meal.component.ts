@@ -3,9 +3,17 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { observableHelper } from 'lib/utilities';
 import { Observable } from 'rxjs/Rx';
 
-import { BoxColors, InfoBoxConfig, MiniBoxConfig, TableBoxConfig, TableBoxLine, ListBoxConfig, ListBoxItem } from '../../../../web-components/boxes';
+import {
+    BoxColors,
+    InfoBoxConfig,
+    ListBoxConfig,
+    ListBoxItem,
+    MiniBoxConfig,
+    TableBoxConfig,
+    TableBoxLine,
+    NumberBoxConfig
+} from '../../../../web-components/boxes';
 import { GraphConfig, PieChart, SingleSeries } from '../../../../web-components/graph';
-import { DataTableConfig } from '../../../../web-components/data-table';
 import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
 import { Food } from '../../../models';
 import { MealMenuItems } from '../menu.items';
@@ -18,11 +26,11 @@ export class PreviewMealComponent extends BaseComponent implements OnInit {
     public food?: Food;
     public foodInfoBox?: InfoBoxConfig;
 
-    public protMiniBox?: MiniBoxConfig;
-    public fatMiniBox?: MiniBoxConfig;
-    public choMiniBox?: MiniBoxConfig;
-    public naclMiniBox?: MiniBoxConfig;
-    public sugarMiniBox?: MiniBoxConfig;
+    public protMiniBox?: NumberBoxConfig;
+    public fatMiniBox?: NumberBoxConfig;
+    public choMiniBox?: NumberBoxConfig;
+    public naclMiniBox?: NumberBoxConfig;
+    public sugarMiniBox?: NumberBoxConfig;
 
     public foodOverviewBox?: TableBoxConfig;
 
@@ -65,7 +73,7 @@ export class PreviewMealComponent extends BaseComponent implements OnInit {
                     secondLine: this.dependencies.coreServices.localizationHelperService.translateFoodAmountAndUnit(
                         m.amount, m.food.foodUnit.unitCode
                     ),
-                    extra: this.dependencies.coreServices.localizationHelperService.translateKcalWithKj(m.food.kcal ? m.food.kcal : 0),
+                    extra: this.dependencies.coreServices.localizationHelperService.translateKcalWithKj(this.dependencies.itemServices.foodService.calculateFoodWithAmount(m.food, m.amount).kcal),
                     linkUrl: this.dependencies.coreServices.navigateService.foodPreviewPage(m.food.id).getUrl()
                 }))),
             super.translate('module.foods.mealComposition')
@@ -73,32 +81,32 @@ export class PreviewMealComponent extends BaseComponent implements OnInit {
     }
 
     private initFoodBoxes(food: Food): void {
-        this.protMiniBox = this.dependencies.webComponentServices.boxService.miniBox(
-            Observable.of(food.prot ? food.prot.toString() : '0'),
+        this.protMiniBox = this.dependencies.webComponentServices.boxService.numberBox(
+            Observable.of(food.prot ? food.prot : 0),
             super.translate('module.foods.nutrition.prot'),
             BoxColors.Primary
         );
 
-        this.fatMiniBox = this.dependencies.webComponentServices.boxService.miniBox(
-            Observable.of(food.fat ? food.fat.toString() : '0'),
+        this.fatMiniBox = this.dependencies.webComponentServices.boxService.numberBox(
+            Observable.of(food.fat ? food.fat : 0),
             super.translate('module.foods.nutrition.fat'),
             BoxColors.Accent
         );
 
-        this.choMiniBox = this.dependencies.webComponentServices.boxService.miniBox(
-            Observable.of(food.cho ? food.cho.toString() : '0'),
+        this.choMiniBox = this.dependencies.webComponentServices.boxService.numberBox(
+            Observable.of(food.cho ? food.cho : 0),
             super.translate('module.foods.nutrition.choShort'),
             BoxColors.Purple
         );
 
-        this.naclMiniBox = this.dependencies.webComponentServices.boxService.miniBox(
-            Observable.of(food.nacl ? food.nacl.toString() : '0'),
+        this.naclMiniBox = this.dependencies.webComponentServices.boxService.numberBox(
+            Observable.of(food.nacl ? food.nacl : 0),
             super.translate('module.foods.nutrition.nacl'),
             BoxColors.Yellow
         );
 
-        this.sugarMiniBox = this.dependencies.webComponentServices.boxService.miniBox(
-            Observable.of(food.sugar ? food.sugar.toString() : '0'),
+        this.sugarMiniBox = this.dependencies.webComponentServices.boxService.numberBox(
+            Observable.of(food.sugar ? food.sugar : 0),
             super.translate('module.foods.nutrition.sugar'),
             BoxColors.Cyan
         );

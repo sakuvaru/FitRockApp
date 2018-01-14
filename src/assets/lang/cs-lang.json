@@ -309,7 +309,8 @@
 			"kcalWithKj": "{{kcal}} kcal ({{kj}} kJ)",
 			"foodIsUsedIn": "Jídla, kde je potravina použita",
 			"mealComposition": "Složení",
-			"foodInfo": "Informace"
+			"foodInfo": "Informace",
+			"foodContains": "obsahuje"
 		},
 		"foodUnits": {
 			"portion": "porce",
