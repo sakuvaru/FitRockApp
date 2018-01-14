@@ -2,7 +2,7 @@
         <div fxLayout="column" fxFlex="50%" class="push-sm">
 
             <h2 *ngIf="food" class="mat-headline">
-                {{ food.foodName }}
+                {{ food.foodName }} - <count-up startVal="0" endVal="3500"></count-up>
             </h2>
 
             <div fxLayoutAlign="space-between start" fxLayout="row" fxHide.sm fxHide.xs>

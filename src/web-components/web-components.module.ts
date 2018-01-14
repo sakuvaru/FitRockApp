@@ -17,6 +17,7 @@ import { TextModule } from './text/text.module';
 import { UploaderModule } from './uploader/uploader.module';
 import { CalendarModule } from './calendar/calendar.module';
 import { BoxesModule } from './boxes/boxes.module';
+import { AnimateModule } from './animate/animate.module';
 
 @NgModule({
     imports: [
@@ -40,7 +41,8 @@ import { BoxesModule } from './boxes/boxes.module';
         DataFormModule,
         LayoutModule,
         CalendarModule,
-        BoxesModule
+        BoxesModule,
+        AnimateModule
     ]
 })
 export class WebComponentsModule {
