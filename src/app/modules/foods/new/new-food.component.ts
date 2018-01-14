@@ -42,7 +42,13 @@ export class NewFoodComponent extends BaseComponent implements OnInit {
     }
 
     private initForm(): void {
-        this.formConfig = this.dependencies.itemServices.foodService.buildInsertForm()
+        this.formConfig = this.dependencies.itemServices.foodService.buildInsertForm(
+            {
+                formDefinitionQuery: this.dependencies.itemServices.foodService.insertFormQuery()
+                .withData('isMeal', false)
+            }
+            )
+            .ignoreFields(['AssignedFoodsVirtual'])
             .onAfterInsert((response) => this.navigate([this.getTrainerUrl('foods/edit'), response.item.id]))
             .optionLabelResolver((field, originalLabel) => {
                 if (field.key === 'FoodCategoryId') {

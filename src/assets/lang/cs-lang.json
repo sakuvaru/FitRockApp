@@ -299,7 +299,7 @@
 			"foodAmountTextLineB": "B: <u>{{ proteins }}</u>, T: <u>{{ fats }}</u>, S: <u>{{ carbs }}</u> = <strong>{{ kcal }}</strong> kcal",
 			"foodAmountTextComplete": "Množství: {{ amount }}/{{ foodUnit }}. B: {{ proteins }}, T: {{ fats }}, S: {{ carbs }} = {{ kcal }} kcal",
 			"foodCategory": "Kategorie",
-			"addFood": "Přidat jídlo",
+			"addFood": "Přidat pottravinu",
 			"removeSelected": "Odstranit vybrané",
 			"setAmount": "Zadej množství",
 			"amount": "Množství",

@@ -93,6 +93,12 @@ export class DropdownComponent extends BaseFormControlComponent implements OnIni
   }
 
   protected getInsertValue(): string | number | boolean | Date | undefined | object  {
+    
+    if (this.field.required && this.field.options && this.field.options.listOptions && this.field.options.listOptions.length === 1) {
+      // automatically preselect item if its the only one in form
+      return this.field.options.listOptions[0].value;
+    }
+
     return this.field.defaultValue;
   }
 

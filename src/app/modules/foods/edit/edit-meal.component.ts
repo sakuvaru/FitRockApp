@@ -189,6 +189,10 @@ export class EditMealComponent extends BaseComponent implements OnInit {
                         });
                     })
                     .configField((field, item) => {
+                        if (field.key === '') {
+
+                        }
+
                         // make sure assigned foods are assigned for calculation by 'onFieldValueChange'
                         if (item) {
                             const models = item.childFoods.map((dish: FoodDish) =>
@@ -197,7 +201,6 @@ export class EditMealComponent extends BaseComponent implements OnInit {
 
                             if (item && field.key === 'AssignedFoodsVirtual') {
                                 field.value = models;
-                                return Observable.of(field);
                             }
 
                             if (models) {
@@ -212,27 +215,21 @@ export class EditMealComponent extends BaseComponent implements OnInit {
 
                                 if (field.key === 'Kcal') {
                                     field.value = calculations.kcal;
-                                    return Observable.of(field);
                                 }
                                 if (field.key === 'Cho') {
                                     field.value = calculations.cho;
-                                    return Observable.of(field);
                                 }
                                 if (field.key === 'Fat') {
                                     field.value = calculations.fat;
-                                    return Observable.of(field);
                                 }
                                 if (field.key === 'Sugar') {
                                     field.value = calculations.sugar;
-                                    return Observable.of(field);
                                 }
                                 if (field.key === 'Prot') {
                                     field.value = calculations.prot;
-                                    return Observable.of(field);
                                 }
                                 if (field.key === 'Nacl') {
                                     field.value = calculations.nacl;
-                                    return Observable.of(field);
                                 }
                             }
                         }
