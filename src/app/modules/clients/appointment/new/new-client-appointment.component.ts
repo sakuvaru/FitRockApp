@@ -62,11 +62,11 @@ export class NewClientAppointmentComponent extends ClientsBaseComponent implemen
                 this.formConfig = this.dependencies.itemServices.appointmentService.buildInsertForm({
                     formDefinitionQuery: this.dependencies.itemServices.appointmentService.insertFormQuery().withData('clientId', clientId)
                 })
-                    .fieldValueResolver((fieldName, value) => {
-                        if (fieldName === 'ClientId') {
-                            return Observable.of(clientId);
+                    .configField((field, item) => {
+                        if (field.key === 'ClientId') {
+                            field.value = clientId;
                         }
-                        return Observable.of(value);
+                        return Observable.of(field);
                     })
                     .onAfterInsert((response) => super.navigate([super.getTrainerUrl('clients/edit/' + clientId + '/appointments/edit/' + response.item.id)]))
                     .build();

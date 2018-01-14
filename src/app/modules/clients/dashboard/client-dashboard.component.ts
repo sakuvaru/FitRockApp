@@ -118,7 +118,7 @@ export class ClientDashboardComponent extends ClientsBaseComponent implements On
               return response.items.map(item => new ListBoxItem(
                 Observable.of(item.message),
                 {
-                  linkUrl: UrlConfig.getChatMessageUrl(item.senderUserId),
+                  linkUrl: UrlConfig.getChatMessageUrl(this.clientId),
                   imageUrl: item.sender.getAvatarOrGravatarUrl() ? item.sender.getAvatarOrGravatarUrl() : this.defaultAvatarUrl
                 }
               ));

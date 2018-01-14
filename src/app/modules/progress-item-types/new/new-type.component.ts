@@ -43,11 +43,11 @@ export class NewTypeComponent extends BaseComponent implements OnInit {
 
     private initForm(): void {
         this.formConfig = this.dependencies.itemServices.progressItemTypeService.buildInsertForm()
-            .fieldValueResolver((fieldName, value) => {
-                if (fieldName === 'TranslateValue') {
-                    return Observable.of(false);
+            .configField((field, item) => {
+                if (field.key === 'TranslateValue') {
+                    field.value = false;
                 }
-                return Observable.of(value);
+                return Observable.of(field);
             })
             .onAfterInsert((response) => this.navigate([this.getTrainerUrl('progress-item-types/edit'), response.item.id]))
             .build();

@@ -65,11 +65,11 @@ export class NewClientWorkoutComponent extends ClientsBaseComponent implements O
             .takeUntil(this.ngUnsubscribe)
             .map(params => {
                 this.formConfig = this.dependencies.itemServices.workoutService.buildInsertForm()
-                    .fieldValueResolver((fieldName, value) => {
-                        if (fieldName === 'ClientId') {
-                            return Observable.of(this.clientId);
+                    .configField((field, item) => {
+                        if (field.key === 'ClientId') {
+                            field.value = this.clientId;
                         }
-                        return Observable.of(value);
+                        return Observable.of(field);
                     })
                     .onAfterInsert((response) => super.navigate([super.getTrainerUrl('clients/edit/' + this.clientId + '/workout/' + response.item.id + '/workout-plan')]))
                     .onInsertFormLoaded(form => {

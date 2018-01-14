@@ -598,24 +598,17 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
     }
 
     private resolveField(field: DataFormField, item: any | undefined): Observable<DataFormField> {
-        // resolve field using custom values
-        if (!this.config.fieldValueResolver) {
+        if (!this.config.configField) {
             return Observable.of(field);
         }
 
-        return this.config.fieldValueResolver(field.key, field.value, item)
-            .map(newValue => {
-                const resolvedValue = this.getFieldValueSetByResolver(newValue);
+        return this.config.configField(field, item).map(resolvedField => {
+            // make sure the value is set properly
+            resolvedField.value = this.getFieldValueSetByResolver(resolvedField.value);
+            resolvedField.defaultValue = this.getFieldValueSetByResolver(resolvedField.defaultValue);
 
-                // set field value
-                field.value = resolvedValue;
-
-                // do not 'change default value' as this is overwrite
-                // field.defaultValue = resolvedValue;
-
-                // return resolved field
-                return field;
-            });
+            return resolvedField;
+        });
     }
 
     private clearForm(): void {

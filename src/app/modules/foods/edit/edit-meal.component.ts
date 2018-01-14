@@ -188,15 +188,16 @@ export class EditMealComponent extends BaseComponent implements OnInit {
                             }
                         });
                     })
-                    .fieldValueResolver((fieldName, value, item) => {
+                    .configField((field, item) => {
                         // make sure assigned foods are assigned for calculation by 'onFieldValueChange'
                         if (item) {
                             const models = item.childFoods.map((dish: FoodDish) =>
                                 this.getMultipleChoiceFoodOption(dish))
                                 .map(s => s.rawValue);
 
-                            if (item && fieldName === 'AssignedFoodsVirtual') {
-                                return Observable.of(models);
+                            if (item && field.key === 'AssignedFoodsVirtual') {
+                                field.value = models;
+                                return Observable.of(field);
                             }
 
                             if (models) {
@@ -209,28 +210,34 @@ export class EditMealComponent extends BaseComponent implements OnInit {
                                     })
                                 );
 
-                                if (fieldName === 'Kcal') {
-                                    return Observable.of(calculations.kcal);
+                                if (field.key === 'Kcal') {
+                                    field.value = calculations.kcal;
+                                    return Observable.of(field);
                                 }
-                                if (fieldName === 'Cho') {
-                                    return Observable.of(calculations.cho);
+                                if (field.key === 'Cho') {
+                                    field.value = calculations.cho;
+                                    return Observable.of(field);
                                 }
-                                if (fieldName === 'Fat') {
-                                    return Observable.of(calculations.fat);
+                                if (field.key === 'Fat') {
+                                    field.value = calculations.fat;
+                                    return Observable.of(field);
                                 }
-                                if (fieldName === 'Sugar') {
-                                    return Observable.of(calculations.sugar);
+                                if (field.key === 'Sugar') {
+                                    field.value = calculations.sugar;
+                                    return Observable.of(field);
                                 }
-                                if (fieldName === 'Prot') {
-                                    return Observable.of(calculations.prot);
+                                if (field.key === 'Prot') {
+                                    field.value = calculations.prot;
+                                    return Observable.of(field);
                                 }
-                                if (fieldName === 'Nacl') {
-                                    return Observable.of(calculations.nacl);
+                                if (field.key === 'Nacl') {
+                                    field.value = calculations.nacl;
+                                    return Observable.of(field);
                                 }
                             }
                         }
 
-                        return Observable.of(value);
+                        return Observable.of(field);
                     })
                     .onFieldValueChange((fields, changedField, newValue) => {
                         const newFields: DataFormChangeField[] = [];

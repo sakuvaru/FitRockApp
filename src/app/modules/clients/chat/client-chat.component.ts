@@ -65,14 +65,14 @@ export class ClientChatComponent extends ClientsBaseComponent implements OnInit 
         return this.clientIdChange
             .map(clientId => {
                 const formConfig = this.dependencies.itemServices.chatMessageService.buildInsertForm()
-                    .fieldValueResolver((fieldName, value) => {
+                    .configField((field, item) => {
                         // manually set recipient & sender
-                        if (fieldName === 'SenderUserId') {
-                            return Observable.of(this.dependencies.authenticatedUserService.getUserId());
-                        } else if (fieldName === 'RecipientUserId') {
-                            return Observable.of(this.clientId);
+                        if (field.key === 'SenderUserId') {
+                            field.value = this.dependencies.authenticatedUserService.getUserId();
+                        } else if (field.key === 'RecipientUserId') {
+                            field.value = this.clientId;
                         }
-                        return Observable.of(value);
+                        return Observable.of(field);
                     })
                     .customButtonSaveText(super.translate('module.chat.send'))
                     .wrapInCard(false)

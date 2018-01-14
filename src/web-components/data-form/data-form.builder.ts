@@ -70,10 +70,11 @@ export class DataFormBuilder<TItem extends IItem> {
     }
 
     /**
-    * Resolver used to change the value of certain fields manually
+    * Can be used to configure field and its properties upon initial load
+    * You can set value, label or any other property...
     */
-    fieldValueResolver(resolver: (fieldName: string, value: string | number | boolean | Date, item: TItem | undefined) => Observable<string | boolean | number | Date | object>): this {
-        this.config.fieldValueResolver = resolver;
+    configField(resolver: (field: DataFormField, item: TItem | undefined) => Observable<DataFormField>): this {
+        this.config.configField = resolver;
         return this;
     }
 

@@ -53,18 +53,18 @@ export class NewFoodComponent extends BaseComponent implements OnInit {
 
                 return Observable.of(originalLabel);
             })
-            .fieldValueResolver((fieldName, value) => {
-                if (fieldName === 'Language') {
+            .configField((field, item) => {
+                if (field.key === 'Language') {
                     const language = this.currentLanguage;
                     if (!language) {
                         throw Error(`Language has to be set in order to create new foods`);
                     }
-                    return Observable.of(language.language.toString());
-                } else if (fieldName === 'IsMeal') {
-                    return Observable.of(false);
+                    field.value = language.language.toString();
+                } else if (field.key === 'IsMeal') {
+                    field.value = false;
                 }   
 
-                return Observable.of(value);
+                return Observable.of(field);
             })
             .build();
     }

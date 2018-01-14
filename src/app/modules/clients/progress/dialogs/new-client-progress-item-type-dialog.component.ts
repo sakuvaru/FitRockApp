@@ -45,13 +45,13 @@ export class NewClientProgressItemTypeDialogComponent extends ClientsBaseCompone
     private initForm(): void {
         this.formConfig = this.dependencies.itemServices.progressItemTypeService.buildInsertForm()
             .wrapInCard(false)
-            .fieldValueResolver((fieldName, value) => {
-                if (fieldName === 'ClientId') {
-                    return Observable.of(this.clientId);
-                } else if (fieldName === 'TranslateValue') {
-                    return Observable.of(false);
+            .configField((field, item) => {
+                if (field.key === 'ClientId') {
+                    field.value = this.clientId;
+                } else if (field.key === 'TranslateValue') {
+                    field.value = false;
                 }
-                return Observable.of(value);
+                return Observable.of(field);
             })
             .onAfterInsert((response) => {
                 this.createdProgressItemType = response.item;

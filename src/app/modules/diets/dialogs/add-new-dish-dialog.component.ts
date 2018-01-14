@@ -54,16 +54,16 @@ export class AddNewDishDialogComponent extends BaseComponent implements OnInit {
 
         return Observable.of(originalLabel);
       })
-      .fieldValueResolver((fieldName, value) => {
-        if (fieldName === 'Language') {
+      .configField((field, item) => {
+        if (field.key === 'Language') {
           const language = this.currentLanguage;
           if (!language) {
             throw Error(`Language has to be set in order to create new foods`);
           }
-          return Observable.of(language.language.toString());
+          field.value = language.language.toString();
         }
 
-        return Observable.of(value);
+        return Observable.of(field);
       })
       .renderButtons(false)
       .build();

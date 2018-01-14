@@ -65,12 +65,12 @@ export class NewClientDietComponent extends ClientsBaseComponent implements OnIn
             .takeUntil(this.ngUnsubscribe)
             .map(clientId => {
                 this.formConfig = this.dependencies.itemServices.dietService.buildInsertForm()
-                    .fieldValueResolver((fieldName, value) => {
+                    .configField((field, item) => {
                         // manually set client
-                        if (fieldName === 'ClientId') {
-                            return Observable.of(this.clientId);
+                        if (field.key === 'ClientId') {
+                            field.value = this.clientId;
                         }
-                        return Observable.of(value);
+                        return Observable.of(field);
                     })
                     .onAfterInsert((response) => super.navigate([super.getTrainerUrl('clients/edit/' + this.clientId + '/diet/' + response.item.id + '/diet-plan')]))
                     .build();

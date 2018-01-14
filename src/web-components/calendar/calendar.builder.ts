@@ -57,11 +57,11 @@ export class CalendarBuilder {
             .build();
 
         this.config.insertEventFormConfig = (attendee: CalendarEventAttendee<User>) => insertFormBuilder(attendee)
-            .fieldValueResolver((fieldName, value) => {
-                if (fieldName === 'ClientId') {
-                    return Observable.of(attendee.model.id);
+            .configField((field, item) => {
+                if (field.key === 'ClientId') {
+                    field.value = attendee.model.id;
                 }
-                return Observable.of(value);
+                return Observable.of(field);
             })
             .wrapInCard(false)
             .renderButtons(false)

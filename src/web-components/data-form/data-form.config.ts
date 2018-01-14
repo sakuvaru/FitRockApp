@@ -122,11 +122,6 @@ export class DataFormConfig {
     public onFieldValueChange?: (fields: DataFormField[], changedField: DataFormField, newValue: string | boolean | number | object | Date | undefined) => Observable<DataFormFieldChangeResult | void>;
 
     /**
-     * Resolver used to change the value of certain fields manually
-     */
-    public fieldValueResolver?: (fieldName: string, value: any, item: any) => Observable<string | boolean | number | Date | object>;
-
-    /**
      * Indicates if local loader is enabled
      */
     public enableLocalLoader = true;
@@ -165,6 +160,11 @@ export class DataFormConfig {
      * Required configuration for multiple choice fields
      */
     public multipleChoiceResolver?: (field: DataFormField, item: any) => DataFormMultipleChoiceFieldConfig<any> | undefined;
+
+    /**
+     * Can be used to change configuration obtained from server
+     */
+    public configField?: (field: DataFormField, item: any) => Observable<DataFormField>;
 
     constructor(
         /**

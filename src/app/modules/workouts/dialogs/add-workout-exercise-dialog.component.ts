@@ -52,13 +52,13 @@ export class AddWorkoutExerciseDialogComponent extends BaseComponent implements 
 
   private initForm(): void {
     this.workoutExerciseForm = this.dependencies.itemServices.workoutExerciseService.buildInsertForm()
-      .fieldValueResolver((fieldName, value) => {
-        if (fieldName === 'ExerciseId') {
-          return Observable.of(this.exercise.id);
-        } else if (fieldName === 'WorkoutId') {
-          return Observable.of(this.workoutId);
+      .configField((field, item) => {
+        if (field.key === 'ExerciseId') {
+          field.value = this.exercise.id;
+        } else if (field.key === 'WorkoutId') {
+          field.value = this.workoutId;
         }
-        return Observable.of(value);
+        return Observable.of(field);
       })
       .wrapInCard(false)
       .onAfterInsert((response => {

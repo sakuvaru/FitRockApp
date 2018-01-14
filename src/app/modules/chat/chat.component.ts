@@ -154,15 +154,15 @@ export class ChatComponent extends BaseComponent implements OnInit {
 
     private initChatForm(userId: number): void {
         this.formConfig = this.dependencies.itemServices.chatMessageService.buildInsertForm()
-            .fieldValueResolver((fieldName, value) => {
+            .configField((field, item) => {
                 // manually set recipient & sender
-                if (fieldName === 'SenderUserId') {
-                    return Observable.of(this.dependencies.authenticatedUserService.getUserId());
+                if (field.key === 'SenderUserId') {
+                    field.value = this.dependencies.authenticatedUserService.getUserId();
                 }
-                if (fieldName === 'RecipientUserId') {
-                    return Observable.of(userId);
+                if (field.key === 'RecipientUserId') {
+                    field.value = userId;
                 }
-                return Observable.of(value);
+                return Observable.of(field);
             })
             .customButtonSaveText(super.translate('module.chat.send'))
             .wrapInCard(false)

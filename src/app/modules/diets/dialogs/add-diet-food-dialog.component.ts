@@ -47,13 +47,13 @@ export class AddDietFoodDialogComponent extends BaseComponent implements OnInit 
 
   private initForm(): void {
     this.dietFoodForm = this.dependencies.itemServices.dietFoodService.buildInsertForm()
-      .fieldValueResolver((fieldName, value, item) => {
-        if (fieldName === 'FoodId') {
-          return Observable.of(this.food.id);
-        } else if (fieldName === 'DietId') {
-          return Observable.of(this.dietId);
+      .configField((field, item) => {
+        if (field.key === 'FoodId') {
+          field.value = this.food.id;
+        } else if (field.key === 'DietId') {
+          field.value = this.dietId;
         }
-        return Observable.of(value);
+        return Observable.of(field);
       })
       .fieldLabelResolver((field, originalLabel) => {
         if (field.key === 'UnitValue') {

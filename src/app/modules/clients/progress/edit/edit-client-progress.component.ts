@@ -91,11 +91,12 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
             formDefinitionQuery: this.dependencies.itemServices.progressItemService.insertFormQuery().withData('clientId', clientId)
         })
             .wrapInCard(false)
-            .fieldValueResolver((fieldName, value) => {
-                if (fieldName === 'ClientId') {
-                    return Observable.of(this.clientId);
+            .configField((field, item) => {
+                if (field.key === 'ClientId') {
+                    field.value = this.clientId;
                 }
-                return Observable.of(value);
+                console.log(field);
+                return Observable.of(field);
             })
             .onAfterInsert(() => {
                 this.reloadDataList();
