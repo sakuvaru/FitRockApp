@@ -393,7 +393,8 @@
 				"nuts": "Ořechy",
 				"sugaryFoods": "Cukrové výrobky",
 				"foodSupplements": "Suplementy",
-				"other": "Jiný"
+				"other": "Jiný",
+				"meal": "Jídlo"
 			}
 		},
 		"progressItemTypes": {
