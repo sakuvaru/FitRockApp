@@ -147,6 +147,7 @@ export class NewMealComponent extends BaseComponent implements OnInit {
             {
                 formDefinitionQuery: this.dependencies.itemServices.foodService.insertFormQuery()
                 .withData('isMeal', true)
+                .withData('isFood', false)
             }
         )
             .onAfterInsert((response) => this.navigate([this.getTrainerUrl('foods/meals/edit'), response.item.id]))

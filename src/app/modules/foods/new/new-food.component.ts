@@ -46,6 +46,7 @@ export class NewFoodComponent extends BaseComponent implements OnInit {
             {
                 formDefinitionQuery: this.dependencies.itemServices.foodService.insertFormQuery()
                 .withData('isMeal', false)
+                .withData('isFood', true)
             }
             )
             .ignoreFields(['AssignedFoodsVirtual'])
