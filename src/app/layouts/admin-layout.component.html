@@ -31,7 +31,7 @@
           <span class="w-layout-sidemenu-title">{{shortenTitle(menuTitle)}}</span>
         </ng-container>
         <!-- using display none because otherwise the search control could not be initialized -->
-        <div [style.display]="enableComponentSearch ? 'block' : 'none'" class="md-body-2">
+        <div [style.display]="enableComponentSearch ? 'block' : 'none'" class="mat-body-2">
           <td-search-input (searchDebounce)="handleComponentSearch($event)" [showUnderline]="false" debounce="200" placeholder="{{ 'shared.searchClient' | localize }}"></td-search-input>
         </div>
       </mat-toolbar>
@@ -84,7 +84,7 @@
 
     </td-layout-manage-list>
     <td-layout-footer>
-      <div layout="row" layout-align="start center" class="md-caption">
+      <div layout="row" layout-align="start center" class="mat-caption">
         <footer [appName]="appName"></footer>
       </div>
     </td-layout-footer>

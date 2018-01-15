@@ -2,20 +2,20 @@
     <div fxFlex="40%" class="push-sm">
         <mat-card>
             <mat-card-content>
-                <p class="md-headline">
+                <p class="mat-headline">
                     {{ location.locationName }}
                 </p>
-                <p class="md-caption">
+                <p class="mat-caption">
                     {{ 'module.locations.type.' + location.locationTypeAsString | localize }}
                 </p>
                 <p>
-                    <span class="md-caption">{{ 'module.locations.address' | localize }}: </span> {{ location.address }}
+                    <span class="mat-caption">{{ 'module.locations.address' | localize }}: </span> {{ location.address }}
                 </p>
                 <p>
-                    <span class="md-caption">{{ 'module.locations.lat' | localize }}: </span> {{ location.lat }}
+                    <span class="mat-caption">{{ 'module.locations.lat' | localize }}: </span> {{ location.lat }}
                 </p>
                 <p>
-                    <span class="md-caption">{{ 'module.locations.lng' | localize }}: </span> {{ location.lng }}
+                    <span class="mat-caption">{{ 'module.locations.lng' | localize }}: </span> {{ location.lng }}
                 </p>
             </mat-card-content>
         </mat-card>

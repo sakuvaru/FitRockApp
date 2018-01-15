@@ -25,18 +25,18 @@
                   <img *ngIf="data.image" matListAvatar [src]="data.image" alt="" />
                   <p matLine>
                     <ng-container *ngIf="config.title">
-                      <span class="md-body-1 tc-grey-900" [innerHtml]="config.title(item) | async"></span>
+                      <span class="mat-body-1 tc-grey-900" [innerHtml]="config.title(item) | async"></span>
                     </ng-container>
 
                   </p>
                   <p matLine>
                     <ng-container *ngIf="config.text">
-                      <span class="md-body-1 tc-grey-700" [innerHtml]="config.text(item) | async"></span>
+                      <span class="mat-body-1 tc-grey-700" [innerHtml]="config.text(item) | async"></span>
                     </ng-container>
                   </p>
                   <p matLine>
                     <ng-container *ngIf="config.footer">
-                      <span class="md-caption" [innerHtml]="config.footer(item) | async"></span>
+                      <span class="mat-caption" [innerHtml]="config.footer(item) | async"></span>
                     </ng-container>
                   </p>
                 </mat-list-item>

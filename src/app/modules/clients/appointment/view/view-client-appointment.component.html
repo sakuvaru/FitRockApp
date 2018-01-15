@@ -2,24 +2,24 @@
     <div fxFlex="40%" class="push-sm">
         <mat-card>
             <mat-card-content *ngIf="appointment">
-                <p class="md-headline">{{ appointment.appointmentName }}</p>
+                <p class="mat-headline">{{ appointment.appointmentName }}</p>
                 <p *ngIf="client">
                     <strong>{{ client.getFullName()}}</strong>
                 </p>
                 <p>
-                    <span class="md-caption">{{ 'module.clients.appointments.when' | localize }}:</span> {{ formatDate(appointment.appointmentDate)
+                    <span class="mat-caption">{{ 'module.clients.appointments.when' | localize }}:</span> {{ formatDate(appointment.appointmentDate)
                     }}
                 </p>
                 <p>
-                    <span class="md-caption">{{ 'module.clients.appointments.where' | localize }}:</span> {{ appointment.location.address }}
+                    <span class="mat-caption">{{ 'module.clients.appointments.where' | localize }}:</span> {{ appointment.location.address }}
                 </p>
                 <p *ngIf="appointment.workout">
-                    <span class="md-caption">{{ 'module.clients.appointments.workout' | localize }}:</span> {{ appointment.workout.workoutName }}
+                    <span class="mat-caption">{{ 'module.clients.appointments.workout' | localize }}:</span> {{ appointment.workout.workoutName }}
                 </p>
                 <p *ngIf="appointment.notes">
-                    <span class="md-caption">{{ 'module.clients.appointments.notes' | localize }}:</span>
+                    <span class="mat-caption">{{ 'module.clients.appointments.notes' | localize }}:</span>
                 </p>
-                <p *ngIf="appointment.notes" class="md-caption">
+                <p *ngIf="appointment.notes" class="mat-caption">
                     {{ appointment.notes }}
                 </p>
             </mat-card-content>

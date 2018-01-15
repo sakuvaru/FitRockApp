@@ -1,5 +1,5 @@
 <mat-dialog-actions>
-    <span class="md-title">{{'module.clients.diet.foodList' | localize }}</span>
+    <span class="mat-title">{{'module.clients.diet.foodList' | localize }}</span>
     <span flex></span>
     <close-button (click)="close()"></close-button>
 </mat-dialog-actions>
@@ -11,7 +11,7 @@
                 <strong>
                     <span *ngIf="dietFood.eatTime">{{dietFood.eatTime}}:</span> {{dietFood.food.foodName}}</strong>
                 &nbsp;-&nbsp;
-                <span class="md-caption">
+                <span class="mat-caption">
                     <plural-food-units [count]="dietFood.unitValue" [unitCode]="dietFood.food.foodUnit.unitCode"></plural-food-units>
                 </span>
             </mat-list-item>

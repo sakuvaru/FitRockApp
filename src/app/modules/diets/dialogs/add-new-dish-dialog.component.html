@@ -1,11 +1,11 @@
 <mat-dialog-actions>
-    <span class="md-title">{{'module.diets.newDish' | localize }}</span>
+    <span class="mat-title">{{'module.diets.newDish' | localize }}</span>
     <span flex></span>
     <close-button (click)="close()"></close-button>
 </mat-dialog-actions>
 
 <mat-dialog-content>
-    <div class="md-padding">
+    <div class="mat-padding">
         <data-form #dataForm [config]="foodForm"></data-form>
     </div>
 </mat-dialog-content>

@@ -11,12 +11,12 @@
   <td-expansion-panel *ngFor="let dietFood of sortedDietFoods; let i = index">
     <ng-template td-expansion-panel-label>
       <span class="tc-red-700">{{i + 1}}.</span> {{dietFood.food.foodName}}
-      <span class="md-caption tc-grey-700">({{ 'module.foodCategories.categories.' + dietFood.food.foodCategory.codename | localize}})</span>
+      <span class="mat-caption tc-grey-700">({{ 'module.foodCategories.categories.' + dietFood.food.foodCategory.codename | localize}})</span>
     </ng-template>
     <ng-template td-expansion-panel-sublabel>
-      <span class="md-caption"> <plural-food-units [count]="dietFood.unitValue" [unitCode]="dietFood.food.foodUnit.unitCode"></plural-food-units> </span>
+      <span class="mat-caption"> <plural-food-units [count]="dietFood.unitValue" [unitCode]="dietFood.food.foodUnit.unitCode"></plural-food-units> </span>
     </ng-template>
-    <div class="md-padding md-caption">
+    <div class="mat-padding mat-caption">
       {{dietFood.notes}}
     </div>
   </td-expansion-panel>

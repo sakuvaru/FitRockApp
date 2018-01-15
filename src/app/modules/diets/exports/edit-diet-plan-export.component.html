@@ -18,7 +18,7 @@
             <span class="tc-red-700">{{i + 1}}.</span>
             <span class="text-truncate push-left-sm">{{dietFood.food.foodName}}</span>
             <span flex></span>
-            <span class="md-caption">&nbsp;( <plural-food-units [count]="dietFood.amount" [unitCode]="dietFood.food.foodUnit.unitCode"></plural-food-units>)</span>
+            <span class="mat-caption">&nbsp;( <plural-food-units [count]="dietFood.amount" [unitCode]="dietFood.food.foodUnit.unitCode"></plural-food-units>)</span>
             <edit-button color="none" (editAction)="openDietFoodDialog(dietFood)"></edit-button>
             <delete-button [enableConfirm]="true" color="none" (confirm)="deleteDietFood(dietFood)"></delete-button>
           </mat-list-item>

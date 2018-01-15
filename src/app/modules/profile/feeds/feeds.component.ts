@@ -70,7 +70,7 @@ export class FeedsComponent extends BaseComponent implements OnInit {
                 if (!feedResult) {
                     return Observable.of(super.fromNow(item.created));
                 }
-                return Observable.of(feedResult.subject + ' ' + '<span class="md-caption">' + super.fromNow(item.created) + '</span>');
+                return Observable.of(feedResult.subject + ' ' + '<span class="mat-caption">' + super.fromNow(item.created) + '</span>');
             })
             .iconResolver(item => this.getFeedIcon(item))
             .imageResolver(item => this.getFeedImage(item))
