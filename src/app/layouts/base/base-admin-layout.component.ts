@@ -1,4 +1,5 @@
 import { AfterViewInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
+import { Location } from '@angular/common';
 import { TdMediaService } from '@covalent/core';
 
 import { stringHelper } from '../../../lib/utilities';
@@ -56,6 +57,7 @@ export class BaseAdminLayoutComponent extends BaseLayoutComponent implements OnD
     constructor(
         protected dependencies: ComponentDependencyService,
         protected cdr: ChangeDetectorRef,
+        protected location: Location
     ) {
         super(dependencies);
 
@@ -109,6 +111,7 @@ export class BaseAdminLayoutComponent extends BaseLayoutComponent implements OnD
                 // resolve component's title using translation services
                 if (componentConfig.componentTitle) {
                     this.dependencies.coreServices.localizationService.get(componentConfig.componentTitle.key, componentConfig.componentTitle.data)
+                        .takeUntil(this.ngUnsubscribe)
                         .subscribe(text => {
                             this.componentTitle = text;
                             this.componentChangedNotification();
@@ -133,6 +136,11 @@ export class BaseAdminLayoutComponent extends BaseLayoutComponent implements OnD
         // broadcast to all listener observables when loading the page
         this.media.broadcast();
         this.componentChangedNotification();
+    }
+
+    protected goBack(): void {
+        console.log(this.location);
+        this.location.back();
     }
 
     protected shortenTitle(text: string): string | null {

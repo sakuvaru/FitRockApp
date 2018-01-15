@@ -22,7 +22,7 @@ export class FoodService extends BaseTypeService<Food> {
         return query;
     }
 
-    calculateFoodWithAmount(food: Food, amount: number, roundTo: number = 0): {
+    calculateFoodWithAmount(food: Food, amount: number, roundTo: number = 1): {
         kcal: number,
         fat: number,
         sugar: number,
@@ -69,7 +69,7 @@ export class FoodService extends BaseTypeService<Food> {
             resultCanBeIncorrectDueToMissingNutrition = true;
         }
 
-        kcal = (fat * 9) + ((prot + cho) * 4);
+        kcal = (fat * 9) + ((prot + sugar + cho) * 4);
 
         return {
             cho: numberHelper.roundTo(cho, roundTo),
@@ -86,7 +86,7 @@ export class FoodService extends BaseTypeService<Food> {
      * Calculates total number of kcal from given foods
      * @param foods foods
      */
-    aggregateFoodsNutrition(foodsWithAmount: FoodWithAmountModel[], roundTo: number = 0): {
+    aggregateFoodsNutrition(foodsWithAmount: FoodWithAmountModel[], roundTo: number = 1): {
         kcal: number,
         fat: number,
         sugar: number,
