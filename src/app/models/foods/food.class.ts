@@ -12,12 +12,12 @@ export class Food extends BaseItem {
     public isGlobal: boolean;
     public isApproved: boolean;
     public description?: string;
-    public kcal?: number;
-    public fat?: number;
-    public cho?: number;
-    public prot?: number;
-    public sugar?: number;
-    public nacl?: number;
+    public kcal: number;
+    public fat: number;
+    public cho: number;
+    public prot: number;
+    public sugar: number;
+    public nacl: number;
     public language: LanguageEnum;
     public isMeal: boolean;
 
