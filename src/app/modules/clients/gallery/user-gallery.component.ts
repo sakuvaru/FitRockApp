@@ -1,18 +1,20 @@
-// common
-import { Component, Input, Output, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-import { ComponentDependencyService, BaseComponent, ComponentSetup } from '../../../core';
-import { AppConfig, UrlConfig } from '../../../config';
-
-// required by component
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
+import * as _ from 'underscore';
+
+import { FetchedFile } from '../../../../lib/repository';
+import {
+    GalleryComponent,
+    GalleryConfig,
+    GalleryGroup,
+    GalleryImage,
+    ImageGroupResult,
+} from '../../../../web-components/gallery';
+import { UploaderConfig } from '../../../../web-components/uploader';
+import { ComponentDependencyService, ComponentSetup } from '../../../core';
 import { ClientsBaseComponent } from '../clients-base.component';
 import { ClientMenuItems } from '../menu.items';
-import { UploaderConfig } from '../../../../web-components/uploader';
-import { FileRecord } from '../../../models';
-import { FetchedFile } from '../../../../lib/repository';
-import { GalleryConfig, GalleryImage, GalleryGroup, ImageGroupResult, GalleryComponent } from '../../../../web-components/gallery';
-import * as _ from 'underscore';
 
 @Component({
     templateUrl: 'user-gallery.component.html'
@@ -127,7 +129,7 @@ export class UserGalleryComponent extends ClientsBaseComponent implements OnInit
         return this.dependencies.webComponentServices.galleryService.gallery(
             this.getGalleryImagesObservable(clientId)
         )
-            .isDownlodable(true)
+            .isDownloadable(true)
             .groupResolver((galleryImage: GalleryImage) => {
                 // group images by day
                 const startOf = 'day';

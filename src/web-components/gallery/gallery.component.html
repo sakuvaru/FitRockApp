@@ -1,46 +1,29 @@
 <ng-container *ngIf="config">
 
-    <ng-container *ngIf="images && images.length === 0">
-        <info-message text="{{ 'webComponents.gallery.noImages' | localize }}"></info-message>
-    </ng-container>
+    <info-message *ngIf="images && images.length === 0" text="{{ 'webComponents.gallery.noImages' | localize }}"></info-message>
+    <error-message *ngIf="imageDeletionFailed" title="{{ 'webComponents.gallery.imageDeletionFailed' | localize }}"></error-message>
 
     <div class="w-gallery-wrapper">
-
-        <button *ngIf="config.deleteFunction && (images && images.length > 0)" (click)="openDeleteDialog()" mat-raised-button color="accent">{{ 'webComponents.gallery.deleteImages' | localize }}</button>
 
         <div class="push-bottom">
             <loader [enabled]="localLoaderEnabled && (numberOfLoadedImages !== totalImages)" type="linear"></loader>
         </div>
 
-        <ng-container *ngIf="!groups">
-            <div *ngFor="let img of images; let i = index">
-                <img (load)="loadImage()" *ngIf="img.thumb" class="w-gallery-thumb" src="{{img.thumb}}" (click)="openImageModal(img)" alt='{{img.description}}'
-                />
-                <img (load)="loadImage()" *ngIf="!img.thumb" class="w-gallery-thumb" src="{{img.img}}" (click)="openImageModal(img)" alt='{{img.description}}'
-                />
-            </div>
+        <ng-container *ngIf="!groups && images">
+            <ks-modal-gallery [modalImages]="images" [plainGalleryConfig]="plainGalleryRow" [downloadable]="config.downloadable" [buttonsConfig]="customButtons"
+                (buttonBeforeHook)="onButtonBeforeHook($event)" enableClose="true" enableCloseOutside="true" [description]="customFullDescription">
+            </ks-modal-gallery>
         </ng-container>
 
         <ng-container *ngIf="groups">
-
             <div *ngFor="let group of groups">
                 <h4>{{group.groupTitle}}</h4>
-                <div *ngFor="let img of group.images; let i = index">
-                    <img (load)="loadImage()" *ngIf="img.thumb" class="w-gallery-thumb" src="{{img.thumb}}" (click)="openImageModal(img)" alt='{{img.description}}'
-                    />
-                    <img (load)="loadImage()" *ngIf="!img.thumb" class="w-gallery-thumb" src="{{img.img}}" (click)="openImageModal(img)" alt='{{img.description}}'
-                    />
-                </div>
-                <div style="clear: both"></div>
+                <ks-modal-gallery *ngIf="group.images" [modalImages]="group.images" [plainGalleryConfig]="plainGalleryRow" [downloadable]="config.downloadable"
+                    (buttonBeforeHook)="onButtonBeforeHook($event)" [buttonsConfig]="customButtons" enableClose="true" enableCloseOutside="false"
+                    [description]="customFullDescription">
+                </ks-modal-gallery>
             </div>
         </ng-container>
-
-        <div *ngIf="openModalWindow">
-            <modal-gallery [modalImages]="images" [imagePointer]="imagePointer" (show)="onShowImageModal($event)" (close)="onCloseImageModal($event)"
-                [downloadable]="config.downloadable" [buttonsConfig]="buttonsConfig" enableClose="true" enableCloseOutside="true"
-                [description]="customFullDescription">
-            </modal-gallery>
-        </div>
     </div>
 
 </ng-container>

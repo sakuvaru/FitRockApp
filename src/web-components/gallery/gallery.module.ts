@@ -10,7 +10,6 @@ import { ButtonsModule } from '../buttons/buttons.module';
 import { LoaderModule } from '../loader/loader.module';
 import { MessagesModule } from '../messages/messages.module';
 import { SharedWebComponentModule } from '../shared-web-components.module';
-import { GalleryDeleteDialogComponent } from './gallery-delete-dialog.component';
 import { GalleryComponent } from './gallery.component';
 
 @NgModule({
@@ -25,13 +24,11 @@ import { GalleryComponent } from './gallery.component';
     ],
     declarations: [
         GalleryComponent,
-        GalleryDeleteDialogComponent
     ],
     exports: [
         GalleryComponent,
     ],
     entryComponents: [
-        GalleryDeleteDialogComponent
     ]
 })
 export class GalleryModule { }

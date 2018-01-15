@@ -701,6 +701,7 @@
 			"imageDeletionFailed": "Smazaní fotografie selhalo",
 			"imageSuccessfullyDeleted": "Fotografie smazána",
 			"deleted": "Smazáno",
+			"alreadyDeleted": "Fotografie je již smazána",
 			"deleteImagesDialogTitle": "Vyber fotografie ke smazání",
 			"dialogDelete": {
 				"message": "Opravdu smazat fotografii?",
