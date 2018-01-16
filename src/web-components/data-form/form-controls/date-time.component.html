@@ -1,7 +1,11 @@
 <div *ngIf="initialized" layout="row" layout-margin [formGroup]="formGroup">
 
-  This is experimental field:
-
-  <owl-date-time [formControlName]="field.key"></owl-date-time>
-
+  <mat-form-field [hintLabel]="field.hint" flex>
+    <input [owlDateTimeTrigger]="dt2" [owlDateTime]="dt2" matInput [formControlName]="field.key" [id]="field.key" [required]="field.required"
+    [placeholder]="field.label">
+    <mat-hint *ngIf="showLengthHint" [ngClass]="{'tc-red-600': elem.value.length > field.options.maxLength}" align="end">{{elem.value.length}} / {{field.options.maxLength}}</mat-hint>
+    <owl-date-time #dt2></owl-date-time>
+    <mat-error>{{customError}}</mat-error>
+    <mat-icon *ngIf="field.options.icon" matSuffix>{{ field.options.icon }}</mat-icon>
+  </mat-form-field>
 </div>
