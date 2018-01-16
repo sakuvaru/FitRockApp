@@ -52,7 +52,7 @@ export class GalleryComponent extends BaseWebComponent implements OnInit, OnChan
     /**
      * Gallery images
      */
-    private images: Image[];
+    public images: Image[];
 
     /**
      * Text to be shown when file is deleted
@@ -70,30 +70,30 @@ export class GalleryComponent extends BaseWebComponent implements OnInit, OnChan
     /**
      * Groups with images
      */
-    private groups: GalleryGroup[] | undefined;
+    public groups: GalleryGroup[] | undefined;
 
     public imageDeletionFailed: boolean = false;
 
     /**
      * Full description
      */
-    private customFullDescription: Description;
+    public customFullDescription: Description;
 
     /**
      * Indicates if local loader should be enabled
      */
-    private localLoaderEnabled: boolean = false;
+    public localLoaderEnabled: boolean = false;
 
     /**
      * This indicates number of loaded images in all 'src' tags. 
      * https://stackoverflow.com/questions/39257687/detect-when-image-has-loaded-in-img-tag
      */
-    private numberOfLoadedImages: number = 0;
+    public numberOfLoadedImages: number = 0;
 
     /**
      * Indicates total number of images
      */
-    private totalImages: number = -1;
+    public totalImages: number = -1;
 
     /**
      * Key used to translate deleted text
@@ -101,12 +101,12 @@ export class GalleryComponent extends BaseWebComponent implements OnInit, OnChan
     private snackbarDeleteTextKey: string = 'webComponents.gallery.deleted';
 
 
-    private plainGalleryRow: PlainGalleryConfig = {
+    public plainGalleryRow: PlainGalleryConfig = {
         strategy: PlainGalleryStrategy.ROW,
         layout: new LineLayout({ width: '100px', height: '100px' }, { length: this.totalImages, wrap: true }, 'flex-start')
     };
 
-    private customButtons: ButtonsConfig = {
+    public customButtons: ButtonsConfig = {
         visible: true,
         strategy: ButtonsStrategy.CUSTOM,
         buttons: [

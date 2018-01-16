@@ -68,6 +68,31 @@ export class ClientDietComponent extends ClientsBaseComponent implements OnInit,
         this.dragulaService.destroy(this.dragulaBag);
     }
 
+    deleteDiet(diet: Diet): void {
+        this.startGlobalLoader();
+        super.subscribeToObservable(this.dependencies.itemServices.dietService.delete(diet.id)
+            .set()
+            .map(response => {
+                // remove diet from local letiable
+                this.existingDiets = _.reject(this.existingDiets, function (item) { return item.id === response.deletedItemId; });
+                this.showDeletedSnackbar();
+            }));
+    }
+
+    goToEditDiet(diet: Diet): void {
+        super.navigate([this.getTrainerUrl('clients/edit/' + this.clientId + '/diet/' + diet.id + '/diet-plan')]);
+    }
+
+    openFoodListDialog(dietFoods: DietFood[]): void {
+        const data: any = {};
+        data.dietFoods = dietFoods;
+
+        const dialog = this.dependencies.tdServices.dialogService.open(FoodListDialogComponent, {
+            panelClass: AppConfig.DefaultDialogPanelClass,
+            data: data
+        });
+    }
+
     private initDragula(): void {
         // set handle for dragula
         const that = this;
@@ -187,31 +212,6 @@ export class ClientDietComponent extends ClientsBaseComponent implements OnInit,
                 super.showSavedSnackbar();
                 return this.reloadExistingDietsObservable(this.clientId);
             }));
-    }
-
-    private deleteDiet(diet: Diet): void {
-        this.startGlobalLoader();
-        super.subscribeToObservable(this.dependencies.itemServices.dietService.delete(diet.id)
-            .set()
-            .map(response => {
-                // remove diet from local letiable
-                this.existingDiets = _.reject(this.existingDiets, function (item) { return item.id === response.deletedItemId; });
-                this.showDeletedSnackbar();
-            }));
-    }
-
-    private goToEditDiet(diet: Diet): void {
-        super.navigate([this.getTrainerUrl('clients/edit/' + this.clientId + '/diet/' + diet.id + '/diet-plan')]);
-    }
-    
-    private openFoodListDialog(dietFoods: DietFood[]): void {
-        const data: any = {};
-        data.dietFoods = dietFoods;
-
-        const dialog = this.dependencies.tdServices.dialogService.open(FoodListDialogComponent, {
-            panelClass: AppConfig.DefaultDialogPanelClass,
-            data: data
-        });
     }
 }
 

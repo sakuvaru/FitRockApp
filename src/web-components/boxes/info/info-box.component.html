@@ -2,16 +2,15 @@
     <mat-card class="w-boxes w-boxes-info-box">
         <loader [enabled]="loaderEnabled"></loader>
         <mat-card-content>
+
             <div fxLayout="row">
-                <span fxFlexAlign="center" *ngIf="config.title" class="mat-title primary">
-                    {{ config.title | async }}
-                </span>
-                <span flex></span>
-                <span fxFlexAlign="center" *ngIf="config.actions">
-                    <button class="w-boxes-title-icon" mat-icon-button *ngFor="let action of config.actions" (click)="resolveAction(action.action)">
+                <div class="mat-title primary" fxFlexAlign=" center" >{{ config.title | async }}</div>
+                <div fxFlex></div>
+                <div fxFlexAlign=" start" >
+                    <button class="w-boxes-icon-fix" mat-icon-button *ngFor="let action of config.actions" (click)="resolveAction(action.action)">
                         <mat-icon>{{ action.icon }}</mat-icon>
                     </button>
-                </span>
+                </div>
             </div>
 
             <ng-container *ngIf="lines">
@@ -47,9 +46,11 @@
                 </p>
             </ng-container>
 
-            <error-message *ngIf="errorOccured" [text]="'webComponents.boxes.boxLoadingError' | localize"></error-message>
-            <info-message *ngIf="config.noDataMessage && lines && lines.length === 0" text="{{ config.noDataMessage | async }}"></info-message>
-            <no-data-message *ngIf="!config.noDataMessage && lines && lines.length === 0"></no-data-message>
+            <div fxLayout="column">
+                <error-message *ngIf="errorOccured" [text]="'webComponents.boxes.boxLoadingError' | localize"></error-message>
+                <info-message *ngIf="config.noDataMessage && lines && lines.length === 0" text="{{ config.noDataMessage | async }}"></info-message>
+                <no-data-message *ngIf="!config.noDataMessage && lines && lines.length === 0"></no-data-message>
+            </div>
 
         </mat-card-content>
     </mat-card>

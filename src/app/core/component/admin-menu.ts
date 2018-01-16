@@ -1,9 +1,9 @@
-import { AppConfig, UrlConfig } from '../../config';
-import { MenuItem, MenuItemType, ResourceKey } from '../models/core.models';
+import { UrlConfig } from '../../config';
+import { MenuItem, MenuItemType } from '../models/core.models';
 
 export class AdminMenu {
 
-    private readonly mainMenu: MenuItem[] = [
+    public readonly mainMenu: MenuItem[] = [
         new MenuItem({ key: 'menu.dashboard' }, MenuItemType.trainer, '', { icon: 'home' }),
         new MenuItem({ key: 'menu.chat' }, MenuItemType.auth, 'chat', { icon: 'email' }),
         new MenuItem({ key: 'menu.clients' }, MenuItemType.trainer, 'clients', { icon: 'people' }),
@@ -15,7 +15,7 @@ export class AdminMenu {
         new MenuItem({ key: 'menu.locations' }, MenuItemType.trainer, 'locations', { icon: 'place' }),
     ];
 
-    private readonly userMenu: MenuItem[] = [
+    public readonly userMenu: MenuItem[] = [
         new MenuItem({ key: 'menu.editProfile' }, MenuItemType.auth, 'profile/edit', { icon: 'edit' }),
         new MenuItem({ key: 'menu.feeds' }, MenuItemType.auth, 'profile/feeds', { icon: 'notifications' }),
         new MenuItem({ key: 'menu.logout' }, MenuItemType.auth, UrlConfig.Logout, { icon: 'exit_to_app' }),

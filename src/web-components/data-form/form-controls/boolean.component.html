@@ -1,6 +1,6 @@
 <div *ngIf="initialized" layout="row" layout-margin [formGroup]="formGroup">
 
-  <div flex>
+  <div fxFlex>
     <mat-checkbox [checked]="checkBoxIsChecked" [formControlName]="field.key" [id]="field.key" [required]="field.required"
       #elem>&nbsp;{{field.label}}
       <span class="mat-caption">({{field.hint}})</span>

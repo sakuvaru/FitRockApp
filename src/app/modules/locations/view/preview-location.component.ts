@@ -1,13 +1,11 @@
-// common
-import { Component, Input, Output, OnInit, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { ComponentDependencyService, BaseComponent, ComponentSetup } from '../../../core';
-import { AppConfig, UrlConfig } from '../../../config';
-
-// required by component
-import { LocationPreviewMenuItems } from '../menu.items';
-import { Location } from '../../../models';
 import { Observable } from 'rxjs/Rx';
+
+import { AppConfig } from '../../../config';
+import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
+import { Location } from '../../../models';
+import { LocationPreviewMenuItems } from '../menu.items';
 
 @Component({
     templateUrl: 'preview-location.component.html'
@@ -16,7 +14,7 @@ export class PreviewLocationComponent extends BaseComponent implements OnInit {
 
     public location: Location;
 
-    private googleApiKey: string = AppConfig.GoogleApiKey;
+    public googleApiKey: string = AppConfig.GoogleApiKey;
 
     constructor(
         private activatedRoute: ActivatedRoute,
@@ -55,7 +53,7 @@ export class PreviewLocationComponent extends BaseComponent implements OnInit {
                             key: this.location.locationName
                         },
                         componentTitle: {
-                            'key': 'module.foods.submenu.preview'
+                            'key': 'module.locations.submenu.view'
                         }
                     });
                 } else {
@@ -65,7 +63,7 @@ export class PreviewLocationComponent extends BaseComponent implements OnInit {
                             key: response.item.locationName
                         },
                         componentTitle: {
-                            'key': 'module.foods.submenu.preview'
+                            'key': 'module.locations.submenu.view'
                         }
                     });
                 }

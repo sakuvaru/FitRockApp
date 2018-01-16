@@ -1,14 +1,11 @@
-// common
-import { Component, Input, Output, OnInit, EventEmitter, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-import { ComponentDependencyService, BaseComponent, ComponentSetup } from '../../../../core';
-import { AppConfig, UrlConfig } from '../../../../config';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs/Rx';
 
-// required by component
+import { ComponentDependencyService, ComponentSetup } from '../../../../core';
+import { Workout } from '../../../../models';
 import { ClientsBaseComponent } from '../../clients-base.component';
 import { ClientEditWorkoutMenuItems } from '../../menu.items';
-import { Workout } from '../../../../models';
-import { Observable } from 'rxjs/Rx';
 
 @Component({
     templateUrl: 'edit-client-workout.component.html'

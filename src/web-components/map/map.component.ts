@@ -68,7 +68,7 @@ export class MapComponent extends BaseWebComponent implements OnInit, OnChanges,
     * It is really important that you define a height component `agm-map`. 
     * Otherwise, you won't see a map on the page! 
     */
-    private defaultHeight: number = 300;
+    public defaultHeight: number = 300;
 
     /**
      * Indicates if map ready has been subscibed to

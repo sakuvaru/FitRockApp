@@ -8,19 +8,16 @@ import { BaseFormControlComponent } from './base-form-control.component';
 @Component({
   selector: 'df-date-time',
   templateUrl: './date-time.component.html',
-  providers: [
-  ],
 })
 
 export class DateTimeComponent extends BaseFormControlComponent implements OnInit, OnChanges {
 
   private dateInitialized: boolean = false;
 
-
   constructor(
     protected cdr: ChangeDetectorRef,
     protected localizationService: LocalizationService,
-    private dateTimeAdapter: DateTimeAdapter<any>
+    protected dateTimeAdapter: DateTimeAdapter<any>
   ) {
     super(cdr, localizationService);
   }

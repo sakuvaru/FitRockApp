@@ -1,15 +1,11 @@
-// common
-import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-import { ComponentDependencyService, BaseComponent, ComponentSetup } from '../../../../core';
-import { AppConfig, UrlConfig } from '../../../../config';
-
-// required by component
-import { ClientsBaseComponent } from '../../clients-base.component';
-import { DataFormConfig } from '../../../../../web-components/data-form';
-import { NewClientWorkoutMenuItems } from '../../menu.items';
-import { Workout } from '../../../../models';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
+
+import { DataFormConfig } from '../../../../../web-components/data-form';
+import { ComponentDependencyService, ComponentSetup } from '../../../../core';
+import { ClientsBaseComponent } from '../../clients-base.component';
+import { NewClientWorkoutMenuItems } from '../../menu.items';
 
 @Component({
     templateUrl: 'new-client-workout.component.html'
@@ -75,6 +71,13 @@ export class NewClientWorkoutComponent extends ClientsBaseComponent implements O
                     .onInsertFormLoaded(form => {
                        
                     })
+                    .optionLabelResolver((field, label) => {
+                        if (field.key === 'WorkoutCategoryId') {
+                            return super.translate(`module.workoutCategories.categories.${label}`);
+                        }
+        
+                        return Observable.of(label);
+                    })  
                     .build();
 
             },

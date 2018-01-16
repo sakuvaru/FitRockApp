@@ -1,20 +1,21 @@
 // common
-import { Component, Input, Output, OnInit, EventEmitter, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-import { ComponentDependencyService, BaseComponent, ComponentSetup } from '../../../../core';
-import { AppConfig, UrlConfig } from '../../../../config';
-
-// required by component
-import { ClientsBaseComponent } from '../../clients-base.component';
-import { ClientMenuItems } from '../../menu.items';
-import { User, Workout, WorkoutExercise } from '../../../../models';
-import { DragulaService } from 'ng2-dragula';
 import 'rxjs/add/operator/switchMap';
+
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { DragulaService } from 'ng2-dragula';
 import { Observable, Subscription } from 'rxjs/Rx';
 import * as _ from 'underscore';
-import { stringHelper, observableHelper } from '../../../../../lib/utilities';
+
+import { stringHelper } from '../../../../../lib/utilities';
+import { AppConfig } from '../../../../config';
+import { ComponentDependencyService, ComponentSetup } from '../../../../core';
+import { Workout, WorkoutExercise } from '../../../../models';
+import { ClientsBaseComponent } from '../../clients-base.component';
+import { ClientMenuItems } from '../../menu.items';
 import { WorkoutListDialogComponent } from '../dialogs/workout-list-dialog.component';
 
+// required by component
 @Component({
     templateUrl: 'client-workout.component.html'
 })
@@ -74,6 +75,52 @@ export class ClientWorkoutComponent extends ClientsBaseComponent implements OnIn
         // unsubscribe from dragula drop events
         this.dropSubscription.unsubscribe();
         this.dragulaService.destroy(this.dragulaBag);
+    }
+
+    newWorkoutFromTemplate(data: any): void {
+        const selected = data.selected;
+
+        if (!selected) {
+            super.translate('module.clients.workout.workoutNotSelected').subscribe(text => {
+                super.showErrorDialog(text);
+            });
+        }
+
+        const selectedWorkout = selected.value as Workout;
+
+        // copy data from selected workout to a new workout with assigned client
+        super.subscribeToObservable(this.dependencies.itemServices.workoutService.copyFromWorkout(selectedWorkout.id, this.clientId)
+            .set()
+            .flatMap(response => {
+                super.showSavedSnackbar();
+                return this.reloadExistingWorkoutsObservable(this.clientId);
+            })
+        );
+
+    }
+
+    deleteWorkout(workout: Workout): void {
+        super.subscribeToObservable(this.dependencies.itemServices.workoutService.delete(workout.id)
+            .set()
+            .map(response => {
+                // remove workout  from local letiable
+                this.existingWorkouts = _.reject(this.existingWorkouts, function (item) { return item.id === response.deletedItemId; });
+                this.showDeletedSnackbar();
+            }));
+    }
+
+    goToEditWorkout(workout: Workout): void {
+        super.navigate([this.getTrainerUrl('clients/edit/' + this.clientId + '/workout/' + workout.id + '/workout-plan')]);
+    }
+
+    openWorkoutListDialog(workoutExercises: WorkoutExercise[]): void {
+        const data: any = {};
+        data.workoutExercises = workoutExercises;
+
+        const dialog = this.dependencies.tdServices.dialogService.open(WorkoutListDialogComponent, {
+            panelClass: AppConfig.DefaultDialogPanelClass,
+            data: data
+        });
     }
 
     private initDragula(): void {
@@ -175,52 +222,6 @@ export class ClientWorkoutComponent extends ClientsBaseComponent implements OnIn
                     this.existingWorkouts = response.items;
                 }
             });
-    }
-
-    public newWorkoutFromTemplate(data: any): void {
-        const selected = data.selected;
-
-        if (!selected) {
-            super.translate('module.clients.workout.workoutNotSelected').subscribe(text => {
-                super.showErrorDialog(text);
-            });
-        }
-
-        const selectedWorkout = selected.value as Workout;
-
-        // copy data from selected workout to a new workout with assigned client
-        super.subscribeToObservable(this.dependencies.itemServices.workoutService.copyFromWorkout(selectedWorkout.id, this.clientId)
-            .set()
-            .flatMap(response => {
-                super.showSavedSnackbar();
-                return this.reloadExistingWorkoutsObservable(this.clientId);
-            })
-        );
-
-    }
-
-    private deleteWorkout(workout: Workout): void {
-        super.subscribeToObservable(this.dependencies.itemServices.workoutService.delete(workout.id)
-            .set()
-            .map(response => {
-                // remove workout  from local letiable
-                this.existingWorkouts = _.reject(this.existingWorkouts, function (item) { return item.id === response.deletedItemId; });
-                this.showDeletedSnackbar();
-            }));
-    }
-
-    private goToEditWorkout(workout: Workout): void {
-        super.navigate([this.getTrainerUrl('clients/edit/' + this.clientId + '/workout/' + workout.id + '/workout-plan')]);
-    }
-
-    private openWorkoutListDialog(workoutExercises: WorkoutExercise[]): void {
-        const data: any = {};
-        data.workoutExercises = workoutExercises;
-
-        const dialog = this.dependencies.tdServices.dialogService.open(WorkoutListDialogComponent, {
-            panelClass: AppConfig.DefaultDialogPanelClass,
-            data: data
-        });
     }
 }
 

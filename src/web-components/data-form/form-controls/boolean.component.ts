@@ -10,7 +10,7 @@ import { BaseFormControlComponent } from './base-form-control.component';
 
 export class BooleanComponent extends BaseFormControlComponent implements OnInit, OnChanges {
 
-  private checkBoxIsChecked: boolean = false;
+  public checkBoxIsChecked: boolean = false;
 
   constructor(
     protected cdr: ChangeDetectorRef,

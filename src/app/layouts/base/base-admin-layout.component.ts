@@ -138,12 +138,16 @@ export class BaseAdminLayoutComponent extends BaseLayoutComponent implements OnD
         this.componentChangedNotification();
     }
 
-    protected goBack(): void {
+    handleComponentSearch(search: string): void {
+        this.dependencies.coreServices.sharedService.setComponentSearch(search);
+    }
+
+    goBack(): void {
         console.log(this.location);
         this.location.back();
     }
 
-    protected shortenTitle(text: string): string | null {
+    shortenTitle(text: string): string | null {
         return stringHelper.shorten(text, this.titleCharsLength, true);
     }
 
@@ -163,9 +167,5 @@ export class BaseAdminLayoutComponent extends BaseLayoutComponent implements OnD
 
     protected calculateShowComponent(): void {
         this.showComponent = !(!this.componentIsInitialized);
-    }
-
-    protected handleComponentSearch(search: string): void {
-        this.dependencies.coreServices.sharedService.setComponentSearch(search);
     }
 }

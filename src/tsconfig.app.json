@@ -7,7 +7,7 @@
     "types": []
   },
   "angularCompilerOptions": {
-    "fullTemplateTypeCheck": true,
+    "fullTemplateTypeCheck": false,
     "preserveWhiteSpace": false
   },
   "exclude": [

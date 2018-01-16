@@ -1,6 +1,6 @@
 <ng-container *ngIf="config && graph && wrapperStyle && graphData">
     <div [ngStyle]="wrapperStyle">
-        <ngx-charts-bar-vertical [results]="graphData" [view]="graph.view" [scheme]="config.scheme" [gradient]="graph.gradient" [xAxis]="graph.showXAxis"
+        <ngx-charts-bar-vertical [results]="graphData" [view]="config.view" [scheme]="config.scheme" [gradient]="config.gradient" [xAxis]="graph.showXAxis"
             [yAxis]="graph.showYAxis" [legend]="config.showLegend" [showXAxisLabel]="graph.showXAxisLabel" [showYAxisLabel]="graph.showYAxisLabel"
             [xAxisLabel]="graph.xAxisLabel | async" [yAxisLabel]="graph.yAxisLabel | async" [legendTitle]="legendTitle" (select)="onSelect($event)">
         </ngx-charts-bar-vertical>

@@ -33,7 +33,7 @@ export abstract class BaseFormControlComponent extends BaseWebComponent implemen
     /**
      * Holds error message
      */
-    private customError: string = '';
+    public customError: string = '';
 
     /**
      * Indicates when the field is initialized

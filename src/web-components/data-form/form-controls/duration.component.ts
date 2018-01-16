@@ -16,7 +16,7 @@ export class DurationComponent extends BaseFormControlComponent implements OnIni
   /**
    * Maximum value for numbers 
    */
-  private readonly maximumNumberValue = 10000;
+  public readonly maximumNumberValue = 10000;
 
   /**
    * Minimum value for numbers 

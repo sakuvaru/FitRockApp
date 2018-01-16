@@ -1,6 +1,6 @@
 <mat-dialog-actions>
     <span class="mat-title">{{'module.clients.progress.editProgressItem' | localize }}</span>
-    <span flex></span>
+    <span fxFlex></span>
     <close-button (click)="close()"></close-button>
 </mat-dialog-actions>
 
@@ -12,6 +12,6 @@
 
 <mat-dialog-actions>
     <button mat-raised-button [dataForm]="dataForm" dataFormSaveButton color="accent">{{ 'shared.save' | localize }}</button>
-    <span flex></span>
+    <span fxFlex></span>
     <delete-button [dataForm]="dataForm" dataFormDeleteButton [enableConfirm]="false"></delete-button>
 </mat-dialog-actions>

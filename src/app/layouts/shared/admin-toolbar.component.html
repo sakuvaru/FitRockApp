@@ -1,4 +1,4 @@
-<div layout="row" layout-align="start center" flex>
+<div layout="row" layout-align="start center" fxFlex>
   <button mat-icon-button tdLayoutToggle>
     <mat-icon>menu</mat-icon>
   </button>
@@ -6,7 +6,7 @@
   <!-- Search box is not used for now
       <td-search-box placeholder="Search" [alwaysVisible]="false" flex></td-search-box>
     !-->
-  <span flex></span>
+  <span fxFlex></span>
 
   <span class="mat-caption">
     {{ license }} 
@@ -39,8 +39,7 @@
         <ng-container *ngIf="{ icon: getFeedIcon(feed), image: getFeedImage(feed) }; let data">
           <mat-nav-list dense style="padding-top: 0px">
             <a mat-list-item [class.bgc-grey-100]="!feed.markedAsRead || (preventFeedChange && !feed.markedAsRead)" (click)="handleClickFeed(feed)">
-              <mat-icon *ngIf="data.icon && !config.iconClassResolver" matListIcon>{{ data.icon }}</mat-icon>
-              <mat-icon *ngIf="data.icon && config.iconClassResolver" matListIcon [ngClass]="[config.iconClassResolver(item)]">{{ data.icon }}</mat-icon>
+              <mat-icon *ngIf="data.icon" matListIcon>{{ data.icon }}</mat-icon>
               <img *ngIf="data.image" matListAvatar [src]="data.image" alt="" />
               <h3 matLine>
                 <span class="w-feed-menu-subject" [innerHtml]="getFeedSubject(feed)"></span>

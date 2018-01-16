@@ -20,7 +20,7 @@ export class LoadMoreComponent extends BaseWebComponent implements OnInit, OnCha
    * => Because we want to cancel requests if new request comes before the old one returns value
    * More info: https://github.com/angular/angular/issues/5876 -> response from 'robwormald commented on Dec 30, 2015'
    */
-    private loadMoreSubject: Subject<boolean> = new Subject<boolean>();
+    public loadMoreSubject: Subject<boolean> = new Subject<boolean>();
 
     /**
      * Resolved data
@@ -40,17 +40,17 @@ export class LoadMoreComponent extends BaseWebComponent implements OnInit, OnCha
     /**
      * Current page
      */
-    private currentPage = 1;
+    public currentPage = 1;
 
     /**
      * Total number of pages with given page size
      */
-    private totalPages: number  = 0;
+    public totalPages: number = 0;
 
     /**
      * Total number of items
      */
-    private totalItems: number = 0;
+    public totalItems: number = 0;
 
     /**
      * Current search term
@@ -65,7 +65,7 @@ export class LoadMoreComponent extends BaseWebComponent implements OnInit, OnCha
     /**
     * Indicates if the load of items is the initial load
     */
-    private isFirstLoad = true;
+    public isFirstLoad = true;
 
     /**
      * Indicates if some data were already loaded
@@ -161,18 +161,18 @@ export class LoadMoreComponent extends BaseWebComponent implements OnInit, OnCha
 
     private subscribeToLoadMoreEvents(): void {
         this.loadMoreSubject
-        .do(() => {
-            // clear errors
-            this.clearErrors();
+            .do(() => {
+                // clear errors
+                this.clearErrors();
 
-            if (this.config.enableLocalLoader) {
-                this.loaderEnabled = true;
-            }
+                if (this.config.enableLocalLoader) {
+                    this.loaderEnabled = true;
+                }
 
-            if (this.config.onBeforeLoad) {
-                this.config.onBeforeLoad(this.isFirstLoad);
-            }
-         })
+                if (this.config.onBeforeLoad) {
+                    this.config.onBeforeLoad(this.isFirstLoad);
+                }
+            })
             .switchMap(() => this.getLoadObservable(true))
             .takeUntil(this.ngUnsubscribe)
             .subscribe(() => {
@@ -185,7 +185,7 @@ export class LoadMoreComponent extends BaseWebComponent implements OnInit, OnCha
                 }
 
                 this.isFirstLoad = false;
-            }, 
+            },
             error => this.handleError(error));
     }
 

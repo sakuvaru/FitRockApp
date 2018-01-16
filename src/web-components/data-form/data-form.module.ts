@@ -11,7 +11,6 @@ import { MessagesModule } from '../messages/messages.module';
 import { SharedWebComponentModule } from '../shared-web-components.module';
 import { DataFormFieldComponent } from './data-form-field.component';
 import { DataFormComponent } from './data-form.component';
-import { MultipleChoiceDialogComponent } from './dialogs/multiple-choice-dialog.component';
 import { DataFormDeleteButtonDirective } from './directives/data-form-delete-button.directive';
 import { DataFormSaveButtonDirective } from './directives/data-form-save-button.directive';
 import { BooleanComponent } from './form-controls/boolean.component';
@@ -43,7 +42,6 @@ import { TextComponent } from './form-controls/text.component';
         OwlNativeDateTimeModule
     ],
     entryComponents: [
-        MultipleChoiceDialogComponent
     ],
     declarations: [
         DataFormComponent,
@@ -64,8 +62,6 @@ import { TextComponent } from './form-controls/text.component';
         DurationComponent,
         EmailComponent,
         MultipleChoiceComponent,
-        // dialogs
-        MultipleChoiceDialogComponent
     ],
     exports: [
         DataFormComponent,

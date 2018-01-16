@@ -28,7 +28,7 @@
           <ng-container *ngIf="menuAvatarUrl">
             <img matCardAvatar class="push-right w-component-avatar" [src]="menuAvatarUrl" alt="menu avatar">
           </ng-container>
-          <span class="w-layout-sidemenu-title">{{shortenTitle(menuTitle)}}</span>
+          <span *ngIf="menuTitle" class="w-layout-sidemenu-title">{{shortenTitle(menuTitle)}}</span>
         </ng-container>
         <!-- using display none because otherwise the search control could not be initialized -->
         <div [style.display]="enableComponentSearch ? 'block' : 'none'" class="mat-body-2">
@@ -50,12 +50,12 @@
 
       <!--
       <mat-toolbar>
-        <div layout="row" layout-align="start center" flex>
+        <div layout="row" layout-align="start center" fxFlex>
           <button mat-icon-button tdLayoutManageListOpen [hideWhenOpened]="true" tdMediaToggle="gt-sm" [mediaStyles]="{display: 'none'}">
             <mat-icon>arrow_back</mat-icon>
           </button>
           <span>{{componentTitle}}</span>
-          <span flex></span>
+          <span fxFlex></span>
           <button mat-icon-button [routerLink]="getAuthUrl('logout')"><mat-icon>exit_to_app</mat-icon></button>
         </div>
       </mat-toolbar>
@@ -66,7 +66,7 @@
           <mat-icon>arrow_back</mat-icon>
         </button>
         <h1>{{componentTitle}}</h1>
-        <span flex></span>
+        <span fxFlex></span>
         <div *ngIf="actions && actions.length > 0" class="push-right-sm">
           <button *ngFor="let action of actions" mat-icon-button (click)="action.action()" [matTooltip]="action.tooltip ? (action.tooltip() | async) : undefined">
             <mat-icon>{{ action.icon() }}</mat-icon>

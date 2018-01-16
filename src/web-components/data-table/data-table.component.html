@@ -55,7 +55,7 @@
 
     <!-- Search -->
     <div class="w-data-table-filter">
-      <mat-form-field floatPlaceholder="never" [ngClass]="config.wrapInCard ? 'text-sm' : ''" flex>
+      <mat-form-field floatPlaceholder="never">
         <input matInput placeholder="{{ 'webComponents.dataTable.searchPlaceholder' | localize }}" [formControl]="searchControl"
           [value]="search" />
         <span matPrefix>
@@ -115,7 +115,7 @@
 
           <!-- Buttons -->
           <ng-container *ngIf="renderButtons">
-            <ng-container [matColumnDef]="buttonsWrapper.nameDef">
+            <ng-container *ngIf="buttonsWrapper" [matColumnDef]="buttonsWrapper.nameDef">
               <mat-header-cell *matHeaderCellDef>
                 {{ 'webComponents.dataTable.actions' | localize }}
               </mat-header-cell>
@@ -198,7 +198,7 @@
 
       <!-- Search -->
       <div class="w-data-table-filter">
-        <mat-form-field floatPlaceholder="never" [ngClass]="config.wrapInCard ? 'text-sm' : ''">
+        <mat-form-field floatPlaceholder="never">
           <input matInput placeholder="{{ 'webComponents.dataTable.searchPlaceholder' | localize }}" [formControl]="searchControl"
             [value]="search" />
           <span matPrefix>

@@ -2,10 +2,6 @@
 
 <calendar [config]="calendarConfig"></calendar>
 
-<h3 *ngIf="currentUser">
-    Current user is authenticated: {{currentUser.isAuthenticated}} - {{currentUser.codename}}
-</h3>
-
 <p>
     <button routerLink="/app/auth/logout" type="submit">Logout</button>
 </p>

@@ -42,6 +42,12 @@ export class UserStatsComponent extends BaseComponent implements OnInit, OnChang
         this.initStats();
     }
 
+    onSelectType(progressItemType: ProgressItemType): void {
+        const newGraphConfig = this.getGraphConfig(this.userId, progressItemType.id);
+        // reload graph
+        this.graph.forceReinitialization(newGraphConfig);
+    }
+
     private initStats(): void {
         if (!this.userId) {
             return;
@@ -91,12 +97,6 @@ export class UserStatsComponent extends BaseComponent implements OnInit, OnChang
                     this.graphConfig = this.getGraphConfig(userId, this.progressItemTypes[0].id);
                 }
             });
-    }
-
-    private onSelectType(progressItemType: ProgressItemType): void {
-        const newGraphConfig = this.getGraphConfig(this.userId, progressItemType.id);
-        // reload graph
-        this.graph.forceReinitialization(newGraphConfig);
     }
 }
 

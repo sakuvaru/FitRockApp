@@ -67,6 +67,92 @@ export class EditWorkoutPlanExportComponent extends BaseComponent implements OnD
     }
   }
 
+  openWorkoutExerciseDialog(workoutExercise: WorkoutExercise): void {
+    const dialog = this.dependencies.tdServices.dialogService.open(EditWorkoutExerciseDialogComponent, {
+      panelClass: AppConfig.DefaultDialogPanelClass,
+      data: workoutExercise
+    });
+
+    dialog.afterClosed().subscribe(m => {
+      // update || remove workout exercise from local letiable
+      if (dialog.componentInstance.workoutExerciseWasDeleted) {
+        // remove exercise
+        this.sortedWorkoutExercises = _.reject(this.sortedWorkoutExercises, function (item) { return item.id === dialog.componentInstance.idOfDeletedWorkoutExercise; });
+
+        // recalculate local order
+        this.recalculateOrder();
+      } else {
+        // update exercice with updated data
+        const workoutExerciseToUpdate: WorkoutExercise[] = this.sortedWorkoutExercises.filter(s => s.id === workoutExercise.id);
+
+        if (!workoutExerciseToUpdate) {
+          throw Error(`Cannot update workout with new values from saved form`);
+        }
+
+        // update data
+        workoutExerciseToUpdate[0].reps = dialog.componentInstance.workoutExercise.reps;
+        workoutExerciseToUpdate[0].sets = dialog.componentInstance.workoutExercise.sets;
+      }
+    });
+  }
+
+  openSelecExerciseDialog(): void {
+    const data: any = {};
+    data.workoutId = this.workout.id;
+
+    const dialog = this.dependencies.tdServices.dialogService.open(SelectWorkoutExerciseDialogComponent, {
+      panelClass: AppConfig.DefaultDialogPanelClass,
+      data: data
+    });
+
+    dialog.afterClosed().subscribe(m => {
+      // open new add workout dialog if some exercise was selected
+      if (dialog.componentInstance.selectedExercise) {
+        this.openAddWorkoutExerciseDialog(dialog.componentInstance.selectedExercise);
+      } else if (dialog.componentInstance.openAddCustomExerciseDialog) {
+        // or open new custom exercise dialog
+        this.openAddCustomExerciseDialog();
+      }
+    });
+  }
+
+  openAddCustomExerciseDialog(): void {
+    const dialog = this.dependencies.tdServices.dialogService.open(AddCustomExerciseDialogComponent, {
+      panelClass: AppConfig.DefaultDialogPanelClass
+    });
+
+    dialog.afterClosed().subscribe(m => {
+      // open add workout exercise dialog if new custom exercise was created 
+      if (dialog.componentInstance.newExercise) {
+        this.openAddWorkoutExerciseDialog(dialog.componentInstance.newExercise);
+      }
+    });
+  }
+
+  openAddWorkoutExerciseDialog(exercise: Exercise): void {
+    const data: any = {};
+    data.workoutId = this.workout.id;
+    data.exercise = exercise;
+
+    const dialog = this.dependencies.tdServices.dialogService.open(AddWorkoutExerciseDialogComponent, {
+      data: data,
+      panelClass: AppConfig.DefaultDialogPanelClass
+    });
+
+    dialog.afterClosed().subscribe(m => {
+      // add newly added workout exercise to list of current exercises
+      // but first load whole object with category
+      if (dialog.componentInstance.newWorkoutExercise) {
+        this.dependencies.itemServices.workoutExerciseService.item().byId(dialog.componentInstance.newWorkoutExercise.id)
+          .includeMultiple(['Exercise', 'Exercise.ExerciseCategory'])
+          .get()
+          .subscribe(response => {
+            this.sortedWorkoutExercises.push(response.item);
+          });
+      }
+    });
+  }
+
   private getInitObservable(): Observable<any> {
     // subscribe to drop events
     return this.dragulaService.drop
@@ -101,7 +187,7 @@ export class EditWorkoutPlanExportComponent extends BaseComponent implements OnD
     this.workout = workout;
   }
 
-  private deleteWorkoutExercise(workoutExercise: WorkoutExercise): void {
+  deleteWorkoutExercise(workoutExercise: WorkoutExercise): void {
     this.startGlobalLoader();
     this.dependencies.itemServices.workoutExerciseService.delete(workoutExercise.id)
       .set()
@@ -118,92 +204,6 @@ export class EditWorkoutPlanExportComponent extends BaseComponent implements OnD
         super.handleAppError(error);
         this.stopGlobalLoader();
       });
-  }
-
-  private openWorkoutExerciseDialog(workoutExercise: WorkoutExercise): void {
-    const dialog = this.dependencies.tdServices.dialogService.open(EditWorkoutExerciseDialogComponent, {
-      panelClass: AppConfig.DefaultDialogPanelClass,
-      data: workoutExercise
-    });
-
-    dialog.afterClosed().subscribe(m => {
-      // update || remove workout exercise from local letiable
-      if (dialog.componentInstance.workoutExerciseWasDeleted) {
-        // remove exercise
-        this.sortedWorkoutExercises = _.reject(this.sortedWorkoutExercises, function (item) { return item.id === dialog.componentInstance.idOfDeletedWorkoutExercise; });
-
-        // recalculate local order
-        this.recalculateOrder();
-      } else {
-        // update exercice with updated data
-        const workoutExerciseToUpdate: WorkoutExercise[] = this.sortedWorkoutExercises.filter(s => s.id === workoutExercise.id);
-
-        if (!workoutExerciseToUpdate) {
-          throw Error(`Cannot update workout with new values from saved form`);
-        }
-
-        // update data
-        workoutExerciseToUpdate[0].reps = dialog.componentInstance.workoutExercise.reps;
-        workoutExerciseToUpdate[0].sets = dialog.componentInstance.workoutExercise.sets;
-      }
-    });
-  }
-
-  private openSelecExerciseDialog(): void {
-    const data: any = {};
-    data.workoutId = this.workout.id;
-
-    const dialog = this.dependencies.tdServices.dialogService.open(SelectWorkoutExerciseDialogComponent, {
-      panelClass: AppConfig.DefaultDialogPanelClass,
-      data: data
-    });
-
-    dialog.afterClosed().subscribe(m => {
-      // open new add workout dialog if some exercise was selected
-      if (dialog.componentInstance.selectedExercise) {
-        this.openAddWorkoutExerciseDialog(dialog.componentInstance.selectedExercise);
-      } else if (dialog.componentInstance.openAddCustomExerciseDialog) {
-        // or open new custom exercise dialog
-        this.openAddCustomExerciseDialog();
-      }
-    });
-  }
-
-  private openAddCustomExerciseDialog(): void {
-    const dialog = this.dependencies.tdServices.dialogService.open(AddCustomExerciseDialogComponent, {
-      panelClass: AppConfig.DefaultDialogPanelClass
-    });
-
-    dialog.afterClosed().subscribe(m => {
-      // open add workout exercise dialog if new custom exercise was created 
-      if (dialog.componentInstance.newExercise) {
-        this.openAddWorkoutExerciseDialog(dialog.componentInstance.newExercise);
-      }
-    });
-  }
-
-  private openAddWorkoutExerciseDialog(exercise: Exercise): void {
-    const data: any = {};
-    data.workoutId = this.workout.id;
-    data.exercise = exercise;
-
-    const dialog = this.dependencies.tdServices.dialogService.open(AddWorkoutExerciseDialogComponent, {
-      data: data,
-      panelClass: AppConfig.DefaultDialogPanelClass
-    });
-
-    dialog.afterClosed().subscribe(m => {
-      // add newly added workout exercise to list of current exercises
-      // but first load whole object with category
-      if (dialog.componentInstance.newWorkoutExercise) {
-        this.dependencies.itemServices.workoutExerciseService.item().byId(dialog.componentInstance.newWorkoutExercise.id)
-          .includeMultiple(['Exercise', 'Exercise.ExerciseCategory'])
-          .get()
-          .subscribe(response => {
-            this.sortedWorkoutExercises.push(response.item);
-          });
-      }
-    });
   }
 
   private recalculateOrder(): void {

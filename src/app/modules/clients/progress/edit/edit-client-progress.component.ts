@@ -51,6 +51,10 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
         super.initClientSubscriptions();
     }
 
+    handleDeleteType(progressItemType: ProgressItemType): void {
+        super.subscribeToObservable(this.getDeleteProgressTypeObservable(progressItemType));
+    }
+
     private getComponentObservables(): Observable<any>[] {
         const observables: Observable<any>[] = [];
 
@@ -230,10 +234,6 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
             .map(clientId => {
                 this.initDataList(clientId);
             });
-    }
-
-    private handleDeleteType(progressItemType: ProgressItemType): void {
-        super.subscribeToObservable(this.getDeleteProgressTypeObservable(progressItemType));
     }
 
     public openAddNewProgressItemTypeDialog(): void {

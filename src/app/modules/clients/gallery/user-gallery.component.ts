@@ -39,7 +39,7 @@ export class UserGalleryComponent extends ClientsBaseComponent implements OnInit
 
     setup(): ComponentSetup {
         return new ComponentSetup({
-            initialized: true,
+            initialized: false,
             isNested: false
         });
     }

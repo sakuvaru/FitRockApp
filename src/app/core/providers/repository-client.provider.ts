@@ -1,4 +1,3 @@
-import { NgModule } from '@angular/core';
 import { Http } from '@angular/http';
 import { TokenService } from 'lib/auth';
 import { RepositoryHttpService } from 'lib/repository/services/repository-http.service';
@@ -77,13 +76,3 @@ export let RepositoryClientProvider = {
     deps: [Http, TokenService]
 };
 
-@NgModule({
-    imports: [
-    ],
-    declarations: [
-    ],
-    providers: [
-        RepositoryClient,
-    ],
-})
-export class RepositoryClientProviderModule { }

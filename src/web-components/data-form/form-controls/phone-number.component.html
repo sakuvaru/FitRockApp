@@ -1,6 +1,6 @@
 <div *ngIf="initialized && activePhoneFormat" layout="row" layout-margin [formGroup]="formGroup">
 
-  <mat-form-field [hintLabel]="field.hint" flex>
+  <mat-form-field [hintLabel]="field.hint ? field.hint : undefined" fxFlex>
     <span matPrefix>{{ activePhoneFormat.inputPrefix }}&nbsp;</span>
     <input matInput [textMask]="{mask: activePhoneFormat.mask}" [required]="field.required"
       [placeholder]="field.label" [formControlName]="field.key" [id]="field.key" type="tel" #elem>

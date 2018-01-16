@@ -1,7 +1,7 @@
 <ng-container *ngIf="config">
 
   <div *ngIf="config.showSearch" class="push-left push-right push-top">
-    <mat-form-field flex>
+    <mat-form-field fxFlex>
       <input matInput placeholder="{{'webComponents.loadMore.search' | localize}}" [formControl]="searchControl" [value]="searchTerm"
       />
       <span matPrefix>

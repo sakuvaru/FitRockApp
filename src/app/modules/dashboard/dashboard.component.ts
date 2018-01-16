@@ -47,46 +47,6 @@ export class DashboardComponent extends BaseComponent implements OnInit {
         )
             .build();
 
-        /*
-        this.calendarConfig = this.dependencies.webComponentServices.calendarService.calendar(
-            this.currentLanguage ? this.currentLanguage.locale : '',
-            (date) => this.dependencies.itemServices.appointmentService.items()
-                // take only only current month + 1 month and - 1 month
-                .whereGreaterThan('AppointmentDate', this.dependencies.coreServices.timeService.moment(date).add(-1, 'months').toDate())
-                .whereLessThen('AppointmentDate', this.dependencies.coreServices.timeService.moment(date).add(1, 'months').toDate())
-            ,
-            (event) => this.dependencies.itemServices.appointmentService.delete(event.model.id),
-            (event) => this.dependencies.itemServices.appointmentService.buildEditForm(
-                this.dependencies.itemServices.appointmentService.editFormQuery(event.model.id).withData('clientId', event.model.clientId)
-            ),
-            (attendee) => this.dependencies.itemServices.appointmentService.buildInsertForm({
-                formDefinitionQuery: this.dependencies.itemServices.appointmentService.insertFormQuery().withData('clientId', attendee.model.id)
-            }),
-            (this.dependencies.itemServices.userService.buildDataTable(
-                (query, search) => query.whereLikeMultiple(['FirstName', 'LastName'], search)
-            )
-                .avatarImage((item) => item.avatarUrl ? item.avatarUrl : AppConfig.DefaultUserAvatarUrl)
-                .withFields([
-                    {
-                        hideOnSmallScreen: false,
-                        name: (item) => super.translate('Fullname (translate todo)'),
-                        value: (item) => item.getFullName(),
-                        sortKey: 'FirstName'
-                    },
-                    {
-                        hideOnSmallScreen: true,
-                        name: (item) => super.translate('E-mail (translate todo)'),
-                        value: (item) => item.email,
-                        sortKey: 'Email'
-                    },
-                ])
-            )
-        )
-            .onEventClick(event => this.dependencies.navigate([this.getTrainerUrl(`/clients/edit/${event.model.clientId}/appointments/view/${event.model.id}`)]))
-            .build();
-
-            */
-
         this.setConfig({
             menuTitle: { key: 'menu.main' },
             componentTitle: { key: 'menu.dashboard' }

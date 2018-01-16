@@ -51,8 +51,13 @@ export class ChatComponent extends BaseComponent implements OnInit {
         // make sure the menu is initialized by searching for all users at the init
         this.dependencies.coreServices.sharedService.setComponentSearch('');
     }
+    
+    loadMoreMessages(): void {
+        super.subscribeToObservable(this.getChatMessagesObservable(this.activeChatUserId, this.chatMessagesPage, false, this.chatMessagesSearch)
+            .takeUntil(this.ngUnsubscribe));
+    }
 
-    private searchConversation(search: string): void {
+    searchConversation(search: string): void {
         this.chatMessagesPage = 1;
         this.chatMessagesSearch = search;
         super.subscribeToObservable(this.getChatMessagesObservable(this.activeChatUserId, this.chatMessagesPage, true, this.chatMessagesSearch));
@@ -205,10 +210,5 @@ export class ChatComponent extends BaseComponent implements OnInit {
                 }
             },
             error => super.handleAppError(error));
-    }
-
-    private loadMoreMessages(): void {
-        super.subscribeToObservable(this.getChatMessagesObservable(this.activeChatUserId, this.chatMessagesPage, false, this.chatMessagesSearch)
-            .takeUntil(this.ngUnsubscribe));
     }
 }

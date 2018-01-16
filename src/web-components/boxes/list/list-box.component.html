@@ -3,37 +3,42 @@
         <loader [enabled]="loaderEnabled"></loader>
         <mat-card-content>
 
-            <span fxFlexAlign="center" *ngIf="config.title" class="mat-title primary">
-                {{ config.title | async }}
-            </span>
-            <span flex></span>
-            <span fxFlexAlign="center" *ngIf="config.actions">
-                <button class="w-boxes-title-icon" mat-icon-button *ngFor="let action of config.actions" (click)="resolveAction(action.action)">
-                    <mat-icon>{{ action.icon }}</mat-icon>
-                </button>
-            </span>
+            <div fxLayout="row">
+                <span fxFlexAlign="center" *ngIf="config.title" class="mat-title primary">
+                    {{ config.title | async }}
+                </span>
+                <span fxFlex></span>
+                <span fxFlexAlign="center" *ngIf="config.actions">
+                    <button class="w-boxes-icon-fix" mat-icon-button *ngFor="let action of config.actions" (click)="resolveAction(action.action)">
+                        <mat-icon>{{ action.icon }}</mat-icon>
+                    </button>
+                </span>
+            </div>
 
-            <mat-nav-list *ngIf="items">
-                <mat-list-item *ngFor="let item of items" (click)="item.linkUrl ? redirectTo(item.linkUrl) : undefined">
-                    <img *ngIf="item.imageUrl" matListAvatar [src]="item.imageUrl" alt="list image for {{ item.text }}">
-                    <mat-icon *ngIf="item.icon" mat-list-icon>{{ item.icon }}</mat-icon>
-                    <div matLine>
-                        {{ item.firstLine | async }}
-                        <span *ngIf="item.extra" fxFlex></span>
-                        <span *ngIf="item.extra">{{ item.extra | async }}</span>
-                    </div>
-                    <div *ngIf="item.secondLine" matLine>
-                        <div class="w-boxes-caption pad-top-sm">
-                            {{ item.secondLine | async }}
+            <div fxLayout="column">
+                <mat-nav-list *ngIf="items">
+                    <mat-list-item *ngFor="let item of items" (click)="item.linkUrl ? redirectTo(item.linkUrl) : undefined">
+                        <img *ngIf="item.imageUrl" matListAvatar [src]="item.imageUrl" alt="list image for {{ item.text }}">
+                        <mat-icon *ngIf="item.icon" mat-list-icon>{{ item.icon }}</mat-icon>
+                        <div matLine>
+                            {{ item.firstLine | async }}
+                            <span *ngIf="item.extra" fxFlex></span>
+                            <span *ngIf="item.extra">{{ item.extra | async }}</span>
                         </div>
-                    </div>
-                </mat-list-item>
-            </mat-nav-list>
+                        <div *ngIf="item.secondLine" matLine>
+                            <div class="w-boxes-caption pad-top-sm">
+                                {{ item.secondLine | async }}
+                            </div>
+                        </div>
+                    </mat-list-item>
+                </mat-nav-list>
+            </div>
 
-            <error-message *ngIf="errorOccured" [text]="'webComponents.boxes.boxLoadingError' | localize"></error-message>
-            <info-message *ngIf="config.noDataMessage && items && items.length === 0" text="{{ config.noDataMessage | async }}"></info-message>
-            <no-data-message *ngIf="!config.noDataMessage && items && items.length === 0"></no-data-message>
-
+            <div fxLayout="column">
+                <error-message *ngIf="errorOccured" [text]="'webComponents.boxes.boxLoadingError' | localize"></error-message>
+                <info-message *ngIf="config.noDataMessage && items && items.length === 0" text="{{ config.noDataMessage | async }}"></info-message>
+                <no-data-message *ngIf="!config.noDataMessage && items && items.length === 0"></no-data-message>
+            </div>
         </mat-card-content>
     </mat-card>
 </ng-container>

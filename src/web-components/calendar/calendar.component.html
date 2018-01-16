@@ -28,7 +28,7 @@
                                     <mat-icon>keyboard_arrow_right</mat-icon>
                                 </button>
 
-                                <span flex></span>
+                                <span fxFlex></span>
 
                                 <add-button tooltip="{{'webComponents.calendar.insertEventTooltip' | localize }}" (click)="openSelectAttendeeDialog()"></add-button>
                             </div>
@@ -45,7 +45,7 @@
                                     <ng-container>{{ getDayDate(viewDate) }}</ng-container>
                                 </button>
 
-                                <span flex></span>
+                                <span fxFlex></span>
 
                                 <button mat-icon-button color="primary" mwlCalendarPreviousView [(viewDate)]="viewDate" [view]="'day'" (viewDateChange)="changeDate($event)">
                                     <mat-icon>keyboard_arrow_left</mat-icon>
@@ -73,7 +73,7 @@
                                 <mat-icon>keyboard_arrow_right</mat-icon>
                             </button>
 
-                            <span flex></span>
+                            <span fxFlex></span>
 
                             <add-button tooltip="{{'webComponents.calendar.insertEventTooltip' | localize }}" (click)="openSelectAttendeeDialog()"></add-button>
                         </div>

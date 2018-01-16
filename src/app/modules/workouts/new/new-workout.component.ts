@@ -1,14 +1,9 @@
-// common
-import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-import { ComponentDependencyService, BaseComponent, ComponentSetup } from '../../../core';
-import { AppConfig, UrlConfig } from '../../../config';
-
-// required by component
-import { DataFormConfig } from '../../../../web-components/data-form';
-import { NewWorkoutMenuItems } from '../menu.items';
-import { Workout } from '../../../models';
+import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
+
+import { DataFormConfig } from '../../../../web-components/data-form';
+import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
+import { NewWorkoutMenuItems } from '../menu.items';
 
 @Component({
     templateUrl: 'new-workout.component.html'

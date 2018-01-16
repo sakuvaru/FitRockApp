@@ -6,6 +6,8 @@ export class MapBoxConfig {
     public noDataMessage?: Observable<string>;
     public actions?: ActionButton[];
 
+    public zoom: number = 10;
+
     constructor(
         public title: Observable<string>,
         public apiKey: string,

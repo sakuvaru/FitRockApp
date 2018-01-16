@@ -40,6 +40,10 @@ export class RadioBooleanComponent extends BaseFormControlComponent implements O
     super.ngOnChanges(changes);
   }
 
+  handleRadioButtonChange(): void {
+    this.showRequiredLabels = false;
+  }
+
   private translateLabels(): void {
     if (this.labelsTranslated) {
       return;
@@ -128,10 +132,6 @@ export class RadioBooleanComponent extends BaseFormControlComponent implements O
       return true;
     }
     return false;
-  }
-
-  private handleRadioButtonChange(): void {
-    this.showRequiredLabels = false;
   }
 }
 

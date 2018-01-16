@@ -422,6 +422,27 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
         }
     }
 
+    toggleShowFullFilters(): void {
+        this.showFullFilters = !this.showFullFilters;
+    }
+
+    runFilter(guid: string): void {
+        // find filter
+        const filterWrapper = this.filtersWrapper.find(m => m.filter.guid === guid);
+        if (!filterWrapper) {
+            throw Error(`Invalid filter '${guid}'`);
+        }
+
+        // reset page to 1
+        this.currentPage = 1;
+
+        // set current filter
+        this.activeFilterGuid = guid;
+
+        // reload data
+        this.reloadData();
+    }
+
     /**
      * inits data table
      */
@@ -754,23 +775,6 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
 
         // logic is the same for initialization, so use that
         return this.initDynamicFilters().map(r => undefined);
-    }
-
-    private runFilter(guid: string): void {
-        // find filter
-        const filterWrapper = this.filtersWrapper.find(m => m.filter.guid === guid);
-        if (!filterWrapper) {
-            throw Error(`Invalid filter '${guid}'`);
-        }
-
-        // reset page to 1
-        this.currentPage = 1;
-
-        // set current filter
-        this.activeFilterGuid = guid;
-
-        // reload data
-        this.reloadData();
     }
 
     private subscribeToTextFilterChanges(): void {
@@ -1132,10 +1136,6 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
                 }
 
             }, error => this.handleError(error));
-    }
-
-    private toggleShowFullFilters(): void {
-        this.showFullFilters = !this.showFullFilters;
     }
 }
 

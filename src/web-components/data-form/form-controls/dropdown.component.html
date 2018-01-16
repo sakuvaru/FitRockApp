@@ -1,9 +1,12 @@
 <div *ngIf="initialized" layout="row" layout-margin [formGroup]="formGroup">
 
-  <mat-form-field [hintLabel]="field.hint" flex>
-    <mat-select [id]="key" [formControlName]="field.key" [required]="field.required" [placeholder]="field.label">
+  <mat-form-field [hintLabel]="field.hint ? field.hint : undefined" fxFlex>
+    <mat-select [id]="field.key" [formControlName]="field.key" [required]="field.required" [placeholder]="field.label">
       <mat-option *ngIf="!field.required">--</mat-option>
-      <mat-option *ngFor="let option of field.options.listOptions" [value]="option.value">{{option.name}}</mat-option>
+
+      <ng-container *ngIf="field.options && field.options.listOptions">
+        <mat-option *ngFor="let option of field.options.listOptions" [value]="option.value">{{option.name}}</mat-option>
+      </ng-container>
     </mat-select>
     <mat-error>{{customError}}</mat-error>
   </mat-form-field>

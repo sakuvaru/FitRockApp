@@ -1,12 +1,12 @@
 <div *ngIf="initialized" layout="row" layout-margin [formGroup]="formGroup">
 
-  <mat-form-field [hintLabel]="field.hint" flex>
-    <textarea matTextareaAutosize matInput [matAutosizeMinRows]="field.options.minAutosizeRows" [matAutosizeMaxRows]="field.options.maxAutosizeRows"
-      [attr.maxLength]="field.options.maxLength > 0 ? field.options.maxLength : null" [required]="field.required"
+  <mat-form-field [hintLabel]="field.hint ? field.hint : undefined" fxFlex>
+    <textarea matTextareaAutosize matInput [matAutosizeMinRows]="field.options && field.options.minAutosizeRows ? field.options.minAutosizeRows : undefined" [matAutosizeMaxRows]="field.options && field.options.maxAutosizeRows ? field.options.maxAutosizeRows : undefined"
+      [attr.maxLength]="field.options && field.options.maxLength ? field.options.maxLength : undefined" [required]="field.required"
       [placeholder]="field.label" [formControlName]="field.key" [id]="field.key" type="textarea"
       #elem>
     </textarea>
-    <mat-hint *ngIf="showLengthHint" [ngClass]="{'tc-red-600': elem.value.length > field.options.maxLength}" align="end">{{elem.value.length}} / {{field.options.maxLength}}</mat-hint>
+    <mat-hint *ngIf="showLengthHint && field.options && field.options.maxLength" [ngClass]="{'tc-red-600': elem.value.length > field.options.maxLength}" align="end">{{elem.value.length}} / {{field.options.maxLength}}</mat-hint>
     <mat-error>{{customError}}</mat-error>
   </mat-form-field>
 

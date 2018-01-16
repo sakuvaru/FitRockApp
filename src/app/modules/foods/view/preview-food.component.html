@@ -6,62 +6,62 @@
         </h2>
 
         <div fxLayoutAlign="space-between start" fxLayout="row" fxHide.sm fxHide.xs>
-            <div fxFlex="18%" fxLayout="row" flex>
+            <div fxFlex="18%" fxLayout="row">
                 <div class="w-full-width">
                     <number-box [config]="protMiniBox"></number-box>
                 </div>
             </div>
-            <div fxFlex="18%" fxLayout="row" flex>
+            <div fxFlex="18%" fxLayout="row">
                 <div class="w-full-width">
                     <number-box [config]="fatMiniBox"></number-box>
                 </div>
             </div>
-            <div fxFlex="18%" fxLayout="row" flex>
+            <div fxFlex="18%" fxLayout="row">
                 <div class="w-full-width">
                     <number-box [config]="choMiniBox"></number-box>
                 </div>
             </div>
-            <div fxFlex="18%" fxLayout="row" flex>
+            <div fxFlex="18%" fxLayout="row">
                 <div class="w-full-width">
                     <number-box [config]="sugarMiniBox"></number-box>
                 </div>
             </div>
-            <div fxFlex="18%" fxLayout="row" flex>
+            <div fxFlex="18%" fxLayout="row">
                 <div class="w-full-width">
                     <number-box [config]="naclMiniBox"></number-box>
                 </div>
             </div>
         </div>
         <div fxLayoutAlign="space-between start" fxFlex="50%" class="push-sm" fxHide fxShow.sm fxShow.xs>
-            <div fxFlex="30%" fxLayout="row" flex>
+            <div fxFlex="30%" fxLayout="row">
                 <div class="w-full-width">
                     <number-box [config]="protMiniBox"></number-box>
                 </div>
             </div>
-            <div fxFlex="30%" fxLayout="row" flex>
+            <div fxFlex="30%" fxLayout="row">
                 <div class="w-full-width">
                     <number-box [config]="fatMiniBox"></number-box>
                 </div>
             </div>
-            <div fxFlex="30%" fxLayout="row" flex>
+            <div fxFlex="30%" fxLayout="row">
                 <div class="w-full-width">
                     <number-box [config]="choMiniBox"></number-box>
                 </div>
             </div>
         </div>
         <div fxLayoutAlign="space-between start" fxFlex="50%" class="push-sm" fxHide fxShow.sm fxShow.xs>
-            <div fxFlex="48%" fxLayout="row" flex>
+            <div fxFlex="48%" fxLayout="row">
                 <div class="w-full-width">
                     <number-box [config]="sugarMiniBox"></number-box>
                 </div>
             </div>
-            <div fxFlex="48%" fxLayout="row" flex>
+            <div fxFlex="48%" fxLayout="row">
                 <div class="w-full-width">
                     <number-box [config]="naclMiniBox"></number-box>
                 </div>
             </div>
         </div>
-        <div fxLayout="column" class="push-top" flex>
+        <div fxLayout="column" class="push-top">
             <div class="w-full-height">
                 <table-box [config]="foodOverviewBox"></table-box>
             </div>
@@ -69,14 +69,14 @@
     </div>
 
     <div fxFlex="50%" class="push-sm">
-        <div fxLayout="column" flex>
+        <div fxLayout="column">
             <graph #graph [config]="foodGraph"></graph>
         </div>
     </div>
 </div>
 
 <div fxLayout="row" class="push-top push-left-sm push-right-sm">
-    <div fxFlex="100%" fxLayout="column" flex>
+    <div fxFlex="100%" fxLayout="column">
         <data-table [config]="usedInDishesDataForm"></data-table>
     </div>
 </div>

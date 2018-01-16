@@ -49,7 +49,7 @@ export class CalendarComponent extends BaseWebComponent implements OnInit, OnCha
     /**
      * Subject used for refreshing the calendar
      */
-    private readonly calendarRefresh = new Subject<void>();
+    public readonly calendarRefresh = new Subject<void>();
 
     /**
      * Indicates if full calendar should be shown (even on mobile)
@@ -96,7 +96,7 @@ export class CalendarComponent extends BaseWebComponent implements OnInit, OnCha
     /** 
      * Error message
      */
-    private errorMessage?: string;
+    public errorMessage?: string;
 
     /**
     * Translations
@@ -181,7 +181,7 @@ export class CalendarComponent extends BaseWebComponent implements OnInit, OnCha
         });
     }
 
-    private openNewEventDialog(selectedAttendee: any): void {
+    openNewEventDialog(selectedAttendee: any): void {
         const data: any = {};
 
         // this anonymous property is accessed by the dialog
@@ -197,7 +197,7 @@ export class CalendarComponent extends BaseWebComponent implements OnInit, OnCha
         });
     }
 
-    private openEditEventDialog(event: CalendarEventModel<any>): void {
+    openEditEventDialog(event: CalendarEventModel<any>): void {
         const data: any = {};
 
         // this anonymous property is accessed by the dialog
@@ -214,6 +214,17 @@ export class CalendarComponent extends BaseWebComponent implements OnInit, OnCha
                 this.loadEvents(false);
             }
         });
+    }
+
+    getDayDate(date: Date): string {
+        const momentDate = moment(date).locale(this.config.locale);
+        return momentDate.format('LL').toString();
+    }
+
+    getMonthDate(date: Date): string {
+        const momentDate = moment(date).locale(this.config.locale);
+
+         return momentDate.format('MMMM YYYY').toString();
     }
 
     private initCalendar(): void {
@@ -403,17 +414,6 @@ export class CalendarComponent extends BaseWebComponent implements OnInit, OnCha
         }
 
         return Yellow;
-    }
-
-    private getDayDate(date: Date): string {
-        const momentDate = moment(date).locale(this.config.locale);
-        return momentDate.format('LL').toString();
-    }
-
-    private getMonthDate(date: Date): string {
-        const momentDate = moment(date).locale(this.config.locale);
-
-         return momentDate.format('MMMM YYYY').toString();
     }
 }
 

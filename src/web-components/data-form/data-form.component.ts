@@ -85,22 +85,22 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
     /**
      * Fields
      */
-    private fields: DataFormField[] = [];
+    public fields: DataFormField[] = [];
 
     /**
      * Indicates if there is a problem with loading form
      */
-    private errorLoadingForm: boolean = false;
+    public errorLoadingForm: boolean = false;
 
     /**
      * Indicates if unknown error occured
      */
-    private unknownError: boolean = false;
+    public unknownError: boolean = false;
 
     /**
      * Current form error
      */
-    private formError?: string;
+    public formError?: string;
 
     /**
      * Snackbar duration

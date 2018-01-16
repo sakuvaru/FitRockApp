@@ -23,32 +23,32 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
      * Maximum number of uploaded files
      * Can be overridden with config
      */
-    private maxFiles: number = 10;
+    public maxFiles: number = 10;
 
     /**
      * Indicates if component is disabled
      */
-    private disabled: boolean = false;
+    public disabled: boolean = false;
 
     /**
      * Indicates if no files were selected
      */
-    private noFilesSelected: boolean = false;
+    public noFilesSelected: boolean = false;
 
     /**
      * Indicates if upload failed
      */
-    private uploadFailed: boolean = false;
+    public uploadFailed: boolean = false;
 
     /**
      * Indicates if upload fails because some of the files contain unsupported extension
      */
-    private extensionNotAllowed: boolean = false;
+    public extensionNotAllowed: boolean = false;
 
     /**
      * This can contain a list of not allowed extensions when upload fails due to unsupported extensions
      */
-    private extensionsNotAllowedParam: any = {};
+    public extensionsNotAllowedParam: any = {};
 
     /**
     * Max files param for translation
@@ -63,12 +63,12 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
     /**
      * List of accepted extensions, include '.' here as per https://teradata.github.io/covalent/#/components/file-upload
      */
-    private acceptedExtensionsString: string;
+    public acceptedExtensionsString: string;
 
     /**
     * List of accepted extensions, these are checked against selected files
     */
-    private acceptedExtensions: string[];
+    public acceptedExtensions: string[];
 
     /**
      * Duration which the snackbar is visible
@@ -78,7 +78,7 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
     /**
      * Indicates if loader is enabled
      */
-    private loaderEnabled: boolean = false;
+    public loaderEnabled: boolean = false;
 
     /**
     * Flag for initialization component, used because ngOnChanges can be called before ngOnInit
@@ -153,7 +153,7 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
     dragLeave(event: any): void {
         event.preventDefault();
         this.dragCounter--;
-        if (this.dragCounter === 0) { 
+        if (this.dragCounter === 0) {
             this.isDraggedOver = false;
         }
     }
@@ -162,6 +162,46 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
         event.preventDefault();
         this.dragCounter = 0;
         this.isDraggedOver = false;
+    }
+
+    uploadSingle(file: File): Observable<any[] | boolean> {
+        if (!file) {
+            this.noFilesSelected = true;
+            return Observable.of(false);
+        }
+
+        if (!this.fileIsAllowed(file)) {
+            this.extensionNotAllowed = true;
+            this.extensionsNotAllowedParam.extensions = this.getListOfNotAllowedExtensions([file]);
+            return Observable.of(false);
+        }
+
+        return this.config.uploadFunction(file)
+            .map(response => {
+                if (response.files && response.files.length === 1) {
+                    return response.files;
+                }
+
+                throw new Error(`Unexpected upload result. Multiple files were received even though only 1 file was expected.`);
+            });
+    }
+
+    uploadMultiple(files: File[]): Observable<any[] | boolean> {
+        if (!files || files.length === 0) {
+            this.noFilesSelected = true;
+            return Observable.of(false);
+        }
+
+        if (!this.allFilesAllowed(files)) {
+            this.extensionNotAllowed = true;
+            this.extensionsNotAllowedParam.extensions = this.getListOfNotAllowedExtensions(files);
+            return Observable.of(false);
+        }
+
+        return this.config.uploadFunction(files)
+            .map(response => {
+                return response.files;
+            });
     }
 
     private initUploader(): void {
@@ -220,7 +260,7 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
                     } else {
                         throw Error(`Unexpected file input`);
                     }
-                  
+
                     return this.uploadMultiple(files);
                 }
 
@@ -296,46 +336,6 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
         }
 
         return extensionsString;
-    }
-
-    private uploadSingle(file: File): Observable<any[] | boolean> {
-        if (!file) {
-            this.noFilesSelected = true;
-            return Observable.of(false);
-        }
-
-        if (!this.fileIsAllowed(file)) {
-            this.extensionNotAllowed = true;
-            this.extensionsNotAllowedParam.extensions = this.getListOfNotAllowedExtensions([file]);
-            return Observable.of(false);
-        }
-
-        return this.config.uploadFunction(file)
-            .map(response => {
-                if (response.files && response.files.length === 1) {
-                    return response.files;
-                }
-
-                throw new Error(`Unexpected upload result. Multiple files were received even though only 1 file was expected.`);
-            });
-    }
-
-    private uploadMultiple(files: File[]): Observable<any[] | boolean> {
-        if (!files || files.length === 0) {
-            this.noFilesSelected = true;
-            return Observable.of(false);
-        }
-
-        if (!this.allFilesAllowed(files)) {
-            this.extensionNotAllowed = true;
-            this.extensionsNotAllowedParam.extensions = this.getListOfNotAllowedExtensions(files);
-            return Observable.of(false);
-        }
-
-        return this.config.uploadFunction(files)
-            .map(response => {
-                return response.files;
-            });
     }
 
     private getListOfNotAllowedExtensions(files: File[]): string {

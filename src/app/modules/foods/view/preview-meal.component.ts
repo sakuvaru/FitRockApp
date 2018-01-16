@@ -47,7 +47,7 @@ export class PreviewMealComponent extends BaseComponent implements OnInit {
 
     setup(): ComponentSetup {
         return new ComponentSetup({
-            initialized: true,
+            initialized: false,
             isNested: false
         });
     }

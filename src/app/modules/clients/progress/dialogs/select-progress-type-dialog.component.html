@@ -1,6 +1,6 @@
 <mat-dialog-actions>
     <span class="mat-title">{{'module.clients.progress.addProgressType' | localize }}</span>
-    <span flex></span>
+    <span fxFlex></span>
     <add-button class="push-right" tooltip="{{'module.clients.progress.newProgressItemType' | localize }}" (click)="addCustomProgressType()"></add-button>
     <close-button (click)="close()"></close-button>
 </mat-dialog-actions>
@@ -12,6 +12,6 @@
 </mat-dialog-content>
 
 <mat-dialog-actions>
-    <div flex></div>
+    <div fxFlex></div>
     <data-table-pager [dataTable]="dataTable"></data-table-pager>
 </mat-dialog-actions>

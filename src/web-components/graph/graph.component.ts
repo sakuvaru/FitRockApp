@@ -47,7 +47,7 @@ export class GraphComponent extends BaseWebComponent {
         }
     }
 
-    private onLoaderChanged(enabled: boolean): void {
+    onLoaderChanged(enabled: boolean): void {
         this.loaderEnabled = enabled;
     }
 

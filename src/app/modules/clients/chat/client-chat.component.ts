@@ -53,6 +53,10 @@ export class ClientChatComponent extends ClientsBaseComponent implements OnInit 
         super.subscribeToObservable(this.getChatMessagesObservable(this.clientId, this.chatMessagesPage, true, this.chatMessagesSearch));
     }
 
+    loadMoreMessages(): void {
+        super.subscribeToObservable(this.getChatMessagesObservable(this.clientId, this.chatMessagesPage, false, this.chatMessagesSearch));
+    }
+
     private getComponentObservables(): Observable<void>[] {
         const observables: Observable<void>[] = [];
         observables.push(this.getFormObservable());
@@ -133,9 +137,5 @@ export class ClientChatComponent extends ClientsBaseComponent implements OnInit 
                     this.allChatMessagesLoaded = true;
                 }
             });
-    }
-
-    private loadMoreMessages(): void {
-        super.subscribeToObservable(this.getChatMessagesObservable(this.clientId, this.chatMessagesPage, false, this.chatMessagesSearch));
     }
 }

@@ -19,7 +19,7 @@ export class MultipleChoiceComponent extends BaseFormControlComponent implements
 
   private multipleChoiceInitialized: boolean = false;
 
-  private multipleChoiceConfig: DataFormMultipleChoiceFieldConfig<any> | undefined;
+  public multipleChoiceConfig: DataFormMultipleChoiceFieldConfig<any> | undefined;
 
   private _selectionList?: MatSelectionList;
   @ViewChild('selectionList') set selectionList(content: MatSelectionList) {
