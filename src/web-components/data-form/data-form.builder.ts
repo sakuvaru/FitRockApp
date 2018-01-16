@@ -55,7 +55,7 @@ export class DataFormBuilder<TItem extends IItem> {
 
         // assign delete function if provided
         if (options && options.deleteFunction) {
-            this.config.deleteFunction = dataFormBuilderUtils.mapDeleteFunction(options.deleteFunction);
+            this.config.deleteFunction = dataFormBuilderUtils.mapDeleteFunction(type, options.deleteFunction);
         }
     }
 

@@ -92,13 +92,13 @@ class DataFormBuilderUtils {
         );
     }
 
-    mapDeleteFunction(deleteFunction: (formData: Object) => Observable<ResponseDelete>): (formData: object) => Observable<DataFormDeleteResponse> {
-        return (formData: Object) => deleteFunction(formData).map(response => {
+    mapDeleteFunction(type: string, deleteFunction: (formData: Object) => Observable<ResponseDelete>): (formData: object) => Observable<DataFormDeleteResponse> {
+        return (formData: Object) => this.mapDataFormError(type, deleteFunction(formData).map(response => {
             if (response instanceof ResponseDelete) {
                 return new DataFormDeleteResponse(response.deletedItemId);
             }
             throw Error(`Unexpected response from delete function`);
-        });
+        }));
     }
 
     mapSaveFunction(type: string, saveFunction: (formData: Object) => Observable<ResponseEdit<any> | ResponseCreate<any>>): (formData: object) => Observable<DataFormInsertResponse<any> | DataFormEditResponse<any>> {
@@ -133,8 +133,23 @@ class DataFormBuilderUtils {
     mapDataFormError<TModel>(type: string, obs: Observable<TModel>): Observable<any> {
         return obs.catch(error => {
 
+            if (!(error instanceof ErrorResponse)) {
+                return Observable.throw(new DataFormError(
+                    error,
+                    'form.error.unknown'
+
+                ));
+            }
+
+            if (error.reason === ErrorReasonEnum.NotAuthorized) {
+                return Observable.throw(new DataFormError(
+                    error,
+                    'form.error.authorizationException'
+                ));
+            }
+
             // system, unknown error
-            if ((!(error instanceof ErrorResponse)) || error.reason !== ErrorReasonEnum.FormError) {
+            if (error.reason !== ErrorReasonEnum.FormError) {
                 return Observable.throw(new DataFormError(
                     error,
                     'form.error.unknown'
