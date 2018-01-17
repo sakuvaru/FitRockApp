@@ -1,19 +1,23 @@
 import { Component } from '@angular/core';
+import { AppConfig } from 'app/config';
+import { LogStatus } from 'lib/auth';
 
-import { UrlConfig } from '../../config';
 import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../../core';
 
 @Component({
+    selector: 'login-page',
     templateUrl: 'login-page.component.html'
 })
 export class LoginPageComponent extends BaseComponent {
 
+    public readonly appLogo: string = AppConfig.AppLogoUrl;
+    
     constructor(
         protected dependencies: ComponentDependencyService) {
         super(dependencies);
 
         // redirect to entry url if user is already logged
-        if (this.dependencies.coreServices.authService.isAuthenticated()) {
+        if (this.dependencies.coreServices.authService.getAuthenticationStatus() === LogStatus.Authenticated) {
             this.dependencies.coreServices.navigateService.entryPage().navigate();
         }
     }

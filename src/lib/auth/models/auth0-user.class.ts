@@ -1,6 +1,9 @@
+import { LogStatus } from './log-status.enum';
+
 export class Auth0User {
 
     constructor(
+        public status: LogStatus,
         public emailVerified: boolean,
         public picture: string,
         public email: string,

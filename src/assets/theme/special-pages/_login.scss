@@ -3,6 +3,23 @@
     height: 100%;
     padding: 50px;
 
+    .w-login-page-session-title {
+        text-align: left;
+        margin-bottom: 0!important;
+    }
+
+    .w-login-page-session-caption {
+        color: #646464!important;
+        font-size: 11px!important;
+        margin-top: 5px!important;
+    }
+
+    .w-login-page-session-avatar {
+        @include border-radius(50%); 
+        height: 45px;
+        width: 45px;
+    }
+
     .w-login-page-title {
         text-align: center;
     }
@@ -38,3 +55,4 @@
         }
     }
 }
+

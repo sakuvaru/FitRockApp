@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 
-import { UrlConfig } from '../../config';
+import { LogStatus } from '../../../lib/auth';
+import { AppConfig } from '../../config';
 import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../../core';
 
 @Component({
@@ -8,12 +9,14 @@ import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../..
 })
 export class ResetPasswordPageComponent extends BaseComponent {
 
+    public readonly appLogo: string = AppConfig.AppLogoUrl;
+
     constructor(
         protected dependencies: ComponentDependencyService) {
         super(dependencies);
 
         // redirect to entry url if user is already logged
-        if (this.dependencies.coreServices.authService.isAuthenticated()) {
+        if (this.dependencies.coreServices.authService.getAuthenticationStatus() === LogStatus.Authenticated) {
             this.dependencies.coreServices.navigateService.entryPage().navigate();
         }
     }

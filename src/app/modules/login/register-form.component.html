@@ -1,79 +1,67 @@
-<mat-card>
-    <mat-card-content>
-        <div class="push-sm">
-            <div class="w-login-page-logo">
-                <img alt="logo" src="{{ appLogo }}">
-            </div>
-            <div class="push-top push-bottom w-login-page-title mat-subheading-2">
-                {{ 'module.login.createAccount' | localize }}
-            </div>
-            <div *ngIf="registerError" class="push-top-sm push-bottom-md">
-                <error-message text="{{ 'module.login.registerError' | localize }}"></error-message>
-            </div>
-            <div *ngIf="userAlreadyExistsError" class="push-top-sm push-bottom-md">
-                <error-message text="{{ 'module.login.userAlreadyExistsError' | localize }}"></error-message>
-            </div>
-            <div *ngIf="loginFailed" class="push-top-sm push-bottom-md">
-                <error-message text="{{ 'module.login.loginFailed' | localize }}"></error-message>
-            </div>
-            <form [formGroup]="formGroup" autocomplete="false">
-                <div layout="row">
-                    <mat-form-field fxFlex>
-                        <input #emailElem matInput placeholder="{{ 'module.login.email' | localize }}" type="text" maxlength="{{ emailLength }}"
-                            name="email" [formControl]="email" required autocomplete="off">
-                        <mat-hint align="start">
-                        </mat-hint>
-                        <mat-error *ngIf="email.invalid">{{ 'module.login.' + getEmailError() | localize }}</mat-error>
-                        <mat-hint align="end">{{emailElem.value.length}} / {{ emailLength }}</mat-hint>
-                    </mat-form-field>
-                </div>
-                <div layout="row" class="push-top-sm">
-                    <mat-form-field fxFlex>
-                        <input matInput placeholder="{{ 'module.login.password' | localize }}" type="password" name="password" [formControl]="password"
-                            required autocomplete="off">
-                        <mat-error *ngIf="password.invalid">{{ 'module.login.' + getPasswordError() | localize }}</mat-error>
-                        <mat-hint *ngIf="mismatchPasswordError && !password.invalid" align="start">
-                            <span class="tc-red-600">{{ 'module.login.passwordMismatch' | localize }}</span>
-                        </mat-hint>
-                    </mat-form-field>
-                </div>
-                <div layout="row" fxFlex="push-top-sm">
-                    <mat-form-field fxFlex>
-                        <input matInput placeholder="{{ 'module.login.passwordConfirm' | localize }}" type="password" name="passwordConfirm" [formControl]="passwordConfirm"
-                            required autocomplete="off">
-                        <mat-error *ngIf="passwordConfirm.invalid">{{ 'module.login.' + getPasswordConfirmError() | localize }}</mat-error>
-                        <mat-hint *ngIf="mismatchPasswordError && !passwordConfirm.invalid" align="start">
-                            <span class="tc-red-600">{{ 'module.login.passwordMismatch' | localize }}</span>
-                        </mat-hint>
-                    </mat-form-field>
-                </div>
-                <div layout="row" layout-align="center" class="push-top">
-                    <div fxFlex="65" fxFlex.xs="100" fxFlex.md="100">
-                        <button fxFlex mat-raised-button color="accent" [disabled]="!formGroup.valid" (click)="onRegister()" class="w-login-page-sign-in-button">
-                            {{ 'module.login.register' | localize }}
-                        </button>
-                    </div>
-                </div>
-            </form>
-
-            <div layout="row" layout-align="center" class="push-top w-login-page-link mat-caption">
-                <div layout="column" fxFlex="100" fxFlex.xs="100" fxFlex.md="100">
-                    <a [routerLink]="getLoginUrl()">{{ 'module.login.loginWithExistingAccount' | localize }}</a>
-                </div>
-            </div>
-
-            <div class="mat-subheading-2 push-top w-login-page-social-separator">
-                {{ 'module.login.orRegister' | localize }}
-            </div>
-
-            <div layout="row" layout-align="center" class="push-top push-bottom w-login-page-social-buttons">
-                <div layout="column" fxFlex="50" fxFlex.xs="100" fxFlex.md="50">
-                    <facebook-button (click)="loginWithFacebook()"></facebook-button>
-                </div>
-                <div layout="column" fxFlex="50" fxFlex.xs="100" fxFlex.md="50">
-                    <google-button class="push-left-sm" (click)="loginWithGoogle()"></google-button>
-                </div>
-            </div>
+<div *ngIf="registerError" class="push-top-sm push-bottom-md">
+    <error-message text="{{ 'module.login.registerError' | localize }}"></error-message>
+</div>
+<div *ngIf="userAlreadyExistsError" class="push-top-sm push-bottom-md">
+    <error-message text="{{ 'module.login.userAlreadyExistsError' | localize }}"></error-message>
+</div>
+<div *ngIf="loginFailed" class="push-top-sm push-bottom-md">
+    <error-message text="{{ 'module.login.loginFailed' | localize }}"></error-message>
+</div>
+<form [formGroup]="formGroup" autocomplete="false">
+    <div fxLayout="row">
+        <mat-form-field fxFlex>
+            <input #emailElem matInput placeholder="{{ 'module.login.email' | localize }}" type="text" maxlength="{{ emailLength }}"
+                name="email" [formControl]="email" required autocomplete="off">
+            <mat-hint align="start">
+            </mat-hint>
+            <mat-error *ngIf="email.invalid">{{ 'module.login.' + getEmailError() | localize }}</mat-error>
+            <mat-hint align="end">{{emailElem.value.length}} / {{ emailLength }}</mat-hint>
+        </mat-form-field>
+    </div>
+    <div fxLayout="row" class="push-top-sm">
+        <mat-form-field fxFlex>
+            <input matInput placeholder="{{ 'module.login.password' | localize }}" type="password" name="password" [formControl]="password"
+                required autocomplete="off">
+            <mat-error *ngIf="password.invalid">{{ 'module.login.' + getPasswordError() | localize }}</mat-error>
+            <mat-hint *ngIf="mismatchPasswordError && !password.invalid" align="start">
+                <span class="tc-red-600">{{ 'module.login.passwordMismatch' | localize }}</span>
+            </mat-hint>
+        </mat-form-field>
+    </div>
+    <div fxLayout="row" class="push-top-sm">
+        <mat-form-field fxFlex>
+            <input matInput placeholder="{{ 'module.login.passwordConfirm' | localize }}" type="password" name="passwordConfirm" [formControl]="passwordConfirm"
+                required autocomplete="off">
+            <mat-error *ngIf="passwordConfirm.invalid">{{ 'module.login.' + getPasswordConfirmError() | localize }}</mat-error>
+            <mat-hint *ngIf="mismatchPasswordError && !passwordConfirm.invalid" align="start">
+                <span class="tc-red-600">{{ 'module.login.passwordMismatch' | localize }}</span>
+            </mat-hint>
+        </mat-form-field>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="center" class="push-top">
+        <div fxFlex="65" fxFlex.xs="100" fxFlex.md="100">
+            <button fxFlex mat-raised-button color="accent" [disabled]="!formGroup.valid" (click)="onRegister()" class="w-login-page-sign-in-button">
+                {{ 'module.login.register' | localize }}
+            </button>
         </div>
-    </mat-card-content>
-</mat-card>
+    </div>
+</form>
+
+<div fxLayout="row" fxLayoutAlign="center" class="push-top w-login-page-link mat-caption">
+    <div fxLayout="column" fxFlex="100" fxFlex.xs="100" fxFlex.md="100">
+        <a [routerLink]="getLoginUrl()">{{ 'module.login.loginWithExistingAccount' | localize }}</a>
+    </div>
+</div>
+
+<div class="mat-subheading-2 push-top w-login-page-social-separator">
+    {{ 'module.login.orRegister' | localize }}
+</div>
+
+<div fxLayout="row" fxLayoutAlign="center" class="push-top push-bottom w-login-page-social-buttons">
+    <div fxLayout="column" fxFlex="50" fxFlex.xs="100" fxFlex.md="50">
+        <facebook-button (click)="loginWithFacebook()"></facebook-button>
+    </div>
+    <div fxLayout="column" fxFlex="50" fxFlex.xs="100" fxFlex.md="50">
+        <google-button class="push-left-sm" (click)="loginWithGoogle()"></google-button>
+    </div>
+</div>

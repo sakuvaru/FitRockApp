@@ -1,11 +1,10 @@
-import { Observable } from 'rxjs/Rx';
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UrlConfig } from 'app/config';
+import { AuthErrorResponse } from 'lib/repository';
+import { Observable } from 'rxjs/Rx';
 
 import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../../core';
-import { UrlConfig, AppConfig } from 'app/config';
-import { ErrorResponse, AuthErrorResponse } from 'lib/repository';
 
 @Component({
     selector: 'register-form',
@@ -14,8 +13,6 @@ import { ErrorResponse, AuthErrorResponse } from 'lib/repository';
 export class RegisterFormComponent extends BaseComponent implements OnInit {
 
     public readonly emailLength: number = 50;
-
-    public readonly appLogo: string = AppConfig.AppLogoUrl;
 
     private readonly passwordMismatchError: string = 'passwordMismatch';
     private readonly customError: string = 'customError';

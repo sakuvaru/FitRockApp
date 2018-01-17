@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { UrlConfig } from 'app/config';
 import { BaseComponent, ComponentDependencyService, ComponentSetup } from 'app/core';
 
 @Component({

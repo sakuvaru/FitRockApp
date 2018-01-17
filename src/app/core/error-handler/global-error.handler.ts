@@ -1,7 +1,7 @@
 import { LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { ErrorHandler, Injectable, Injector } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from 'lib/auth/';
+import { AuthService, LogStatus } from 'lib/auth/';
 import * as StackTrace from 'stacktrace-js';
 
 import { AppConfig, UrlConfig } from '../../config';
@@ -37,8 +37,8 @@ export class GlobalErrorHandler implements ErrorHandler {
         const url = location instanceof PathLocationStrategy ? location.path() : '';
 
         let userName: string = '';
-        if (authService.isAuthenticated()) {
-            const currentUser = authService.getAuth0UserFromLocalStorage();
+        if (authService.getAuthenticationStatus() === LogStatus.Authenticated) {
+            const currentUser = authService.getCurrentAuthUser();
             if (currentUser && currentUser.email) {
                 userName = currentUser.email;
             }

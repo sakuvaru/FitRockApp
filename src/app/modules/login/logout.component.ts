@@ -1,11 +1,9 @@
-// common
 import { Component } from '@angular/core';
 
-import { UrlConfig } from '../../config';
 import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../../core';
 
 @Component({
-    templateUrl: 'login-page.component.html'
+    templateUrl: 'logout.component.html'
 })
 export class LogoutComponent extends BaseComponent {
 

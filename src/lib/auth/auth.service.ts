@@ -8,6 +8,7 @@ import { Auth0User } from 'lib/auth/models/auth0-user.class';
 import { AppConfig } from '../../app/config';
 import { Auth0LoginCallback } from './models/auth0-login-callback.class';
 import { TokenService } from './token.service';
+import { LogStatus } from './models/log-status.enum';
 
 /*
 Authentication service requirements:
@@ -33,8 +34,10 @@ export class AuthService {
     constructor(private tokenService: TokenService, private http: Http, private router: Router) { 
     }
 
-    getAuth0UserFromLocalStorage(): Auth0User | null {
-        if (!this.isAuthenticated()) {
+    getCurrentAuthUser(): Auth0User | null {
+        const status = this.getAuthenticationStatus();
+
+        if (status === LogStatus.MissingToken) {
             return null;
         }
 
@@ -47,6 +50,7 @@ export class AuthService {
         const decodedToken = this.decodeToken(idToken);
 
         return new Auth0User(
+            status,
             decodedToken['email_verified'], 
             decodedToken['picture'], 
             decodedToken['email'], 
@@ -130,20 +134,20 @@ export class AuthService {
         this.tokenService.removeIdToken();
     }
 
-    isAuthenticated(): boolean {
+    getAuthenticationStatus(): LogStatus {
         const idToken = this.tokenService.getIdToken();
 
         if (!idToken) {
             // missing token - not authenticated
-            return false;
+            return LogStatus.MissingToken;
         }
 
         if (this.isTokenExpired(idToken)) {
             // token is expired
-            return false;
+            return LogStatus.TokenExpired;
         }
 
-        return true;
+        return LogStatus.Authenticated;
     }
 
     private decodeToken(token: string): any {

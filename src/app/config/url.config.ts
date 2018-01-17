@@ -10,6 +10,7 @@ export class UrlConfig {
 
     static Login = 'login';
     static ResetPassword = 'reset-password';
+    static SessionLock = 'session-lock';
     static Register = 'register';
     static AppError = 'error';
     static Unauthorized = 'unauthorized';
@@ -42,6 +43,10 @@ export class UrlConfig {
 
     static getLoginUrl(): string {
         return UrlConfig.getAuthUrl(UrlConfig.Login);
+    }
+
+    static getSessionLockUrl(): string {
+        return UrlConfig.getAuthUrl(UrlConfig.SessionLock);
     }
 
     static getResetPasswordUrl(): string {

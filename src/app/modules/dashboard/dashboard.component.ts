@@ -65,7 +65,7 @@ export class DashboardComponent extends BaseComponent implements OnInit {
                 this.logs = response.items;
             }));
 
-        this.currentUser = this.dependencies.coreServices.authService.getAuth0UserFromLocalStorage();
+        this.currentUser = this.dependencies.coreServices.authService.getCurrentAuthUser();
     }
 
     onLogout(): void {

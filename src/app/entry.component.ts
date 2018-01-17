@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 
 import { BaseComponent, ComponentDependencyService, ComponentSetup } from './core';
 import { AuthenticatedUser } from './core/models/core.models';
+import { LogStatus } from 'lib/auth';
 
 @Component({
   template: '',
@@ -21,11 +22,17 @@ export class EntryComponent extends BaseComponent {
   ) {
     super(dependencies);
     // try getting current user out of the auth service
-    const currentUser = this.dependencies.coreServices.authService.getAuth0UserFromLocalStorage();
+    const currentUser = this.dependencies.coreServices.authService.getCurrentAuthUser();
 
     // if user is not authenticated, just redirect him to logon page
     if (!currentUser) {
       this.dependencies.coreServices.navigateService.loginPage().navigate();
+      return;
+    }
+
+    // if user is found, but his token expired, redirect him to session lock page
+    if (currentUser.status === LogStatus.TokenExpired) {
+      this.dependencies.coreServices.navigateService.sessionLockPage().navigate();
       return;
     }
     

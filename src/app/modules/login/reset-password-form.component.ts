@@ -1,9 +1,9 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+
 import { UrlConfig } from '../../config/url.config';
 import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../../core';
-import { AppConfig } from 'app/config';
 
 @Component({
     selector: 'reset-password-form',
@@ -12,8 +12,6 @@ import { AppConfig } from 'app/config';
 export class ResetPasswordFormComponent extends BaseComponent implements OnInit {
 
     public readonly emailLength: number = 50;
-
-    public readonly appLogo: string = AppConfig.AppLogoUrl;
 
     public email = new FormControl('', [Validators.required, Validators.email]);
 

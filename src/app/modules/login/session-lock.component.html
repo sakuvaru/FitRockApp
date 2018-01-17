@@ -1,0 +1,32 @@
+<div class="w-login-page">
+    <div fxLayout="row" fxLayoutAlign="center">
+        <div fxFlex="25" fxFlex.sm="95" fxFlex.xs="95" fxFlex.md="40">
+            <mat-card>
+                <mat-card-content>
+                    <div fxLayout fxLayout="row" fxLayout.sm="column" fxLayout.xs="column">
+                        <div fxFlex="initial" class="push-sm">
+                            <div class="push-right-md">
+                                <img class="w-login-page-session-avatar" *ngIf="userAvatarUrl" alt="locked user" [src]="userAvatarUrl" />
+                            </div>
+                        </div>
+                        <div fxFlex class="push-top-sm">
+                            <div class="w-login-page-session-title mat-subheading-2">
+                                {{ 'module.login.sessionLock' | localize }}
+                            </div>
+                            <p class="w-login-page-session-caption">
+                                {{ 'module.login.sessionExpired' | localize }}
+                            </p>
+                        </div>
+                    </div>
+
+                    <div fxLayout fxLayout="row" fxLayoutAlign="center" class="push">
+                        <div fxFlex="100">
+                            <login-form [showCreateAccountLink]="false" [showDifferentUserLink]="true" [disableEmailField]="true" [fixedEmail]="email"></login-form>
+                        </div>
+                    </div>
+
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+</div>

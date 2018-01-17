@@ -6,6 +6,7 @@ import { AppConfig, UrlConfig } from '../../config';
 
 // required by component
 import { Log } from '../../models';
+import { LogStatus } from 'lib/auth/models/log-status.enum';
 
 @Component({
   templateUrl: 'app-error.component.html'
@@ -33,7 +34,7 @@ export class AppErrorComponent extends BaseComponent implements OnInit {
   ngOnInit() {
     super.ngOnInit();
 
-    this.showDebugDetails = this.dependencies.coreServices.authService.isAuthenticated();
+    this.showDebugDetails = this.dependencies.coreServices.authService.getAuthenticationStatus() === LogStatus.Authenticated;
 
     // get the guid of error from url
     const logGuid = this.activatedRoute.snapshot.queryParams[UrlConfig.AppErrorLogGuidQueryString];

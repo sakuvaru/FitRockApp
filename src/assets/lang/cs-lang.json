@@ -494,7 +494,10 @@
 			"resetPasswordFailed": "Akce se nezdařilo, kontaktuj nás prosím pokud se tahle chyba opakuje",
 			"missingEmail": "E-mail musí být vyplněný",
 			"resetPasswordSend": "Pokud tento účet existuje, tak e-mail na změnu hesla byl odeslán přes službu Auth0",
-			"resetPassword": "Změnit heslo"
+			"resetPassword": "Změnit heslo",
+			"sessionLock": "Přihlášení vypršelo",
+			"sessionExpired": "Přihlas se prosím znovu",
+			"differentAccount": "Přepnout účet"
 		},
 		"chat": {
 			"send": "Odeslat"

@@ -32,6 +32,10 @@ export class NavigateService {
     return this.getNavigateResult(UrlConfig.getLoginUrl());
   }
 
+  sessionLockPage(navigationExtras?: NavigationExtras): NavigateResult {
+    return this.getNavigateResult(UrlConfig.getSessionLockUrl());
+  }
+
   errorPage(navigationExtras?: NavigationExtras): NavigateResult {
     return this.getNavigateResult(UrlConfig.getErrorUrl());
   }
