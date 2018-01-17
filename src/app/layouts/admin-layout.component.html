@@ -1,3 +1,6 @@
+<loader [enabled]="showLoading" type="linear"></loader>
+
+
 <td-layout *ngIf="ready">
   <td-navigation-drawer fxFlex [sidenavTitle]="appName" [name]="displayUsername">
     <mat-nav-list>
@@ -74,7 +77,6 @@
         </div>
       </div>
 
-      <loader [enabled]="showLoading" type="linear"></loader>
       <!-- ngClass with hidden styles is used because *ngIf would cause the router to not be executed at all -->
       <div [ngClass]="{'w-hidden': !showComponent}">
         <page-wrapper>
