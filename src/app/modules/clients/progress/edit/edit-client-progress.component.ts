@@ -1,22 +1,20 @@
-// common
-import { Component, Input, Output, OnInit, EventEmitter, ViewChild } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-import { ComponentDependencyService, BaseComponent, ComponentSetup } from '../../../../core';
-import { AppConfig, UrlConfig } from '../../../../config';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs/Rx';
+import * as _ from 'underscore';
 
-// required by component
+import { stringHelper } from '../../../../../lib/utilities';
+import { DataFormComponent, DataFormConfig } from '../../../../../web-components/data-form';
+import { DataTableComponent, DataTableConfig, IDynamicFilter } from '../../../../../web-components/data-table';
+import { AppConfig } from '../../../../config';
+import { ComponentDependencyService, ComponentSetup } from '../../../../core';
 import { ProgressItemType } from '../../../../models';
+import { ProgressItem } from '../../../../models';
 import { ClientsBaseComponent } from '../../clients-base.component';
 import { ClientMenuItems } from '../../menu.items';
-import { DataFormComponent, DataFormConfig, DataFormFieldChangeResult } from '../../../../../web-components/data-form';
-import { DataTableConfig, DataTableComponent, IDynamicFilter } from '../../../../../web-components/data-table';
-import { ProgressItem, User, ProgressItemTypeWithCountDto } from '../../../../models';
-import { Observable } from 'rxjs/Rx';
 import { EditProgressItemDialogComponent } from '../dialogs/edit-progress-item-dialog.component';
-import { SelectProgressTypeDialogComponent } from '../dialogs/select-progress-type-dialog.component';
 import { NewClientProgressItemTypeDialogComponent } from '../dialogs/new-client-progress-item-type-dialog.component';
-import * as _ from 'underscore';
-import { stringHelper } from '../../../../../lib/utilities';
+import { SelectProgressTypeDialogComponent } from '../dialogs/select-progress-type-dialog.component';
 
 @Component({
     templateUrl: 'edit-client-progress.component.html'
@@ -59,7 +57,6 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
         const observables: Observable<any>[] = [];
 
         const obsClientMenu = this.clientChange
-            .takeUntil(this.ngUnsubscribe)
             .map(client => {
                 this.setConfig({
                     menuItems: new ClientMenuItems(client.id).menuItems,

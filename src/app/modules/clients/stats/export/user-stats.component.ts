@@ -71,16 +71,21 @@ export class UserStatsComponent extends BaseComponent implements OnInit, OnChang
                 })
         )
             .dataResolver(data => {
-                data = data as MultiSeries[];
+                const dataConst = data as MultiSeries[];
+                const originalSeriesLabel: string = data[0].name;
 
-                data.forEach(series => {
-                    series.series.forEach(singleSeries => {
-                        const seriesDate = new Date(singleSeries.name);
-                        singleSeries.name = super.formatDate(seriesDate);
+                // translate line value
+                return super.translate('module.progressItemTypes.globalTypes.' + originalSeriesLabel).map(text => {
+                    dataConst.forEach(series => {
+                        // if translation could not be resolved, use original name
+                        series.name = text.startsWith('module.progressItemTypes.globalTypes.') ? originalSeriesLabel : text;
+                        series.series.forEach(singleSeries => {
+                            const seriesDate = new Date(singleSeries.name);
+                            singleSeries.name = super.formatDate(seriesDate);
+                        });
                     });
+                    return data;
                 });
-
-                return Observable.of(data);
             })
             .build();
     }

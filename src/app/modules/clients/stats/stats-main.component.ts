@@ -1,14 +1,10 @@
-// common
-import { Component, Input, Output, OnInit, EventEmitter, ViewChild } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-import { ComponentDependencyService, BaseComponent, ComponentSetup } from '../../../core';
-import { AppConfig, UrlConfig } from '../../../config';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs/Rx';
 
-// required by component
-import { ProgressItemType } from '../../../models';
+import { ComponentDependencyService, ComponentSetup } from '../../../core';
 import { ClientsBaseComponent } from '../clients-base.component';
 import { ClientMenuItems } from '../menu.items';
-import { Observable } from 'rxjs/Rx';
 
 @Component({
     selector: 'stats-main',
