@@ -1,25 +1,22 @@
-// common
-import { Component, Input, Output, OnInit, EventEmitter, Inject } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-import { ComponentDependencyService, BaseComponent, ComponentConfig, ComponentSetup } from '../../../../core';
-import { AppConfig, UrlConfig } from '../../../../config';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
-// required by component
-import { MAT_DIALOG_DATA } from '@angular/material';
+import { BaseDialogComponent, ComponentDependencyService, ComponentSetup } from '../../../../core';
 import { WorkoutExercise } from '../../../../models';
 
 @Component({
   templateUrl: 'workout-list-dialog.component.html'
 })
-export class WorkoutListDialogComponent extends BaseComponent implements OnInit {
+export class WorkoutListDialogComponent extends BaseDialogComponent<WorkoutListDialogComponent> implements OnInit {
 
   public workoutExercises: WorkoutExercise[];
 
   constructor(
     protected dependencies: ComponentDependencyService,
+    protected dialogRef: MatDialogRef<WorkoutListDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    super(dependencies);
+    super(dependencies, dialogRef, data);
     this.workoutExercises = data.workoutExercises;
   }
 

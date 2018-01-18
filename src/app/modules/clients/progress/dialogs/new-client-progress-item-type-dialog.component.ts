@@ -1,31 +1,26 @@
-// common
-import { Inject, Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-import { ComponentDependencyService, BaseComponent, ComponentSetup } from '../../../../core';
-import { AppConfig, UrlConfig } from '../../../../config';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { Observable } from 'rxjs/Rx';
 
-// required by component
-import { MAT_DIALOG_DATA } from '@angular/material';
-import { ClientsBaseComponent } from '../../clients-base.component';
 import { DataFormConfig } from '../../../../../web-components/data-form';
-import { NewClientProgressItemTypeMenuItems } from '../../menu.items';
+import { BaseDialogComponent, ComponentDependencyService, ComponentSetup } from '../../../../core';
 import { ProgressItemType } from '../../../../models';
-import { Observable, Subject } from 'rxjs/Rx';
 
 @Component({
     templateUrl: 'new-client-progress-item-type-dialog.component.html'
 })
-export class NewClientProgressItemTypeDialogComponent extends ClientsBaseComponent implements OnInit {
+export class NewClientProgressItemTypeDialogComponent extends BaseDialogComponent<NewClientProgressItemTypeDialogComponent> implements OnInit {
 
     public formConfig: DataFormConfig;
 
     public createdProgressItemType?: ProgressItemType;
 
     constructor(
-        protected activatedRoute: ActivatedRoute,
-        protected componentDependencyService: ComponentDependencyService,
+        protected dependencies: ComponentDependencyService,
+        protected dialogRef: MatDialogRef<NewClientProgressItemTypeDialogComponent>,
+        @Inject(MAT_DIALOG_DATA) public data: any
     ) {
-        super(componentDependencyService, activatedRoute);
+        super(dependencies, dialogRef, data);
     }
 
     setup(): ComponentSetup {

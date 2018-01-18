@@ -1,15 +1,16 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { SelectFoodDialogComponent } from 'app/modules/foods/dialogs/select-food-dialog.component';
 import { IDynamicFilter } from 'web-components/data-table/data-table.builder';
 
 import { DataTableConfig } from '../../../../web-components/data-table';
-import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
+import { BaseDialogComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
 import { Food } from '../../../models';
 
 @Component({
   templateUrl: 'select-diet-food-dialog.component.html'
 })
-export class SelectDietFoodDialogComponent extends BaseComponent implements OnInit {
+export class SelectDietFoodDialogComponent extends BaseDialogComponent<SelectFoodDialogComponent> implements OnInit {
 
   public selectable: boolean = true;
   public config?: DataTableConfig;
@@ -25,9 +26,10 @@ export class SelectDietFoodDialogComponent extends BaseComponent implements OnIn
 
   constructor(
     protected dependencies: ComponentDependencyService,
+    protected dialogRef: MatDialogRef<SelectFoodDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    super(dependencies);
+    super(dependencies, dialogRef, data);
 
     this.takeFoodDishes = data.takeFoodDishes;
   }

@@ -6,6 +6,7 @@ export * from './services/shared.service';
 export * from './services/authenticated-user.service';
 export * from './error-handler/global-error.handler';
 export * from './component/base.component';
+export * from './component/base-dialog.component';
 export * from './component/admin-menu';
 export * from './component/component-dependency.service';
 export * from './models/core.models';

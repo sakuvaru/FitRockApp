@@ -1,20 +1,16 @@
-// common
-import { Component, Input, Output, OnInit, EventEmitter, Inject } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-import { ComponentDependencyService, BaseComponent, ComponentConfig, ComponentSetup } from '../../../core';
-import { AppConfig, UrlConfig } from '../../../config';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { Observable } from 'rxjs/Rx';
 
-// required by component
-import { Exercise } from '../../../models';
-import { MAT_DIALOG_DATA } from '@angular/material';
-import { WorkoutExercise } from '../../../models';
 import { DataFormConfig } from '../../../../web-components/data-form';
-import { Observable, Subject } from 'rxjs/Rx';
+import { BaseDialogComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
+import { Exercise } from '../../../models';
+import { WorkoutExercise } from '../../../models';
 
 @Component({
   templateUrl: 'add-workout-exercise-dialog.component.html'
 })
-export class AddWorkoutExerciseDialogComponent extends BaseComponent implements OnInit {
+export class AddWorkoutExerciseDialogComponent extends BaseDialogComponent<AddWorkoutExerciseDialogComponent> implements OnInit {
 
   public workoutId: number;
   public exercise: Exercise;
@@ -28,9 +24,10 @@ export class AddWorkoutExerciseDialogComponent extends BaseComponent implements 
 
   constructor(
     protected dependencies: ComponentDependencyService,
+    protected dialogRef: MatDialogRef<AddWorkoutExerciseDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    super(dependencies);
+    super(dependencies, dialogRef, data);
 
 
     this.workoutId = data.workoutId;

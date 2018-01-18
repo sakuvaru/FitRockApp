@@ -1,19 +1,14 @@
-// common
-import { Component, Input, Output, OnInit, EventEmitter, Inject } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-import { ComponentDependencyService, BaseComponent, ComponentConfig, ComponentSetup } from '../../../core';
-import { AppConfig, UrlConfig } from '../../../config';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
-// required by component
 import { DataTableConfig, IDynamicFilter } from '../../../../web-components/data-table';
+import { BaseDialogComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
 import { Exercise } from '../../../models';
-import { MAT_DIALOG_DATA } from '@angular/material';
-import { Observable } from 'rxjs/Rx';
 
 @Component({
   templateUrl: 'select-workout-exercise-dialog.component.html'
 })
-export class SelectWorkoutExerciseDialogComponent extends BaseComponent implements OnInit {
+export class SelectWorkoutExerciseDialogComponent extends BaseDialogComponent<SelectWorkoutExerciseDialogComponent> implements OnInit {
 
   public selectable: boolean = true;
   public config: DataTableConfig;
@@ -23,9 +18,10 @@ export class SelectWorkoutExerciseDialogComponent extends BaseComponent implemen
 
   constructor(
     protected dependencies: ComponentDependencyService,
+    protected dialogRef: MatDialogRef<SelectWorkoutExerciseDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    super(dependencies);
+    super(dependencies, dialogRef, data);
 
   }
 

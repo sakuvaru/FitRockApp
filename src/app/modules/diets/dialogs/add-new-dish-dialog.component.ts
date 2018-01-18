@@ -1,15 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { stringHelper } from 'lib/utilities';
 import { Observable } from 'rxjs/Rx';
 
 import { DataFormConfig } from '../../../../web-components/data-form';
-import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
+import { BaseDialogComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
 import { Food } from '../../../models';
 
 @Component({
   templateUrl: 'add-new-dish-dialog.component.html'
 })
-export class AddNewDishDialogComponent extends BaseComponent implements OnInit {
+export class AddNewDishDialogComponent extends BaseDialogComponent<AddNewDishDialogComponent> implements OnInit {
 
   public foodForm: DataFormConfig;
 
@@ -20,8 +21,10 @@ export class AddNewDishDialogComponent extends BaseComponent implements OnInit {
 
   constructor(
     protected dependencies: ComponentDependencyService,
+    protected dialogRef: MatDialogRef<AddNewDishDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    super(dependencies);
+    super(dependencies, dialogRef, DataCue);
 
   }
 

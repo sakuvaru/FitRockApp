@@ -1,46 +1,35 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
-import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
+import { BaseDialogComponent, ComponentDependencyService } from '../../../core';
 
 @Component({
   templateUrl: 'food-dish-amount.component.html'
 })
-export class FoodDishAmountDialogComponent extends BaseComponent implements OnInit {
+export class FoodDishAmountDialogComponent extends BaseDialogComponent<FoodDishAmountDialogComponent> implements OnInit {
 
   public unitCode?: string;
   public amount?: number;
 
   constructor(
-    private dialogRef: MatDialogRef<FoodDishAmountDialogComponent>,
     protected dependencies: ComponentDependencyService,
+    protected dialogRef: MatDialogRef<FoodDishAmountDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    super(dependencies);
+    super(dependencies, dialogRef, data);
     this.unitCode = data.unitCode;
-  }
-
-  setup(): ComponentSetup {
-    return new ComponentSetup({
-      initialized: true,
-      isNested: true
-    });
   }
 
   cancel(): void {
     this.amount = undefined;
-    this.close();
+    super.close();
   }
 
   confirm(): void {
-    this.close();
+    super.close();
   }
 
   ngOnInit() {
     super.ngOnInit();
-  }
-
-  public close(): void {
-    this.dialogRef.close();
   }
 }

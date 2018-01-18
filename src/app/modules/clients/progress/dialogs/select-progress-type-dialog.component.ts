@@ -1,18 +1,14 @@
-// common
-import { Component, Input, Output, OnInit, EventEmitter, Inject } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-import { ComponentDependencyService, BaseComponent, ComponentConfig, ComponentSetup } from '../../../../core';
-import { AppConfig, UrlConfig } from '../../../../config';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
-// required by component
 import { DataTableConfig } from '../../../../../web-components/data-table';
-import { MAT_DIALOG_DATA } from '@angular/material';
+import { BaseDialogComponent, ComponentDependencyService, ComponentSetup } from '../../../../core';
 import { ProgressItemType } from '../../../../models';
 
 @Component({
   templateUrl: 'select-progress-type-dialog.component.html'
 })
-export class SelectProgressTypeDialogComponent extends BaseComponent implements OnInit {
+export class SelectProgressTypeDialogComponent extends BaseDialogComponent<SelectProgressTypeDialogComponent> implements OnInit {
 
   public config: DataTableConfig;
   public selectedItem: ProgressItemType;
@@ -20,9 +16,10 @@ export class SelectProgressTypeDialogComponent extends BaseComponent implements 
 
   constructor(
     protected dependencies: ComponentDependencyService,
+    protected dialogRef: MatDialogRef<SelectProgressTypeDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    super(dependencies);
+    super(dependencies, dialogRef, data);
 
   }
 

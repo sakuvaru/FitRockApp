@@ -1,18 +1,14 @@
-// common
-import { Component, Input, Output, OnInit, EventEmitter, Inject } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-import { ComponentDependencyService, BaseComponent, ComponentConfig, ComponentSetup } from '../../../../core';
-import { AppConfig, UrlConfig } from '../../../../config';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
-// required by component
-import { MAT_DIALOG_DATA } from '@angular/material';
-import { ProgressItem } from '../../../../models';
 import { DataFormConfig } from '../../../../../web-components/data-form';
+import { BaseDialogComponent, ComponentDependencyService, ComponentSetup } from '../../../../core';
+import { ProgressItem } from '../../../../models';
 
 @Component({
   templateUrl: 'edit-progress-item-dialog.component.html'
 })
-export class EditProgressItemDialogComponent extends BaseComponent implements OnInit {
+export class EditProgressItemDialogComponent extends BaseDialogComponent<EditProgressItemDialogComponent> implements OnInit {
 
   public formConfig: DataFormConfig;
 
@@ -23,9 +19,10 @@ export class EditProgressItemDialogComponent extends BaseComponent implements On
 
   constructor(
     protected dependencies: ComponentDependencyService,
+    protected dialogRef: MatDialogRef<EditProgressItemDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    super(dependencies);
+    super(dependencies, dialogRef, data);
     this.item = data;
 
   }

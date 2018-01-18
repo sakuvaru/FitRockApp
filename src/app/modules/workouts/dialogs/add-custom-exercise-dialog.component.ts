@@ -1,19 +1,15 @@
-// common
-import { Component, Input, Output, OnInit, EventEmitter, Inject } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-import { ComponentDependencyService, BaseComponent, ComponentConfig, ComponentSetup } from '../../../core';
-import { AppConfig, UrlConfig } from '../../../config';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { Observable } from 'rxjs/Rx';
 
-// required by component
-import { Exercise } from '../../../models';
-import { MAT_DIALOG_DATA } from '@angular/material';
 import { DataFormConfig } from '../../../../web-components/data-form';
-import { Observable, Subject } from 'rxjs/Rx';
+import { BaseDialogComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
+import { Exercise } from '../../../models';
 
 @Component({
   templateUrl: 'add-custom-exercise-dialog.component.html'
 })
-export class AddCustomExerciseDialogComponent extends BaseComponent implements OnInit {
+export class AddCustomExerciseDialogComponent extends BaseDialogComponent<AddCustomExerciseDialogComponent> implements OnInit {
 
   public workoutExerciseForm: DataFormConfig;
 
@@ -24,9 +20,10 @@ export class AddCustomExerciseDialogComponent extends BaseComponent implements O
 
   constructor(
     protected dependencies: ComponentDependencyService,
+    protected dialogRef: MatDialogRef<AddCustomExerciseDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    super(dependencies);
-
+    super(dependencies, dialogRef, data);
   }
 
   setup(): ComponentSetup {

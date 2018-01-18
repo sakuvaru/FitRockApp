@@ -1,15 +1,15 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { Observable } from 'rxjs/Rx';
 
 import { DataFormConfig } from '../../../../web-components/data-form';
-import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
+import { BaseDialogComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
 import { DietFood } from '../../../models';
 
 @Component({
   templateUrl: 'edit-diet-food-dialog.component.html'
 })
-export class EditDietFoodDialogComponent extends BaseComponent implements OnInit {
+export class EditDietFoodDialogComponent extends BaseDialogComponent<EditDietFoodDialogComponent> implements OnInit {
 
   public dietFoodForm: DataFormConfig;
 
@@ -21,9 +21,10 @@ export class EditDietFoodDialogComponent extends BaseComponent implements OnInit
 
   constructor(
     protected dependencies: ComponentDependencyService,
+    protected dialogRef: MatDialogRef<EditDietFoodDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    super(dependencies);
+    super(dependencies, dialogRef, data);
     
 
     this.dietFood = data;
