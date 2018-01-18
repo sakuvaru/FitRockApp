@@ -4,7 +4,7 @@
     <input [owlDateTimeTrigger]="dt2" [owlDateTime]="dt2" matInput [formControlName]="field.key" [id]="field.key" [required]="field.required"
     [placeholder]="field.label">
     <owl-date-time #dt2></owl-date-time>
-    <mat-error>{{customError}}</mat-error>
+    <mat-error *ngIf="customError">{{customError}}</mat-error>
     <mat-icon *ngIf="field.options && field.options.icon" matSuffix>{{ field.options.icon }}</mat-icon>
   </mat-form-field>
 </div>

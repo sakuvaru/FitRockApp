@@ -5,6 +5,6 @@
       [placeholder]="field.label">
     <mat-datepicker-toggle matSuffix [for]="datepicker"></mat-datepicker-toggle>
     <mat-datepicker #datepicker></mat-datepicker>
-    <mat-error>{{customError}}</mat-error>
+    <mat-error *ngIf="customError">{{customError}}</mat-error>
   </mat-form-field>
 </div>

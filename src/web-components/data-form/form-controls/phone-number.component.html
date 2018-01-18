@@ -8,7 +8,7 @@
     <!-- Don't show length hint for phone
       <mat-hint *ngIf="showLengthHint" [ngClass]="{'tc-red-600': elem.value.length > options.maxLength}" align="end">{{elem.value.length}} / {{options.maxLength}}</mat-hint>
      -->
-    <mat-error>{{customError}}</mat-error>
+    <mat-error *ngIf="customError">{{customError}}</mat-error>
   </mat-form-field>
 
 </div>
