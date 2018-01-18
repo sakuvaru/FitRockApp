@@ -33,8 +33,8 @@
 
 <div fxLayout="row" fxLayoutAlign="center" class="push-top w-login-page-link mat-caption">
     <div fxLayout="column" fxFlex="50" fxFlex.xs="100" fxFlex.md="50">
-        <a *ngIf="showCreateAccountLink" [routerLink]="getRegisterUrl()">{{ 'module.login.createAccount' | localize }}</a>
-        <a *ngIf="showDifferentUserLink" [routerLink]="getLoginUr()">{{ 'module.login.differentAccount' | localize }}</a>
+        <a *ngIf="!isSessionLock" [routerLink]="getRegisterUrl()">{{ 'module.login.createAccount' | localize }}</a>
+        <a *ngIf="isSessionLock" [routerLink]="getLoginUr()">{{ 'module.login.differentAccount' | localize }}</a>
     </div>
     <div fxLayout="column" fxFlex="50" fxFlex.xs="100" fxFlex.md="50" class="text-right">
         <a [routerLink]="getResetPasswordUrl()">{{ 'module.login.forgotYourPassword' | localize }}</a>

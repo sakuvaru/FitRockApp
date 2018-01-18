@@ -1,14 +1,12 @@
-// common
-import { Component, Input, Output, OnInit, EventEmitter, OnDestroy, AfterViewInit } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-import { ComponentDependencyService, BaseComponent, ComponentConfig, ComponentSetup } from '../../../../core';
-import { AppConfig, UrlConfig } from '../../../../config';
-
-// required by component
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
+
+import { AppConfig } from '../../../../config';
+import { ComponentDependencyService, ComponentSetup } from '../../../../core';
+import { Appointment } from '../../../../models';
 import { ClientsBaseComponent } from '../../clients-base.component';
 import { ClientEditAppointmentMenuItems } from '../../menu.items';
-import { Appointment, User } from '../../../../models';
 
 @Component({
   templateUrl: 'view-client-appointment.component.html'
@@ -27,7 +25,7 @@ export class ViewClientAppointmentComponent extends ClientsBaseComponent impleme
 
   setup(): ComponentSetup {
     return new ComponentSetup({
-        initialized: true,
+        initialized: false,
         isNested: false
     });
 }

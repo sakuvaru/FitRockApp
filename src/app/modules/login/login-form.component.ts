@@ -17,11 +17,7 @@ export class LoginFormComponent extends BaseComponent implements OnInit, OnChang
      * This is created because the fixed e-mail can be provided at a later time. This should be set
      * immediately so that the field is also disabled immediately
      */
-    @Input() disableEmailField: boolean = false;
-
-    @Input() showCreateAccountLink: boolean = true;
-
-    @Input() showDifferentUserLink: boolean = false;
+    @Input() isSessionLock: boolean = false;
 
     public readonly emailLength: number = 50;
 
@@ -64,7 +60,7 @@ export class LoginFormComponent extends BaseComponent implements OnInit, OnChang
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        if (this.disableEmailField) {
+        if (this.isSessionLock) {
             // set disabled field if e-mail is forced
             this.email.disable();
         }   
