@@ -11,10 +11,15 @@ export class AuthGuardService implements CanActivate {
     constructor(private authService: AuthService, private navigateService: NavigateService) { }
 
     canActivate(): boolean {
-        if (this.authService.getAuthenticationStatus() === LogStatus.Authenticated) {
+        const status = this.authService.getAuthenticationStatus();
+        if (status === LogStatus.Authenticated) {
             return true;
         } else {
-            this.navigateService.unauthorizedPage().navigate();
+            if (status === LogStatus.TokenExpired) {
+                this.navigateService.sessionLockPage().navigate();
+            } else {
+                this.navigateService.unauthorizedPage().navigate();
+            }
             return false;
         }
     }
