@@ -1,29 +1,24 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
-import { BaseComponent } from '../base.component';
 import { ComponentDependencyService } from '../component-dependency.service';
-import { ComponentSetup } from '../component-setup.class';
+import { BaseModuleComponent } from './base-module.component';
 
 @Component({
 })
-export abstract class BaseDialogComponent<TDialogComponent> extends BaseComponent implements OnInit {
+export abstract class BaseDialogComponent<TDialogComponent> extends BaseModuleComponent implements OnInit {
 
   constructor(
     protected dependencies: ComponentDependencyService,
     protected dialogRef: MatDialogRef<TDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    options?: {
+      subscribedToRepositoryErrors?: boolean
+  }
   ) {
-    super(dependencies);
+    super(dependencies, options);
   }
-
-  setup(): ComponentSetup {
-    return new ComponentSetup({
-      initialized: true,
-      isNested: true
-    });
-  }
-
+  
   ngOnInit() {
     super.ngOnInit();
   }

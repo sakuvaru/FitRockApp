@@ -12,10 +12,16 @@ import { AdminToolbarComponent } from './shared/admin-toolbar.component';
 @NgModule({
     imports: [
         CommonModule,
-        RouterModule, // router module needs to be exported along with the layouts so that router-outlet can be used
+        RouterModule, 
         CoreModule
     ],
     declarations: [
+        SimpleLayoutComponent,
+        AdminLayoutComponent,
+        FooterComponent,
+        AdminToolbarComponent
+    ],
+    exports: [
         SimpleLayoutComponent,
         AdminLayoutComponent,
         FooterComponent,

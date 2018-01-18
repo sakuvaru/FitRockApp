@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FlexLayoutModule, MediaQueriesModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DragulaModule } from 'ng2-dragula';
+import { RouterModule } from '@angular/router';
 
 import { DirectivesModule } from '../../directives';
 import { AuthModule } from '../../lib/auth';
@@ -12,17 +13,20 @@ import { AngularMaterialModule } from '../../lib/material';
 import { WebComponentsModule } from '../../web-components';
 import { ComponentDependencyService } from './component/component-dependency.service';
 import { AppLanguageResolver } from './providers/app-language-resolver';
-import { AuthenticatedUserService } from './services/authenticated-user.service';
-import { CurrentLanguageService } from './services/current-language.service';
-import { SharedService } from './services/shared.service';
-import { SystemService } from './services/system.service';
-import { TimeService } from './services/time.service';
-import { RememberService } from './services/remember.service';
-import { NavigateService } from './services/navigate.service';
-import { LocalizationHelperService } from './services/localization-helper.service';
+import {
+    AuthenticatedUserService,
+    CurrentLanguageService,
+    LocalizationHelperService,
+    NavigateService,
+    RememberService,
+    SharedService,
+    SystemService,
+    TimeService,
+} from './services';
 
 @NgModule({
     imports: [
+        RouterModule,
         CommonModule,
         ReactiveFormsModule,
         FormsModule,
@@ -51,6 +55,7 @@ import { LocalizationHelperService } from './services/localization-helper.servic
         LocalizationHelperService
     ],
     exports: [
+        RouterModule,
         CommonModule,
         ReactiveFormsModule,
         FormsModule,
@@ -62,7 +67,7 @@ import { LocalizationHelperService } from './services/localization-helper.servic
         WebComponentsModule,
         DragulaModule,
         DirectivesModule,
-        LocalizationModule
+        LocalizationModule,
     ]
 })
 export class CoreModule { }

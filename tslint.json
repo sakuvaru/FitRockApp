@@ -120,13 +120,10 @@
       "app",
       "camelCase"
     ],
-    /* This rule is edited as this project uses different component names, revisit this rule later*/
-    "component-selector": [
-      true,
-      "element",
-      "",
-      ""
-    ],
+    /**
+      'mod' is my prefix for components inside 'modules' folder
+    **/
+    "component-selector": ["element", ["mod", ""], "kebab-case"],
     "use-input-property-decorator": true,
     "use-output-property-decorator": true,
     "use-host-property-decorator": true,

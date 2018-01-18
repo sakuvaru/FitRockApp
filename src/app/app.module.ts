@@ -62,21 +62,17 @@ import { CoreModule } from './core';
 // web component services
 import { WebComponentServicesModule } from './web-component-services/web-component-services.module';
 
-// modules
+// layouts
 import { LayoutsModule } from './layouts/layouts.module';
-import { SharedModule } from './modules/shared/shared.module';
+
+// services
 import { ServicesModule } from './services/services.module';
-import { DashboardModule } from './modules/dashboard/dashboard.module';
-import { LoginModule } from './modules/login/login.module';
-import { ClientsModule } from './modules/clients/clients.module';
-import { WorkoutsModule } from './modules/workouts/workouts.module';
-import { ExercisesModule } from './modules/exercises/exercises.module';
-import { DietsModule } from './modules/diets/diets.module';
-import { FoodsModule } from './modules/foods/foods.module';
-import { ProgressItemTypesModule } from './modules/progress-item-types/progress-item-types.module';
-import { ProfileModule } from './modules/profile/profile.module';
-import { ChatModule } from './modules/chat/chat.module';
-import { LocationModule } from './modules/locations/location.module';
+
+// modules
+import { ModulesModule } from './modules/modules.module';
+
+// pages
+import { PagesModule } from './pages/pages.module';
 
 @NgModule({
   declarations: [
@@ -118,21 +114,14 @@ import { LocationModule } from './modules/locations/location.module';
     // web component services
     WebComponentServicesModule,
 
-    // modules
-    LayoutsModule,
-    SharedModule,
-    DashboardModule,
+    // services
     ServicesModule,
-    LoginModule,
-    ClientsModule,
-    WorkoutsModule,
-    ExercisesModule,
-    DietsModule,
-    FoodsModule,
-    ProgressItemTypesModule,
-    ProfileModule,
-    ChatModule,
-    LocationModule,
+
+    // modules
+    ModulesModule,
+
+    // pages
+    PagesModule,
 
     // localization
     LocalizationModule.forRoot({

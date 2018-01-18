@@ -1,18 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { ResponseMultiple } from 'lib/repository';
 import { Observable } from 'rxjs/Rx';
 import * as _ from 'underscore';
 
 import { DataFormConfig } from '../../../web-components/data-form';
 import { AppConfig } from '../../config';
-import { BasePageComponent, ComponentDependencyService, ComponentSetup } from '../../core';
-import { ChatMessage } from '../../models';
-import { ChatMenuItems } from './menu.items';
+import { BaseModuleComponent, ComponentDependencyService, ComponentSetup } from '../../core';
+import { ChatMessage, User } from '../../models';
 
 @Component({
+    selector: 'mod-chat',
     templateUrl: 'chat.component.html'
 })
-export class ChatComponent extends BasePageComponent implements OnInit {
+export class ChatComponent extends BaseModuleComponent implements OnInit {
+
+    @Input() changeUser: Observable<number>;
+
+    @Output() usersLoaded = new EventEmitter<ResponseMultiple<User>>();
+    @Output() activeUserLoad = new EventEmitter<User>();
 
     public formConfig?: DataFormConfig;
     public chatMessages?: ChatMessage[];
@@ -24,26 +30,18 @@ export class ChatComponent extends BasePageComponent implements OnInit {
 
     public noConversationFound: boolean = false;
     public noUserFound: boolean = false;
-    public activeChatUserId: number;
+
+    public activeUserId: number;
 
     private readonly clientsPageSize: number = 200;
 
     public readonly defaultAvatarUrl: string = AppConfig.DefaultUserAvatarUrl;
 
     constructor(
-        protected activatedRoute: ActivatedRoute,
         protected componentDependencyService: ComponentDependencyService
     ) {
         super(componentDependencyService);
     }
-
-    setup(): ComponentSetup {
-        return new ComponentSetup({
-            initialized: false,
-            isNested: false
-        });
-    }
-
     ngOnInit(): void {
         super.ngOnInit();
         super.subscribeToObservables(this.getComponentObservables());
@@ -53,14 +51,14 @@ export class ChatComponent extends BasePageComponent implements OnInit {
     }
     
     loadMoreMessages(): void {
-        super.subscribeToObservable(this.getChatMessagesObservable(this.activeChatUserId, this.chatMessagesPage, false, this.chatMessagesSearch)
+        super.subscribeToObservable(this.getChatMessagesObservable(this.activeUserId, this.chatMessagesPage, false, this.chatMessagesSearch)
             .takeUntil(this.ngUnsubscribe));
     }
 
     searchConversation(search: string): void {
         this.chatMessagesPage = 1;
         this.chatMessagesSearch = search;
-        super.subscribeToObservable(this.getChatMessagesObservable(this.activeChatUserId, this.chatMessagesPage, true, this.chatMessagesSearch));
+        super.subscribeToObservable(this.getChatMessagesObservable(this.activeUserId, this.chatMessagesPage, true, this.chatMessagesSearch));
     }
 
     private getComponentObservables(): Observable<any>[] {
@@ -82,22 +80,17 @@ export class ChatComponent extends BasePageComponent implements OnInit {
                     .takeUntil(this.ngUnsubscribe);
             })
             .map(response => {
-                this.setConfig({
-                    menuItems: new ChatMenuItems(response.items).menuItems,
-                    enableSearch: true
-                });
+                this.usersLoaded.next(response);
             });
     }
 
     private getConverstationObservable(): Observable<any> {
-        return this.activatedRoute.params
-            .switchMap(params => {
+        return this.changeUser
+            .switchMap(userId => {
                 super.startGlobalLoader();
                 this.resetChatUser();
 
-                const userIdParam = +params['id'];
-
-                if (!userIdParam) {
+                if (!userId) {
                     return this.dependencies.itemServices.userService.clients()
                         .orderByAsc('FirstName')
                         .limit(1)
@@ -105,7 +98,7 @@ export class ChatComponent extends BasePageComponent implements OnInit {
                 }
 
                 return this.dependencies.itemServices.userService.clients()
-                    .whereEquals('Id', userIdParam)
+                    .whereEquals('Id', userId)
                     .limit(1)
                     .get();
             })
@@ -117,24 +110,21 @@ export class ChatComponent extends BasePageComponent implements OnInit {
 
                 const activeUser = response.items[0];
 
-                this.activeChatUserId = activeUser.id;
+                this.activeUserId = activeUser.id;
 
-                // update component config with user's name
-                super.setConfig({
-                    componentTitle: { key: activeUser.getFullName() }
-                });
+                this.activeUserLoad.next(activeUser);
 
                 return Observable.of(response);
             })
             .switchMap(response => {
-                if (!this.activeChatUserId) {
+                if (!this.activeUserId) {
                     return Observable.of(response);
                 }
 
-                return this.getChatMessagesObservable(this.activeChatUserId, this.chatMessagesPage, true, this.chatMessagesSearch);
+                return this.getChatMessagesObservable(this.activeUserId, this.chatMessagesPage, true, this.chatMessagesSearch);
             })
             .map(() => {
-                this.initChatForm(this.activeChatUserId);
+                this.initChatForm(this.activeUserId);
 
                 super.stopAllLoaders();
             });

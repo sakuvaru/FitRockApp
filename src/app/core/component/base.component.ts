@@ -1,10 +1,11 @@
 import { OnDestroy, OnInit } from '@angular/core';
 import { NavigationExtras } from '@angular/router';
+import { AuthenticatedUser, LanguageConfig } from 'app/core';
+import { ErrorReasonEnum, ErrorResponse } from 'lib/repository';
 import { Observable, Subject } from 'rxjs/Rx';
 
-import { UrlConfig } from '../../config';
+import { AppConfig, UrlConfig } from '../../config';
 import { ComponentDependencyService } from './component-dependency.service';
-import { AuthenticatedUser, LanguageConfig } from 'app/core';
 
 
 export abstract class BaseComponent implements OnInit, OnDestroy {
@@ -30,7 +31,25 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
      */
     protected authUser?: AuthenticatedUser;
 
-    constructor(protected dependencies: ComponentDependencyService) {
+    /**
+    * Indicates if component subscribed to repository errors
+    */
+    protected subscribedToRepositoryErrors: boolean = false;
+
+    protected translations = {
+        dialogErrorTitle: '',
+        dialogDefaultError: '',
+        dialogCloseButton: '',
+        dialogDynamicTranslationMessage: '',
+        dialogDynamicTranslationTitle: ''
+    };
+
+    constructor(protected dependencies: ComponentDependencyService, options?: {
+        subscribedToRepositoryErrors?: boolean
+    }) {
+        if (options) {
+            Object.assign(this, options);
+        }
     }
 
     // ----------------------- Lifecycle Events --------------------- // 
@@ -60,6 +79,7 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
         this.ngUnsubscribe.next();
         this.ngUnsubscribe.complete();
     }
+
 
     // ------------------- Loader ---------------------------- //
 
@@ -121,5 +141,109 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
 
     fromNow(date: Date): string {
         return this.dependencies.coreServices.timeService.fromNow(date);
+    }
+
+    // --------------------- Error handlers -------------- // 
+
+    protected handleSubscribeError(error: any): void {
+        // no need to do anything here as errors are handled with handleAppError
+    }
+
+    protected handleAppError(error: any): void {
+        // force stop all loaders
+        this.stopAllLoaders(true);
+
+        if (AppConfig.DevModeEnabled) {
+            // log errors to console in dev mode
+            console.error(error);
+        }
+
+        if (error instanceof ErrorResponse) {
+            // don't do anything if its form error as these error should be handled by individual components
+            if (error.reason === ErrorReasonEnum.FormError) {
+                return;
+            }
+
+            // don't handle auth exception as they are handled by register form directly
+            if (error.reason === ErrorReasonEnum.AuthException) {
+                return;
+            }
+
+            // handle server not running error
+            if (error.reason === ErrorReasonEnum.ServerNotRunning) {
+                this.dependencies.coreServices.navigateService.serverDownPage().navigate();
+                return;
+            }
+
+            // handle not found error
+            if (error.reason === ErrorReasonEnum.NotFound) {
+                this.dependencies.coreServices.navigateService.item404().navigate();
+                return;
+            }
+
+            // handle situation where user was logged out (e.g. due to long inactivity)
+            if (error.reason === ErrorReasonEnum.NotAuthorized) {
+                this.dependencies.coreServices.navigateService.loginPage().navigate();
+                return;
+            }
+
+            // handle license error
+            if (error.reason === ErrorReasonEnum.LicenseLimitation) {
+                this.showErrorDialog('errors.invalidLicense');
+                return;
+            }
+            // handle unknown ErrorResponse error
+            this.showErrorDialog();
+        } else {
+            // handle unknown error
+            this.showErrorDialog();
+        }
+    }
+
+    // --------------- Dialogs ------------------- //
+
+    showErrorDialog(key?: string): void {
+        const useKey = !key ? 'errors.dialogDefaultError' : key;
+        const titleKey = 'errors.dialogErrorTitle';
+
+        this.showDialog(useKey, titleKey);
+    }
+
+    showDialog(messageKey: string, titleKey?: string): void {
+        // reset current translations
+        this.translations.dialogDynamicTranslationMessage = '';
+        this.translations.dialogDynamicTranslationTitle = '';
+
+        const observables: Observable<any>[] = [];
+
+        observables.push(this.translate(messageKey).map(text => this.translations.dialogDynamicTranslationMessage = text));
+
+        if (titleKey) {
+            observables.push(this.translate(titleKey).map(text => this.translations.dialogDynamicTranslationTitle = text));
+        }
+
+        if (!this.translations.dialogCloseButton) {
+            observables.push(this.translate('shared.close').map(text => this.translations.dialogCloseButton = text));
+        }
+
+        const zippedObservable = this.dependencies.helpers.observableHelper.zipObservables(observables)
+            .map(() => {
+                this.dependencies.tdServices.dialogService.openAlert({
+                    message: this.translations.dialogDynamicTranslationMessage,
+                    title: this.translations.dialogDynamicTranslationTitle,
+                    closeButton: this.translations.dialogCloseButton
+                });
+            });
+
+        zippedObservable.takeUntil(this.ngUnsubscribe).subscribe();
+    }
+
+    /**
+     * Error that could not be handled in any other way
+     * @param error Error
+     */
+    protected handleFatalError(error: any): void {
+        console.error('Fatal error:');
+        console.error(error);
     }
 }
