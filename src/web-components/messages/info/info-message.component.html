@@ -1,1 +1,5 @@
-<td-message color="primary" [sublabel]="text" [label]="title" icon="info"></td-message>
+<td-message *ngIf="showMessage" #message color="primary" [sublabel]="text" [label]="title" icon="info">
+    <button *ngIf="showDismiss" td-message-actions mat-icon-button (click)="message.close(); handleClose()">
+        <mat-icon>cancel</mat-icon>
+    </button>
+</td-message>
