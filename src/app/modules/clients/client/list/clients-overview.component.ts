@@ -98,7 +98,8 @@ export class ClientsOverviewComponent extends ClientsBaseComponent implements On
         },
       ]
       )
-      .groupByItemsCount(5)
+      .groupByItemsCount(6)
+      .pageSize(12)
       .mode(
       this.dependencies.coreServices.rememberService.get<string>(this.rememberDataTableStateName, 'tiles') === 'standard' ? DataTableMode.Standard : DataTableMode.Tiles
       )

@@ -1,6 +1,6 @@
-<div class="container" fxLayout fxLayout.sm="column" fxLayout.xs="column">
+<div fxFlexFill class="container" fxLayout fxLayout.sm="column" fxLayout.xs="column">
     <div fxFlex="40%" class="push-sm">
-        <mat-card>
+        <mat-card fxFlex>
             <mat-card-content *ngIf="appointment">
                 <p class="mat-headline">{{ appointment.appointmentName }}</p>
                 <p *ngIf="client">
@@ -26,7 +26,7 @@
         </mat-card>
     </div>
     <div fxFlex="60%" class="push-sm">
-        <mat-card>
+        <mat-card fxFlex>
             <mat-card-content *ngIf="appointment">
                 <map [apiKey]="googleApiKey" [address]="appointment.location.address" [lat]="appointment.location.lat" [lng]="appointment.location.lng"></map>
             </mat-card-content>
