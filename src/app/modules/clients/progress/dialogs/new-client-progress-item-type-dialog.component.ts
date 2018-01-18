@@ -12,6 +12,7 @@ import { ProgressItemType } from '../../../../models';
 export class NewClientProgressItemTypeDialogComponent extends BaseDialogComponent<NewClientProgressItemTypeDialogComponent> implements OnInit {
 
     public formConfig: DataFormConfig;
+    private clientId?: number;
 
     public createdProgressItemType?: ProgressItemType;
 
@@ -21,6 +22,7 @@ export class NewClientProgressItemTypeDialogComponent extends BaseDialogComponen
         @Inject(MAT_DIALOG_DATA) public data: any
     ) {
         super(dependencies, dialogRef, data);
+        this.clientId = data.clientId;
     }
 
     setup(): ComponentSetup {

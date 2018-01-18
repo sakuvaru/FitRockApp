@@ -1,7 +1,7 @@
 // common
 import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { ComponentDependencyService, BaseComponent, ComponentSetup } from '../../../core';
+import { ComponentDependencyService, BasePageComponent, ComponentSetup } from '../../../core';
 import { AppConfig, UrlConfig } from '../../../config';
 
 // requied by component
@@ -13,7 +13,7 @@ import { FetchedFile } from '../../../../lib/repository';
 @Component({
     templateUrl: 'edit-avatar.component.html'
 })
-export class EditAvatarComponent extends BaseComponent implements OnInit {
+export class EditAvatarComponent extends BasePageComponent implements OnInit {
 
     public uploaderConfig: UploaderConfig;
 

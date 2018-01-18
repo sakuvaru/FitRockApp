@@ -1,7 +1,7 @@
 // common
 import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { ComponentDependencyService, BaseComponent, ComponentSetup } from '../../../core';
+import { ComponentDependencyService, BasePageComponent, ComponentSetup } from '../../../core';
 import { AppConfig, UrlConfig } from '../../../config';
 
 // requied by component
@@ -14,7 +14,7 @@ import { languageHelper } from 'lib/repository';
 @Component({
     templateUrl: 'edit-my-profile.component.html'
 })
-export class EditMyProfileComponent extends BaseComponent implements OnInit {
+export class EditMyProfileComponent extends BasePageComponent implements OnInit {
 
     public formConfig: DataFormConfig;
 

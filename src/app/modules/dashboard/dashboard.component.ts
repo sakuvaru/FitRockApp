@@ -3,13 +3,13 @@ import { LanguageEnum } from 'lib/repository';
 
 import { Auth0User } from '../../../lib/auth';
 import { CalendarConfig } from '../../../web-components/calendar/calendar.config';
-import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../../core';
+import { BasePageComponent, ComponentDependencyService, ComponentSetup } from '../../core';
 import { Log } from '../../models';
 
 @Component({
     templateUrl: 'dashboard.component.html'
 })
-export class DashboardComponent extends BaseComponent implements OnInit {
+export class DashboardComponent extends BasePageComponent implements OnInit {
 
     public logs: Log[];
     public log: Log;

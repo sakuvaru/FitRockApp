@@ -2,14 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
 
-import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
+import { BasePageComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
 import { Diet, DietFood } from '../../../models';
 import { DietMenuItems } from '../menu.items';
 
 @Component({
   templateUrl: 'diet-plan.component.html'
 })
-export class DietPlanComponent extends BaseComponent implements OnInit {
+export class DietPlanComponent extends BasePageComponent implements OnInit {
 
   public diet: Diet;
   public sortedDietFoods: DietFood[];

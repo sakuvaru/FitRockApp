@@ -7,7 +7,7 @@ import { Observable, Subject } from 'rxjs/Rx';
 
 import { guidHelper } from '../../../../lib/utilities';
 import { DataFormConfig, DataFormMultipleChoiceItem, DataFormMultipleChoiceFieldConfig, DataFormFieldChangeResult, DataFormField, DataFormChangeField } from '../../../../web-components/data-form';
-import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
+import { BasePageComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
 import { SelectFoodDialogComponent } from '../dialogs/select-food-dialog.component';
 import { EditFoodDishDialogComponent } from '../dialogs/edit-food-dish-dialog.component';
 import { FoodDishAmountDialogComponent } from '../dialogs/food-dish-amount.component';
@@ -16,7 +16,7 @@ import { MealMenuItems } from '../menu.items';
 @Component({
     templateUrl: 'edit-meal.component.html'
 })
-export class EditMealComponent extends BaseComponent implements OnInit {
+export class EditMealComponent extends BasePageComponent implements OnInit {
 
     public formConfig: DataFormConfig;
 

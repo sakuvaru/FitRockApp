@@ -2,13 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 
 import { DataFormConfig } from '../../../../web-components/data-form';
-import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
+import { BasePageComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
 import { NewWorkoutMenuItems } from '../menu.items';
 
 @Component({
     templateUrl: 'new-workout.component.html'
 })
-export class NewWorkoutComponent extends BaseComponent implements OnInit {
+export class NewWorkoutComponent extends BasePageComponent implements OnInit {
 
     public formConfig: DataFormConfig;
 

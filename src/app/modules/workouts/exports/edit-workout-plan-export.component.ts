@@ -6,7 +6,7 @@ import * as _ from 'underscore';
 
 import { stringHelper } from '../../../../lib/utilities';
 import { AppConfig } from '../../../config';
-import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
+import { BasePageComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
 import { Exercise, Workout, WorkoutExercise } from '../../../models';
 import { AddCustomExerciseDialogComponent } from '../dialogs/add-custom-exercise-dialog.component';
 import { AddWorkoutExerciseDialogComponent } from '../dialogs/add-workout-exercise-dialog.component';
@@ -17,7 +17,7 @@ import { SelectWorkoutExerciseDialogComponent } from '../dialogs/select-workout-
   templateUrl: 'edit-workout-plan-export.component.html',
   selector: 'edit-workout-plan-export'
 })
-export class EditWorkoutPlanExportComponent extends BaseComponent implements OnDestroy, OnChanges {
+export class EditWorkoutPlanExportComponent extends BasePageComponent implements OnDestroy, OnChanges {
 
   @Output() loadWorkout = new EventEmitter();
 

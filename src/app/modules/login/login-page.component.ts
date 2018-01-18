@@ -2,13 +2,13 @@ import { Component } from '@angular/core';
 import { AppConfig } from 'app/config';
 import { LogStatus } from 'lib/auth';
 
-import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../../core';
+import { BasePageComponent, ComponentDependencyService, ComponentSetup } from '../../core';
 
 @Component({
     selector: 'login-page',
     templateUrl: 'login-page.component.html'
 })
-export class LoginPageComponent extends BaseComponent {
+export class LoginPageComponent extends BasePageComponent {
 
     public readonly appLogo: string = AppConfig.AppLogoUrl;
     

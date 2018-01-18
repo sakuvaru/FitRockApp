@@ -1,12 +1,12 @@
 // common
 import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { ComponentDependencyService, BaseComponent, ComponentSetup } from '../../core';
+import { ComponentDependencyService, BasePageComponent, ComponentSetup } from '../../core';
 
 @Component({
   templateUrl: 'item-404.component.html'
 })
-export class Item404Component extends BaseComponent {
+export class Item404Component extends BasePageComponent {
   constructor(
     private activatedRoute: ActivatedRoute,
     protected dependencies: ComponentDependencyService) {

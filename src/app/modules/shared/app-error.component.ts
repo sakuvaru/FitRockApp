@@ -1,7 +1,7 @@
 // common
 import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { ComponentDependencyService, BaseComponent, ComponentSetup } from '../../core';
+import { ComponentDependencyService, BasePageComponent, ComponentSetup } from '../../core';
 import { AppConfig, UrlConfig } from '../../config';
 
 // required by component
@@ -11,7 +11,7 @@ import { LogStatus } from 'lib/auth/models/log-status.enum';
 @Component({
   templateUrl: 'app-error.component.html'
 })
-export class AppErrorComponent extends BaseComponent implements OnInit {
+export class AppErrorComponent extends BasePageComponent implements OnInit {
 
   public isCriticalError: boolean = false;
   public showDebugDetails: boolean = false;

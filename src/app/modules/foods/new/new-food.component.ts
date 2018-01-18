@@ -2,7 +2,7 @@
 import { Observable } from 'rxjs/Rx';
 import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { ComponentDependencyService, BaseComponent, ComponentSetup } from '../../../core';
+import { ComponentDependencyService, BasePageComponent, ComponentSetup } from '../../../core';
 import { AppConfig, UrlConfig } from '../../../config';
 
 // required by component
@@ -14,7 +14,7 @@ import { stringHelper } from 'lib/utilities';
 @Component({
     templateUrl: 'new-food.component.html'
 })
-export class NewFoodComponent extends BaseComponent implements OnInit {
+export class NewFoodComponent extends BasePageComponent implements OnInit {
 
     public formConfig: DataFormConfig;
 

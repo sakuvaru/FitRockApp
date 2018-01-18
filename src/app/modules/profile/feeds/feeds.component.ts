@@ -3,14 +3,14 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 
 import { LoadMoreConfig } from '../../../../web-components/load-more';
-import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
+import { BasePageComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
 import { Feed, FeedResult } from '../../../models';
 import { MyProfileMenuItems } from '../menu.items';
 
 @Component({
     templateUrl: 'feeds.component.html'
 })
-export class FeedsComponent extends BaseComponent implements OnInit {
+export class FeedsComponent extends BasePageComponent implements OnInit {
 
     public loadMoreConfig: LoadMoreConfig;
 

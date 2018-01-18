@@ -3,12 +3,12 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
 
 import { AppConfig } from '../../config';
-import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../../core';
+import { BasePageComponent, ComponentDependencyService, ComponentSetup } from '../../core';
 
 @Component({
   templateUrl: 'server-down.component.html'
 })
-export class ServerDownComponent extends BaseComponent implements OnInit {
+export class ServerDownComponent extends BasePageComponent implements OnInit {
 
   public appOnline: boolean = false;
 

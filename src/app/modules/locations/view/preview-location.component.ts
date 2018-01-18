@@ -3,14 +3,14 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
 
 import { AppConfig } from '../../../config';
-import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
+import { BasePageComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
 import { Location } from '../../../models';
 import { LocationPreviewMenuItems } from '../menu.items';
 
 @Component({
     templateUrl: 'preview-location.component.html'
 })
-export class PreviewLocationComponent extends BaseComponent implements OnInit {
+export class PreviewLocationComponent extends BasePageComponent implements OnInit {
 
     public location: Location;
 

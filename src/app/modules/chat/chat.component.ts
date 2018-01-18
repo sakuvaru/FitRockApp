@@ -5,14 +5,14 @@ import * as _ from 'underscore';
 
 import { DataFormConfig } from '../../../web-components/data-form';
 import { AppConfig } from '../../config';
-import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../../core';
+import { BasePageComponent, ComponentDependencyService, ComponentSetup } from '../../core';
 import { ChatMessage } from '../../models';
 import { ChatMenuItems } from './menu.items';
 
 @Component({
     templateUrl: 'chat.component.html'
 })
-export class ChatComponent extends BaseComponent implements OnInit {
+export class ChatComponent extends BasePageComponent implements OnInit {
 
     public formConfig?: DataFormConfig;
     public chatMessages?: ChatMessage[];

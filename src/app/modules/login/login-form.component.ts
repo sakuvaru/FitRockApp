@@ -3,13 +3,13 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 
 import { UrlConfig } from '../../config/url.config';
-import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../../core';
+import { BasePageComponent, ComponentDependencyService, ComponentSetup } from '../../core';
 
 @Component({
     selector: 'login-form',
     templateUrl: 'login-form.component.html'
 })
-export class LoginFormComponent extends BaseComponent implements OnInit, OnChanges {
+export class LoginFormComponent extends BasePageComponent implements OnInit, OnChanges {
 
     @Input() fixedEmail: string;
 

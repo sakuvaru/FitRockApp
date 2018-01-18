@@ -2,12 +2,11 @@ import { OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs/Rx';
 
-import { BaseComponent } from '../../core/component/base.component';
-import { ComponentDependencyService } from '../../core/component/component-dependency.service';
+import { BasePageComponent, ComponentDependencyService } from '../../core';
 import { User } from '../../models';
 
 // Note: importing from barrel caused 'Cannot resolve app parameters' error while building the app
-export abstract class ClientsBaseComponent extends BaseComponent implements OnInit, OnDestroy {
+export abstract class ClientsBaseComponent extends BasePageComponent implements OnInit, OnDestroy {
 
     /**
      * Subject containnig whole User object

@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 
 import { DataTableConfig } from '../../../../web-components/data-table';
-import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
+import { BasePageComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
 import { ProgressItemTypesOverviewMenuItem } from '../menu.items';
 
 @Component({
   templateUrl: 'global-types-list.component.html'
 })
-export class GlobalTypesListComponent extends BaseComponent implements OnInit {
+export class GlobalTypesListComponent extends BasePageComponent implements OnInit {
 
   public config: DataTableConfig;
 

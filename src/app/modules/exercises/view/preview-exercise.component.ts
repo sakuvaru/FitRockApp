@@ -1,7 +1,7 @@
 // common
 import { Component, Input, Output, OnInit, EventEmitter, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { ComponentDependencyService, BaseComponent, ComponentSetup } from '../../../core';
+import { ComponentDependencyService, BasePageComponent, ComponentSetup } from '../../../core';
 import { AppConfig, UrlConfig } from '../../../config';
 
 // required by component
@@ -13,7 +13,7 @@ import { Observable } from 'rxjs/Rx';
 @Component({
     templateUrl: 'preview-exercise.component.html'
 })
-export class PreviewExerciseComponent extends BaseComponent implements OnInit {
+export class PreviewExerciseComponent extends BasePageComponent implements OnInit {
 
     public exercise: Exercise;
 

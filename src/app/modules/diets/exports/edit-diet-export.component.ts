@@ -3,14 +3,14 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
 
 import { DataFormConfig } from '../../../../web-components/data-form';
-import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
+import { BasePageComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
 import { Diet } from '../../../models';
 
 @Component({
     templateUrl: 'edit-diet-export.component.html',
     selector: 'edit-diet-export'
 })
-export class EditDietExportComponent extends BaseComponent implements OnInit, OnChanges {
+export class EditDietExportComponent extends BasePageComponent implements OnInit, OnChanges {
 
     @Output() loadDiet = new EventEmitter<Diet>();
 

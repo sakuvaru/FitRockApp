@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
+import { BasePageComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
 import { Workout } from '../../../models';
 import { WorkoutMenuItems } from '../menu.items';
 
 @Component({
     templateUrl: 'edit-workout.component.html'
 })
-export class EditWorkoutComponent extends BaseComponent implements OnInit {
+export class EditWorkoutComponent extends BasePageComponent implements OnInit {
 
     public workoutId: number;
 

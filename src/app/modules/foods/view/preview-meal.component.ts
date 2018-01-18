@@ -14,14 +14,14 @@ import {
     NumberBoxConfig
 } from '../../../../web-components/boxes';
 import { GraphConfig, PieChart, SingleSeries } from '../../../../web-components/graph';
-import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
+import { BasePageComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
 import { Food } from '../../../models';
 import { MealMenuItems } from '../menu.items';
 
 @Component({
     templateUrl: 'preview-meal.component.html'
 })
-export class PreviewMealComponent extends BaseComponent implements OnInit {
+export class PreviewMealComponent extends BasePageComponent implements OnInit {
 
     public food?: Food;
     public foodInfoBox?: InfoBoxConfig;

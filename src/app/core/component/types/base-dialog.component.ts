@@ -1,13 +1,13 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
-import { BaseComponent } from './base.component';
-import { ComponentDependencyService } from './component-dependency.service';
-import { ComponentSetup } from './component-setup.class';
+import { BaseComponent } from '../base.component';
+import { ComponentDependencyService } from '../component-dependency.service';
+import { ComponentSetup } from '../component-setup.class';
 
 @Component({
 })
-export class BaseDialogComponent<TDialogComponent> extends BaseComponent implements OnInit {
+export abstract class BaseDialogComponent<TDialogComponent> extends BaseComponent implements OnInit {
 
   constructor(
     protected dependencies: ComponentDependencyService,

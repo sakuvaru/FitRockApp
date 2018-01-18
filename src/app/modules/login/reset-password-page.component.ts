@@ -2,12 +2,12 @@ import { Component } from '@angular/core';
 
 import { LogStatus } from '../../../lib/auth';
 import { AppConfig } from '../../config';
-import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../../core';
+import { BasePageComponent, ComponentDependencyService, ComponentSetup } from '../../core';
 
 @Component({
     templateUrl: 'reset-password-page.component.html'
 })
-export class ResetPasswordPageComponent extends BaseComponent {
+export class ResetPasswordPageComponent extends BasePageComponent {
 
     public readonly appLogo: string = AppConfig.AppLogoUrl;
 

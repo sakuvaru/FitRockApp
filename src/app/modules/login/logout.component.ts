@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 
-import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../../core';
+import { BasePageComponent, ComponentDependencyService, ComponentSetup } from '../../core';
 
 @Component({
     templateUrl: 'logout.component.html'
 })
-export class LogoutComponent extends BaseComponent {
+export class LogoutComponent extends BasePageComponent {
 
     constructor(
         protected dependencies: ComponentDependencyService) {

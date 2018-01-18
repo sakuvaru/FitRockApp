@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
+import { BasePageComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
 import { Diet } from '../../../models';
 import { DietMenuItems } from '../menu.items';
 
 @Component({
     templateUrl: 'edit-diet.component.html'
 })
-export class EditDietComponent extends BaseComponent implements OnInit {
+export class EditDietComponent extends BasePageComponent implements OnInit {
 
     public dietId: number;
 

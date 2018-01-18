@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { BaseComponent, ComponentDependencyService, ComponentSetup } from 'app/core';
+import { BasePageComponent, ComponentDependencyService, ComponentSetup } from 'app/core';
 
 @Component({
   template: '',
 })
-export class ProcessExternalLoginComponent extends BaseComponent {
+export class ProcessExternalLoginComponent extends BasePageComponent {
 
   setup(): ComponentSetup {
     return new ComponentSetup({

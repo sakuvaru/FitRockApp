@@ -234,8 +234,12 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
     }
 
     public openAddNewProgressItemTypeDialog(): void {
+
         const dialog = this.dependencies.tdServices.dialogService.open(NewClientProgressItemTypeDialogComponent, {
             panelClass: AppConfig.DefaultDialogPanelClass,
+            data: {
+                clientId: this.clientId
+            }
         });
 
         dialog.afterClosed().subscribe(m => {

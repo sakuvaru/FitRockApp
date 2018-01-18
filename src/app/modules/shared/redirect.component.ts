@@ -1,7 +1,7 @@
 // common
 import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { ComponentDependencyService, BaseComponent, ComponentSetup } from '../../core';
+import { ComponentDependencyService, BasePageComponent, ComponentSetup } from '../../core';
 import { AppConfig } from '../../config';
 
 /**
@@ -12,7 +12,7 @@ import { AppConfig } from '../../config';
 @Component({
     template: 'redirect.component.html'
 })
-export class RedirectComponent extends BaseComponent implements OnInit {
+export class RedirectComponent extends BasePageComponent implements OnInit {
 
     constructor(
         private activatedRoute: ActivatedRoute,

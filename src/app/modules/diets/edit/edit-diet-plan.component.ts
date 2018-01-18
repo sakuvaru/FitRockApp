@@ -1,7 +1,7 @@
 // common
 import { Component, Input, Output, OnInit, EventEmitter, OnDestroy, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { ComponentDependencyService, BaseComponent, ComponentConfig, ComponentSetup } from '../../../core';
+import { ComponentDependencyService, BasePageComponent, ComponentConfig, ComponentSetup } from '../../../core';
 import { AppConfig, UrlConfig } from '../../../config';
 
 // required by component
@@ -11,7 +11,7 @@ import { Diet } from '../../../models';
 @Component({
   templateUrl: 'edit-diet-plan.component.html'
 })
-export class EditDietPlanComponent extends BaseComponent implements OnInit, OnDestroy {
+export class EditDietPlanComponent extends BasePageComponent implements OnInit, OnDestroy {
 
   public dietId: number;
 

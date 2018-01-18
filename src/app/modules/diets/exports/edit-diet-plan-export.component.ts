@@ -6,7 +6,7 @@ import * as _ from 'underscore';
 
 import { stringHelper } from '../../../../lib/utilities';
 import { AppConfig } from '../../../config';
-import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
+import { BasePageComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
 import { Diet, DietFood, Food } from '../../../models';
 import { AddDietFoodDialogComponent } from '../dialogs/add-diet-food-dialog.component';
 import { AddNewDishDialogComponent } from '../dialogs/add-new-dish-dialog.component';
@@ -18,7 +18,7 @@ import { SelectDietFoodDialogComponent } from '../dialogs/select-diet-food-dialo
   templateUrl: 'edit-diet-plan-export.component.html',
   selector: 'edit-diet-plan-export'
 })
-export class EditDietPlanExportComponent extends BaseComponent implements OnDestroy, OnChanges {
+export class EditDietPlanExportComponent extends BasePageComponent implements OnDestroy, OnChanges {
 
   @Output() loadDiet = new EventEmitter();
 

@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 
-import { BaseComponent, ComponentDependencyService, ComponentSetup } from './core';
+import { BasePageComponent, ComponentDependencyService, ComponentSetup } from './core';
 import { AuthenticatedUser } from './core/models/core.models';
 import { LogStatus } from 'lib/auth';
 
 @Component({
   template: '',
 })
-export class EntryComponent extends BaseComponent {
+export class EntryComponent extends BasePageComponent {
 
   setup(): ComponentSetup {
     return new ComponentSetup({

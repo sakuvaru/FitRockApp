@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 
 import { UrlConfig } from '../../config';
-import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../../core';
+import { BasePageComponent, ComponentDependencyService, ComponentSetup } from '../../core';
 import { AppConfig } from 'app/config/app.config';
 
 @Component({
     templateUrl: 'register-page.component.html'
 })
-export class RegisterPageComponent extends BaseComponent {
+export class RegisterPageComponent extends BasePageComponent {
 
     public readonly appLogo: string = AppConfig.AppLogoUrl;
 

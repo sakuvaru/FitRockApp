@@ -2,14 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
 
-import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
+import { BasePageComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
 import { Workout, WorkoutExercise } from '../../../models';
 import { WorkoutMenuItems } from '../menu.items';
 
 @Component({
   templateUrl: 'workout-plan.component.html'
 })
-export class WorkoutPlanComponent extends BaseComponent implements OnInit {
+export class WorkoutPlanComponent extends BasePageComponent implements OnInit {
 
   public workout: Workout;
   public sortedWorkoutExercises: WorkoutExercise[];

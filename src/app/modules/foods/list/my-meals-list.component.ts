@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 
 import { DataTableConfig, IDynamicFilter } from '../../../../web-components/data-table';
-import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
+import { BasePageComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
 import { Food } from '../../../models';
 import { FoodOverviewItems } from '../menu.items';
 
 @Component({
   templateUrl: 'my-meals-list.component.html'
 })
-export class MyMealsListComponent extends BaseComponent implements OnInit {
+export class MyMealsListComponent extends BasePageComponent implements OnInit {
 
   public config: DataTableConfig;
 

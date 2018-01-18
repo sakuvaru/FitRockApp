@@ -2,7 +2,7 @@ import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@
 import { Observable } from 'rxjs/Rx';
 
 import { BaseGraph, GraphComponent, GraphConfig, LineChart, MultiSeries } from '../../../../../web-components/graph';
-import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../../../../core';
+import { BasePageComponent, ComponentDependencyService, ComponentSetup } from '../../../../core';
 import { ProgressItemType } from '../../../../models';
 import { stringHelper } from 'lib/utilities';
 
@@ -10,7 +10,7 @@ import { stringHelper } from 'lib/utilities';
     selector: 'user-stats',
     templateUrl: 'user-stats.component.html'
 })
-export class UserStatsComponent extends BaseComponent implements OnInit, OnChanges {
+export class UserStatsComponent extends BasePageComponent implements OnInit, OnChanges {
 
     @Input() userId: number;
 

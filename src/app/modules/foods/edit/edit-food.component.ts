@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 
 import { DataFormConfig } from '../../../../web-components/data-form';
-import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
+import { BasePageComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
 import { FoodMenuItems } from '../menu.items';
 import { Observable } from 'rxjs/Observable';
 import { stringHelper } from 'lib/utilities';
@@ -10,7 +10,7 @@ import { stringHelper } from 'lib/utilities';
 @Component({
     templateUrl: 'edit-food.component.html'
 })
-export class EditFoodComponent extends BaseComponent implements OnInit {
+export class EditFoodComponent extends BasePageComponent implements OnInit {
 
     public formConfig: DataFormConfig;
 

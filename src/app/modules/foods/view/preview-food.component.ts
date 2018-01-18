@@ -6,14 +6,14 @@ import { Observable } from 'rxjs/Rx';
 import { BoxColors, InfoBoxConfig, MiniBoxConfig, TableBoxConfig, TableBoxLine, NumberBoxConfig } from '../../../../web-components/boxes';
 import { GraphConfig, PieChart, SingleSeries } from '../../../../web-components/graph';
 import { DataTableConfig } from '../../../../web-components/data-table';
-import { BaseComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
+import { BasePageComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
 import { Food } from '../../../models';
 import { FoodMenuItems } from '../menu.items';
 
 @Component({
     templateUrl: 'preview-food.component.html'
 })
-export class PreviewFoodComponent extends BaseComponent implements OnInit {
+export class PreviewFoodComponent extends BasePageComponent implements OnInit {
 
     public food?: Food;
     public foodInfoBox?: InfoBoxConfig;

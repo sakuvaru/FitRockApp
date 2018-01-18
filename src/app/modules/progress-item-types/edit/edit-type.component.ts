@@ -1,7 +1,7 @@
 // common
 import { Component, Input, Output, OnInit, EventEmitter, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { ComponentDependencyService, BaseComponent, ComponentSetup } from '../../../core';
+import { ComponentDependencyService, BasePageComponent, ComponentSetup } from '../../../core';
 import { AppConfig, UrlConfig } from '../../../config';
 
 // required by component
@@ -12,7 +12,7 @@ import { ProgressItemType } from '../../../models';
 @Component({
     templateUrl: 'edit-type.component.html'
 })
-export class EditTypeComponent extends BaseComponent implements OnInit {
+export class EditTypeComponent extends BasePageComponent implements OnInit {
 
     public formConfig: DataFormConfig;
 
