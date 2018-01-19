@@ -55,8 +55,7 @@ export class WorkoutPlanComponent extends BasePageComponent implements OnInit {
         });
 
         this.assignWorkout(response.item);
-      },
-      error => super.handleAppError(error));
+      });
   }
 
   private assignWorkout(workout: Workout): void {

@@ -154,7 +154,6 @@ export class EditDietPlanExportComponent extends BasePageComponent implements On
           this.stopGlobalLoader();
         },
         (error) => {
-          super.handleAppError(error);
           this.stopGlobalLoader();
         }));
   }

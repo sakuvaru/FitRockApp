@@ -146,7 +146,7 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
     // --------------------- Error handlers -------------- // 
 
     protected handleSubscribeError(error: any): void {
-        // no need to do anything here as errors are handled with handleAppError
+        this.handleAppError(error);
     }
 
     protected handleAppError(error: any): void {

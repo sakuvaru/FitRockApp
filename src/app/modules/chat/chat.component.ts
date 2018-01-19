@@ -51,8 +51,7 @@ export class ChatComponent extends BaseModuleComponent implements OnInit {
     }
     
     loadMoreMessages(): void {
-        super.subscribeToObservable(this.getChatMessagesObservable(this.activeUserId, this.chatMessagesPage, false, this.chatMessagesSearch)
-            .takeUntil(this.ngUnsubscribe));
+        super.subscribeToObservable(this.getChatMessagesObservable(this.activeUserId, this.chatMessagesPage, false, this.chatMessagesSearch));
     }
 
     searchConversation(search: string): void {
@@ -76,8 +75,7 @@ export class ChatComponent extends BaseModuleComponent implements OnInit {
                     .pageSize(this.clientsPageSize)
                     .whereLikeMultiple(['FirstName', 'LastName'], search)
                     .orderByAsc('FirstName')
-                    .get()
-                    .takeUntil(this.ngUnsubscribe);
+                    .get();
             })
             .map(response => {
                 this.usersLoaded.next(response);
@@ -163,8 +161,7 @@ export class ChatComponent extends BaseModuleComponent implements OnInit {
             .wrapInCard(false)
             .onAfterInsert((response) => {
                 // reload messages
-                super.subscribeToObservable(this.getChatMessagesObservable(userId, 1, true, this.chatMessagesSearch)
-                    .takeUntil(this.ngUnsubscribe));
+                super.subscribeToObservable(this.getChatMessagesObservable(userId, 1, true, this.chatMessagesSearch));
 
             })
             .build();
@@ -198,7 +195,6 @@ export class ChatComponent extends BaseModuleComponent implements OnInit {
                     }
                     this.allChatMessagesLoaded = true;
                 }
-            },
-            error => super.handleAppError(error));
+            });
     }
 }

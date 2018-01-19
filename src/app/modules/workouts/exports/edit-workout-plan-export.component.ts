@@ -201,7 +201,6 @@ export class EditWorkoutPlanExportComponent extends BasePageComponent implements
         this.stopGlobalLoader();
       },
       (error) => {
-        super.handleAppError(error);
         this.stopGlobalLoader();
       });
   }

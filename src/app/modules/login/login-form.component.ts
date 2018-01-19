@@ -55,8 +55,7 @@ export class LoginFormComponent extends BasePageComponent implements OnInit, OnC
             .takeUntil(this.ngUnsubscribe)
             .subscribe((fragment: string) => {
                 this.processFailedLogonRedirect();
-            },
-            error => super.handleAppError(error));
+            });
     }
 
     ngOnChanges(changes: SimpleChanges): void {

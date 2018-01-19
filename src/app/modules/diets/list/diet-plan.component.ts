@@ -35,12 +35,10 @@ export class DietPlanComponent extends BasePageComponent implements OnInit {
 
   private getDietObservable(): Observable<any> {
     return this.activatedRoute.params
-      .takeUntil(this.ngUnsubscribe)
       .switchMap((params: Params) => this.dependencies.itemServices.dietService.item()
         .byId(+params['id'])
         .includeMultiple(['DietCategory', 'DietFoods.Food.FoodUnit', 'DietFoods', 'DietFoods.Food', 'DietFoods.Food.FoodCategory'])
         .get())
-      .takeUntil(this.ngUnsubscribe)
       .map(response => {
         this.setConfig({
           menuItems: new DietMenuItems(response.item.id).menuItems,
@@ -53,8 +51,7 @@ export class DietPlanComponent extends BasePageComponent implements OnInit {
         });
 
         this.assignDiet(response.item);
-      },
-      error => super.handleAppError(error));
+      });
   }
 
   private assignDiet(diet: Diet): void {

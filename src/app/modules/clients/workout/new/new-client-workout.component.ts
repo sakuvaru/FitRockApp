@@ -80,7 +80,6 @@ export class NewClientWorkoutComponent extends ClientsBaseComponent implements O
                     })  
                     .build();
 
-            },
-            error => super.handleAppError(error));
+            });
     }
 }
