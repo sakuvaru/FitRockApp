@@ -17,7 +17,7 @@ export class EditTypeComponent extends BasePageComponent implements OnInit {
     public formConfig: DataFormConfig;
 
     constructor(
-        private activatedRoute: ActivatedRoute,
+        protected activatedRoute: ActivatedRoute,
         protected componentDependencyService: ComponentDependencyService,
     ) {
         super(componentDependencyService);

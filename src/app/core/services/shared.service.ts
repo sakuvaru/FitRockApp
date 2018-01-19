@@ -4,6 +4,7 @@ import { ComponentConfig } from '../component/component.config';
 import { GlobalLoaderStatus, AuthenticatedUser } from '../models/core.models';
 import { ComponentSetup } from '../component/component-setup.class';
 import { Log } from '../../models/';
+import { IComponentConfig } from 'app/core';
 
 /// Shared data app
 /// Communication via shared service: https://angular.io/docs/ts/latest/cookbook/component-communication.html#!#bidirectional-service
@@ -11,7 +12,7 @@ import { Log } from '../../models/';
 export class SharedService {
 
   // Observable string sources
-  private componentConfigSource = new Subject<ComponentConfig>();
+  private componentConfigSource = new Subject<IComponentConfig>();
   private globalLoaderSource = new Subject<GlobalLoaderStatus>();
   private componentSearchSource = new Subject<string>();
   private errorSource = new Subject<Log>();
@@ -27,7 +28,7 @@ export class SharedService {
   authenticatedUserChanged$ = this.authenticatedUserSource.asObservable();
 
   // Service message commands
-  setComponentConfig(config: ComponentConfig): void {
+  setComponentConfig(config: IComponentConfig): void {
     this.componentConfigSource.next(config);
   }
 

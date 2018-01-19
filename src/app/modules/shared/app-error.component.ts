@@ -19,7 +19,7 @@ export class AppErrorComponent extends BasePageComponent implements OnInit {
   public translateParams: any;
 
   constructor(
-    private activatedRoute: ActivatedRoute,
+    protected activatedRoute: ActivatedRoute,
     protected dependencies: ComponentDependencyService) {
     super(dependencies);
   }

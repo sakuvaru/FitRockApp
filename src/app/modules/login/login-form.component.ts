@@ -34,7 +34,7 @@ export class LoginFormComponent extends BasePageComponent implements OnInit, OnC
     public missingLogonDetails: boolean = false;
 
     constructor(
-        private activatedRoute: ActivatedRoute,
+        protected activatedRoute: ActivatedRoute,
         protected dependencies: ComponentDependencyService) {
         super(dependencies);
     }

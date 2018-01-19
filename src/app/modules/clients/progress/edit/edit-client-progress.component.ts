@@ -1,5 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 import * as _ from 'underscore';
 
@@ -7,19 +6,19 @@ import { stringHelper } from '../../../../../lib/utilities';
 import { DataFormComponent, DataFormConfig } from '../../../../../web-components/data-form';
 import { DataTableComponent, DataTableConfig, IDynamicFilter } from '../../../../../web-components/data-table';
 import { AppConfig } from '../../../../config';
-import { ComponentDependencyService, ComponentSetup } from '../../../../core';
-import { ProgressItemType } from '../../../../models';
+import { ComponentDependencyService } from '../../../../core';
 import { ProgressItem } from '../../../../models';
-import { ClientsBaseComponent } from '../../clients-base.component';
-import { ClientMenuItems } from '../../menu.items';
+import { ProgressItemType } from '../../../../models';
+import { BaseClientModuleComponent } from '../../base-client-module.component';
 import { EditProgressItemDialogComponent } from '../dialogs/edit-progress-item-dialog.component';
 import { NewClientProgressItemTypeDialogComponent } from '../dialogs/new-client-progress-item-type-dialog.component';
 import { SelectProgressTypeDialogComponent } from '../dialogs/select-progress-type-dialog.component';
 
 @Component({
+    selector: 'mod-edit-client-progress',
     templateUrl: 'edit-client-progress.component.html'
 })
-export class EditClientProgressComponent extends ClientsBaseComponent implements OnInit {
+export class EditClientProgressComponent extends BaseClientModuleComponent implements OnInit, OnChanges {
 
     public formConfig: DataFormConfig;
     public dataTableConfig: DataTableConfig;
@@ -29,74 +28,46 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
     @ViewChild(DataFormComponent) progressItemForm: DataFormComponent;
 
     constructor(
-        protected activatedRoute: ActivatedRoute,
         protected componentDependencyService: ComponentDependencyService,
     ) {
-        super(componentDependencyService, activatedRoute);
-    }
-
-    setup(): ComponentSetup {
-        return new ComponentSetup({
-            initialized: false,
-            isNested: false
-        });
+        super(componentDependencyService);
     }
 
     ngOnInit(): void {
         super.ngOnInit();
+    }
 
-        super.subscribeToObservables(this.getComponentObservables());
-        super.initClientSubscriptions();
+    ngOnChanges(changes: SimpleChanges): void {
+        if (this.client) {
+            this.init();
+        }
     }
 
     handleDeleteType(progressItemType: ProgressItemType): void {
         super.subscribeToObservable(this.getDeleteProgressTypeObservable(progressItemType));
     }
 
-    private getComponentObservables(): Observable<any>[] {
-        const observables: Observable<any>[] = [];
+    private init(): void {
+        this.initProgressItemsForm();
+        this.initDataList();
+        super.subscribeToObservables(this.getObservables());
+    }
 
-        const obsClientMenu = this.clientChange
-            .map(client => {
-                this.setConfig({
-                    menuItems: new ClientMenuItems(client.id).menuItems,
-                    menuTitle: {
-                        key: 'module.clients.viewClientSubtitle',
-                        data: { 'fullName': client.getFullName() }
-                    },
-                    componentTitle: {
-                        'key': 'module.clients.submenu.progress'
-                    },
-                    menuAvatarUrl: client.getAvatarOrGravatarUrl()
-                });
-            });
-
-        observables.push(this.getInitFormObservable());
-        observables.push(this.getDataListObservable());
-        observables.push(obsClientMenu);
+    private getObservables(): Observable<void>[] {
+        const observables: Observable<void>[] = [];
         observables.push(this.getProgressTypesObservable());
-
         return observables;
     }
 
-    private getInitFormObservable(): Observable<any> {
-        return this.clientIdChange
-            .takeUntil(this.ngUnsubscribe)
-            .map(clientId => {
-                this.initProgressItemsForm(clientId);
-            });
-    }
-
-    private initProgressItemsForm(clientId: number): void {
+    private initProgressItemsForm(): void {
         this.formConfig = this.dependencies.itemServices.progressItemService.buildInsertForm({
-            formDefinitionQuery: this.dependencies.itemServices.progressItemService.insertFormQuery().withData('clientId', clientId)
+            formDefinitionQuery: this.dependencies.itemServices.progressItemService.insertFormQuery().withData('clientId', this.client.id)
         })
             .wrapInCard(false)
             .configField((field, item) => {
                 if (field.key === 'ClientId') {
-                    field.value = this.clientId;
+                    field.value = this.client.id;
                 }
-                console.log(field);
                 return Observable.of(field);
             })
             .onAfterInsert(() => {
@@ -148,27 +119,22 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
             .build();
     }
 
-    private getProgressTypesObservable(): Observable<any> {
-        return this.clientIdChange
-            .takeUntil(this.ngUnsubscribe)
-            .switchMap(clientId => {
+    private getProgressTypesObservable(): Observable<void> {
                 return this.dependencies.itemServices.progressItemTypeService.items()
                     .byCurrentUser()
-                    .whereEquals('ClientId', clientId)
+                    .whereEquals('ClientId', this.client.id)
                     .get()
-                    .takeUntil(this.ngUnsubscribe);
-            })
             .map((response) => {
                 this.progressItemTypes = response.items;
             });
     }
 
-    private initDataList(clientId: number): void {
+    private initDataList(): void {
         this.dataTableConfig = this.dependencies.itemServices.progressItemService.buildDataTable(
             (query, search) => {
                 return query
                     .includeMultiple(['ProgressItemType', 'ProgressItemType.ProgressItemUnit'])
-                    .whereEquals('ClientId', clientId);
+                    .whereEquals('ClientId', this.client.id);
             }
             , { enableDelete: true })
             .withFields([
@@ -200,7 +166,7 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
                 },
             ])
             .withDynamicFilters(
-            (search) => this.dependencies.itemServices.progressItemTypeService.getProgressItemTypeWithCountDto(this.clientId, undefined)
+            (search) => this.dependencies.itemServices.progressItemTypeService.getProgressItemTypeWithCountDto(this.client.id, undefined)
                 .get()
                 .map(response => {
                     const filters: IDynamicFilter<ProgressItem>[] = [];
@@ -225,20 +191,11 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
             .build();
     }
 
-    private getDataListObservable(): Observable<any> {
-        return this.clientIdChange
-            .takeUntil(this.ngUnsubscribe)
-            .map(clientId => {
-                this.initDataList(clientId);
-            });
-    }
-
     public openAddNewProgressItemTypeDialog(): void {
-
         const dialog = this.dependencies.tdServices.dialogService.open(NewClientProgressItemTypeDialogComponent, {
             panelClass: AppConfig.DefaultDialogPanelClass,
             data: {
-                clientId: this.clientId
+                clientId: this.client.id
             }
         });
 
@@ -280,7 +237,7 @@ export class EditClientProgressComponent extends ClientsBaseComponent implements
 
     private getAddProgressTypeObservable(progressItemType: ProgressItemType): Observable<any> {
         return this.dependencies.itemServices.progressItemTypeService.create(progressItemType)
-            .withOption('ClientId', this.clientId)
+            .withOption('ClientId', this.client.id)
             .set()
             .takeUntil(this.ngUnsubscribe)
             .map(createResponse => {

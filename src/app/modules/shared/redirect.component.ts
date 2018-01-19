@@ -15,7 +15,7 @@ import { AppConfig } from '../../config';
 export class RedirectComponent extends BasePageComponent implements OnInit {
 
     constructor(
-        private activatedRoute: ActivatedRoute,
+        protected activatedRoute: ActivatedRoute,
         protected dependencies: ComponentDependencyService) {
         super(dependencies);
     }

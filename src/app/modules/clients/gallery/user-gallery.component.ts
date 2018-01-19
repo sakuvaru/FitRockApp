@@ -1,5 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 import * as _ from 'underscore';
 
@@ -12,14 +11,14 @@ import {
     ImageGroupResult,
 } from '../../../../web-components/gallery';
 import { UploaderConfig } from '../../../../web-components/uploader';
-import { ComponentDependencyService, ComponentSetup } from '../../../core';
-import { ClientsBaseComponent } from '../clients-base.component';
-import { ClientMenuItems } from '../menu.items';
+import { ComponentDependencyService } from '../../../core';
+import { BaseClientModuleComponent } from '../base-client-module.component';
 
 @Component({
+    selector: 'mod-user-gallery',
     templateUrl: 'user-gallery.component.html'
 })
-export class UserGalleryComponent extends ClientsBaseComponent implements OnInit {
+export class UserGalleryComponent extends BaseClientModuleComponent implements OnInit, OnChanges {
 
     /**
      * This property is used to add uploaded images to gallery config
@@ -32,67 +31,52 @@ export class UserGalleryComponent extends ClientsBaseComponent implements OnInit
     @ViewChild(GalleryComponent) galleryComponent: GalleryComponent;
 
     constructor(
-        protected componentDependencyService: ComponentDependencyService,
-        protected activatedRoute: ActivatedRoute) {
-        super(componentDependencyService, activatedRoute);
-    }
-
-    setup(): ComponentSetup {
-        return new ComponentSetup({
-            initialized: false,
-            isNested: false
-        });
+        protected componentDependencyService: ComponentDependencyService) {
+        super(componentDependencyService);
     }
 
     ngOnInit() {
         super.ngOnInit();
-
-        super.subscribeToObservables(this.getComponentObservables());
-        super.initClientSubscriptions();
     }
 
-    private getInitUploaderObservable(): Observable<any> {
-        return this.clientIdChange
-            .takeUntil(this.ngUnsubscribe)
-            .map(clientId => {
-                this.uploaderConfig = this.dependencies.webComponentServices.uploaderService.multipleUpload(
-                    (files: File[]) => this.dependencies.fileService.uploadGalleryImages(files, clientId)
-                        .set())
-                    .useDefaultImageExtensions(true)
-                    .onAfterUpload<FetchedFile>((files => {
-                        if (files) {
-                            // append uploaded files to current gallery list
-                            this.currentImages = _.union(this.currentImages, files.map(m => new GalleryImage({
-                                imageUrl: m.absoluteUrl,
-                                imageDate: m.fileLastModified
-                            })));
-
-                            // reload gallery
-                            this.galleryComponent.reloadData();
-                        }
-                    }))
-                    .build();
-            });
+    ngOnChanges(changes: SimpleChanges) {
+        if (this.client) {
+            this.init();
+        }
     }
 
-    private getComponentObservables(): Observable<void>[] {
-        const observables: Observable<void>[] = [];
-        observables.push(this.getInitGalleryObservable());
-        observables.push(this.getClientMenuObservable());
-        observables.push(this.getInitUploaderObservable());
-        return observables;
+    private init(): void {
+        this.initUploader();
+        this.initGallery();
+        super.subscribeToObservable(this.getGalleryImagesObservable());
     }
 
-    private getInitGalleryObservable(): Observable<void> {
-        return this.clientIdChange
-            .takeUntil(this.ngUnsubscribe)
-            .map(clientId => {
-                this.galleryConfig = this.getGalleryConfig(clientId);
-            });
+    private initUploader(): void {
+        this.uploaderConfig = this.dependencies.webComponentServices.uploaderService.multipleUpload(
+            (files: File[]) => this.dependencies.fileService.uploadGalleryImages(files, this.client.id)
+                .set())
+            .useDefaultImageExtensions(true)
+            .onAfterUpload<FetchedFile>((files => {
+                if (files) {
+                    // append uploaded files to current gallery list
+                    this.currentImages = _.union(this.currentImages, files.map(m => new GalleryImage({
+                        imageUrl: m.absoluteUrl,
+                        imageDate: m.fileLastModified
+                    })));
+
+                    // reload gallery
+                    this.galleryComponent.reloadData();
+                }
+            }))
+            .build();
     }
 
-    private getGalleryImagesObservable(clientId: number): Observable<GalleryImage[]> {
-        return this.dependencies.fileService.getGalleryFiles(clientId).set()
+    private initGallery(): void {
+        this.galleryConfig = this.getGalleryConfig();
+    }
+
+    private getGalleryImagesObservable(): Observable<GalleryImage[]> {
+        return this.dependencies.fileService.getGalleryFiles(this.client.id).set()
             .map(response => {
                 if (response.files) {
                     const galleryImages = response.files.map(m => new GalleryImage({
@@ -107,27 +91,9 @@ export class UserGalleryComponent extends ClientsBaseComponent implements OnInit
             });
     }
 
-    private getClientMenuObservable(): Observable<void> {
-        return this.clientChange
-            .takeUntil(this.ngUnsubscribe)
-            .map(client => {
-                this.setConfig({
-                    menuItems: new ClientMenuItems(client.id).menuItems,
-                    menuTitle: {
-                        key: 'module.clients.viewClientSubtitle',
-                        data: { 'fullName': client.getFullName() }
-                    },
-                    componentTitle: {
-                        'key': 'module.clients.submenu.gallery'
-                    },
-                    menuAvatarUrl: client.getAvatarOrGravatarUrl()
-                });
-            });
-    }
-
-    private getGalleryConfig(clientId: number): GalleryConfig {
+    private getGalleryConfig(): GalleryConfig {
         return this.dependencies.webComponentServices.galleryService.gallery(
-            this.getGalleryImagesObservable(clientId)
+            this.getGalleryImagesObservable()
         )
             .isDownloadable(true)
             .groupResolver((galleryImage: GalleryImage) => {

@@ -1,7 +1,8 @@
 import { AppConfig, UrlConfig } from '../../config';
 import { MenuItem, MenuItemType, ResourceKey, ComponentAction } from '../models/core.models';
+import { IComponentConfig } from './icomponent-config.interface';
 
-export class ComponentConfig {
+export class ComponentConfig implements IComponentConfig {
 
     private readonly default_componentTitle: ResourceKey = { key: 'menu.dashboard' };
     private readonly default_menuItems: MenuItem[] = [
@@ -16,7 +17,7 @@ export class ComponentConfig {
     public menuItems?: MenuItem[] = this.default_menuItems;
     public appName?: string = this.default_appName;
     public menuTitle?: ResourceKey = this.default_menuTitle;
-    public enableSearch = false;
+    public enableSearch?: boolean = false;
     public menuAvatarUrl?: string = this.default_menuAvatarUrl;
     public actions?: ComponentAction[] = this.default_actions;
 

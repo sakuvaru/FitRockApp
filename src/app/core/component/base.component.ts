@@ -41,15 +41,17 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
         dialogDefaultError: '',
         dialogCloseButton: '',
         dialogDynamicTranslationMessage: '',
-        dialogDynamicTranslationTitle: ''
+        dialogDynamicTranslationTitle: '',
+        snackbarSavedText: '',
+        snackbarDeletedText: ''
     };
 
-    constructor(protected dependencies: ComponentDependencyService, options?: {
-        subscribedToRepositoryErrors?: boolean
-    }) {
-        if (options) {
-            Object.assign(this, options);
-        }
+    /**
+ * Duration for snackbar
+ */
+    private readonly snackbarDefaultDuration: number = 2500;
+
+    constructor(protected dependencies: ComponentDependencyService) {
     }
 
     // ----------------------- Lifecycle Events --------------------- // 
@@ -143,6 +145,34 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
         return this.dependencies.coreServices.timeService.fromNow(date);
     }
 
+    // --------------- Snackbar ------------------- //
+
+    showSnackbar(message: string): void {
+        this.dependencies.mdServices.snackbarService.open(message, undefined, { duration: this.snackbarDefaultDuration });
+    }
+
+    showSavedSnackbar(): void {
+        if (this.translations.snackbarSavedText) {
+            this.showSnackbar(this.translations.snackbarSavedText);
+        } else {
+            // resolve translations
+            this.initSnackbarTranslationsObs()
+                .takeUntil(this.ngUnsubscribe)
+                .subscribe(() => this.showSnackbar(this.translations.snackbarSavedText));
+        }
+    }
+
+    showDeletedSnackbar(): void {
+        if (this.translations.snackbarDeletedText) {
+            this.showSnackbar(this.translations.snackbarDeletedText);
+        } else {
+            // resolve translations
+            this.initSnackbarTranslationsObs()
+                .takeUntil(this.ngUnsubscribe)
+                .subscribe(() => this.showSnackbar(this.translations.snackbarDeletedText));
+        }
+    }
+
     // --------------------- Error handlers -------------- // 
 
     protected handleSubscribeError(error: any): void {
@@ -198,6 +228,17 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
             // handle unknown error
             this.showErrorDialog();
         }
+    }
+
+    private initSnackbarTranslationsObs(): Observable<any> {
+        return this.dependencies.coreServices.localizationService.get('shared.saved')
+            .map(text => {
+                this.translations.snackbarSavedText = text;
+            })
+            .zip(this.dependencies.coreServices.localizationService.get('shared.deleted')
+                .map(text => {
+                    this.translations.snackbarDeletedText = text;
+                }));
     }
 
     // --------------- Dialogs ------------------- //

@@ -2,11 +2,11 @@ import { OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs/Rx';
 
-import { BasePageComponent, ComponentDependencyService } from '../../core';
+import { BasePageComponent, ComponentDependencyService, ComponentConfig, IComponentConfig } from '../../core';
 import { User } from '../../models';
 
 // Note: importing from barrel caused 'Cannot resolve app parameters' error while building the app
-export abstract class ClientsBaseComponent extends BasePageComponent implements OnInit, OnDestroy {
+export abstract class BaseClientsPageComponent extends BasePageComponent implements OnInit, OnDestroy {
 
     /**
      * Subject containnig whole User object
@@ -30,9 +30,12 @@ export abstract class ClientsBaseComponent extends BasePageComponent implements 
 
     constructor(
         protected componentDependencyService: ComponentDependencyService,
-        protected activatedRoute: ActivatedRoute
+        protected activatedRoute: ActivatedRoute,
+        protected options?: IComponentConfig
     ) {
-        super(componentDependencyService);
+        super(componentDependencyService, activatedRoute, options);
+
+        this.initClientSubscriptions();
     }
 
     ngOnInit() {
@@ -50,7 +53,6 @@ export abstract class ClientsBaseComponent extends BasePageComponent implements 
     initClientSubscriptions(): void {
         // subscribe to client id changes
         this.activatedRoute.params
-            .takeUntil(this.ngUnsubscribe)
             .map(params => {
                 const id = +params['id'];
 
@@ -63,6 +65,7 @@ export abstract class ClientsBaseComponent extends BasePageComponent implements 
                 }
 
             })
+            .takeUntil(this.ngUnsubscribe)
             .subscribe();
     }
 
@@ -91,7 +94,6 @@ export abstract class ClientsBaseComponent extends BasePageComponent implements 
 
     private initClientSubscription(userId: number): void {
         this.activatedRoute.params
-            .takeUntil(this.ngUnsubscribe)
             .switchMap(params => {
                 const id = +params['id'];
                 return this.dependencies.itemServices.userService.item().byId(id).get();
@@ -102,6 +104,7 @@ export abstract class ClientsBaseComponent extends BasePageComponent implements 
                 this.client = user;
                 super.stopGlobalLoader();
             })
+            .takeUntil(this.ngUnsubscribe)
             .subscribe();
     }
 }

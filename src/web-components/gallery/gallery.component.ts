@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { MatSnackBar, MatDialog } from '@angular/material';
+import { MatDialog, MatSnackBar } from '@angular/material';
 import {
     ButtonEvent,
     ButtonsConfig,
@@ -146,15 +146,11 @@ export class GalleryComponent extends BaseWebComponent implements OnInit, OnChan
     }
 
     ngOnInit() {
-        if (this.config) {
-            this.initGallery(this.config);
-        }
+        this.initGallery();
     }
 
     ngOnChanges(changes: SimpleChanges) {
-        if (changes.config.currentValue) {
-            this.initGallery(changes.config.currentValue);
-        }
+        this.initGallery();
     }
 
     onButtonBeforeHook(event: ButtonEvent) {
@@ -180,12 +176,11 @@ export class GalleryComponent extends BaseWebComponent implements OnInit, OnChan
 
     reloadData(): void {
         this.initialized = false;
-        this.initGallery(this.config);
+        this.initGallery();
     }
 
-    private initGallery(config: GalleryConfig) {
-        if (!config) {
-            console.warn('Gallery could not be initialized');
+    private initGallery() {
+        if (this.initialized || !this.config) {
             return;
         }
 
@@ -193,9 +188,6 @@ export class GalleryComponent extends BaseWebComponent implements OnInit, OnChan
         if (this.initialized) {
             return;
         }
-
-        // make sure config is assigned
-        this.config = config;
 
         if (this.config.enableLocalLoader) {
             this.localLoaderEnabled = true;
@@ -218,7 +210,7 @@ export class GalleryComponent extends BaseWebComponent implements OnInit, OnChan
         this.customFullDescription = this.getCustomDescription();
 
         // init gallery with images & groups
-        this.getGalleryInitObservable(config)
+        this.getGalleryInitObservable(this.config)
             .takeUntil(this.ngUnsubscribe)
             .subscribe(() => {
                 // finally mark component as initialized

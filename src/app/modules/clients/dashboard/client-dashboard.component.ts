@@ -1,18 +1,26 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
-import { ActionButton, InfoBoxConfig, InfoBoxLine, InfoBoxText, InfoBoxLineType, ListBoxConfig, ListBoxItem, MapBoxConfig } from 'web-components/boxes';
+import {
+  ActionButton,
+  InfoBoxConfig,
+  InfoBoxLine,
+  InfoBoxLineType,
+  InfoBoxText,
+  ListBoxConfig,
+  ListBoxItem,
+  MapBoxConfig,
+} from 'web-components/boxes';
 
 import { AppConfig, UrlConfig } from '../../../config';
-import { ComponentDependencyService, ComponentSetup } from '../../../core';
-import { Appointment, Diet, Workout } from '../../../models';
-import { ClientsBaseComponent } from '../clients-base.component';
-import { ClientMenuItems } from '../menu.items';
+import { ComponentDependencyService } from '../../../core';
+import { Appointment } from '../../../models';
+import { BaseClientModuleComponent } from '../base-client-module.component';
 
 @Component({
+  selector: 'mod-client-dashboard',
   templateUrl: 'client-dashboard.component.html'
 })
-export class ClientDashboardComponent extends ClientsBaseComponent implements OnInit {
+export class ClientDashboardComponent extends BaseClientModuleComponent implements OnInit, OnChanges {
 
   public readonly defaultAvatarUrl: string = AppConfig.DefaultUserAvatarUrl;
   public readonly googleApiKey: string = AppConfig.GoogleApiKey;
@@ -26,43 +34,34 @@ export class ClientDashboardComponent extends ClientsBaseComponent implements On
   public publicNotesInfoBox?: InfoBoxConfig;
 
   constructor(
-    protected activatedRoute: ActivatedRoute,
     protected componentDependencyService: ComponentDependencyService,
   ) {
-    super(componentDependencyService, activatedRoute);
+    super(componentDependencyService);
   }
 
-  setup(): ComponentSetup {
-    return new ComponentSetup({
-      initialized: false,
-      isNested: false
-    });
+  ngOnChanges(changes: SimpleChanges): void {
+        if (this.client) {
+          this.init();
+        }
   }
 
   ngOnInit(): void {
     super.ngOnInit();
-
-    super.subscribeToObservables(this.getComponentObservables());
-    super.initClientSubscriptions();
   }
 
-  private getComponentObservables(): Observable<void>[] {
-    const observables: Observable<any>[] = [];
-    observables.push(this.getInitMenuObservable());
-    observables.push(this.getInitAppointmentObservable());
-    observables.push(this.getInitWorkoutsObservable());
-    observables.push(this.getInitDietsObservable());
-    observables.push(this.getInitChatMessagesObservable());
-    return observables;
+  private init(): void {
+    this.initWorkouts();
+    this.initDiets();
+    this.initChatMessages();
+    this.initAppointments();
+    this.initNotesInfoBoxes();
   }
 
-  private getInitWorkoutsObservable(): Observable<void> {
-    return this.clientIdChange
-      .map(clientId => {
+  private initWorkouts(): void {
         this.workoutsListBox = new ListBoxConfig(
           this.dependencies.itemServices.workoutService.items()
             .byCurrentUser()
-            .whereEquals('ClientId', clientId)
+            .whereEquals('ClientId', this.client.id)
             .orderByDesc('Id')
             .get()
             .map(response => {
@@ -78,16 +77,13 @@ export class ClientDashboardComponent extends ClientsBaseComponent implements On
             noDataMessage: super.translate('module.clients.dashboard.noWorkouts')
           }
         );
-      });
   }
 
-  private getInitDietsObservable(): Observable<void> {
-    return this.clientIdChange
-      .map(clientId => {
+  private initDiets(): void {
         this.dietsListBox = this.dependencies.webComponentServices.boxService.listBox(
           this.dependencies.itemServices.dietService.items()
             .byCurrentUser()
-            .whereEquals('ClientId', clientId)
+            .whereEquals('ClientId', this.client.id)
             .orderByDesc('Id')
             .get()
             .map(response => {
@@ -101,16 +97,12 @@ export class ClientDashboardComponent extends ClientsBaseComponent implements On
           super.translate('module.clients.dashboard.diets'),
           {
             noDataMessage: super.translate('module.clients.dashboard.noDiets')
-          }
-        );
-      });
+          });
   }
 
-  private getInitChatMessagesObservable(): Observable<void> {
-    return this.clientIdChange
-      .map(clientId => {
+  private initChatMessages(): void {
         this.chatMessagesListBox = this.dependencies.webComponentServices.boxService.listBox(
-          this.dependencies.itemServices.chatMessageService.getConversationMessages(clientId)
+          this.dependencies.itemServices.chatMessageService.getConversationMessages(this.client.id)
             .limit(6)
             .orderByDesc('Id')
             .get()
@@ -118,7 +110,7 @@ export class ClientDashboardComponent extends ClientsBaseComponent implements On
               return response.items.map(item => new ListBoxItem(
                 Observable.of(item.message),
                 {
-                  linkUrl: UrlConfig.getChatMessageUrl(this.clientId),
+                  linkUrl: UrlConfig.getChatMessageUrl(this.client.id),
                   imageUrl: item.sender.getAvatarOrGravatarUrl() ? item.sender.getAvatarOrGravatarUrl() : this.defaultAvatarUrl
                 }
               ));
@@ -128,14 +120,11 @@ export class ClientDashboardComponent extends ClientsBaseComponent implements On
             noDataMessage: super.translate('module.clients.dashboard.noChatMessages'),
           }
         );
-      });
   }
 
-  private getInitAppointmentObservable(): Observable<void> {
+  private initAppointments(): void {
     let appointment: Appointment | undefined;
 
-    return this.clientIdChange
-      .map(clientId => {
         const dateNow = new Date();
         dateNow.setSeconds(0);
         dateNow.setMilliseconds(0);
@@ -144,7 +133,7 @@ export class ClientDashboardComponent extends ClientsBaseComponent implements On
           this.dependencies.itemServices.appointmentService.items()
             .limit(1)
             .byCurrentUser()
-            .whereEquals('ClientId', clientId)
+            .whereEquals('ClientId', this.client.id)
             .whereGreaterThan('AppointmentDate', dateNow)
             .orderByAsc('AppointmentDate')
             .includeMultiple(['Workout', 'Location', 'Client'])
@@ -164,7 +153,7 @@ export class ClientDashboardComponent extends ClientsBaseComponent implements On
                 ) :
                   new ActionButton('add', Observable.of(undefined)
                     .map(() => {
-                      this.dependencies.coreServices.navigateService.navigate([UrlConfig.getNewAppointmentUrl(this.clientId)]);
+                      this.dependencies.coreServices.navigateService.navigate([UrlConfig.getNewAppointmentUrl(this.client.id)]);
                     }));
             
                 this.appointmentInfoBox.actions = [action];
@@ -221,41 +210,22 @@ export class ClientDashboardComponent extends ClientsBaseComponent implements On
             ]
           }
         );
-      });
   }
 
-  private getInitMenuObservable(): Observable<void> {
-    return this.clientChange
-      .map(client => {
-        // set component config
-        this.setConfig({
-          menuItems: new ClientMenuItems(client.id).menuItems,
-          menuTitle: {
-            key: 'module.clients.viewClientSubtitle',
-            data: { 'fullName': client.getFullName() }
-          },
-          componentTitle: {
-            'key': 'module.clients.submenu.dashboard'
-          },
-          menuAvatarUrl: client.getAvatarOrGravatarUrl()
-        });
-
+  private initNotesInfoBoxes(): void {
         // set info boxes
         this.privateNotesInfoBox = this.dependencies.webComponentServices.boxService.infoBox(
           Observable.of([
-            new InfoBoxLine([new InfoBoxText(client.trainerPrivateNotes, InfoBoxLineType.Body1)])
+            new InfoBoxLine([new InfoBoxText(this.client.trainerPrivateNotes, InfoBoxLineType.Body1)])
           ]),
           super.translate('module.clients.dashboard.privateNotes'),
         );
 
         this.publicNotesInfoBox = this.dependencies.webComponentServices.boxService.infoBox(
           Observable.of([
-            new InfoBoxLine([new InfoBoxText(client.trainerPublicNotes, InfoBoxLineType.Body1)])
+            new InfoBoxLine([new InfoBoxText(this.client.trainerPublicNotes, InfoBoxLineType.Body1)])
           ]),
           super.translate('module.clients.dashboard.publicNotes'),
         );
-      });
   }
-
- 
 }

@@ -17,7 +17,7 @@ export class PreviewLocationComponent extends BasePageComponent implements OnIni
     public googleApiKey: string = AppConfig.GoogleApiKey;
 
     constructor(
-        private activatedRoute: ActivatedRoute,
+        protected activatedRoute: ActivatedRoute,
         protected componentDependencyService: ComponentDependencyService,
     ) {
         super(componentDependencyService);

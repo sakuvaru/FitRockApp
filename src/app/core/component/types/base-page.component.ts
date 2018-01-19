@@ -1,12 +1,13 @@
 import { OnDestroy, OnInit } from '@angular/core';
-import { ComponentAction } from 'app/core';
+import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
 
 import { MenuItem, ResourceKey } from '../../models/core.models';
 import { BaseComponent } from '../base.component';
 import { ComponentDependencyService } from '../component-dependency.service';
-import { ComponentSetup } from '../component-setup.class';
 import { ComponentConfig } from '../component.config';
+import { IComponentConfig } from '../icomponent-config.interface';
+
 
 export abstract class BasePageComponent extends BaseComponent implements OnInit, OnDestroy {
 
@@ -18,33 +19,18 @@ export abstract class BasePageComponent extends BaseComponent implements OnInit,
     protected isNestedComponent: boolean = false;
 
     /**
-     * Duration for snackbar
-     */
-    private readonly snackbarDefaultDuration: number = 2500;
-
-    // translations
-    private snackbarSavedText: string;
-    private snackbarDeletedText: string;
-
-    /**
      * Component config
      */
     protected componentConfig: ComponentConfig = new ComponentConfig();
 
-    /**
-    * Every child component should setup its base config.
-    * This is setup during the component initialization and should serve
-    * different purpose then the ComponentConfig which can be set at any time during the component lifecycle.
-    * If no setup is provided, default setup will be used
-    */
-    abstract setup(): ComponentSetup;
-
     constructor(protected dependencies: ComponentDependencyService,
-        options?: {
-            subscribedToRepositoryErrors?: boolean
-        }) {
-        super(dependencies, options);
-        this.setupComponent();
+        protected activatedRoute?: ActivatedRoute,
+        options?: IComponentConfig) {
+        super(dependencies);
+
+        if (options) {
+            this.setConfig(options);
+        }
     }
 
     // ----------------------- Lifecycle Events --------------------- // 
@@ -70,28 +56,22 @@ export abstract class BasePageComponent extends BaseComponent implements OnInit,
     updateMenuItems(menuItems: MenuItem[]): void {
         this.componentConfig.menuItems = menuItems;
         this.componentConfig.setDefaultValues();
-        this.setConfig();
+        this.dependencies.coreServices.sharedService.setComponentConfig(this.componentConfig);
     }
 
     updateComponentTitle(title: ResourceKey): void {
         this.componentConfig.componentTitle = title;
         this.componentConfig.setDefaultValues();
-        this.setConfig();
+        this.dependencies.coreServices.sharedService.setComponentConfig(this.componentConfig);
     }
 
-    setConfig(options?:
-        {
-            componentTitle?: ResourceKey,
-            menuItems?: MenuItem[],
-            appName?: string,
-            menuTitle?: ResourceKey,
-            enableSearch?: boolean,
-            menuAvatarUrl?: string,
-            actions?: ComponentAction[]
-        }): void {
-        if (options) {
-            Object.assign(this.componentConfig, options);
-        }
+    setConfig(options: IComponentConfig): void {
+        const config = new ComponentConfig();
+
+        Object.assign(config, options);
+
+        this.componentConfig = config;
+    
         this.componentConfig.setDefaultValues();
         this.dependencies.coreServices.sharedService.setComponentConfig(this.componentConfig);
     }
@@ -122,10 +102,6 @@ export abstract class BasePageComponent extends BaseComponent implements OnInit,
             .takeUntil(this.ngUnsubscribe)
             .subscribe((val) => {
                 this.stopAllLoaders();
-
-                if (setComponentAsInitialized) {
-                    this.initializeComponent(true);
-                }
             },
             error => {
                 this.stopAllLoaders();
@@ -158,11 +134,6 @@ export abstract class BasePageComponent extends BaseComponent implements OnInit,
             .takeUntil(this.ngUnsubscribe)
             .subscribe(() => {
                 this.stopAllLoaders();
-
-                // set component as initialized
-                if (setComponentAsInitialized) {
-                    this.initializeComponent(true);
-                }
             },
             error => {
                 this.stopAllLoaders();
@@ -171,67 +142,7 @@ export abstract class BasePageComponent extends BaseComponent implements OnInit,
             );
     }
 
-    // --------------- Snackbar ------------------- //
-
-    showSnackbar(message: string): void {
-        this.dependencies.mdServices.snackbarService.open(message, undefined, { duration: this.snackbarDefaultDuration });
-    }
-
-    showSavedSnackbar(): void {
-        this.showSnackbar(this.snackbarSavedText);
-    }
-
-    showDeletedSnackbar(): void {
-        this.showSnackbar(this.snackbarDeletedText);
-    }
-
-
     // --------------- Component initialization  ------------------ //
-
-    protected setupComponent(): void {
-        const setup = this.setup();
-        if (setup) {
-            this.dependencies.coreServices.sharedService.setComponentSetup(setup);
-        }
-
-        // shared setup
-        this.sharedSetup(setup);
-
-        // nested vs non-nested setup
-        if (setup.isNested) {
-            this.setupNestedComponent(setup);
-        } else {
-            this.setupNonNestedComponent(setup);
-        }
-    }
-
-    private sharedSetup(setup: ComponentSetup): void {
-        // translations
-        this.dependencies.coreServices.localizationService.get('shared.saved')
-            .takeUntil(this.ngUnsubscribe)
-            .subscribe(text => this.snackbarSavedText = text);
-
-        this.dependencies.coreServices.localizationService.get('shared.deleted')
-            .takeUntil(this.ngUnsubscribe)
-            .subscribe(text => this.snackbarDeletedText = text);
-    }
-
-    private setupNestedComponent(setup: ComponentSetup): void {
-        // no special logic needed for nested component right now
-    }
-
-    private setupNonNestedComponent(setup: ComponentSetup): void {
-    }
-
-    private initializeComponent(initialize: boolean = true): void {
-        const currentSetup = this.setup();
-        if (currentSetup) {
-            currentSetup.initialized = initialize;
-        } else {
-            throw Error(`Component was not initialized`);
-        }
-        this.dependencies.coreServices.sharedService.setComponentSetup(currentSetup);
-    }
 
     private subscribeToRepositoryErrors(): void {
         if (this.subscribedToRepositoryErrors) {

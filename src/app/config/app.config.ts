@@ -6,6 +6,9 @@ export class AppConfig {
     public static DevModeEnabled = true;
     public static RedirectToErrorPageOnError = false;
 
+    // version
+    public static Version = '0.9 Beta';
+
     // app
     public static AppName = 'Fit Rock';
     public static MainTitle = 'Menu';

@@ -10,11 +10,8 @@ export abstract class BaseModuleComponent extends BaseComponent implements OnIni
 
   constructor(
     protected dependencies: ComponentDependencyService,
-    options?: {
-      subscribedToRepositoryErrors?: boolean
-    }
   ) {
-    super(dependencies, options);
+    super(dependencies);
   }
 
   ngOnInit(): void {

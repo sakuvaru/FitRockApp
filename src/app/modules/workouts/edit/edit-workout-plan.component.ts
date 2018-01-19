@@ -17,7 +17,7 @@ export class EditWorkoutPlanComponent extends BasePageComponent implements OnIni
   public workout: Workout;
 
   constructor(
-    private activatedRoute: ActivatedRoute,
+    protected activatedRoute: ActivatedRoute,
     protected dependencies: ComponentDependencyService) {
     super(dependencies);
   }

@@ -16,7 +16,7 @@ export class EditDietPlanComponent extends BasePageComponent implements OnInit, 
   public dietId: number;
 
   constructor(
-    private activatedRoute: ActivatedRoute,
+    protected activatedRoute: ActivatedRoute,
     protected dependencies: ComponentDependencyService) {
     super(dependencies);
   }

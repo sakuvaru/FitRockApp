@@ -92,7 +92,7 @@ export class BaseAdminLayoutComponent extends BaseLayoutComponent implements OnD
             .subscribe(
             componentConfig => {
                 // set component search
-                this.enableComponentSearch = componentConfig.enableSearch;
+                this.enableComponentSearch = componentConfig.enableSearch ? componentConfig.enableSearch : false;
 
                 // set menu items
                 this.menuItems = componentConfig.menuItems;
@@ -166,6 +166,7 @@ export class BaseAdminLayoutComponent extends BaseLayoutComponent implements OnD
     }
 
     protected calculateShowComponent(): void {
-        this.showComponent = !(!this.componentIsInitialized);
+        this.showComponent = true;
+        //this.showComponent = !(!this.componentIsInitialized);
     }
 }

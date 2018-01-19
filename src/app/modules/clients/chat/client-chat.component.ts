@@ -1,19 +1,18 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 import * as _ from 'underscore';
 
 import { DataFormConfig } from '../../../../web-components/data-form';
 import { AppConfig } from '../../../config';
-import { ComponentDependencyService, ComponentSetup } from '../../../core';
+import { ComponentDependencyService } from '../../../core';
 import { ChatMessage } from '../../../models';
-import { ClientsBaseComponent } from '../clients-base.component';
-import { ClientMenuItems } from '../menu.items';
+import { BaseClientModuleComponent } from '../base-client-module.component';
 
 @Component({
+    selector: 'mod-client-chat',
     templateUrl: 'client-chat.component.html'
 })
-export class ClientChatComponent extends ClientsBaseComponent implements OnInit {
+export class ClientChatComponent extends BaseClientModuleComponent implements OnInit, OnChanges {
 
     public formConfig: DataFormConfig;
     public chatMessages: ChatMessage[];
@@ -26,55 +25,45 @@ export class ClientChatComponent extends ClientsBaseComponent implements OnInit 
     public readonly defaultAvatarUrl: string = AppConfig.DefaultUserAvatarUrl;
 
     constructor(
-        protected activatedRoute: ActivatedRoute,
         protected componentDependencyService: ComponentDependencyService
     ) {
-        super(componentDependencyService, activatedRoute);
+        super(componentDependencyService);
 
     }
 
-    setup(): ComponentSetup {
-        return new ComponentSetup({
-            initialized: true,
-            isNested: false
-        });
+    ngOnChanges(changes: SimpleChanges): void {
+        if (this.client) {
+            this.init();
+        }
     }
 
     ngOnInit(): void {
         super.ngOnInit();
+    }
 
-        super.subscribeToObservables(this.getComponentObservables());
-        super.initClientSubscriptions();
+    private init(): void {
+        this.initForm();
+        super.subscribeToObservable(this.getChatMessagesObservable(this.client.id, this.chatMessagesPage, true, this.chatMessagesSearch));
     }
 
     searchConversation(search: string): void {
         this.chatMessagesPage = 1;
         this.chatMessagesSearch = search;
-        super.subscribeToObservable(this.getChatMessagesObservable(this.clientId, this.chatMessagesPage, true, this.chatMessagesSearch));
+        super.subscribeToObservable(this.getChatMessagesObservable(this.client.id, this.chatMessagesPage, true, this.chatMessagesSearch));
     }
 
     loadMoreMessages(): void {
-        super.subscribeToObservable(this.getChatMessagesObservable(this.clientId, this.chatMessagesPage, false, this.chatMessagesSearch));
+        super.subscribeToObservable(this.getChatMessagesObservable(this.client.id, this.chatMessagesPage, false, this.chatMessagesSearch));
     }
 
-    private getComponentObservables(): Observable<void>[] {
-        const observables: Observable<void>[] = [];
-        observables.push(this.getFormObservable());
-        observables.push(this.getInitChatMessagesObservable());
-        observables.push(this.getInitComponentConfigObservable());
-        return observables;
-    }
-
-    private getFormObservable(): Observable<void> {
-        return this.clientIdChange
-            .map(clientId => {
+    private initForm(): void {
                 const formConfig = this.dependencies.itemServices.chatMessageService.buildInsertForm()
                     .configField((field, item) => {
                         // manually set recipient & sender
                         if (field.key === 'SenderUserId') {
                             field.value = this.dependencies.authenticatedUserService.getUserId();
                         } else if (field.key === 'RecipientUserId') {
-                            field.value = this.clientId;
+                            field.value = this.client.id;
                         }
                         return Observable.of(field);
                     })
@@ -82,36 +71,14 @@ export class ClientChatComponent extends ClientsBaseComponent implements OnInit 
                     .wrapInCard(false)
                     .onAfterInsert((response) => {
                         // reload messages
-                        super.subscribeToObservable(this.getChatMessagesObservable(this.clientId, 1, true, this.chatMessagesSearch)
+                        super.subscribeToObservable(this.getChatMessagesObservable(this.client.id, 1, true, this.chatMessagesSearch)
                             .takeUntil(this.ngUnsubscribe));
                     })
                     .build();
 
                 this.formConfig = formConfig;
-            });
     }
 
-    private getInitComponentConfigObservable(): Observable<void> {
-        return this.clientChange
-        .map(client => {
-            this.setConfig({
-                menuItems: new ClientMenuItems(client.id).menuItems,
-                menuTitle: {
-                    key: 'module.clients.viewClientSubtitle',
-                    data: { 'fullName': client.getFullName() }
-                },
-                componentTitle: {
-                    'key': 'module.clients.submenu.chat'
-                },
-                menuAvatarUrl: client.getAvatarOrGravatarUrl()
-            });
-        });
-    }
-
-    private getInitChatMessagesObservable(): Observable<void> {
-        return this.clientChange
-            .flatMap(client => this.getChatMessagesObservable(client.id, this.chatMessagesPage, true, this.chatMessagesSearch));
-    }
 
     private getChatMessagesObservable(clientId: number, page: number, replaceMessages: boolean, search: string): Observable<void> {
         return this.dependencies.itemServices.chatMessageService.getConversationMessages(clientId)

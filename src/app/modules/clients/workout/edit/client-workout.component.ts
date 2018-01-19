@@ -1,25 +1,23 @@
 // common
 import 'rxjs/add/operator/switchMap';
 
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { DragulaService } from 'ng2-dragula';
 import { Observable, Subscription } from 'rxjs/Rx';
 import * as _ from 'underscore';
 
 import { stringHelper } from '../../../../../lib/utilities';
 import { AppConfig } from '../../../../config';
-import { ComponentDependencyService, ComponentSetup } from '../../../../core';
+import { ComponentDependencyService } from '../../../../core';
 import { Workout, WorkoutExercise } from '../../../../models';
-import { ClientsBaseComponent } from '../../clients-base.component';
-import { ClientMenuItems } from '../../menu.items';
+import { BaseClientModuleComponent } from '../../base-client-module.component';
 import { WorkoutListDialogComponent } from '../dialogs/workout-list-dialog.component';
 
-// required by component
 @Component({
+    selector: 'mod-client-workout',
     templateUrl: 'client-workout.component.html'
 })
-export class ClientWorkoutComponent extends ClientsBaseComponent implements OnInit, OnDestroy {
+export class ClientWorkoutComponent extends BaseClientModuleComponent implements OnInit, OnDestroy, OnChanges {
 
     public workoutExists: boolean = true;
     public workoutTemplates: Workout[];
@@ -47,26 +45,19 @@ export class ClientWorkoutComponent extends ClientsBaseComponent implements OnIn
 
     constructor(
         protected componentDependencyService: ComponentDependencyService,
-        protected activatedRoute: ActivatedRoute,
         private dragulaService: DragulaService
     ) {
-        super(componentDependencyService, activatedRoute);
+        super(componentDependencyService);
     }
 
-    setup(): ComponentSetup {
-        return new ComponentSetup({
-            initialized: false,
-            isNested: false
-        });
+    ngOnChanges(changes: SimpleChanges): void {
+        if (this.client) {
+            this.init();
+        }
     }
 
     ngOnInit(): void {
         super.ngOnInit();
-
-        this.initDragula();
-
-        super.subscribeToObservables(this.getComponentObservables());
-        super.initClientSubscriptions();
     }
 
     ngOnDestroy() {
@@ -89,11 +80,11 @@ export class ClientWorkoutComponent extends ClientsBaseComponent implements OnIn
         const selectedWorkout = selected.value as Workout;
 
         // copy data from selected workout to a new workout with assigned client
-        super.subscribeToObservable(this.dependencies.itemServices.workoutService.copyFromWorkout(selectedWorkout.id, this.clientId)
+        super.subscribeToObservable(this.dependencies.itemServices.workoutService.copyFromWorkout(selectedWorkout.id, this.client.id)
             .set()
             .flatMap(response => {
                 super.showSavedSnackbar();
-                return this.reloadExistingWorkoutsObservable(this.clientId);
+                return this.reloadExistingWorkoutsObservable(this.client.id);
             })
         );
 
@@ -110,7 +101,7 @@ export class ClientWorkoutComponent extends ClientsBaseComponent implements OnIn
     }
 
     goToEditWorkout(workout: Workout): void {
-        super.navigate([this.getTrainerUrl('clients/edit/' + this.clientId + '/workout/' + workout.id + '/workout-plan')]);
+        super.navigate([this.getTrainerUrl('clients/edit/' + this.client.id + '/workout/' + workout.id + '/workout-plan')]);
     }
 
     openWorkoutListDialog(workoutExercises: WorkoutExercise[]): void {
@@ -138,7 +129,7 @@ export class ClientWorkoutComponent extends ClientsBaseComponent implements OnIn
             .debounceTime(500)
             .takeUntil(this.ngUnsubscribe)
             .switchMap(() => {
-                return this.dependencies.itemServices.workoutService.updateItemsOrder(this.existingWorkouts, this.clientId).set();
+                return this.dependencies.itemServices.workoutService.updateItemsOrder(this.existingWorkouts, this.client.id).set();
             })
             .subscribe(() => {
                 super.stopGlobalLoader();
@@ -146,58 +137,34 @@ export class ClientWorkoutComponent extends ClientsBaseComponent implements OnIn
             });
     }
 
-    private getComponentObservables(): Observable<any>[] {
+    private init(): void {
         const observables: Observable<any>[] = [];
 
-        const obsClientMenu = this.clientChange
-            .takeUntil(this.ngUnsubscribe)
-            .map(client => {
-                this.setConfig({
-                    menuItems: new ClientMenuItems(client.id).menuItems,
-                    menuTitle: {
-                        key: 'module.clients.viewClientSubtitle',
-                        data: { 'fullName': client.getFullName() }
-                    },
-                    componentTitle: {
-                        'key': 'module.clients.submenu.workout'
-                    },
-                    menuAvatarUrl: client.getAvatarOrGravatarUrl()
-                });
-            });
-
-        const obsExistingExercises = this.existingWorkoutsObservable();
-
-        const letWorkoutTemplates = this.clientIdChange
-            .takeUntil(this.ngUnsubscribe)
-            .switchMap(clientId => this.dependencies.itemServices.workoutService.items()
-                .byCurrentUser()
-                .whereEmpty('ClientId')
-                .orderByAsc('WorkoutName')
-                .get())
+        observables.push(this.existingWorkoutsObservable());
+        observables.push(this.dependencies.itemServices.workoutService.items()
+            .byCurrentUser()
+            .whereEmpty('ClientId')
+            .orderByAsc('WorkoutName')
+            .get()
             .map(response => {
                 if (!response.isEmpty()) {
                     this.workoutTemplates = response.items;
                 }
-            });
+            }));
 
-        observables.push(obsClientMenu);
-        observables.push(obsExistingExercises);
-        observables.push(letWorkoutTemplates);
+        super.subscribeToObservables(observables);
 
-        return observables;
+        this.initDragula();
     }
 
     private existingWorkoutsObservable(): Observable<any> {
-        return this.clientIdChange
-            .takeUntil(this.ngUnsubscribe)
-            .switchMap(clientId => {
-                return this.dependencies.itemServices.workoutService.items()
-                    .byCurrentUser()
-                    .includeMultiple(['WorkoutExercises', 'WorkoutExercises.Exercise'])
-                    .whereEquals('ClientId', clientId)
-                    .orderByAsc('Order')
-                    .get();
-            })
+        return this.dependencies.itemServices.workoutService.items()
+            .byCurrentUser()
+            .includeMultiple(['WorkoutExercises', 'WorkoutExercises.Exercise'])
+            .whereEquals('ClientId', this.client.id)
+            .orderByAsc('Order')
+            .get()
+
             .map(response => {
                 if (!response.isEmpty()) {
                     this.existingWorkouts = response.items;

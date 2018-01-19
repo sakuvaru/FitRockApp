@@ -12,11 +12,9 @@ export abstract class BaseDialogComponent<TDialogComponent> extends BaseModuleCo
     protected dependencies: ComponentDependencyService,
     protected dialogRef: MatDialogRef<TDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    options?: {
-      subscribedToRepositoryErrors?: boolean
-  }
+  
   ) {
-    super(dependencies, options);
+    super(dependencies);
   }
   
   ngOnInit() {

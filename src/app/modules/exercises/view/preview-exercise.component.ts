@@ -18,7 +18,7 @@ export class PreviewExerciseComponent extends BasePageComponent implements OnIni
     public exercise: Exercise;
 
     constructor(
-        private activatedRoute: ActivatedRoute,
+        protected activatedRoute: ActivatedRoute,
         protected componentDependencyService: ComponentDependencyService,
     ) {
         super(componentDependencyService);

@@ -26,7 +26,7 @@ export class ResetPasswordFormComponent extends BasePageComponent implements OnI
     public resetPasswordEmailSend: boolean = false;
 
     constructor(
-        private activatedRoute: ActivatedRoute,
+        protected activatedRoute: ActivatedRoute,
         protected dependencies: ComponentDependencyService) {
         super(dependencies);
     }

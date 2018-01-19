@@ -30,10 +30,10 @@ export class EditWorkoutPlanExportComponent extends BasePageComponent implements
   public readonly dragulaHandle: string = 'dragula-move-handle';
 
   constructor(
-    private activatedRoute: ActivatedRoute,
+    protected activatedRoute: ActivatedRoute,
     private dragulaService: DragulaService,
     protected dependencies: ComponentDependencyService) {
-    super(dependencies);
+    super(dependencies, activatedRoute);
 
     // set handle for dragula
     const that = this;

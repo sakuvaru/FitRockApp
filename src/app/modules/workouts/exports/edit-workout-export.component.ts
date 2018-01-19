@@ -19,10 +19,10 @@ export class EditWorkoutExportComponent extends BasePageComponent implements OnI
     public formConfig: DataFormConfig;
 
     constructor(
-        private activatedRoute: ActivatedRoute,
+        protected activatedRoute: ActivatedRoute,
         protected componentDependencyService: ComponentDependencyService,
     ) {
-        super(componentDependencyService);
+        super(componentDependencyService, activatedRoute);
     }
 
     setup(): ComponentSetup {

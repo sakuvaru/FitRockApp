@@ -15,9 +15,9 @@ export class WorkoutPlanComponent extends BasePageComponent implements OnInit {
   public sortedWorkoutExercises: WorkoutExercise[];
 
   constructor(
-    private activatedRoute: ActivatedRoute,
+    protected activatedRoute: ActivatedRoute,
     protected dependencies: ComponentDependencyService) {
-    super(dependencies);
+    super(dependencies, activatedRoute);
   }
 
   setup(): ComponentSetup {

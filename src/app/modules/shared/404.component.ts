@@ -8,7 +8,7 @@ import { ComponentDependencyService, BasePageComponent, ComponentSetup } from '.
 })
 export class Global404Component extends BasePageComponent {
   constructor(
-    private activatedRoute: ActivatedRoute,
+    protected activatedRoute: ActivatedRoute,
     protected dependencies: ComponentDependencyService) {
     super(dependencies);
   }

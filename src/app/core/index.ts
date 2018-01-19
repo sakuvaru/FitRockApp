@@ -13,6 +13,7 @@ export * from './component/component-dependency.service';
 export * from './models/core.models';
 export * from './component/component-setup.class';
 export * from './component/component.config';
+export * from './component/icomponent-config.interface';
 
 
 

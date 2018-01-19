@@ -13,7 +13,7 @@ export class EditWorkoutComponent extends BasePageComponent implements OnInit {
     public workoutId: number;
 
     constructor(
-        private activatedRoute: ActivatedRoute,
+        protected activatedRoute: ActivatedRoute,
         protected componentDependencyService: ComponentDependencyService,
     ) {
         super(componentDependencyService);

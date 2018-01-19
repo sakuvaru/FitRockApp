@@ -1,66 +1,30 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs/Rx';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
-import { ComponentDependencyService, ComponentSetup } from '../../../../core';
+import { ComponentDependencyService } from '../../../../core';
 import { Diet } from '../../../../models';
-import { ClientsBaseComponent } from '../../clients-base.component';
-import { ClientEditDietMenuItems } from '../../menu.items';
+import { BaseClientModuleComponent } from '../../base-client-module.component';
 
 @Component({
+  selector: 'mod-edit-client-diet-plan',
   templateUrl: 'edit-client-diet-plan.component.html'
 })
-export class EditClientDietPlanComponent extends ClientsBaseComponent implements OnInit {
+export class EditClientDietPlanComponent extends BaseClientModuleComponent implements OnInit {
 
-  public dietId: number;
-  public diet: Diet;
+  @Input() dietId: number;
+
+  @Output() dietLoad = new EventEmitter<Diet>();
 
   constructor(
-    protected activatedRoute: ActivatedRoute,
     protected componentDependencyService: ComponentDependencyService,
   ) {
-    super(componentDependencyService, activatedRoute);
-  }
-
-  setup(): ComponentSetup {
-    return new ComponentSetup({
-      initialized: false,
-      isNested: false
-    });
+    super(componentDependencyService);
   }
 
   ngOnInit() {
     super.ngOnInit();
-
-    this.initDietId();
-    super.subscribeToObservable(this.getMenuInitObservable());
-    super.initClientSubscriptions();
-  }
-
-  private initDietId(): void {
-    this.activatedRoute.params
-      .takeUntil(this.ngUnsubscribe)
-      .subscribe(params => {
-        this.dietId = +params['dietId'];
-      });
-  }
-
-  private getMenuInitObservable(): Observable<any> {
-    return this.clientChange.map(client => {
-      this.setConfig({
-        menuItems: new ClientEditDietMenuItems(client.id, this.dietId).menuItems,
-        menuTitle: {
-          key: 'module.clients.viewClientSubtitle',
-          data: { 'fullName': client.getFullName() }
-        },
-        menuAvatarUrl: client.getAvatarOrGravatarUrl()
-      });
-    });
   }
 
   public handleLoadDiet(diet: Diet): void {
-    const translationData: any = {};
-    translationData.dietName = diet.dietName;
-    super.updateComponentTitle({ key: 'module.clients.diet.editPlanWithName', data: translationData });
+    this.dietLoad.next(diet);
   }
 }

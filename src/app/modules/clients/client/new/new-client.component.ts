@@ -1,44 +1,27 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
 
 import { DataFormConfig } from '../../../../../web-components/data-form';
-import { ComponentDependencyService, ComponentSetup } from '../../../../core';
+import { BaseModuleComponent, ComponentDependencyService } from '../../../../core';
 import { User } from '../../../../models';
-import { ClientsBaseComponent } from '../../clients-base.component';
-import { NewClientMenuItems } from '../../menu.items';
 
 @Component({
+    selector: 'mod-new-client',
     templateUrl: 'new-client.component.html'
 })
-export class NewClientComponent extends ClientsBaseComponent implements OnInit {
+export class NewClientComponent extends BaseModuleComponent implements OnInit {
 
     public formConfig: DataFormConfig;
 
     constructor(
-        protected activatedRoute: ActivatedRoute,
         protected componentDependencyService: ComponentDependencyService,
     ) {
-        super(componentDependencyService, activatedRoute);
-    }
-
-    setup(): ComponentSetup {
-        return new ComponentSetup({
-            initialized: true,
-            isNested: false
-        });
+        super(componentDependencyService);
     }
 
     ngOnInit(): void {
         super.ngOnInit();
-
-        this.setConfig({
-            componentTitle: { key: 'module.clients.submenu.newClient' },
-            menuItems: new NewClientMenuItems().menuItems
-        });
-
         this.initForm();
-        super.initClientSubscriptions();
     }
 
     private initForm(): void {

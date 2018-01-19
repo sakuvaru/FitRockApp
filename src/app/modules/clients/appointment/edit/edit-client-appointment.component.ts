@@ -1,74 +1,48 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs/Rx';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Appointment } from 'app/models';
 
 import { DataFormConfig } from '../../../../../web-components/data-form';
-import { ComponentDependencyService, ComponentSetup } from '../../../../core';
-import { ClientsBaseComponent } from '../../clients-base.component';
-import { ClientEditAppointmentMenuItems } from '../../menu.items';
+import { ComponentDependencyService } from '../../../../core';
+import { BaseClientModuleComponent } from '../../base-client-module.component';
 
 @Component({
+  selector: 'mod-edit-client-appointment',
   templateUrl: 'edit-client-appointment.component.html'
 })
-export class EditClientAppointmentComponent extends ClientsBaseComponent implements OnInit {
+export class EditClientAppointmentComponent extends BaseClientModuleComponent implements OnInit, OnChanges {
+
+  @Input() appointmentId: number;
+
+  @Output() loadAppointment = new EventEmitter<Appointment>();
 
   public formConfig: DataFormConfig;
 
   constructor(
-    protected activatedRoute: ActivatedRoute,
     protected componentDependencyService: ComponentDependencyService,
   ) {
-    super(componentDependencyService, activatedRoute);
+    super(componentDependencyService);
   }
-
-  setup(): ComponentSetup {
-    return new ComponentSetup({
-        initialized: true,
-        isNested: false
-    });
-}
 
   ngOnInit(): void {
     super.ngOnInit();
-
-    super.subscribeToObservable(this.getInitObservable());
-    super.initClientSubscriptions();
   }
 
-  private getInitObservable(): Observable<any> {
-    return this.clientChange
-      .switchMap(client => {
-        return this.activatedRoute.params
-          .map(params => {
-            return +params['appointmentId'];
-          });
-      })
-      .map(appointmentId => {
-        this.initForm(appointmentId);
-      });
+  ngOnChanges(changes: SimpleChanges): void {
+    if (this.appointmentId && this.client) {
+      this.initForm();
+    }
   }
 
-  private initForm(appointmentId: number): void {
+  private initForm(): void {
     this.formConfig = this.dependencies.itemServices.appointmentService.buildEditForm(
-        this.dependencies.itemServices.appointmentService.editFormQuery(appointmentId).withData('clientId', this.clientId)
+        this.dependencies.itemServices.appointmentService.editFormQuery(this.appointmentId).withData('clientId', this.client.id)
     )
       .enableDelete(true)
-      .onAfterDelete(() => super.navigate([this.getTrainerUrl('clients/edit/' + this.clientId + '/appointments')]))
+      .onAfterDelete(() => super.navigate([this.getTrainerUrl('clients/edit/' + this.client.id + '/appointments')]))
       .onEditFormLoaded(form => {
         const appointment = form.item;
 
-         // setup menu
-         this.setConfig({
-          menuItems: new ClientEditAppointmentMenuItems(this.client.id, appointmentId).menuItems,
-          menuTitle: {
-            key: 'module.clients.viewClientSubtitle',
-            data: { 'fullName': this.client.getFullName() }
-          },
-          componentTitle: {
-            'key': 'module.clients.appointments.editAppointmentWithName', data: { 'appointmentName': appointment.appointmentName }
-          },
-          menuAvatarUrl: this.client.getAvatarOrGravatarUrl()
-        });
+         this.loadAppointment.next(appointment);
 
       })
       .build();

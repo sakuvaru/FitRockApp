@@ -15,7 +15,7 @@ export class DietPlanComponent extends BasePageComponent implements OnInit {
   public sortedDietFoods: DietFood[];
 
   constructor(
-    private activatedRoute: ActivatedRoute,
+    protected activatedRoute: ActivatedRoute,
     protected dependencies: ComponentDependencyService) {
     super(dependencies);
   }

@@ -1,6 +1,6 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, OnChanges, SimpleChanges } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ResponseMultiple } from 'lib/repository';
+import { ResponseMultiple, MultipleItemQuery } from 'lib/repository';
 import { Observable } from 'rxjs/Rx';
 import * as _ from 'underscore';
 
@@ -13,9 +13,9 @@ import { ChatMessage, User } from '../../models';
     selector: 'mod-chat',
     templateUrl: 'chat.component.html'
 })
-export class ChatComponent extends BaseModuleComponent implements OnInit {
+export class ChatComponent extends BaseModuleComponent implements OnInit, OnChanges {
 
-    @Input() changeUser: Observable<number>;
+    @Input() conversationUserId: number;
 
     @Output() usersLoaded = new EventEmitter<ResponseMultiple<User>>();
     @Output() activeUserLoad = new EventEmitter<User>();
@@ -31,8 +31,6 @@ export class ChatComponent extends BaseModuleComponent implements OnInit {
     public noConversationFound: boolean = false;
     public noUserFound: boolean = false;
 
-    public activeUserId: number;
-
     private readonly clientsPageSize: number = 200;
 
     public readonly defaultAvatarUrl: string = AppConfig.DefaultUserAvatarUrl;
@@ -44,32 +42,42 @@ export class ChatComponent extends BaseModuleComponent implements OnInit {
     }
     ngOnInit(): void {
         super.ngOnInit();
-        super.subscribeToObservables(this.getComponentObservables());
 
-        // make sure the menu is initialized by searching for all users at the init
-        this.dependencies.coreServices.sharedService.setComponentSearch('');
+        this.initMenuAndUsers();
+
+        if (!this.conversationUserId) {
+            this.initConversation();
+        }
     }
-    
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes.conversationUserId.currentValue) {
+            this.initConversation();
+        }
+    }
+
     loadMoreMessages(): void {
-        super.subscribeToObservable(this.getChatMessagesObservable(this.activeUserId, this.chatMessagesPage, false, this.chatMessagesSearch));
+        super.subscribeToObservable(this.getChatMessagesObservable(this.conversationUserId, this.chatMessagesPage, false, this.chatMessagesSearch));
     }
 
     searchConversation(search: string): void {
         this.chatMessagesPage = 1;
         this.chatMessagesSearch = search;
-        super.subscribeToObservable(this.getChatMessagesObservable(this.activeUserId, this.chatMessagesPage, true, this.chatMessagesSearch));
+        super.subscribeToObservable(this.getChatMessagesObservable(this.conversationUserId, this.chatMessagesPage, true, this.chatMessagesSearch));
     }
 
-    private getComponentObservables(): Observable<any>[] {
-        const observables: Observable<any>[] = [];
-        observables.push(this.getSearchAndMenuObservable());
-        observables.push(this.getConverstationObservable());
-        return observables;
+    private initMenuAndUsers(): void {
+        super.subscribeToObservable(this.getSearchAndMenuObservable());
+       // make sure the menu is initialized by searching for all users at the init
+       this.dependencies.coreServices.sharedService.setComponentSearch('');
     }
 
-    private getSearchAndMenuObservable(): Observable<any> {
+    private initConversation(): void {
+        super.subscribeToObservable(this.getConverstationObservable());
+    }
+
+    private getSearchAndMenuObservable(): Observable<void> {
         return this.dependencies.coreServices.sharedService.componentSearchChanged$
-            .takeUntil(this.ngUnsubscribe)
             .switchMap(search => {
                 return this.dependencies.itemServices.userService.clients()
                     .pageSize(this.clientsPageSize)
@@ -82,49 +90,47 @@ export class ChatComponent extends BaseModuleComponent implements OnInit {
             });
     }
 
-    private getConverstationObservable(): Observable<any> {
-        return this.changeUser
-            .switchMap(userId => {
-                super.startGlobalLoader();
-                this.resetChatUser();
+    private getConverstationObservable(): Observable<void> {
+        let userQuery: Observable<ResponseMultiple<User>>;
 
-                if (!userId) {
-                    return this.dependencies.itemServices.userService.clients()
-                        .orderByAsc('FirstName')
-                        .limit(1)
-                        .get();
-                }
+        if (!this.conversationUserId) {
+            userQuery = this.dependencies.itemServices.userService.clients()
+                .orderByAsc('FirstName')
+                .limit(1)
+                .get();
 
-                return this.dependencies.itemServices.userService.clients()
-                    .whereEquals('Id', userId)
-                    .limit(1)
-                    .get();
-            })
+        } else {
+            userQuery = this.dependencies.itemServices.userService.clients()
+                .whereEquals('Id', this.conversationUserId)
+                .limit(1)
+                .get();
+        }
+
+        return userQuery.switchMap(response => {
+            this.resetChatUser();
+
+            console.log(response);
+
+            if (!response || !response.items[0]) {
+                this.setNoUserFound();
+                return Observable.empty();
+            }
+
+            const activeUser = response.items[0];
+
+            this.activeUserLoad.next(activeUser);
+
+            return Observable.of(response);
+        })
             .switchMap(response => {
-                if (!response || !response.items[0]) {
-                    this.setNoUserFound();
-                    return Observable.empty();
-                }
-
-                const activeUser = response.items[0];
-
-                this.activeUserId = activeUser.id;
-
-                this.activeUserLoad.next(activeUser);
-
-                return Observable.of(response);
-            })
-            .switchMap(response => {
-                if (!this.activeUserId) {
+                if (!this.conversationUserId) {
                     return Observable.of(response);
                 }
 
-                return this.getChatMessagesObservable(this.activeUserId, this.chatMessagesPage, true, this.chatMessagesSearch);
+                return this.getChatMessagesObservable(this.conversationUserId, this.chatMessagesPage, true, this.chatMessagesSearch);
             })
             .map(() => {
-                this.initChatForm(this.activeUserId);
-
-                super.stopAllLoaders();
+                this.initChatForm(this.conversationUserId);
             });
     }
 

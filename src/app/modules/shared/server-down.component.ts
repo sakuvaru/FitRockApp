@@ -13,7 +13,7 @@ export class ServerDownComponent extends BasePageComponent implements OnInit {
   public appOnline: boolean = false;
 
   constructor(
-    private activatedRoute: ActivatedRoute,
+    protected activatedRoute: ActivatedRoute,
     protected dependencies: ComponentDependencyService) {
     super(dependencies);
   }

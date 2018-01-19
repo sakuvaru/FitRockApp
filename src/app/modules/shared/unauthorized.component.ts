@@ -13,7 +13,7 @@ export class UnauthorizedComponent extends BasePageComponent {
   public loginUrl: string;
 
   constructor(
-    private activatedRoute: ActivatedRoute,
+    protected activatedRoute: ActivatedRoute,
     protected dependencies: ComponentDependencyService) {
     super(dependencies);
 

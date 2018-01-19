@@ -1,18 +1,17 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { stringHelper } from 'lib/utilities';
 import { Observable } from 'rxjs/Rx';
 
-import { BaseGraph, GraphComponent, GraphConfig, LineChart, MultiSeries } from '../../../../../web-components/graph';
-import { BasePageComponent, ComponentDependencyService, ComponentSetup } from '../../../../core';
-import { ProgressItemType } from '../../../../models';
-import { stringHelper } from 'lib/utilities';
+import { BaseGraph, GraphComponent, GraphConfig, LineChart, MultiSeries } from '../../../../web-components/graph';
+import { ComponentDependencyService } from '../../../core';
+import { ProgressItemType } from '../../../models';
+import { BaseClientModuleComponent } from '../base-client-module.component';
 
 @Component({
-    selector: 'user-stats',
+    selector: 'mod-user-stats',
     templateUrl: 'user-stats.component.html'
 })
-export class UserStatsComponent extends BasePageComponent implements OnInit, OnChanges {
-
-    @Input() userId: number;
+export class UserStatsComponent extends BaseClientModuleComponent implements OnInit, OnChanges {
 
     public graphConfig: GraphConfig<BaseGraph>;
     public progressItemTypes: ProgressItemType[];
@@ -25,35 +24,28 @@ export class UserStatsComponent extends BasePageComponent implements OnInit, OnC
         super(componentDependencyService);
     }
 
-    setup(): ComponentSetup {
-        return new ComponentSetup({
-            initialized: true,
-            isNested: true
-        });
-    }
-
     ngOnInit() {
         super.ngOnInit();
-
-        this.initStats();
     }
 
     ngOnChanges(changes: SimpleChanges) {
-        this.initStats();
+        if (this.client) {
+            this.initStats();
+        }
     }
 
     onSelectType(progressItemType: ProgressItemType): void {
-        const newGraphConfig = this.getGraphConfig(this.userId, progressItemType.id);
+        const newGraphConfig = this.getGraphConfig(this.client.id, progressItemType.id);
         // reload graph
         this.graph.forceReinitialization(newGraphConfig);
     }
 
     private initStats(): void {
-        if (!this.userId) {
+        if (!this.client.id) {
             return;
         }
 
-        this.getProgressTypesAndInitGraphObservable(this.userId)
+        this.getProgressTypesAndInitGraphObservable(this.client.id)
             .takeUntil(this.ngUnsubscribe)
             .subscribe();
     }

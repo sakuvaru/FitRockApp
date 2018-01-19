@@ -1,72 +1,52 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 
 import { AppConfig } from '../../../../config';
-import { ComponentDependencyService, ComponentSetup } from '../../../../core';
+import { ComponentDependencyService } from '../../../../core';
 import { Appointment } from '../../../../models';
-import { ClientsBaseComponent } from '../../clients-base.component';
-import { ClientEditAppointmentMenuItems } from '../../menu.items';
+import { BaseClientModuleComponent } from '../../../clients/base-client-module.component';
 
 @Component({
+  selector: 'mod-view-client-appointment',
   templateUrl: 'view-client-appointment.component.html'
 })
-export class ViewClientAppointmentComponent extends ClientsBaseComponent implements OnInit {
+export class ViewClientAppointmentComponent extends BaseClientModuleComponent implements OnInit, OnChanges {
+
+  @Input() appointmentId: number;
+
+  @Output() loadAppointment = new EventEmitter<Appointment>();
 
   public appointment?: Appointment;
   public googleApiKey: string = AppConfig.GoogleApiKey;
 
   constructor(
-    protected activatedRoute: ActivatedRoute,
     protected componentDependencyService: ComponentDependencyService,
   ) {
-    super(componentDependencyService, activatedRoute);
+    super(componentDependencyService);
   }
-
-  setup(): ComponentSetup {
-    return new ComponentSetup({
-        initialized: false,
-        isNested: false
-    });
-}
 
   ngOnInit(): void {
     super.ngOnInit();
-
-    super.subscribeToObservable(this.getInitObservable());
-    super.initClientSubscriptions();
   }
 
-  private getInitObservable(): Observable<any> {
-    return this.clientChange
-      .switchMap(client => this.activatedRoute.params
-        .switchMap(params => {
-          const appointmentId = +params['appointmentId'];
+  ngOnChanges(changes: SimpleChanges): void {
+    if (this.client && this.appointmentId) {
+      super.subscribeToObservable(this.getInitObservable());
+    }
+  }
 
-          return this.dependencies.itemServices.appointmentService.item().byId(appointmentId)
-            .includeMultiple(['Location', 'Workout'])
-            .get();
-        })
-        .map(response => {
-          // check if appointment is assigned to current client
-          if (response.item.clientId !== this.clientId) {
-            this.dependencies.coreServices.navigateService.item404().navigate();
-          }
+  private getInitObservable(): Observable<void> {
+    return this.dependencies.itemServices.appointmentService.item().byId(this.appointmentId)
+      .includeMultiple(['Location', 'Workout'])
+      .get()
+      .map(response => {
+        // check if appointment is assigned to current client
+        if (response.item.clientId !== this.client.id) {
+          this.dependencies.coreServices.navigateService.item404().navigate();
+        }
 
-          this.appointment = response.item;
-
-          this.setConfig({
-            menuItems: new ClientEditAppointmentMenuItems(this.client.id, this.appointment.id).menuItems,
-            menuTitle: {
-              key: 'module.clients.viewClientSubtitle',
-              data: { 'fullName': this.client.getFullName() }
-            },
-            componentTitle: {
-              'key': 'module.clients.appointments.viewAppointmentWithName', data: { 'appointmentName': this.appointment.appointmentName }
-            },
-            menuAvatarUrl: this.client.getAvatarOrGravatarUrl()
-          });
-        })
-      );
+        this.appointment = response.item;
+        this.loadAppointment.next(response.item);
+      });
   }
 }

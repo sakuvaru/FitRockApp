@@ -12,20 +12,13 @@ import { ChatMenuItems } from './menu.items';
 })
 export class ChatPageComponent extends BasePageComponent implements OnInit {
 
-    public changeUser = new Subject<number>();
+    public conversationUserId?: number;
 
     constructor(
         protected activatedRoute: ActivatedRoute,
         protected componentDependencyService: ComponentDependencyService
     ) {
-        super(componentDependencyService);
-    }
-
-    setup(): ComponentSetup {
-        return new ComponentSetup({
-            initialized: true,
-            isNested: false
-        });
+        super(componentDependencyService, activatedRoute);
     }
 
     ngOnInit(): void {
@@ -50,7 +43,7 @@ export class ChatPageComponent extends BasePageComponent implements OnInit {
     private init(): void {
         super.subscribeToObservable(this.activatedRoute.params
             .map(params => {
-                this.changeUser.next(+params['id']);
+                this.conversationUserId = +params['id'];
             })
         );
     }

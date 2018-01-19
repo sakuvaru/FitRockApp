@@ -1,68 +1,30 @@
-// common
-import { Component, Input, Output, OnInit, EventEmitter, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-import { ComponentDependencyService, BasePageComponent, ComponentSetup } from '../../../../core';
-import { AppConfig, UrlConfig } from '../../../../config';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
-// required by component
-import { Observable } from 'rxjs/Rx';
-import { ClientsBaseComponent } from '../../clients-base.component';
-import { ClientEditDietMenuItems } from '../../menu.items';
+import { ComponentDependencyService } from '../../../../core';
 import { Diet } from '../../../../models';
+import { BaseClientModuleComponent } from '../../base-client-module.component';
 
 @Component({
+    selector: 'mod-edit-client-diet',
     templateUrl: 'edit-client-diet.component.html'
 })
-export class EditClientDietComponent extends ClientsBaseComponent implements OnInit {
+export class EditClientDietComponent extends BaseClientModuleComponent implements OnInit {
 
-    public dietId: number;
+    @Input() dietId: number;
+
+    @Output() dietLoad = new EventEmitter<Diet>();
 
     constructor(
-        protected activatedRoute: ActivatedRoute,
         protected componentDependencyService: ComponentDependencyService,
     ) {
-        super(componentDependencyService, activatedRoute);
-    }
-
-    setup(): ComponentSetup {
-        return new ComponentSetup({
-            initialized: false,
-            isNested: false
-        });
+        super(componentDependencyService);
     }
 
     ngOnInit() {
         super.ngOnInit();
-
-        this.initDietId();
-        super.subscribeToObservable(this.getMenuInitObservable());
-        super.initClientSubscriptions();
-    }
-
-    private initDietId(): void {
-        this.activatedRoute.params
-            .takeUntil(this.ngUnsubscribe)
-            .subscribe(params => {
-                this.dietId = +params['dietId'];
-            });
-    }
-
-    private getMenuInitObservable(): Observable<any> {
-        return this.clientChange.map(client => {
-            this.setConfig({
-                menuItems: new ClientEditDietMenuItems(client.id, this.dietId).menuItems,
-                menuTitle: {
-                    key: 'module.clients.viewClientSubtitle',
-                    data: { 'fullName': client.getFullName() }
-                },
-                menuAvatarUrl: client.getAvatarOrGravatarUrl()
-            });
-        });
     }
 
     public handleLoadDiet(diet: Diet): void {
-        const translationData: any = {};
-        translationData.dietName = diet.dietName;
-        super.updateComponentTitle({ key: 'module.clients.diet.editPlanWithName', data: translationData });
+        this.dietLoad.next(diet);
     }
 }

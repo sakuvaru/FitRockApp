@@ -13,4 +13,4 @@ import { ChatRouter } from './chat.routing';
         ChatPageComponent,
     ]
 })
-export class ChatModule { }
+export class ChatPagesModule { }

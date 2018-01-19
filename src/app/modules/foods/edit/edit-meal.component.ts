@@ -25,7 +25,7 @@ export class EditMealComponent extends BasePageComponent implements OnInit {
     private item: Food;
 
     constructor(
-        private activatedRoute: ActivatedRoute,
+        protected activatedRoute: ActivatedRoute,
         protected componentDependencyService: ComponentDependencyService,
     ) {
         super(componentDependencyService);

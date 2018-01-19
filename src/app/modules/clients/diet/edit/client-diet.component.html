@@ -1,6 +1,6 @@
 <mat-card>
     <mat-card-content>
-        <button mat-raised-button color="primary" [routerLink]="[getTrainerUrl('clients/edit/' + clientId + '/new-diet')]">{{'module.clients.diet.newDiet' | localize}}</button>
+        <button *ngIf="client" mat-raised-button color="primary" [routerLink]="[getTrainerUrl('clients/edit/' + client.id + '/new-diet')]">{{'module.clients.diet.newDiet' | localize}}</button>
     </mat-card-content>
     <mat-divider></mat-divider>
     <mat-card-content>

@@ -1,62 +1,31 @@
-// common
-import { Component, Input, Output, OnInit, EventEmitter, AfterContentInit } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-import { ComponentDependencyService, BasePageComponent, ComponentConfig, ComponentSetup } from '../../../../core';
-import { AppConfig, UrlConfig } from '../../../../config';
+import { Component, OnChanges, OnInit } from '@angular/core';
 
-// required by component
-import { ClientsBaseComponent } from '../../clients-base.component';
-import { ClientMenuItems } from '../../menu.items';
 import { DataTableConfig } from '../../../../../web-components/data-table';
-import { Appointment } from '../../../../models';
-import { MultipleItemQuery } from '../../../../../lib/repository';
-import { Observable } from 'rxjs/Rx';
+import { ComponentDependencyService } from '../../../../core';
+import { BaseClientModuleComponent } from '../../../clients/base-client-module.component';
 
 @Component({
+  selector: 'mod-client-appointment-list',
   templateUrl: 'client-appointment-list.component.html'
 })
-export class ClientAppointmentListComponent extends ClientsBaseComponent implements OnInit {
+export class ClientAppointmentListComponent extends BaseClientModuleComponent implements OnInit, OnChanges {
 
   public config: DataTableConfig;
 
   constructor(
-    protected activatedRoute: ActivatedRoute,
     protected componentDependencyService: ComponentDependencyService,
   ) {
-    super(componentDependencyService, activatedRoute);
+    super(componentDependencyService);
   }
-
-  setup(): ComponentSetup {
-    return new ComponentSetup({
-        initialized: true,
-        isNested: false
-    });
-}
 
   ngOnInit(): void {
     super.ngOnInit();
-    super.subscribeToObservable(this.getInitObservable());
-    super.initClientSubscriptions();
   }
 
-  private getInitObservable(): Observable<any> {
-    return this.clientChange.map(client => {
-
-      // component config
-      this.setConfig({
-        menuItems: new ClientMenuItems(client.id).menuItems,
-        menuTitle: {
-          key: 'module.clients.viewClientSubtitle',
-          data: { 'fullName': client.getFullName() }
-        },
-        componentTitle: {
-          'key': 'module.clients.submenu.appointments'
-        },
-        menuAvatarUrl: client.getAvatarOrGravatarUrl()
-      });
-
-      this.initList(client.id);
-    });
+  ngOnChanges(): void {
+    if (this.client) {
+      this.initList(this.client.id);
+    }
   }
 
   private initList(clientId: number): void {
@@ -104,7 +73,7 @@ export class ClientAppointmentListComponent extends ClientsBaseComponent impleme
           priority: 2
         }
       ])
-      .onClick((item) => super.navigate([super.getTrainerUrl('clients/edit/') + this.clientId + '/appointments/view/' + item.id]))
+      .onClick((item) => super.navigate([super.getTrainerUrl('clients/edit/') + this.client.id + '/appointments/view/' + item.id]))
       .build();
   }
 }

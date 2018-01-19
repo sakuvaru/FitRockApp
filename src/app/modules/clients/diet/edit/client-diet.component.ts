@@ -1,5 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { DragulaService } from 'ng2-dragula';
 import { Observable, Subscription } from 'rxjs/Rx';
 import * as _ from 'underscore';
@@ -8,14 +7,14 @@ import { stringHelper } from '../../../../../lib/utilities';
 import { AppConfig } from '../../../../config';
 import { ComponentDependencyService, ComponentSetup } from '../../../../core';
 import { Diet, DietFood } from '../../../../models';
-import { ClientsBaseComponent } from '../../clients-base.component';
-import { ClientMenuItems } from '../../menu.items';
+import { BaseClientModuleComponent } from '../../base-client-module.component';
 import { FoodListDialogComponent } from '../dialogs/food-list-dialog.component';
 
 @Component({
+    selector: 'mod-client-diet',
     templateUrl: 'client-diet.component.html'
 })
-export class ClientDietComponent extends ClientsBaseComponent implements OnInit, OnDestroy {
+export class ClientDietComponent extends BaseClientModuleComponent implements OnInit, OnDestroy, OnChanges {
 
     public workoutExists: boolean = true;
     public dietTemplates: Diet[];
@@ -37,27 +36,20 @@ export class ClientDietComponent extends ClientsBaseComponent implements OnInit,
     private dropSubscription: Subscription;
 
     constructor(
-        protected activatedRoute: ActivatedRoute,
         protected componentDependencyService: ComponentDependencyService,
         private dragulaService: DragulaService,
     ) {
-        super(componentDependencyService, activatedRoute);
-    }
-
-    setup(): ComponentSetup {
-        return new ComponentSetup({
-            initialized: false,
-            isNested: false
-        });
+        super(componentDependencyService);
     }
 
     ngOnInit(): void {
         super.ngOnInit();
+    }
 
-        this.initDragula();
-
-        super.subscribeToObservables(this.getComponentObservables());
-        super.initClientSubscriptions();
+    ngOnChanges(changes: SimpleChanges) {
+        if (this.client) {
+            this.init();
+        }
     }
 
     ngOnDestroy() {
@@ -80,7 +72,7 @@ export class ClientDietComponent extends ClientsBaseComponent implements OnInit,
     }
 
     goToEditDiet(diet: Diet): void {
-        super.navigate([this.getTrainerUrl('clients/edit/' + this.clientId + '/diet/' + diet.id + '/diet-plan')]);
+        super.navigate([this.getTrainerUrl('clients/edit/' + this.client.id + '/diet/' + diet.id + '/diet-plan')]);
     }
 
     openFoodListDialog(dietFoods: DietFood[]): void {
@@ -108,7 +100,7 @@ export class ClientDietComponent extends ClientsBaseComponent implements OnInit,
             .debounceTime(500)
             .takeUntil(this.ngUnsubscribe)
             .switchMap(() => {
-                return this.dependencies.itemServices.dietService.updateItemsOrder(this.existingDiets, this.clientId).set();
+                return this.dependencies.itemServices.dietService.updateItemsOrder(this.existingDiets, this.client.id).set();
             })
             .subscribe(() => {
                 super.stopGlobalLoader();
@@ -117,56 +109,33 @@ export class ClientDietComponent extends ClientsBaseComponent implements OnInit,
 
     }
 
-    private getComponentObservables(): Observable<any>[] {
+    private init(): void {
         const observables: Observable<any>[] = [];
-
-        const obsClientMenu = this.clientChange
-            .takeUntil(this.ngUnsubscribe)
-            .map(client => {
-                this.setConfig({
-                    menuItems: new ClientMenuItems(client.id).menuItems,
-                    menuTitle: {
-                        key: 'module.clients.viewClientSubtitle',
-                        data: { 'fullName': client.getFullName() }
-                    },
-                    componentTitle: {
-                        'key': 'module.clients.submenu.diet'
-                    },
-                    menuAvatarUrl: client.getAvatarOrGravatarUrl()
-                });
-            });
-
-            const obsDietTemplates = this.clientIdChange
-            .takeUntil(this.ngUnsubscribe)
-            .switchMap(clientId => this.dependencies.itemServices.dietService.items()
+           observables.push(this.dependencies.itemServices.dietService.items()
                 .byCurrentUser()
                 .whereNull('ClientId')
                 .orderByAsc('DietName')
-                .get())
+                .get()
             .map(response => {
                 if (!response.isEmpty()) {
                     this.dietTemplates = response.items;
                 }
-            });
+            }));
 
-            const obsExistingDiets = this.existingDietsObservable();
+            observables.push(this.existingDietsObservable());
 
-        observables.push(obsClientMenu);
-        observables.push(obsDietTemplates);
-        observables.push(obsExistingDiets);
+        super.subscribeToObservables(observables);
 
-        return observables;
+        this.initDragula();
     }
 
     private existingDietsObservable(): Observable<any> {
-        return this.clientIdChange
-            .takeUntil(this.ngUnsubscribe)
-            .switchMap(clientId => this.dependencies.itemServices.dietService.items()
+        return this.dependencies.itemServices.dietService.items()
                 .byCurrentUser()
                 .includeMultiple(['DietFoods', 'DietFoods.Food', 'DietFoods.Food.FoodUnit'])
-                .whereEquals('ClientId', clientId)
+                .whereEquals('ClientId', this.client.id)
                 .orderByAsc('Order')
-                .get())
+                .get()
             .map(response => {
                 if (!response.isEmpty()) {
                     this.existingDiets = response.items;
@@ -179,11 +148,11 @@ export class ClientDietComponent extends ClientsBaseComponent implements OnInit,
             });
     }
 
-    private reloadExistingDietsObservable(clientId: number): Observable<any> {
+    private reloadExistingDietsObservable(): Observable<any> {
         return this.dependencies.itemServices.dietService.items()
             .byCurrentUser()
             .includeMultiple(['DietFoods', 'DietFoods.Food', 'DietFoods.Food.FoodUnit'])
-            .whereEquals('ClientId', clientId)
+            .whereEquals('ClientId', this.client.id)
             .orderByAsc('Order')
             .get()
             .map(response => {
@@ -205,12 +174,12 @@ export class ClientDietComponent extends ClientsBaseComponent implements OnInit,
         const selectedDiet = selected.value as Diet;
 
         // copy data from selected diet to a new diet with assigned client
-        super.subscribeToObservable(this.dependencies.itemServices.dietService.copyFromDiet(selectedDiet.id, this.clientId)
+        super.subscribeToObservable(this.dependencies.itemServices.dietService.copyFromDiet(selectedDiet.id, this.client.id)
             .set()
             .takeUntil(this.ngUnsubscribe)
             .flatMap(response => {
                 super.showSavedSnackbar();
-                return this.reloadExistingDietsObservable(this.clientId);
+                return this.reloadExistingDietsObservable();
             }));
     }
 }

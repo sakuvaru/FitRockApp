@@ -31,7 +31,7 @@ export class PreviewFoodComponent extends BasePageComponent implements OnInit {
     public foodGraph?: GraphConfig<PieChart>;
 
     constructor(
-        private activatedRoute: ActivatedRoute,
+        protected activatedRoute: ActivatedRoute,
         protected componentDependencyService: ComponentDependencyService,
     ) {
         super(componentDependencyService);

@@ -31,8 +31,7 @@ import { EditProgressItemDialogComponent } from './progress/dialogs/edit-progres
 import { SelectProgressTypeDialogComponent } from './progress/dialogs/select-progress-type-dialog.component';
 
 // stats components
-import { StatsMainComponent } from './stats/stats-main.component';
-import { UserStatsComponent } from './stats/export/user-stats.component';
+import { UserStatsComponent } from './stats/user-stats.component';
 
 // chat components
 import { ClientChatComponent } from './chat/client-chat.component';
@@ -49,9 +48,6 @@ import { ViewClientAppointmentComponent } from './appointment/view/view-client-a
 // dashboard
 import { ClientDashboardComponent } from './dashboard/client-dashboard.component';
 
-// router
-import { ClientsRouter } from './clients.routing';
-
 // modules
 import { SharedModule} from '../shared/shared.module';
 import { WorkoutsModule} from '../workouts/workouts.module';
@@ -61,7 +57,6 @@ import { DietsModule} from '../diets/diets.module';
     imports: [
         CoreModule,
         CommonModule,
-        ClientsRouter,
         SharedModule,
         WorkoutsModule,
         DietsModule
@@ -72,6 +67,42 @@ import { DietsModule} from '../diets/diets.module';
         NewClientProgressItemTypeDialogComponent,
         FoodListDialogComponent,
         WorkoutListDialogComponent
+    ],
+    exports: [
+        // user
+        ClientsOverviewComponent,
+        NewClientComponent,
+        EditClientComponent,
+        // workout
+        EditClientWorkoutComponent,
+        ClientWorkoutComponent,
+        EditClientWorkoutPlanComponent,
+        NewClientWorkoutComponent,
+        WorkoutListDialogComponent,
+        // diet
+        EditClientDietComponent,
+        ClientDietComponent,
+        EditClientDietPlanComponent,
+        NewClientDietComponent,
+        FoodListDialogComponent,
+        // progress
+        EditClientProgressComponent,
+        NewClientProgressItemTypeDialogComponent,
+        EditProgressItemDialogComponent,
+        SelectProgressTypeDialogComponent,
+        // stats
+        UserStatsComponent,
+        // chat
+        ClientChatComponent,
+        // gallery
+        UserGalleryComponent,
+        // appointment
+        EditClientAppointmentComponent,
+        ClientAppointmentListComponent,
+        NewClientAppointmentComponent,
+        ViewClientAppointmentComponent,
+        // dashboard
+        ClientDashboardComponent
     ],
     declarations: [
         // user
@@ -96,7 +127,6 @@ import { DietsModule} from '../diets/diets.module';
         EditProgressItemDialogComponent,
         SelectProgressTypeDialogComponent,
         // stats
-        StatsMainComponent,
         UserStatsComponent,
         // chat
         ClientChatComponent,

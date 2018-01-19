@@ -31,7 +31,7 @@ export class EditDietPlanExportComponent extends BasePageComponent implements On
   public readonly dragulaHandle: string = 'dragula-move-handle';
 
   constructor(
-    private activatedRoute: ActivatedRoute,
+    protected activatedRoute: ActivatedRoute,
     private dragulaService: DragulaService,
     protected dependencies: ComponentDependencyService) {
     super(dependencies);

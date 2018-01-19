@@ -1,66 +1,32 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs/Rx';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
-import { ComponentDependencyService, ComponentSetup } from '../../../../core';
+import { ComponentDependencyService } from '../../../../core';
 import { Workout } from '../../../../models';
-import { ClientsBaseComponent } from '../../clients-base.component';
-import { ClientEditWorkoutMenuItems } from '../../menu.items';
+import { BaseClientModuleComponent } from '../../base-client-module.component';
 
 @Component({
+  selector: 'mod-edit-client-workout-plan',
   templateUrl: 'edit-client-workout-plan.component.html'
 })
-export class EditClientWorkoutPlanComponent extends ClientsBaseComponent implements OnInit {
+export class EditClientWorkoutPlanComponent extends BaseClientModuleComponent implements OnInit {
 
-  public workoutId: number;
-  public workout: Workout;
+  @Input() workoutId: number;
+
+  @Output() loadWorkout = new EventEmitter<Workout>();
+
+  public workout?: Workout;
 
   constructor(
-    protected activatedRoute: ActivatedRoute,
     protected componentDependencyService: ComponentDependencyService,
   ) {
-    super(componentDependencyService, activatedRoute);
-  }
-
-  setup(): ComponentSetup {
-    return new ComponentSetup({
-      initialized: true,
-      isNested: false
-    });
+    super(componentDependencyService);
   }
 
   ngOnInit() {
     super.ngOnInit();
-
-    this.initWorkoutId();
-    super.subscribeToObservable(this.getMenuInitObservable());
-    super.initClientSubscriptions();
-  }
-
-  private initWorkoutId(): void {
-    this.activatedRoute.params
-      .takeUntil(this.ngUnsubscribe)
-      .subscribe(params => {
-        this.workoutId = +params['workoutId'];
-      });
-  }
-
-  private getMenuInitObservable(): Observable<any> {
-    return this.clientChange.map(client => {
-      this.setConfig({
-        menuItems: new ClientEditWorkoutMenuItems(client.id, this.workoutId).menuItems,
-        menuTitle: {
-          key: 'module.clients.viewClientSubtitle',
-          data: { 'fullName': client.getFullName() }
-        },
-        menuAvatarUrl: client.getAvatarOrGravatarUrl()
-      });
-    });
   }
 
   public handleLoadWorkout(workout: Workout): void {
-    const translationData: any = {};
-    translationData.workoutName = workout.workoutName;
-    super.updateComponentTitle({ key: 'module.clients.workout.editWorkoutWithName', data: translationData });
+    this.loadWorkout.next(workout);
   }
 }

@@ -1,45 +1,39 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Observable } from 'rxjs/Rx';
 
-import { DataTableMode, DataTableConfig, DataTableComponent } from '../../../../../web-components/data-table';
+import { DataTableComponent, DataTableConfig, DataTableMode } from '../../../../../web-components/data-table';
 import { AppConfig } from '../../../../config';
-import { ComponentDependencyService, ComponentSetup } from '../../../../core';
-import { ClientsBaseComponent } from '../../clients-base.component';
-import { ClientOverviewMenuItems } from '../../menu.items';
-import { guidHelper } from 'lib/utilities';
+import { BaseModuleComponent, ComponentDependencyService } from '../../../../core';
 
 @Component({
+  selector: 'mod-clients-overview',
   templateUrl: 'clients-overview.component.html'
 })
-export class ClientsOverviewComponent extends ClientsBaseComponent implements OnInit {
+export class ClientsOverviewComponent extends BaseModuleComponent implements OnInit {
+
+  @Input() toggleMode: Observable<void>;
+
+  @Output() modeChanged = new EventEmitter<DataTableMode>();
+
+  @ViewChild('clientsDataTable') clientsDataTable: DataTableComponent;
 
   public config: DataTableConfig;
 
   private readonly rememberDataTableStateName: string = 'clients_overview_data_table_mode';
 
-  @ViewChild('clientsDataTable') clientsDataTable: DataTableComponent;
-
   constructor(
-    protected activatedRoute: ActivatedRoute,
     protected componentDependencyService: ComponentDependencyService,
   ) {
-    super(componentDependencyService, activatedRoute);
-  }
-
-  setup(): ComponentSetup {
-    return new ComponentSetup({
-      initialized: true,
-      isNested: false
-    });
+    super(componentDependencyService);
   }
 
   ngOnInit(): void {
     super.ngOnInit();
     this.init();
-    super.initClientSubscriptions();
+    
   }
 
-  toggleMode(): void {
+  toggleModeExecute(): void {
     this.clientsDataTable.toggleMode();
 
     if (this.clientsDataTable.config.mode === DataTableMode.Standard) {
@@ -51,12 +45,14 @@ export class ClientsOverviewComponent extends ClientsBaseComponent implements On
     }
   }
 
+  private subscribeToModeChange(): void {
+    super.subscribeToObservable(
+      this.toggleMode.map(mode => this.toggleModeExecute())
+    );
+  }
+
   private init(): void {
-    this.setConfig({
-      menuTitle: { key: 'menu.clients' },
-      menuItems: new ClientOverviewMenuItems().menuItems,
-      componentTitle: { key: 'module.clients.allClients' }
-    });
+    this.subscribeToModeChange();
 
     this.config = this.dependencies.itemServices.userService.buildDataTable(
       (query, search) => {
@@ -116,13 +112,6 @@ export class ClientsOverviewComponent extends ClientsBaseComponent implements On
       })
       .build();
 
-    // configure component actions after config is set up
-    super.setConfig({
-      actions: [{
-        action: () => this.toggleMode(),
-        icon: () => this.config.mode === DataTableMode.Standard ? 'view_module' : 'view_headline',
-        tooltip: () => this.config.mode === DataTableMode.Standard ? super.translate('shared.tiles') : super.translate('shared.list')
-      }]
-    });
+    this.modeChanged.next(this.config.mode);
   }
 }
