@@ -17,7 +17,6 @@ import { NewDietTemplateComponent } from './new/new-diet-template.component';
     imports: [
         RouterModule.forChild([
             {
-                // workouts
                 path: UrlConfig.TrainerMasterPath, component: AdminLayoutComponent, canActivate: [AuthGuardService], children: [
                     {
                         path: 'diets', component: DietTemplatesComponent

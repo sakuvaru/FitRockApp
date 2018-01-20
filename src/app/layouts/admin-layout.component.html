@@ -4,7 +4,7 @@
 <td-layout *ngIf="ready">
   <td-navigation-drawer fxFlex [sidenavTitle]="appName" [name]="displayUsername">
     <mat-nav-list>
-      <a class="w-layout-drawbar-item" *ngFor="let item of adminMenu.mainMenu" mat-list-item [routerLink]="getMenuItemUrl(item.action, item.type)">
+      <a class="w-layout-drawbar-item" *ngFor="let item of adminMenu.trainerMenu" mat-list-item [routerLink]="getMenuItemUrl(item.action, item.type)">
         <mat-icon>{{item.icon}}</mat-icon>{{item.label.key | localize}}</a>
     </mat-nav-list>
     <div td-navigation-drawer-menu>

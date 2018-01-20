@@ -4,13 +4,15 @@ import { FormsModule } from '@angular/forms';
 
 import { ChatPagesModule } from './chat/chat-pages.module';
 import { ClientsPagesModule } from './clients/clients-pages.module';
+import { DashboardPagesModule } from './dashboard/dashboard-pages.module';
 
 @NgModule({
     imports: [
         CommonModule,
         FormsModule,
         ClientsPagesModule,
-        ChatPagesModule
+        ChatPagesModule,
+        DashboardPagesModule
     ]
 })
 export class PagesModule { }

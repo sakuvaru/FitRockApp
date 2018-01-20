@@ -85,7 +85,7 @@ export class EntryComponent extends BasePageComponent {
 
   private redirectUser(isClient: boolean): void {
     console.warn('clients are redirected to same page as trainers for now');
-    this.dependencies.coreServices.navigateService.trainerPage('').navigate();
+    this.dependencies.coreServices.navigateService.trainerDashboardPage().navigate();
     return;
     /*
     if (!isClient) {

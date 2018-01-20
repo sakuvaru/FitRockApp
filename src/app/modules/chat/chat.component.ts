@@ -1,12 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output, OnChanges, SimpleChanges } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { ResponseMultiple, MultipleItemQuery } from 'lib/repository';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { ResponseMultiple } from 'lib/repository';
 import { Observable } from 'rxjs/Rx';
 import * as _ from 'underscore';
 
 import { DataFormConfig } from '../../../web-components/data-form';
 import { AppConfig } from '../../config';
-import { BaseModuleComponent, ComponentDependencyService, ComponentSetup } from '../../core';
+import { BaseModuleComponent, ComponentDependencyService } from '../../core';
 import { ChatMessage, User } from '../../models';
 
 @Component({
@@ -178,7 +177,6 @@ export class ChatComponent extends BaseModuleComponent implements OnInit, OnChan
             .whereLike('Message', search ? search : '')
             .get()
             .map(response => {
-                console.log(response.items.length);
                 this.chatMessagesPage = page + 1;
                 if (!response.isEmpty()) {
                     this.allChatMessagesLoaded = false;

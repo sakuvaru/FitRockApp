@@ -55,13 +55,13 @@ export class BaseLayoutComponent implements OnDestroy {
         return '/' + UrlConfig.getAuthUrl(action);
     }
 
-    getHomeUrl(): string {
+    getDashboardUrl(): string {
         const authUser = this.dependencies.authenticatedUserService.getUser();
         if (authUser) {
             if (authUser.isClient) {
-                return '/' + UrlConfig.getClientUrl('');
+                return this.dependencies.coreServices.navigateService.clientDashboardPage().getUrl();
             } else {
-                return '/' + UrlConfig.getTrainerUrl('');
+                return this.dependencies.coreServices.navigateService.trainerDashboardPage().getUrl();
             }
         }
 

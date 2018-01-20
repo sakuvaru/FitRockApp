@@ -1,17 +1,10 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { RouterModule } from '@angular/router';
 
-// guard
 import { AuthGuardService } from '../../../lib/auth';
-
-// config
-import { AppConfig, UrlConfig } from '../../config';
-
-// components
-import { DashboardComponent } from './dashboard.component';
-import { SimpleLayoutComponent } from '../../layouts/simple-layout.component';
+import { UrlConfig } from '../../config';
 import { AdminLayoutComponent } from '../../layouts/admin-layout.component';
-
+import { DashboardPageComponent } from './dashboard-page.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +13,7 @@ import { AdminLayoutComponent } from '../../layouts/admin-layout.component';
     RouterModule.forChild([
       {
         path: UrlConfig.TrainerMasterPath, canActivate: [AuthGuardService], component: AdminLayoutComponent, children: [
-          { path: '', component: DashboardComponent },
+          { path: UrlConfig.Dashboard, component: DashboardPageComponent },
         ]
       }
     ])

@@ -3,8 +3,8 @@ import { MenuItem, MenuItemType } from '../models/core.models';
 
 export class AdminMenu {
 
-    public readonly mainMenu: MenuItem[] = [
-        new MenuItem({ key: 'menu.dashboard' }, MenuItemType.trainer, '', { icon: 'home' }),
+    public readonly trainerMenu: MenuItem[] = [
+        new MenuItem({ key: 'menu.dashboard' }, MenuItemType.trainer, UrlConfig.Dashboard, { icon: 'home' }),
         new MenuItem({ key: 'menu.chat' }, MenuItemType.auth, 'chat', { icon: 'email' }),
         new MenuItem({ key: 'menu.clients' }, MenuItemType.trainer, 'clients', { icon: 'people' }),
         new MenuItem({ key: 'menu.workouts' }, MenuItemType.trainer, 'workouts', { icon: 'fitness_center' }),

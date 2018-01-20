@@ -72,6 +72,14 @@ export class NavigateService {
     return this.getNavigateResult(UrlConfig.getActionUrl(action));
   }
 
+  trainerDashboardPage(navigationExtras?: NavigationExtras): NavigateResult {
+    return this.getNavigateResult(UrlConfig.getTrainerDashboardUrl());
+  }
+
+  clientDashboardPage(navigationExtras?: NavigationExtras): NavigateResult {
+    return this.getNavigateResult(UrlConfig.getClientDashboardUrl());
+  }
+
   trainerPage(action: string, navigationExtras?: NavigationExtras): NavigateResult {
     return this.getNavigateResult(UrlConfig.getTrainerUrl(action));
   }

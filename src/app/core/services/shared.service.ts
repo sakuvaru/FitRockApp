@@ -11,6 +11,9 @@ import { IComponentConfig } from 'app/core';
 @Injectable()
 export class SharedService {
 
+  public componentConfigCurrent?: IComponentConfig;
+  public componentSearchCurrent?: string;
+
   // Observable string sources
   private componentConfigSource = new Subject<IComponentConfig>();
   private globalLoaderSource = new Subject<GlobalLoaderStatus>();
@@ -29,10 +32,12 @@ export class SharedService {
 
   // Service message commands
   setComponentConfig(config: IComponentConfig): void {
+    this.componentConfigCurrent = config;
     this.componentConfigSource.next(config);
   }
 
   setComponentSearch(search: string): void {
+    this.componentSearchCurrent = search;
     this.componentSearchSource.next(search);
   }
 

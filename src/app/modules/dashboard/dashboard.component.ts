@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { LanguageEnum } from 'lib/repository';
 
 import { Auth0User } from '../../../lib/auth';
 import { CalendarConfig } from '../../../web-components/calendar/calendar.config';
-import { BasePageComponent, ComponentDependencyService, ComponentSetup } from '../../core';
+import { BaseModuleComponent, ComponentDependencyService } from '../../core';
 import { Log } from '../../models';
 
 @Component({
+    selector: 'mod-dashboard',
     templateUrl: 'dashboard.component.html'
 })
-export class DashboardComponent extends BasePageComponent implements OnInit {
+export class DashboardComponent extends BaseModuleComponent implements OnInit {
 
     public logs: Log[];
     public log: Log;
@@ -20,13 +20,6 @@ export class DashboardComponent extends BasePageComponent implements OnInit {
     constructor(
         protected dependencies: ComponentDependencyService) {
         super(dependencies);
-    }
-
-    setup(): ComponentSetup {
-        return new ComponentSetup({
-            initialized: true,
-            isNested: false
-        });
     }
 
     ngOnInit(): void {
@@ -46,11 +39,6 @@ export class DashboardComponent extends BasePageComponent implements OnInit {
             }
         )
             .build();
-
-        this.setConfig({
-            menuTitle: { key: 'menu.main' },
-            componentTitle: { key: 'menu.dashboard' }
-        });
 
         this.dependencies.itemServices.userService.item().byId(this.authUser ? this.authUser.id : 0).get().subscribe(response => {
         } );

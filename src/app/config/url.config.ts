@@ -8,6 +8,7 @@ export class UrlConfig {
     static AuthMasterPath = 'auth';
     static SharedMasterPath = 'shared';
 
+    static Dashboard = 'dashboard';
     static Login = 'login';
     static ResetPassword = 'reset-password';
     static SessionLock = 'session-lock';
@@ -74,6 +75,14 @@ export class UrlConfig {
             return UrlConfig.TrainerMasterPath + '/' + action;
         }
         return UrlConfig.TrainerMasterPath;
+    }
+
+    static getClientDashboardUrl(): string {
+        return this.getClientUrl(UrlConfig.Dashboard);
+    }
+
+    static getTrainerDashboardUrl(): string {
+        return this.getTrainerUrl(UrlConfig.Dashboard);
     }
 
     static getClientUrl(action?: string): string {

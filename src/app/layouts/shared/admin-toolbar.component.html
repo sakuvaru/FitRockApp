@@ -2,7 +2,7 @@
   <button mat-icon-button tdLayoutToggle>
     <mat-icon>menu</mat-icon>
   </button>
-  <a mat-button [routerLink]="getHomeUrl()">{{appName}}</a>
+  <a mat-button [routerLink]="'/' + getDashboardUrl()">{{appName}}</a>
   <!-- Search box is not used for now
       <td-search-box placeholder="Search" [alwaysVisible]="false" flex></td-search-box>
     !-->
