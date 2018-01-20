@@ -1,29 +1,29 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 
-// core module
 import { CoreModule } from '../../core';
-
-// components
-import { Item404Component } from './item-404.component';
-import { UnauthorizedComponent } from './unauthorized.component';
-import { AppErrorComponent } from './app-error.component';
-import { RedirectComponent } from './redirect.component';
-import { ServerDownComponent } from './server-down.component';
-
-// router
-import { SharedRouter } from './shared.routing';
+import { AppErrorComponent } from './types/app-error.component';
+import { ItemNotFoundComponent } from './types/item-not-found.component';
+import { NotFoundComponent } from './types/not-found.component';
+import { ServerDownComponent } from './types/server-down.component';
+import { UnauthorizedComponent } from './types/unauthorized.component';
 
 @NgModule({
     imports: [
         CommonModule,
-        SharedRouter,
         CoreModule,
     ],
     declarations: [
+        ItemNotFoundComponent,
+        NotFoundComponent,
         UnauthorizedComponent,
-        RedirectComponent,
-        Item404Component,
+        AppErrorComponent,
+        ServerDownComponent
+    ],
+    exports: [
+        ItemNotFoundComponent,
+        NotFoundComponent,
+        UnauthorizedComponent,
         AppErrorComponent,
         ServerDownComponent
     ],

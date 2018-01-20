@@ -12,6 +12,7 @@ import { FoodPagesModule } from './foods/food-pages.module';
 import { LocationPagesModule } from './locations/location-pages.module';
 import { ProfilePagesModule } from './profile/profile-pages.module';
 import { ProgressItemTypePagesModule } from './progress-item-types/progress-item-type-pages.module';
+import { SharedPagesModule } from './shared/shared-pages.module';
 
 @NgModule({
     imports: [
@@ -26,7 +27,8 @@ import { ProgressItemTypePagesModule } from './progress-item-types/progress-item
         LocationPagesModule,
         AuthenticationPagesModule,
         ProfilePagesModule,
-        ProgressItemTypePagesModule
+        ProgressItemTypePagesModule,
+        SharedPagesModule
     ]
 })
 export class PagesModule { }

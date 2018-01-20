@@ -1,8 +1,8 @@
-// common
-import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
-import { ActivatedRoute, Params, Router } from '@angular/router';
-import { ComponentDependencyService, BasePageComponent, ComponentSetup } from '../../core';
-import { AppConfig } from '../../config';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+
+import { AppConfig } from '../../../config';
+import { BasePageComponent, ComponentDependencyService } from '../../../core';
 
 /**
  * This component is used to redirect user to another component
@@ -10,7 +10,7 @@ import { AppConfig } from '../../config';
  * refresh the whole page => go through redirect router to force refresh.
  */
 @Component({
-    template: 'redirect.component.html'
+    template: ''
 })
 export class RedirectComponent extends BasePageComponent implements OnInit {
 
@@ -18,13 +18,6 @@ export class RedirectComponent extends BasePageComponent implements OnInit {
         protected activatedRoute: ActivatedRoute,
         protected dependencies: ComponentDependencyService) {
         super(dependencies);
-    }
-
-    setup(): ComponentSetup {
-        return new ComponentSetup({
-            initialized: true,
-            isNested: false
-        });
     }
 
     ngOnInit() {

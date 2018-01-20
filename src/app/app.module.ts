@@ -25,9 +25,6 @@ import 'hammerjs';
 import 'mousetrap';
 import { ModalGalleryModule } from 'angular-modal-gallery';
 
-// 404
-import { Global404Component } from './modules/shared/404.component';
-
 // global error handler
 import { GlobalErrorHandler } from './core/';
 
@@ -77,7 +74,6 @@ import { PagesModule } from './pages/pages.module';
 @NgModule({
   declarations: [
     AppComponent,
-    Global404Component,
     EntryComponent
   ],
   imports: [

@@ -1,0 +1,21 @@
+<h2>{{ 'module.shared.errors.errorPageTitle' | localize }}</h2>
+
+<div *ngIf="isCriticalError">
+    {{ 'module.shared.errors.criticalErrorText' | localize }}
+</div>
+
+<div *ngIf="!isCriticalError" [innerHTML]="'module.shared.errors.loggedErrorText' | localize:translateParams">
+</div>
+
+<div *ngIf="showDebugDetails && log" class="push-top">
+    <mat-card>
+        <mat-card-title>Error message</mat-card-title>
+        <mat-card-content>
+            {{log.errorMessage }}
+        </mat-card-content>
+        <mat-card-subtitle>Stacktrace</mat-card-subtitle>
+        <mat-card-content>
+            {{log.stacktrace}}
+        </mat-card-content>
+    </mat-card>
+</div>

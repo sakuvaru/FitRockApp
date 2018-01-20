@@ -1,17 +1,16 @@
-// common
-import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-import { ComponentDependencyService, BasePageComponent, ComponentSetup } from '../../core';
-import { AppConfig, UrlConfig } from '../../config';
-
-// required by component
-import { Log } from '../../models';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { LogStatus } from 'lib/auth/models/log-status.enum';
 
+import { BaseModuleComponent, ComponentDependencyService } from '../../../core';
+import { Log } from '../../../models';
+
 @Component({
+  selector: 'mod-app-error',
   templateUrl: 'app-error.component.html'
 })
-export class AppErrorComponent extends BasePageComponent implements OnInit {
+export class AppErrorComponent extends BaseModuleComponent implements OnInit, OnChanges {
+
+  @Input() logGuid: string;
 
   public isCriticalError: boolean = false;
   public showDebugDetails: boolean = false;
@@ -19,32 +18,29 @@ export class AppErrorComponent extends BasePageComponent implements OnInit {
   public translateParams: any;
 
   constructor(
-    protected activatedRoute: ActivatedRoute,
     protected dependencies: ComponentDependencyService) {
     super(dependencies);
   }
 
-  setup(): ComponentSetup {
-    return new ComponentSetup({
-      initialized: true,
-      isNested: false
-    });
-  }
-
   ngOnInit() {
     super.ngOnInit();
+  }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (this.logGuid) {
+      this.init();
+    }
+  }
+
+  private init(): void {
     this.showDebugDetails = this.dependencies.coreServices.authService.getAuthenticationStatus() === LogStatus.Authenticated;
 
-    // get the guid of error from url
-    const logGuid = this.activatedRoute.snapshot.queryParams[UrlConfig.AppErrorLogGuidQueryString];
-
-    if (this.showDebugDetails && logGuid) {
+    if (this.showDebugDetails && this.logGuid) {
       // try to get the error with details from service
       super.startGlobalLoader();
 
       this.dependencies.itemServices.logService
-        .getLogByGuid(logGuid)
+        .getLogByGuid(this.logGuid)
         .subscribe(response => {
           if (response.isEmpty()) {
             this.isCriticalError = true;

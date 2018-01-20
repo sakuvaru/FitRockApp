@@ -1,28 +1,20 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
 
-import { AppConfig } from '../../config';
-import { BasePageComponent, ComponentDependencyService, ComponentSetup } from '../../core';
+import { AppConfig } from '../../../config';
+import { BaseModuleComponent, ComponentDependencyService } from '../../../core';
 
 @Component({
+  selector: 'mod-server-down',
   templateUrl: 'server-down.component.html'
 })
-export class ServerDownComponent extends BasePageComponent implements OnInit {
+export class ServerDownComponent extends BaseModuleComponent implements OnInit {
 
   public appOnline: boolean = false;
 
   constructor(
-    protected activatedRoute: ActivatedRoute,
     protected dependencies: ComponentDependencyService) {
     super(dependencies);
-  }
-
-  setup(): ComponentSetup {
-    return new ComponentSetup({
-      initialized: true,
-      isNested: false
-    });
   }
 
   ngOnInit() {
