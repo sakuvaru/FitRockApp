@@ -1,19 +1,14 @@
-// common
-import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-import { ComponentDependencyService, BasePageComponent, ComponentConfig, ComponentSetup } from '../../../core';
-import { AppConfig, UrlConfig } from '../../../config';
+import { Component, OnInit } from '@angular/core';
 
-// required by component
-import { WorkoutsOverviewMenuItems } from '../menu.items';
 import { DataTableConfig, IDynamicFilter } from '../../../../web-components/data-table';
-import { Workout, WorkoutCategoryListWithWorkoutsCount } from '../../../models';
-import { Observable } from 'rxjs/Rx';
+import { BaseModuleComponent, ComponentDependencyService } from '../../../core';
+import { Workout } from '../../../models';
 
 @Component({
+  selector: 'mod-workout-templates',
   templateUrl: 'workout-templates.component.html'
 })
-export class WorkoutTemplatesComponent extends BasePageComponent implements OnInit {
+export class WorkoutTemplatesComponent extends BaseModuleComponent implements OnInit {
 
   public config: DataTableConfig;
 
@@ -22,22 +17,9 @@ export class WorkoutTemplatesComponent extends BasePageComponent implements OnIn
     super(dependencies);
   }
 
-  setup(): ComponentSetup {
-    return new ComponentSetup({
-      initialized: true,
-      isNested: false
-    });
-  }
 
   ngOnInit() {
     super.ngOnInit();
-
-    this.setConfig({
-      menuTitle: { key: 'menu.workouts' },
-      menuItems: new WorkoutsOverviewMenuItems().menuItems,
-      componentTitle: { key: 'module.workouts.submenu.workoutTemplates' },
-    });
-
     this.init();
   }
 

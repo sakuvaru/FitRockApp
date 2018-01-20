@@ -1,50 +1,52 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Observable } from 'rxjs/Rx';
 
-import { BasePageComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
+import { DataFormConfig } from '../../../../web-components/data-form';
+import { BaseModuleComponent, ComponentDependencyService } from '../../../core';
 import { Workout } from '../../../models';
-import { WorkoutMenuItems } from '../menu.items';
 
 @Component({
-    templateUrl: 'edit-workout.component.html'
+    selector: 'mod-edit-workout',
+    templateUrl: 'edit-workout.component.html',
 })
-export class EditWorkoutComponent extends BasePageComponent implements OnInit {
+export class EditWorkoutComponent extends BaseModuleComponent implements OnInit, OnChanges {
 
-    public workoutId: number;
+    @Output() loadWorkout = new EventEmitter<Workout>();
+
+    @Input() workoutId: number;
+
+    public formConfig: DataFormConfig;
 
     constructor(
-        protected activatedRoute: ActivatedRoute,
         protected componentDependencyService: ComponentDependencyService,
     ) {
         super(componentDependencyService);
     }
 
-    setup(): ComponentSetup {
-        return new ComponentSetup({
-            initialized: true,
-            isNested: false
-        });
+    ngOnChanges(changes: SimpleChanges) {
+        const workoutId = changes.workoutId.currentValue;
+        if (workoutId) {
+            this.initForm(workoutId);
+        }
     }
 
-    ngOnInit() {
+    ngOnInit(): void {
         super.ngOnInit();
-
-        this.activatedRoute.params
-            .takeUntil(this.ngUnsubscribe)
-            .subscribe(params => {
-                this.workoutId = +params['id'];
-            });
     }
 
-    public handleLoadWorkout(workout: Workout): void {
-        this.setConfig({
-            menuItems: new WorkoutMenuItems(workout.id).menuItems,
-            menuTitle: {
-                key: workout.workoutName
-            },
-            componentTitle: {
-                'key': 'module.workouts.editWorkout'
-            }
-        });
+    private initForm(workoutId: number): void {
+        this.formConfig = this.dependencies.itemServices.workoutService.buildEditForm(workoutId)
+            .onAfterDelete(() => super.navigate([super.getTrainerUrl('workouts')]))
+            .onEditFormLoaded(form => {
+                this.loadWorkout.next(form.item);
+            })
+            .optionLabelResolver((field, label) => {
+                if (field.key === 'WorkoutCategoryId') {
+                    return super.translate(`module.workoutCategories.categories.${label}`);
+                }
+
+                return Observable.of(label);
+            })
+            .build();
     }
 }

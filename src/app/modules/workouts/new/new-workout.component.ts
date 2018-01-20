@@ -2,13 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 
 import { DataFormConfig } from '../../../../web-components/data-form';
-import { BasePageComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
-import { NewWorkoutMenuItems } from '../menu.items';
+import { BaseModuleComponent, ComponentDependencyService } from '../../../core';
 
 @Component({
+    selector: 'mod-new-workout',
     templateUrl: 'new-workout.component.html'
 })
-export class NewWorkoutComponent extends BasePageComponent implements OnInit {
+export class NewWorkoutComponent extends BaseModuleComponent implements OnInit {
 
     public formConfig: DataFormConfig;
 
@@ -17,21 +17,8 @@ export class NewWorkoutComponent extends BasePageComponent implements OnInit {
         super(componentDependencyService);
     }
 
-    setup(): ComponentSetup {
-        return new ComponentSetup({
-            initialized: true,
-            isNested: false
-        });
-    }
-
     ngOnInit() {
         super.ngOnInit();
-
-        this.setConfig({
-            componentTitle: { key: 'module.workouts.submenu.new' },
-            menuItems: new NewWorkoutMenuItems().menuItems
-        });
-
         this.initFom();
     }
 

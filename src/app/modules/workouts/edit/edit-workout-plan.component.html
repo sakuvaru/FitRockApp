@@ -1,1 +1,30 @@
-<edit-workout-plan-export [workoutId]="workoutId" (loadWorkout)="handleLoadWorkout($event)"></edit-workout-plan-export>
+<mat-card *ngIf="workout">
+  <mat-card-title>{{workout.workoutName}}</mat-card-title>
+  <mat-card-subtitle>{{ 'module.workoutCategories.categories.' + workout.workoutCategory.codename | localize }}</mat-card-subtitle>
+  <mat-card-content *ngIf="workout.description">
+    {{workout.description}}
+  </mat-card-content>
+</mat-card>
+
+<div *ngIf="sortedWorkoutExercises" class="push-top">
+  <button mat-raised-button color="primary" class="text-upper" (click)="openSelecExerciseDialog()">{{'module.workouts.addExercise' | localize }}</button>
+
+  <div *ngIf="sortedWorkoutExercises">
+    <mat-list [dragula]='"dragula-bag"' class="push-top" [dragulaModel]="sortedWorkoutExercises">
+      <ng-container *ngFor="let workoutExercise of sortedWorkoutExercises; let i = index">
+        <mat-list-item class="w-sort-list-item dragula-move-handle">
+          <span class="tc-red-700">{{i + 1}}.</span>
+          <span class="text-truncate push-left-sm">{{workoutExercise.exercise.exerciseName}}</span>
+          <span fxFlex></span>
+          <span class="mat-caption tc-grey-700">&nbsp;&nbsp;<span *ngIf="workoutExercise.sets && workoutExercise.reps">{{workoutExercise.sets}}x{{workoutExercise.reps}}</span></span>
+          <edit-button color="none" (editAction)="openWorkoutExerciseDialog(workoutExercise)"></edit-button>
+          <delete-button [enableConfirm]="true" color="none" (confirm)="deleteWorkoutExercise(workoutExercise)"></delete-button>
+        </mat-list-item>
+      </ng-container>
+    </mat-list>
+  </div>
+
+  <div *ngIf="sortedWorkoutExercises && sortedWorkoutExercises.length > 5" class="push-top">
+    <button mat-raised-button color="primary" class="text-upper" (click)="openSelecExerciseDialog()">{{'module.workouts.addExercise' | localize }}</button>
+  </div>
+</div>

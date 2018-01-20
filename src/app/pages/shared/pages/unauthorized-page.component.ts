@@ -17,11 +17,4 @@ export class UnauthorizedPageComponent extends BasePageComponent {
 
     this.loginUrl = '/' + UrlConfig.getLoginUrl();
   }
-
-  setup(): ComponentSetup {
-    return new ComponentSetup({
-      initialized: true,
-      isNested: false
-    });
-  }
 }

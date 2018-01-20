@@ -13,6 +13,7 @@ import { LocationPagesModule } from './locations/location-pages.module';
 import { ProfilePagesModule } from './profile/profile-pages.module';
 import { ProgressItemTypePagesModule } from './progress-item-types/progress-item-type-pages.module';
 import { SharedPagesModule } from './shared/shared-pages.module';
+import { WorkoutPagesModule } from './workouts/workouts-pages.module';
 
 @NgModule({
     imports: [
@@ -28,7 +29,8 @@ import { SharedPagesModule } from './shared/shared-pages.module';
         AuthenticationPagesModule,
         ProfilePagesModule,
         ProgressItemTypePagesModule,
-        SharedPagesModule
+        SharedPagesModule,
+        WorkoutPagesModule
     ]
 })
 export class PagesModule { }
