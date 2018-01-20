@@ -7,6 +7,7 @@ import { ClientsPagesModule } from './clients/clients-pages.module';
 import { DashboardPagesModule } from './dashboard/dashboard-pages.module';
 import { DietPagesModule } from './diets/diet-pages.module';
 import { ExercisesModule } from './exercises/exercise-pages.module';
+import { FoodPagesModule } from './foods/food-pages.module';
 
 @NgModule({
     imports: [
@@ -16,7 +17,8 @@ import { ExercisesModule } from './exercises/exercise-pages.module';
         ChatPagesModule,
         DashboardPagesModule,
         DietPagesModule,
-        ExercisesModule
+        ExercisesModule,
+        FoodPagesModule
     ]
 })
 export class PagesModule { }

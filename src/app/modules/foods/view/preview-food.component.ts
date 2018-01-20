@@ -1,19 +1,22 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { observableHelper } from 'lib/utilities';
 import { Observable } from 'rxjs/Rx';
 
-import { BoxColors, InfoBoxConfig, MiniBoxConfig, TableBoxConfig, TableBoxLine, NumberBoxConfig } from '../../../../web-components/boxes';
-import { GraphConfig, PieChart, SingleSeries } from '../../../../web-components/graph';
+import { BoxColors, InfoBoxConfig, NumberBoxConfig, TableBoxConfig, TableBoxLine } from '../../../../web-components/boxes';
 import { DataTableConfig } from '../../../../web-components/data-table';
-import { BasePageComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
+import { GraphConfig, PieChart, SingleSeries } from '../../../../web-components/graph';
+import { BaseModuleComponent, ComponentDependencyService } from '../../../core';
 import { Food } from '../../../models';
-import { FoodMenuItems } from '../menu.items';
 
 @Component({
+    selector: 'mod-preview-food',
     templateUrl: 'preview-food.component.html'
 })
-export class PreviewFoodComponent extends BasePageComponent implements OnInit {
+export class PreviewFoodComponent extends BaseModuleComponent implements OnInit, OnChanges {
+
+    @Input() foodId: number;
+
+    @Output() loadFood = new EventEmitter<Food>();
 
     public food?: Food;
     public foodInfoBox?: InfoBoxConfig;
@@ -31,56 +34,50 @@ export class PreviewFoodComponent extends BasePageComponent implements OnInit {
     public foodGraph?: GraphConfig<PieChart>;
 
     constructor(
-        protected activatedRoute: ActivatedRoute,
         protected componentDependencyService: ComponentDependencyService,
     ) {
         super(componentDependencyService);
     }
 
-    setup(): ComponentSetup {
-        return new ComponentSetup({
-            initialized: false,
-            isNested: false
-        });
-    }
-
     ngOnInit(): void {
         super.ngOnInit();
-        this.init();
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (this.foodId) {
+            this.init();
+        }
     }
 
     private init(): void {
+        this.initUsedInFoodsDataForm();
+        this.initGraph();
+
         const observables: Observable<any>[] = [];
-        observables.push(this.getItemObservable());
-        observables.push(this.getGraphConfig());
-        observables.push(this.initUsedInFoodsDataForm());
+        observables.push(this.initFoodObservable());
 
         super.subscribeToObservables(observables);
     }
 
-    private initUsedInFoodsDataForm(): Observable<void> {
-        return this.activatedRoute.params
-            .map(params => {
-                this.usedInDishesDataForm = this.dependencies.itemServices.foodDishService.buildDataTable(
-                    (query, search) => query
-                        .byCurrentUser()
-                        .whereLike('ParentFood.FoodName', search)
-                        .whereEquals('FoodId', +params['id'])
-                        .include('ParentFood')
-                )
-                    .withFields([{
-                        name: item => super.translate('module.foods.foodName'),
-                        value: item => item.parentFood.foodName,
-                        sortKey: 'ParentFood.FoodName',
-                        hideOnSmallScreen: false
-                    }])
-                    .onClick(item => {
-                        this.dependencies.coreServices.navigateService.mealPreviewPage(item.parentFoodId).navigate();
-                    })
-                    .title(super.translate('module.foods.foodIsUsedIn'))
-                    .build();
-            });
-
+    private initUsedInFoodsDataForm(): void {
+        this.usedInDishesDataForm = this.dependencies.itemServices.foodDishService.buildDataTable(
+            (query, search) => query
+                .byCurrentUser()
+                .whereLike('ParentFood.FoodName', search)
+                .whereEquals('FoodId', this.foodId)
+                .include('ParentFood')
+        )
+            .withFields([{
+                name: item => super.translate('module.foods.foodName'),
+                value: item => item.parentFood.foodName,
+                sortKey: 'ParentFood.FoodName',
+                hideOnSmallScreen: false
+            }])
+            .onClick(item => {
+                this.dependencies.coreServices.navigateService.mealPreviewPage(item.parentFoodId).navigate();
+            })
+            .title(super.translate('module.foods.foodIsUsedIn'))
+            .build();
     }
 
     private initFoodBoxes(food: Food): void {
@@ -130,74 +127,49 @@ export class PreviewFoodComponent extends BasePageComponent implements OnInit {
         );
     }
 
-    private getGraphConfig(): Observable<void> {
-        return this.activatedRoute.params
-            .map(params => {
-                this.foodGraph = this.dependencies.webComponentServices.graphService.pieChart(
-                    this.dependencies.itemServices.foodService.getNutritionDistribution(+params['id'])
-                        .set()
-                        .map(response => {
-                            return new PieChart(response.data.items, {
-                                showLabels: true
-                            });
-                        })
-                )
-                    .showLegend(false)
-                    .dataResolver(data => {
-                        data = data as SingleSeries[];
+    private initGraph(): void {
+        this.foodGraph = this.dependencies.webComponentServices.graphService.pieChart(
+            this.dependencies.itemServices.foodService.getNutritionDistribution(this.foodId)
+                .set()
+                .map(response => {
+                    return new PieChart(response.data.items, {
+                        showLabels: true
+                    });
+                })
+        )
+            .showLegend(false)
+            .dataResolver(data => {
+                data = data as SingleSeries[];
 
-                        const foodTranslations: any = {};
-                        const observables: Observable<any>[] = [];
+                const foodTranslations: any = {};
+                const observables: Observable<any>[] = [];
 
-                        // translate all names in series
-                        data.forEach(series => {
-                            observables.push(
-                                super.translate('module.foods.nutrition.' + series.name.toLowerCase())
-                                    .map(translation => series.name = translation)
-                            );
-                        });
+                // translate all names in series
+                data.forEach(series => {
+                    observables.push(
+                        super.translate('module.foods.nutrition.' + series.name.toLowerCase())
+                            .map(translation => series.name = translation)
+                    );
+                });
 
-                        return observableHelper.zipObservables(observables).map(() => data);
-                    })
-                    .build();
-            });
-
+                return observableHelper.zipObservables(observables).map(() => data);
+            })
+            .build();
     }
 
-    private getItemObservable(): Observable<void> {
-        return this.activatedRoute.params
-            .switchMap((params: Params) => this.dependencies.itemServices.foodService.item()
-                .byId(+params['id'])
-                .includeMultiple(['FoodCategory', 'FoodUnit'])
-                .get()
-                .map(response => {
-                    this.food = response.item;
+    private initFoodObservable(): Observable<void> {
+        return this.dependencies.itemServices.foodService.item()
+            .byId(this.foodId)
+            .includeMultiple(['FoodCategory', 'FoodUnit'])
+            .get()
+            .map(response => {
+                this.food = response.item;
 
-                    // init food info boxes
-                    this.initFoodBoxes(this.food);
+                // init food info boxes
+                this.initFoodBoxes(this.food);
 
-                    if (this.food.createdByUserId === this.dependencies.authenticatedUserService.getUserId()) {
-                        this.setConfig({
-                            menuItems: new FoodMenuItems(this.food.id).menuItems,
-                            menuTitle: {
-                                key: this.food.foodName
-                            },
-                            componentTitle: {
-                                'key': 'module.foods.submenu.previewFood'
-                            }
-                        });
-                    } else {
-                        this.setConfig({
-                            menuItems: new FoodMenuItems(response.item.id).menuItems,
-                            menuTitle: {
-                                key: response.item.foodName
-                            },
-                            componentTitle: {
-                                'key': 'module.foods.submenu.previewFood'
-                            }
-                        });
-                    }
-                })
+                this.loadFood.next(this.food);
+            }
             );
     }
 }

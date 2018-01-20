@@ -1,19 +1,14 @@
-// common
-import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-import { ComponentDependencyService, BasePageComponent, ComponentConfig, ComponentSetup } from '../../../core';
-import { AppConfig, UrlConfig } from '../../../config';
+import { Component, OnInit } from '@angular/core';
 
-// required by component
-import { FoodOverviewItems } from '../menu.items';
-import { IDynamicFilter, DataTableConfig } from '../../../../web-components/data-table';
-import { Food, FoodCategoryWithFoodsCountDto } from '../../../models';
-import { Observable } from 'rxjs/Rx';
+import { DataTableConfig, IDynamicFilter } from '../../../../web-components/data-table';
+import { BaseModuleComponent, ComponentDependencyService } from '../../../core';
+import { Food } from '../../../models';
 
 @Component({
+  selector: 'mod-my-foods-list',
   templateUrl: 'my-foods-list.component.html'
 })
-export class MyFoodsListComponent extends BasePageComponent implements OnInit {
+export class MyFoodsListComponent extends BaseModuleComponent implements OnInit {
 
   public config: DataTableConfig;
 
@@ -22,25 +17,12 @@ export class MyFoodsListComponent extends BasePageComponent implements OnInit {
     super(dependencies);
   }
 
-  setup(): ComponentSetup {
-    return new ComponentSetup({
-      initialized: true,
-      isNested: false
-    });
-  }
-
   ngOnInit() {
     super.ngOnInit();
-
     this.init();
   }
 
   private init() {
-    this.setConfig({
-      menuTitle: { key: 'module.foods.submenu.allFoods' },
-      menuItems: new FoodOverviewItems().menuItems,
-      componentTitle: { key: 'module.foods.submenu.overview' },
-    });
     this.config = this.dependencies.itemServices.foodService.buildDataTable((query, search) => {
       return query
         .include('FoodCategory')
@@ -81,7 +63,7 @@ export class MyFoodsListComponent extends BasePageComponent implements OnInit {
           });
           return filters;
         }))
-      .onClick((item) => super.navigate([super.getTrainerUrl('foods/preview/') + item.id]))
+      .onClick((item) => this.dependencies.coreServices.navigateService.foodPreviewPage(item.id).navigate())
       .build();
   }
 }

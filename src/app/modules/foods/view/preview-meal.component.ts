@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { observableHelper } from 'lib/utilities';
 import { Observable } from 'rxjs/Rx';
 
@@ -8,20 +7,23 @@ import {
     InfoBoxConfig,
     ListBoxConfig,
     ListBoxItem,
-    MiniBoxConfig,
+    NumberBoxConfig,
     TableBoxConfig,
     TableBoxLine,
-    NumberBoxConfig
 } from '../../../../web-components/boxes';
 import { GraphConfig, PieChart, SingleSeries } from '../../../../web-components/graph';
-import { BasePageComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
+import { BaseModuleComponent, ComponentDependencyService } from '../../../core';
 import { Food } from '../../../models';
-import { MealMenuItems } from '../menu.items';
 
 @Component({
+    selector: 'mod-preview-meal',
     templateUrl: 'preview-meal.component.html'
 })
-export class PreviewMealComponent extends BasePageComponent implements OnInit {
+export class PreviewMealComponent extends BaseModuleComponent implements OnInit, OnChanges {
+
+    @Input() foodId: number;
+
+    @Output() loadFood = new EventEmitter<Food>();
 
     public food?: Food;
     public foodInfoBox?: InfoBoxConfig;
@@ -39,28 +41,26 @@ export class PreviewMealComponent extends BasePageComponent implements OnInit {
     public foodGraph?: GraphConfig<PieChart>;
 
     constructor(
-        protected activatedRoute: ActivatedRoute,
         protected componentDependencyService: ComponentDependencyService,
     ) {
         super(componentDependencyService);
     }
 
-    setup(): ComponentSetup {
-        return new ComponentSetup({
-            initialized: false,
-            isNested: false
-        });
-    }
-
     ngOnInit(): void {
         super.ngOnInit();
-        this.init();
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (this.foodId) {
+            this.init();
+        }
     }
 
     private init(): void {
+        this.initGraph();
+
         const observables: Observable<any>[] = [];
-        observables.push(this.getItemObservable());
-        observables.push(this.getGraphConfig());
+        observables.push(this.initFoodObservable());
 
         super.subscribeToObservables(observables);
     }
@@ -127,75 +127,49 @@ export class PreviewMealComponent extends BasePageComponent implements OnInit {
         );
     }
 
-    private getGraphConfig(): Observable<void> {
-        return this.activatedRoute.params
-            .map(params => {
-                this.foodGraph = this.dependencies.webComponentServices.graphService.pieChart(
-                    this.dependencies.itemServices.foodService.getNutritionDistribution(+params['id'])
-                        .set()
-                        .map(response => {
-                            return new PieChart(response.data.items, {
-                                showLabels: true
-                            });
-                        })
-                )
-                    .showLegend(false)
-                    .dataResolver(data => {
-                        data = data as SingleSeries[];
+    private initGraph(): void {
+        this.foodGraph = this.dependencies.webComponentServices.graphService.pieChart(
+            this.dependencies.itemServices.foodService.getNutritionDistribution(this.foodId)
+                .set()
+                .map(response => {
+                    return new PieChart(response.data.items, {
+                        showLabels: true
+                    });
+                })
+        )
+            .showLegend(false)
+            .dataResolver(data => {
+                data = data as SingleSeries[];
 
-                        const foodTranslations: any = {};
-                        const observables: Observable<any>[] = [];
+                const foodTranslations: any = {};
+                const observables: Observable<any>[] = [];
 
-                        // translate all names in series
-                        data.forEach(series => {
-                            observables.push(
-                                super.translate('module.foods.nutrition.' + series.name.toLowerCase())
-                                    .map(translation => series.name = translation)
-                            );
-                        });
+                // translate all names in series
+                data.forEach(series => {
+                    observables.push(
+                        super.translate('module.foods.nutrition.' + series.name.toLowerCase())
+                            .map(translation => series.name = translation)
+                    );
+                });
 
-                        return observableHelper.zipObservables(observables).map(() => data);
-                    })
-                    .build();
-            });
-
+                return observableHelper.zipObservables(observables).map(() => data);
+            })
+            .build();
     }
 
-    private getItemObservable(): Observable<void> {
-        return this.activatedRoute.params
-            .switchMap((params: Params) => this.dependencies.itemServices.foodService.item()
-                .byId(+params['id'])
-                .includeMultiple(['FoodCategory', 'FoodUnit', 'ChildFoods', 'ChildFoods.Food', 'ChildFoods.Food.FoodUnit'])
-                .get()
-                .map(response => {
-                    this.food = response.item;
+    private initFoodObservable(): Observable<void> {
+        return this.dependencies.itemServices.foodService.item()
+            .byId(this.foodId)
+            .includeMultiple(['FoodCategory', 'FoodUnit', 'ChildFoods', 'ChildFoods.Food', 'ChildFoods.Food.FoodUnit'])
+            .get()
+            .map(response => {
+                this.food = response.item;
 
-                    // init food info boxes
-                    this.initFoodBoxes(this.food);
-                    this.initMealFoods(this.food);
+                // init food info boxes
+                this.initFoodBoxes(this.food);
+                this.initMealFoods(this.food);
 
-                    if (this.food.createdByUserId === this.dependencies.authenticatedUserService.getUserId()) {
-                        this.setConfig({
-                            menuItems: new MealMenuItems(this.food.id).menuItems,
-                            menuTitle: {
-                                key: this.food.foodName
-                            },
-                            componentTitle: {
-                                'key': 'module.foods.submenu.previewMeal'
-                            }
-                        });
-                    } else {
-                        this.setConfig({
-                            menuItems: new MealMenuItems(response.item.id).menuItems,
-                            menuTitle: {
-                                key: response.item.foodName
-                            },
-                            componentTitle: {
-                                'key': 'module.foods.submenu.previewMeal'
-                            }
-                        });
-                    }
-                })
-            );
+                this.loadFood.next(this.food);
+            });
     }
 }

@@ -1,70 +1,57 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Food } from 'app/models';
+import { stringHelper } from 'lib/utilities';
+import { Observable } from 'rxjs/Observable';
 
 import { DataFormConfig } from '../../../../web-components/data-form';
-import { BasePageComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
-import { FoodMenuItems } from '../menu.items';
-import { Observable } from 'rxjs/Observable';
-import { stringHelper } from 'lib/utilities';
+import { BaseModuleComponent, ComponentDependencyService } from '../../../core';
 
 @Component({
+    selector: 'mod-edit-food',
     templateUrl: 'edit-food.component.html'
 })
-export class EditFoodComponent extends BasePageComponent implements OnInit {
+export class EditFoodComponent extends BaseModuleComponent implements OnInit, OnChanges {
+
+    @Input() foodId: number;
+
+    @Output() loadFood = new EventEmitter<Food>();
 
     public formConfig: DataFormConfig;
 
     constructor(
-        protected activatedRoute: ActivatedRoute,
         protected componentDependencyService: ComponentDependencyService,
     ) {
         super(componentDependencyService);
     }
 
-    setup(): ComponentSetup {
-        return new ComponentSetup({
-            initialized: true,
-            isNested: false
-        });
-    }
-
     ngOnInit(): void {
         super.ngOnInit();
+    }
 
-        this.initForm();
+    ngOnChanges(changes: SimpleChanges) {
+        if (this.foodId) {
+            this.initForm();
+        }
     }
 
     private initForm(): void {
-        this.activatedRoute.params
-            .takeUntil(this.ngUnsubscribe)
-            .map((params: Params) => {
-                this.formConfig = this.dependencies.itemServices.foodService.buildEditForm(+params['id'])
-                    .onAfterDelete(() => super.navigate([this.getTrainerUrl('foods')]))
-                    .optionLabelResolver((field, originalLabel) => {
-                        if (field.key === 'FoodCategoryId') {
-                            return super.translate('module.foodCategories.categories.' + originalLabel);
-                        } else if (field.key === 'FoodUnitId') {
-                            return super.translate('module.foodUnits.' + originalLabel).map(text => stringHelper.capitalizeText(text));
-                        }
+        this.formConfig = this.dependencies.itemServices.foodService.buildEditForm(this.foodId)
+            .onAfterDelete(() => super.navigate([this.getTrainerUrl('foods')]))
+            .optionLabelResolver((field, originalLabel) => {
+                if (field.key === 'FoodCategoryId') {
+                    return super.translate('module.foodCategories.categories.' + originalLabel);
+                } else if (field.key === 'FoodUnitId') {
+                    return super.translate('module.foodUnits.' + originalLabel).map(text => stringHelper.capitalizeText(text));
+                }
 
-                        return Observable.of(originalLabel);
-                    })
-                    .ignoreFields([
-                        'AssignedFoodsVirtual'
-                    ])
-                    .onEditFormLoaded(form => {
-                        this.setConfig({
-                            menuItems: new FoodMenuItems(form.item.id).menuItems,
-                            menuTitle: {
-                                key: form.item.foodName
-                            },
-                            componentTitle: {
-                                'key': 'module.foods.submenu.editFood'
-                            }
-                        });
-                    })
-                    .build();
+                return Observable.of(originalLabel);
             })
-            .subscribe();
+            .ignoreFields([
+                'AssignedFoodsVirtual'
+            ])
+            .onEditFormLoaded(form => {
+                this.loadFood.next(form.item);
+            })
+            .build();
     }
 }

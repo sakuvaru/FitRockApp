@@ -1,22 +1,27 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
 import { AppConfig } from 'app/config';
 import { Food, FoodDish, NewChildFoodVirtualModel } from 'app/models';
 import { stringHelper } from 'lib/utilities';
 import { Observable, Subject } from 'rxjs/Rx';
 
 import { guidHelper } from '../../../../lib/utilities';
-import { DataFormConfig, DataFormMultipleChoiceItem, DataFormMultipleChoiceFieldConfig, DataFormFieldChangeResult, DataFormField, DataFormChangeField } from '../../../../web-components/data-form';
-import { BasePageComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
-import { SelectFoodDialogComponent } from '../dialogs/select-food-dialog.component';
+import {
+    DataFormChangeField,
+    DataFormConfig,
+    DataFormFieldChangeResult,
+    DataFormMultipleChoiceFieldConfig,
+    DataFormMultipleChoiceItem,
+} from '../../../../web-components/data-form';
+import { BaseModuleComponent, ComponentDependencyService } from '../../../core';
 import { EditFoodDishDialogComponent } from '../dialogs/edit-food-dish-dialog.component';
 import { FoodDishAmountDialogComponent } from '../dialogs/food-dish-amount.component';
-import { NewMealMenuItems } from '../menu.items';
+import { SelectFoodDialogComponent } from '../dialogs/select-food-dialog.component';
 
 @Component({
+    selector: 'mod-new-meal',
     templateUrl: 'new-meal.component.html'
 })
-export class NewMealComponent extends BasePageComponent implements OnInit {
+export class NewMealComponent extends BaseModuleComponent implements OnInit {
 
     public formConfig: DataFormConfig;
 
@@ -27,21 +32,8 @@ export class NewMealComponent extends BasePageComponent implements OnInit {
         super(componentDependencyService);
     }
 
-    setup(): ComponentSetup {
-        return new ComponentSetup({
-            initialized: true,
-            isNested: false
-        });
-    }
-
     ngOnInit() {
         super.ngOnInit();
-
-        this.setConfig({
-            componentTitle: { key: 'module.foods.submenu.newMeal' },
-            menuItems: new NewMealMenuItems().menuItems
-        });
-
         this.initForm();
     }
 

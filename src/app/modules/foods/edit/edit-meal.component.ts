@@ -1,28 +1,38 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { AppConfig } from 'app/config';
 import { Food, FoodDish, NewChildFoodVirtualModel } from 'app/models';
 import { stringHelper } from 'lib/utilities';
 import { Observable, Subject } from 'rxjs/Rx';
 
 import { guidHelper } from '../../../../lib/utilities';
-import { DataFormConfig, DataFormMultipleChoiceItem, DataFormMultipleChoiceFieldConfig, DataFormFieldChangeResult, DataFormField, DataFormChangeField } from '../../../../web-components/data-form';
-import { BasePageComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
-import { SelectFoodDialogComponent } from '../dialogs/select-food-dialog.component';
+import {
+    DataFormChangeField,
+    DataFormConfig,
+    DataFormFieldChangeResult,
+    DataFormMultipleChoiceFieldConfig,
+    DataFormMultipleChoiceItem,
+} from '../../../../web-components/data-form';
+import { BaseModuleComponent, ComponentDependencyService } from '../../../core';
 import { EditFoodDishDialogComponent } from '../dialogs/edit-food-dish-dialog.component';
 import { FoodDishAmountDialogComponent } from '../dialogs/food-dish-amount.component';
-import { MealMenuItems } from '../menu.items';
+import { SelectFoodDialogComponent } from '../dialogs/select-food-dialog.component';
 
 @Component({
+    selector: 'mod-edit-meal',
     templateUrl: 'edit-meal.component.html'
 })
-export class EditMealComponent extends BasePageComponent implements OnInit {
+export class EditMealComponent extends BaseModuleComponent implements OnInit, OnChanges {
+
+    @Input() foodId: number;
+
+    @Output() loadFood = new EventEmitter<Food>();
 
     public formConfig: DataFormConfig;
 
     public dishValueChange: Subject<DataFormMultipleChoiceItem<NewChildFoodVirtualModel>> = new Subject<DataFormMultipleChoiceItem<NewChildFoodVirtualModel>>();
 
-    private item: Food;
+    private food: Food;
 
     constructor(
         protected activatedRoute: ActivatedRoute,
@@ -31,16 +41,14 @@ export class EditMealComponent extends BasePageComponent implements OnInit {
         super(componentDependencyService);
     }
 
-    setup(): ComponentSetup {
-        return new ComponentSetup({
-            initialized: true,
-            isNested: false
-        });
+    ngOnChanges(changes: SimpleChanges) {
+        if (this.foodId) {
+            this.initForm();
+        }
     }
 
     ngOnInit(): void {
         super.ngOnInit();
-        this.initForm();
     }
 
     private getFoodOptionMetaLines(food: Food, amount: number): Observable<string>[] {
@@ -141,156 +149,143 @@ export class EditMealComponent extends BasePageComponent implements OnInit {
     }
 
     private initForm(): void {
-        this.activatedRoute.params
-            .map((params: Params) => {
-                this.formConfig = this.dependencies.itemServices.foodService.buildEditForm(
-                    this.dependencies.itemServices.foodService.editFormQuery(+params['id'])
-                        .includeMultiple(['ChildFoods', 'ChildFoods.Food', 'ChildFoods.Food.FoodUnit'])
-                )
-                    .multipleChoiceResolver((field, item) => {
-                        if (field.key === 'AssignedFoodsVirtual') {
-                            return new DataFormMultipleChoiceFieldConfig<NewChildFoodVirtualModel>({
-                                assignedItems: (yField, yItem) => {
-                                    return yItem && yItem.childFoods
-                                        ? Observable.of(yItem.childFoods.map((dish: FoodDish) => this.getMultipleChoiceFoodOption(dish)))
-                                        : Observable.of([]);
-                                },
-                                onEditSelected: (selectedItems) => this.openEditFoodDishDialog(selectedItems),
-                                onDialogClick: (xField, xItem) => this.openSelectFoodDialog(),
-                                itemChange: this.dishValueChange,
-                                addButtonText: super.translate('module.foods.addFood'),
-                                removeButtonText: super.translate('module.foods.removeSelected'),
-                                editButtonText: super.translate('shared.edit')
-                            });
-                        }
+        this.formConfig = this.dependencies.itemServices.foodService.buildEditForm(
+            this.dependencies.itemServices.foodService.editFormQuery(this.foodId)
+                .includeMultiple(['ChildFoods', 'ChildFoods.Food', 'ChildFoods.Food.FoodUnit'])
+        )
+            .multipleChoiceResolver((field, item) => {
+                if (field.key === 'AssignedFoodsVirtual') {
+                    return new DataFormMultipleChoiceFieldConfig<NewChildFoodVirtualModel>({
+                        assignedItems: (yField, yItem) => {
+                            return yItem && yItem.childFoods
+                                ? Observable.of(yItem.childFoods.map((dish: FoodDish) => this.getMultipleChoiceFoodOption(dish)))
+                                : Observable.of([]);
+                        },
+                        onEditSelected: (selectedItems) => this.openEditFoodDishDialog(selectedItems),
+                        onDialogClick: (xField, xItem) => this.openSelectFoodDialog(),
+                        itemChange: this.dishValueChange,
+                        addButtonText: super.translate('module.foods.addFood'),
+                        removeButtonText: super.translate('module.foods.removeSelected'),
+                        editButtonText: super.translate('shared.edit')
+                    });
+                }
 
-                        return undefined;
-                    })
-                    .onAfterDelete(() => super.navigate([this.getTrainerUrl('foods/meals')]))
-                    .optionLabelResolver((field, originalLabel) => {
-                        if (field.key === 'FoodCategoryId') {
-                            return super.translate('module.foodCategories.categories.' + originalLabel);
-                        } else if (field.key === 'FoodUnitId') {
-                            return super.translate('module.foodUnits.' + originalLabel).map(text => stringHelper.capitalizeText(text));
-                        }
-
-                        return Observable.of(originalLabel);
-                    })
-                    .onEditFormLoaded(form => {
-                        this.item = form.item;
-                        this.setConfig({
-                            menuItems: new MealMenuItems(form.item.id).menuItems,
-                            menuTitle: {
-                                key: form.item.foodName
-                            },
-                            componentTitle: {
-                                'key': 'module.foods.submenu.editMeal'
-                            }
-                        });
-                    })
-                    .configField((field, item) => {
-                        if (field.key === '') {
-
-                        }
-
-                        // make sure assigned foods are assigned for calculation by 'onFieldValueChange'
-                        if (item) {
-                            const models = item.childFoods.map((dish: FoodDish) =>
-                                this.getMultipleChoiceFoodOption(dish))
-                                .map(s => s.rawValue);
-
-                            if (item && field.key === 'AssignedFoodsVirtual') {
-                                field.value = models;
-                            }
-
-                            if (models) {
-                                const calculations = this.dependencies.itemServices.foodService.aggregateFoodsNutrition(
-                                    models.map(s => {
-                                        return {
-                                            food: s.food,
-                                            amount: s.amount
-                                        };
-                                    })
-                                );
-
-                                if (field.key === 'Kcal') {
-                                    field.value = calculations.kcal;
-                                }
-                                if (field.key === 'Cho') {
-                                    field.value = calculations.cho;
-                                }
-                                if (field.key === 'Fat') {
-                                    field.value = calculations.fat;
-                                }
-                                if (field.key === 'Sugar') {
-                                    field.value = calculations.sugar;
-                                }
-                                if (field.key === 'Prot') {
-                                    field.value = calculations.prot;
-                                }
-                                if (field.key === 'Nacl') {
-                                    field.value = calculations.nacl;
-                                }
-                            }
-                        }
-
-                        return Observable.of(field);
-                    })
-                    .onFieldValueChange((fields, changedField, newValue) => {
-                        const newFields: DataFormChangeField[] = [];
-
-                        if (changedField.key === 'AssignedFoodsVirtual') {
-
-                            // recalculate dish components
-                            const assignedFoods = newValue as NewChildFoodVirtualModel[];
-                            const kcalField = fields.find(m => m.key === 'Kcal');
-                            const choField = fields.find(m => m.key === 'Cho');
-                            const fatField = fields.find(m => m.key === 'Fat');
-                            const sugarField = fields.find(m => m.key === 'Sugar');
-                            const protField = fields.find(m => m.key === 'Prot');
-                            const naclField = fields.find(m => m.key === 'Nacl');
-
-                            if (assignedFoods) {
-                                const calculation = this.dependencies.itemServices.foodService.aggregateFoodsNutrition(
-                                    assignedFoods.map(s => {
-                                        return {
-                                            food: s.food,
-                                            amount: s.amount
-                                        };
-                                    })
-                                );
-
-                                if (kcalField) {
-                                    newFields.push(new DataFormChangeField(kcalField.key, calculation.kcal));
-                                }
-
-                                if (choField) {
-                                    newFields.push(new DataFormChangeField(choField.key, calculation.cho));
-                                }
-
-                                if (fatField) {
-                                    newFields.push(new DataFormChangeField(fatField.key, calculation.fat));
-                                }
-
-                                if (sugarField) {
-                                    newFields.push(new DataFormChangeField(sugarField.key, calculation.sugar));
-                                }
-
-                                if (protField) {
-                                    newFields.push(new DataFormChangeField(protField.key, calculation.prot));
-                                }
-
-                                if (naclField) {
-                                    newFields.push(new DataFormChangeField(naclField.key, calculation.nacl));
-                                }
-                            }
-                        }
-
-                        return Observable.of(new DataFormFieldChangeResult(newFields));
-                    })
-                    .build();
+                return undefined;
             })
-            .takeUntil(this.ngUnsubscribe)
-            .subscribe();
+            .onAfterDelete(() => super.navigate([this.getTrainerUrl('foods/meals')]))
+            .optionLabelResolver((field, originalLabel) => {
+                if (field.key === 'FoodCategoryId') {
+                    return super.translate('module.foodCategories.categories.' + originalLabel);
+                } else if (field.key === 'FoodUnitId') {
+                    return super.translate('module.foodUnits.' + originalLabel).map(text => stringHelper.capitalizeText(text));
+                }
+
+                return Observable.of(originalLabel);
+            })
+            .onEditFormLoaded(form => {
+                this.loadFood.next(form.item);
+                this.food = form.item;
+            })
+            .configField((field, item) => {
+                if (field.key === '') {
+
+                }
+
+                // make sure assigned foods are assigned for calculation by 'onFieldValueChange'
+                if (item) {
+                    const models = item.childFoods.map((dish: FoodDish) =>
+                        this.getMultipleChoiceFoodOption(dish))
+                        .map(s => s.rawValue);
+
+                    if (item && field.key === 'AssignedFoodsVirtual') {
+                        field.value = models;
+                    }
+
+                    if (models) {
+                        const calculations = this.dependencies.itemServices.foodService.aggregateFoodsNutrition(
+                            models.map(s => {
+                                return {
+                                    food: s.food,
+                                    amount: s.amount
+                                };
+                            })
+                        );
+
+                        if (field.key === 'Kcal') {
+                            field.value = calculations.kcal;
+                        }
+                        if (field.key === 'Cho') {
+                            field.value = calculations.cho;
+                        }
+                        if (field.key === 'Fat') {
+                            field.value = calculations.fat;
+                        }
+                        if (field.key === 'Sugar') {
+                            field.value = calculations.sugar;
+                        }
+                        if (field.key === 'Prot') {
+                            field.value = calculations.prot;
+                        }
+                        if (field.key === 'Nacl') {
+                            field.value = calculations.nacl;
+                        }
+                    }
+                }
+
+                return Observable.of(field);
+            })
+            .onFieldValueChange((fields, changedField, newValue) => {
+                const newFields: DataFormChangeField[] = [];
+
+                if (changedField.key === 'AssignedFoodsVirtual') {
+
+                    // recalculate dish components
+                    const assignedFoods = newValue as NewChildFoodVirtualModel[];
+                    const kcalField = fields.find(m => m.key === 'Kcal');
+                    const choField = fields.find(m => m.key === 'Cho');
+                    const fatField = fields.find(m => m.key === 'Fat');
+                    const sugarField = fields.find(m => m.key === 'Sugar');
+                    const protField = fields.find(m => m.key === 'Prot');
+                    const naclField = fields.find(m => m.key === 'Nacl');
+
+                    if (assignedFoods) {
+                        const calculation = this.dependencies.itemServices.foodService.aggregateFoodsNutrition(
+                            assignedFoods.map(s => {
+                                return {
+                                    food: s.food,
+                                    amount: s.amount
+                                };
+                            })
+                        );
+
+                        if (kcalField) {
+                            newFields.push(new DataFormChangeField(kcalField.key, calculation.kcal));
+                        }
+
+                        if (choField) {
+                            newFields.push(new DataFormChangeField(choField.key, calculation.cho));
+                        }
+
+                        if (fatField) {
+                            newFields.push(new DataFormChangeField(fatField.key, calculation.fat));
+                        }
+
+                        if (sugarField) {
+                            newFields.push(new DataFormChangeField(sugarField.key, calculation.sugar));
+                        }
+
+                        if (protField) {
+                            newFields.push(new DataFormChangeField(protField.key, calculation.prot));
+                        }
+
+                        if (naclField) {
+                            newFields.push(new DataFormChangeField(naclField.key, calculation.nacl));
+                        }
+                    }
+                }
+
+                return Observable.of(new DataFormFieldChangeResult(newFields));
+            })
+            .build();
     }
 }

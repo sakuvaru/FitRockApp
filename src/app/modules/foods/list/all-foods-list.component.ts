@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 
 import { DataTableConfig, IDynamicFilter } from '../../../../web-components/data-table';
-import { BasePageComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
+import { BaseModuleComponent, ComponentDependencyService } from '../../../core';
 import { Food } from '../../../models';
-import { FoodOverviewItems } from '../menu.items';
 
 @Component({
+  selector: 'mod-all-foods-list',
   templateUrl: 'all-foods-list.component.html'
 })
-export class AllFoodsListComponent extends BasePageComponent implements OnInit {
+export class AllFoodsListComponent extends BaseModuleComponent implements OnInit {
 
   public config: DataTableConfig;
 
@@ -17,25 +17,12 @@ export class AllFoodsListComponent extends BasePageComponent implements OnInit {
     super(dependencies);
   }
 
-  setup(): ComponentSetup {
-    return new ComponentSetup({
-      initialized: true,
-      isNested: false
-    });
-  }
-
   ngOnInit() {
     super.ngOnInit();
-
     this.init();
   }
 
   private init() {
-    this.setConfig({
-      menuTitle: { key: 'module.foods.submenu.allFoods' },
-      menuItems: new FoodOverviewItems().menuItems,
-      componentTitle: { key: 'module.foods.submenu.overview' },
-    });
     this.config = this.dependencies.itemServices.foodService.buildDataTable((query, search) => {
       return query
         .include('FoodCategory')
@@ -76,7 +63,13 @@ export class AllFoodsListComponent extends BasePageComponent implements OnInit {
           });
           return filters;
         }))
-      .onClick((item) => super.navigate([super.getTrainerUrl('foods/preview/') + item.id]))
+      .onClick((item) => {
+        if (item.isMeal) {
+          this.dependencies.coreServices.navigateService.mealPreviewPage(item.id).navigate();
+        } else {
+          this.dependencies.coreServices.navigateService.foodPreviewPage(item.id).navigate();
+        }
+      })
       .build();
   }
 }

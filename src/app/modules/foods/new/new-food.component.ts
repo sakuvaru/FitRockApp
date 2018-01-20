@@ -1,20 +1,15 @@
-// common
-import { Observable } from 'rxjs/Rx';
-import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-import { ComponentDependencyService, BasePageComponent, ComponentSetup } from '../../../core';
-import { AppConfig, UrlConfig } from '../../../config';
-
-// required by component
-import { DataFormConfig } from '../../../../web-components/data-form';
-import { NewFoodMenuItems } from '../menu.items';
-import { Food } from '../../../models';
+import { Component, OnInit } from '@angular/core';
 import { stringHelper } from 'lib/utilities';
+import { Observable } from 'rxjs/Rx';
+
+import { DataFormConfig } from '../../../../web-components/data-form';
+import { BaseModuleComponent, ComponentDependencyService } from '../../../core';
 
 @Component({
+    selector: 'mod-new-food',
     templateUrl: 'new-food.component.html'
 })
-export class NewFoodComponent extends BasePageComponent implements OnInit {
+export class NewFoodComponent extends BaseModuleComponent implements OnInit {
 
     public formConfig: DataFormConfig;
 
@@ -23,21 +18,8 @@ export class NewFoodComponent extends BasePageComponent implements OnInit {
         super(componentDependencyService);
     }
 
-    setup(): ComponentSetup {
-        return new ComponentSetup({
-            initialized: true,
-            isNested: false
-        });
-    }
-
     ngOnInit() {
         super.ngOnInit();
-
-        this.setConfig({
-            componentTitle: { key: 'module.foods.submenu.newFood' },
-            menuItems: new NewFoodMenuItems().menuItems
-        });
-
         this.initForm();
     }
 
