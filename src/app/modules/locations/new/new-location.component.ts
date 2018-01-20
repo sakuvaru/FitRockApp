@@ -1,19 +1,14 @@
-// common
-import { Component, Input, Output, OnInit, EventEmitter, OnDestroy, AfterViewInit } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-import { ComponentDependencyService, BasePageComponent, ComponentConfig, ComponentSetup } from '../../../core';
-import { AppConfig, UrlConfig } from '../../../config';
-
-// required by component
-import { DataFormConfig } from '../../../../web-components/data-form';
-import { NewLocationsMenuItems } from '../menu.items';
-import { Location } from '../../../models';
+import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 
+import { DataFormConfig } from '../../../../web-components/data-form';
+import { BaseModuleComponent, ComponentDependencyService } from '../../../core';
+
 @Component({
+    selector: 'mod-new-location',
     templateUrl: 'new-location.component.html'
 })
-export class NewLocationComponent extends BasePageComponent implements OnInit {
+export class NewLocationComponent extends BaseModuleComponent implements OnInit {
 
     public formConfig: DataFormConfig;
 
@@ -22,22 +17,8 @@ export class NewLocationComponent extends BasePageComponent implements OnInit {
         super(dependencies);
     }
 
-    setup(): ComponentSetup {
-        return new ComponentSetup({
-            initialized: true,
-            isNested: false
-        });
-    }
-
     ngOnInit() {
         super.ngOnInit();
-
-        this.setConfig({
-            menuTitle: { key: 'module.locations.submenu.overview' },
-            componentTitle: { key: 'module.locations.submenu.new' },
-            menuItems: new NewLocationsMenuItems().menuItems
-        });
-
         this.initForm();
     }
 

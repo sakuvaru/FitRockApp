@@ -1,18 +1,13 @@
-// common
-import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-import { ComponentDependencyService, BasePageComponent, ComponentConfig, ComponentSetup } from '../../../core';
-import { AppConfig, UrlConfig } from '../../../config';
+import { Component, OnInit } from '@angular/core';
 
-// required by component
-import { LocationOverviewItems } from '../menu.items';
 import { DataTableConfig } from '../../../../web-components/data-table';
-import { Location } from '../../../models';
+import { BaseModuleComponent, ComponentDependencyService } from '../../../core';
 
 @Component({
+  selector: 'mod-my-locations',
   templateUrl: 'my-locations.component.html'
 })
-export class MyLocationsComponent extends BasePageComponent implements OnInit {
+export class MyLocationsComponent extends BaseModuleComponent implements OnInit {
 
   public config: DataTableConfig;
 
@@ -21,22 +16,10 @@ export class MyLocationsComponent extends BasePageComponent implements OnInit {
     super(dependencies);
   }
 
-  setup(): ComponentSetup {
-    return new ComponentSetup({
-        initialized: true,
-        isNested: false
-    });
-}
 
   ngOnInit() {
     super.ngOnInit();
-
-    this.setConfig({
-      menuTitle: { key: 'module.locations.submenu.overview' },
-      menuItems: new LocationOverviewItems().menuItems,
-      componentTitle: { key: 'module.locations.submenu.myLocations' },
-    });
-
+  
     this.config = this.dependencies.itemServices.locationService.buildDataTable(
       (query, search) => {
         return query

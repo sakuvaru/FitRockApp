@@ -1,67 +1,50 @@
-// common
-import { Component, Input, Output, OnInit, EventEmitter, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-import { ComponentDependencyService, BasePageComponent, ComponentSetup } from '../../../core';
-import { AppConfig, UrlConfig } from '../../../config';
-
-// required by component
-import { LocationsEditMenuItems } from '../menu.items';
-import { DataFormConfig } from '../../../../web-components/data-form';
-import { Location } from '../../../models';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 
+import { DataFormConfig } from '../../../../web-components/data-form';
+import { BaseModuleComponent, ComponentDependencyService } from '../../../core';
+import { Location } from '../../../models';
+
 @Component({
+    selector: 'mod-edit-location',
     templateUrl: 'edit-location.component.html'
 })
-export class EditLocationComponent extends BasePageComponent implements OnInit {
+export class EditLocationComponent extends BaseModuleComponent implements OnInit, OnChanges {
+
+    @Input() locationId: number;
+
+    @Output() loadLocation = new EventEmitter<Location>();
 
     public formConfig: DataFormConfig;
 
     constructor(
-        protected activatedRoute: ActivatedRoute,
         protected componentDependencyService: ComponentDependencyService,
     ) {
         super(componentDependencyService);
     }
 
-    setup(): ComponentSetup {
-        return new ComponentSetup({
-            initialized: true,
-            isNested: false
-        });
-    }
-
     ngOnInit(): void {
         super.ngOnInit();
+    }
 
-        this.initForm();
+    ngOnChanges(changes: SimpleChanges): void {
+        if (this.locationId) {
+            this.initForm();
+        }
     }
 
     private initForm(): void {
-        this.activatedRoute.params
-            .takeUntil(this.ngUnsubscribe)
-            .map((params: Params) => {
-                this.formConfig = this.dependencies.itemServices.locationService.buildEditForm(+params['id'])
-                    .onAfterDelete(() => super.navigate([this.getTrainerUrl('locations')]))
-                    .onEditFormLoaded(form => {
-                        this.setConfig({
-                            menuItems: new LocationsEditMenuItems(form.item.id).menuItems,
-                            menuTitle: {
-                                key: form.item.locationName
-                            },
-                            componentTitle: {
-                                'key': 'module.locations.submenu.edit'
-                            }
-                        });
-                    })
-                    .optionLabelResolver((field, optionLabel) => {
-                        if (field.key === 'LocationType') {
-                            return super.translate('module.locations.type.' + optionLabel);
-                        }
-                        return Observable.of(optionLabel);
-                    })
-                    .build();
+        this.formConfig = this.dependencies.itemServices.locationService.buildEditForm(this.locationId)
+            .onAfterDelete(() => super.navigate([this.getTrainerUrl('locations')]))
+            .onEditFormLoaded(form => {
+                this.loadLocation.next(form.item);
             })
-            .subscribe();
+            .optionLabelResolver((field, optionLabel) => {
+                if (field.key === 'LocationType') {
+                    return super.translate('module.locations.type.' + optionLabel);
+                }
+                return Observable.of(optionLabel);
+            })
+            .build();
     }
 }

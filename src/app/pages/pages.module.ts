@@ -8,6 +8,7 @@ import { DashboardPagesModule } from './dashboard/dashboard-pages.module';
 import { DietPagesModule } from './diets/diet-pages.module';
 import { ExercisesModule } from './exercises/exercise-pages.module';
 import { FoodPagesModule } from './foods/food-pages.module';
+import { LocationPagesModule } from './locations/location-pages.module';
 
 @NgModule({
     imports: [
@@ -18,7 +19,8 @@ import { FoodPagesModule } from './foods/food-pages.module';
         DashboardPagesModule,
         DietPagesModule,
         ExercisesModule,
-        FoodPagesModule
+        FoodPagesModule,
+        LocationPagesModule
     ]
 })
 export class PagesModule { }
