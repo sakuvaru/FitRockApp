@@ -33,13 +33,6 @@ export class AddDietFoodDialogComponent extends BaseDialogComponent<AddDietFoodD
     this.food = data.food;
   }
 
-  setup(): ComponentSetup {
-    return new ComponentSetup({
-      initialized: true,
-      isNested: true
-    });
-  }
-
   ngOnInit() {
     super.ngOnInit();
 

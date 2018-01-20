@@ -1,19 +1,14 @@
-// common
-import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-import { ComponentDependencyService, BasePageComponent, ComponentSetup } from '../../../core';
-import { AppConfig, UrlConfig } from '../../../config';
-
-// required by component
-import { DataFormConfig } from '../../../../web-components/data-form';
-import { NewDietMenuItems } from '../menu.items';
-import { Diet } from '../../../models';
+import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 
+import { DataFormConfig } from '../../../../web-components/data-form';
+import { BaseModuleComponent, ComponentDependencyService } from '../../../core';
+
 @Component({
+    selector: 'mod-new-diet-template',
     templateUrl: 'new-diet-template.component.html'
 })
-export class NewDietTemplateComponent extends BasePageComponent implements OnInit {
+export class NewDietTemplateComponent extends BaseModuleComponent implements OnInit {
 
     public formConfig: DataFormConfig;
 
@@ -22,21 +17,8 @@ export class NewDietTemplateComponent extends BasePageComponent implements OnIni
         super(componentDependencyService);
     }
 
-    setup(): ComponentSetup {
-        return new ComponentSetup({
-            initialized: true,
-            isNested: false
-        });
-    }
-
     ngOnInit() {
         super.ngOnInit();
-
-        this.setConfig({
-            componentTitle: { key: 'module.diets.submenu.new' },
-            menuItems: new NewDietMenuItems().menuItems
-        });
-
         this.initForm();
     }
 

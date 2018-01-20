@@ -1,0 +1,17 @@
+<mat-dialog-actions>
+    <span class="mat-title">{{'module.diets.selectFood' | localize}}</span>
+    <span fxFlex></span>
+    <add-button class="push-right" tooltip="{{'module.diets.newDish' | localize }}" (click)="newDish()"></add-button>
+    <add-button class="push-right" tooltip="{{'module.diets.newFood' | localize }}" (click)="newFood()"></add-button>
+    <close-button (click)="close()"></close-button>
+</mat-dialog-actions>
+
+<mat-dialog-content>
+    <data-table #dataTable [config]="config"></data-table>
+    <button mat-raised-button color="accent"></button>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <div fxFlex></div>
+    <data-table-pager [dataTable]="dataTable"></data-table-pager>
+</mat-dialog-actions>

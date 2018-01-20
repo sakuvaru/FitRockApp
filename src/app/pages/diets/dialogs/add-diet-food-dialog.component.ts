@@ -4,30 +4,40 @@ import { Observable } from 'rxjs/Rx';
 
 import { DataFormConfig } from '../../../../web-components/data-form';
 import { BaseDialogComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
-import { DietFood } from '../../../models';
+import { DietFood, Food } from '../../../models';
 
 @Component({
-  templateUrl: 'edit-diet-food-dialog.component.html'
+  templateUrl: 'add-diet-food-dialog.component.html'
 })
-export class EditDietFoodDialogComponent extends BaseDialogComponent<EditDietFoodDialogComponent> implements OnInit {
+export class AddDietFoodDialogComponent extends BaseDialogComponent<AddDietFoodDialogComponent> implements OnInit {
+
+  public dietId: number;
+  public food: Food;
 
   public dietFoodForm: DataFormConfig;
 
-  // public because it is accessed by parent component
-  public dietFood: DietFood;
-
-  public idOfDeletedDietFood: number;
-  public dietFoodWasDeleted: boolean = false;
+  /**
+   * Accessed by parent component
+   */
+  public newDietFood: DietFood;
 
   constructor(
     protected dependencies: ComponentDependencyService,
-    protected dialogRef: MatDialogRef<EditDietFoodDialogComponent>,
+    protected dialogRef: MatDialogRef<AddDietFoodDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     super(dependencies, dialogRef, data);
-    
 
-    this.dietFood = data;
+
+    this.dietId = data.dietId;
+    this.food = data.food;
+  }
+
+  setup(): ComponentSetup {
+    return new ComponentSetup({
+      initialized: true,
+      isNested: true
+    });
   }
 
   ngOnInit() {
@@ -37,11 +47,18 @@ export class EditDietFoodDialogComponent extends BaseDialogComponent<EditDietFoo
   }
 
   private initForm(): void {
-    this.dietFoodForm = this.dependencies.itemServices.dietFoodService.buildEditForm(this.dietFood.id)
-      .wrapInCard(false)
+    this.dietFoodForm = this.dependencies.itemServices.dietFoodService.buildInsertForm()
+      .configField((field, item) => {
+        if (field.key === 'FoodId') {
+          field.value = this.food.id;
+        } else if (field.key === 'DietId') {
+          field.value = this.dietId;
+        }
+        return Observable.of(field);
+      })
       .fieldLabelResolver((field, originalLabel) => {
         if (field.key === 'UnitValue') {
-          return this.dependencies.itemServices.foodUnitService.item().byId(this.dietFood.food.foodUnitId)
+          return this.dependencies.itemServices.foodUnitService.item().byId(this.food.foodUnitId)
             .get()
             .flatMap(response => {
               if (response.isEmpty()) {
@@ -54,15 +71,11 @@ export class EditDietFoodDialogComponent extends BaseDialogComponent<EditDietFoo
         }
         return Observable.of(originalLabel);
       })
-      .onAfterEdit((response) => {
-        this.dietFood = response.item;
+      .wrapInCard(false)
+      .onAfterInsert((response => {
+        this.newDietFood = response.item;
         this.close();
-      })
-      .onAfterDelete((response) => {
-        this.idOfDeletedDietFood = response.deletedItemId;
-        this.dietFoodWasDeleted = true;
-        this.close();
-      })
+      }))
       .renderButtons(false)
       .build();
   }

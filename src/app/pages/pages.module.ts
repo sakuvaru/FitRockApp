@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { ChatPagesModule } from './chat/chat-pages.module';
 import { ClientsPagesModule } from './clients/clients-pages.module';
 import { DashboardPagesModule } from './dashboard/dashboard-pages.module';
+import { DietPagesModule } from './diets/diet-pages.module';
 
 @NgModule({
     imports: [
@@ -12,7 +13,8 @@ import { DashboardPagesModule } from './dashboard/dashboard-pages.module';
         FormsModule,
         ClientsPagesModule,
         ChatPagesModule,
-        DashboardPagesModule
+        DashboardPagesModule,
+        DietPagesModule
     ]
 })
 export class PagesModule { }

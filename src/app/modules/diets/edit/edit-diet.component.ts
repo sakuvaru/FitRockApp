@@ -1,50 +1,56 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs/Rx';
 
-import { BasePageComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
+import { DataFormConfig } from '../../../../web-components/data-form';
+import { BaseModuleComponent, ComponentDependencyService } from '../../../core';
 import { Diet } from '../../../models';
-import { DietMenuItems } from '../menu.items';
 
 @Component({
-    templateUrl: 'edit-diet.component.html'
+    templateUrl: 'edit-diet.component.html',
+    selector: 'mod-edit-diet'
 })
-export class EditDietComponent extends BasePageComponent implements OnInit {
+export class EditDietComponent extends BaseModuleComponent implements OnInit, OnChanges {
 
-    public dietId: number;
+    @Output() loadDiet = new EventEmitter<Diet>();
+
+    @Input() dietId: number;
+
+    public formConfig: DataFormConfig;
 
     constructor(
-        protected activatedRoute: ActivatedRoute,
         protected componentDependencyService: ComponentDependencyService,
     ) {
         super(componentDependencyService);
     }
 
-    setup(): ComponentSetup {
-        return new ComponentSetup({
-            initialized: true,
-            isNested: false
-        });
+    ngOnChanges(changes: SimpleChanges) {
+        const dietId = changes.dietId.currentValue;
+        if (dietId) {
+            this.initForm(dietId);
+        }
     }
 
-    ngOnInit() {
+    ngOnInit(): void {
         super.ngOnInit();
-
-        this.activatedRoute.params
-            .takeUntil(this.ngUnsubscribe)
-            .subscribe(params => {
-                this.dietId = +params['id'];
-            });
     }
 
-    public handleLoadDiet(diet: Diet): void {
-        this.setConfig({
-            menuItems: new DietMenuItems(diet.id).menuItems,
-            menuTitle: {
-                key: diet.dietName
-            },
-            componentTitle: {
-                'key': 'module.diets.editDiet'
-            },
-        });
+    private initForm(dietId: number): void {
+        this.formConfig = this.dependencies.itemServices.dietService.buildEditForm(dietId)
+            .onAfterDelete(() => super.navigate([super.getTrainerUrl('diets')]))
+            .onEditFormLoaded(form => {
+                const diet = form.item;
+
+                // set loaded workout
+                this.loadDiet.next(diet);
+            })
+            .optionLabelResolver((field, originalLabel) => {
+                if (field.key === 'DietCategoryId') {
+                    return super.translate('module.dietCategories.categories.' + originalLabel);
+                }
+
+                return Observable.of(originalLabel);
+            })
+            .build();
     }
 }

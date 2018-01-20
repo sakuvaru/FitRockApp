@@ -1,40 +1,24 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { NgModule } from '@angular/core';
 
-// core module
 import { CoreModule } from '../../core';
-
-// components
+import { SharedModule } from '../shared/shared.module';
+import { AddDietFoodDialogComponent } from './dialogs/add-diet-food-dialog.component';
+import { AddNewDishDialogComponent } from './dialogs/add-new-dish-dialog.component';
+import { AddNewFoodDialogComponent } from './dialogs/add-new-food-dialog.component';
+import { EditDietFoodDialogComponent } from './dialogs/edit-diet-food-dialog.component';
+import { SelectDietFoodDialogComponent } from './dialogs/select-diet-food-dialog.component';
+import { EditDietPlanComponent } from './edit/edit-diet-plan.component';
+import { EditDietComponent } from './edit/edit-diet.component';
 import { ClientDietsComponent } from './list/client-diets.component';
 import { DietTemplatesComponent } from './list/diet-templates.component';
 import { NewDietTemplateComponent } from './new/new-diet-template.component';
-import { EditDietComponent } from './edit/edit-diet.component';
-import { DietPlanComponent } from './list/diet-plan.component';
-import { EditDietPlanComponent } from './edit/edit-diet-plan.component';
-
-// dialogs
-import { AddDietFoodDialogComponent} from './dialogs/add-diet-food-dialog.component';
-import { SelectDietFoodDialogComponent} from './dialogs/select-diet-food-dialog.component';
-import { EditDietFoodDialogComponent } from './dialogs/edit-diet-food-dialog.component';
-import { AddNewFoodDialogComponent } from './dialogs/add-new-food-dialog.component';
-import { AddNewDishDialogComponent } from './dialogs/add-new-dish-dialog.component';
-
-// exports
-import { EditDietPlanExportComponent } from './exports/edit-diet-plan-export.component';
-import { EditDietExportComponent } from './exports/edit-diet-export.component';
-
-// router
-import { DietsRouter } from './diets.routing';
-
-// modules
-import { SharedModule} from '../shared/shared.module';
+import { DietPlanViewComponent } from './view/diet-plan-view.component';
 
 @NgModule({
     imports: [
         CoreModule,
         CommonModule,
-        DietsRouter,
         SharedModule
     ],
     entryComponents: [
@@ -49,19 +33,26 @@ import { SharedModule} from '../shared/shared.module';
         DietTemplatesComponent,
         NewDietTemplateComponent,
         EditDietComponent,
-        DietPlanComponent,
+        DietPlanViewComponent,
         EditDietPlanComponent,
         AddDietFoodDialogComponent,
         SelectDietFoodDialogComponent,
         EditDietFoodDialogComponent,
         AddNewFoodDialogComponent,
         AddNewDishDialogComponent,
-        EditDietPlanExportComponent,
-        EditDietExportComponent
     ],
     exports: [
-        EditDietPlanExportComponent,
-        EditDietExportComponent
+        ClientDietsComponent,
+        DietTemplatesComponent,
+        NewDietTemplateComponent,
+        EditDietComponent,
+        DietPlanViewComponent,
+        EditDietPlanComponent,
+        AddDietFoodDialogComponent,
+        SelectDietFoodDialogComponent,
+        EditDietFoodDialogComponent,
+        AddNewFoodDialogComponent,
+        AddNewDishDialogComponent,
     ]
 })
 export class DietsModule { }

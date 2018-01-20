@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { stringHelper } from 'lib/utilities';
 import { Observable } from 'rxjs/Rx';
@@ -8,9 +8,9 @@ import { BaseDialogComponent, ComponentDependencyService, ComponentSetup } from 
 import { Food } from '../../../models';
 
 @Component({
-  templateUrl: 'add-new-food-dialog.component.html'
+  templateUrl: 'add-new-dish-dialog.component.html'
 })
-export class AddNewFoodDialogComponent extends BaseDialogComponent<AddNewFoodDialogComponent> implements OnInit {
+export class AddNewDishDialogComponent extends BaseDialogComponent<AddNewDishDialogComponent> implements OnInit {
 
   public foodForm: DataFormConfig;
 
@@ -21,11 +21,18 @@ export class AddNewFoodDialogComponent extends BaseDialogComponent<AddNewFoodDia
 
   constructor(
     protected dependencies: ComponentDependencyService,
-    protected dialogRef: MatDialogRef<AddNewFoodDialogComponent>,
+    protected dialogRef: MatDialogRef<AddNewDishDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    super(dependencies, dialogRef, data);
+    super(dependencies, dialogRef, DataCue);
 
+  }
+
+  setup(): ComponentSetup {
+    return new ComponentSetup({
+      initialized: true,
+      isNested: true
+    });
   }
 
   ngOnInit() {

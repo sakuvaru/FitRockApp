@@ -34,6 +34,13 @@ export class SelectDietFoodDialogComponent extends BaseDialogComponent<SelectFoo
     this.takeFoodDishes = data.takeFoodDishes;
   }
 
+  setup(): ComponentSetup {
+    return new ComponentSetup({
+        initialized: true,
+        isNested: true
+    });
+}
+
   ngOnInit() {
     super.ngOnInit();
 

@@ -28,13 +28,6 @@ export class AddNewDishDialogComponent extends BaseDialogComponent<AddNewDishDia
 
   }
 
-  setup(): ComponentSetup {
-    return new ComponentSetup({
-      initialized: true,
-      isNested: true
-    });
-  }
-
   ngOnInit() {
     super.ngOnInit();
 

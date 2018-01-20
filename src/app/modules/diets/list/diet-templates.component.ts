@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 
 import { DataTableConfig, IDynamicFilter } from '../../../../web-components/data-table';
-import { BasePageComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
+import { BaseModuleComponent, ComponentDependencyService } from '../../../core';
 import { Diet } from '../../../models';
-import { DietsOverviewMenuItems } from '../menu.items';
 
 @Component({
+  selector: 'mod-diet-templates',
   templateUrl: 'diet-templates.component.html'
 })
-export class DietTemplatesComponent extends BasePageComponent implements OnInit {
+export class DietTemplatesComponent extends BaseModuleComponent implements OnInit {
 
   public config: DataTableConfig;
 
@@ -17,22 +17,8 @@ export class DietTemplatesComponent extends BasePageComponent implements OnInit 
     super(dependencies);
   }
 
-  setup(): ComponentSetup {
-    return new ComponentSetup({
-      initialized: true,
-      isNested: false
-    });
-  }
-
   ngOnInit() {
     super.ngOnInit();
-
-    this.setConfig({
-      menuTitle: { key: 'menu.diets' },
-      menuItems: new DietsOverviewMenuItems().menuItems,
-      componentTitle: { key: 'module.diets.submenu.dietTemplates' },
-    });
-
     this.init();
   }
 
