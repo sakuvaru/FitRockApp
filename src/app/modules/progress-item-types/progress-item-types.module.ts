@@ -1,34 +1,30 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { NgModule } from '@angular/core';
 
-// core module
 import { CoreModule } from '../../core';
-
-// components
-import { MyTypesListComponent } from './list/my-types-list.component';
-import { GlobalTypesListComponent } from './list/global-types-list.component';
-import { EditTypeComponent } from './edit/edit-type.component';
-import { NewTypeComponent } from './new/new-type.component';
-
-// router
-import { ProgressItemTypesRouter } from './progress-item-types.routing';
-
-// modules
-import { SharedModule} from '../shared/shared.module';
+import { SharedModule } from '../shared/shared.module';
+import { EditProgressTypeComponent } from './edit/edit-progress-type.component';
+import { GlobalProgressTypesListComponent } from './list/global-progress-types-list.component';
+import { MyProgressTypesListComponent } from './list/my-progress-types-list.component';
+import { NewProgressTypeComponent } from './new/new-progress-type.component';
 
 @NgModule({
     imports: [
         CoreModule,
         CommonModule,
-        ProgressItemTypesRouter,
         SharedModule
     ],
     declarations: [
-        MyTypesListComponent,
-        GlobalTypesListComponent,
-        EditTypeComponent,
-        NewTypeComponent
+        EditProgressTypeComponent,
+        GlobalProgressTypesListComponent,
+        MyProgressTypesListComponent,
+        NewProgressTypeComponent
+    ],
+    exports: [
+        EditProgressTypeComponent,
+        GlobalProgressTypesListComponent,
+        MyProgressTypesListComponent,
+        NewProgressTypeComponent
     ]
 })
 export class ProgressItemTypesModule { }

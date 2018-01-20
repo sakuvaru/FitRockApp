@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 
 import { DataTableConfig } from '../../../../web-components/data-table';
-import { BasePageComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
-import { ProgressItemTypesOverviewMenuItem } from '../menu.items';
+import { BaseModuleComponent, ComponentDependencyService } from '../../../core';
 
 @Component({
-  templateUrl: 'my-types-list.component.html'
+  selector: 'mod-my-progress-types-list',
+  templateUrl: 'my-progress-types-list.component.html'
 })
-export class MyTypesListComponent extends BasePageComponent implements OnInit {
+export class MyProgressTypesListComponent extends BaseModuleComponent implements OnInit {
 
   public config: DataTableConfig;
 
@@ -16,25 +16,12 @@ export class MyTypesListComponent extends BasePageComponent implements OnInit {
     super(dependencies);
   }
 
-  setup(): ComponentSetup {
-    return new ComponentSetup({
-      initialized: true,
-      isNested: false
-    });
-  }
-
   ngOnInit() {
     super.ngOnInit();
-
     this.init();
   }
 
   private init() {
-    this.setConfig({
-      componentTitle: { key: 'module.progressItemTypes.submenu.globalTypes' },
-      menuItems: new ProgressItemTypesOverviewMenuItem().menuItems,
-      menuTitle: { key: 'module.progressItemTypes.submenu.overview' },
-    });
     this.config = this.dependencies.itemServices.progressItemTypeService.buildDataTable((query, search) => {
       return query
         .whereEquals('IsGlobal', false)

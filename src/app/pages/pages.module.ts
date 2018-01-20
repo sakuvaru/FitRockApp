@@ -11,6 +11,7 @@ import { ExercisesModule } from './exercises/exercise-pages.module';
 import { FoodPagesModule } from './foods/food-pages.module';
 import { LocationPagesModule } from './locations/location-pages.module';
 import { ProfilePagesModule } from './profile/profile-pages.module';
+import { ProgressItemTypePagesModule } from './progress-item-types/progress-item-type-pages.module';
 
 @NgModule({
     imports: [
@@ -24,7 +25,8 @@ import { ProfilePagesModule } from './profile/profile-pages.module';
         FoodPagesModule,
         LocationPagesModule,
         AuthenticationPagesModule,
-        ProfilePagesModule
+        ProfilePagesModule,
+        ProgressItemTypePagesModule
     ]
 })
 export class PagesModule { }
