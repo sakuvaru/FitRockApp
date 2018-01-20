@@ -40,18 +40,18 @@ export class ChatComponent extends BaseModuleComponent implements OnInit, OnChan
     ) {
         super(componentDependencyService);
     }
+
     ngOnInit(): void {
         super.ngOnInit();
 
         this.initMenuAndUsers();
-
         if (!this.conversationUserId) {
             this.initConversation();
         }
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        if (changes.conversationUserId.currentValue) {
+        if (!changes.conversationUserId.firstChange) {
             this.initConversation();
         }
     }
@@ -68,8 +68,8 @@ export class ChatComponent extends BaseModuleComponent implements OnInit, OnChan
 
     private initMenuAndUsers(): void {
         super.subscribeToObservable(this.getSearchAndMenuObservable());
-       // make sure the menu is initialized by searching for all users at the init
-       this.dependencies.coreServices.sharedService.setComponentSearch('');
+        // make sure the menu is initialized by searching for all users at the init
+        this.dependencies.coreServices.sharedService.setComponentSearch('');
     }
 
     private initConversation(): void {
@@ -93,6 +93,8 @@ export class ChatComponent extends BaseModuleComponent implements OnInit, OnChan
     private getConverstationObservable(): Observable<void> {
         let userQuery: Observable<ResponseMultiple<User>>;
 
+        let activeUser: User;
+
         if (!this.conversationUserId) {
             userQuery = this.dependencies.itemServices.userService.clients()
                 .orderByAsc('FirstName')
@@ -109,28 +111,22 @@ export class ChatComponent extends BaseModuleComponent implements OnInit, OnChan
         return userQuery.switchMap(response => {
             this.resetChatUser();
 
-            console.log(response);
-
             if (!response || !response.items[0]) {
                 this.setNoUserFound();
                 return Observable.empty();
             }
 
-            const activeUser = response.items[0];
+            activeUser = response.items[0];
 
             this.activeUserLoad.next(activeUser);
 
             return Observable.of(response);
         })
             .switchMap(response => {
-                if (!this.conversationUserId) {
-                    return Observable.of(response);
-                }
-
-                return this.getChatMessagesObservable(this.conversationUserId, this.chatMessagesPage, true, this.chatMessagesSearch);
+                return this.getChatMessagesObservable(activeUser.id, this.chatMessagesPage, true, this.chatMessagesSearch);
             })
             .map(() => {
-                this.initChatForm(this.conversationUserId);
+                this.initChatForm(activeUser.id);
             });
     }
 
@@ -173,7 +169,7 @@ export class ChatComponent extends BaseModuleComponent implements OnInit, OnChan
             .build();
     }
 
-    private getChatMessagesObservable(clientId: number, page: number, replaceMessages: boolean, search: string): Observable<any> {
+    private getChatMessagesObservable(clientId: number, page: number, replaceMessages: boolean, search: string): Observable<void> {
         return this.dependencies.itemServices.chatMessageService.getConversationMessages(clientId)
             .includeMultiple(['Sender', 'Recipient'])
             .orderByDesc('Created')
@@ -181,8 +177,8 @@ export class ChatComponent extends BaseModuleComponent implements OnInit, OnChan
             .pageSize(this.chatMessagesPageSize)
             .whereLike('Message', search ? search : '')
             .get()
-            .takeUntil(this.ngUnsubscribe)
             .map(response => {
+                console.log(response.items.length);
                 this.chatMessagesPage = page + 1;
                 if (!response.isEmpty()) {
                     this.allChatMessagesLoaded = false;
