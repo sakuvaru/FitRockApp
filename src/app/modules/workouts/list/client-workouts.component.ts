@@ -19,7 +19,7 @@ export class ClientWorkoutsComponent extends BaseModuleComponent implements OnIn
 
   ngOnInit() {
     super.ngOnInit();
-    this.ngOnInit();
+    this.init();
   }
 
   private init(): void {
