@@ -66,11 +66,7 @@ export abstract class BasePageComponent extends BaseComponent implements OnInit,
     }
 
     setConfig(options: IComponentConfig): void {
-        const config = new ComponentConfig();
-
-        Object.assign(config, options);
-
-        this.componentConfig = config;
+        Object.assign(this.componentConfig, options);
     
         this.componentConfig.setDefaultValues();
         this.dependencies.coreServices.sharedService.setComponentConfig(this.componentConfig);
