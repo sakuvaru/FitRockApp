@@ -1,20 +1,14 @@
-// common
-import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-import { ComponentDependencyService, BasePageComponent, ComponentSetup } from '../../../core';
-import { AppConfig, UrlConfig } from '../../../config';
-
-// requied by component
-import { MyProfileMenuItems } from '../menu.items';
-import { DataFormConfig } from '../../../../web-components/data-form';
-import { User } from '../../../models';
+import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
-import { languageHelper } from 'lib/repository';
+
+import { DataFormConfig } from '../../../../web-components/data-form';
+import { BaseModuleComponent, ComponentDependencyService } from '../../../core';
 
 @Component({
+    selector: 'mod-edit-my-profile',
     templateUrl: 'edit-my-profile.component.html'
 })
-export class EditMyProfileComponent extends BasePageComponent implements OnInit {
+export class EditMyProfileComponent extends BaseModuleComponent implements OnInit {
 
     public formConfig: DataFormConfig;
 
@@ -23,24 +17,9 @@ export class EditMyProfileComponent extends BasePageComponent implements OnInit 
         super(dependencies);
     }
 
-    setup(): ComponentSetup {
-        return new ComponentSetup({
-            initialized: true,
-            isNested: false
-        });
-    }
     ngOnInit() {
         super.ngOnInit();
-        this.initMenu();
         this.initForm();
-    }
-
-    private initMenu(): void {
-        this.setConfig({
-            componentTitle: { key: 'module.profile.submenu.editProfile' },
-            menuItems: new MyProfileMenuItems().menuItems,
-            menuTitle: { key: 'module.profile.submenu.myProfile' },
-        });
     }
 
     private initForm(): void {

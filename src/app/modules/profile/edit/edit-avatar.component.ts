@@ -1,19 +1,15 @@
-// common
-import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-import { ComponentDependencyService, BasePageComponent, ComponentSetup } from '../../../core';
-import { AppConfig, UrlConfig } from '../../../config';
-
-// requied by component
-import { MyProfileMenuItems } from '../menu.items';
+import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
-import { UploaderConfig } from '../../../../web-components/uploader';
+
 import { FetchedFile } from '../../../../lib/repository';
+import { UploaderConfig } from '../../../../web-components/uploader';
+import { BaseModuleComponent, ComponentDependencyService } from '../../../core';
 
 @Component({
+    selector: 'mod-edit-avatar',
     templateUrl: 'edit-avatar.component.html'
 })
-export class EditAvatarComponent extends BasePageComponent implements OnInit {
+export class EditAvatarComponent extends BaseModuleComponent implements OnInit {
 
     public uploaderConfig: UploaderConfig;
 
@@ -25,27 +21,10 @@ export class EditAvatarComponent extends BasePageComponent implements OnInit {
         super(dependencies);
     }
 
-    setup(): ComponentSetup {
-        return new ComponentSetup({
-            initialized: true,
-            isNested: false
-        });
-    }
-
     ngOnInit() {
         super.ngOnInit();
-
-        this.initMenu();
         this.initUploader();
         super.subscribeToObservable(this.getAvatarObservable());
-    }
-
-    private initMenu(): void {
-        this.setConfig({
-            componentTitle: { key: 'module.profile.submenu.avatar' },
-            menuItems: new MyProfileMenuItems().menuItems,
-            menuTitle: { key: 'module.profile.submenu.myProfile' },
-        });
     }
 
     private initUploader(): void {

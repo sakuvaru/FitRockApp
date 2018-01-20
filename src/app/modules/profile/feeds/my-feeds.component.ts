@@ -1,16 +1,15 @@
-// common
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 
 import { LoadMoreConfig } from '../../../../web-components/load-more';
-import { BasePageComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
+import { BaseModuleComponent, ComponentDependencyService } from '../../../core';
 import { Feed, FeedResult } from '../../../models';
-import { MyProfileMenuItems } from '../menu.items';
 
 @Component({
-    templateUrl: 'feeds.component.html'
+    selector: 'mod-my-feeds',
+    templateUrl: 'my-feeds.component.html'
 })
-export class FeedsComponent extends BasePageComponent implements OnInit {
+export class MyFeedsComponent extends BaseModuleComponent implements OnInit {
 
     public loadMoreConfig: LoadMoreConfig;
 
@@ -19,29 +18,11 @@ export class FeedsComponent extends BasePageComponent implements OnInit {
         super(dependencies);
     }
 
-    setup(): ComponentSetup {
-        return new ComponentSetup({
-            initialized: true,
-            isNested: false
-        });
-    }
-
     ngOnInit() {
         super.ngOnInit();
-
-        this.initMenu();
         this.initLoadMore();
 
         super.subscribeToObservable(this.getMarkAllFeedsAsReadObservable(), { enableLoader: false });
-    }
-
-    private initMenu(): void {
-
-        this.setConfig({
-            componentTitle: { key: 'module.profile.submenu.feeds' },
-            menuItems: new MyProfileMenuItems().menuItems,
-            menuTitle: { key: 'module.profile.submenu.myProfile' },
-        });
     }
 
     private getMarkAllFeedsAsReadObservable(): Observable<any> {

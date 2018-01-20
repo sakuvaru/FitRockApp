@@ -10,6 +10,7 @@ import { DietPagesModule } from './diets/diet-pages.module';
 import { ExercisesModule } from './exercises/exercise-pages.module';
 import { FoodPagesModule } from './foods/food-pages.module';
 import { LocationPagesModule } from './locations/location-pages.module';
+import { ProfilePagesModule } from './profile/profile-pages.module';
 
 @NgModule({
     imports: [
@@ -22,7 +23,8 @@ import { LocationPagesModule } from './locations/location-pages.module';
         ExercisesModule,
         FoodPagesModule,
         LocationPagesModule,
-        AuthenticationPagesModule
+        AuthenticationPagesModule,
+        ProfilePagesModule
     ]
 })
 export class PagesModule { }
