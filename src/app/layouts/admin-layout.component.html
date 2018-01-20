@@ -1,7 +1,6 @@
-<loader [enabled]="showLoading" type="linear"></loader>
+<loader [enabled]="loaderEnabled" type="linear"></loader>
 
-
-<td-layout *ngIf="ready">
+<td-layout>
   <td-navigation-drawer fxFlex [sidenavTitle]="appName" [name]="displayUsername">
     <mat-nav-list>
       <a class="w-layout-drawbar-item" *ngFor="let item of adminMenu.trainerMenu" mat-list-item [routerLink]="getMenuItemUrl(item.action, item.type)">
@@ -77,8 +76,7 @@
         </div>
       </div>
 
-      <!-- ngClass with hidden styles is used because *ngIf would cause the router to not be executed at all -->
-      <div [ngClass]="{'w-hidden': !showComponent}">
+      <div>
         <page-wrapper>
           <router-outlet></router-outlet>
         </page-wrapper>
@@ -86,7 +84,7 @@
 
     </td-layout-manage-list>
     <td-layout-footer>
-      <div layout="row" layout-align="start center" class="mat-caption">
+      <div fxLayout="row" fxLayoutAlign="start center" class="mat-caption">
         <footer [appName]="appName"></footer>
       </div>
     </td-layout-footer>

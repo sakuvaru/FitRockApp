@@ -1,5 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { Observable } from 'rxjs/Rx';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 
 import { DataTableComponent, DataTableConfig, DataTableMode } from '../../../../../web-components/data-table';
 import { AppConfig } from '../../../../config';
@@ -9,9 +8,9 @@ import { BaseModuleComponent, ComponentDependencyService } from '../../../../cor
   selector: 'mod-clients-overview',
   templateUrl: 'clients-overview.component.html'
 })
-export class ClientsOverviewComponent extends BaseModuleComponent implements OnInit {
+export class ClientsOverviewComponent extends BaseModuleComponent implements OnInit, OnChanges {
 
-  @Input() toggleMode: Observable<void>;
+  @Input() mode: DataTableMode;
 
   @Output() modeChanged = new EventEmitter<DataTableMode>();
 
@@ -30,14 +29,24 @@ export class ClientsOverviewComponent extends BaseModuleComponent implements OnI
   ngOnInit(): void {
     super.ngOnInit();
     this.init();
-    
   }
 
-  toggleModeExecute(): void {
+  ngOnChanges(changes: SimpleChanges): void {
+    if (this.mode) {
+      if (this.config.mode !== this.mode) {
+        this.toggleMode();
+      }
+    }
+  }
+
+  toggleMode(): void {
     this.clientsDataTable.toggleMode();
+
+    this.modeChanged.next(this.config.mode);
 
     if (this.clientsDataTable.config.mode === DataTableMode.Standard) {
       // remember last active mode
+
       this.dependencies.coreServices.rememberService.set(this.rememberDataTableStateName, 'standard');
     } else {
       // remember last active mode
@@ -45,15 +54,7 @@ export class ClientsOverviewComponent extends BaseModuleComponent implements OnI
     }
   }
 
-  private subscribeToModeChange(): void {
-    super.subscribeToObservable(
-      this.toggleMode.map(mode => this.toggleModeExecute())
-    );
-  }
-
   private init(): void {
-    this.subscribeToModeChange();
-
     this.config = this.dependencies.itemServices.userService.buildDataTable(
       (query, search) => {
         return this.dependencies.itemServices.userService.clients()

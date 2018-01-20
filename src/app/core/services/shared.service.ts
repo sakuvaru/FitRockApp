@@ -3,7 +3,7 @@ import { IComponentConfig } from 'app/core';
 import { Subject } from 'rxjs/Subject';
 
 import { Log } from '../../models/';
-import { AuthenticatedUser, GlobalLoaderStatus } from '../models/core.models';
+import { AuthenticatedUser } from '../models/core.models';
 
 /// Shared data app
 /// Communication via shared service: https://angular.io/docs/ts/latest/cookbook/component-communication.html#!#bidirectional-service
@@ -15,7 +15,7 @@ export class SharedService {
 
   // Observable string sources
   private componentConfigSource = new Subject<IComponentConfig>();
-  private globalLoaderSource = new Subject<GlobalLoaderStatus>();
+  private globalLoaderSource = new Subject<boolean>();
   private componentSearchSource = new Subject<string>();
   private errorSource = new Subject<Log>();
   private authenticatedUserSource = new Subject<AuthenticatedUser>();
@@ -38,8 +38,8 @@ export class SharedService {
     this.componentSearchSource.next(search);
   }
 
-  setGlobalLoader(show: boolean, forceDisable: boolean): void {
-    this.globalLoaderSource.next(new GlobalLoaderStatus(show, forceDisable));
+  setGlobalLoader(enabled: boolean): void {
+    this.globalLoaderSource.next(enabled);
   }
 
   setError(log: Log): void {

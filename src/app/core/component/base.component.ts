@@ -68,7 +68,7 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
         this.authUser = this.dependencies.authenticatedUserService.getUser();
 
         // stop loaders on component init 
-        this.dependencies.coreServices.sharedService.setGlobalLoader(false, false);
+        this.dependencies.coreServices.sharedService.setGlobalLoader(false);
     }
 
     /**
@@ -86,11 +86,11 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
     // ------------------- Loader ---------------------------- //
 
     startGlobalLoader(): void {
-        this.dependencies.coreServices.sharedService.setGlobalLoader(true, false);
+        this.dependencies.coreServices.sharedService.setGlobalLoader(true);
     }
 
     stopGlobalLoader(forceDisable: boolean = false): void {
-        this.dependencies.coreServices.sharedService.setGlobalLoader(false, forceDisable);
+        this.dependencies.coreServices.sharedService.setGlobalLoader(false);
     }
 
     stopAllLoaders(forceDisable: boolean = false): void {

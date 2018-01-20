@@ -68,19 +68,6 @@ export class AuthenticatedUser {
     }
 }
 
-export class GlobalLoaderStatus {
-    constructor(
-        /**
-         * Indicates if loader should be shown
-         */
-        public show,
-        /**
-         * Indicates if loader should be hidden no matter what
-         */
-        public forceDisable
-    ) { }
-}
-
 export class LanguageConfig {
     constructor(
         /**

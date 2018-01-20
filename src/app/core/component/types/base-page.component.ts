@@ -24,13 +24,8 @@ export abstract class BasePageComponent extends BaseComponent implements OnInit,
     protected componentConfig: ComponentConfig = new ComponentConfig();
 
     constructor(protected dependencies: ComponentDependencyService,
-        protected activatedRoute?: ActivatedRoute,
-        options?: IComponentConfig) {
+        protected activatedRoute?: ActivatedRoute) {
         super(dependencies);
-
-        if (options) {
-            this.setConfig(options);
-        }
     }
 
     // ----------------------- Lifecycle Events --------------------- // 

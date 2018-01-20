@@ -3,8 +3,7 @@ import { AfterViewInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { TdMediaService } from '@covalent/core';
 
 import { stringHelper } from '../../../lib/utilities';
-import { AppConfig } from '../../config';
-import { AdminMenu, ComponentAction, ComponentDependencyService, GlobalLoaderStatus, MenuItem } from '../../core';
+import { AdminMenu, ComponentAction, ComponentDependencyService, MenuItem } from '../../core';
 import { BaseLayoutComponent } from './base-layout.component';
 
 export class BaseAdminLayoutComponent extends BaseLayoutComponent implements OnDestroy, AfterViewInit {
@@ -13,13 +12,10 @@ export class BaseAdminLayoutComponent extends BaseLayoutComponent implements OnD
     public media: TdMediaService;
 
     // Setup properties
-    protected readonly titleCharsLength: number = 22;
+    public readonly titleCharsLength: number = 22;
     public readonly year: number = new Date().getFullYear();
-    protected readonly hideComponentWhenLoaderIsEnabled = AppConfig.HideComponentWhenLoaderIsEnabled;
 
     // Component configuration & data
-    public globalLoaderStatus: GlobalLoaderStatus = new GlobalLoaderStatus(false, false);
-    public componentIsInitialized: boolean = false;
     public enableComponentSearch: boolean = false;
     public componentTitle?: string;
     public menuTitle?: string;
@@ -33,14 +29,9 @@ export class BaseAdminLayoutComponent extends BaseLayoutComponent implements OnD
     public adminMenu: AdminMenu = new AdminMenu();
 
     /**
-     * This property indicates if component should be shown
+     * Indicates if loader is enabled
      */
-    public showComponent: boolean = false;
-
-    /**
-     * Indicates if loader should be shown
-     */
-    public showLoading: boolean = false;
+    public loaderEnabled: boolean = false;
 
     /**
     * Part of url identifying 'client' or 'trainer' app type
@@ -51,8 +42,6 @@ export class BaseAdminLayoutComponent extends BaseLayoutComponent implements OnD
      * Menu items
      */
     public menuItems?: MenuItem[];
-
-    public ready: boolean = false;
 
     constructor(
         protected dependencies: ComponentDependencyService,
@@ -75,7 +64,7 @@ export class BaseAdminLayoutComponent extends BaseLayoutComponent implements OnD
             .takeUntil(this.ngUnsubscribe)
             .subscribe(
             status => {
-                this.globalLoaderStatus = status;
+                this.loaderEnabled = status;
                 this.componentChangedNotification();
             });
 
@@ -120,8 +109,6 @@ export class BaseAdminLayoutComponent extends BaseLayoutComponent implements OnD
                         });
                 }
             });
-
-        this.ready = true;
     }
 
     ngAfterViewInit(): void {
@@ -135,7 +122,6 @@ export class BaseAdminLayoutComponent extends BaseLayoutComponent implements OnD
     }
 
     goBack(): void {
-        console.log(this.location);
         this.location.back();
     }
 
@@ -147,18 +133,6 @@ export class BaseAdminLayoutComponent extends BaseLayoutComponent implements OnD
      * This method has to be called each time any property changes
      */
     protected componentChangedNotification(): void {
-        this.calculateShowComponent();
-        this.calculateShowLoader();
         this.cdr.detectChanges();
-    }
-
-    protected calculateShowLoader(): void {
-        // simplified for now as components using this layout do not use component init status which might be removed anyway
-        this.showLoading = !this.globalLoaderStatus.forceDisable && ((this.hideComponentWhenLoaderIsEnabled && this.globalLoaderStatus.show));
-    }
-
-    protected calculateShowComponent(): void {
-        this.showComponent = true;
-        //this.showComponent = !(!this.componentIsInitialized);
     }
 }

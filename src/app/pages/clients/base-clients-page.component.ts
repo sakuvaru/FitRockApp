@@ -31,9 +31,8 @@ export abstract class BaseClientsPageComponent extends BasePageComponent impleme
     constructor(
         protected componentDependencyService: ComponentDependencyService,
         protected activatedRoute: ActivatedRoute,
-        protected options?: IComponentConfig
     ) {
-        super(componentDependencyService, activatedRoute, options);
+        super(componentDependencyService, activatedRoute);
 
         this.initClientSubscriptions();
     }

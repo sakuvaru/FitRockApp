@@ -14,7 +14,11 @@ export class NewClientPageComponent extends BaseClientsPageComponent implements 
         protected activatedRoute: ActivatedRoute,
         protected componentDependencyService: ComponentDependencyService,
     ) {
-        super(componentDependencyService, activatedRoute, {
+        super(componentDependencyService, activatedRoute);
+    }
+
+    ngOnInit(): void {
+        super.setConfig({
             componentTitle: { key: 'module.clients.submenu.newClient' },
             menuItems: new NewClientMenuItems().menuItems
         });
