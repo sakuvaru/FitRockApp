@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
-import { BaseDialogComponent, ComponentDependencyService, ComponentSetup } from '../../../../core';
+import { BaseDialogComponent, ComponentDependencyService } from '../../../../core';
 import { DietFood } from '../../../../models';
 
 @Component({
@@ -20,12 +20,6 @@ export class FoodListDialogComponent extends BaseDialogComponent<FoodListDialogC
     this.dietFoods = data.dietFoods;
   }
 
-  setup(): ComponentSetup {
-    return new ComponentSetup({
-      initialized: true,
-      isNested: true
-    });
-  }
 
   ngOnInit() {
     super.ngOnInit();

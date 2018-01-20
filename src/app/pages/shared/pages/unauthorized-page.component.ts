@@ -1,7 +1,8 @@
-import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-import { ComponentDependencyService, BasePageComponent, ComponentSetup } from '../../../core';
-import { AppConfig, UrlConfig } from '../../../config';
+import { Component } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+
+import { UrlConfig } from '../../../config';
+import { BasePageComponent, ComponentDependencyService } from '../../../core';
 
 @Component({
   templateUrl: 'unauthorized-page.component.html'

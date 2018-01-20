@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
 import { DataFormConfig } from '../../../../../web-components/data-form';
-import { BaseDialogComponent, ComponentDependencyService, ComponentSetup } from '../../../../core';
+import { BaseDialogComponent, ComponentDependencyService } from '../../../../core';
 import { ProgressItem } from '../../../../models';
 
 @Component({
@@ -25,13 +25,6 @@ export class EditProgressItemDialogComponent extends BaseDialogComponent<EditPro
     super(dependencies, dialogRef, data);
     this.item = data;
 
-  }
-
-  setup(): ComponentSetup {
-    return new ComponentSetup({
-      initialized: true,
-      isNested: true
-    });
   }
 
   ngOnInit() {

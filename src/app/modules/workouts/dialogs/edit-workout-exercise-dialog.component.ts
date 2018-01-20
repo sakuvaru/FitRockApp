@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
 import { DataFormConfig } from '../../../../web-components/data-form';
-import { BaseDialogComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
+import { BaseDialogComponent, ComponentDependencyService } from '../../../core';
 import { WorkoutExercise } from '../../../models';
 
 @Component({
@@ -26,13 +26,6 @@ export class EditWorkoutExerciseDialogComponent extends BaseDialogComponent<Edit
     super(dependencies, dialogRef, data);
 
     this.workoutExercise = data;
-  }
-
-  setup(): ComponentSetup {
-    return new ComponentSetup({
-      initialized: true,
-      isNested: true
-    });
   }
 
   ngOnInit() {

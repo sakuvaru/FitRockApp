@@ -5,7 +5,7 @@ import * as _ from 'underscore';
 
 import { stringHelper } from '../../../../../lib/utilities';
 import { AppConfig } from '../../../../config';
-import { ComponentDependencyService, ComponentSetup } from '../../../../core';
+import { ComponentDependencyService } from '../../../../core';
 import { Diet, DietFood } from '../../../../models';
 import { BaseClientModuleComponent } from '../../base-client-module.component';
 import { FoodListDialogComponent } from '../dialogs/food-list-dialog.component';

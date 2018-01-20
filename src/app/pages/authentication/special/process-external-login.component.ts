@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { BasePageComponent, ComponentDependencyService, ComponentSetup } from 'app/core';
+import { BasePageComponent, ComponentDependencyService } from 'app/core';
 
 @Component({
   template: '',

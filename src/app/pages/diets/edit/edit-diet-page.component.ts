@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { BasePageComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
+import { BasePageComponent, ComponentDependencyService } from '../../../core';
 import { Diet } from '../../../models';
 import { DietMenuItems } from '../menu.items';
 

@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { Observable } from 'rxjs/Rx';
 
 import { DataFormConfig } from '../../../../../web-components/data-form';
-import { BaseDialogComponent, ComponentDependencyService, ComponentSetup } from '../../../../core';
+import { BaseDialogComponent, ComponentDependencyService } from '../../../../core';
 import { ProgressItemType } from '../../../../models';
 
 @Component({
@@ -23,13 +23,6 @@ export class NewClientProgressItemTypeDialogComponent extends BaseDialogComponen
     ) {
         super(dependencies, dialogRef, data);
         this.clientId = data.clientId;
-    }
-
-    setup(): ComponentSetup {
-        return new ComponentSetup({
-            initialized: true,
-            isNested: true
-        });
     }
 
     ngOnInit() {

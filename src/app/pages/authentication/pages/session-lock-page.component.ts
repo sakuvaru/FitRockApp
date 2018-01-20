@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AppConfig } from 'app/config';
 import { LogStatus } from 'lib/auth';
 
-import { BasePageComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
+import { BasePageComponent, ComponentDependencyService } from '../../../core';
 
 @Component({
     templateUrl: 'session-lock-page.component.html'
@@ -49,10 +49,4 @@ export class SessionLockPageComponent extends BasePageComponent implements OnIni
         }
     }
 
-    setup(): ComponentSetup {
-        return new ComponentSetup({
-            initialized: true,
-            isNested: false
-        });
-    }
 }

@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { IDynamicFilter } from 'web-components/data-table/data-table.builder';
 
 import { DataTableConfig } from '../../../../web-components/data-table';
-import { BaseDialogComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
+import { BaseDialogComponent, ComponentDependencyService } from '../../../core';
 import { Food } from '../../../models';
 
 @Component({
@@ -22,13 +22,6 @@ export class SelectFoodDialogComponent extends BaseDialogComponent<SelectFoodDia
   ) {
     super(dependencies, dialogRef, data);
   }
-
-  setup(): ComponentSetup {
-    return new ComponentSetup({
-        initialized: true,
-        isNested: true
-    });
-}
 
   ngOnInit() {
     super.ngOnInit();

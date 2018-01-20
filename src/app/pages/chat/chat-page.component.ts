@@ -2,9 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { User } from 'app/models';
 import { ResponseMultiple } from 'lib/repository';
-import { Subject } from 'rxjs/Rx';
 
-import { BasePageComponent, ComponentDependencyService, ComponentSetup } from '../../core';
+import { BasePageComponent, ComponentDependencyService } from '../../core';
 import { ChatMenuItems } from './menu.items';
 
 @Component({

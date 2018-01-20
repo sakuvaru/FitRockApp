@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 
 import { UrlConfig } from '../../../config/url.config';
-import { BaseModuleComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
+import { BaseModuleComponent, ComponentDependencyService } from '../../../core';
 
 @Component({
     selector: 'mod-login-form',
@@ -37,13 +37,6 @@ export class LoginFormComponent extends BaseModuleComponent implements OnInit, O
         protected activatedRoute: ActivatedRoute,
         protected dependencies: ComponentDependencyService) {
         super(dependencies);
-    }
-
-    setup(): ComponentSetup {
-        return new ComponentSetup({
-            initialized: true,
-            isNested: true
-        });
     }
 
     ngOnInit() {

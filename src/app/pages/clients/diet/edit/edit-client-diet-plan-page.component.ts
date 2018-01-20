@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subject } from 'rxjs/Rx';
-
-import { ComponentDependencyService, ComponentSetup } from '../../../../core';
-import { BaseClientsPageComponent } from '../../base-clients-page.component';
 import { Diet } from 'app/models';
+
+import { ComponentDependencyService } from '../../../../core';
+import { BaseClientsPageComponent } from '../../base-clients-page.component';
 import { ClientEditDietMenuItems } from '../../menu.items';
 
 @Component({

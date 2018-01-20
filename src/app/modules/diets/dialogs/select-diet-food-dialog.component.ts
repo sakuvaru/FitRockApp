@@ -4,7 +4,7 @@ import { SelectFoodDialogComponent } from 'app/modules/foods/dialogs/select-food
 import { IDynamicFilter } from 'web-components/data-table/data-table.builder';
 
 import { DataTableConfig } from '../../../../web-components/data-table';
-import { BaseDialogComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
+import { BaseDialogComponent, ComponentDependencyService } from '../../../core';
 import { Food } from '../../../models';
 
 @Component({

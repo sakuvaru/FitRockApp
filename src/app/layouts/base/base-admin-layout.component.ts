@@ -1,5 +1,5 @@
-import { AfterViewInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { Location } from '@angular/common';
+import { AfterViewInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { TdMediaService } from '@covalent/core';
 
 import { stringHelper } from '../../../lib/utilities';
@@ -76,14 +76,6 @@ export class BaseAdminLayoutComponent extends BaseLayoutComponent implements OnD
             .subscribe(
             status => {
                 this.globalLoaderStatus = status;
-                this.componentChangedNotification();
-            });
-
-        this.dependencies.coreServices.sharedService.componentSetupChanged$
-            .takeUntil(this.ngUnsubscribe)
-            .subscribe(
-            setup => {
-                this.componentIsInitialized = setup.initialized;
                 this.componentChangedNotification();
             });
 

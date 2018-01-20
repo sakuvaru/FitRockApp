@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
-import { BaseDialogComponent, ComponentDependencyService, ComponentSetup } from '../../../../core';
+import { BaseDialogComponent, ComponentDependencyService } from '../../../../core';
 import { WorkoutExercise } from '../../../../models';
 
 @Component({
@@ -18,13 +18,6 @@ export class WorkoutListDialogComponent extends BaseDialogComponent<WorkoutListD
   ) {
     super(dependencies, dialogRef, data);
     this.workoutExercises = data.workoutExercises;
-  }
-
-  setup(): ComponentSetup {
-    return new ComponentSetup({
-      initialized: true,
-      isNested: true
-    });
   }
 
   ngOnInit() {

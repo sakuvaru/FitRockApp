@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 
 import { UrlConfig } from '../../../config/url.config';
-import { BaseModuleComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
+import { BaseModuleComponent, ComponentDependencyService } from '../../../core';
 
 @Component({
     selector: 'mod-reset-password-form',
@@ -29,13 +29,6 @@ export class ResetPasswordFormComponent extends BaseModuleComponent implements O
         protected activatedRoute: ActivatedRoute,
         protected dependencies: ComponentDependencyService) {
         super(dependencies);
-    }
-
-    setup(): ComponentSetup {
-        return new ComponentSetup({
-            initialized: true,
-            isNested: true
-        });
     }
 
     ngOnInit() {

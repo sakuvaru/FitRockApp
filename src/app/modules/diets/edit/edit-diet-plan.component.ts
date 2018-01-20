@@ -1,12 +1,11 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { DragulaService } from 'ng2-dragula';
 import { Observable } from 'rxjs/Rx';
 import * as _ from 'underscore';
 
 import { stringHelper } from '../../../../lib/utilities';
 import { AppConfig } from '../../../config';
-import { BaseModuleComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
+import { BaseModuleComponent, ComponentDependencyService } from '../../../core';
 import { Diet, DietFood, Food } from '../../../models';
 import { AddDietFoodDialogComponent } from '../dialogs/add-diet-food-dialog.component';
 import { AddNewDishDialogComponent } from '../dialogs/add-new-dish-dialog.component';
@@ -45,13 +44,6 @@ export class EditDietPlanComponent extends BaseModuleComponent implements OnDest
 
     // subscribe to drop events
     super.subscribeToObservable(this.getInitObsevable());
-  }
-
-  setup(): ComponentSetup {
-    return new ComponentSetup({
-      initialized: true,
-      isNested: true
-    });
   }
 
   ngOnDestroy() {

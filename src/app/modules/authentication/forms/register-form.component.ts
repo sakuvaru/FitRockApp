@@ -4,7 +4,7 @@ import { UrlConfig } from 'app/config';
 import { AuthErrorResponse } from 'lib/repository';
 import { Observable } from 'rxjs/Rx';
 
-import { BaseModuleComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
+import { BaseModuleComponent, ComponentDependencyService } from '../../../core';
 
 @Component({
     selector: 'mod-register-form',
@@ -39,13 +39,6 @@ export class RegisterFormComponent extends BaseModuleComponent implements OnInit
         protected dependencies: ComponentDependencyService
     ) {
         super(dependencies);
-    }
-
-    setup(): ComponentSetup {
-        return new ComponentSetup({
-            initialized: true,
-            isNested: true
-        });
     }
 
     ngOnInit() {

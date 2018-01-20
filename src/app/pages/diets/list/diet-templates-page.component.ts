@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { DataTableConfig } from '../../../../web-components/data-table';
-import { BasePageComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
+import { BasePageComponent, ComponentDependencyService } from '../../../core';
 import { DietsOverviewMenuItems } from '../menu.items';
 
 @Component({

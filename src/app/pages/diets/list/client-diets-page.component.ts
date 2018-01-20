@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
-import { DataTableConfig, IDynamicFilter } from '../../../../web-components/data-table';
-import { BasePageComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
-import { Diet } from '../../../models';
+import { DataTableConfig } from '../../../../web-components/data-table';
+import { BasePageComponent, ComponentDependencyService } from '../../../core';
 import { DietsOverviewMenuItems } from '../menu.items';
 
 @Component({

@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { Observable } from 'rxjs/Rx';
 
 import { DataFormConfig } from '../../../../web-components/data-form';
-import { BaseDialogComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
+import { BaseDialogComponent, ComponentDependencyService } from '../../../core';
 import { Exercise } from '../../../models';
 import { WorkoutExercise } from '../../../models';
 
@@ -32,13 +32,6 @@ export class AddWorkoutExerciseDialogComponent extends BaseDialogComponent<AddWo
 
     this.workoutId = data.workoutId;
     this.exercise = data.exercise;
-  }
-
-  setup(): ComponentSetup {
-    return new ComponentSetup({
-      initialized: true,
-      isNested: true
-    });
   }
 
   ngOnInit() {

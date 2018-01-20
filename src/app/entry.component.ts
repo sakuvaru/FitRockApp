@@ -1,21 +1,13 @@
 import { Component } from '@angular/core';
-
-import { BasePageComponent, ComponentDependencyService, ComponentSetup } from './core';
-import { AuthenticatedUser } from './core/models/core.models';
 import { LogStatus } from 'lib/auth';
+
+import { BasePageComponent, ComponentDependencyService } from './core';
+import { AuthenticatedUser } from './core/models/core.models';
 
 @Component({
   template: '',
 })
 export class EntryComponent extends BasePageComponent {
-
-  setup(): ComponentSetup {
-    return new ComponentSetup({
-      initialized: true,
-      isNested: false,
-      disableRepositoryErrors: true
-    });
-  }
 
   constructor(
     protected dependencies: ComponentDependencyService,

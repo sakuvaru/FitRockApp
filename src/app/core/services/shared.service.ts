@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
-import { ComponentConfig } from '../component/component.config';
-import { GlobalLoaderStatus, AuthenticatedUser } from '../models/core.models';
-import { ComponentSetup } from '../component/component-setup.class';
-import { Log } from '../../models/';
 import { IComponentConfig } from 'app/core';
+import { Subject } from 'rxjs/Subject';
+
+import { Log } from '../../models/';
+import { AuthenticatedUser, GlobalLoaderStatus } from '../models/core.models';
 
 /// Shared data app
 /// Communication via shared service: https://angular.io/docs/ts/latest/cookbook/component-communication.html#!#bidirectional-service
@@ -19,7 +18,6 @@ export class SharedService {
   private globalLoaderSource = new Subject<GlobalLoaderStatus>();
   private componentSearchSource = new Subject<string>();
   private errorSource = new Subject<Log>();
-  private componentSetupSource = new Subject<ComponentSetup>();
   private authenticatedUserSource = new Subject<AuthenticatedUser>();
 
   // Observable string streams
@@ -27,7 +25,6 @@ export class SharedService {
   componentSearchChanged$ = this.componentSearchSource.asObservable();
   globalLoaderChanged$ = this.globalLoaderSource.asObservable();
   errorChanged$ = this.errorSource.asObservable();
-  componentSetupChanged$ = this.componentSetupSource.asObservable();
   authenticatedUserChanged$ = this.authenticatedUserSource.asObservable();
 
   // Service message commands
@@ -47,10 +44,6 @@ export class SharedService {
 
   setError(log: Log): void {
     this.errorSource.next(log);
-  }
-
-  setComponentSetup(setup: ComponentSetup): void {
-    this.componentSetupSource.next(setup);
   }
 
   setAuthenticatedUser(user: AuthenticatedUser): void {

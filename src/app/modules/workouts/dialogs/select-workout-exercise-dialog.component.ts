@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
 import { DataTableConfig, IDynamicFilter } from '../../../../web-components/data-table';
-import { BaseDialogComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
+import { BaseDialogComponent, ComponentDependencyService } from '../../../core';
 import { Exercise } from '../../../models';
 
 @Component({
@@ -23,13 +23,6 @@ export class SelectWorkoutExerciseDialogComponent extends BaseDialogComponent<Se
   ) {
     super(dependencies, dialogRef, data);
 
-  }
-
-  setup(): ComponentSetup {
-    return new ComponentSetup({
-      initialized: true,
-      isNested: true
-    });
   }
 
   ngOnInit() {
