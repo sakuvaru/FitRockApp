@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 
-import { BasePageComponent, ComponentDependencyService, ComponentSetup } from '../../core';
+import { BasePageComponent, ComponentDependencyService } from '../../../core';
 
 @Component({
-    templateUrl: 'logout.component.html'
+    templateUrl: 'logout-page.component.html'
 })
-export class LogoutComponent extends BasePageComponent {
+export class LogoutPageComponent extends BasePageComponent {
 
     constructor(
         protected dependencies: ComponentDependencyService) {
@@ -16,12 +16,5 @@ export class LogoutComponent extends BasePageComponent {
 
         // redirect after logging-out
         this.dependencies.coreServices.navigateService.logoutPage().navigate();
-    }
-
-    setup(): ComponentSetup {
-        return new ComponentSetup({
-            initialized: false,
-            isNested: false
-        });
     }
 }

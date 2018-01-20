@@ -6,13 +6,6 @@ import { BasePageComponent, ComponentDependencyService, ComponentSetup } from 'a
 })
 export class ProcessExternalLoginComponent extends BasePageComponent {
 
-  setup(): ComponentSetup {
-    return new ComponentSetup({
-      initialized: true,
-      isNested: false
-    });
-  }
-
   constructor(
     protected dependencies: ComponentDependencyService,
   ) {

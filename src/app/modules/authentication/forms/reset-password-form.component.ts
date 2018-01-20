@@ -2,14 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 
-import { UrlConfig } from '../../config/url.config';
-import { BasePageComponent, ComponentDependencyService, ComponentSetup } from '../../core';
+import { UrlConfig } from '../../../config/url.config';
+import { BaseModuleComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
 
 @Component({
-    selector: 'reset-password-form',
+    selector: 'mod-reset-password-form',
     templateUrl: 'reset-password-form.component.html'
 })
-export class ResetPasswordFormComponent extends BasePageComponent implements OnInit {
+export class ResetPasswordFormComponent extends BaseModuleComponent implements OnInit {
 
     public readonly emailLength: number = 50;
 

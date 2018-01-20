@@ -1,16 +1,17 @@
 import { Component } from '@angular/core';
+import { AppConfig } from 'app/config';
+import { LogStatus } from 'lib/auth';
 
-import { LogStatus } from '../../../lib/auth';
-import { AppConfig } from '../../config';
-import { BasePageComponent, ComponentDependencyService, ComponentSetup } from '../../core';
+import { BasePageComponent, ComponentDependencyService } from '../../../core';
 
 @Component({
-    templateUrl: 'reset-password-page.component.html'
+    selector: 'login-page',
+    templateUrl: 'login-page.component.html'
 })
-export class ResetPasswordPageComponent extends BasePageComponent {
+export class LoginPageComponent extends BasePageComponent {
 
     public readonly appLogo: string = AppConfig.AppLogoUrl;
-
+    
     constructor(
         protected dependencies: ComponentDependencyService) {
         super(dependencies);
@@ -19,12 +20,5 @@ export class ResetPasswordPageComponent extends BasePageComponent {
         if (this.dependencies.coreServices.authService.getAuthenticationStatus() === LogStatus.Authenticated) {
             this.dependencies.coreServices.navigateService.entryPage().navigate();
         }
-    }
-    
-    setup(): ComponentSetup {
-        return new ComponentSetup({
-            initialized: true,
-            isNested: false
-        });
     }
 }

@@ -4,13 +4,13 @@ import { UrlConfig } from 'app/config';
 import { AuthErrorResponse } from 'lib/repository';
 import { Observable } from 'rxjs/Rx';
 
-import { BasePageComponent, ComponentDependencyService, ComponentSetup } from '../../core';
+import { BaseModuleComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
 
 @Component({
-    selector: 'register-form',
+    selector: 'mod-register-form',
     templateUrl: 'register-form.component.html'
 })
-export class RegisterFormComponent extends BasePageComponent implements OnInit {
+export class RegisterFormComponent extends BaseModuleComponent implements OnInit {
 
     public readonly emailLength: number = 50;
 

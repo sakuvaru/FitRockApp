@@ -2,12 +2,12 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import { UrlConfig } from '../../config';
-import { LoginPageComponent } from './login-page.component';
-import { LogoutComponent } from './logout.component';
-import { RegisterPageComponent } from './register-page.component';
-import { ResetPasswordPageComponent } from './reset-password-page.component';
-import { ProcessExternalLoginComponent } from './process-external-login.component';
-import { SessionLockComponent } from './session-lock.component';
+import { LoginPageComponent } from './pages/login-page.component';
+import { LogoutPageComponent } from './pages/logout-page.component';
+import { RegisterPageComponent } from './pages/register-page.component';
+import { ResetPasswordPageComponent } from './pages/reset-password-page.component';
+import { SessionLockPageComponent } from './pages/session-lock-page.component';
+import { ProcessExternalLoginComponent } from './special/process-external-login.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +18,7 @@ import { SessionLockComponent } from './session-lock.component';
         path: UrlConfig.AuthMasterPath + '/' + UrlConfig.Login, component: LoginPageComponent
       },
       {
-        path: UrlConfig.AuthMasterPath + '/' + UrlConfig.Logout, component: LogoutComponent
+        path: UrlConfig.AuthMasterPath + '/' + UrlConfig.Logout, component: LogoutPageComponent
       },
       {
         path: UrlConfig.AuthMasterPath + '/' + UrlConfig.Register, component: RegisterPageComponent
@@ -27,7 +27,7 @@ import { SessionLockComponent } from './session-lock.component';
         path: UrlConfig.AuthMasterPath + '/' + UrlConfig.ResetPassword, component: ResetPasswordPageComponent
       },
       {
-        path: UrlConfig.AuthMasterPath + '/' + UrlConfig.SessionLock, component: SessionLockComponent
+        path: UrlConfig.AuthMasterPath + '/' + UrlConfig.SessionLock, component: SessionLockPageComponent
       },
       {
         path: UrlConfig.ProcessExternalLogin, component: ProcessExternalLoginComponent
@@ -38,4 +38,4 @@ import { SessionLockComponent } from './session-lock.component';
     RouterModule
   ]
 })
-export class LoginRouter { }
+export class AuthenticationRouter { }

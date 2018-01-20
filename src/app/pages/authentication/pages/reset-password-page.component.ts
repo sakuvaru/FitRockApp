@@ -1,17 +1,16 @@
 import { Component } from '@angular/core';
-import { AppConfig } from 'app/config';
-import { LogStatus } from 'lib/auth';
 
-import { BasePageComponent, ComponentDependencyService, ComponentSetup } from '../../core';
+import { LogStatus } from '../../../../lib/auth';
+import { AppConfig } from '../../../config';
+import { BasePageComponent, ComponentDependencyService } from '../../../core';
 
 @Component({
-    selector: 'login-page',
-    templateUrl: 'login-page.component.html'
+    templateUrl: 'reset-password-page.component.html'
 })
-export class LoginPageComponent extends BasePageComponent {
+export class ResetPasswordPageComponent extends BasePageComponent {
 
     public readonly appLogo: string = AppConfig.AppLogoUrl;
-    
+
     constructor(
         protected dependencies: ComponentDependencyService) {
         super(dependencies);
@@ -21,11 +20,5 @@ export class LoginPageComponent extends BasePageComponent {
             this.dependencies.coreServices.navigateService.entryPage().navigate();
         }
     }
-
-    setup(): ComponentSetup {
-        return new ComponentSetup({
-            initialized: true,
-            isNested: false
-        });
-    }
+ 
 }

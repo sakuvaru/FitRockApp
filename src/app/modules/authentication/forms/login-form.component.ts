@@ -2,14 +2,14 @@ import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/cor
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 
-import { UrlConfig } from '../../config/url.config';
-import { BasePageComponent, ComponentDependencyService, ComponentSetup } from '../../core';
+import { UrlConfig } from '../../../config/url.config';
+import { BaseModuleComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
 
 @Component({
-    selector: 'login-form',
+    selector: 'mod-login-form',
     templateUrl: 'login-form.component.html'
 })
-export class LoginFormComponent extends BasePageComponent implements OnInit, OnChanges {
+export class LoginFormComponent extends BaseModuleComponent implements OnInit, OnChanges {
 
     @Input() fixedEmail: string;
 

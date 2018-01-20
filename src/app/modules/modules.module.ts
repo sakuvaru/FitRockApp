@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { ChatModule } from './chat/chat.module';
 import { SharedModule } from './shared/shared.module';
 import { DashboardModule } from './dashboard/dashboard.module';
-import { LoginModule } from './login/login.module';
+import { AuthenticationModule } from './authentication/authentication.module';
 import { ClientsModule } from './clients/clients.module';
 import { WorkoutsModule } from './/workouts/workouts.module';
 import { ExercisesModule } from './exercises/exercises.module';
@@ -22,7 +22,7 @@ import { LocationModule } from './locations/location.module';
         ChatModule,
         SharedModule,
         DashboardModule,
-        LoginModule,
+        AuthenticationModule,
         ClientsModule,
         WorkoutsModule,
         ExercisesModule,
@@ -39,7 +39,7 @@ import { LocationModule } from './locations/location.module';
         ChatModule,
         SharedModule,
         DashboardModule,
-        LoginModule,
+        AuthenticationModule,
         ClientsModule,
         WorkoutsModule,
         ExercisesModule,

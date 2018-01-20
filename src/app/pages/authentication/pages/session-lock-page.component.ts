@@ -2,12 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { AppConfig } from 'app/config';
 import { LogStatus } from 'lib/auth';
 
-import { BasePageComponent, ComponentDependencyService, ComponentSetup } from '../../core';
+import { BasePageComponent, ComponentDependencyService, ComponentSetup } from '../../../core';
 
 @Component({
-    templateUrl: 'session-lock.component.html'
+    templateUrl: 'session-lock-page.component.html'
 })
-export class SessionLockComponent extends BasePageComponent implements OnInit {
+export class SessionLockPageComponent extends BasePageComponent implements OnInit {
 
     public readonly appLogo: string = AppConfig.AppLogoUrl;
 
