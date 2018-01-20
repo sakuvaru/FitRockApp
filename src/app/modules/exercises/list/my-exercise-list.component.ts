@@ -1,19 +1,14 @@
-// common
-import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-import { ComponentDependencyService, BasePageComponent, ComponentConfig, ComponentSetup } from '../../../core';
-import { AppConfig, UrlConfig } from '../../../config';
+import { Component, OnInit } from '@angular/core';
 
-// required by component
-import { ExercisesOverviewMenuItem } from '../menu.items';
-import { IDynamicFilter, DataTableConfig } from '../../../../web-components/data-table';
-import { Exercise, ExerciseCategoryListWithExercisesCount } from '../../../models';
-import { Observable } from 'rxjs/Rx';
+import { DataTableConfig, IDynamicFilter } from '../../../../web-components/data-table';
+import { BaseModuleComponent, ComponentDependencyService } from '../../../core';
+import { Exercise } from '../../../models';
 
 @Component({
+  selector: 'mod-my-exercise-list',
   templateUrl: 'my-exercise-list.component.html'
 })
-export class MyExerciseListComponent extends BasePageComponent implements OnInit {
+export class MyExerciseListComponent extends BaseModuleComponent implements OnInit {
 
   public config: DataTableConfig;
 
@@ -22,22 +17,8 @@ export class MyExerciseListComponent extends BasePageComponent implements OnInit
     super(dependencies);
   }
 
-  setup(): ComponentSetup {
-    return new ComponentSetup({
-      initialized: true,
-      isNested: false
-    });
-  }
-
   ngOnInit() {
     super.ngOnInit();
-
-    this.setConfig({
-      menuTitle: { key: 'module.exercises.myExercises' },
-      menuItems: new ExercisesOverviewMenuItem().menuItems,
-      componentTitle: { key: 'module.exercises.overview' },
-    });
-
     this.init();
   }
 

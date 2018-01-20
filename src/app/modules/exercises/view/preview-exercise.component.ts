@@ -1,73 +1,44 @@
-// common
-import { Component, Input, Output, OnInit, EventEmitter, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-import { ComponentDependencyService, BasePageComponent, ComponentSetup } from '../../../core';
-import { AppConfig, UrlConfig } from '../../../config';
-
-// required by component
-import { ExercisePreviewMenuItems, ExerciseMenuItems } from '../menu.items';
-import { Exercise } from '../../../models';
-import 'rxjs/add/operator/switchMap';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 
+import { BaseModuleComponent, ComponentDependencyService } from '../../../core';
+import { Exercise } from '../../../models';
+
 @Component({
+    selector: 'mod-preview-exercise',
     templateUrl: 'preview-exercise.component.html'
 })
-export class PreviewExerciseComponent extends BasePageComponent implements OnInit {
+export class PreviewExerciseComponent extends BaseModuleComponent implements OnInit, OnChanges {
 
-    public exercise: Exercise;
+    @Input() exerciseId: number;
+
+    @Output() loadExercise = new EventEmitter<Exercise>();
+
+    private exercise?: Exercise;
 
     constructor(
-        protected activatedRoute: ActivatedRoute,
         protected componentDependencyService: ComponentDependencyService,
     ) {
         super(componentDependencyService);
     }
 
-    setup(): ComponentSetup {
-        return new ComponentSetup({
-            initialized: true,
-            isNested: false
-        });
-    }
-
     ngOnInit(): void {
         super.ngOnInit();
-
-        super.subscribeToObservable(this.getItemObservable());
     }
 
-    private getItemObservable(): Observable<any> {
-        return this.activatedRoute.params
-            .takeUntil(this.ngUnsubscribe)
-            .switchMap((params: Params) => this.dependencies.itemServices.exerciseService.item()
-                .byId(+params['id'])
-                .get()
-                .takeUntil(this.ngUnsubscribe))
-            .map(response => {
-                this.exercise = response.item;
+    ngOnChanges(changes: SimpleChanges): void {
+        if (this.exerciseId) {
+            super.subscribeToObservable(this.getItemObservable());
+        }
+    }
 
-                if (this.exercise.createdByUserId === this.dependencies.authenticatedUserService.getUserId()) {
-                    this.setConfig({
-                        menuItems: new ExerciseMenuItems(this.exercise.id).menuItems,
-                        menuTitle: {
-                            key: this.exercise.exerciseName
-                        },
-                        componentTitle: {
-                            'key': 'module.exercises.preview'
-                        }
-                    });
-                } else {
-                    this.setConfig({
-                        menuItems: new ExercisePreviewMenuItems(response.item.id).menuItems,
-                        menuTitle: {
-                            key: response.item.exerciseName
-                        },
-                        componentTitle: {
-                            'key': 'module.exercises.preview'
-                        }
-                    });
-                }
+    private getItemObservable(): Observable<void> {
+        return this.dependencies.itemServices.exerciseService.item()
+            .byId(this.exerciseId)
+            .get()
+            .map(response => {
+                this.loadExercise.next(response.item);
+                this.exercise = response.item;
             });
     }
 }
