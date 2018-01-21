@@ -38,6 +38,13 @@ export class NewClientDietComponent extends BaseClientModuleComponent implements
                 }
                 return Observable.of(field);
             })
+            .optionLabelResolver((field, originalLabel) => {
+                if (field.key === 'DietCategoryId') {
+                    return super.translate('module.dietCategories.categories.' + originalLabel);
+                }
+
+                return Observable.of(originalLabel);
+            })
             .onAfterInsert((response) => super.navigate([super.getTrainerUrl('clients/edit/' + this.client.id + '/diet/' + response.item.id + '/diet-plan')]))
             .build();
     }
