@@ -23,24 +23,25 @@ export class EditClientDietPlanPageComponent extends BaseClientsPageComponent im
   ngOnInit() {
     super.ngOnInit();
 
-    super.subscribeToObservable(this.activatedRoute.params
-      .map(params => {
-        this.dietId = +params['dietId'];
-      }));
+    super.subscribeToObservable(
+      this.clientChange.switchMap(client =>
+        this.activatedRoute.params.map(params => {
+          this.dietId = +params['dietId'];
+        })));
   }
 
   onDietLoad(diet: Diet): void {
     const translationData: any = {};
     translationData.dietName = diet.dietName;
 
-      this.setConfig({
-        componentTitle: { key: 'module.clients.diet.editPlanWithName', data: translationData },
-        menuItems: new ClientEditDietMenuItems(this.client.id, diet.id).menuItems,
-        menuTitle: {
-            key: 'module.clients.viewClientSubtitle',
-            data: { 'fullName': this.client.getFullName() }
-        },
-        menuAvatarUrl: this.client.getAvatarOrGravatarUrl()
+    this.setConfig({
+      componentTitle: { key: 'module.clients.diet.editPlanWithName', data: translationData },
+      menuItems: new ClientEditDietMenuItems(this.client.id, diet.id).menuItems,
+      menuTitle: {
+        key: 'module.clients.viewClientSubtitle',
+        data: { 'fullName': this.client.getFullName() }
+      },
+      menuAvatarUrl: this.client.getAvatarOrGravatarUrl()
     });
   }
 }

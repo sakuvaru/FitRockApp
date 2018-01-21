@@ -25,10 +25,10 @@ export class EditClientAppointmentPageComponent extends BaseClientsPageComponent
     super.ngOnInit();
 
     super.subscribeToObservable(
-      this.activatedRoute.params
-        .map(params => {
+      this.clientChange.switchMap(client =>
+        this.activatedRoute.params.map(params => {
           this.appointmentId = +params['appointmentId'];
-        }));
+        })));
   }
 
   private loadAppointment(appointment: Appointment): void {

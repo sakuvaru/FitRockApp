@@ -12,7 +12,7 @@ import { ClientEditWorkoutMenuItems } from '../../menu.items';
 })
 export class EditClientWorkoutPageComponent extends BaseClientsPageComponent implements OnInit {
 
-    public workoutIdChange = new Subject<number>();
+    public workoutId?: number;
 
     constructor(
         protected activatedRoute: ActivatedRoute,
@@ -27,10 +27,12 @@ export class EditClientWorkoutPageComponent extends BaseClientsPageComponent imp
     }
 
     private init(): void {
-        super.subscribeToObservable(this.activatedRoute.params
-            .map(params => {
-                this.workoutIdChange.next(+params['workoutId']);
-            }));
+
+        super.subscribeToObservable(
+            this.clientChange.switchMap(client =>
+                this.activatedRoute.params.map(params => {
+                    this.workoutId = +params['workoutId'];
+                })));
     }
 
     private onLoadWorkout(workout: Workout): void {

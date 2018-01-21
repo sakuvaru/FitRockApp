@@ -23,10 +23,11 @@ export class EditClientDietPageComponent extends BaseClientsPageComponent implem
     ngOnInit() {
         super.ngOnInit();
 
-        super.subscribeToObservable(this.activatedRoute.params
-            .map(params => {
-                this.dietId = +params['dietId'];
-            }));
+        super.subscribeToObservable(
+            this.clientChange.switchMap(client =>
+                this.activatedRoute.params.map(params => {
+                    this.dietId = +params['dietId'];
+                })));
     }
 
     onDietLoad(diet: Diet): void {

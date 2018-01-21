@@ -2,7 +2,7 @@ import { OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs/Rx';
 
-import { BasePageComponent, ComponentDependencyService, ComponentConfig, IComponentConfig } from '../../core';
+import { BasePageComponent, ComponentDependencyService } from '../../core';
 import { User } from '../../models';
 
 // Note: importing from barrel caused 'Cannot resolve app parameters' error while building the app
@@ -101,7 +101,6 @@ export abstract class BaseClientsPageComponent extends BasePageComponent impleme
                 const user = response.item;
                 this.clientChange.next(response.item);
                 this.client = user;
-                super.stopGlobalLoader();
             })
             .takeUntil(this.ngUnsubscribe)
             .subscribe();

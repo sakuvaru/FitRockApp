@@ -24,10 +24,11 @@ export class EditClientWorkoutPlanPageComponent extends BaseClientsPageComponent
   ngOnInit() {
     super.ngOnInit();
 
-    super.subscribeToObservable(this.activatedRoute.params
-      .map(params => {
-        this.workoutId = params['workoutId'];
-      }));
+    super.subscribeToObservable(
+      this.clientChange.switchMap(client =>
+        this.activatedRoute.params.map(params => {
+          this.workoutId = +params['workoutId'];
+        })));
   }
 
   onLoadWorkout(workout: Workout): void {
