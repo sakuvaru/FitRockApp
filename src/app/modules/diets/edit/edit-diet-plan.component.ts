@@ -60,10 +60,12 @@ export class EditDietPlanComponent extends BaseModuleComponent implements OnDest
     }
   }
 
-  openSelectFoodDialog(takeFoodDishes: boolean): void {
+  openSelectFoodDialog(foods: boolean, meals: boolean, supplements: boolean): void {
     const data: any = {};
     data.dietId = this.diet.id;
-    data.takeFoodDishes = takeFoodDishes;
+    data.foods = foods;
+    data.meals = meals;
+    data.supplements = supplements;
 
     const dialog = this.dependencies.tdServices.dialogService.open(SelectDietFoodDialogComponent, {
       panelClass: AppConfig.DefaultDialogPanelClass,

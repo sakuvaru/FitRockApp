@@ -20,7 +20,8 @@ export class FoodCategoryService extends BaseTypeService<FoodCategory> {
         isMeal?: boolean, 
         isSupplement?: boolean, 
         isFood?: boolean, 
-        isApproved?: boolean
+        isApproved?: boolean,
+        isGlobalOrByCurrentUser?: boolean
         }): MultipleItemQueryCustom<FoodCategoryWithFoodsCountDto> {
         return this.customItems<FoodCategoryWithFoodsCountDto>()
             .withCustomOption('foodName', data.foodName)
@@ -30,6 +31,7 @@ export class FoodCategoryService extends BaseTypeService<FoodCategory> {
             .withCustomOption('isSupplement', data.isSupplement ? data.isSupplement : undefined)
             .withCustomOption('isFood', data.isFood ? data.isFood : undefined)
             .withCustomOption('isApproved', data.isApproved ? data.isApproved : undefined)
+            .withCustomOption('isGlobalOrByCurrentUser', data.isGlobalOrByCurrentUser ? data.isGlobalOrByCurrentUser : undefined)
             .withCustomAction('FoodCategoryWithFoodsCountDto');
     }
 }

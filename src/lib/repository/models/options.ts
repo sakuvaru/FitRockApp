@@ -1,5 +1,8 @@
 import { IOption } from '../interfaces/ioption.interface';
 import { FieldValue } from './field-value.class';
+import { QueryCondition, QueryConditionField, QueryConditionJoin, QueryConditionType} from '../models/query-conditions';
+import { processParamValue } from 'lib/repository/helpers/process-param-value';
+
 
 export class CustomOption implements IOption {
     constructor(
@@ -165,6 +168,40 @@ export class OrderByDescending implements IOption {
 
     public GetParamValue(): string {
         return this.field;
+    }
+}
+
+export class WhereComplex implements IOption {
+
+    public condition: QueryCondition;
+
+    public leftSide: QueryCondition | QueryConditionField[];
+    public rightSide: QueryCondition | QueryConditionField[];
+    public join: QueryConditionJoin;
+
+    constructor(data: {
+         leftSide: QueryCondition | QueryConditionField[],
+         rightSide: QueryCondition | QueryConditionField[],
+         join: QueryConditionJoin
+    }
+    ) {
+        if (!data.leftSide || !data.rightSide || !data.join) {
+            throw Error(`Missing data for Where condition`);
+        }
+
+        this.condition = new QueryCondition({
+            leftSide: data.leftSide,
+            rightSide: data.rightSide, 
+            join: data.join
+        });
+    }
+
+    public GetParam(): string {
+        return 'whereComplex';
+    }
+
+    public GetParamValue(): string {
+        return processParamValue(this.condition.getUrlParamValue());
     }
 }
 
@@ -401,20 +438,3 @@ export class WhereLessThan implements IOption {
 }
 
 
-/**
- * Gets proper 'string' value of string, number or boolean value
- * @param value Value to be processed
- */
-function processParamValue(value: string | number | boolean | Date | undefined): string {
-    if (typeof (value) === 'boolean') {
-        if (!value) {
-            return 'false';
-        }
-        return 'true';
-    }
-
-    if (!value) {
-        return '';
-    }
-    return value.toString().trim();
-}

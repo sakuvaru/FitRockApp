@@ -35,3 +35,4 @@ export * from './queries/order/items-order-query.class';
 export * from './queries/generic/get-query.class';
 export * from './models/controller-model.class';
 export * from './helpers/language-helper.class';
+export * from './models/query-conditions';

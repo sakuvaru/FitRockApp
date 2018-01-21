@@ -6,6 +6,8 @@ import { IDynamicFilter } from 'web-components/data-table/data-table.builder';
 import { DataTableConfig } from '../../../../web-components/data-table';
 import { BaseDialogComponent, ComponentDependencyService } from '../../../core';
 import { Food } from '../../../models';
+import { QueryConditionField, QueryConditionType, QueryConditionJoin, QueryCondition } from 'lib/repository';
+
 
 @Component({
   templateUrl: 'select-diet-food-dialog.component.html'
@@ -15,10 +17,9 @@ export class SelectDietFoodDialogComponent extends BaseDialogComponent<SelectFoo
   public selectable: boolean = true;
   public config?: DataTableConfig;
 
-  /**
-   * Indicates if foods or food dishes are fetched
-   */
-  public takeFoodDishes: boolean = false;
+  public foods: boolean = false;
+  public meals: boolean = false;
+  public supplements: boolean = false;
 
   public selectedFood?: Food;
   public openAddNewFoodDialog: boolean = false;
@@ -31,7 +32,9 @@ export class SelectDietFoodDialogComponent extends BaseDialogComponent<SelectFoo
   ) {
     super(dependencies, dialogRef, data);
 
-    this.takeFoodDishes = data.takeFoodDishes;
+    this.foods = data.foods;
+    this.meals = data.meals;
+    this.supplements = data.supplements;
   }
 
   ngOnInit() {
@@ -39,9 +42,29 @@ export class SelectDietFoodDialogComponent extends BaseDialogComponent<SelectFoo
 
     this.config = this.dependencies.itemServices.foodService.buildDataTable(
       (query, search) => {
+
+        if (this.foods) {
+          // get only approved foods
+          query = query.whereEquals('IsApproved', true);
+        }
+
+        query.whereComplex({
+          leftSide: new QueryCondition({
+            leftSide: [new QueryConditionField('IsGlobal', true, QueryConditionType.Equals)],
+            rightSide: [new QueryConditionField('IsApproved', true, QueryConditionType.Equals)],
+            join: QueryConditionJoin.And
+          }) ,
+          rightSide: [new QueryConditionField('CreatedByUserId', this.authUser ? this.authUser.id : 0, QueryConditionType.Equals)],
+          join: QueryConditionJoin.Or
+        });
+
+        return query;
+        /*
         return query
           .include('FoodCategory')
-          .whereEquals('IsMeal', this.takeFoodDishes)
+          .whereEquals('IsMeal', this.meals)
+          .whereEquals('IsFood', this.foods)
+          .whereEquals('IsSupplement', this.supplements)
           .whereLike('FoodName', search)
           .whereEqualsWithOr([{
             field: 'CreatedByUserId',
@@ -50,6 +73,7 @@ export class SelectDietFoodDialogComponent extends BaseDialogComponent<SelectFoo
             field: 'IsGlobal',
             value: true
           }]);
+          */
       },
     )
       .withFields([
@@ -65,7 +89,11 @@ export class SelectDietFoodDialogComponent extends BaseDialogComponent<SelectFoo
           hideOnSmallScreen: true
         },
       ])
-      .withDynamicFilters(search => this.dependencies.itemServices.foodCategoryService.getFoodCategoryWithFoodsCountDto(search, this.takeFoodDishes ? true : false, false, this.takeFoodDishes, false)
+      .withDynamicFilters(search => this.dependencies.itemServices.foodCategoryService.getFoodCategoryWithFoodsCountDto({
+        foodName: search,
+        isGlobalOrByCurrentUser: this.foods ? true : false, // get either global foods or the foods created by current user
+
+      })
         .get()
         .map(response => {
           const filters: IDynamicFilter<Food>[] = [];

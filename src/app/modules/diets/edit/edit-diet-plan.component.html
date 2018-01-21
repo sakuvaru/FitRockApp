@@ -7,8 +7,13 @@
 </mat-card>
 
 <div *ngIf="diet" class="push-top">
-  <button mat-raised-button color="primary" class="text-upper" (click)="openSelectFoodDialog(false)">{{'module.diets.addDietFood' | localize }}</button>
-  <button mat-raised-button color="primary" class="text-upper" (click)="openSelectFoodDialog(true)">{{'module.diets.addDietDish' | localize }}</button>
+  <div>
+    <span class="mat-body-1">{{ 'module.diets.add' | localize }}</span>
+    <button mat-raised-button color="primary" class="text-upper" (click)="openSelectFoodDialog(true, false, false)">{{'module.diets.addDietFood' | localize }}</button>
+    <button mat-raised-button color="primary" class="text-upper" (click)="openSelectFoodDialog(false, true, false)">{{'module.diets.addDietMeal' | localize }}</button>
+    <button mat-raised-button color="primary" class="text-upper" (click)="openSelectFoodDialog(false, false, true)">{{'module.diets.addDietSupplement' | localize }}</button>
+  </div>
+
   <div *ngIf="sortedDietFoods">
 
     <div *ngIf="sortedDietFoods">
@@ -18,7 +23,8 @@
             <span class="tc-red-700">{{i + 1}}.</span>
             <span class="text-truncate push-left-sm">{{dietFood.food.foodName}}</span>
             <span fxFlex></span>
-            <span class="mat-caption">&nbsp;( <plural-food-units [count]="dietFood.amount" [unitCode]="dietFood.food.foodUnit.unitCode"></plural-food-units>)</span>
+            <span class="mat-caption">&nbsp;(
+              <plural-food-units [count]="dietFood.amount" [unitCode]="dietFood.food.foodUnit.unitCode"></plural-food-units>)</span>
             <edit-button color="none" (editAction)="openDietFoodDialog(dietFood)"></edit-button>
             <delete-button [enableConfirm]="true" color="none" (confirm)="deleteDietFood(dietFood)"></delete-button>
           </mat-list-item>
@@ -27,8 +33,12 @@
     </div>
 
     <div *ngIf="sortedDietFoods && sortedDietFoods.length > 5" class="push-top">
-      <button mat-raised-button color="primary" class="text-upper" (click)="openSelectFoodDialog(false)">{{'module.diets.addDietFood' | localize }}</button>
-      <button mat-raised-button color="primary" class="text-upper" (click)="openSelectFoodDialog(true)">{{'module.diets.addDietDish' | localize }}</button>
+      <div>
+        <span class="mat-body-1">{{ 'module.diets.add' | localize }}</span>
+        <button mat-raised-button color="primary" class="text-upper" (click)="openSelectFoodDialog(true, false, false)">{{'module.diets.addDietFood' | localize }}</button>
+        <button mat-raised-button color="primary" class="text-upper" (click)="openSelectFoodDialog(false, true, false)">{{'module.diets.addDietMeal' | localize }}</button>
+        <button mat-raised-button color="primary" class="text-upper" (click)="openSelectFoodDialog(false, false, true)">{{'module.diets.addDietSupplement' | localize }}</button>
+      </div>
     </div>
   </div>
 </div>
