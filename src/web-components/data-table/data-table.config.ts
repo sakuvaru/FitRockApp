@@ -41,6 +41,11 @@ export class DataTableConfig {
     public enableLocalLoader = true;
 
     /**
+     * Indicates if search is enabled (search filter shown)
+     */
+    public enableSearch = true;
+
+    /**
      * Default limit
      */
     public limit?: number;

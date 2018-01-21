@@ -282,6 +282,14 @@ export class DataTableBuilder<TItem extends IItem> {
         return this;
     }
 
+     /**
+     * Indicates if search is enabled (search filter shown)
+     */
+    enableSearch(enable: boolean): this {
+        this.config.enableSearch = enable;
+        return this;
+    }
+
     avatarImage(resolver: (item: TItem) => string): this {
         this.config.avatar = (item) => {
             return new DataTableAvatar(resolver(item), undefined);

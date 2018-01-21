@@ -188,6 +188,7 @@ export class EditClientProgressComponent extends BaseClientModuleComponent imple
                 tooltip: (item) => super.translate('shared.edit'),
                 action: (item) => this.openEditProgressItemDialog(item)
             })
+            .enableSearch(false)
             .build();
     }
 
