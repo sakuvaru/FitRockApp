@@ -67,7 +67,7 @@ export class MySupplementsListComponent extends BaseModuleComponent implements O
           });
           return filters;
         }))
-      .onClick((item) => this.dependencies.coreServices.navigateService.foodPreviewPage(item.id).navigate())
+      .onClick((item) => this.dependencies.coreServices.navigateService.supplementPreviewPage(item.id).navigate())
       .build();
   }
 }

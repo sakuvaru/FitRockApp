@@ -92,12 +92,28 @@ export class NavigateService {
     return this.getNavigateResult(UrlConfig.getAuthUrl(action));
   }
 
+  mealEditPage(foodId: number, navigationExtras?: NavigationExtras): NavigateResult {
+    return this.getNavigateResult(UrlConfig.getTrainerUrl('/foods/meals/edit/' + foodId));
+  }
+
+  foodEditPage(foodId: number, navigationExtras?: NavigationExtras): NavigateResult {
+    return this.getNavigateResult(UrlConfig.getTrainerUrl('/foods/edit/' + foodId));
+  }
+
+  supplementEditPage(foodId: number, navigationExtras?: NavigationExtras): NavigateResult {
+    return this.getNavigateResult(UrlConfig.getTrainerUrl('/foods/supplements/edit/' + foodId));
+  }
+
   mealPreviewPage(foodId: number, navigationExtras?: NavigationExtras): NavigateResult {
     return this.getNavigateResult(UrlConfig.getTrainerUrl('/foods/meals/preview/' + foodId));
   }
 
   foodPreviewPage(foodId: number, navigationExtras?: NavigationExtras): NavigateResult {
     return this.getNavigateResult(UrlConfig.getTrainerUrl('/foods/preview/' + foodId));
+  }
+
+  supplementPreviewPage(foodId: number, navigationExtras?: NavigationExtras): NavigateResult {
+    return this.getNavigateResult(UrlConfig.getTrainerUrl('/foods/supplements/preview/' + foodId));
   }
 
   private getNavigateResult(url, navigationExtras?: NavigationExtras): NavigateResult {

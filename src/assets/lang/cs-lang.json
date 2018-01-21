@@ -287,7 +287,8 @@
 				"myMeals": "Moje jídla",
 				"mySupplements": "Moje doplňky výživy",
 				"newSupplement": "Nový doplněk výživy",
-				"previewSupplement": "Doplněk výživy"
+				"previewSupplement": "Doplněk výživy",
+				"editSupplement": "Upravit doplněk výživy"
 			},
 			"nutrition": {
 				"prot": "Bílkoviny",

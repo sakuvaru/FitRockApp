@@ -18,6 +18,7 @@ import { PreviewMealComponent } from './view/preview-meal.component';
 import { MySupplementsListComponent } from './list/my-supplements-list.component';
 import { NewSupplementComponent } from './new/new-supplement.component';
 import { PreviewSupplementComponent } from './view/preview-supplement.component';
+import { EditSupplementComponent } from './edit/edit-supplement.component';
 
 @NgModule({
     imports: [
@@ -45,7 +46,8 @@ import { PreviewSupplementComponent } from './view/preview-supplement.component'
         FoodDishAmountDialogComponent,
         MySupplementsListComponent,
         NewSupplementComponent,
-        PreviewSupplementComponent
+        PreviewSupplementComponent,
+        EditSupplementComponent
     ],
     exports: [
         MyFoodsListComponent,
@@ -62,7 +64,8 @@ import { PreviewSupplementComponent } from './view/preview-supplement.component'
         FoodDishAmountDialogComponent,
         MySupplementsListComponent,
         NewSupplementComponent,
-        PreviewSupplementComponent
+        PreviewSupplementComponent,
+        EditSupplementComponent
     ]
 })
 export class FoodsModule { }

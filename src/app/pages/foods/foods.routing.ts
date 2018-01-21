@@ -16,6 +16,7 @@ import { NewSupplementPageComponent } from './new/new-supplement-page.component'
 import { PreviewFoodPageComponent } from './view/preview-food-page.component';
 import { PreviewMealPageComponent } from './view/preview-meal-page.component';
 import { PreviewSupplementPageComponent } from './view/preview-supplement-page.component';
+import { EditSupplementPageComponent } from './edit/edit-supplement-page.component';
 
 @NgModule({
     declarations: [
@@ -59,6 +60,9 @@ import { PreviewSupplementPageComponent } from './view/preview-supplement-page.c
                     },
                     {
                         path: 'foods/supplements/preview/:id', component: PreviewSupplementPageComponent
+                    },
+                    {
+                        path: 'foods/supplements/edit/:id', component: EditSupplementPageComponent
                     },
                 ],
             },

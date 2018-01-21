@@ -142,7 +142,7 @@ export class NewMealComponent extends BaseModuleComponent implements OnInit {
                 .withData('isFood', false)
             }
         )
-            .onAfterInsert((response) => this.navigate([this.getTrainerUrl('foods/meals/edit'), response.item.id]))
+            .onAfterInsert((response) => this.dependencies.coreServices.navigateService.mealPreviewPage(response.item.id).navigate())
             .optionLabelResolver((field, originalLabel) => {
                 if (field.key === 'FoodCategoryId') {
                     return super.translate('module.foodCategories.categories.' + originalLabel);

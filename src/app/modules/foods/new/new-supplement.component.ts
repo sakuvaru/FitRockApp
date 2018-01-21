@@ -32,7 +32,7 @@ export class NewSupplementComponent extends BaseModuleComponent implements OnIni
                     .withData('isSupplement', true)
             })
             .ignoreFields(['AssignedFoodsVirtual'])
-            .onAfterInsert((response) => this.navigate([this.getTrainerUrl('foods/edit'), response.item.id]))
+            .onAfterInsert((response) => this.dependencies.coreServices.navigateService.supplementPreviewPage(response.item.id).navigate())
             .optionLabelResolver((field, originalLabel) => {
                 if (field.key === 'FoodCategoryId') {
                     return super.translate('module.foodCategories.categories.' + originalLabel);

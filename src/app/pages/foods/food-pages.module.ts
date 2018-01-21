@@ -15,6 +15,7 @@ import { PreviewMealPageComponent } from './view/preview-meal-page.component';
 import { MySupplementsListPageComponent } from './list/my-supplements-list-page.component';
 import { NewSupplementPageComponent } from './new/new-supplement-page.component';
 import { PreviewSupplementPageComponent } from './view/preview-supplement-page.component';
+import { EditSupplementPageComponent } from './edit/edit-supplement-page.component';
 
 @NgModule({
     imports: [
@@ -35,7 +36,8 @@ import { PreviewSupplementPageComponent } from './view/preview-supplement-page.c
         PreviewMealPageComponent,
         MySupplementsListPageComponent,
         NewSupplementPageComponent,
-        PreviewSupplementPageComponent
+        PreviewSupplementPageComponent,
+        EditSupplementPageComponent
     ],
 })
 export class FoodPagesModule { }
