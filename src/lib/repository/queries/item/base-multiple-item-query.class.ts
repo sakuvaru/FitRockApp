@@ -42,7 +42,7 @@ export abstract class BaseMultipleItemQuery extends BaseItemQuery {
     // debug
     abstract toString(): string;
 
-    withCustomOption(optionName: string, value: string | boolean | number | Date): this {
+    withCustomOption(optionName: string, value: string | boolean | number | Date | undefined): this {
         this._options.push(new Options.CustomOption(optionName, value));
         return this;
     }

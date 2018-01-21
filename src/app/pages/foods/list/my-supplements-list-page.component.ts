@@ -4,9 +4,9 @@ import { BasePageComponent, ComponentDependencyService } from '../../../core';
 import { FoodOverviewItems } from '../menu.items';
 
 @Component({
-  templateUrl: 'my-foods-list-page.component.html'
+  templateUrl: 'my-supplements-list-page.component.html'
 })
-export class MyFoodsListPageComponent extends BasePageComponent implements OnInit {
+export class MySupplementsListPageComponent extends BasePageComponent implements OnInit {
 
   constructor(
     protected dependencies: ComponentDependencyService) {
@@ -20,7 +20,7 @@ export class MyFoodsListPageComponent extends BasePageComponent implements OnIni
 
   private init() {
     this.setConfig({
-      menuTitle: { key: 'module.foods.submenu.myFoods' },
+      menuTitle: { key: 'module.foods.submenu.mySupplements' },
       menuItems: new FoodOverviewItems().menuItems,
       componentTitle: { key: 'module.foods.submenu.overview' },
     });

@@ -9,6 +9,12 @@ export class Diet extends BaseItem {
     public clientId?: number;
     public order?: number;
     public dietCategoryId: number;
+    public targetKcal?: number;
+    public targetFat?: number;
+    public targetCho?: number;
+    public targetProt?: number;
+    public dayString: string;
+    public day: number;
 
     public dietCategory: DietCategory;
     public client?: User;

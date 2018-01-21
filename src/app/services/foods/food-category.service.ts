@@ -13,13 +13,23 @@ export class FoodCategoryService extends BaseTypeService<FoodCategory> {
         });
     }
 
-    getFoodCategoryWithFoodsCountDto(foodName: string, byCurrentUser: boolean, takeOnlyGlobal: boolean, isMeal: boolean, takeOnlyApproved: boolean): MultipleItemQueryCustom<FoodCategoryWithFoodsCountDto> {
+    getFoodCategoryWithFoodsCountDto(data: {
+        foodName: string, 
+        byCurrentUser?: boolean, 
+        isGlobal?: boolean, 
+        isMeal?: boolean, 
+        isSupplement?: boolean, 
+        isFood?: boolean, 
+        isApproved?: boolean
+        }): MultipleItemQueryCustom<FoodCategoryWithFoodsCountDto> {
         return this.customItems<FoodCategoryWithFoodsCountDto>()
-            .withCustomOption('foodName', foodName)
-            .withCustomOption('byCurrentUser', byCurrentUser)
-            .withCustomOption('takeOnlyGlobal', takeOnlyGlobal)
-            .withCustomOption('isMeal', isMeal)
-            .withCustomOption('takeOnlyApproved', takeOnlyApproved)
+            .withCustomOption('foodName', data.foodName)
+            .withCustomOption('byCurrentUser', data.byCurrentUser ? data.byCurrentUser : undefined)
+            .withCustomOption('isGlobal', data.isGlobal ? data.isGlobal : undefined)
+            .withCustomOption('isMeal', data.isMeal ? data.isMeal : undefined)
+            .withCustomOption('isSupplement', data.isSupplement ? data.isSupplement : undefined)
+            .withCustomOption('isFood', data.isFood ? data.isFood : undefined)
+            .withCustomOption('isApproved', data.isApproved ? data.isApproved : undefined)
             .withCustomAction('FoodCategoryWithFoodsCountDto');
     }
 }

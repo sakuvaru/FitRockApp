@@ -6,10 +6,10 @@ import { DataFormConfig } from '../../../../web-components/data-form';
 import { BaseModuleComponent, ComponentDependencyService } from '../../../core';
 
 @Component({
-    selector: 'mod-new-food',
-    templateUrl: 'new-food.component.html'
+    selector: 'mod-new-supplement',
+    templateUrl: 'new-supplement.component.html'
 })
-export class NewFoodComponent extends BaseModuleComponent implements OnInit {
+export class NewSupplementComponent extends BaseModuleComponent implements OnInit {
 
     public formConfig: DataFormConfig;
 
@@ -28,9 +28,9 @@ export class NewFoodComponent extends BaseModuleComponent implements OnInit {
             {
                 formDefinitionQuery: this.dependencies.itemServices.foodService.insertFormQuery()
                     .withData('isMeal', false)
-                    .withData('isFood', true)
-            }
-        )
+                    .withData('isFood', false)
+                    .withData('isSupplement', true)
+            })
             .ignoreFields(['AssignedFoodsVirtual'])
             .onAfterInsert((response) => this.navigate([this.getTrainerUrl('foods/edit'), response.item.id]))
             .optionLabelResolver((field, originalLabel) => {
@@ -52,9 +52,9 @@ export class NewFoodComponent extends BaseModuleComponent implements OnInit {
                 } else if (field.key === 'IsMeal') {
                     field.value = false;
                 } else if (field.key === 'IsFood') {
-                    field.value = true;
-                } else if (field.key === 'IsSupplement') {
                     field.value = false;
+                } else if (field.key === 'IsSupplement') {
+                    field.value = true;
                 }
 
                 return Observable.of(field);

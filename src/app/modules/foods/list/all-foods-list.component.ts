@@ -49,7 +49,11 @@ export class AllFoodsListComponent extends BaseModuleComponent implements OnInit
           hideOnSmallScreen: true
         }
       ])
-      .withDynamicFilters(search => this.dependencies.itemServices.foodCategoryService.getFoodCategoryWithFoodsCountDto(search, false, true, false, true)
+      .withDynamicFilters(search => this.dependencies.itemServices.foodCategoryService.getFoodCategoryWithFoodsCountDto({
+        foodName: search,
+        isGlobal: true,
+        isApproved: true
+      })
         .get()
         .map(response => {
           const filters: IDynamicFilter<Food>[] = [];

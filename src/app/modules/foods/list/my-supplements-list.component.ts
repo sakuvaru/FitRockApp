@@ -5,10 +5,10 @@ import { BaseModuleComponent, ComponentDependencyService } from '../../../core';
 import { Food } from '../../../models';
 
 @Component({
-  selector: 'mod-my-meals-list',
-  templateUrl: 'my-meals-list.component.html'
+  selector: 'mod-my-supplements-list',
+  templateUrl: 'my-supplements-list.component.html'
 })
-export class MyMealsListComponent extends BaseModuleComponent implements OnInit {
+export class MySupplementsListComponent extends BaseModuleComponent implements OnInit {
 
   public config: DataTableConfig;
 
@@ -27,7 +27,7 @@ export class MyMealsListComponent extends BaseModuleComponent implements OnInit 
       return query
         .include('FoodCategory')
         .byCurrentUser()
-        .whereEquals('IsMeal', true)
+        .whereEquals('IsSupplement', true)
         .whereLike('FoodName', search);
     })
       .withFields([
@@ -52,7 +52,7 @@ export class MyMealsListComponent extends BaseModuleComponent implements OnInit 
       .withDynamicFilters(search => this.dependencies.itemServices.foodCategoryService.getFoodCategoryWithFoodsCountDto({
         foodName: search,
         byCurrentUser: true,
-        isMeal: true,
+        isSupplement: true
       })
         .get()
         .map(response => {
@@ -67,7 +67,7 @@ export class MyMealsListComponent extends BaseModuleComponent implements OnInit 
           });
           return filters;
         }))
-      .onClick((item) => this.dependencies.coreServices.navigateService.mealPreviewPage(item.id).navigate())
+      .onClick((item) => this.dependencies.coreServices.navigateService.foodPreviewPage(item.id).navigate())
       .build();
   }
 }

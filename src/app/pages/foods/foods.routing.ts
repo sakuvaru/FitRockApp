@@ -9,10 +9,13 @@ import { EditMealPageComponent } from './edit/edit-meal-page.component';
 import { AllFoodsListPageComponent } from './list/all-foods-list-page.component';
 import { MyFoodsListPageComponent } from './list/my-foods-list-page.component';
 import { MyMealsListPageComponent } from './list/my-meals-list-page.component';
+import { MySupplementsListPageComponent } from './list/my-supplements-list-page.component';
 import { NewFoodPageComponent } from './new/new-food-page.component';
 import { NewMealPageComponent } from './new/new-meal-page.component';
+import { NewSupplementPageComponent } from './new/new-supplement-page.component';
 import { PreviewFoodPageComponent } from './view/preview-food-page.component';
 import { PreviewMealPageComponent } from './view/preview-meal-page.component';
+import { PreviewSupplementPageComponent } from './view/preview-supplement-page.component';
 
 @NgModule({
     declarations: [
@@ -47,7 +50,16 @@ import { PreviewMealPageComponent } from './view/preview-meal-page.component';
                     },
                     {
                         path: 'foods/meals/edit/:id', component: EditMealPageComponent
-                    }
+                    },
+                    {
+                        path: 'foods/supplements', component: MySupplementsListPageComponent
+                    },
+                    {
+                        path: 'foods/supplements/new', component: NewSupplementPageComponent
+                    },
+                    {
+                        path: 'foods/supplements/preview/:id', component: PreviewSupplementPageComponent
+                    },
                 ],
             },
         ])

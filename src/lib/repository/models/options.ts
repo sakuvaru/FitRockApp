@@ -4,7 +4,7 @@ import { FieldValue } from './field-value.class';
 export class CustomOption implements IOption {
     constructor(
         public optionName: string,
-        public optionValue: string | boolean | number | Date
+        public optionValue: string | boolean | number | Date | undefined
     ) {
         if (!optionName) {
             throw Error(`Option name cannot be empty`);
@@ -141,7 +141,7 @@ export class OrderBy implements IOption {
     }
 
     public GetParam(): string {
-        return 'orderbyasc'; 
+        return 'orderbyasc';
     }
 
     public GetParamValue(): string {
@@ -160,7 +160,7 @@ export class OrderByDescending implements IOption {
     }
 
     public GetParam(): string {
-        return 'orderbydesc'; 
+        return 'orderbydesc';
     }
 
     public GetParamValue(): string {
@@ -237,7 +237,7 @@ export class WhereLike implements IOption {
         return 'wherelike.' + this.field.trim();
     }
 
-    public GetParamValue(): string {
+    public GetParamValue(): string | undefined {
         return processParamValue(this.value);
     }
 }
@@ -256,7 +256,7 @@ export class WhereLikeMultiple implements IOption {
         return 'wherelike.' + this.fields.map(m => m).join('+');
     }
 
-    public GetParamValue(): string {
+    public GetParamValue(): string | undefined {
         return processParamValue(this.value);
     }
 }
@@ -370,7 +370,7 @@ export class WhereGreaterThan implements IOption {
         return 'wheregreaterthan.' + this.field.trim();
     }
 
-    public GetParamValue(): string {
+    public GetParamValue(): string | undefined {
         if (this.value instanceof Date) {
             return processParamValue(this.value.toUTCString());
         }
@@ -392,7 +392,7 @@ export class WhereLessThan implements IOption {
         return 'wherelessthan.' + this.field.trim();
     }
 
-    public GetParamValue(): string {
+    public GetParamValue(): string | undefined {
         if (this.value instanceof Date) {
             return processParamValue(this.value.toUTCString());
         }
@@ -405,11 +405,15 @@ export class WhereLessThan implements IOption {
  * Gets proper 'string' value of string, number or boolean value
  * @param value Value to be processed
  */
-function processParamValue(value: string | number | boolean | Date): string {
-    if (!value) {
-        if (typeof (value) === 'boolean') {
+function processParamValue(value: string | number | boolean | Date | undefined): string {
+    if (typeof (value) === 'boolean') {
+        if (!value) {
             return 'false';
         }
+        return 'true';
+    }
+
+    if (!value) {
         return '';
     }
     return value.toString().trim();

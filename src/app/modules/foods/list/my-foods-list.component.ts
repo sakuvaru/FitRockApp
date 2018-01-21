@@ -27,7 +27,7 @@ export class MyFoodsListComponent extends BaseModuleComponent implements OnInit 
       return query
         .include('FoodCategory')
         .byCurrentUser()
-        .whereEquals('IsMeal', false)
+        .whereEquals('IsFood', true)
         .whereLike('FoodName', search);
     })
       .withFields([
@@ -38,7 +38,7 @@ export class MyFoodsListComponent extends BaseModuleComponent implements OnInit 
           hideOnSmallScreen: false
         },
         {
-          value: (item) =>  super.translate('module.foodCategories.categories.' + item.foodCategory.codename),
+          value: (item) => super.translate('module.foodCategories.categories.' + item.foodCategory.codename),
           name: (item) => super.translate('module.foods.foodCategory'),
           hideOnSmallScreen: true
         },
@@ -49,14 +49,18 @@ export class MyFoodsListComponent extends BaseModuleComponent implements OnInit 
           hideOnSmallScreen: true
         }
       ])
-      .withDynamicFilters(search => this.dependencies.itemServices.foodCategoryService.getFoodCategoryWithFoodsCountDto(search, true, false, false, false)
+      .withDynamicFilters(search => this.dependencies.itemServices.foodCategoryService.getFoodCategoryWithFoodsCountDto({
+        foodName: search,
+        isFood: true,
+        byCurrentUser: true
+      })
         .get()
         .map(response => {
           const filters: IDynamicFilter<Food>[] = [];
           response.items.forEach(category => {
             filters.push(({
               guid: category.id.toString(),
-              name:  super.translate('module.foodCategories.categories.' + category.codename),
+              name: super.translate('module.foodCategories.categories.' + category.codename),
               query: (query) => query.whereEquals('FoodCategoryId', category.id),
               count: category.foodsCount
             }));

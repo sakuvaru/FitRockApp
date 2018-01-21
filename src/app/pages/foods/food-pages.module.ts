@@ -12,6 +12,9 @@ import { NewFoodPageComponent } from './new/new-food-page.component';
 import { NewMealPageComponent } from './new/new-meal-page.component';
 import { PreviewFoodPageComponent } from './view/preview-food-page.component';
 import { PreviewMealPageComponent } from './view/preview-meal-page.component';
+import { MySupplementsListPageComponent } from './list/my-supplements-list-page.component';
+import { NewSupplementPageComponent } from './new/new-supplement-page.component';
+import { PreviewSupplementPageComponent } from './view/preview-supplement-page.component';
 
 @NgModule({
     imports: [
@@ -29,7 +32,10 @@ import { PreviewMealPageComponent } from './view/preview-meal-page.component';
         PreviewFoodPageComponent,
         NewMealPageComponent,
         EditMealPageComponent,
-        PreviewMealPageComponent
+        PreviewMealPageComponent,
+        MySupplementsListPageComponent,
+        NewSupplementPageComponent,
+        PreviewSupplementPageComponent
     ],
 })
 export class FoodPagesModule { }

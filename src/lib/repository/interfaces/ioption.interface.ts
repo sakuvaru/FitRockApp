@@ -1,4 +1,4 @@
 export interface IOption {
     GetParam();
-    GetParamValue();
+    GetParamValue(): string | undefined;
 }

@@ -284,7 +284,10 @@
 				"overview": "Přehled",
 				"newFood": "Nová potravina",
 				"newMeal": "Nové jídlo",
-				"myMeals": "Moje jídla"
+				"myMeals": "Moje jídla",
+				"mySupplements": "Moje doplňky výživy",
+				"newSupplement": "Nový doplněk výživy",
+				"previewSupplement": "Doplněk výživy"
 			},
 			"nutrition": {
 				"prot": "Bílkoviny",
@@ -401,7 +404,8 @@
 				"sugaryFoods": "Cukrové výrobky",
 				"foodSupplements": "Suplementy",
 				"other": "Jiný",
-				"meal": "Jídlo"
+				"meal": "Jídlo",
+				"supplement": "Doplněk výživy"
 			}
 		},
 		"progressItemTypes": {
