@@ -25,10 +25,12 @@ export enum QueryConditionJoin {
 
 export class QueryCondition {
 
-    private readonly conditionWrap = '-c-';
+    private readonly conditionJoinStart = '-j';
+    private readonly conditionJoinEnd = '-';
+    private readonly conditionWrapStart = '-c';
+    private readonly conditionWrapEnd = '-';
     private readonly fieldWrap = '-f-';
     private readonly fieldParamSeparator = '-v-';
-    private readonly conditionJoinWrap = '-j-';
 
     public leftSide: QueryConditionField[] | QueryCondition;
     public rightSide: QueryConditionField[] | QueryCondition;
@@ -48,9 +50,17 @@ export class QueryCondition {
         return this.getCondition(this.leftSide, this.rightSide, this.join);
     }
 
-    private getCondition(leftSide: QueryConditionField[] | QueryCondition, rightSide: QueryConditionField[] | QueryCondition, join: QueryConditionJoin): string {
+    private getConditionSeparator(index: number): string {
+        return this.conditionJoinStart + index + this.conditionJoinEnd;
+    }
+
+    private getConditionTag(index: number): string {
+        return '-c-';
+    }
+
+    private getCondition(leftSide: QueryConditionField[] | QueryCondition, rightSide: QueryConditionField[] | QueryCondition, join: QueryConditionJoin, conditionIndex: number = 0): string {
         // start condition
-        let condition: string = this.conditionWrap;
+        let condition: string = this.getConditionTag(conditionIndex);
 
         // add let side
         if (Array.isArray(leftSide) && leftSide) {
@@ -63,13 +73,13 @@ export class QueryCondition {
             });
         } else if (leftSide instanceof QueryCondition) {
             // recursively resolve condition
-            condition += this.getCondition(leftSide.leftSide, leftSide.rightSide, leftSide.join);
+            condition += this.getCondition(leftSide.leftSide, leftSide.rightSide, leftSide.join, conditionIndex + 1);
         } else {
             throw Error('Unsupported left condition');
         }
 
         // add join param
-        condition += `${this.conditionJoinWrap}${join.toString()}${this.conditionJoinWrap}`;
+        condition += `${this.getConditionSeparator(conditionIndex)}${join.toString()}${this.getConditionSeparator(conditionIndex)}`;
 
         // add right side
         if (Array.isArray(rightSide) && rightSide) {
@@ -82,13 +92,13 @@ export class QueryCondition {
             });
         } else if (rightSide instanceof QueryCondition) {
             // recursively resolve condition
-            condition += this.getCondition(rightSide.leftSide, rightSide.rightSide, rightSide.join);
+            condition += this.getCondition(rightSide.leftSide, rightSide.rightSide, rightSide.join, conditionIndex + 1);
         } else {
             throw Error('Unsupported right condition');
         }
 
         // wrap end condition
-        condition += this.conditionWrap;
+        condition += this.getConditionTag(conditionIndex);
 
         return condition;
     }

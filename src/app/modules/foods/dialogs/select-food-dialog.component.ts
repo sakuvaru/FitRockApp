@@ -26,6 +26,8 @@ export class SelectFoodDialogComponent extends BaseDialogComponent<SelectFoodDia
   ngOnInit() {
     super.ngOnInit();
 
+    console.log('TODO!! Fix filters here');
+
     this.config = this.dependencies.itemServices.foodService.buildDataTable(
       (query, search) => {
         return query
@@ -54,7 +56,10 @@ export class SelectFoodDialogComponent extends BaseDialogComponent<SelectFoodDia
           hideOnSmallScreen: true
         },
       ])
-      .withDynamicFilters(search => this.dependencies.itemServices.foodCategoryService.getFoodCategoryWithFoodsCountDto(search, false, false, false, false)
+      .withDynamicFilters(search => this.dependencies.itemServices.foodCategoryService.getFoodCategoryWithFoodsCountDto({
+        foodName: search,
+        isFood: true
+      })
         .get()
         .map(response => {
           const filters: IDynamicFilter<Food>[] = [];

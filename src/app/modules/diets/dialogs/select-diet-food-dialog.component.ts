@@ -43,37 +43,39 @@ export class SelectDietFoodDialogComponent extends BaseDialogComponent<SelectFoo
     this.config = this.dependencies.itemServices.foodService.buildDataTable(
       (query, search) => {
 
+        // shared conditions
+        query
+          .whereLike('FoodName', search)
+          .include('FoodCategory');
+
         if (this.foods) {
+        // get foods that are either global & approved or created by current user
           // get only approved foods
-          query = query.whereEquals('IsApproved', true);
+          query.whereEquals('IsFood', true);
+          query.whereComplex({
+            leftSide: new QueryCondition({
+              leftSide: [new QueryConditionField('IsGlobal', true, QueryConditionType.Equals)],
+              rightSide: [new QueryConditionField('IsApproved', true, QueryConditionType.Equals)],
+              join: QueryConditionJoin.And
+            }) ,
+            rightSide: [new QueryConditionField('CreatedByUserId', this.authUser ? this.authUser.id : 0, QueryConditionType.Equals)],
+            join: QueryConditionJoin.Or
+          });
         }
 
-        query.whereComplex({
-          leftSide: new QueryCondition({
-            leftSide: [new QueryConditionField('IsGlobal', true, QueryConditionType.Equals)],
-            rightSide: [new QueryConditionField('IsApproved', true, QueryConditionType.Equals)],
-            join: QueryConditionJoin.And
-          }) ,
-          rightSide: [new QueryConditionField('CreatedByUserId', this.authUser ? this.authUser.id : 0, QueryConditionType.Equals)],
-          join: QueryConditionJoin.Or
-        });
+        if (this.meals) {
+          query
+            .byCurrentUser()
+            .whereEquals('IsMeal', true);
+        }
+
+        if (this.supplements) {
+          query
+            .byCurrentUser()
+            .whereEquals('IsSupplement', true);
+        }
 
         return query;
-        /*
-        return query
-          .include('FoodCategory')
-          .whereEquals('IsMeal', this.meals)
-          .whereEquals('IsFood', this.foods)
-          .whereEquals('IsSupplement', this.supplements)
-          .whereLike('FoodName', search)
-          .whereEqualsWithOr([{
-            field: 'CreatedByUserId',
-            value: this.authUser ? this.authUser.id : 0
-          }, {
-            field: 'IsGlobal',
-            value: true
-          }]);
-          */
       },
     )
       .withFields([
@@ -91,8 +93,11 @@ export class SelectDietFoodDialogComponent extends BaseDialogComponent<SelectFoo
       ])
       .withDynamicFilters(search => this.dependencies.itemServices.foodCategoryService.getFoodCategoryWithFoodsCountDto({
         foodName: search,
+        isFood: this.foods,
+        isMeal: this.meals,
+        isSupplement: this.supplements,
+        byCurrentUser: this.meals || this.supplements ? true : false, // get only created by current user for supps and meals
         isGlobalOrByCurrentUser: this.foods ? true : false, // get either global foods or the foods created by current user
-
       })
         .get()
         .map(response => {
