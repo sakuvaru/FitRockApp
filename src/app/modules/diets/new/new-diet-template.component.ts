@@ -23,7 +23,9 @@ export class NewDietTemplateComponent extends BaseModuleComponent implements OnI
     }
 
     private initForm(): void {
-        this.formConfig = this.dependencies.itemServices.dietService.buildInsertForm()
+        this.formConfig = this.dependencies.itemServices.dietService.buildInsertForm({
+            modifyDefaultDefinitionQuery: (query) => query.withData('IsTemplate', true)
+        })
             .onAfterInsert((response) => this.navigate([this.getTrainerUrl('diets/edit-plan'), response.item.id]))
             .optionLabelResolver((field, originalLabel) => {
                 if (field.key === 'DietCategoryId') {

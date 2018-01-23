@@ -91,12 +91,25 @@ export abstract class BaseTypeService<TItem extends IItem> {
      */
     buildInsertForm(
         options?: {
+            modifyDefaultDefinitionQuery?: (query: InsertFormQuery<TItem>) => InsertFormQuery<TItem>,
             formDefinitionQuery?: InsertFormQuery<TItem>,
             insertQuery?: (formData: Object) => CreateItemQuery<TItem>
         }
     ): DataFormBuilder<TItem> {
+        if (options && options.modifyDefaultDefinitionQuery && options.formDefinitionQuery) {
+            throw Error(`Custom form definition query & modify form definition query cannot be defined at same time. Choose one or the other.`);
+        }
         // query used to get form definition from server
-        const formDefinitionQuery = options && options.formDefinitionQuery ? options.formDefinitionQuery : this.insertFormQuery();
+        let formDefinitionQuery:  InsertFormQuery<TItem>; 
+
+        if (options && options.formDefinitionQuery) {
+            formDefinitionQuery = options.formDefinitionQuery;
+        } else if (options && options.modifyDefaultDefinitionQuery) {
+            formDefinitionQuery = options.modifyDefaultDefinitionQuery(this.insertFormQuery());
+        } else {
+            formDefinitionQuery = this.insertFormQuery();
+        }
+
         const createQuery = options && options.insertQuery ? options.insertQuery : (item: TItem) => this.create(item);
 
         return this.dataFormService.insertForm<TItem>(this.type, formDefinitionQuery.get(), (formData) => createQuery(formData).set());
