@@ -34,6 +34,15 @@ export class EditDietPlanComponent extends BaseModuleComponent implements OnDest
     protected dependencies: ComponentDependencyService) {
     super(dependencies);
 
+    // make sure dragula does not already exist
+    const existingDragula = this.dragulaService.find(this.dragulaBag);
+    if (existingDragula) {
+      // destroy dragula because it should not exist
+      // this can happen id ngOnDestroy was not called 
+      // which may happen if e.g. recompile is triggered 
+        this.dragulaService.destroy(this.dragulaBag);
+    }
+
     // set handle for dragula
     const that = this;
     this.dragulaService.setOptions(this.dragulaBag, {
