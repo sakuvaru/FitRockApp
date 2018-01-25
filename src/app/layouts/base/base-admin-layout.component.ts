@@ -65,7 +65,10 @@ export class BaseAdminLayoutComponent extends BaseLayoutComponent implements OnD
             .subscribe(
             status => {
                 this.loaderEnabled = status;
-                this.componentChangedNotification();
+                // at this moment it is required to detect changes here because if (most probably) loader
+                // is changed multiple times on the same page (e.g. calling startLoader, stopLoader within the same 
+                // method multiple times) this would thrown an error
+                this.cdr.detectChanges(); 
             });
 
         this.dependencies.coreServices.sharedService.componentConfigChanged$
@@ -95,7 +98,6 @@ export class BaseAdminLayoutComponent extends BaseLayoutComponent implements OnD
                         .takeUntil(this.ngUnsubscribe)
                         .subscribe(text => {
                             this.componentTitle = text;
-                            this.componentChangedNotification();
                         });
                 }
 
@@ -105,16 +107,16 @@ export class BaseAdminLayoutComponent extends BaseLayoutComponent implements OnD
                         .takeUntil(this.ngUnsubscribe)
                         .subscribe(text => {
                             this.menuTitle = text;
-                            this.componentChangedNotification();
                         });
                 }
+
+                this.cdr.detectChanges(); 
             });
     }
 
     ngAfterViewInit(): void {
         // broadcast to all listener observables when loading the page
         this.media.broadcast();
-        this.componentChangedNotification();
     }
 
     handleComponentSearch(search: string): void {
@@ -127,12 +129,5 @@ export class BaseAdminLayoutComponent extends BaseLayoutComponent implements OnD
 
     shortenTitle(text: string): string | null {
         return stringHelper.shorten(text, this.titleCharsLength, true);
-    }
-
-    /**
-     * This method has to be called each time any property changes
-     */
-    protected componentChangedNotification(): void {
-        this.cdr.detectChanges();
     }
 }

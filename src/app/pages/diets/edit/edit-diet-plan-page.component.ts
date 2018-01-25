@@ -10,7 +10,7 @@ import { DietMenuItems } from '../menu.items';
 })
 export class EditDietPlanPageComponent extends BasePageComponent implements OnInit, OnDestroy {
 
-  public dietId: number;
+  public dietId?: number;
 
   constructor(
     protected activatedRoute: ActivatedRoute,

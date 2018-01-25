@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges, OnInit } from '@angular/core';
 import { DragulaService } from 'ng2-dragula';
 import { Observable } from 'rxjs/Rx';
 import * as _ from 'underscore';
@@ -17,7 +17,7 @@ import { SelectDietFoodDialogComponent } from '../dialogs/select-diet-food-dialo
   templateUrl: 'edit-diet-plan.component.html',
   selector: 'mod-edit-diet-plan'
 })
-export class EditDietPlanComponent extends BaseModuleComponent implements OnDestroy, OnChanges {
+export class EditDietPlanComponent extends BaseModuleComponent implements OnDestroy, OnChanges, OnInit {
 
   @Output() loadDiet = new EventEmitter();
 
@@ -33,14 +33,16 @@ export class EditDietPlanComponent extends BaseModuleComponent implements OnDest
     private dragulaService: DragulaService,
     protected dependencies: ComponentDependencyService) {
     super(dependencies);
+  }
 
+  ngOnInit(): void {
     // make sure dragula does not already exist
     const existingDragula = this.dragulaService.find(this.dragulaBag);
     if (existingDragula) {
       // destroy dragula because it should not exist
       // this can happen id ngOnDestroy was not called 
       // which may happen if e.g. recompile is triggered 
-        this.dragulaService.destroy(this.dragulaBag);
+      this.dragulaService.destroy(this.dragulaBag);
     }
 
     // set handle for dragula
@@ -200,7 +202,7 @@ export class EditDietPlanComponent extends BaseModuleComponent implements OnDest
     }
   }
 
-  private getInitObsevable(): Observable<any> {
+  private getInitObsevable(): Observable<void> {
     return this.dragulaService.drop
       .takeUntil(this.ngUnsubscribe)
       .do(() => {
