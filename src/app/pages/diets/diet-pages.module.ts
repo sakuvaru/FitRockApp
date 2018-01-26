@@ -9,7 +9,7 @@ import { ClientDietsPageComponent } from './list/client-diets-page.component';
 import { DietTemplatesPageComponent } from './list/diet-templates-page.component';
 import { NewDietTemplatePageComponent } from './new/new-diet-template-page.component';
 import { EditDietPageComponent } from './edit/edit-diet-page.component';
-import { DietPlanViewPageComponent } from './view/diet-plan-view-page.component';
+import { DietPreviewPageComponent } from './view/diet-preview-page.component';
 import { EditDietPlanPageComponent } from './edit/edit-diet-plan-page.component';
 
 @NgModule({
@@ -23,7 +23,7 @@ import { EditDietPlanPageComponent } from './edit/edit-diet-plan-page.component'
         DietTemplatesPageComponent,
         NewDietTemplatePageComponent,
         EditDietPageComponent,
-        DietPlanViewPageComponent,
+        DietPreviewPageComponent,
         EditDietPlanPageComponent
     ],
     exports: [

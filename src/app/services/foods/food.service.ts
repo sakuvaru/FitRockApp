@@ -40,31 +40,31 @@ export class FoodService extends BaseTypeService<Food> {
         let resultCanBeIncorrectDueToMissingNutrition = false;
 
         if (food.fat) {
-            fat += this.calculateUnitValue(amount, food.fat);
+            fat += this.calculateUnitValue(amount, food.fat, food.foodUnitMeasurementValue);
         } else {
             resultCanBeIncorrectDueToMissingNutrition = true;
         }
 
         if (food.sugar) {
-            sugar += this.calculateUnitValue(amount, food.sugar);
+            sugar += this.calculateUnitValue(amount, food.sugar, food.foodUnitMeasurementValue);
         } else {
             resultCanBeIncorrectDueToMissingNutrition = true;
         }
 
         if (food.prot) {
-            prot += this.calculateUnitValue(amount, food.prot);
+            prot += this.calculateUnitValue(amount, food.prot, food.foodUnitMeasurementValue);
         } else {
             resultCanBeIncorrectDueToMissingNutrition = true;
         }
 
         if (food.cho) {
-            cho += this.calculateUnitValue(amount, food.cho);
+            cho += this.calculateUnitValue(amount, food.cho, food.foodUnitMeasurementValue);
         } else {
             resultCanBeIncorrectDueToMissingNutrition = true;
         }
 
         if (food.nacl) {
-            nacl += this.calculateUnitValue(amount, food.nacl);
+            nacl += this.calculateUnitValue(amount, food.nacl, food.foodUnitMeasurementValue);
         } else {
             resultCanBeIncorrectDueToMissingNutrition = true;
         }
@@ -130,7 +130,7 @@ export class FoodService extends BaseTypeService<Food> {
         };
     }
 
-    calculateUnitValue(unitValue: number, valuePerMeasurementUnit: number): number {
-        return valuePerMeasurementUnit / 100 * unitValue;
+    calculateUnitValue(amount: number, unitValue: number, measurementUnitValue: number): number {
+        return (amount * unitValue) / measurementUnitValue;
     }
 }

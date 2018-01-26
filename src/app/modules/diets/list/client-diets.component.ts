@@ -81,7 +81,7 @@ export class ClientDietsComponent extends BaseModuleComponent implements OnInit 
           return filters;
         })
       )
-      .onClick((item) => super.navigate([super.getTrainerUrl('diets/edit-plan/') + item.id]))
+      .onClick((item) => this.dependencies.coreServices.navigateService.dietPreviewPage(item.id).navigate())
       .build();
   }
 }

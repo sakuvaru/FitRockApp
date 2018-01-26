@@ -12,7 +12,7 @@ import { EditDietComponent } from './edit/edit-diet.component';
 import { ClientDietsComponent } from './list/client-diets.component';
 import { DietTemplatesComponent } from './list/diet-templates.component';
 import { NewDietTemplateComponent } from './new/new-diet-template.component';
-import { DietPlanViewComponent } from './view/diet-plan-view.component';
+import { DietPreviewComponent } from './view/diet-preview.component';
 import { FoodsModule } from '../foods/foods.module';
 
 @NgModule({
@@ -33,7 +33,7 @@ import { FoodsModule } from '../foods/foods.module';
         DietTemplatesComponent,
         NewDietTemplateComponent,
         EditDietComponent,
-        DietPlanViewComponent,
+        DietPreviewComponent,
         EditDietPlanComponent,
         AddDietFoodDialogComponent,
         SelectDietFoodDialogComponent,
@@ -45,7 +45,7 @@ import { FoodsModule } from '../foods/foods.module';
         DietTemplatesComponent,
         NewDietTemplateComponent,
         EditDietComponent,
-        DietPlanViewComponent,
+        DietPreviewComponent,
         EditDietPlanComponent,
         AddDietFoodDialogComponent,
         SelectDietFoodDialogComponent,

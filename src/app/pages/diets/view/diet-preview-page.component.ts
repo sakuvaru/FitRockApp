@@ -6,9 +6,9 @@ import { Diet } from '../../../models';
 import { DietMenuItems } from '../menu.items';
 
 @Component({
-  templateUrl: 'diet-plan-view-page.component.html'
+  templateUrl: 'diet-preview-page.component.html'
 })
-export class DietPlanViewPageComponent extends BasePageComponent implements OnInit {
+export class DietPreviewPageComponent extends BasePageComponent implements OnInit {
 
   public dietId?: number;
 

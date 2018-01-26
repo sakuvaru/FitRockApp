@@ -116,6 +116,10 @@ export class NavigateService {
     return this.getNavigateResult(UrlConfig.getTrainerUrl('/foods/supplements/preview/' + foodId));
   }
 
+  dietPreviewPage(dietId: number): NavigateResult {
+    return this.getNavigateResult(UrlConfig.getTrainerUrl('/diets/edit-plan/' + dietId));
+  }
+
   private getNavigateResult(url, navigationExtras?: NavigationExtras): NavigateResult {
     return new NavigateResult((xUrl) => this.router.navigate([xUrl], navigationExtras), url);
   }
