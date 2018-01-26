@@ -15,7 +15,7 @@ export class DataFormField {
     /**
      * Additional field options
      */
-    public options?: DataFormFieldOptions;
+    public options: DataFormFieldOptions = new DataFormFieldOptions();
 
     /**
      * Label of the field
@@ -148,9 +148,11 @@ export class DataFormFieldOptions {
         maxNumberValue?: number,
         minNumberValue?: number,
         extraTranslationData?: any,
-        icon?: string
+        icon?: string,
     }) {
-        Object.assign(this, options);
+        if (options) {
+            Object.assign(this, options);
+        }
     }
 }
 

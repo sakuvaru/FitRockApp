@@ -49,24 +49,6 @@ export class MyMealsListComponent extends BaseModuleComponent implements OnInit 
           hideOnSmallScreen: true
         }
       ])
-      .withDynamicFilters(search => this.dependencies.itemServices.foodCategoryService.getFoodCategoryWithFoodsCountDto({
-        foodName: search,
-        byCurrentUser: true,
-        isMeal: true,
-      })
-        .get()
-        .map(response => {
-          const filters: IDynamicFilter<Food>[] = [];
-          response.items.forEach(category => {
-            filters.push(({
-              guid: category.id.toString(),
-              name: super.translate('module.foodCategories.categories.' + category.codename),
-              query: (query) => query.whereEquals('FoodCategoryId', category.id),
-              count: category.foodsCount
-            }));
-          });
-          return filters;
-        }))
       .onClick((item) => this.dependencies.coreServices.navigateService.mealPreviewPage(item.id).navigate())
       .build();
   }

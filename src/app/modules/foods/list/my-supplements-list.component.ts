@@ -49,24 +49,6 @@ export class MySupplementsListComponent extends BaseModuleComponent implements O
           hideOnSmallScreen: true
         }
       ])
-      .withDynamicFilters(search => this.dependencies.itemServices.foodCategoryService.getFoodCategoryWithFoodsCountDto({
-        foodName: search,
-        byCurrentUser: true,
-        isSupplement: true
-      })
-        .get()
-        .map(response => {
-          const filters: IDynamicFilter<Food>[] = [];
-          response.items.forEach(category => {
-            filters.push(({
-              guid: category.id.toString(),
-              name: super.translate('module.foodCategories.categories.' + category.codename),
-              query: (query) => query.whereEquals('FoodCategoryId', category.id),
-              count: category.foodsCount
-            }));
-          });
-          return filters;
-        }))
       .onClick((item) => this.dependencies.coreServices.navigateService.supplementPreviewPage(item.id).navigate())
       .build();
   }

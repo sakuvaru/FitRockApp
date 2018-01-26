@@ -187,10 +187,6 @@ export class EditMealComponent extends BaseModuleComponent implements OnInit, On
                 this.food = form.item;
             })
             .configField((field, item) => {
-                if (field.key === '') {
-
-                }
-
                 // make sure assigned foods are assigned for calculation by 'onFieldValueChange'
                 if (item) {
                     const models = item.childFoods.map((dish: FoodDish) =>
