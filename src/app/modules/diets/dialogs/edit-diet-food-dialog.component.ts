@@ -56,18 +56,14 @@ export class EditDietFoodDialogComponent extends BaseDialogComponent<EditDietFoo
       })
       .onAfterEdit((response) => {
         this.dietFood = response.item;
-        this.close();
+        super.close();
       })
       .onAfterDelete((response) => {
         this.idOfDeletedDietFood = response.deletedItemId;
         this.dietFoodWasDeleted = true;
-        this.close();
+        super.close();
       })
       .renderButtons(false)
       .build();
-  }
-
-  public close(): void {
-    this.dependencies.tdServices.dialogService.closeAll();
   }
 }

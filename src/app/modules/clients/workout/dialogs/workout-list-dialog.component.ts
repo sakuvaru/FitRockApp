@@ -23,8 +23,4 @@ export class WorkoutListDialogComponent extends BaseDialogComponent<WorkoutListD
   ngOnInit() {
     super.ngOnInit();
   }
-
-  public close(): void {
-    this.dependencies.tdServices.dialogService.closeAll();
-  }
 }

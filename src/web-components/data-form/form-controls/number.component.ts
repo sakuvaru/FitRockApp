@@ -40,21 +40,21 @@ export class NumberComponent extends BaseFormControlComponent implements OnInit,
     super.ngOnChanges(changes);
   }
 
-  protected getInsertValue(): number {
+  protected getInsertValue(): number | undefined {
     const defaultFieldValue = this.field.defaultValue;
 
     if (!defaultFieldValue) {
-      return 0;
+      return undefined;
     }
 
     return +defaultFieldValue;
   }
 
-  protected getEditValue(): number {
+  protected getEditValue(): number | undefined {
     const fieldValue = this.field.value;
 
     if (!fieldValue) {
-      return 0;
+      return undefined;
     }
 
     return +fieldValue;
@@ -71,15 +71,14 @@ export class NumberComponent extends BaseFormControlComponent implements OnInit,
       let errorMessageKey: string = 'form.error.unknown';
       const translationData: any = {};
 
+      // validate only if number is required
+      if (!this.field.required) {
+        return new ValueValidationResult(isValid, errorMessageKey, translationData);
+      }
+
       if (!numberHelper.isNumber(value)) {
-        // field is not a number
-        // if (min value <= 0 || max value >= 0) && number is 0, its all good
-        if ((this.getMinNumberValue() <= 0 || this.getMaxNumberValue() >= 0) && (value === 0 || !value)) {
-          isValid = true;
-        } else {
-          isValid = false;
-          errorMessageKey = 'form.error.valueIsNotANumber';
-        }
+        isValid = false;
+        errorMessageKey = 'form.error.valueIsNotANumber';
       } else {
         // field is a number, but check its min & max values
         const maxValue = this.getMaxNumberValue();

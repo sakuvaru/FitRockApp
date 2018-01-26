@@ -52,17 +52,13 @@ export class SelectProgressTypeDialogComponent extends BaseDialogComponent<Selec
       .renderPager(false)
       .onClick((item) => {
         this.selectedItem = item;
-        this.close();
+        super.close();
       })
       .build();
   }
 
   public addCustomProgressType(): void {
     this.openAddCustomProgressTypeDialog = true;
-    this.close();
-  }
-
-  public close(): void {
-    this.dependencies.tdServices.dialogService.closeAll();
+    super.close();
   }
 }

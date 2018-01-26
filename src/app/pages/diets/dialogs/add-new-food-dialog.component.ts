@@ -39,7 +39,7 @@ export class AddNewFoodDialogComponent extends BaseDialogComponent<AddNewFoodDia
       .wrapInCard(false)
       .onAfterInsert((response => {
         this.newFood = response.item;
-        this.close();
+        super.close();
       }))
       .optionLabelResolver((field, originalLabel) => {
         if (field.key === 'FoodCategoryId') {
@@ -63,9 +63,5 @@ export class AddNewFoodDialogComponent extends BaseDialogComponent<AddNewFoodDia
       })
       .renderButtons(false)
       .build();
-  }
-
-  public close(): void {
-    this.dependencies.tdServices.dialogService.closeAll();
   }
 }

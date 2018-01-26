@@ -17,13 +17,14 @@ export class SelectDietFoodDialogComponent extends BaseDialogComponent<SelectFoo
   public selectable: boolean = true;
   public config?: DataTableConfig;
 
-  public foods: boolean = false;
-  public meals: boolean = false;
-  public supplements: boolean = false;
+  public isFood: boolean = false;
+  public isMeal: boolean = false;
+  public isSupplement: boolean = false;
 
   public selectedFood?: Food;
-  public openAddNewFoodDialog: boolean = false;
-  public openAddNewDishDialog: boolean = false;
+  public openNewFoodDialog: boolean = false;
+  public openNewMealDialog: boolean = false;
+  public openNewSupplementDialog: boolean = false;
 
   constructor(
     protected dependencies: ComponentDependencyService,
@@ -32,15 +33,15 @@ export class SelectDietFoodDialogComponent extends BaseDialogComponent<SelectFoo
   ) {
     super(dependencies, dialogRef, data);
 
-    this.foods = data.foods;
-    this.meals = data.meals;
-    this.supplements = data.supplements;
+    this.isFood = data.isFood;
+    this.isMeal = data.isMeal;
+    this.isSupplement = data.isSupplement;
   }
 
   ngOnInit() {
     super.ngOnInit();
 
-    this.config = this.dependencies.itemServices.foodService.buildDataTable(
+    const dataTable = this.dependencies.itemServices.foodService.buildDataTable(
       (query, search) => {
 
         // shared conditions
@@ -48,8 +49,8 @@ export class SelectDietFoodDialogComponent extends BaseDialogComponent<SelectFoo
           .whereLike('FoodName', search)
           .include('FoodCategory');
 
-        if (this.foods) {
-        // get foods that are either global & approved or created by current user
+        if (this.isFood) {
+          // get foods that are either global & approved or created by current user
           // get only approved foods
           query.whereEquals('IsFood', true);
           query.whereComplex({
@@ -57,19 +58,19 @@ export class SelectDietFoodDialogComponent extends BaseDialogComponent<SelectFoo
               leftSide: [new QueryConditionField('IsGlobal', true, QueryConditionType.Equals)],
               rightSide: [new QueryConditionField('IsApproved', true, QueryConditionType.Equals)],
               join: QueryConditionJoin.And
-            }) ,
+            }),
             rightSide: [new QueryConditionField('CreatedByUserId', this.authUser ? this.authUser.id : 0, QueryConditionType.Equals)],
             join: QueryConditionJoin.Or
           });
         }
 
-        if (this.meals) {
+        if (this.isMeal) {
           query
             .byCurrentUser()
             .whereEquals('IsMeal', true);
         }
 
-        if (this.supplements) {
+        if (this.isSupplement) {
           query
             .byCurrentUser()
             .whereEquals('IsSupplement', true);
@@ -91,48 +92,55 @@ export class SelectDietFoodDialogComponent extends BaseDialogComponent<SelectFoo
           hideOnSmallScreen: true
         },
       ])
-      .withDynamicFilters(search => this.dependencies.itemServices.foodCategoryService.getFoodCategoryWithFoodsCountDto({
-        foodName: search,
-        isFood: this.foods,
-        isMeal: this.meals,
-        isSupplement: this.supplements,
-        byCurrentUser: this.meals || this.supplements ? true : false, // get only created by current user for supps and meals
-        isGlobalOrByCurrentUser: this.foods ? true : false, // get either global foods or the foods created by current user
-      })
-        .get()
-        .map(response => {
-          const filters: IDynamicFilter<Food>[] = [];
-          response.items.forEach(category => {
-            filters.push(({
-              guid: category.id.toString(),
-              name: super.translate('module.foodCategories.categories.' + category.codename),
-              query: (query) => query.whereEquals('FoodCategoryId', category.id),
-              count: category.foodsCount
-            }));
-          });
-          return filters;
-        }))
       .pageSize(5)
       .renderPager(false)
       .onClick((item: Food) => {
         // assign selected item
         this.selectedFood = item;
-        this.close();
-      })
-      .build();
+        super.close();
+      });
+
+    if (this.isFood) {
+      dataTable.withDynamicFilters(search =>
+        // show filters only for foods
+        this.dependencies.itemServices.foodCategoryService.getFoodCategoryWithFoodsCountDto({
+          foodName: search,
+          isFood: this.isFood,
+          isMeal: this.isMeal,
+          isSupplement: this.isSupplement,
+          byCurrentUser: this.isMeal || this.isSupplement ? true : false, // get only created by current user for supps and meals
+          isGlobalOrByCurrentUser: this.isFood ? true : false, // get either global foods or the foods created by current user
+        })
+          .get()
+          .map(response => {
+            const filters: IDynamicFilter<Food>[] = [];
+            response.items.forEach(category => {
+              filters.push(({
+                guid: category.id.toString(),
+                name: super.translate('module.foodCategories.categories.' + category.codename),
+                query: (query) => query.whereEquals('FoodCategoryId', category.id),
+                count: category.foodsCount
+              }));
+            });
+            return filters;
+          }));
+    }
+
+    this.config = dataTable.build();
   }
 
   public newFood(): void {
-    this.openAddNewFoodDialog = true;
-    this.close();
+    this.openNewFoodDialog = true;
+    super.close();
   }
 
-  public newDish(): void {
-    this.openAddNewDishDialog = true;
-    this.close();
+  public newMeal(): void {
+    this.openNewMealDialog = true;
+    super.close();
   }
 
-  public close(): void {
-    this.dependencies.tdServices.dialogService.closeAll();
+  public newSupplement(): void {
+    this.openNewSupplementDialog = true;
+    super.close();
   }
 }

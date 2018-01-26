@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { stringHelper } from 'lib/utilities';
 import { Observable } from 'rxjs/Rx';
 
-import { DataFormConfig } from '../../../../web-components/data-form';
+import { DataFormConfig, DataFormComponent, DataFormInsertResponse } from '../../../../web-components/data-form';
 import { BaseModuleComponent, ComponentDependencyService } from '../../../core';
+import { Food } from 'app/models';
 
 @Component({
     selector: 'mod-new-food',
@@ -12,6 +13,14 @@ import { BaseModuleComponent, ComponentDependencyService } from '../../../core';
 export class NewFoodComponent extends BaseModuleComponent implements OnInit {
 
     public formConfig: DataFormConfig;
+
+    @Input() redirectAfterInsert: boolean = true;
+
+    @Input() renderButtons: boolean = true;
+
+    @Output() onAfterInsert = new EventEmitter<DataFormInsertResponse<Food>>();
+
+    @ViewChild(DataFormComponent) dataForm: DataFormComponent;
 
     constructor(
         protected componentDependencyService: ComponentDependencyService) {
@@ -32,7 +41,12 @@ export class NewFoodComponent extends BaseModuleComponent implements OnInit {
             }
         )
             .ignoreFields(['AssignedFoodsVirtual'])
-            .onAfterInsert((response) => this.dependencies.coreServices.navigateService.foodPreviewPage(response.item.id).navigate())
+            .onAfterInsert((response) => {
+                this.onAfterInsert.next(response);
+                if (this.redirectAfterInsert) {
+                    this.dependencies.coreServices.navigateService.foodPreviewPage(response.item.id).navigate();
+                }
+            })
             .optionLabelResolver((field, originalLabel) => {
                 if (field.key === 'FoodCategoryId') {
                     return super.translate('module.foodCategories.categories.' + originalLabel);
@@ -42,6 +56,7 @@ export class NewFoodComponent extends BaseModuleComponent implements OnInit {
 
                 return Observable.of(originalLabel);
             })
+            .renderButtons(this.renderButtons)
             .configField((field, item) => {
                 if (field.key === 'Language') {
                     const language = this.currentLanguage;

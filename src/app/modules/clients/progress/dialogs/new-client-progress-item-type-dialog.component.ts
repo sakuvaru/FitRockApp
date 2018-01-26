@@ -45,13 +45,9 @@ export class NewClientProgressItemTypeDialogComponent extends BaseDialogComponen
             })
             .onAfterInsert((response) => {
                 this.createdProgressItemType = response.item;
-                this.close();
+                super.close();
             })
             .renderButtons(false)
             .build();
-    }
-
-    public close(): void {
-        this.dependencies.tdServices.dialogService.closeAll();
     }
 }

@@ -1,16 +1,37 @@
 <mat-dialog-actions>
-    <span class="mat-title">{{'module.diets.newFood' | localize }}</span>
+    <span *ngIf="isFood" class="mat-title">{{'module.diets.newFood' | localize }}</span>
+    <span *ngIf="isMeal" class="mat-title">{{'module.diets.newMeal' | localize }}</span>
+    <span *ngIf="isSupplement" class="mat-title">{{'module.diets.newSupplement' | localize }}</span>
     <span fxFlex></span>
     <close-button (click)="close()"></close-button>
 </mat-dialog-actions>
 
-<mat-dialog-content>
-    <div class="mat-padding">
-        <data-form #dataForm [config]="foodForm"></data-form>
-    </div>
-</mat-dialog-content>
+<ng-container *ngIf="isFood">
+    <mat-dialog-content>
+        <mod-new-food [renderButtons]="false" [redirectAfterInsert]="false" (onAfterInsert)="handleInsert($event)" #newFood></mod-new-food>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+        <button mat-raised-button [dataForm]="newFood.dataForm" dataFormSaveButton color="accent">{{ 'shared.create' | localize }}</button>
+        <span fxFlex></span>
+    </mat-dialog-actions>
+</ng-container>
 
-<mat-dialog-actions>
-    <button mat-raised-button [dataForm]="dataForm" dataFormSaveButton color="accent">{{ 'shared.create' | localize }}</button>
-    <span fxFlex></span>
-</mat-dialog-actions>
+<ng-container *ngIf="isMeal">
+    <mat-dialog-content>
+        <mod-new-meal [renderButtons]="false" [redirectAfterInsert]="false" (onAfterInsert)="handleInsert($event)" #newMeal></mod-new-meal>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+        <button mat-raised-button [dataForm]="newMeal.dataForm" dataFormSaveButton color="accent">{{ 'shared.create' | localize }}</button>
+        <span fxFlex></span>
+    </mat-dialog-actions>
+</ng-container>
+
+<ng-container *ngIf="isSupplement">
+    <mat-dialog-content>
+        <mod-new-supplement [renderButtons]="false" [redirectAfterInsert]="false" (onAfterInsert)="handleInsert($event)" #newSupplement></mod-new-supplement>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+        <button mat-raised-button [dataForm]="newSupplement.dataForm" dataFormSaveButton color="accent">{{ 'shared.create' | localize }}</button>
+        <span fxFlex></span>
+    </mat-dialog-actions>
+</ng-container>

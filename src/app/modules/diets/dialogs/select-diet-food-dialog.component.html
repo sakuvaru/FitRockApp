@@ -1,8 +1,11 @@
 <mat-dialog-actions>
-    <span class="mat-title">{{'module.diets.selectFood' | localize}}</span>
+    <span *ngIf="isFood" class="mat-title">{{'module.diets.selectFood' | localize}}</span>
+    <span *ngIf="isMeal" class="mat-title">{{'module.diets.selectMeal' | localize}}</span>
+    <span *ngIf="isSupplement" class="mat-title">{{'module.diets.selectSupplement' | localize}}</span>
     <span fxFlex></span>
-    <add-button class="push-right" tooltip="{{'module.diets.newDish' | localize }}" (click)="newDish()"></add-button>
-    <add-button class="push-right" tooltip="{{'module.diets.newFood' | localize }}" (click)="newFood()"></add-button>
+    <add-button *ngIf="isFood" class="push-right" tooltip="{{'module.diets.newFood' | localize }}" (click)="newFood()"></add-button>
+    <add-button *ngIf="isMeal" class="push-right" tooltip="{{'module.diets.newMeal' | localize }}" (click)="newMeal()"></add-button>
+    <add-button *ngIf="isSupplement" class="push-right" tooltip="{{'module.diets.newSupplement' | localize }}" (click)="newSupplement()"></add-button>
     <close-button (click)="close()"></close-button>
 </mat-dialog-actions>
 
@@ -12,6 +15,6 @@
 </mat-dialog-content>
 
 <mat-dialog-actions>
-    <div fxFlex></div>
+    <div fxFlex></div>                  
     <data-table-pager [dataTable]="dataTable"></data-table-pager>
 </mat-dialog-actions>

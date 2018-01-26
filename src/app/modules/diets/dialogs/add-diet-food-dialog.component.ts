@@ -67,13 +67,9 @@ export class AddDietFoodDialogComponent extends BaseDialogComponent<AddDietFoodD
       .wrapInCard(false)
       .onAfterInsert((response => {
         this.newDietFood = response.item;
-        this.close();
+        super.close();
       }))
       .renderButtons(false)
       .build();
-  }
-
-  public close(): void {
-    this.dependencies.tdServices.dialogService.closeAll();
   }
 }

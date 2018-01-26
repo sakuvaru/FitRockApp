@@ -262,8 +262,10 @@
 			"editTemplate": "Upravit šablonu",
 			"previewDiet": "Přehled plánu",
 			"foodUnit": "Množství",
-			"newFood": "Vytvořit potravinu",
-			"newDish": "Vytvořit jídlo",
+			"addFoodToDiet": "Přidat do jídelníčku",
+			"newFood": "Nová potravina",
+			"newSupplement": "Nový suplement",
+			"newMeal": "Nové jídlo",
 			"addDietMeal": "Jídlo",
 			"addDietSupplement": "Suplement",
 			"addDietFood": "Potravinu",
@@ -272,7 +274,9 @@
 			"myFoods": "Moje jídla",
 			"dietFoodHasNoNotes": "Nejsou zde žádné poznámky",
 			"eatTime": "Čas",
-			"selectFood": "Vybrat jídlo",
+			"selectFood": "Vyber potravinu",
+			"selectMeal": "Vyber jídlo",
+			"selectSupplement": "Vyber suplement",
 			"clientDietsNotice": "Na této stránce najdeš všechny jídelníčky použité pro klienty. Tyto jídelníčky jsou nezávislé na šablonách a lze je upravit pro každého klienta samostatně."
 		},
 		"foods": {
@@ -596,7 +600,10 @@
 		"diet": {
 			"dietName": "Název",
 			"dietCategoryId": "Kategorie",
-			"description": "Popis"
+			"description": "Popis",
+			"targetFat": "Cílové tuky",
+			"targetCho": "Cílové sacharidy",
+			"targetProt": "Cílové bílkoviny"
 		},
 		"dietFood": {
 			"amount": "Množství",

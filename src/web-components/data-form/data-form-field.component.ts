@@ -20,6 +20,10 @@ export class DataFormFieldComponent extends BaseWebComponent {
   @Input() formGroup: FormGroup;
   @Input() config: DataFormConfig;
 
+  isDisabled(): boolean {
+    return this.field.disabled ? this.field.disabled : false;
+  }
+
   // ----------------------- Field types ------------------------ //
 
   isDropdownField(): boolean {

@@ -4,7 +4,6 @@ import { NgModule } from '@angular/core';
 import { CoreModule } from '../../core';
 import { SharedModule } from '../shared/shared.module';
 import { AddDietFoodDialogComponent } from './dialogs/add-diet-food-dialog.component';
-import { AddNewDishDialogComponent } from './dialogs/add-new-dish-dialog.component';
 import { AddNewFoodDialogComponent } from './dialogs/add-new-food-dialog.component';
 import { EditDietFoodDialogComponent } from './dialogs/edit-diet-food-dialog.component';
 import { SelectDietFoodDialogComponent } from './dialogs/select-diet-food-dialog.component';
@@ -14,19 +13,20 @@ import { ClientDietsComponent } from './list/client-diets.component';
 import { DietTemplatesComponent } from './list/diet-templates.component';
 import { NewDietTemplateComponent } from './new/new-diet-template.component';
 import { DietPlanViewComponent } from './view/diet-plan-view.component';
+import { FoodsModule } from '../foods/foods.module';
 
 @NgModule({
     imports: [
         CoreModule,
         CommonModule,
-        SharedModule
+        SharedModule,
+        FoodsModule
     ],
     entryComponents: [
         AddDietFoodDialogComponent,
         SelectDietFoodDialogComponent,
         EditDietFoodDialogComponent,
         AddNewFoodDialogComponent,
-        AddNewDishDialogComponent
     ],
     declarations: [
         ClientDietsComponent,
@@ -39,7 +39,6 @@ import { DietPlanViewComponent } from './view/diet-plan-view.component';
         SelectDietFoodDialogComponent,
         EditDietFoodDialogComponent,
         AddNewFoodDialogComponent,
-        AddNewDishDialogComponent,
     ],
     exports: [
         ClientDietsComponent,
@@ -52,7 +51,6 @@ import { DietPlanViewComponent } from './view/diet-plan-view.component';
         SelectDietFoodDialogComponent,
         EditDietFoodDialogComponent,
         AddNewFoodDialogComponent,
-        AddNewDishDialogComponent,
     ]
 })
 export class DietsModule { }

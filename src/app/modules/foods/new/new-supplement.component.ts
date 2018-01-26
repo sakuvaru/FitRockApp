@@ -1,15 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { stringHelper } from 'lib/utilities';
 import { Observable } from 'rxjs/Rx';
 
-import { DataFormConfig } from '../../../../web-components/data-form';
+import { DataFormConfig, DataFormInsertResponse, DataFormComponent } from '../../../../web-components/data-form';
 import { BaseModuleComponent, ComponentDependencyService } from '../../../core';
+import { Food } from 'app/models';
 
 @Component({
     selector: 'mod-new-supplement',
     templateUrl: 'new-supplement.component.html'
 })
 export class NewSupplementComponent extends BaseModuleComponent implements OnInit {
+
+    @Input() redirectAfterInsert: boolean = true;
+
+    @Input() renderButtons: boolean = true;
+
+    @Output() onAfterInsert = new EventEmitter<DataFormInsertResponse<Food>>();
+
+    @ViewChild(DataFormComponent) dataForm: DataFormComponent;
 
     public formConfig: DataFormConfig;
 
@@ -32,7 +41,13 @@ export class NewSupplementComponent extends BaseModuleComponent implements OnIni
                     .withData('isSupplement', true)
             })
             .ignoreFields(['AssignedFoodsVirtual'])
-            .onAfterInsert((response) => this.dependencies.coreServices.navigateService.supplementPreviewPage(response.item.id).navigate())
+            .onAfterInsert((response) => {
+                this.onAfterInsert.next(response);
+                if (this.redirectAfterInsert) {
+                    this.dependencies.coreServices.navigateService.supplementPreviewPage(response.item.id).navigate();
+                }
+            })
+            .renderButtons(this.renderButtons)
             .optionLabelResolver((field, originalLabel) => {
                 if (field.key === 'FoodCategoryId') {
                     return super.translate('module.foodCategories.categories.' + originalLabel);

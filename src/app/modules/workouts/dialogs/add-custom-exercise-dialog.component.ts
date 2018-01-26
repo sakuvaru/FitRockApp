@@ -37,7 +37,7 @@ export class AddCustomExerciseDialogComponent extends BaseDialogComponent<AddCus
       .wrapInCard(false)
       .onAfterInsert((response => {
         this.newExercise = response.item;
-        this.close();
+        super.close();
       }))
       .renderButtons(false)
       .optionLabelResolver((field, label) => {
@@ -48,9 +48,5 @@ export class AddCustomExerciseDialogComponent extends BaseDialogComponent<AddCus
         return Observable.of(label);
     })
       .build();
-  }
-
-  public close(): void {
-    this.dependencies.tdServices.dialogService.closeAll();
   }
 }

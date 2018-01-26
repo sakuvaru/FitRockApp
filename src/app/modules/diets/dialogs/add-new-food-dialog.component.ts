@@ -1,9 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
-import { stringHelper } from 'lib/utilities';
-import { Observable } from 'rxjs/Rx';
 
-import { DataFormConfig } from '../../../../web-components/data-form';
+import { DataFormConfig, DataFormInsertResponse, DataFormComponent } from '../../../../web-components/data-form';
 import { BaseDialogComponent, ComponentDependencyService } from '../../../core';
 import { Food } from '../../../models';
 
@@ -17,7 +15,13 @@ export class AddNewFoodDialogComponent extends BaseDialogComponent<AddNewFoodDia
   /**
    * Accessed by parent component
    */
-  public newFood: Food;
+  public newFood?: Food;
+
+  public isFood: boolean;
+  public isMeal: boolean;
+  public isSupplement: boolean;
+
+  public dataForm?: DataFormComponent;
 
   constructor(
     protected dependencies: ComponentDependencyService,
@@ -25,47 +29,19 @@ export class AddNewFoodDialogComponent extends BaseDialogComponent<AddNewFoodDia
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     super(dependencies, dialogRef, data);
-
+    this.isFood = data.isFood;
+    this.isMeal = data.isMeal;
+    this.isSupplement = data.isSupplement;
   }
 
   ngOnInit() {
     super.ngOnInit();
-
-    this.initForm();
   }
 
-  private initForm(): void {
-    this.foodForm = this.dependencies.itemServices.foodService.buildInsertForm()
-      .wrapInCard(false)
-      .onAfterInsert((response => {
-        this.newFood = response.item;
-        this.close();
-      }))
-      .optionLabelResolver((field, originalLabel) => {
-        if (field.key === 'FoodCategoryId') {
-          return super.translate('module.foodCategories.categories.' + originalLabel);
-        } else if (field.key === 'FoodUnitId') {
-          return super.translate('module.foodUnits.' + originalLabel).map(text => stringHelper.capitalizeText(text));
-        }
-
-        return Observable.of(originalLabel);
-      })
-      .configField((field, item) => {
-        if (field.key === 'Language') {
-          const language = this.currentLanguage;
-          if (!language) {
-            throw Error(`Language has to be set in order to create new foods`);
-          }
-          field.value = language.language.toString();
-        }
-
-        return Observable.of(field);
-      })
-      .renderButtons(false)
-      .build();
-  }
-
-  public close(): void {
-    this.dependencies.tdServices.dialogService.closeAll();
+  handleInsert(response: DataFormInsertResponse<Food>): void {
+    if (response.item) {
+      this.newFood = response.item;
+    }
+    super.close();
   }
 }

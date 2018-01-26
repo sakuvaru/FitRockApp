@@ -38,18 +38,14 @@ export class EditProgressItemDialogComponent extends BaseDialogComponent<EditPro
       .wrapInCard(false)
       .onAfterEdit((response) => {
         this.itemWasUpdated = true;
-        this.close();
+        super.close();
       })
       .onAfterDelete((response) => {
         this.idOfDeletedItem = response.deletedItemId;
         this.itemWasDeleted = true;
-        this.close();
+        super.close();
       })
       .renderButtons(false)
       .build();
-  }
-
-  public close(): void {
-    this.dependencies.tdServices.dialogService.closeAll();
   }
 }

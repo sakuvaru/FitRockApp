@@ -24,8 +24,4 @@ export class FoodListDialogComponent extends BaseDialogComponent<FoodListDialogC
   ngOnInit() {
     super.ngOnInit();
   }
-
-  public close(): void {
-    this.dependencies.tdServices.dialogService.closeAll();
-  }
 }

@@ -70,17 +70,13 @@ export class SelectWorkoutExerciseDialogComponent extends BaseDialogComponent<Se
       .onClick((item: Exercise) => {
         // assign selected exercise
         this.selectedExercise = item;
-        this.close();
+        super.close();
       })
       .build();
   }
 
   public addCustomExercise(): void {
     this.openAddCustomExerciseDialog = true;
-    this.close();
-  }
-
-  public close(): void {
-    this.dependencies.tdServices.dialogService.closeAll();
+    super.close();
   }
 }

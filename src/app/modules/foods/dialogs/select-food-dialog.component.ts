@@ -26,13 +26,11 @@ export class SelectFoodDialogComponent extends BaseDialogComponent<SelectFoodDia
   ngOnInit() {
     super.ngOnInit();
 
-    console.log('TODO!! Fix filters here');
-
     this.config = this.dependencies.itemServices.foodService.buildDataTable(
       (query, search) => {
         return query
           .includeMultiple(['FoodCategory', 'FoodUnit'])
-          .whereEquals('IsMeal', false)
+          .whereEquals('IsFood', true)
           .whereEqualsWithOr([{
             field: 'CreatedByUserId',
             value: this.authUser ? this.authUser.id : 0
@@ -78,12 +76,8 @@ export class SelectFoodDialogComponent extends BaseDialogComponent<SelectFoodDia
       .onClick((item: Food) => {
         // assign selected item
         this.selectedFood = item;
-        this.close();
+        super.close();
       })
       .build();
-  }
-
-  public close(): void {
-    this.dependencies.tdServices.dialogService.closeAll();
   }
 }

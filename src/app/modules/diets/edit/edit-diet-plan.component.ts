@@ -8,7 +8,6 @@ import { AppConfig } from '../../../config';
 import { BaseModuleComponent, ComponentDependencyService } from '../../../core';
 import { Diet, DietFood, Food } from '../../../models';
 import { AddDietFoodDialogComponent } from '../dialogs/add-diet-food-dialog.component';
-import { AddNewDishDialogComponent } from '../dialogs/add-new-dish-dialog.component';
 import { AddNewFoodDialogComponent } from '../dialogs/add-new-food-dialog.component';
 import { EditDietFoodDialogComponent } from '../dialogs/edit-diet-food-dialog.component';
 import { SelectDietFoodDialogComponent } from '../dialogs/select-diet-food-dialog.component';
@@ -71,53 +70,51 @@ export class EditDietPlanComponent extends BaseModuleComponent implements OnDest
     }
   }
 
-  openSelectFoodDialog(foods: boolean, meals: boolean, supplements: boolean): void {
+  openSelectFoodDialog(isFood: boolean, isMeal: boolean, isSupplement: boolean): void {
     const data: any = {};
     data.dietId = this.diet.id;
-    data.foods = foods;
-    data.meals = meals;
-    data.supplements = supplements;
+    data.isFood = isFood;
+    data.isMeal = isMeal;
+    data.isSupplement = isSupplement;
 
     const dialog = this.dependencies.tdServices.dialogService.open(SelectDietFoodDialogComponent, {
       panelClass: AppConfig.DefaultDialogPanelClass,
       data: data
     });
 
-    dialog.afterClosed().subscribe(m => {
-      // open new add diet food dialog if some food was selected
-      if (dialog.componentInstance.selectedFood) {
-        this.openAddDietFoodDialog(dialog.componentInstance.selectedFood);
-      } else if (dialog.componentInstance.openAddNewFoodDialog) {
-        this.openNewFoodDialog();
-      } else if (dialog.componentInstance.openAddNewDishDialog) {
-        this.openNewDishDialog();
-      }
-    });
+    dialog.afterClosed()
+      .takeUntil(this.ngUnsubscribe)
+      .subscribe(m => {
+        // open new add diet food dialog if some food was selected
+        if (dialog.componentInstance.selectedFood) {
+          this.openAddDietFoodDialog(dialog.componentInstance.selectedFood);
+        } else if (dialog.componentInstance.openNewFoodDialog) {
+          this.openNewFoodDialog(true, false, false);
+        } else if (dialog.componentInstance.openNewMealDialog) {
+          this.openNewFoodDialog(false, true, false);
+        } else if (dialog.componentInstance.openNewSupplementDialog) {
+          this.openNewFoodDialog(false, false, true);
+        }
+      });
   }
 
-  openNewDishDialog(): void {
-    const dialog = this.dependencies.tdServices.dialogService.open(AddNewDishDialogComponent, {
-      panelClass: AppConfig.DefaultDialogPanelClass
-    });
-
-    dialog.afterClosed().subscribe(m => {
-      // open add diet food dialog if new custom food was created 
-      if (dialog.componentInstance.newFood) {
-        this.openAddDietFoodDialog(dialog.componentInstance.newFood);
-      }
-    });
-  }
-
-  openNewFoodDialog(): void {
+  openNewFoodDialog(isFood: boolean, isMeal: boolean, isSupplement: boolean): void {
     const dialog = this.dependencies.tdServices.dialogService.open(AddNewFoodDialogComponent, {
-      panelClass: AppConfig.DefaultDialogPanelClass
-    });
-    dialog.afterClosed().subscribe(m => {
-      // open add diet food dialog if new custom food was created 
-      if (dialog.componentInstance.newFood) {
-        this.openAddDietFoodDialog(dialog.componentInstance.newFood);
+      panelClass: AppConfig.DefaultDialogPanelClass,
+      data: {
+        isFood: isFood,
+        isMeal: isMeal,
+        isSupplement: isSupplement
       }
     });
+    dialog.afterClosed()
+      .takeUntil(this.ngUnsubscribe)
+      .subscribe(m => {
+        // open add diet food dialog if new custom food was created 
+        if (dialog.componentInstance.newFood) {
+          this.openAddDietFoodDialog(dialog.componentInstance.newFood);
+        }
+      });
   }
 
   openAddDietFoodDialog(food: Food): void {

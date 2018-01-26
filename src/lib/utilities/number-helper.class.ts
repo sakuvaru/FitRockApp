@@ -5,11 +5,7 @@ export class NumberHelper {
      * @param value value to check
      */
     isNumber(value: any): boolean {
-        const number = +value;
-        if (number) {
-            return true;
-        }
-        return false;
+        return !isNaN(parseFloat(value)) && isFinite(value);
     }
 
     /**

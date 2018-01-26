@@ -23,7 +23,7 @@ export class EditFoodDishDialogComponent extends BaseDialogComponent<EditFoodDis
   }
 
   confirm(): void {
-    this.close();
+    super.close();
   }
 
   ngOnInit() {

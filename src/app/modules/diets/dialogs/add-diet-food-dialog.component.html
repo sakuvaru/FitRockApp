@@ -1,5 +1,5 @@
 <mat-dialog-actions>
-    <span *ngIf="food" class="mat-title">{{'module.diets.addDietFood' | localize }} - {{ food.foodName }}</span>
+    <span *ngIf="food" class="mat-title">{{'module.diets.addFoodToDiet' | localize }} - {{ food.foodName }}</span>
     <span fxFlex></span>
     <close-button (click)="close()"></close-button>
 </mat-dialog-actions>
@@ -11,6 +11,6 @@
 </mat-dialog-content>
 
 <mat-dialog-actions>
-        <button mat-raised-button [dataForm]="dataForm" dataFormSaveButton color="accent">{{ 'shared.create' | localize }}</button>
+    <button mat-raised-button [dataForm]="dataForm" dataFormSaveButton color="accent">{{ 'shared.create' | localize }}</button>
     <span fxFlex></span>
 </mat-dialog-actions>

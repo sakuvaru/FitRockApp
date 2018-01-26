@@ -53,13 +53,9 @@ export class AddWorkoutExerciseDialogComponent extends BaseDialogComponent<AddWo
       .wrapInCard(false)
       .onAfterInsert((response => {
         this.newWorkoutExercise = response.item;
-        this.close();
+        super.close();
       }))
       .renderButtons(false)
       .build();
-  }
-
-  public close(): void {
-    this.dependencies.tdServices.dialogService.closeAll();
   }
 }

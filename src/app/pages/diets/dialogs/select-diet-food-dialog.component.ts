@@ -88,22 +88,18 @@ export class SelectDietFoodDialogComponent extends BaseDialogComponent<SelectFoo
       .onClick((item: Food) => {
         // assign selected item
         this.selectedFood = item;
-        this.close();
+        super.close();
       })
       .build();
   }
 
   public newFood(): void {
     this.openAddNewFoodDialog = true;
-    this.close();
+    super.close();
   }
 
   public newDish(): void {
     this.openAddNewDishDialog = true;
-    this.close();
-  }
-
-  public close(): void {
-    this.dependencies.tdServices.dialogService.closeAll();
+    super.close();
   }
 }

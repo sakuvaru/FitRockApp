@@ -39,18 +39,14 @@ export class EditWorkoutExerciseDialogComponent extends BaseDialogComponent<Edit
       .wrapInCard(false)
       .onAfterEdit((response) => {
         this.workoutExercise = response.item;
-        this.close();
+        super.close();
       })
       .onAfterDelete((response) => {
         this.idOfDeletedWorkoutExercise = response.deletedItemId;
         this.workoutExerciseWasDeleted = true;
-        this.close();
+        super.close();
       })
       .renderButtons(false)
       .build();
-  }
-
-  public close(): void {
-    this.dependencies.tdServices.dialogService.closeAll();
   }
 }
