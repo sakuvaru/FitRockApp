@@ -1,7 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { NgModule, ModuleWithProviders } from '@angular/core';
+import { NgModule } from '@angular/core';
 
+import { AnimateModule } from './animate/animate.module';
+import { BadgesModule } from './badges/badges.module';
+import { BoxesModule } from './boxes/boxes.module';
 import { ButtonsModule } from './buttons/buttons.module';
+import { CalendarModule } from './calendar/calendar.module';
 import { DataFormModule } from './data-form/data-form.module';
 import { DataTableModule } from './data-table/data-table.module';
 import { GalleryModule } from './gallery/gallery.module';
@@ -15,9 +19,6 @@ import { MapModule } from './map/map.module';
 import { MessagesModule } from './messages/messages.module';
 import { TextModule } from './text/text.module';
 import { UploaderModule } from './uploader/uploader.module';
-import { CalendarModule } from './calendar/calendar.module';
-import { BoxesModule } from './boxes/boxes.module';
-import { AnimateModule } from './animate/animate.module';
 
 @NgModule({
     imports: [
@@ -42,7 +43,8 @@ import { AnimateModule } from './animate/animate.module';
         LayoutModule,
         CalendarModule,
         BoxesModule,
-        AnimateModule
+        AnimateModule,
+        BadgesModule
     ]
 })
 export class WebComponentsModule {

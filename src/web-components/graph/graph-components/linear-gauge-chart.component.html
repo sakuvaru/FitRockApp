@@ -1,0 +1,7 @@
+<ng-container *ngIf="config && graph && wrapperStyle">
+    <div [ngStyle]="wrapperStyle">
+        <ngx-charts-linear-gauge [valueFormatting]="graph.labelFormatting ? graph.labelFormatting : undefined" [previousValue]="graph.previousValue" [min]="graph.min" [max]="graph.max" [value]="graph.value" [units]="graph.units ? (graph.units | async) : ''"
+            [view]="config.view" [scheme]="customColorScheme" (select)="onSelect($event)">
+        </ngx-charts-linear-gauge>
+    </div>
+</ng-container>

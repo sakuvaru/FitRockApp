@@ -22,7 +22,7 @@ export class GraphComponent extends BaseWebComponent {
      */
     public loaderEnabled: boolean = true;
 
-    @ViewChild('graphComponent') graphComponent: BaseGraphComponent;
+    @ViewChild('graphComponent') graphComponent: BaseGraphComponent<any>;
 
     constructor(
         protected localizationService: LocalizationService

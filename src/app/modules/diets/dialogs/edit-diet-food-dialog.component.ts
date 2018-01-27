@@ -18,6 +18,7 @@ export class EditDietFoodDialogComponent extends BaseDialogComponent<EditDietFoo
 
   public idOfDeletedDietFood: number;
   public dietFoodWasDeleted: boolean = false;
+  public foodWasEdited: boolean = false;
 
   constructor(
     protected dependencies: ComponentDependencyService,
@@ -40,7 +41,7 @@ export class EditDietFoodDialogComponent extends BaseDialogComponent<EditDietFoo
     this.dietFoodForm = this.dependencies.itemServices.dietFoodService.buildEditForm(this.dietFood.id)
       .wrapInCard(false)
       .fieldLabelResolver((field, originalLabel) => {
-        if (field.key === 'UnitValue') {
+        if (field.key === 'Amount') {
           return this.dependencies.itemServices.foodUnitService.item().byId(this.dietFood.food.foodUnitId)
             .get()
             .flatMap(response => {
@@ -48,14 +49,15 @@ export class EditDietFoodDialogComponent extends BaseDialogComponent<EditDietFoo
                 console.warn(`FoodUnit was not found, this should have not happened here`);
                 return Observable.of(originalLabel);
               }
-              return super.translate('module.foodUnits.' + response.item.unitCode)
-                .map(unitTranslation => originalLabel + ' (' + unitTranslation + ')');
+              return super.translate('module.foodUnits.pluralTwo.' + response.item.unitCode)
+                .map(unitTranslation => originalLabel + ' - ' + unitTranslation + '');
             });
         }
         return Observable.of(originalLabel);
       })
       .onAfterEdit((response) => {
         this.dietFood = response.item;
+        this.foodWasEdited = true;
         super.close();
       })
       .onAfterDelete((response) => {

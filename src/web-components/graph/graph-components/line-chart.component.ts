@@ -11,7 +11,7 @@ import { observableHelper } from 'lib/utilities';
     selector: 'line-chart',
     templateUrl: 'line-chart.component.html'
 })
-export class LineChartGraphComponent extends BaseGraphComponent implements OnInit, OnChanges {
+export class LineChartGraphComponent extends BaseGraphComponent<LineChart> implements OnInit, OnChanges {
 
     /**
      * Graph configuration

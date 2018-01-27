@@ -11,5 +11,6 @@ export enum GraphTypeEnum {
 
     LineChart = 0,
     VerticalBarChart = 1,
-    PieChart = 2
+    PieChart = 2,
+    LinearGaugeChart = 3
 }

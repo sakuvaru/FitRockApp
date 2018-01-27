@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Diet } from '../../models';
-import { RepositoryClient, PostQuery } from '../../../lib/repository';
-import { BaseTypeService } from '../base/base-type.service';
-import { numberHelper } from 'lib/utilities';
-import { FoodService } from '../foods/food.service';
 import { SingleSeriesResponse } from 'app/services/progress/progress-models';
+import { numberHelper } from 'lib/utilities';
+
+import { PostQuery, RepositoryClient } from '../../../lib/repository';
+import { Diet } from '../../models';
+import { BaseTypeService } from '../base/base-type.service';
+import { FoodService } from '../foods/food.service';
+import { WebColorEnum } from 'web-components';
 
 @Injectable()
 export class DietService extends BaseTypeService<Diet> {
@@ -12,7 +14,7 @@ export class DietService extends BaseTypeService<Diet> {
     private foodService: FoodService;
 
     constructor(repositoryClient: RepositoryClient) {
-        super (repositoryClient, {
+        super(repositoryClient, {
             type: 'Diet',
             allowDelete: true
         });
@@ -27,7 +29,7 @@ export class DietService extends BaseTypeService<Diet> {
         return query;
     }
 
-     copyFromDiet(dietId: number, clientId: number): PostQuery<Diet> {
+    copyFromDiet(dietId: number, clientId: number): PostQuery<Diet> {
         return super.post<Diet>('CopyFromDiet')
             .withJsonData({
                 'dietId': dietId,
@@ -61,7 +63,7 @@ export class DietService extends BaseTypeService<Diet> {
                 nacl += foodCalculation.nacl;
             });
         }
-        
+
         return {
             cho: numberHelper.roundTo(cho, roundTo),
             fat: numberHelper.roundTo(fat, roundTo),
@@ -70,5 +72,29 @@ export class DietService extends BaseTypeService<Diet> {
             prot: numberHelper.roundTo(prot, roundTo),
             sugar: numberHelper.roundTo(sugar, roundTo),
         };
+    }
+
+    getGaugeColor(target: number, actual: number): WebColorEnum {
+        const okThreshold = 20;
+        const warnThreshold = 35;
+        let difference = 0;
+
+        if (actual === target) {
+            return WebColorEnum.Green;
+        }
+
+        if (actual > target) {
+            difference = actual - target;
+        } else {
+            difference = target - actual;
+        }
+
+        if (difference < okThreshold) {
+            return WebColorEnum.Green;
+        }
+        if (difference < warnThreshold) {
+            return WebColorEnum.Gold;
+        }
+        return WebColorEnum.Red;
     }
 }

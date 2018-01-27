@@ -11,6 +11,8 @@ import { AddDietFoodDialogComponent } from '../dialogs/add-diet-food-dialog.comp
 import { AddNewFoodDialogComponent } from '../dialogs/add-new-food-dialog.component';
 import { EditDietFoodDialogComponent } from '../dialogs/edit-diet-food-dialog.component';
 import { SelectDietFoodDialogComponent } from '../dialogs/select-diet-food-dialog.component';
+import { LinearGaugeChart, GraphConfig } from 'web-components/graph';
+import { WebColorEnum } from 'web-components';
 
 @Component({
   templateUrl: 'edit-diet-plan.component.html',
@@ -22,11 +24,25 @@ export class EditDietPlanComponent extends BaseModuleComponent implements OnDest
 
   @Input() dietId: number;
 
-  public diet: Diet;
+  private updateData$ = new EventEmitter<void>();
+
+  public dietFoodNutritions?: any;
+
+  public protColor = WebColorEnum.Blue;
+  public fatColor = WebColorEnum.Red;
+  public choColor = WebColorEnum.Purple;
+
+  public diet?: Diet;
   public sortedDietFoods: DietFood[];
 
   public readonly dragulaBag: string = 'dragula-bag';
   public readonly dragulaHandle: string = 'dragula-move-handle';
+
+  public fatsGauge?: GraphConfig<LinearGaugeChart>;
+  public protGauge?: GraphConfig<LinearGaugeChart>;
+  public choGauge?: GraphConfig<LinearGaugeChart>;
+
+  public totalKca = 0;
 
   constructor(
     private dragulaService: DragulaService,
@@ -52,8 +68,11 @@ export class EditDietPlanComponent extends BaseModuleComponent implements OnDest
       }
     });
 
+    // subscribe to gauge changes
+    this.subscribeToUpdateData();
+
     // subscribe to drop events
-    super.subscribeToObservable(this.getInitObsevable());
+    super.subscribeToObservable(this.getInitObservable());
   }
 
   ngOnDestroy() {
@@ -72,7 +91,7 @@ export class EditDietPlanComponent extends BaseModuleComponent implements OnDest
 
   openSelectFoodDialog(isFood: boolean, isMeal: boolean, isSupplement: boolean): void {
     const data: any = {};
-    data.dietId = this.diet.id;
+    data.dietId = this.dietId;
     data.isFood = isFood;
     data.isMeal = isMeal;
     data.isSupplement = isSupplement;
@@ -119,7 +138,7 @@ export class EditDietPlanComponent extends BaseModuleComponent implements OnDest
 
   openAddDietFoodDialog(food: Food): void {
     const data: any = {};
-    data.dietId = this.diet.id;
+    data.dietId = this.dietId;
     data.food = food;
 
     const dialog = this.dependencies.tdServices.dialogService.open(AddDietFoodDialogComponent, {
@@ -127,18 +146,21 @@ export class EditDietPlanComponent extends BaseModuleComponent implements OnDest
       panelClass: AppConfig.DefaultDialogPanelClass
     });
 
-    dialog.afterClosed().subscribe(m => {
-      // add newly added diet food to current list
-      // but first load whole object with category
-      if (dialog.componentInstance.newDietFood) {
-        this.dependencies.itemServices.dietFoodService.item().byId(dialog.componentInstance.newDietFood.id)
-          .includeMultiple(['Food', 'Food.FoodCategory', 'Food.FoodUnit'])
-          .get()
-          .subscribe(response => {
-            this.sortedDietFoods.push(response.item);
-          });
-      }
-    });
+    dialog.afterClosed()
+      .takeUntil(this.ngUnsubscribe)
+      .subscribe(m => {
+        // add newly added diet food to current list
+        // but first load whole object with category
+        if (dialog.componentInstance.newDietFood) {
+          this.dependencies.itemServices.dietFoodService.item().byId(dialog.componentInstance.newDietFood.id)
+            .includeMultiple(['Food', 'Food.FoodCategory', 'Food.FoodUnit'])
+            .get()
+            .subscribe(response => {
+              this.sortedDietFoods.push(response.item);
+              this.updateData();
+            });
+        }
+      });
   }
 
   deleteDietFood(dietFood: DietFood): void {
@@ -149,23 +171,24 @@ export class EditDietPlanComponent extends BaseModuleComponent implements OnDest
         .map(response => {
           // remove diet food from local letiable
           this.sortedDietFoods = _.reject(this.sortedDietFoods, function (item) { return item.id === response.deletedItemId; });
-
+          this.updateData();
           this.showSavedSnackbar();
-
-          this.stopGlobalLoader();
-        },
-        (error) => {
           this.stopGlobalLoader();
         }));
   }
 
-  openDietFoodDialog(dietFood: DietFood): void {
+  openEditDietFoodDialog(dietFood: DietFood): void {
     const dialog = this.dependencies.tdServices.dialogService.open(EditDietFoodDialogComponent, {
       panelClass: AppConfig.DefaultDialogPanelClass,
       data: dietFood
     });
 
     dialog.afterClosed().subscribe(m => {
+      if (dialog.componentInstance.dietFoodWasDeleted || dialog.componentInstance.foodWasEdited) {
+        // recalculate gauges if there were any changes
+        this.updateData();
+      }
+
       // update || remove diet food from local letiable
       if (dialog.componentInstance.dietFoodWasDeleted) {
         // remove diet food
@@ -189,6 +212,74 @@ export class EditDietPlanComponent extends BaseModuleComponent implements OnDest
     });
   }
 
+  private calculateDietFoodNutrition(dietFoods: DietFood[]): void {
+    const data = {};
+    dietFoods.forEach(dietFood => {
+      data[dietFood.id] = this.dependencies.itemServices.foodService.calculateFoodWithAmount(dietFood.food, dietFood.amount, 1);
+    });
+    
+    this.dietFoodNutritions = data;
+  }
+
+  private subscribeToUpdateData(): void {
+    this.updateData$
+      .switchMap(() => this.getDietObservable(this.dietId))
+      .map(() => {
+        if (this.diet) {
+          this.calculateGauges(this.diet);
+        }
+        this.calculateDietFoodNutrition(this.sortedDietFoods);
+      })
+      .takeUntil(this.ngUnsubscribe)
+      .subscribe();
+  }
+
+  private updateData(): void {
+    this.updateData$.next();
+  }
+
+  private calculateGauges(diet: Diet): void {
+    if (!diet) {
+      return;
+    }
+
+    const nutrition = this.dependencies.itemServices.dietService.aggregateNutrition(diet, 1);
+
+    if (diet.targetFat) {
+      this.fatsGauge = this.dependencies.webComponentServices.graphService.linearGaugeChart(Observable.of(
+        new LinearGaugeChart(0, diet.targetFat + (diet.targetFat * 0.3), nutrition.fat, {
+          previousValue: diet.targetFat,
+          units: super.translate('module.foods.nutrition.fat'),
+          color: this.dependencies.itemServices.dietService.getGaugeColor(diet.targetFat, nutrition.fat),
+          labelFormatting: (value) => `${value} / ${diet.targetFat}`
+        })), {
+          height: '75px'
+        }).build();
+    }
+    if (diet.targetCho) {
+      this.choGauge = this.dependencies.webComponentServices.graphService.linearGaugeChart(Observable.of(
+        new LinearGaugeChart(0, diet.targetCho + (diet.targetCho * 0.3), nutrition.cho, {
+          previousValue: diet.targetCho,
+          units: super.translate('module.foods.nutrition.choShort'),
+          color: this.dependencies.itemServices.dietService.getGaugeColor(diet.targetCho, nutrition.cho),
+          labelFormatting: (value) => `${value} / ${diet.targetCho}`
+        })), {
+          height: '75px'
+        }).build();
+    }
+    if (diet.targetProt) {
+      this.protGauge = this.dependencies.webComponentServices.graphService.linearGaugeChart(Observable.of(
+        new LinearGaugeChart(0, diet.targetProt + (diet.targetProt * 0.3), nutrition.prot, {
+          previousValue: diet.targetProt,
+          units: super.translate('module.foods.nutrition.prot'),
+          color: this.dependencies.itemServices.dietService.getGaugeColor(diet.targetProt, nutrition.prot),
+          labelFormatting: (value) => `${value} / ${diet.targetProt}`
+        })), {
+          height: '75px'
+        }).build();
+    }
+  }
+
   private recalculateOrder(): void {
     if (this.sortedDietFoods) {
       let order = 0;
@@ -199,7 +290,7 @@ export class EditDietPlanComponent extends BaseModuleComponent implements OnDest
     }
   }
 
-  private getInitObsevable(): Observable<void> {
+  private getInitObservable(): Observable<void> {
     return this.dragulaService.drop
       .takeUntil(this.ngUnsubscribe)
       .do(() => {
@@ -207,7 +298,7 @@ export class EditDietPlanComponent extends BaseModuleComponent implements OnDest
       })
       .debounceTime(500)
       .switchMap(() => {
-        return this.dependencies.itemServices.dietFoodService.updateItemsOrder(this.sortedDietFoods, this.diet.id).set();
+        return this.dependencies.itemServices.dietFoodService.updateItemsOrder(this.sortedDietFoods, this.dietId).set();
       })
       .map(() => {
         super.stopGlobalLoader();
@@ -215,14 +306,15 @@ export class EditDietPlanComponent extends BaseModuleComponent implements OnDest
       });
   }
 
-  private getDietObservable(dietId: number): Observable<any> {
+  private getDietObservable(dietId: number): Observable<void> {
     return this.dependencies.itemServices.dietService.item()
       .byId(dietId)
       .includeMultiple(['DietCategory', 'DietFoods.Food.FoodUnit', 'DietFoods', 'DietFoods.Food', 'DietFoods.Food.FoodCategory'])
       .get()
       .map(response => {
         this.loadDiet.next(response.item);
-
+        this.calculateGauges(response.item);
+        this.calculateDietFoodNutrition(response.item.dietFoods);
         this.assignDiet(response.item);
       });
   }

@@ -1,5 +1,6 @@
 import { Observable } from 'rxjs/Rx';
 
+import { WebColorEnum } from '../shared/enums/web-color.enum';
 import { MultiSeries, SingleSeries } from './graph-models';
 import { GraphTypeEnum } from './graph-type.enum';
 
@@ -90,6 +91,41 @@ export class PieChart extends BaseGraph {
         public data: SingleSeries[],
         options?: {
             showLabels?: boolean,
+            labelFormatting?: (value: any) => string;
+        }
+    ) {
+        super();
+        if (options) {
+            Object.assign(this, options);
+        }
+    }
+}
+
+
+export class LinearGaugeChart extends BaseGraph {
+
+    /**
+     * Data are not required for this graph
+     */
+    public data: any = undefined;
+
+    public readonly type: GraphTypeEnum = GraphTypeEnum.LinearGaugeChart;
+
+    public animations: boolean = true;
+    public color: WebColorEnum = WebColorEnum.Blue;
+    public units?: Observable<string>;
+    public previousValue?: number;
+    public labelFormatting?: (value: any) => string;
+
+    constructor(
+        public min: number,
+        public max: number,
+        public value: number,
+        options?: {
+            previousValue?: number,
+            animations?: boolean,
+            color?: WebColorEnum,
+            units?: Observable<string>,
             labelFormatting?: (value: any) => string;
         }
     ) {

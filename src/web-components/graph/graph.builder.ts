@@ -11,11 +11,16 @@ export class GraphBuilder<TGraph extends BaseGraph> {
 
     constructor(
         public graph: Observable<TGraph>,
-        public graphType: GraphTypeEnum
+        public graphType: GraphTypeEnum,
+        options?: {
+            width?: string,
+            height?: string
+        }
     ) {
         this.config = new GraphConfig<TGraph> (
             graph,
-            graphType
+            graphType,
+            options
         );
     }
 

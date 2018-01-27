@@ -305,6 +305,11 @@
 				"nacl": "Sůl",
 				"kcal": "Kcal"
 			},
+			"nutritionChar": {
+				"prot": "B",
+				"fat": "T",
+				"cho": "S"
+			},
 			"foodName": "Název",
 			"foodAmountTextLineA": "{{ amount }} {{ foodUnit }}",
 			"foodAmountTextLineB": "B: <u>{{ proteins }}</u>, T: <u>{{ fats }}</u>, S: <u>{{ carbs }}</u> = <strong>{{ kcal }}</strong> kcal",

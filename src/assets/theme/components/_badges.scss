@@ -1,0 +1,31 @@
+.w-badge {
+    /* This code is taken out of the angular material chip */
+    transition: box-shadow 280ms cubic-bezier(.4,0,.2,1);
+    display: inline-flex;
+    padding: 5px 9px;
+    border-radius: 24px;
+    align-items: center;
+    cursor: default;
+    line-height: 18px;
+    margin: 0 8px 3px 0;
+}
+
+.w-badge-dark {
+    color: rgba(0, 0, 0, 0.87);
+}
+
+.w-badge-light {
+    color: #FFFFFF;
+}
+
+.w-badge-xs {
+    font-size: 10px;
+}
+
+.w-badge-sm {
+    font-size: 12px;
+}
+
+.w-badge-md {
+    font-size: 14px;
+}

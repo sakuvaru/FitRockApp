@@ -50,7 +50,7 @@ export class AddDietFoodDialogComponent extends BaseDialogComponent<AddDietFoodD
         return Observable.of(field);
       })
       .fieldLabelResolver((field, originalLabel) => {
-        if (field.key === 'UnitValue') {
+        if (field.key === 'Amount') {
           return this.dependencies.itemServices.foodUnitService.item().byId(this.food.foodUnitId)
             .get()
             .flatMap(response => {
@@ -58,8 +58,8 @@ export class AddDietFoodDialogComponent extends BaseDialogComponent<AddDietFoodD
                 console.warn(`FoodUnit was not found, this should have not happened here`);
                 return Observable.of(originalLabel);
               }
-              return super.translate('module.foodUnits.' + response.item.unitCode)
-                .map(unitTranslation => originalLabel + ' (' + unitTranslation + ')');
+              return super.translate('module.foodUnits.pluralTwo.' + response.item.unitCode)
+                .map(unitTranslation => originalLabel + ' - ' + unitTranslation + '');
             });
         }
         return Observable.of(originalLabel);

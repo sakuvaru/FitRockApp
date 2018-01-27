@@ -11,7 +11,7 @@ import { BaseGraphComponent } from './base-graph.component';
     selector: 'pie-chart',
     templateUrl: 'pie-chart.component.html'
 })
-export class PieChartComponent extends BaseGraphComponent implements OnInit, OnChanges {
+export class PieChartComponent extends BaseGraphComponent<PieChart> implements OnInit, OnChanges {
 
     /**
      * Graph configuration

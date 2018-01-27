@@ -7,12 +7,12 @@ import { MultiSeries, SingleSeries } from '../graph-models';
 import { BaseGraph } from '../graph-types';
 import { GraphConfig } from '../graph.config';
 
-export abstract class BaseGraphComponent extends BaseWebComponent implements OnInit, OnChanges {
+export abstract class BaseGraphComponent<TGraph extends BaseGraph> extends BaseWebComponent implements OnInit, OnChanges {
 
     /**
      * Graph configuration
      */
-    @Input() abstract config: GraphConfig<BaseGraph>;
+    @Input() abstract config: GraphConfig<TGraph>;
 
     /**
      * Loader change 
@@ -32,7 +32,7 @@ export abstract class BaseGraphComponent extends BaseWebComponent implements OnI
     /**
      * Graph
      */
-    public graph: BaseGraph;
+    public graph: TGraph;
 
     /**
      *  Legend title
@@ -52,7 +52,7 @@ export abstract class BaseGraphComponent extends BaseWebComponent implements OnI
     /**
      * Initialization required for each specific graph
      */
-    abstract specializedGraphInit(graph: BaseGraph): Observable<BaseGraph>;
+    abstract specializedGraphInit(graph: TGraph): Observable<TGraph>;
 
     constructor(
         protected localizationService: LocalizationService
@@ -60,18 +60,17 @@ export abstract class BaseGraphComponent extends BaseWebComponent implements OnI
 
 
     ngOnInit() {
-        this.initGraph(this.config);
     }
 
     ngOnChanges(changes: SimpleChanges) {
-        this.initGraph(changes.config.currentValue);
+        this.initGraph();
     }
 
     /**
      * Reinitializes graph
      * @param config Graph config
      */
-    forceReinitialization(config: GraphConfig<BaseGraph>): void {
+    forceReinitialization(config: GraphConfig<TGraph>): void {
         this.config = config;
 
         this.initialized = false;
@@ -81,7 +80,7 @@ export abstract class BaseGraphComponent extends BaseWebComponent implements OnI
         this.loadGraph$ = new Subject<void>();
 
         // init graph
-        this.initGraph(config);
+        this.initGraph();
     }
 
     /**
@@ -91,21 +90,24 @@ export abstract class BaseGraphComponent extends BaseWebComponent implements OnI
         this.loadGraph$.next();
     }
 
-    protected initGraph(config: GraphConfig<BaseGraph>): void {
-        if (this.initialized || !this.config) {
+    protected initGraph(): void {
+        if (!this.config) {
+            return;
+        }
+
+        if (this.initialized) {
+            // this makes graph reload if the config changes
+            this.forceReinitialization(this.config);
             return;
         }
 
         this.initialized = true;
 
-        // set properties
-        this.config = config;
-
         // init wrapper styles
-        this.initWrapperStyle(config);
+        this.initWrapperStyle(this.config);
 
         // translate legend
-        this.getInitTranslationsObservable(config)
+        this.getInitTranslationsObservable(this.config)
             .takeUntil(this.ngUnsubscribe)
             .subscribe();
 
@@ -143,7 +145,7 @@ export abstract class BaseGraphComponent extends BaseWebComponent implements OnI
             })
             .switchMap(graph => {
                 // assign graph
-                this.graph = graph;
+                this.graph = graph as TGraph;
 
                 // data does not need to be resolved using custom function
                 if (!this.config.dataResolver) {

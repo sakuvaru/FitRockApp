@@ -8,8 +8,9 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { LoaderModule } from '../loader/loader.module';
 import { SharedWebComponentModule } from '../shared-web-components.module';
 import { LineChartGraphComponent } from './graph-components/line-chart.component';
-import { VerticalBarGraphComponent } from './graph-components/vertical-bar-chart.component';
+import { LinearGaugeChartComponent } from './graph-components/linear-gauge-chart.component';
 import { PieChartComponent } from './graph-components/pie-chart.component';
+import { VerticalBarGraphComponent } from './graph-components/vertical-bar-chart.component';
 import { GraphComponent } from './graph.component';
 
 @NgModule({
@@ -26,10 +27,15 @@ import { GraphComponent } from './graph.component';
         GraphComponent,
         VerticalBarGraphComponent,
         LineChartGraphComponent,
-        PieChartComponent
+        PieChartComponent,
+        LinearGaugeChartComponent
     ],
     exports: [
-        GraphComponent
+        GraphComponent,
+        VerticalBarGraphComponent,
+        LineChartGraphComponent,
+        PieChartComponent,
+        LinearGaugeChartComponent
     ]
 })
 export class GraphModule { }

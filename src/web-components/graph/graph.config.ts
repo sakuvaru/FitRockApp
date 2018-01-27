@@ -3,6 +3,7 @@ import { Observable } from 'rxjs/Rx';
 import { GraphTypeEnum } from './graph-type.enum';
 import { BaseGraph } from './graph-types';
 import { MultiSeries, SingleSeries } from './graph-models';
+import { WebColorEnum } from '../shared/enums/web-color.enum';
 
 export class GraphConfig<TGraph extends BaseGraph> {
 
@@ -25,12 +26,12 @@ export class GraphConfig<TGraph extends BaseGraph> {
     /**
      * Width of graph
      */
-    public width: any = '100%';
+    public width: string = '100%';
 
     /**
      * Height of the graph
      */
-    public height: any = '400px';
+    public height: string = '400px';
 
     /**
      * Indicates if legend will be shown
@@ -46,7 +47,7 @@ export class GraphConfig<TGraph extends BaseGraph> {
      * Graph color scheme
      */
     public scheme = {
-        domain: ['#f44336', '#3f51b5', '#8b008b', '#00ced1', '#fff500', '#ffa07a']
+        domain: [WebColorEnum.Red, WebColorEnum.Blue, WebColorEnum.Purple, WebColorEnum.Cyan, WebColorEnum.Yellow, WebColorEnum.Orange, WebColorEnum.Green]
     };
 
     /**
@@ -63,6 +64,13 @@ export class GraphConfig<TGraph extends BaseGraph> {
          * Corresponding graph type
          */
         public graphType: GraphTypeEnum,
+        options?: {
+            width?: string,
+            height?: string
+        }
     ) {
+        if (options) {
+            Object.assign(this, options);
+        }
     }
 }
