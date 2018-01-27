@@ -70,7 +70,7 @@ export class DietTemplatesComponent extends BaseModuleComponent implements OnIni
           return filters;
         })
       )
-      .onClick((item) => this.dependencies.coreServices.navigateService.dietPreviewPage(item.id).navigate())
+      .onClick((item) => this.dependencies.coreServices.navigateService.dietPlanPage(item.id).navigate())
       .build();
   }
 }

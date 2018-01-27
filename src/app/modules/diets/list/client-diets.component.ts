@@ -81,7 +81,7 @@ export class ClientDietsComponent extends BaseModuleComponent implements OnInit 
           return filters;
         })
       )
-      .onClick((item) => this.dependencies.coreServices.navigateService.dietPreviewPage(item.id).navigate())
+      .onClick((item) => this.dependencies.coreServices.navigateService.dietPlanPage(item.id).navigate())
       .build();
   }
 }
