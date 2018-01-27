@@ -28,6 +28,13 @@ export class EditDietPlanComponent extends BaseModuleComponent implements OnDest
 
   public dietFoodNutritions?: any;
 
+  public showFoodDetails: boolean = true;
+
+  /**
+   * Used on template to identify whether meals shows list of child foods
+   */
+  public openedMeals = {};
+
   public protColor = WebColorEnum.Blue;
   public fatColor = WebColorEnum.Red;
   public choColor = WebColorEnum.Purple;
@@ -213,6 +220,10 @@ export class EditDietPlanComponent extends BaseModuleComponent implements OnDest
   }
 
   private calculateDietFoodNutrition(dietFoods: DietFood[]): void {
+    if (!dietFoods) {
+      return;
+    }
+
     const data = {};
     dietFoods.forEach(dietFood => {
       data[dietFood.id] = this.dependencies.itemServices.foodService.calculateFoodWithAmount(dietFood.food, dietFood.amount, 1);
@@ -309,9 +320,11 @@ export class EditDietPlanComponent extends BaseModuleComponent implements OnDest
   private getDietObservable(dietId: number): Observable<void> {
     return this.dependencies.itemServices.dietService.item()
       .byId(dietId)
-      .includeMultiple(['DietCategory', 'DietFoods.Food.FoodUnit', 'DietFoods', 'DietFoods.Food', 'DietFoods.Food.FoodCategory'])
+      .includeMultiple(['DietCategory', 'DietFoods.Food.FoodUnit', 'DietFoods', 'DietFoods.Food',
+        'DietFoods.Food.FoodCategory', 'DietFoods.Food.ChildFoods', 'DietFoods.Food.ChildFoods.Food', 'DietFoods.Food.ChildFoods.Food.FoodUnit'])
       .get()
       .map(response => {
+        console.log(response);
         this.loadDiet.next(response.item);
         this.calculateGauges(response.item);
         this.calculateDietFoodNutrition(response.item.dietFoods);

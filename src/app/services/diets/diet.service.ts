@@ -75,8 +75,8 @@ export class DietService extends BaseTypeService<Diet> {
     }
 
     getGaugeColor(target: number, actual: number): WebColorEnum {
-        const okThreshold = 20;
-        const warnThreshold = 35;
+        const okThreshold = 10;
+        const warnThreshold = 25;
         let difference = 0;
 
         if (actual === target) {

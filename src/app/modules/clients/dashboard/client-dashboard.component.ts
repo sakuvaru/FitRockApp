@@ -15,6 +15,7 @@ import { AppConfig, UrlConfig } from '../../../config';
 import { ComponentDependencyService } from '../../../core';
 import { Appointment } from '../../../models';
 import { BaseClientModuleComponent } from '../base-client-module.component';
+import { TextAlignEnum } from 'web-components';
 
 @Component({
   selector: 'mod-client-dashboard',
@@ -73,6 +74,7 @@ export class ClientDashboardComponent extends BaseClientModuleComponent implemen
               ));
             }),
           super.translate('module.clients.dashboard.workouts'),
+          TextAlignEnum.Left,
           {
             noDataMessage: super.translate('module.clients.dashboard.noWorkouts')
           }
@@ -95,6 +97,7 @@ export class ClientDashboardComponent extends BaseClientModuleComponent implemen
               ));
             }),
           super.translate('module.clients.dashboard.diets'),
+          TextAlignEnum.Left,
           {
             noDataMessage: super.translate('module.clients.dashboard.noDiets')
           });
@@ -116,6 +119,7 @@ export class ClientDashboardComponent extends BaseClientModuleComponent implemen
               ));
             }),
           super.translate('module.clients.dashboard.latestMessages'),
+          TextAlignEnum.Left,
           {
             noDataMessage: super.translate('module.clients.dashboard.noChatMessages'),
           }
@@ -166,6 +170,7 @@ export class ClientDashboardComponent extends BaseClientModuleComponent implemen
               // also init map
               this.appointmentMapBox = this.dependencies.webComponentServices.boxService.mapBox(
                 super.translate('module.clients.dashboard.nextAppointmentMap'),
+                TextAlignEnum.Left,
                 this.googleApiKey,
                 appointment.location.address,
                 appointment.location.lat,
@@ -204,6 +209,7 @@ export class ClientDashboardComponent extends BaseClientModuleComponent implemen
 
             }),
           super.translate('module.clients.dashboard.nextAppointment'),
+          TextAlignEnum.Left,
           {
             noDataMessage: super.translate('module.clients.dashboard.noAppointment'),
             actions: [
@@ -219,6 +225,7 @@ export class ClientDashboardComponent extends BaseClientModuleComponent implemen
             new InfoBoxLine([new InfoBoxText(this.client.trainerPrivateNotes, InfoBoxLineType.Body1)])
           ]),
           super.translate('module.clients.dashboard.privateNotes'),
+          TextAlignEnum.Left,
         );
 
         this.publicNotesInfoBox = this.dependencies.webComponentServices.boxService.infoBox(
@@ -226,6 +233,7 @@ export class ClientDashboardComponent extends BaseClientModuleComponent implemen
             new InfoBoxLine([new InfoBoxText(this.client.trainerPublicNotes, InfoBoxLineType.Body1)])
           ]),
           super.translate('module.clients.dashboard.publicNotes'),
+          TextAlignEnum.Left,
         );
   }
 }

@@ -5,21 +5,56 @@
       <table-box [config]="dietOverviewBox"></table-box>
     </div>
 
-    <div class="push-top" *ngIf="sortedDietFoods">
-      <td-expansion-panel *ngFor="let dietFood of sortedDietFoods; let i = index">
-        <ng-template td-expansion-panel-label>
-          <span class="tc-red-700">{{i + 1}}.</span> {{dietFood.food.foodName}}
-          <span class="mat-caption tc-grey-700">({{ 'module.foodCategories.categories.' + dietFood.food.foodCategory.codename | localize}})</span>
-        </ng-template>
-        <ng-template td-expansion-panel-sublabel>
-          <span class="mat-caption">
-            <plural-food-units [count]="dietFood.unitValue" [unitCode]="dietFood.food.foodUnit.unitCode"></plural-food-units>
-          </span>
-        </ng-template>
-        <div class="mat-padding mat-caption">
-          {{dietFood.notes}}
+    <div *ngIf="sortedDietFoods" class="push-top">
+      <div *ngFor="let dietFood of sortedDietFoods; let i = index" fxLayout="column" class="w-box-background pad push-top-sm">
+        <div fxLayout="row" fxLayoutAlign=" center">
+          <div fxLayout="column" fxFlex>
+            <div>
+              {{ dietFood.food.foodName }}
+              <span class="mat-caption"> / {{ dietFoodNutritions[dietFood.id].kcal }} {{ 'module.foods.nutrition.kcal' | localize }}</span>
+            </div>
+            <div *ngIf="dietFood.eatTime" class="push-top-sm mat-caption">
+              <div class="w-site-icon-with-text">
+                <mat-icon>alarm</mat-icon>
+                <span class="push-left-sm">{{ dietFood.eatTime }}</span>
+              </div>
+            </div>
+            <div class="push-top-sm mat-caption">
+              <div class="w-site-icon-with-text">
+                <mat-icon>local_dining</mat-icon>
+                <span class="push-left-sm">
+                  <plural-food-units [count]="dietFood.amount" [unitCode]="dietFood.food.foodUnit.unitCode"></plural-food-units>
+                </span>
+              </div>
+            </div>
+            <div *ngIf="dietFood.food.isMeal" class="push-top-sm mat-caption">
+              <div class="w-site-icon-with-text">
+                <mat-icon>list</mat-icon>
+                <span class="push-left-sm">
+                  <a *ngIf="!hiddenMeals[dietFood.id] || hiddenMeals[dietFood.id] === false" class="w-cursor-pointer" (click)="hiddenMeals[dietFood.id] = true">{{ 'module.diets.hideComposition' | localize }} </a>
+                  <a *ngIf="hiddenMeals[dietFood.id] && hiddenMeals[dietFood.id] === true" class="w-cursor-pointer" (click)="hiddenMeals[dietFood.id] = false">{{ 'module.diets.showComposition' | localize }} </a>
+                </span>
+              </div>
+              <ng-container *ngIf="!hiddenMeals[dietFood.id] || hiddenMeals[dietFood.id] === false">
+                <div *ngFor="let dietFoodChild of dietFood.food.childFoods" class="push-left push-top-sm">
+                  <span>
+                    <strong>{{ dietFoodChild.food.foodName }}</strong>:
+                    <plural-food-units [count]="dietFoodChild.amount" [unitCode]="dietFoodChild.food.foodUnit.unitCode"></plural-food-units>
+                  </span>
+                </div>
+              </ng-container>
+            </div>
+            <div class="mat-caption push-top-sm">
+              <span class="push-right-sm">{{ ('module.foods.nutritionChar.fat' | localize) }}:</span>
+              <badge [color]="fatColor" size="xs" [text]="dietFoodNutritions[dietFood.id].fat"></badge>
+              <span class="push-right-sm">{{ ('module.foods.nutritionChar.prot' | localize) }}:</span>
+              <badge [color]="protColor" size="xs" [text]="dietFoodNutritions[dietFood.id].prot"></badge>
+              <span class="push-right-sm"> {{ ('module.foods.nutritionChar.cho' | localize) }}:</span>
+              <badge [color]="choColor" size="xs" [text]="dietFoodNutritions[dietFood.id].cho"></badge>
+            </div>
+          </div>
         </div>
-      </td-expansion-panel>
+      </div>
     </div>
 
   </div>
@@ -50,33 +85,9 @@
 
 <div *ngIf="diet && diet.dietFoods && diet.dietFoods.length > 0" fxLayout="row" class="push-top push-left-sm push-right-sm">
   <div fxFlex="100%" fxLayout="column">
+    <h2>
+      {{ 'module.diets.nutritionDistribution' | localize }}
+    </h2>
     <graph #graph [config]="dietGraph"></graph>
   </div>
 </div>
-
-
-<!--
-<mat-card *ngIf="diet" class="push-bottom">
-  <mat-card-title>{{diet.dietName}}</mat-card-title>
-  <mat-card-subtitle>{{ 'module.dietCategories.categories.' + diet.dietCategory.codename | localize}}</mat-card-subtitle>
-  <mat-divider></mat-divider>
-  <mat-card-content *ngIf="diet.description">
-    {{diet.description}}
-  </mat-card-content>
-</mat-card>
-
-<div class="push-top" *ngIf="sortedDietFoods">
-  <td-expansion-panel *ngFor="let dietFood of sortedDietFoods; let i = index">
-    <ng-template td-expansion-panel-label>
-      <span class="tc-red-700">{{i + 1}}.</span> {{dietFood.food.foodName}}
-      <span class="mat-caption tc-grey-700">({{ 'module.foodCategories.categories.' + dietFood.food.foodCategory.codename | localize}})</span>
-    </ng-template>
-    <ng-template td-expansion-panel-sublabel>
-      <span class="mat-caption"> <plural-food-units [count]="dietFood.unitValue" [unitCode]="dietFood.food.foodUnit.unitCode"></plural-food-units> </span>
-    </ng-template>
-    <div class="mat-padding mat-caption">
-      {{dietFood.notes}}
-    </div>
-  </td-expansion-panel>
-</div>
--->

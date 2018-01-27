@@ -23,6 +23,7 @@ export class Food extends BaseItem {
     public isFood: boolean;
     public isSupplement: boolean;
 
+    public dietFoods: DietFood[];
     public childFoods: FoodDish[];
     public foodDishes: FoodDish[];
     public foodUnit: FoodUnit;

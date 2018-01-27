@@ -25,35 +25,84 @@
 </div>
 
 <div *ngIf="diet" class="push-top">
-  <div>
-    <p class="mat-body-1">{{ 'module.diets.add' | localize }} </p>
-    <button mat-raised-button color="primary" class="text-upper" (click)="openSelectFoodDialog(true, false, false)">{{'module.diets.addDietFood' | localize }}</button>
-    <button mat-raised-button color="primary" class="text-upper" (click)="openSelectFoodDialog(false, true, false)">{{'module.diets.addDietMeal' | localize }}</button>
-    <button mat-raised-button color="primary" class="text-upper" (click)="openSelectFoodDialog(false, false, true)">{{'module.diets.addDietSupplement' | localize }}</button>
+  <div fxLayout="row">
+    <div fxLayout="column" class="push-right-sm">
+      <button mat-raised-button color="primary" (click)="openSelectFoodDialog(true, false, false)">
+        <mat-icon class="w-site-icon-button-fix">add_box</mat-icon> {{'module.diets.addDietFood' | localize }}</button>
+    </div>
+    <div fxLayout="column" class="push-right-sm">
+      <button mat-raised-button color="primary" (click)="openSelectFoodDialog(false, true, false)">
+        <mat-icon class="w-site-icon-button-fix">add_box</mat-icon> {{'module.diets.addDietMeal' | localize }}</button>
+    </div>
+    <div fxLayout="column" class="push-right-sm">
+      <button mat-raised-button color="primary" (click)="openSelectFoodDialog(false, false, true)">
+        <mat-icon class="w-site-icon-button-fix">add_box</mat-icon> {{'module.diets.addDietSupplement' | localize }}</button>
+    </div>
+
+    <div fxFlex fxLayout="column">
+      <div class="text-right">
+        <button mat-raised-button (click)="showFoodDetails ? showFoodDetails = false : showFoodDetails = true">
+          <mat-icon class="w-site-icon-button-fix">{{ showFoodDetails ? 'close' : 'view_list' }}</mat-icon>
+          {{ showFoodDetails ? ('module.diets.hideDetails' | localize) : ('module.diets.showDetails' | localize) }}
+        </button>
+      </div>
+    </div>
   </div>
 
   <ng-container *ngIf="sortedDietFoods">
-    <div *ngIf="sortedDietFoods" class="push-top" [dragula]='"dragula-bag"' [dragulaModel]="sortedDietFoods">
-      <div *ngFor="let dietFood of sortedDietFoods; let i = index" fxLayout="column" class="w-sort-list-item dragula-move-handle pad push-top-sm">
+    <div class="push-top" [dragula]='"dragula-bag"' [dragulaModel]="sortedDietFoods">
+      <div *ngFor="let dietFood of sortedDietFoods; let i = index" fxLayout="column" [class.pad-sm]="!showFoodDetails" [class.pad]="showFoodDetails" class="w-sort-list-item dragula-move-handle push-top-sm">
         <div fxLayout="row" fxLayoutAlign=" center">
           <div fxLayout="column" fxFlex>
             <div>
               {{ dietFood.food.foodName }}
               <span class="mat-caption"> / {{ dietFoodNutritions[dietFood.id].kcal }} {{ 'module.foods.nutrition.kcal' | localize }}</span>
             </div>
-            <div class="push-top-sm mat-caption">
-              <span *ngIf="dietFood.eatTime">{{ dietFood.eatTime }} - </span>
-              <plural-food-units [count]="dietFood.amount" [unitCode]="dietFood.food.foodUnit.unitCode"></plural-food-units>
-            </div>
-            <div class="mat-caption push-top-sm">
-              <badge [color]="fatColor" size="xs" [text]="('module.foods.nutritionChar.fat' | localize)  + ': ' + dietFoodNutritions[dietFood.id].fat"></badge>
-              <badge [color]="protColor" size="xs" [text]="('module.foods.nutritionChar.prot' | localize)  + ': ' + dietFoodNutritions[dietFood.id].prot"></badge>
-              <badge [color]="choColor" size="xs" [text]="('module.foods.nutritionChar.cho' | localize)  + ': ' + dietFoodNutritions[dietFood.id].cho"></badge>
-            </div>
-            <div fxHide fxShow.sm fxShow.xs>
-              <edit-button color="none" (editAction)="openEditDietFoodDialog(dietFood)"></edit-button>
-              <delete-button [enableConfirm]="true" color="none" (confirm)="deleteDietFood(dietFood)"></delete-button>
-            </div>
+            <ng-container *ngIf="showFoodDetails">
+              <div *ngIf="dietFood.eatTime" class="push-top-sm mat-caption">
+                <div class="w-site-icon-with-text">
+                  <mat-icon>alarm</mat-icon>
+                  <span class="push-left-sm">{{ dietFood.eatTime }}</span>
+                </div>
+              </div>
+              <div class="push-top-sm mat-caption">
+                <div class="w-site-icon-with-text">
+                  <mat-icon>local_dining</mat-icon>
+                  <span class="push-left-sm">
+                    <plural-food-units [count]="dietFood.amount" [unitCode]="dietFood.food.foodUnit.unitCode"></plural-food-units>
+                  </span>
+                </div>
+              </div>
+              <div *ngIf="dietFood.food.isMeal" class="push-top-sm mat-caption">
+                <div class="w-site-icon-with-text">
+                  <mat-icon>list</mat-icon>
+                  <span class="push-left-sm">
+                    <a *ngIf="!openedMeals[dietFood.id] || openedMeals[dietFood.id] === false" class="w-cursor-pointer" (click)="openedMeals[dietFood.id] = true">{{ 'module.diets.showComposition' | localize }} </a>
+                    <a *ngIf="openedMeals[dietFood.id] && openedMeals[dietFood.id] === true" class="w-cursor-pointer" (click)="openedMeals[dietFood.id] = false">{{ 'module.diets.hideComposition' | localize }} </a>
+                  </span>
+                </div>
+                <ng-container *ngIf="openedMeals[dietFood.id] === true">
+                  <div *ngFor="let dietFoodChild of dietFood.food.childFoods" class="push-left push-top-sm">
+                    <span>
+                      <strong>{{ dietFoodChild.food.foodName }}</strong>:
+                      <plural-food-units [count]="dietFoodChild.amount" [unitCode]="dietFoodChild.food.foodUnit.unitCode"></plural-food-units>
+                    </span>
+                  </div>
+                </ng-container>
+              </div>
+              <div class="mat-caption push-top-sm">
+                <span class="push-right-sm">{{ ('module.foods.nutritionChar.fat' | localize) }}:</span>
+                <badge [color]="fatColor" size="xs" [text]="dietFoodNutritions[dietFood.id].fat"></badge>
+                <span class="push-right-sm">{{ ('module.foods.nutritionChar.prot' | localize) }}:</span>
+                <badge [color]="protColor" size="xs" [text]="dietFoodNutritions[dietFood.id].prot"></badge>
+                <span class="push-right-sm"> {{ ('module.foods.nutritionChar.cho' | localize) }}:</span>
+                <badge [color]="choColor" size="xs" [text]="dietFoodNutritions[dietFood.id].cho"></badge>
+              </div>
+              <div fxHide fxShow.sm fxShow.xs>
+                <edit-button color="none" (editAction)="openEditDietFoodDialog(dietFood)"></edit-button>
+                <delete-button [enableConfirm]="true" color="none" (confirm)="deleteDietFood(dietFood)"></delete-button>
+              </div>
+            </ng-container>
           </div>
           <div fxHide.xs fxHide.sm fxLayout="column" class="text-right">
             <edit-button color="none" (editAction)="openEditDietFoodDialog(dietFood)"></edit-button>

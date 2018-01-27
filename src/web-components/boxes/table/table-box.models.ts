@@ -1,9 +1,11 @@
 import { Observable } from 'rxjs/Rx';
+import { TextAlignEnum } from '../../shared/enums/text-align.enum';
 
 export class TableBoxConfig {
     constructor(
         public title: Observable<string>,
-        public lines: Observable<TableBoxLine[]>,
+        public titleAlign: TextAlignEnum,
+        public lines: Observable<TableBoxLine[]>
     ) { }
 }
 

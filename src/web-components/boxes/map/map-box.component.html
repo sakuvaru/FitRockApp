@@ -2,16 +2,18 @@
     <mat-card class="w-boxes w-boxes-info-box">
         <loader [enabled]="loaderEnabled"></loader>
         <mat-card-content *ngIf="config">
-            <div fxLayout="row">
-                <span fxFlexAlign="center" *ngIf="config.title" class="mat-title primary">
-                    {{ config.title | async }}
-                </span>
-                <span fxFlex></span>
-                <span fxFlexAlign="center" *ngIf="config.actions">
-                    <button class="w-boxes-title-icon" mat-icon-button *ngFor="let action of config.actions" (click)="resolveAction(action.action)">
+
+            <div *ngIf="config.title" fxLayoutAlign=" center" fxLayout="row">
+                <div fxFlex fxLayout="column" [class]="config.titleAlign">
+                    <span class="mat-title primary">
+                        {{ config.title | async }}
+                    </span>
+                </div>
+                <div *ngIf="config.actions && config.actions.length > 0" fxLayout="column">
+                    <button class="w-boxes-icon-fix" mat-icon-button *ngFor="let action of config.actions" (click)="resolveAction(action.action)">
                         <mat-icon>{{ action.icon }}</mat-icon>
                     </button>
-                </span>
+                </div>
             </div>
 
             <div fxLayout="column">

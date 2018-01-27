@@ -2,10 +2,12 @@
     <mat-card *ngIf="config.lines | async; let lines" class="w-boxes w-boxes-table-box">
         <mat-card-content>
 
-            <div fxLayout="column">
-                <span fxFlexAlign="center" *ngIf="config.title" class="mat-title primary">
-                    {{ config.title | async }}
-                </span>
+            <div *ngIf="config.title" fxLayoutAlign=" center" fxLayout="row">
+                <div fxFlex [class]="config.titleAlign">
+                    <div class="mat-title primary">
+                        {{ config.title | async }}
+                    </div>
+                </div>
             </div>
 
             <div fxFlexFill fxLayout="row" fxLayout.sm="100" fxLayout.xs="100" fxLayout.md="100">

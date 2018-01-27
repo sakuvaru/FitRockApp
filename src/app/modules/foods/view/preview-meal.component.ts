@@ -14,6 +14,7 @@ import {
 import { GraphConfig, PieChart, SingleSeries } from '../../../../web-components/graph';
 import { BaseModuleComponent, ComponentDependencyService } from '../../../core';
 import { Food } from '../../../models';
+import { TextAlignEnum } from 'web-components';
 
 @Component({
     selector: 'mod-preview-meal',
@@ -76,7 +77,8 @@ export class PreviewMealComponent extends BaseModuleComponent implements OnInit,
                     extra: this.dependencies.coreServices.localizationHelperService.translateKcalWithKj(this.dependencies.itemServices.foodService.calculateFoodWithAmount(m.food, m.amount).kcal),
                     linkUrl: this.dependencies.coreServices.navigateService.foodPreviewPage(m.food.id).getUrl()
                 }))),
-            super.translate('module.foods.mealComposition')
+            super.translate('module.foods.mealComposition'),
+            TextAlignEnum.Left,
         );
     }
 
@@ -123,6 +125,7 @@ export class PreviewMealComponent extends BaseModuleComponent implements OnInit,
 
         this.foodOverviewBox = this.dependencies.webComponentServices.boxService.tableBox(
             super.translate('module.foods.foodInfo'),
+            TextAlignEnum.Left,
             Observable.of(overviewLines)
         );
     }

@@ -1,5 +1,6 @@
 import { Observable } from 'rxjs/Rx';
 import { ActionButton } from '../shared/shared.models';
+import { TextAlignEnum } from '../../shared/enums/text-align.enum';
 
 export class ListBoxItem {
 
@@ -33,6 +34,7 @@ export class ListBoxConfig {
     constructor(
         public items: Observable<ListBoxItem[]>,
         public title: Observable<string>,
+        public titleAlign: TextAlignEnum,
         private options?: {
             noDataMessage?: Observable<string>,
             actions?: ActionButton[]

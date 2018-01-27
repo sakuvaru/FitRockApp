@@ -11,39 +11,43 @@ import {
     TableBoxLine,
     TableBoxConfig,
     MapBoxConfig,
-    NumberBoxConfig
+    NumberBoxConfig,
 } from '../../../web-components/boxes';
+import { TextAlignEnum } from 'web-components';
 
 export class BoxService {
 
     infoBox(
         lines: Observable<InfoBoxLine[]>,
         title: Observable<string>,
+        titleAlign: TextAlignEnum,
         options?: {
             noDataMessage?: Observable<string>,
             actions?: ActionButton[]
         }
     ): InfoBoxConfig {
-        return new InfoBoxConfig(lines, title, options);
+        return new InfoBoxConfig(lines, title, titleAlign, options);
     }
 
     listBox(
         items: Observable<ListBoxItem[]>,
         title: Observable<string>,
+        titleAlign: TextAlignEnum,
         options?: {
             noDataMessage?: Observable<string>,
             actions?: ActionButton[]
         }
     ): ListBoxConfig {
-        return new ListBoxConfig(items, title, options);
+        return new ListBoxConfig(items, title, titleAlign, options);
     }
 
     miniBox(
         title: Observable<string>,
         text: Observable<string>,
+        titleAlign: TextAlignEnum,
         color: BoxColors
     ): MiniBoxConfig {
-        return new MiniBoxConfig(title, text, color);
+        return new MiniBoxConfig(title, titleAlign, text, color);
     }
 
     numberBox(
@@ -60,13 +64,15 @@ export class BoxService {
 
     tableBox(
         title: Observable<string>,
+        titleAlign: TextAlignEnum,
         lines: Observable<TableBoxLine[]>,
     ): TableBoxConfig {
-        return new TableBoxConfig(title, lines);
+        return new TableBoxConfig(title, titleAlign, lines);
     }
 
     mapBox(
         title: Observable<string>,
+        titleAlign: TextAlignEnum,
         apiKey: string,
         address: string,
         lat?: number,
@@ -77,7 +83,7 @@ export class BoxService {
             actions?: ActionButton[]
         }
     ): MapBoxConfig {
-        return new MapBoxConfig(title, apiKey, address, lat, lng, options);
+        return new MapBoxConfig(title, titleAlign, apiKey, address, lat, lng, options);
     }
 
 }

@@ -1,5 +1,6 @@
 import { Observable } from 'rxjs/Rx';
 import { ActionButton } from '../shared/shared.models';
+import { TextAlignEnum } from '../../shared/enums/text-align.enum';
 
 export class MapBoxConfig {
 
@@ -10,6 +11,7 @@ export class MapBoxConfig {
 
     constructor(
         public title: Observable<string>,
+        public titleAlign: TextAlignEnum,
         public apiKey: string,
         public address: string,
         public lat?: number,

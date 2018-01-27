@@ -7,6 +7,7 @@ import { DataTableConfig } from '../../../../web-components/data-table';
 import { GraphConfig, PieChart, SingleSeries } from '../../../../web-components/graph';
 import { BaseModuleComponent, ComponentDependencyService } from '../../../core';
 import { Food } from '../../../models';
+import { TextAlignEnum } from 'web-components';
 
 @Component({
     selector: 'mod-preview-supplement',
@@ -123,6 +124,7 @@ export class PreviewSupplementComponent extends BaseModuleComponent implements O
 
         this.foodOverviewBox = this.dependencies.webComponentServices.boxService.tableBox(
             super.translate('module.foods.foodInfo'),
+            TextAlignEnum.Left,
             Observable.of(overviewLines)
         );
     }

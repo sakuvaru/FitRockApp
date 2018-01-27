@@ -71,6 +71,8 @@
 		"cancel": "Zrušit",
 		"confirm": "Potvrdit",
 		"version": "v",
+		"hide": "skrýt",
+		"show": "zobrazit",
 		"language": {
 			"default": "Výchozí jazyk (čeština)",
 			"cz": "Čeština",
@@ -249,11 +251,17 @@
 			"submenu": {
 				"dietTemplates": "Šablony",
 				"clientDiets": "Klientské jídelníčky",
-				"view": "Zobrazit",
+				"view": "Přehled",
 				"editPlan": "Upravit šablonu",
 				"edit": "Upravit základní údaje",
 				"new": "Nová šablona jídelníčku"
 			},
+			"showDetails": "Zobrazit detaily",
+			"hideDetails": "Skrýt detaily",
+			"showComposition": "Zobrazit složení",
+			"hideComposition": "Skrýt složení",
+			"dietTotalKcal": "Celkem kcal",
+			"nutritionDistribution": "Rozložení živin",
 			"add": "Přidat",
 			"dietCategory": "Kategorie",
 			"createdForClient": "Pro klienta",
@@ -268,7 +276,7 @@
 			"newMeal": "Nové jídlo",
 			"addDietMeal": "Jídlo",
 			"addDietSupplement": "Suplement",
-			"addDietFood": "Potravinu",
+			"addDietFood": "Potravina",
 			"editDietFood": "Upravit záznam",
 			"allFoods": "Všechna jídla",
 			"myFoods": "Moje jídla",
@@ -606,9 +614,9 @@
 			"dietName": "Název",
 			"dietCategoryId": "Kategorie",
 			"description": "Popis",
-			"targetFat": "Cílové tuky",
-			"targetCho": "Cílové sacharidy",
-			"targetProt": "Cílové bílkoviny"
+			"targetFat": "Cílové tuky (g)",
+			"targetCho": "Cílové sacharidy (g)",
+			"targetProt": "Cílové bílkoviny (g)"
 		},
 		"dietFood": {
 			"amount": "Množství",
