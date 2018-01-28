@@ -27,6 +27,7 @@ import { NewClientWorkoutPageComponent } from './workout/new/new-client-workout-
 
 // diet components
 import { EditClientDietPageComponent } from './diet/edit/edit-client-diet-page.component';
+import { ClientDietPreviewPageComponent } from './diet/view/client-diet-preview-page.component';
 import { ClientDietPageComponent } from './diet/edit/client-diet-page.component';
 import { EditClientDietPlanPageComponent } from './diet/edit/edit-client-diet-plan-page.component';
 import { NewClientDietPageComponent } from './diet/new/new-client-diet-page.component';
@@ -85,6 +86,9 @@ import { ClientDashboardPageComponent } from './dashboard/client-dashboard-page.
                     // diet
                     {
                         path: 'clients/edit/:id/diet', component: ClientDietPageComponent
+                    },
+                    {
+                        path: 'clients/edit/:id/diet/:dietId/view', component: ClientDietPreviewPageComponent
                     },
                     {
                         path: 'clients/edit/:id/diet/:dietId', component: EditClientDietPageComponent

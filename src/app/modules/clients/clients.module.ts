@@ -19,6 +19,7 @@ import { WorkoutListDialogComponent } from './workout/dialogs/workout-list-dialo
 
 // diet components
 import { EditClientDietComponent } from './diet/edit/edit-client-diet.component';
+import { ViewClientDietComponent } from './diet/view/view-client-diet.component';
 import { ClientDietComponent } from './diet/edit/client-diet.component';
 import { EditClientDietPlanComponent } from './diet/edit/edit-client-diet-plan.component';
 import { NewClientDietComponent } from './diet/new/new-client-diet.component';
@@ -81,6 +82,7 @@ import { DietsModule} from '../diets/diets.module';
         WorkoutListDialogComponent,
         // diet
         EditClientDietComponent,
+        ViewClientDietComponent,
         ClientDietComponent,
         EditClientDietPlanComponent,
         NewClientDietComponent,
@@ -117,6 +119,7 @@ import { DietsModule} from '../diets/diets.module';
         WorkoutListDialogComponent,
         // diet
         EditClientDietComponent,
+        ViewClientDietComponent,
         ClientDietComponent,
         EditClientDietPlanComponent,
         NewClientDietComponent,

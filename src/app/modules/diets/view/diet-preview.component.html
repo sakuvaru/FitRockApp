@@ -11,7 +11,14 @@
           <div fxLayout="column" fxFlex>
             <div>
               {{ dietFood.food.foodName }}
-              <span class="mat-caption"> / {{ dietFoodNutritions[dietFood.id].kcal }} {{ 'module.foods.nutrition.kcal' | localize }}</span>
+            </div>
+            <div class="push-top-sm mat-caption">
+              <div class="w-site-icon-with-text">
+                <mat-icon>trending_up</mat-icon>
+                <span class="push-left-sm">
+                  {{ dietFoodNutritions[dietFood.id].kcal }} {{ 'module.foods.nutrition.kcal' | localize }}
+                </span>
+              </div>
             </div>
             <div *ngIf="dietFood.eatTime" class="push-top-sm mat-caption">
               <div class="w-site-icon-with-text">

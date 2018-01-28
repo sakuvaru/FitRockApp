@@ -100,6 +100,7 @@ export class ClientEditDietMenuItems {
     constructor(clientId: number, dietId: number) {
         this.menuItems = [
             new MenuItem({ key: 'menu.shared.back' }, MenuItemType.trainer, 'clients/edit/' + clientId + '/diet', { icon: 'arrow_back' }),
+            new MenuItem({ key: 'module.clients.diet.viewPlan' }, MenuItemType.trainer, 'clients/edit/' + clientId + '/diet/' + dietId + '/view', { icon: 'info_outline' }),
             new MenuItem({ key: 'module.clients.diet.editPlan' }, MenuItemType.trainer, 'clients/edit/' + clientId + '/diet/' + dietId + '/diet-plan', { icon: 'list' }),
             new MenuItem({ key: 'module.clients.diet.editDiet' }, MenuItemType.trainer, 'clients/edit/' + clientId + '/diet/' + dietId, { icon: 'edit' }),
         ];
