@@ -5,7 +5,7 @@ import {
     ItemCountQuery, PostQuery, RepositoryClient, IItem, SingleItemQueryInit,
     MultipleItemQuery, CreateItemQuery, EditItemQuery, DeleteItemQuery, SingleFileQuery, MultipleFileQuery,
     EditFormQuery, InsertFormQuery, TouchKeyQuery, CacheKeyType, SingleItemQueryInitCustom, MultipleItemQueryCustom,
-    DeleteFileQuery, ItemsOrderQuery
+    DeleteFileQuery, ItemsOrderQuery, ControllerModel, GetQuery
 } from '../../../lib/repository';
 
 import { numberHelper } from '../../../lib/utilities';
@@ -80,8 +80,12 @@ export abstract class BaseTypeService<TItem extends IItem> {
         return this.repositoryClient.customItem<TAny>(this.type);
     }
 
-    post<TAny extends any>(action: string): PostQuery<TAny> {
+    post<TAny>(action: string): PostQuery<TAny> {
         return this.repositoryClient.post<TAny>(this.type, action);
+    }
+
+    get<TAny>(action: string): GetQuery<TAny> {
+        return this.repositoryClient.get<TAny>(this.type, action);
     }
 
     /* --------------------- Form builds ------------------------- */

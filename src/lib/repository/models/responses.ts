@@ -277,6 +277,26 @@ export class ResponsePost<T extends any> {
     }
 }
 
+export class ResponseGet<T extends any> {
+    public data: T;
+    public action: string;
+    public message: string;
+    public model: string;
+
+    constructor(
+        private options?: {
+            data?: T,
+            action?: string;
+            message?: string;
+            model?: string,
+        }
+    ) {
+        if (options) {
+            Object.assign(this, options);
+        }
+    }
+}
+
 export class ResponseUploadMultiple {
 
     public files: FetchedFile[];

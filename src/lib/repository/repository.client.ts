@@ -23,6 +23,7 @@ import { TouchKeyQuery } from './queries/misc/touch-key-query.class';
 import { ItemsOrderQuery } from './queries/order/items-order-query.class';
 import { RepositoryConfig } from './repository.config';
 import { QueryService } from './services/query.service';
+import { stringHelper } from 'lib/utilities';
 
 export class RepositoryClient {
 
@@ -72,8 +73,8 @@ export class RepositoryClient {
     get<TAny>(controller: ControllerModel): GetQuery<TAny>;
     get<TAny>(controller: string, action: string): GetQuery<TAny>;
     get<TAny>(controllerOrName: string | ControllerModel, action?: string): GetQuery<TAny> {
-        if (controllerOrName instanceof String && action) {
-            return new GetQuery(this.queryService, controllerOrName, action);
+        if (stringHelper.isString(controllerOrName) && action) {
+            return new GetQuery(this.queryService, controllerOrName as string, action);
         }
         if (controllerOrName instanceof ControllerModel) {
             return new GetQuery(this.queryService, controllerOrName.controller, controllerOrName.action);

@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { RepositoryClient, ControllerModel } from '../../../lib/repository';
+import { RepositoryClient, ControllerModel, ResponseGet } from '../../../lib/repository';
 import { BaseTypeService } from '../base/base-type.service';
 import { Observable } from 'rxjs/Rx';
+import { Day } from 'app/models';
 
 @Injectable()
 export class ServerService {
@@ -17,6 +18,14 @@ export class ServerService {
       .set()
       .map((response: any) => {
         return response.authenticated;
+      });
+  }
+
+  getDays(): Observable<Day[]> {
+    return this.repositoryClient.get<ResponseGet<Day[]>>(this.controller, 'GetDays')
+      .set()
+      .map(response => {
+        return response.data.map(m => new Day(m.day, m.dayString));
       });
   }
 }

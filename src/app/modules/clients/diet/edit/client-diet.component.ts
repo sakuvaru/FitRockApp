@@ -4,9 +4,8 @@ import { Observable, Subscription } from 'rxjs/Rx';
 import * as _ from 'underscore';
 
 import { stringHelper } from '../../../../../lib/utilities';
-import { AppConfig } from '../../../../config';
 import { ComponentDependencyService } from '../../../../core';
-import { Diet, DietFood } from '../../../../models';
+import { Day, Diet } from '../../../../models';
 import { BaseClientModuleComponent } from '../../base-client-module.component';
 
 @Component({
@@ -15,14 +14,13 @@ import { BaseClientModuleComponent } from '../../base-client-module.component';
 })
 export class ClientDietComponent extends BaseClientModuleComponent implements OnInit, OnDestroy, OnChanges {
 
-    public workoutExists: boolean = true;
-    public dietTemplates: Diet[];
-    public existingDiets: Diet[];
+    public dietTemplates: Diet[] = [];
 
     /**
      * Name of the dragula bag - used in the template & config
      */
     public readonly dragulaBag: string = 'dragula-bag';
+    public readonly dragulaBagParent: string = 'dragula-bag-parent';
 
     /**
      * Class of the handle used to drag & drop dragula items
@@ -34,6 +32,8 @@ export class ClientDietComponent extends BaseClientModuleComponent implements On
      */
     private dropSubscription: Subscription;
 
+    public days: DayWithDiets[] = [];
+
     constructor(
         protected componentDependencyService: ComponentDependencyService,
         private dragulaService: DragulaService,
@@ -43,6 +43,7 @@ export class ClientDietComponent extends BaseClientModuleComponent implements On
 
     ngOnInit(): void {
         super.ngOnInit();
+        this.makeSureDragulaIsUnsubscribed();
     }
 
     ngOnChanges(changes: SimpleChanges) {
@@ -53,10 +54,7 @@ export class ClientDietComponent extends BaseClientModuleComponent implements On
 
     ngOnDestroy() {
         super.ngOnDestroy();
-
-        // unsubscribe from dragula drop events
-        this.dropSubscription.unsubscribe();
-        this.dragulaService.destroy(this.dragulaBag);
+        this.makeSureDragulaIsUnsubscribed();
     }
 
     deleteDiet(diet: Diet): void {
@@ -64,8 +62,8 @@ export class ClientDietComponent extends BaseClientModuleComponent implements On
         super.subscribeToObservable(this.dependencies.itemServices.dietService.delete(diet.id)
             .set()
             .map(response => {
-                // remove diet from local letiable
-                this.existingDiets = _.reject(this.existingDiets, function (item) { return item.id === response.deletedItemId; });
+                // remove diet from local variable
+                this.days.map(day => day.diets = _.reject(day.diets, function (item) { return item.id === response.deletedItemId; }));
                 this.showDeletedSnackbar();
             }));
     }
@@ -82,84 +80,7 @@ export class ClientDietComponent extends BaseClientModuleComponent implements On
         }
     }
 
-    private initDragula(): void {
-        // set handle for dragula
-        const that = this;
-        this.dragulaService.setOptions(this.dragulaBag, {
-            moves: function (el: any, container: any, handle: any): any {
-                return stringHelper.contains(el.className, that.dragulaMoveHandle);
-            }
-        });
-
-        // subscribe to drop events
-        this.dropSubscription = this.dragulaService.drop
-            .do(() => super.startGlobalLoader())
-            .debounceTime(500)
-            .takeUntil(this.ngUnsubscribe)
-            .switchMap(() => {
-                return this.dependencies.itemServices.dietService.updateItemsOrder(this.existingDiets, this.client.id).set();
-            })
-            .subscribe(() => {
-                super.stopGlobalLoader();
-                super.showSavedSnackbar();
-            });
-
-    }
-
-    private init(): void {
-        const observables: Observable<any>[] = [];
-           observables.push(this.dependencies.itemServices.dietService.items()
-                .byCurrentUser()
-                .whereNull('ClientId')
-                .orderByAsc('DietName')
-                .get()
-            .map(response => {
-                if (!response.isEmpty()) {
-                    this.dietTemplates = response.items;
-                }
-            }));
-
-            observables.push(this.existingDietsObservable());
-
-        super.subscribeToObservables(observables);
-
-        this.initDragula();
-    }
-
-    private existingDietsObservable(): Observable<any> {
-        return this.dependencies.itemServices.dietService.items()
-                .byCurrentUser()
-                .includeMultiple(['DietFoods', 'DietFoods.Food', 'DietFoods.Food.FoodUnit'])
-                .whereEquals('ClientId', this.client.id)
-                .orderByAsc('Order')
-                .get()
-            .map(response => {
-                if (!response.isEmpty()) {
-                    this.existingDiets = response.items;
-
-                    // order diet foods
-                    this.existingDiets.forEach(diet => {
-                        diet.dietFoods = _.sortBy(diet.dietFoods, m => m.order);
-                    });
-                }
-            });
-    }
-
-    private reloadExistingDietsObservable(): Observable<any> {
-        return this.dependencies.itemServices.dietService.items()
-            .byCurrentUser()
-            .includeMultiple(['DietFoods', 'DietFoods.Food', 'DietFoods.Food.FoodUnit'])
-            .whereEquals('ClientId', this.client.id)
-            .orderByAsc('Order')
-            .get()
-            .map(response => {
-                if (!response.isEmpty()) {
-                    this.existingDiets = response.items;
-                }
-            });
-    }
-
-    public newDietFromTemplate(data: any): void {
+    newDietFromTemplate(data: any): void {
         const selected = data.selected;
 
         if (!selected) {
@@ -175,9 +96,169 @@ export class ClientDietComponent extends BaseClientModuleComponent implements On
             .set()
             .takeUntil(this.ngUnsubscribe)
             .flatMap(response => {
+                // reload diets
+                return this.existingDietsObservable();
+            })
+            .map(response => {
                 super.showSavedSnackbar();
-                return this.reloadExistingDietsObservable();
+
             }));
     }
+
+    private makeSureDragulaIsUnsubscribed(): void {
+        // unsubscribe from dragula drop events
+        if (this.dropSubscription) {
+            this.dropSubscription.unsubscribe();
+        }
+
+        if (this.dragulaService.find(this.dragulaBag)) {
+            this.dragulaService.destroy(this.dragulaBag);
+        }
+        if (this.dragulaService.find(this.dragulaBagParent)) {
+            this.dragulaService.destroy(this.dragulaBagParent);
+        }
+    }
+
+    private getUpdateDietDayObservable(): Observable<void> {
+        // go through all days and find diet which were updated
+        let saveObservable = Observable.of(undefined);
+        this.days.map(day => day.diets.map(diet => {
+            if (diet.day !== day.day.day) {
+                // Day was change, update local variables 
+                diet.day = day.day.day;
+                diet.dayString = day.day.dayString;
+
+                saveObservable = this.dependencies.itemServices.dietService.edit(diet).set().map(response => undefined);
+            }
+        }));
+
+        return saveObservable;
+    }
+
+    private init(): void {
+        const observables: Observable<any>[] = [];
+        observables.push(this.dependencies.itemServices.dietService.items()
+            .byCurrentUser()
+            .whereNull('ClientId')
+            .orderByAsc('DietName')
+            .get()
+            .map(response => {
+                if (!response.isEmpty()) {
+                    this.dietTemplates = response.items;
+                }
+            }));
+
+        observables.push(this.existingDietsObservable());
+
+        observables.push(this.getInitDaysObservable());
+
+        super.subscribeToObservables(observables);
+
+        this.initDragula();
+    }
+
+    private getOrderedDietsFromDays(): Diet[] {
+        const orderedDiets: Diet[] = [];
+        this.days.map(day => day.diets.map(s => orderedDiets.push(s)));
+
+        return orderedDiets;
+    }
+
+    private initDragula(): void {
+        // set handle for dragula
+        const that = this;
+        this.dragulaService.setOptions(this.dragulaBag, {
+            moves: function (el: any, container: any, handle: any): any {
+                return stringHelper.contains(handle.className, that.dragulaMoveHandle);
+            }
+        });
+
+        this.dragulaService.setOptions(this.dragulaBagParent, {
+            moves: function (el: any, container: any, handle: any): any {
+                // we don't want parent to move 
+                return false;
+            }
+        });
+
+        // subscribe to drop events
+        this.dropSubscription = this.dragulaService.drop
+            .do(() => super.startGlobalLoader())
+            .debounceTime(500)
+            .flatMap(value => {
+                const updateOrderObservable = this.dependencies.itemServices.dietService.updateItemsOrder(this.getOrderedDietsFromDays(), this.client.id).set();
+                const updateDietObservable = this.getUpdateDietDayObservable();
+
+                return updateOrderObservable.zip(updateDietObservable);
+            })
+
+            .takeUntil(this.ngUnsubscribe)
+            .subscribe(() => {
+                super.stopGlobalLoader();
+                super.showSavedSnackbar();
+            });
+    }
+
+    private existingDietsObservable(): Observable<void> {
+        return this.dependencies.itemServices.dietService.items()
+            .byCurrentUser()
+            .includeMultiple(['DietFoods', 'DietFoods.Food', 'DietFoods.Food.FoodUnit'])
+            .whereEquals('ClientId', this.client.id)
+            .orderByAsc('Order')
+            .get()
+            .map(response => {
+                if (!response.isEmpty()) {
+                    // assign diets to days
+                    this.assignDietToDays(response.items);
+                }
+            });
+    }
+
+    private getInitDaysObservable(): Observable<void> {
+        return this.dependencies.coreServices.serverService.getDays()
+            .map(days => {
+                this.days = days.map(day => new DayWithDiets(day, []));
+            });
+    }
+
+    private assignDietToDays(diets: Diet[]): void {
+        if (!diets || diets.length === 0) {
+            return;
+        }
+
+        // first make sure that days contain no diets
+        this.days.map(day => {
+            day.diets = [];
+        });
+
+        const unassignedDayValue = 0;
+        const unassignedDay = this.days.find(m => m.day.day === unassignedDayValue);
+
+        if (!unassignedDay) {
+            throw Error(`Could not find unassigned day with value '${unassignedDayValue}'`);
+        }
+
+        diets.forEach(diet => {
+            const day = this.days.find(m => m.day.day === diet.day);
+
+            if (!day) {
+                // unassigned diet
+                unassignedDay.diets.push(diet);
+            } else {
+                day.diets.push(diet);
+            }
+        });
+
+        // order diets based on their order
+        this.days.map(day => {
+            day.diets = _.sortBy(day.diets, m => m.order);
+        });
+    }
+}
+
+class DayWithDiets {
+    constructor(
+        public day: Day,
+        public diets: Diet[] = []
+    ) { }
 }
 

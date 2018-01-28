@@ -17,22 +17,25 @@
     </mat-card-content>
 </mat-card>
 
-<div *ngIf="existingDiets" class="push-top">
-    <mat-list [dragula]='"dragula-bag"' [dragulaModel]="existingDiets">
-        <ng-container *ngFor="let diet of existingDiets; let i = index">
-            <mat-list-item class="w-sort-list-item dragula-move-handle">
-                <span class="tc-red-700">{{i + 1}}. &nbsp;</span>
-                <span>{{diet.dietName}}</span>
-                <span class="mat-caption">&nbsp;(
-                    <plural [count]="diet.dietFoods.length" m0="module.clients.diet.fiveFoods" m1="module.clients.diet.oneFood"
-                        m2="module.clients.diet.twoFoods" m5="module.clients.diet.fiveFoods"></plural>) </span>
-                <span fxFlex></span>
-                <mat-icon matTooltip="{{'module.clients.diet.foodList' | localize}}" class="w-cursor-pointer" (click)="goToDietPreview(diet)">
-                    <i class="material-icons">remove_red_eye</i>
-                </mat-icon>
-                <edit-button (editAction)="goToEditDiet(diet)"></edit-button>
-                <delete-button [enableConfirm]="true" (confirm)="deleteDiet(diet)"></delete-button>
-            </mat-list-item>
-        </ng-container>
-    </mat-list>
+<div *ngFor="let day of days" class="push-top" [dragulaModel]="days" [dragula]='"dragula-bag-parent"'>
+    <div fxLayout="row">
+        <div fxLayout="column" class="push-right-sm">
+            {{ day.day.localizationKey | localize }}
+        </div>
+    </div>
+    <div fxLayout="row">
+        <div fxLayout="column" class="push-right-sm" fxFlex>
+            <div [attr.day]="day.day.day" class="pad-md" style="display:block; background-color:yellow; height: 40px" [dragulaModel]="day.diets" [dragula]='"dragula-bag"'>
+                <div *ngFor="let diet of day.diets">
+                    <div class="dragula-move-handle" [attr.dietId]="diet.id">
+                        {{ diet.dietName }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div fxLayout="column">
+            actions
+        </div>
+    </div>
+
 </div>

@@ -39,3 +39,6 @@ export * from './locations/location.class';
 
 // appointments
 export * from './appointments/appointment.class';
+
+// shared
+export * from './shared/day.class';

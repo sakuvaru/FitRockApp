@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { SingleSeriesResponse } from 'app/services/progress/progress-models';
 import { numberHelper } from 'lib/utilities';
+import { WebColorEnum } from 'web-components';
 
 import { PostQuery, RepositoryClient } from '../../../lib/repository';
 import { Diet } from '../../models';
 import { BaseTypeService } from '../base/base-type.service';
 import { FoodService } from '../foods/food.service';
-import { WebColorEnum } from 'web-components';
 
 @Injectable()
 export class DietService extends BaseTypeService<Diet> {
