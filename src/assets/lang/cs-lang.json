@@ -526,6 +526,16 @@
 		},
 		"chat": {
 			"send": "Odeslat"
+		},
+		"days": {
+			"none": "Nepřiřazeno",
+			"monday": "Pondělí",
+			"tuesday": "Úterý",
+			"wednesday": "Středa",
+			"thursday": "Čtvrtek",
+			"friday": "Pátek",
+			"saturday": "Sobota",
+			"sunday": "Neděle"
 		}
 	},
 	"form": {
@@ -616,7 +626,9 @@
 			"description": "Popis",
 			"targetFat": "Cílové tuky (g)",
 			"targetCho": "Cílové sacharidy (g)",
-			"targetProt": "Cílové bílkoviny (g)"
+			"targetProt": "Cílové bílkoviny (g)",
+			"day": "Den",
+			"day.hint": "Tímto polem upřesníš den, na který je tento jídelníček pro klienta určený"
 		},
 		"dietFood": {
 			"amount": "Množství",

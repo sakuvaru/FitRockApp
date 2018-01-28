@@ -42,7 +42,7 @@
     <div fxFlex fxLayout="column">
       <div class="text-right">
         <button mat-raised-button (click)="showFoodDetails ? showFoodDetails = false : showFoodDetails = true">
-          <mat-icon class="w-site-icon-button-fix">{{ showFoodDetails ? 'close' : 'view_list' }}</mat-icon>
+          <mat-icon class="w-site-icon-button-fix">{{ showFoodDetails ? 'close' : 'add' }}</mat-icon>
           {{ showFoodDetails ? ('module.diets.hideDetails' | localize) : ('module.diets.showDetails' | localize) }}
         </button>
       </div>

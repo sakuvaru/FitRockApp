@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Rx';
 import { DataFormConfig } from '../../../../web-components/data-form';
 import { BaseModuleComponent, ComponentDependencyService } from '../../../core';
 import { Diet } from '../../../models';
+import { stringHelper } from 'lib/utilities';
 
 @Component({
     templateUrl: 'edit-diet.component.html',
@@ -47,6 +48,9 @@ export class EditDietComponent extends BaseModuleComponent implements OnInit, On
             .optionLabelResolver((field, originalLabel) => {
                 if (field.key === 'DietCategoryId') {
                     return super.translate('module.dietCategories.categories.' + originalLabel);
+                }
+                if (field.key === 'Day') {
+                    return super.translate('module.days.' + stringHelper.firstCharToLowerCase(originalLabel));
                 }
 
                 return Observable.of(originalLabel);
