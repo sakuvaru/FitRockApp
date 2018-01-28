@@ -23,7 +23,6 @@ import { ViewClientDietComponent } from './diet/view/view-client-diet.component'
 import { ClientDietComponent } from './diet/edit/client-diet.component';
 import { EditClientDietPlanComponent } from './diet/edit/edit-client-diet-plan.component';
 import { NewClientDietComponent } from './diet/new/new-client-diet.component';
-import { FoodListDialogComponent } from './diet/dialogs/food-list-dialog.component';
 
 // progress components
 import { EditClientProgressComponent } from './progress/edit/edit-client-progress.component';
@@ -66,7 +65,6 @@ import { DietsModule} from '../diets/diets.module';
         EditProgressItemDialogComponent,
         SelectProgressTypeDialogComponent,
         NewClientProgressItemTypeDialogComponent,
-        FoodListDialogComponent,
         WorkoutListDialogComponent
     ],
     exports: [
@@ -86,7 +84,6 @@ import { DietsModule} from '../diets/diets.module';
         ClientDietComponent,
         EditClientDietPlanComponent,
         NewClientDietComponent,
-        FoodListDialogComponent,
         // progress
         EditClientProgressComponent,
         NewClientProgressItemTypeDialogComponent,
@@ -123,7 +120,6 @@ import { DietsModule} from '../diets/diets.module';
         ClientDietComponent,
         EditClientDietPlanComponent,
         NewClientDietComponent,
-        FoodListDialogComponent,
         // progress
         EditClientProgressComponent,
         NewClientProgressItemTypeDialogComponent,

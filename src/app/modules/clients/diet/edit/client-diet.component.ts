@@ -8,7 +8,6 @@ import { AppConfig } from '../../../../config';
 import { ComponentDependencyService } from '../../../../core';
 import { Diet, DietFood } from '../../../../models';
 import { BaseClientModuleComponent } from '../../base-client-module.component';
-import { FoodListDialogComponent } from '../dialogs/food-list-dialog.component';
 
 @Component({
     selector: 'mod-client-diet',
@@ -72,17 +71,15 @@ export class ClientDietComponent extends BaseClientModuleComponent implements On
     }
 
     goToEditDiet(diet: Diet): void {
-        super.navigate([this.getTrainerUrl('clients/edit/' + this.client.id + '/diet/' + diet.id + '/diet-plan')]);
+        if (diet.clientId) {
+            this.dependencies.coreServices.navigateService.clientDietPlanPage(diet.clientId, diet.id).navigate();
+        }
     }
 
-    openFoodListDialog(dietFoods: DietFood[]): void {
-        const data: any = {};
-        data.dietFoods = dietFoods;
-
-        const dialog = this.dependencies.tdServices.dialogService.open(FoodListDialogComponent, {
-            panelClass: AppConfig.DefaultDialogPanelClass,
-            data: data
-        });
+    goToDietPreview(diet: Diet): void {
+        if (diet.clientId) {
+            this.dependencies.coreServices.navigateService.clientDietPreviewPage(diet.clientId, diet.id).navigate();
+        }
     }
 
     private initDragula(): void {

@@ -124,6 +124,14 @@ export class NavigateService {
     return this.getNavigateResult(UrlConfig.getTrainerUrl('/diets/edit-plan/' + dietId));
   }
 
+  clientDietPlanPage(clientId: number, dietId: number): NavigateResult {
+    return this.getNavigateResult(UrlConfig.getTrainerUrl('clients/edit/' + clientId + '/diet/' + dietId + '/diet-plan'));
+  }
+
+  clientDietPreviewPage(clientId: number, dietId: number): NavigateResult {
+    return this.getNavigateResult(UrlConfig.getTrainerUrl('clients/edit/' + clientId + '/diet/' + dietId + '/view'));
+  }
+
   private getNavigateResult(url, navigationExtras?: NavigationExtras): NavigateResult {
     return new NavigateResult((xUrl) => this.router.navigate([xUrl], navigationExtras), url);
   }
