@@ -1,4 +1,4 @@
-import { TdDialogService } from '@covalent/core/dialogs/services/dialog.service';
+import { TdDialogService } from '@covalent/core';
 import { ChangeDetectionStrategy, Component, Inject, OnInit } from '@angular/core';
 
 import { BaseWebComponent } from '../../base-web-component.class';

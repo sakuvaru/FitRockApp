@@ -4,6 +4,7 @@ import { CalendarEvent, CalendarEventTitleFormatter } from 'angular-calendar';
 import { EventAction, EventColor } from 'calendar-utils';
 import { isSameDay, isSameMonth } from 'date-fns';
 import { LocalizationService } from 'lib/localization';
+import * as moment from 'moment';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Rx';
 import { CalendarEventModel } from 'web-components/calendar';
@@ -19,7 +20,6 @@ import { CalendarConfig } from './calendar.config';
 import { CalendarColor } from './calendar.enums';
 import { CalendarDeleteResponse, CalendarEventAttendee } from './calendar.models';
 import { CustomEventTitleFormatter } from './custom-event-title.formatter';
-import * as moment from 'moment';
 
 @Component({
     selector: 'calendar',
