@@ -1,5 +1,6 @@
 import { Observable } from 'rxjs/Rx';
 import { LanguageEnum } from '../../../lib/repository';
+import { guidHelper } from 'lib/utilities';
 
 export class ResourceKey {
 
@@ -19,6 +20,9 @@ export class ResourceKey {
 export class MenuItem {
     public icon?: string;
     public imageUrl?: string;
+    public nestedItems?: MenuItemNested[];
+
+    public identifier: string = guidHelper.newGuid();
 
     constructor(
         public label: ResourceKey,
@@ -26,7 +30,8 @@ export class MenuItem {
         public action: string,
         options?: {
             icon?: string,
-            imageUrl?: string
+            imageUrl?: string,
+            nestedItems?: MenuItemNested[],
         }
     ) {
         if (options) {
@@ -35,7 +40,23 @@ export class MenuItem {
     }
 }
 
+export class MenuItemNested {
+    constructor(
+        public label: ResourceKey,
+        public type: MenuItemType,
+        public action: string,
+        options?: {
+            nestedItems?: MenuItemNested[]
+        }
+    ) {
+        if (options) {
+            Object.assign(this, options);
+        }
+    } 
+}
+
 export enum MenuItemType {
+    withNestedItems,
     auth,
     trainer,
     client

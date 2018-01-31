@@ -1,39 +1,49 @@
 <loader [enabled]="loaderEnabled" color="accent" type="linear"></loader>
 
 <mat-sidenav-container class="w-layout-sidenav-container">
-  <mat-sidenav #snav class="w-layout-sidenav" [mode]="isMobile ? 'over' : 'side'" opened="true">
+  <mat-sidenav #snav class="w-layout-sidenav" [mode]="isMobile ? 'over' : 'side'" [opened]="isMobile ? 'false' : 'true'">
 
     <div fxLayout="row" fxLayoutAlign="center center">
- 
+
       <div fxLayout="column" class="push-top push-bottom">
         <span [routerLink]="'/' + getDashboardUrl()" class="w-layout-app-name">{{ appName }}</span>
       </div>
     </div>
 
-    <div fxLayout="row" fxLayoutAlign="center center" *ngFor="let item of adminMenu.trainerMenu" class="w-layout-menu-item" [routerLink]="getMenuItemUrl(item.action, item.type)">
+    <div fxLayout="row" fxLayoutAlign="center center" *ngFor="let item of adminMenu.trainerMenu" class="w-layout-menu-item" (click)="handleMenuItemClick(item)">
       <div fxLayout="column" class="push-left push-right-sm">
-        <mat-icon>{{item.icon}}</mat-icon>
+        <mat-icon class="w-layout-menu-item-icon">{{item.icon}}</mat-icon>
       </div>
       <div fxLayout="column" fxFlex>
         {{item.label.key | localize}}
       </div>
+      <div fxLayout="column" *ngIf="item.nestedItems && item.nestedItems.length > 0" class="pad-right">
+        <mat-icon class="w-layout-show-more-icon" [@rotate90]="triggeredItems[item.identifier] ? triggeredItems[item.identifier].triggered : false">keyboard_arrow_right</mat-icon>
+      </div>
     </div>
-
-    <ng-template let-item let-last="last" ngFor [ngForOf]="menuItems">
-      <a mat-list-item [routerLink]="getMenuItemUrl(item.action, item.type)">
-        <img *ngIf="item.imageUrl" mat-list-avatar alt="" [src]="item.imageUrl">
-        <mat-icon *ngIf="item.icon" [color]="getMenuItemColor(item.action, item.type)">{{item.icon}}</mat-icon>
-        <div class="mat-list-text">
-          {{ item.label.key | localize}}
-        </div>
-      </a>
-    </ng-template>
 
   </mat-sidenav>
   <mat-sidenav-content class="w-layout-sidenav-content">
 
     <div class="w-layout-top-panel">
       <admin-toolbar [matSidenav]="snav"></admin-toolbar>
+    </div>
+
+    <div fxLayout="row" fxLayoutWrap fxLayoutAlign="start center" fxLayoutAlign.xs="start " fxLayoutAlign.sm="start " fxLayout.sm="row"
+      fxLayout.xs="row" class="w-layout-component-menu push-top pad-left pad-right">
+      <div fxLayout="column" *ngFor="let item of menuItems" [routerLink]="getMenuItemUrl(item.action, item.type)" class="push-right pad-top pad-bottom w-layout-component-menu-item">
+        <div fxLayout="row" fxLayoutAlign="start center" [ngClass.xs]="'push-top'">
+          <div fxLayout="column" *ngIf="item.imageUrl">
+            <img alt="" [src]="item.imageUrl">
+          </div>
+          <div fxLayout="column" *ngIf="item.icon" class="push-right-sm">
+            <mat-icon [color]="getMenuItemColor(item.action, item.type)">{{item.icon}}</mat-icon>
+          </div>
+          <div fxLayout="column">
+            {{ item.label.key | localize}}
+          </div>
+        </div>
+      </div>
     </div>
 
     <page-wrapper>

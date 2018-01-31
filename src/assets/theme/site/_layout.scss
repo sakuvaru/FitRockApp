@@ -5,7 +5,7 @@
 }
 
 .w-layout-sidenav {
-    width: 220px;
+    width: 250px;
     background-color: #353943;
     height: 100%;
     display: flex;
@@ -29,7 +29,6 @@
 
     .mat-icon {
         color: #FFFFFF;
-        font-size: 15px;
     }
 }
 
@@ -61,8 +60,35 @@
     color: #FFFFFF;
 }
 
+.w-layout-menu-item-icon  {
+    font-size: 15px;
+}
+
 .w-layout-large-screen-menu {
     font-size: 16px;
+}
+
+.w-layout-show-more-icon {
+    font-size: 18px
+}
+
+.w-layout-component-menu {
+    background-color: rgb(230, 230, 230);
+    color: #353943;
+
+    .w-layout-component-menu-item {
+        font-size: 14px;
+        cursor: pointer;
+
+        .mat-icon {
+            font-size: 15px;
+        }
+    }
+
+    .w-layout-component-menu-item:hover {
+        color: $accent;
+        transition: color 0.2s ease;
+    }
 }
 
 /* End new admin layout */

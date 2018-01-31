@@ -1,5 +1,5 @@
 import { UrlConfig } from '../../config';
-import { MenuItem, MenuItemType } from '../models/core.models';
+import { MenuItem, MenuItemType, MenuItemNested } from '../models/core.models';
 
 export class AdminMenu {
 
@@ -11,7 +11,10 @@ export class AdminMenu {
         new MenuItem({ key: 'menu.exercises' }, MenuItemType.trainer, 'exercises', { icon: 'rowing' }),
         new MenuItem({ key: 'menu.diets' }, MenuItemType.trainer, 'diets', { icon: 'restaurant' }),
         new MenuItem({ key: 'menu.foods' }, MenuItemType.trainer, 'foods', { icon: 'free_breakfast' }),
-        new MenuItem({ key: 'menu.progressItemTypes' }, MenuItemType.trainer, 'progress-item-types', { icon: 'timeline' }),
+        new MenuItem({ key: 'menu.progressItemTypes' }, MenuItemType.withNestedItems, '', { icon: 'timeline', nestedItems: [
+            new MenuItemNested({ key: 'menu.myProgressItemTypes' }, MenuItemType.trainer, 'progress-item-types'),
+            new MenuItemNested({ key: 'menu.globalProgressItemTypes' }, MenuItemType.trainer, 'progress-item-types/global'),
+        ] }),
         new MenuItem({ key: 'menu.locations' }, MenuItemType.trainer, 'locations', { icon: 'place' }),
     ];
 

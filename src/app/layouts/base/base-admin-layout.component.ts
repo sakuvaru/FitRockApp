@@ -1,6 +1,5 @@
 import { Location } from '@angular/common';
-import { AfterViewInit, ChangeDetectorRef, OnDestroy, NgZone } from '@angular/core';
-import { TdMediaService } from '@covalent/core';
+import { AfterViewInit, ChangeDetectorRef, NgZone, OnDestroy } from '@angular/core';
 
 import { stringHelper } from '../../../lib/utilities';
 import { AdminMenu, ComponentAction, ComponentDependencyService, MenuItem } from '../../core';
