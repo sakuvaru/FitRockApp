@@ -22,7 +22,7 @@ export class DataFormConfig {
     /**
      * Indicates if form is wrapped in card
      */
-    public wrapInCard: boolean = true;
+    public wrapInCard: boolean = false;
 
     /**
     * Form definition query

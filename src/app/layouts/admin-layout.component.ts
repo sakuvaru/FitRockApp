@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, NgZone } from '@angular/core';
 import { ComponentDependencyService } from '../core';
 import { BaseAdminLayoutComponent } from './base/base-admin-layout.component';
 import { Location } from '@angular/common';
@@ -11,9 +11,10 @@ export class AdminLayoutComponent extends BaseAdminLayoutComponent  {
     constructor(
         protected dependencies: ComponentDependencyService,
         protected cdr: ChangeDetectorRef,
-        protected location: Location
+        protected location: Location,
+        protected ngZone: NgZone
     ) {
-        super(dependencies, cdr, location);
+        super(dependencies, cdr, location, ngZone);
     }
 
 }

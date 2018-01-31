@@ -1,3 +1,72 @@
+/* New admin layout */
+
+.w-layout-sidenav-container {
+    height: 100%;
+}
+
+.w-layout-sidenav {
+    width: 220px;
+    background-color: #353943;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FFFFFF;
+}
+
+.w-layout-sidenav-content {
+    background-color: #FFFFFF;
+    height: 100%;
+}
+
+.w-layout-menu-item {
+    text-transform: uppercase;
+    font-weight: 500;
+    font-size: 13px;
+    letter-spacing: .6px;
+    cursor: pointer;
+    padding: 13px 0 13px;
+
+    .mat-icon {
+        color: #FFFFFF;
+        font-size: 15px;
+    }
+}
+
+.w-layout-toolbar-link {
+    color: #FFFFFF;
+}
+
+.w-layout-toolbar-link:hover {
+    text-decoration: underline;
+}
+
+.w-layout-menu-item:hover {
+    transition: color 0.2s ease;
+    color: $accent;
+    .mat-icon {
+        transition: color 0.2s ease;
+        color: $accent;
+    }
+}
+
+.w-layout-app-name {
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.w-layout-top-panel {
+    background-image: -webkit-linear-gradient(45deg, $accent 0, $primary 100%);
+    background-image: linear-gradient(45deg, $accent 0, $primary 100%);
+    color: #FFFFFF;
+}
+
+.w-layout-large-screen-menu {
+    font-size: 16px;
+}
+
+/* End new admin layout */
+
 /* Layout z-index stacking */
 
 /* Material issue: https://github.com/angular/material2/issues/7636 */

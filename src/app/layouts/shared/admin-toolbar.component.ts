@@ -1,16 +1,19 @@
-import { Component } from '@angular/core';
+import { Component, NgZone, Input } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 
 import { AppConfig, UrlConfig } from '../../config';
-import { ComponentDependencyService } from '../../core';
+import { ComponentDependencyService, AuthenticatedUser } from '../../core';
 import { Feed } from '../../models';
 import { BaseLayoutComponent } from '../base/base-layout.component';
+import { MatSidenav } from '@angular/material';
 
 @Component({
     selector: 'admin-toolbar',
     templateUrl: 'admin-toolbar.component.html'
 })
 export class AdminToolbarComponent extends BaseLayoutComponent {
+
+    @Input() matSidenav: MatSidenav;
 
     public feedsCount: number;
     public feeds: Feed[];
@@ -19,6 +22,7 @@ export class AdminToolbarComponent extends BaseLayoutComponent {
     public showAvatar: boolean = false;
     public license: string | undefined;
     public userAvatarUrl?: string;
+    public username?: string;
 
     public readonly limitFeedsCount: number = 8;
 
@@ -28,19 +32,24 @@ export class AdminToolbarComponent extends BaseLayoutComponent {
      */
     public preventFeedChange: boolean = false;
 
+    public authUser?: AuthenticatedUser;
+
     constructor(
-        protected dependencies: ComponentDependencyService
+        protected dependencies: ComponentDependencyService,
+        protected ngZone: NgZone
     ) {
-        super(dependencies);
+        super(dependencies, ngZone);
         this.initUser();
         this.subscribeToFeedObservables();
     }
 
     private initUser(): void {
-        const authUser = this.dependencies.authenticatedUserService.getUser();
-        this.userAvatarUrl = authUser ? authUser.getAvatarOrGravatarUrl() : undefined;
+        this.authUser = this.dependencies.authenticatedUserService.getUser();
+        if (this.authUser) {
+        this.userAvatarUrl = this.authUser.getAvatarOrGravatarUrl();
         this.showAvatar = true;
-        this.license = authUser ? authUser.license : undefined;
+        this.license = this.authUser.license;
+        this.username = this.authUser.firstName && this.authUser.lastName ? `${this.authUser.firstName} ${this.authUser.lastName}` : this.authUser.email;
 
         // listen to user changes and update avatar accordingly
         this.dependencies.coreServices.sharedService.authenticatedUserChanged$
@@ -51,6 +60,8 @@ export class AdminToolbarComponent extends BaseLayoutComponent {
                     this.userAvatarUrl = user.avatarUrl;
                 }
             });
+
+        }
     }
 
     private subscribeToFeedObservables(): void {

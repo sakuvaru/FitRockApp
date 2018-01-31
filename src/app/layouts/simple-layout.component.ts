@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, NgZone } from '@angular/core';
 import { ComponentDependencyService } from '../core';
 import { BaseLayoutComponent } from './base/base-layout.component';
 
@@ -10,7 +10,8 @@ export class SimpleLayoutComponent extends BaseLayoutComponent {
     constructor(
         protected dependencies: ComponentDependencyService,
         protected cdr: ChangeDetectorRef,
+        protected ngZone: NgZone
     ) {
-        super(dependencies);
+        super(dependencies, ngZone);
     }
 }

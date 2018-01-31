@@ -1,10 +1,16 @@
-import { OnDestroy } from '@angular/core';
+import { OnDestroy, NgZone, AfterViewInit, OnInit } from '@angular/core';
 import { Subject } from 'rxjs/Rx';
 
 import { AppConfig, UrlConfig } from '../../config';
 import { ComponentDependencyService, MenuItemType } from '../../core';
+import { TdMediaService } from '@covalent/core';
 
-export class BaseLayoutComponent implements OnDestroy {
+export class BaseLayoutComponent implements OnDestroy, AfterViewInit, OnInit {
+
+    public isMobile: boolean = false;
+
+    // shortcut to media service
+    public mediaService?: TdMediaService;
 
     /**
     * Important - used to unsubsribe ALL subscriptions when component is destroyed. This ensures that requests are cancelled
@@ -21,7 +27,13 @@ export class BaseLayoutComponent implements OnDestroy {
 
     constructor(
         protected dependencies: ComponentDependencyService,
+        protected ngZone: NgZone
     ) {
+        this.mediaService = dependencies.tdServices.mediaService;
+    }
+
+    ngOnInit(): void {
+        this.watchScreen();
     }
 
     /**
@@ -33,6 +45,14 @@ export class BaseLayoutComponent implements OnDestroy {
         // see comments on top
         this.ngUnsubscribe.next();
         this.ngUnsubscribe.complete();
+    }
+
+    ngAfterViewInit(): void {
+        // broadcast to all listener observables when loading the page
+        if (!this.mediaService) {
+            throw Error(`Media service was not initialized`);
+        }
+        this.mediaService.broadcast();
     }
 
     getMenuItemUrl(action: string, type: MenuItemType): string {
@@ -89,4 +109,19 @@ export class BaseLayoutComponent implements OnDestroy {
     fromNow(date: Date): string {
         return this.dependencies.coreServices.timeService.fromNow(date);
     }
+
+    private watchScreen(): void {
+        if (!this.mediaService) {
+            throw Error(`Media service was not initialized`);
+        }
+
+        this.mediaService.registerQuery('xs')
+            .takeUntil(this.ngUnsubscribe)
+            .subscribe((matches: boolean) => {
+                this.ngZone.run(() => {
+                    this.isMobile = matches;
+                });
+            });
+    }
+
 }

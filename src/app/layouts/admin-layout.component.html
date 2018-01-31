@@ -1,92 +1,43 @@
-<loader [enabled]="loaderEnabled" type="linear"></loader>
+<loader [enabled]="loaderEnabled" color="accent" type="linear"></loader>
 
-<td-layout>
-  <td-navigation-drawer fxFlex [sidenavTitle]="appName" [name]="displayUsername">
-    <mat-nav-list>
-      <a class="w-layout-drawbar-item" *ngFor="let item of adminMenu.trainerMenu" mat-list-item [routerLink]="getMenuItemUrl(item.action, item.type)">
-        <mat-icon>{{item.icon}}</mat-icon>{{item.label.key | localize}}</a>
-    </mat-nav-list>
-    <div td-navigation-drawer-menu>
-      <mat-nav-list>
-        <a class="w-layout-drawbar-item" *ngFor="let item of adminMenu.userMenu" mat-list-item [routerLink]="getMenuItemUrl(item.action, item.type)">
-          <mat-icon>{{item.icon}}</mat-icon>{{item.label.key | localize}}</a>
-      </mat-nav-list>
-    </div>
-  </td-navigation-drawer>
-  <div td-sidenav-content class="td-layout-footer pad">
-    &copy; {{year}} {{appName}}
-  </div>
+<mat-sidenav-container class="w-layout-sidenav-container">
+  <mat-sidenav #snav class="w-layout-sidenav" [mode]="isMobile ? 'over' : 'side'" opened="true">
 
-  <td-layout-nav>
-    <div td-toolbar-content flex>
-      <admin-toolbar></admin-toolbar>
+    <div fxLayout="row" fxLayoutAlign="center center">
+ 
+      <div fxLayout="column" class="push-top push-bottom">
+        <span [routerLink]="'/' + getDashboardUrl()" class="w-layout-app-name">{{ appName }}</span>
+      </div>
     </div>
 
-    <td-layout-manage-list #manageList [opened]="media.registerQuery('gt-sm') | async" [mode]="(media.registerQuery('gt-sm') | async) ? 'side' :  'over'"
-      [sidenavWidth]="(media.registerQuery('gt-xs') | async) ? '257px' : '100%'">
-
-      <mat-toolbar *ngIf="menuTitle || enableComponentSearch" class="w-component-to" td-sidenav-content>
-        <ng-container *ngIf="!enableComponentSearch">
-          <ng-container *ngIf="menuAvatarUrl">
-            <img matCardAvatar class="push-right w-component-avatar" [src]="menuAvatarUrl" alt="menu avatar">
-          </ng-container>
-          <span *ngIf="menuTitle" class="w-layout-sidemenu-title">{{shortenTitle(menuTitle)}}</span>
-        </ng-container>
-        <!-- using display none because otherwise the search control could not be initialized -->
-        <div [style.display]="enableComponentSearch ? 'block' : 'none'" class="mat-body-2">
-          <td-search-input (searchDebounce)="handleComponentSearch($event)" [showUnderline]="false" debounce="200" placeholder="{{ 'shared.searchClient' | localize }}"></td-search-input>
-        </div>
-      </mat-toolbar>
-
-      <mat-nav-list td-sidenav-content [tdLayoutManageListClose]="!media.query('gt-sm')">
-        <ng-template let-item let-last="last" ngFor [ngForOf]="menuItems">
-          <a mat-list-item [routerLink]="getMenuItemUrl(item.action, item.type)">
-            <img *ngIf="item.imageUrl" mat-list-avatar alt="" [src]="item.imageUrl">
-            <mat-icon *ngIf="item.icon" [color]="getMenuItemColor(item.action, item.type)">{{item.icon}}</mat-icon>
-            <div class="mat-list-text">
-              {{ item.label.key | localize}}
-            </div>
-          </a>
-        </ng-template>
-      </mat-nav-list>
-
-      <!--
-      <mat-toolbar>
-        <div layout="row" layout-align="start center" fxFlex>
-          <button mat-icon-button tdLayoutManageListOpen [hideWhenOpened]="true" tdMediaToggle="gt-sm" [mediaStyles]="{display: 'none'}">
-            <mat-icon>arrow_back</mat-icon>
-          </button>
-          <span>{{componentTitle}}</span>
-          <span fxFlex></span>
-          <button mat-icon-button [routerLink]="getAuthUrl('logout')"><mat-icon>exit_to_app</mat-icon></button>
-        </div>
-      </mat-toolbar>
-    -->
-
-      <div class="w-layout-component-header">
-        <button mat-icon-button tdLayoutManageListOpen [hideWhenOpened]="true" tdMediaToggle="gt-sm" [mediaStyles]="{display: 'none'}">
-          <mat-icon>arrow_back</mat-icon>
-        </button>
-        <h1>{{componentTitle}}</h1>
-        <span fxFlex></span>
-        <div *ngIf="actions && actions.length > 0" class="push-right-sm">
-          <button *ngFor="let action of actions" mat-icon-button (click)="action.action()" [matTooltip]="action.tooltip ? (action.tooltip() | async) : undefined">
-            <mat-icon>{{ action.icon() }}</mat-icon>
-          </button>
-        </div>
+    <div fxLayout="row" fxLayoutAlign="center center" *ngFor="let item of adminMenu.trainerMenu" class="w-layout-menu-item" [routerLink]="getMenuItemUrl(item.action, item.type)">
+      <div fxLayout="column" class="push-left push-right-sm">
+        <mat-icon>{{item.icon}}</mat-icon>
       </div>
-
-      <div>
-        <page-wrapper>
-          <router-outlet></router-outlet>
-        </page-wrapper>
+      <div fxLayout="column" fxFlex>
+        {{item.label.key | localize}}
       </div>
+    </div>
 
-    </td-layout-manage-list>
-    <td-layout-footer>
-      <div fxLayout="row" fxLayoutAlign="start center" class="mat-caption">
-        <footer [appName]="appName"></footer>
-      </div>
-    </td-layout-footer>
-  </td-layout-nav>
-</td-layout>
+    <ng-template let-item let-last="last" ngFor [ngForOf]="menuItems">
+      <a mat-list-item [routerLink]="getMenuItemUrl(item.action, item.type)">
+        <img *ngIf="item.imageUrl" mat-list-avatar alt="" [src]="item.imageUrl">
+        <mat-icon *ngIf="item.icon" [color]="getMenuItemColor(item.action, item.type)">{{item.icon}}</mat-icon>
+        <div class="mat-list-text">
+          {{ item.label.key | localize}}
+        </div>
+      </a>
+    </ng-template>
+
+  </mat-sidenav>
+  <mat-sidenav-content class="w-layout-sidenav-content">
+
+    <div class="w-layout-top-panel">
+      <admin-toolbar [matSidenav]="snav"></admin-toolbar>
+    </div>
+
+    <page-wrapper>
+      <router-outlet></router-outlet>
+    </page-wrapper>
+  </mat-sidenav-content>
+</mat-sidenav-container>

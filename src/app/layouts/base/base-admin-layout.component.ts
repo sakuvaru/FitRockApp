@@ -1,5 +1,5 @@
 import { Location } from '@angular/common';
-import { AfterViewInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, OnDestroy, NgZone } from '@angular/core';
 import { TdMediaService } from '@covalent/core';
 
 import { stringHelper } from '../../../lib/utilities';
@@ -7,9 +7,6 @@ import { AdminMenu, ComponentAction, ComponentDependencyService, MenuItem } from
 import { BaseLayoutComponent } from './base-layout.component';
 
 export class BaseAdminLayoutComponent extends BaseLayoutComponent implements OnDestroy, AfterViewInit {
-
-    // shortcut to media service
-    public media: TdMediaService;
 
     // Setup properties
     public readonly titleCharsLength: number = 22;
@@ -22,8 +19,8 @@ export class BaseAdminLayoutComponent extends BaseLayoutComponent implements OnD
     public menuAvatarUrl?: string;
     public actions?: ComponentAction[];
 
-    public displayUsername: string;
-    public email: string;
+    public displayUsername?: string;
+    public email?: string;
 
     // admin menu
     public adminMenu: AdminMenu = new AdminMenu();
@@ -36,7 +33,7 @@ export class BaseAdminLayoutComponent extends BaseLayoutComponent implements OnD
     /**
     * Part of url identifying 'client' or 'trainer' app type
     */
-    public urlSegment: string;
+    public urlSegment?: string;
 
     /**
      * Menu items
@@ -46,11 +43,11 @@ export class BaseAdminLayoutComponent extends BaseLayoutComponent implements OnD
     constructor(
         protected dependencies: ComponentDependencyService,
         protected cdr: ChangeDetectorRef,
-        protected location: Location
+        protected location: Location,
+        protected ngZone: NgZone
     ) {
-        super(dependencies);
+        super(dependencies, ngZone);
 
-        this.media = dependencies.tdServices.mediaService;
 
         // init user texts
         const user = this.dependencies.authenticatedUserService.getUser();
@@ -112,11 +109,6 @@ export class BaseAdminLayoutComponent extends BaseLayoutComponent implements OnD
 
                 this.cdr.detectChanges(); 
             });
-    }
-
-    ngAfterViewInit(): void {
-        // broadcast to all listener observables when loading the page
-        this.media.broadcast();
     }
 
     handleComponentSearch(search: string): void {
