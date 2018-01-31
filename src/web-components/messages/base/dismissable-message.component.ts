@@ -2,8 +2,6 @@ import { Component, Input, OnChanges, SimpleChanges, OnInit } from '@angular/cor
 
 import { BaseWebComponent } from '../../base-web-component.class';
 
-@Component({
-})
 export class DismissableMessageComponent extends BaseWebComponent implements OnInit, OnChanges {
 
     private readonly dismissStoragePrefix: string = 'dismissableMessage_';

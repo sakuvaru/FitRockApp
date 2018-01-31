@@ -14,7 +14,7 @@ export class PreviewExerciseComponent extends BaseModuleComponent implements OnI
 
     @Output() loadExercise = new EventEmitter<Exercise>();
 
-    private exercise?: Exercise;
+    public exercise?: Exercise;
 
     constructor(
         protected componentDependencyService: ComponentDependencyService,

@@ -14,6 +14,7 @@ import { AngularMaterialModule } from '../../lib/material';
 import { WebComponentsModule } from '../../web-components';
 import { ComponentDependencyService } from './component/component-dependency.service';
 import { AppLanguageResolver } from './providers/app-language-resolver';
+import { BaseDialogComponent } from './component/types/base-dialog.component';
 import {
     AuthenticatedUserService,
     CurrentLanguageService,
@@ -41,9 +42,10 @@ import {
         WebComponentsModule,
         DragulaModule,
         DirectivesModule,
-        LocalizationModule
+        LocalizationModule,
     ],
     declarations: [
+        BaseDialogComponent
     ],
     providers: [
         SharedService,

@@ -1,4 +1,4 @@
-import { OnDestroy, OnInit } from '@angular/core';
+import { OnDestroy, OnInit, Component } from '@angular/core';
 import { NavigationExtras } from '@angular/router';
 import { AuthenticatedUser, LanguageConfig } from 'app/core';
 import { ErrorReasonEnum, ErrorResponse } from 'lib/repository';
@@ -6,7 +6,6 @@ import { Observable, Subject } from 'rxjs/Rx';
 
 import { AppConfig, UrlConfig } from '../../config';
 import { ComponentDependencyService } from './component-dependency.service';
-
 
 export abstract class BaseComponent implements OnInit, OnDestroy {
 

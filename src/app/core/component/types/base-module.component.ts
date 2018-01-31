@@ -4,8 +4,6 @@ import { Observable } from 'rxjs/Rx';
 import { BaseComponent } from '../base.component';
 import { ComponentDependencyService } from '../component-dependency.service';
 
-@Component({
-})
 export abstract class BaseModuleComponent extends BaseComponent implements OnInit, OnDestroy {
 
   constructor(

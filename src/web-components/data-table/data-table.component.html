@@ -83,7 +83,7 @@
 
               <!-- Sortable header -->
               <ng-container *ngIf="fieldWrapper.field.sortKey">
-                <mat-header-cell mat-sort-header *matHeaderCellDef fxHide="false" [fxHide.sm]="fieldWrapper.field.hideOnSmallScreen === true"
+                <mat-header-cell mat-sort-header *matHeaderCellDef="let item" fxHide="false" [fxHide.sm]="fieldWrapper.field.hideOnSmallScreen === true"
                   [fxHide.xs]="fieldWrapper.field.hideOnSmallScreen === true">
                   <ng-container *ngIf="fieldWrapper.field.name(item) as nameResult">
                     <span class="text-truncate" *ngIf="fieldWrapper.field.isObservable(nameResult)">{{ nameResult| async }}</span>
@@ -94,7 +94,7 @@
 
               <!-- Header without sort -->
               <ng-container *ngIf="!fieldWrapper.field.sortKey">
-                <mat-header-cell *matHeaderCellDef fxHide="false" [fxHide.sm]="fieldWrapper.field.hideOnSmallScreen === true" [fxHide.xs]="fieldWrapper.field.hideOnSmallScreen === true">
+                <mat-header-cell *matHeaderCellDef="let item" fxHide="false" [fxHide.sm]="fieldWrapper.field.hideOnSmallScreen === true" [fxHide.xs]="fieldWrapper.field.hideOnSmallScreen === true">
                   <ng-container *ngIf="fieldWrapper.field.name(item) as nameResult">
                     <span class="text-truncate" *ngIf="fieldWrapper.field.isObservable(nameResult)">{{ nameResult| async }}</span>
                     <span class="text-truncate" *ngIf="!fieldWrapper.field.isObservable(nameResult)">{{ nameResult }}</span>
@@ -159,7 +159,7 @@
 
               </mat-header-cell>
               <mat-cell *matCellDef="let item">
-                <ng-container *ngIf="config.avatar(item) as avatar">
+                <ng-container *ngIf="config.avatar && config.avatar(item) as avatar">
                   <img *ngIf="avatar.isImage()" class="w-data-table-avatar-image" alt="avatar" [src]="avatar.imageUrl" />
                   <mat-icon *ngIf="avatar.isIcon()">{{ avatar.icon }}</mat-icon>
                 </ng-container>
@@ -215,7 +215,7 @@
             <div [fxFlex]="(100 / this.config.groupByItemsCount)" fxFlex.sm="100%" fxFlex.xs="100%">
               <div class="push-sm">
                 <mat-card [class.w-data-table-clickable-tile]="isClickable" (click)="isClickable ? handleOnClick(item) : undefined">
-                  <ng-container *ngIf="config.avatar(item) as avatar">
+                  <ng-container *ngIf="config.avatar && config.avatar(item) as avatar">
                     <img mat-card-image *ngIf="avatar.isImage()" alt="avatar" [src]="avatar.imageUrl" />
                   </ng-container>
                   <mat-card-content>

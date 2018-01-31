@@ -30,7 +30,7 @@ export class LoadMoreComponent extends BaseWebComponent implements OnInit, OnCha
     /**
      * Search control
      */
-    private searchControl = new FormControl();
+    public searchControl = new FormControl();
 
     /**
      * Debounce time for search
@@ -117,6 +117,11 @@ export class LoadMoreComponent extends BaseWebComponent implements OnInit, OnCha
         }
     }
 
+    loadNextPage(): void {
+        this.currentPage++;
+        this.reloadData();
+    }
+
     private initLoadMoreComponent() {
         if (!this.config || this.initialized) {
             return;
@@ -199,11 +204,6 @@ export class LoadMoreComponent extends BaseWebComponent implements OnInit, OnCha
 
     private reloadData(): void {
         this.loadMoreSubject.next(true);
-    }
-
-    private loadNextPage(): void {
-        this.currentPage++;
-        this.reloadData();
     }
 
     private subscribeToSearchEvents(): void {

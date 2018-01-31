@@ -1,12 +1,12 @@
-import { ViewChild, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 import { Observable, Subject } from 'rxjs/Rx';
 import * as _ from 'underscore';
 
 import { LocalizationService } from '../../lib/localization';
 import { BaseWebComponent } from '../base-web-component.class';
-import { UploaderConfig } from './uploader.config';
 import { UploaderModeEnum } from './uploader-mode.enum';
+import { UploaderConfig } from './uploader.config';
 
 @Component({
     selector: 'uploader',
@@ -53,7 +53,7 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
     /**
     * Max files param for translation
     */
-    private get maxFilesParam(): any {
+    public get maxFilesParam(): any {
         const param: any = {};
         param.maxFiles = this.maxFiles;
 
@@ -106,6 +106,9 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
         return this.dragCounter === 0;
     }
 
+    public selectedFiles?: FileList;
+    public selectedFile?: File;
+
     @Input() config: UploaderConfig;
 
     constructor(
@@ -123,9 +126,20 @@ export class UploaderComponent extends BaseWebComponent implements OnInit, OnCha
         this.initUploader();
     }
 
-    selectEvent(file: File | FileList): void {
+    selectEvent(fileOrFiles: File | FileList): void {
         if (this.config.onSelectFiles) {
-            this.config.onSelectFiles(file);
+            this.config.onSelectFiles(fileOrFiles);
+        }
+
+        this.selectedFiles = undefined;
+        this.selectedFile = undefined;
+
+        if (fileOrFiles instanceof File) {
+            this.selectedFile = fileOrFiles;
+        }
+
+        if (fileOrFiles instanceof FileList) {
+            this.selectedFiles = fileOrFiles;
         }
     }
 

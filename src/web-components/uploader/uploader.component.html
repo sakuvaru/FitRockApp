@@ -8,7 +8,8 @@
           <td-file-upload #fileUpload defaultColor="primary" activeColor="primary" cancelColor="warn" (select)="handleUploadSingle($event)"
             (upload)="handleUploadSingle($event)" (cancel)="cancelEvent()" [accept]="acceptedExtensionsString" [disabled]="disabled">
             <mat-icon>file_upload</mat-icon>
-            <span>{{ fileUpload.files?.name }}</span>
+            <span *ngIf="selectedFile">{{ selectedFile.name }}</span>
+            <span *ngIf="selectedFiles">{{ selectedFiles.length }}</span>
             <ng-template td-file-input-label>
               <mat-icon>attach_file</mat-icon>
               <span>{{ 'webComponents.uploader.chooseAFile' | localize}}</span>
@@ -27,7 +28,8 @@
           (dragenter)="dragEnter($event)" (upload)="handleUploadMultiple($event)" (cancel)="cancelEvent()" [accept]="acceptedExtensionsString" [disabled]="disabled"
             multiple>
             <mat-icon>file_upload</mat-icon>
-            <span>{{ fileUpload.files?.name }}</span>
+            <span *ngIf="selectedFile">{{ selectedFile.name }}</span>
+            <span *ngIf="selectedFiles">{{ selectedFiles.length }}</span>
             <ng-template td-file-input-label>
               <mat-icon>attach_file</mat-icon>
               <span>{{ 'webComponents.uploader.chooseFiles' | localize:maxFilesParam }}</span>

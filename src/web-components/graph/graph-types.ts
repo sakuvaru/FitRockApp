@@ -25,6 +25,7 @@ export class LineChart extends BaseGraph {
     public showXAxisLabel = true;
     public showYAxisLabel = true;
     public legend = false;
+    public autoScale = true;
 
     constructor(
         public data: MultiSeries[],

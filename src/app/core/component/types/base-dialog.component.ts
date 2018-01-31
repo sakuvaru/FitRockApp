@@ -4,9 +4,13 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { ComponentDependencyService } from '../component-dependency.service';
 import { BaseModuleComponent } from './base-module.component';
 
+/**
+ * Component decorated is required here for base dialog
+ */
 @Component({
+  template: ''
 })
-export abstract class BaseDialogComponent<TDialogComponent> extends BaseModuleComponent implements OnInit {
+export class BaseDialogComponent<TDialogComponent> extends BaseModuleComponent implements OnInit {
 
   constructor(
     protected dependencies: ComponentDependencyService,

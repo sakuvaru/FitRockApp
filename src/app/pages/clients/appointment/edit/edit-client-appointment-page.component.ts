@@ -31,7 +31,7 @@ export class EditClientAppointmentPageComponent extends BaseClientsPageComponent
         })));
   }
 
-  private loadAppointment(appointment: Appointment): void {
+  loadAppointment(appointment: Appointment): void {
     // setup menu
     this.setConfig({
       menuItems: new ClientEditAppointmentMenuItems(this.client.id, appointment.id).menuItems,

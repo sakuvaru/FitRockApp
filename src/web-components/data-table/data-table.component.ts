@@ -113,7 +113,7 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
     /**
      * Indicates if any data was already loaded
      */
-    private anyDataLoaded: boolean = false;
+    public anyDataLoaded: boolean = false;
 
     /**
      * Temp variable to hold filters
@@ -214,7 +214,7 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
     /**
      * Data source
      */
-    private dataSource?: DataSource<any>;
+    public dataSource?: DataSource<any>;
 
     /**
     * Flag for initialization component, used because ngOnChanges can be called before ngOnInit

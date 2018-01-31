@@ -1,6 +1,6 @@
 <ng-container *ngIf="config && graph && wrapperStyle && graphData">
     <div [ngStyle]="wrapperStyle">
-        <ngx-charts-pie-chart [labelFormatting]="graph.labelFormatting" [labels]="graph.showLabels" [results]="graphData" [view]="config.view" [scheme]="config.scheme" [gradient]="config.gradient" [legend]="config.showLegend"
+        <ngx-charts-pie-chart [labelFormatting]="graph.labelFormatting" [labels]="graph.showLabels" [results]="graphData" [view]="config.view" [scheme]="config.scheme" [gradient]="graph.gradient" [legend]="config.showLegend"
             [legendTitle]="legendTitle" (select)="onSelect($event)">
         </ngx-charts-pie-chart>
     </div>

@@ -35,7 +35,7 @@ export class EditClientWorkoutPageComponent extends BaseClientsPageComponent imp
                 })));
     }
 
-    private onLoadWorkout(workout: Workout): void {
+    onLoadWorkout(workout: Workout): void {
         const translationData: any = {};
         translationData.workoutName = workout.workoutName;
 
