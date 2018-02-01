@@ -89,21 +89,19 @@ export class BaseLayoutComponent implements OnDestroy, AfterViewInit, OnInit {
         return '';
     }
 
-    getMenuItemColor(action: string, type: MenuItemType): string | null {
-        const activeColor = 'accent';
-
+    menuItemIsActive(action: string, type: MenuItemType): boolean {
         const url = this.getMenuItemUrl(action, type);
         const currentUrl = this.dependencies.coreServices.navigateService.getCurrentUrl();
 
         if (currentUrl === url) {
-            return activeColor;
+            return true;
         }
 
         if (currentUrl.startsWith(url) && currentUrl.endsWith(url)) {
-            return activeColor;
+            return true;
         }
 
-        return null;
+        return false;
     }
 
     fromNow(date: Date): string {

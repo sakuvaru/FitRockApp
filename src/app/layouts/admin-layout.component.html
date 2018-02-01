@@ -37,9 +37,9 @@
             <img alt="" [src]="item.imageUrl">
           </div>
           <div fxLayout="column" *ngIf="item.icon" class="push-right-sm">
-            <mat-icon [color]="getMenuItemColor(item.action, item.type)">{{item.icon}}</mat-icon>
+            <mat-icon [class.accent]="menuItemIsActive(item.action, item.type)">{{item.icon}}</mat-icon>
           </div>
-          <div fxLayout="column">
+          <div fxLayout="column" [class.accent]="menuItemIsActive(item.action, item.type)">
             {{ item.label.key | localize}}
           </div>
         </div>
