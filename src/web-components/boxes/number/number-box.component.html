@@ -6,7 +6,7 @@
                     <count-up *ngIf="config.animate" [endVal]="config.number | async" [startVal]="config.startNumber"></count-up>
                     <span *ngIf="!config.animate">{{ config.number | async }}</span>
                 </div>
-                <div class="text-center mat-body-1">
+                <div class="text-center mat-body-1 text-truncate">
                     {{ config.text | async }}
                 </div>
             </mat-card-content>
