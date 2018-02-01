@@ -1,8 +1,7 @@
 <ng-container *ngIf="config">
-    <div [ngClass]="{'w-box-background': config.wrapInCard, 'pad': config.wrapInCard, 'push': config.wrapInCard}">
-        <loader [enabled]="loaderEnabled"></loader>
-
-        <div class="w-boxes w-boxes-list-box">
+    <div class="w-boxes w-boxes-list-box">
+        <div [ngClass]="{'w-box-card': config.wrapInCard, 'pad': config.wrapInCard, 'push': config.wrapInCard}">
+            <loader [enabled]="loaderEnabled"></loader>
             <div *ngIf="config.title" fxLayoutAlign=" center" fxLayout="row">
                 <div fxFlex fxLayout="column" [class]="config.titleAlign">
                     <span class="mat-title primary">

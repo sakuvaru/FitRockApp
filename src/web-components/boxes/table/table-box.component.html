@@ -1,6 +1,6 @@
 <ng-container *ngIf="config">
-    <div [ngClass]="{'w-box-background': config.wrapInCard, 'pad': config.wrapInCard}">
-        <div  class="w-boxes w-boxes-table-box">
+    <div class="w-boxes w-boxes-table-box">
+        <div [ngClass]="{'w-box-card': config.wrapInCard, 'pad': config.wrapInCard}">
             <div *ngIf="config.title" fxLayoutAlign=" center" fxLayout="row">
                 <div fxFlex [class]="config.titleAlign">
                     <div class="mat-title primary">

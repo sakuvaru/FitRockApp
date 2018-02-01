@@ -1,4 +1,9 @@
 .w-boxes {
+
+    .box-card {
+        @include card-box();
+    }
+
     .box-primary {
         background-color: $primary;
         color: $primary-contrast;
