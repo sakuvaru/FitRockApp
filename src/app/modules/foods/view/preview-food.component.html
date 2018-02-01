@@ -1,82 +1,49 @@
-<div fxFlexFill fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayout.md="column">
+<div fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayout.md="column">
     <div fxLayout="column" fxFlex="50%" class="push-sm">
-
-        <h1 *ngIf="food" class="mat-headline">
-            {{ food.foodName }}
-        </h1>
-
-        <div fxLayoutAlign="space-between start" fxLayout="row" fxHide.sm fxHide.xs>
-            <div fxFlex="18%" fxLayout="row">
-                <div class="w-full-width">
-                    <number-box [config]="protMiniBox"></number-box>
-                </div>
-            </div>
-            <div fxFlex="18%" fxLayout="row">
-                <div class="w-full-width">
-                    <number-box [config]="fatMiniBox"></number-box>
-                </div>
-            </div>
-            <div fxFlex="18%" fxLayout="row">
-                <div class="w-full-width">
-                    <number-box [config]="choMiniBox"></number-box>
-                </div>
-            </div>
-            <div fxFlex="18%" fxLayout="row">
-                <div class="w-full-width">
-                    <number-box [config]="sugarMiniBox"></number-box>
-                </div>
-            </div>
-            <div fxFlex="18%" fxLayout="row">
-                <div class="w-full-width">
-                    <number-box [config]="naclMiniBox"></number-box>
-                </div>
-            </div>
-        </div>
-        <div fxLayoutAlign="space-between start" fxFlex="50%" class="push-sm" fxHide fxShow.sm fxShow.xs>
-            <div fxFlex="30%" fxLayout="row">
-                <div class="w-full-width">
-                    <number-box [config]="protMiniBox"></number-box>
-                </div>
-            </div>
-            <div fxFlex="30%" fxLayout="row">
-                <div class="w-full-width">
-                    <number-box [config]="fatMiniBox"></number-box>
-                </div>
-            </div>
-            <div fxFlex="30%" fxLayout="row">
-                <div class="w-full-width">
-                    <number-box [config]="choMiniBox"></number-box>
-                </div>
-            </div>
-        </div>
-        <div fxLayoutAlign="space-between start" fxFlex="50%" class="push-sm" fxHide fxShow.sm fxShow.xs>
-            <div fxFlex="48%" fxLayout="row">
-                <div class="w-full-width">
-                    <number-box [config]="sugarMiniBox"></number-box>
-                </div>
-            </div>
-            <div fxFlex="48%" fxLayout="row">
-                <div class="w-full-width">
-                    <number-box [config]="naclMiniBox"></number-box>
-                </div>
-            </div>
-        </div>
-        <div fxFlex fxLayout="column" class="push-top">
-            <div class="w-full-height">
-                <table-box [config]="foodOverviewBox"></table-box>
-            </div>
-        </div>
-    </div>
-
-    <div fxFlex="50%" class="push-sm">
         <div fxLayout="column">
+            <h1 *ngIf="food" class="mat-headline">
+                {{ food.foodName }}
+            </h1>
+
+            <div fxLayoutWrap fxLayoutAlign="space-between start" fxLayout="row">
+                <div fxFlex="18%" fxFlex.sm="30%" fxFlex.xs="30%" fxLayout="column" class="push-bottom-md">
+                    <div class="w-full-width">
+                        <number-box [config]="protMiniBox"></number-box>
+                    </div>
+                </div>
+                <div fxFlex="18%" fxFlex.sm="30%" fxFlex.xs="30%" fxLayout="column" class="push-bottom-md">
+                    <div class="w-full-width">
+                        <number-box [config]="fatMiniBox"></number-box>
+                    </div>
+                </div>
+                <div fxFlex="18%" fxFlex.sm="30%" fxFlex.xs="30%" fxLayout="column" class="push-bottom-md">
+                    <div class="w-full-width">
+                        <number-box [config]="choMiniBox"></number-box>
+                    </div>
+                </div>
+                <div fxFlex="18%" fxFlex.sm="30%" fxFlex.xs="30%" fxLayout="column" class="push-bottom-md">
+                    <div class="w-full-width">
+                        <number-box [config]="sugarMiniBox"></number-box>
+                    </div>
+                </div>
+                <div fxFlex="18%" fxFlex.sm="30%" fxFlex.xs="30%" fxLayout="column" class="push-bottom-md">
+                    <div class="w-full-width">
+                        <number-box [config]="naclMiniBox"></number-box>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div fxLayout="column" class="push-top">
+            <table-box [config]="foodOverviewBox"></table-box>
+        </div>
+
+        <div fxLayout="column" class="push-top">
             <graph #graph [config]="foodGraph"></graph>
         </div>
     </div>
-</div>
 
-<div fxLayout="row" class="push-top push-left-sm push-right-sm">
-    <div fxFlex="100%" fxLayout="column">
+    <div fxLayout="column" fxFlex="50%" class="push-sm">
         <data-table [config]="usedInDishesDataForm"></data-table>
     </div>
 </div>

@@ -30,7 +30,7 @@ export class PreviewSupplementComponent extends BaseModuleComponent implements O
 
     public foodOverviewBox?: TableBoxConfig;
 
-    public usedInDishesDataForm?: DataTableConfig;
+    public usedInMealsDataTable?: DataTableConfig;
 
     public foodGraph?: GraphConfig<PieChart>;
 
@@ -61,7 +61,7 @@ export class PreviewSupplementComponent extends BaseModuleComponent implements O
     }
 
     private initUsedInFoodsDataForm(): void {
-        this.usedInDishesDataForm = this.dependencies.itemServices.foodDishService.buildDataTable(
+        this.usedInMealsDataTable = this.dependencies.itemServices.foodDishService.buildDataTable(
             (query, search) => query
                 .byCurrentUser()
                 .whereLike('ParentFood.FoodName', search)
@@ -125,7 +125,6 @@ export class PreviewSupplementComponent extends BaseModuleComponent implements O
         this.foodOverviewBox = this.dependencies.webComponentServices.boxService.tableBox(
             Observable.of(overviewLines), 
             {
-                title: super.translate('module.foods.foodInfo'),
             }
         );
     }
