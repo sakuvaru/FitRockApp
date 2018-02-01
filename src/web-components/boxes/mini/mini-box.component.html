@@ -2,7 +2,7 @@
     <div class="w-boxes w-boxes-mini-box">
         <mat-card [ngClass]="[getClassName()]">
             <mat-card-content>
-                <div fxFlex [class]="config.titleAlign">
+                <div *ngIf="config.title" fxFlex [class]="config.titleAlign">
                     <span class="mat-title">
                         {{ config.title | async }}
                     </span>

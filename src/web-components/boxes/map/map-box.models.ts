@@ -4,14 +4,15 @@ import { TextAlignEnum } from '../../shared/enums/text-align.enum';
 
 export class MapBoxConfig {
 
+    public title?: Observable<string>;
+    public titleAlign: TextAlignEnum = TextAlignEnum.Left;
+    public wrapInCard: boolean = false;
     public noDataMessage?: Observable<string>;
     public actions?: ActionButton[];
-
     public zoom: number = 10;
 
     constructor(
-        public title: Observable<string>,
-        public titleAlign: TextAlignEnum,
+ 
         public apiKey: string,
         public address: string,
         public lat?: number,
@@ -19,7 +20,10 @@ export class MapBoxConfig {
         private options?: {
             zoom?: number,
             noDataMessage?: Observable<string>,
-            actions?: ActionButton[]
+            actions?: ActionButton[],
+            title?: Observable<string>,
+            titleAlign?: TextAlignEnum,
+            wrapInCard?: boolean
         }
     )  { 
         if (options) {

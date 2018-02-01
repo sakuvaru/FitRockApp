@@ -123,9 +123,10 @@ export class PreviewFoodComponent extends BaseModuleComponent implements OnInit,
         }
 
         this.foodOverviewBox = this.dependencies.webComponentServices.boxService.tableBox(
-            super.translate('module.foods.foodInfo'),
-            TextAlignEnum.Center,
-            Observable.of(overviewLines)
+            Observable.of(overviewLines),
+            { 
+                title: super.translate('module.foods.foodInfo'),
+            }
         );
     }
 

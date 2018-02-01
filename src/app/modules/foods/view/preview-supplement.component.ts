@@ -123,9 +123,10 @@ export class PreviewSupplementComponent extends BaseModuleComponent implements O
         }
 
         this.foodOverviewBox = this.dependencies.webComponentServices.boxService.tableBox(
-            super.translate('module.foods.foodInfo'),
-            TextAlignEnum.Left,
-            Observable.of(overviewLines)
+            Observable.of(overviewLines), 
+            {
+                title: super.translate('module.foods.foodInfo'),
+            }
         );
     }
 

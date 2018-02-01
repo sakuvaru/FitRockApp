@@ -1,8 +1,7 @@
-<ng-container>
-    <mat-card class="w-boxes w-boxes-info-box">
+<ng-container *ngIf="config">
+    <div [ngClass]="{'w-box-background': config.wrapInCard, 'pad': config.wrapInCard, 'push': config.wrapInCard}">
         <loader [enabled]="loaderEnabled"></loader>
-        <mat-card-content *ngIf="config">
-
+        <div class="w-boxes w-boxes-info-box">
             <div *ngIf="config.title" fxLayoutAlign=" center" fxLayout="row">
                 <div fxFlex fxLayout="column" [class]="config.titleAlign">
                     <span class="mat-title primary">
@@ -26,6 +25,7 @@
                 <info-message *ngIf="config.noDataMessage && (!config.address && !config.lat && !config.lng)" text="{{ config.noDataMessage | async }}"></info-message>
                 <no-data-message *ngIf="!config.noDataMessage && (!config.address && !config.lat && !config.lng)"></no-data-message>
             </div>
-        </mat-card-content>
-    </mat-card>
+        </div>
+    </div>
+
 </ng-container>

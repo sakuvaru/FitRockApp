@@ -77,8 +77,9 @@ export class PreviewMealComponent extends BaseModuleComponent implements OnInit,
                     extra: this.dependencies.coreServices.localizationHelperService.translateKcalWithKj(this.dependencies.itemServices.foodService.calculateFoodWithAmount(m.food, m.amount).kcal),
                     linkUrl: this.dependencies.coreServices.navigateService.foodPreviewPage(m.food.id).getUrl()
                 }))),
-            super.translate('module.foods.mealComposition'),
-            TextAlignEnum.Left,
+            {
+                title: super.translate('module.foods.mealComposition'),
+            }
         );
     }
 
@@ -124,9 +125,9 @@ export class PreviewMealComponent extends BaseModuleComponent implements OnInit,
         }
 
         this.foodOverviewBox = this.dependencies.webComponentServices.boxService.tableBox(
-            super.translate('module.foods.foodInfo'),
-            TextAlignEnum.Left,
-            Observable.of(overviewLines)
+            Observable.of(overviewLines), {
+                title: super.translate('module.foods.foodInfo'),
+            }
         );
     }
 

@@ -11,8 +11,8 @@ export class TableBoxConfig {
         public lines: Observable<TableBoxLine[]>,
         public options?: {
             wrapInCard?: boolean,
-            title: Observable<string>,
-            titleAlign: TextAlignEnum,
+            title?: Observable<string>,
+            titleAlign?: TextAlignEnum,
         }
     ) {
         if (options) {

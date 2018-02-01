@@ -23,31 +23,37 @@ export class BoxService {
         titleAlign: TextAlignEnum,
         options?: {
             noDataMessage?: Observable<string>,
-            actions?: ActionButton[]
+            actions?: ActionButton[],
+            title?: Observable<string>,
+            titleAlign?: TextAlignEnum,
+            wrapInCard?: boolean
         }
     ): InfoBoxConfig {
-        return new InfoBoxConfig(lines, title, titleAlign, options);
+        return new InfoBoxConfig(lines, options);
     }
 
     listBox(
         items: Observable<ListBoxItem[]>,
-        title: Observable<string>,
-        titleAlign: TextAlignEnum,
         options?: {
             noDataMessage?: Observable<string>,
-            actions?: ActionButton[]
+            actions?: ActionButton[],
+            title?: Observable<string>,
+            titleAlign?: TextAlignEnum,
+            wrapInCard?: boolean
         }
     ): ListBoxConfig {
-        return new ListBoxConfig(items, title, titleAlign, options);
+        return new ListBoxConfig(items, options);
     }
 
     miniBox(
-        title: Observable<string>,
         text: Observable<string>,
-        titleAlign: TextAlignEnum,
-        color: BoxColors
+        color: BoxColors,
+        options?: {
+            title: Observable<string>,
+            titleAlign: TextAlignEnum,
+        }
     ): MiniBoxConfig {
-        return new MiniBoxConfig(title, titleAlign, text, color);
+        return new MiniBoxConfig(text, color, options);
     }
 
     numberBox(
@@ -66,16 +72,14 @@ export class BoxService {
         lines: Observable<TableBoxLine[]>,
         options?: {
             wrapInCard?: boolean,
-            title: Observable<string>,
-            titleAlign: TextAlignEnum,
+            title?: Observable<string>,
+            titleAlign?: TextAlignEnum,
         }
     ): TableBoxConfig {
         return new TableBoxConfig(lines, options);
     }
 
     mapBox(
-        title: Observable<string>,
-        titleAlign: TextAlignEnum,
         apiKey: string,
         address: string,
         lat?: number,
@@ -83,10 +87,13 @@ export class BoxService {
         options?: {
             zoom?: number,
             noDataMessage?: Observable<string>,
-            actions?: ActionButton[]
+            actions?: ActionButton[],
+            title?: Observable<string>,
+            titleAlign?: TextAlignEnum,
+            wrapInCard?: boolean
         }
     ): MapBoxConfig {
-        return new MapBoxConfig(title, titleAlign, apiKey, address, lat, lng, options);
+        return new MapBoxConfig(apiKey, address, lat, lng, options);
     }
 
 }

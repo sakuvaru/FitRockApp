@@ -4,7 +4,7 @@ import { TextAlignEnum } from '../../shared/enums/text-align.enum';
 
 export class ListBoxItem {
 
-    public extra?:  Observable<string>;
+    public extra?: Observable<string>;
     public secondLine?: Observable<string>;
     public linkUrl?: string;
     public imageUrl?: string;
@@ -13,7 +13,7 @@ export class ListBoxItem {
     constructor(
         public firstLine: Observable<string>,
         private options?: {
-            extra?:  Observable<string>
+            extra?: Observable<string>
             secondLine?: Observable<string>,
             linkUrl?: string,
             imageUrl?: string,
@@ -28,16 +28,20 @@ export class ListBoxItem {
 
 export class ListBoxConfig {
 
+    public wrapInCard: boolean = false;
+    public title?: Observable<string>;
+    public titleAlign: TextAlignEnum = TextAlignEnum.Left;
     public noDataMessage?: Observable<string>;
     public actions?: ActionButton[];
 
     constructor(
         public items: Observable<ListBoxItem[]>,
-        public title: Observable<string>,
-        public titleAlign: TextAlignEnum,
         private options?: {
             noDataMessage?: Observable<string>,
-            actions?: ActionButton[]
+            actions?: ActionButton[],
+            title?: Observable<string>,
+            titleAlign?: TextAlignEnum,
+            wrapInCard?: boolean
         }
     ) {
         if (options) {

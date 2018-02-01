@@ -20,18 +20,23 @@ export class InfoBoxLine {
 
 export class InfoBoxConfig {
 
+    public wrapInCard: boolean = false;
+    public title?: Observable<string>;
+    public titleAlign: TextAlignEnum = TextAlignEnum.Left;
     public noDataMessage?: Observable<string>;
     public actions?: ActionButton[];
 
     constructor(
         public lines: Observable<InfoBoxLine[]>,
-        public title: Observable<string>,
-        public titleAlign: TextAlignEnum,
+
         private options?: {
             noDataMessage?: Observable<string>,
-            actions?: ActionButton[]
+            actions?: ActionButton[],
+            title?: Observable<string>,
+            titleAlign?: TextAlignEnum,
+            wrapInCard?: boolean
         }
-    )  {
+    ) {
         if (options) {
             Object.assign(this, options);
         }

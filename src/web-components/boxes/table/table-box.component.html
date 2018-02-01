@@ -1,6 +1,6 @@
 <ng-container *ngIf="config">
     <div [ngClass]="{'w-box-background': config.wrapInCard, 'pad': config.wrapInCard}">
-        <div *ngIf="config.lines | async; let lines" class="w-boxes w-boxes-table-box">
+        <div  class="w-boxes w-boxes-table-box">
             <div *ngIf="config.title" fxLayoutAlign=" center" fxLayout="row">
                 <div fxFlex [class]="config.titleAlign">
                     <div class="mat-title primary">
@@ -9,7 +9,7 @@
                 </div>
             </div>
 
-            <div fxFlexFill fxLayout="row" fxLayout.sm="100" fxLayout.xs="100" fxLayout.md="100">
+            <div *ngIf="config.lines | async; let lines" fxFlexFill fxLayout="row" fxLayout.sm="100" fxLayout.xs="100" fxLayout.md="100">
                 <div fxLayout="column" fxFlex="initial" [ngClass]="{'push-sm': config.wrapInCard, 'push-right-sm': !config.wrapInCard}">
                     <div *ngFor="let line of lines" fxLayout="row" class="push-top-sm">
                         <strong>{{ line.text | async }}:</strong>
