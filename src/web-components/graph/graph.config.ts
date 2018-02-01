@@ -10,7 +10,7 @@ export class GraphConfig<TGraph extends BaseGraph> {
     /**
      * Indicates if graph is wrapped in card
      */
-    public wrapInCard: boolean = true;
+    public wrapInCard: boolean = false;
 
     /**
      * Indicates if local loader is enabled

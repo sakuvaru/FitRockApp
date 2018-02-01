@@ -1,7 +1,5 @@
-<div class="w-graph">
-  <ng-container *ngIf="config && config.wrapInCard">
-
-    <mat-card>
+<div *ngIf="config" class="w-graph">
+    <div [ngClass]="{'w-graph-card': config.wrapInCard, 'pad': config.wrapInCard}">
       <loader [enabled]="loaderEnabled" type="linear"></loader>
       <mat-card-content class="pad-top-sm">
         <line-chart #graphComponent *ngIf="config.graphType === 0" [config]="config" (loaderChanged)="onLoaderChanged($event)"></line-chart>
@@ -9,19 +7,5 @@
         <pie-chart #graphComponent *ngIf="config.graphType === 2" [config]="config" (loaderChanged)="onLoaderChanged($event)"></pie-chart>
         <linear-gauge-chart #graphComponent *ngIf="config.graphType === 3" [config]="config" (loaderChanged)="onLoaderChanged($event)"></linear-gauge-chart>
       </mat-card-content>
-    </mat-card>
-
-  </ng-container>
-
-  <ng-container *ngIf="config && !config.wrapInCard">
-
-    <loader [enabled]="loaderEnabled" type="linear"></loader>
-    <div>
-      <line-chart #graphComponent *ngIf="config.graphType === 0" [config]="config" (loaderChanged)="onLoaderChanged($event)"></line-chart>
-      <vertical-bar-chart #graphComponent *ngIf="config.graphType === 1" [config]="config" (loaderChanged)="onLoaderChanged($event)"></vertical-bar-chart>
-      <pie-chart #graphComponent *ngIf="config.graphType === 2" [config]="config" (loaderChanged)="onLoaderChanged($event)"></pie-chart>
-      <linear-gauge-chart #graphComponent *ngIf="config.graphType === 3" [config]="config" (loaderChanged)="onLoaderChanged($event)"></linear-gauge-chart>
     </div>
-
-  </ng-container>
 </div>

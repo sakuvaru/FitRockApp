@@ -13,9 +13,9 @@ import { BaseClientModuleComponent } from '../base-client-module.component';
 })
 export class UserStatsComponent extends BaseClientModuleComponent implements OnInit, OnChanges {
 
-    public graphConfig: GraphConfig<BaseGraph>;
-    public progressItemTypes: ProgressItemType[];
-    public idOfActiveType: number;
+    public graphConfig?: GraphConfig<BaseGraph>;
+    public progressItemTypes: ProgressItemType[] = [];
+    public idOfActiveType?: number;
 
     @ViewChild(GraphComponent) graph: GraphComponent;
 

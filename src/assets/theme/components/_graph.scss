@@ -1,9 +1,6 @@
 .w-graph {
-    /**
-    Removes default mat card margin
-    */
-    .mat-card {
-        margin: 0!important;
+    .w-graph-card {
+        @include card-box();
     }
 }
 
