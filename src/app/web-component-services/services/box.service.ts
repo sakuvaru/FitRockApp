@@ -63,11 +63,14 @@ export class BoxService {
     }
 
     tableBox(
-        title: Observable<string>,
-        titleAlign: TextAlignEnum,
         lines: Observable<TableBoxLine[]>,
+        options?: {
+            wrapInCard?: boolean,
+            title: Observable<string>,
+            titleAlign: TextAlignEnum,
+        }
     ): TableBoxConfig {
-        return new TableBoxConfig(title, titleAlign, lines);
+        return new TableBoxConfig(lines, options);
     }
 
     mapBox(

@@ -34,8 +34,8 @@ export class DietPreviewComponent extends BaseModuleComponent implements OnInit,
 
     public dietOverviewBox?: TableBoxConfig;
 
-    public diet: Diet;
-    public sortedDietFoods: DietFood[];
+    public diet?: Diet;
+    public sortedDietFoods: DietFood[] = [];
 
     public dietGraph?: GraphConfig<PieChart>;
 
@@ -135,7 +135,6 @@ export class DietPreviewComponent extends BaseModuleComponent implements OnInit,
         );
 
         const overviewLines = [
-            new TableBoxLine(super.translate('module.diets.dietName'), super.translate(diet.dietName)),
             new TableBoxLine(super.translate('module.diets.dietCategory'), super.translate('module.dietCategories.categories.' + diet.dietCategory.codename)),
             new TableBoxLine(super.translate('module.diets.dietTotalKcal'), this.dependencies.coreServices.localizationHelperService.translateKcalWithKj(nutrition.kcal))
         ];
@@ -145,8 +144,6 @@ export class DietPreviewComponent extends BaseModuleComponent implements OnInit,
         }
 
         this.dietOverviewBox = this.dependencies.webComponentServices.boxService.tableBox(
-            super.translate('module.foods.foodInfo'),
-            TextAlignEnum.Left,
             Observable.of(overviewLines)
         );
     }
