@@ -16,6 +16,11 @@ import { DataTableMode } from './data-table-mode.enum';
 export class DataTableConfig {
 
     /**
+     * Indicates if data table is wrapped in a card like box
+     */
+    public wrapInCard: boolean = false;
+
+    /**
      * Hash stored so that its not calculated each time its accessed
      */
     private _hash?: number;

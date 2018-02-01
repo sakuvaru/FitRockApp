@@ -203,6 +203,11 @@ export class DataTableBuilder<TItem extends IItem> {
         return this;
     }
 
+    wrapInCard(wrap: boolean): this {
+        this.config.wrapInCard = wrap;
+        return this;
+    }
+
     /**
     * Page size options
     */

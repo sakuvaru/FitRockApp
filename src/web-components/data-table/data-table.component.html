@@ -9,6 +9,17 @@
   </mat-chip-list>
   -->
 
+  <!-- Search -->
+  <div *ngIf="config.enableSearch" class="w-data-table-filter">
+    <mat-form-field floatPlaceholder="never">
+      <input matInput placeholder="{{ 'webComponents.dataTable.searchPlaceholder' | localize }}" [formControl]="searchControl"
+        [value]="search" />
+      <span matPrefix>
+        <mat-icon>search</mat-icon>
+      </span>
+    </mat-form-field>
+  </div>
+
   <div class="mat-chip-list" fxHide.sm="true" fxHide.xs="true">
     <!-- Large layout -->
     <div class="mat-chip-list-wrapper">
@@ -43,26 +54,15 @@
 </div>
 <ng-container *ngIf="config && config.mode === 0">
 
-  <div class="w-data-table">
+  <div [ngClass]="{'w-data-table': true, 'w-data-table-card': config.wrapInCard}">
 
     <loader [enabled]="loaderEnabled" type="linear"></loader>
 
     <div fxFlexAlign="center" *ngIf="config.title" class="mat-title primary pad-top pad-left pad-right">
-        {{ config.title | async }}
+      {{ config.title | async }}
     </div>
 
     <error-message *ngIf="errorMessage" [text]="errorMessage"></error-message>
-
-    <!-- Search -->
-    <div *ngIf="config.enableSearch" class="w-data-table-filter">
-      <mat-form-field floatPlaceholder="never">
-        <input matInput placeholder="{{ 'webComponents.dataTable.searchPlaceholder' | localize }}" [formControl]="searchControl"
-          [value]="search" />
-        <span matPrefix>
-          <mat-icon>search</mat-icon>
-        </span>
-      </mat-form-field>
-    </div>
 
     <div [class.w-data-table-clickable]="isClickable">
 
@@ -94,7 +94,8 @@
 
               <!-- Header without sort -->
               <ng-container *ngIf="!fieldWrapper.field.sortKey">
-                <mat-header-cell *matHeaderCellDef="let item" fxHide="false" [fxHide.sm]="fieldWrapper.field.hideOnSmallScreen === true" [fxHide.xs]="fieldWrapper.field.hideOnSmallScreen === true">
+                <mat-header-cell *matHeaderCellDef="let item" fxHide="false" [fxHide.sm]="fieldWrapper.field.hideOnSmallScreen === true"
+                  [fxHide.xs]="fieldWrapper.field.hideOnSmallScreen === true">
                   <ng-container *ngIf="fieldWrapper.field.name(item) as nameResult">
                     <span class="text-truncate" *ngIf="fieldWrapper.field.isObservable(nameResult)">{{ nameResult| async }}</span>
                     <span class="text-truncate" *ngIf="!fieldWrapper.field.isObservable(nameResult)">{{ nameResult }}</span>

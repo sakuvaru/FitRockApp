@@ -11,11 +11,11 @@
     }
 }
 
-.w-data-table {
+.w-data-table-card {
+    @include card-box();
+}
 
-    background-color: #ffffff;
-    @include box-shadow();
-    
+.w-data-table {
     .w-data-table-filter {
         min-height: 64px;
         padding: 8px 24px 0;
