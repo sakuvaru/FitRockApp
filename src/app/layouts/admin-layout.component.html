@@ -11,7 +11,7 @@
     </div>
 
     <div fxLayout="row" fxLayoutAlign="center center" *ngFor="let item of adminMenu.trainerMenu" class="w-layout-menu-item" (click)="handleMenuItemClick(item)">
-      <div fxLayout="column" class="push-left push-right-sm">
+      <div fxLayout="column" class="push-left push-right-sm" [class.accent]="menuItemIsActive(item.action, item.type, false)" >
         <mat-icon class="w-layout-menu-item-icon">{{item.icon}}</mat-icon>
       </div>
       <div fxLayout="column" fxFlex>

@@ -89,19 +89,15 @@ export class BaseLayoutComponent implements OnDestroy, AfterViewInit, OnInit {
         return '';
     }
 
-    menuItemIsActive(action: string, type: MenuItemType): boolean {
+    menuItemIsActive(action: string, type: MenuItemType, exactMatch: boolean = true): boolean {
         const url = this.getMenuItemUrl(action, type);
         const currentUrl = this.dependencies.coreServices.navigateService.getCurrentUrl();
 
-        if (currentUrl === url) {
-            return true;
+        if (exactMatch) {
+            return currentUrl.toLowerCase() === url.toLowerCase();
         }
 
-        if (currentUrl.startsWith(url) && currentUrl.endsWith(url)) {
-            return true;
-        }
-
-        return false;
+        return currentUrl.startsWith(url);
     }
 
     fromNow(date: Date): string {
