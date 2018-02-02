@@ -1,20 +1,35 @@
 import { Observable } from 'rxjs/Rx';
-import { ActionButton } from '../shared/shared.models';
+
+import { TextClass } from '../..//shared/enums/text-class.enum';
 import { TextAlignEnum } from '../../shared/enums/text-align.enum';
+import { ActionButton } from '../shared/shared.models';
+
+export class ListBoxLine {
+
+    public lineExtra?: Observable<string>;
+
+    constructor(
+        public text: Observable<string>,
+        public type: TextClass = TextClass.Body1,
+        private options?: {
+            lineExtra?: Observable<string>
+        }
+    ) {
+        if (options) {
+            Object.assign(this, options);
+        }
+    }
+}
 
 export class ListBoxItem {
 
-    public extra?: Observable<string>;
-    public secondLine?: Observable<string>;
     public linkUrl?: string;
     public imageUrl?: string;
     public icon?: string;
 
     constructor(
-        public firstLine: Observable<string>,
+        public lines: ListBoxLine[],
         private options?: {
-            extra?: Observable<string>
-            secondLine?: Observable<string>,
             linkUrl?: string,
             imageUrl?: string,
             icon?: string

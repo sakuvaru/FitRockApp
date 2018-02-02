@@ -1,13 +1,8 @@
-<div *ngIf="filtersWrapper && filtersWrapper.length > 0" class="push-bottom-sm">
+<ng-container *ngIf="config">
 
-  <!-- mat-chip-list is not used directly because ':focus' messes up with the search focus when some chip is selected(focused) -->
-  <!--
-    <mat-chip-list>
-    <mat-chip style="cursor: pointer" *ngFor="let filterWrapper of filtersWrapper" selected="false" (click)="runFilter(filterWrapper.resolvedName)" [selected]="filterWrapper.resolvedName === activeFilterName ? true : false">
-      {{ filterWrapper.resolvedName }} ({{ filterWrapper.resolvedCount }})
-    </mat-chip>
-  </mat-chip-list>
-  -->
+  <div fxFlexAlign="center" *ngIf="config.title" class="mat-title primary push-top">
+    {{ config.title | async }}
+  </div>
 
   <!-- Search -->
   <div *ngIf="config.enableSearch" class="w-data-table-filter">
@@ -20,47 +15,54 @@
     </mat-form-field>
   </div>
 
-  <div class="mat-chip-list" fxHide.sm="true" fxHide.xs="true">
-    <!-- Large layout -->
-    <div class="mat-chip-list-wrapper">
-      <div tabindex="-1" *ngFor="let filterWrapper of filtersWrapper" [class.mat-chip-selected]="filterWrapper.filter.guid === activeFilterGuid"
-        class="w-cursor-pointer w-chip mat-chip mat-primary" (click)="runFilter(filterWrapper.filter.guid)">
-        {{ filterWrapper.resolvedName }}&nbsp;
-        <span *ngIf="filterWrapper.resolvedCount >= 0">({{ filterWrapper.resolvedCount }})</span>
+  <div *ngIf="filtersWrapper && filtersWrapper.length > 0" class="push-bottom-sm">
+
+    <!-- mat-chip-list is not used directly because ':focus' messes up with the search focus when some chip is selected(focused) -->
+    <!--
+    <mat-chip-list>
+    <mat-chip style="cursor: pointer" *ngFor="let filterWrapper of filtersWrapper" selected="false" (click)="runFilter(filterWrapper.resolvedName)" [selected]="filterWrapper.resolvedName === activeFilterName ? true : false">
+      {{ filterWrapper.resolvedName }} ({{ filterWrapper.resolvedCount }})
+    </mat-chip>
+  </mat-chip-list>
+  -->
+
+    <div class="mat-chip-list" fxHide.sm="true" fxHide.xs="true">
+      <!-- Large layout -->
+      <div class="mat-chip-list-wrapper">
+        <div tabindex="-1" *ngFor="let filterWrapper of filtersWrapper" [class.mat-chip-selected]="filterWrapper.filter.guid === activeFilterGuid"
+          class="w-cursor-pointer w-chip mat-chip mat-primary" (click)="runFilter(filterWrapper.filter.guid)">
+          {{ filterWrapper.resolvedName }}&nbsp;
+          <span *ngIf="filterWrapper.resolvedCount >= 0">({{ filterWrapper.resolvedCount }})</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="mat-chip-list" fxHide="true" fxHide.sm="false" fxHide.xs="false">
+      <!-- Small layout -->
+      <div class="mat-chip-list-wrapper">
+        <div tabindex="-1" *ngFor="let filterWrapper of showFullFilters ? filtersWrapper : filtersWrapperSmallLayout" [class.mat-chip-selected]="filterWrapper.filter.guid === activeFilterGuid"
+          class="w-cursor-pointer w-chip mat-chip mat-primary" (click)="runFilter(filterWrapper.filter.guid)">
+          {{ filterWrapper.resolvedName }}&nbsp;
+          <span *ngIf="filterWrapper.resolvedCount >= 0">({{ filterWrapper.resolvedCount }})</span>
+        </div>
+        <div tabindex="-1" *ngIf="filtersWrapper.length > filtersWrapperSmallLayout.length && !showFullFilters" (click)="toggleShowFullFilters()"
+          class="w-cursor-pointer w-chip mat-chip">
+          <span>+ {{ filtersWrapper.length - filtersWrapperSmallLayout.length }} </span>
+        </div>
+        <div tabindex="-1" *ngIf="filtersWrapperSmallLayout.length < filtersWrapper.length && showFullFilters" (click)="toggleShowFullFilters()"
+          class="w-cursor-pointer w-chip mat-chip">
+          <span>{{ 'webComponents.dataTable.showLess' | localize }}</span>
+        </div>
       </div>
     </div>
   </div>
+</ng-container>
 
-  <div class="mat-chip-list" fxHide="true" fxHide.sm="false" fxHide.xs="false">
-    <!-- Small layout -->
-    <div class="mat-chip-list-wrapper">
-      <div tabindex="-1" *ngFor="let filterWrapper of showFullFilters ? filtersWrapper : filtersWrapperSmallLayout" [class.mat-chip-selected]="filterWrapper.filter.guid === activeFilterGuid"
-        class="w-cursor-pointer w-chip mat-chip mat-primary" (click)="runFilter(filterWrapper.filter.guid)">
-        {{ filterWrapper.resolvedName }}&nbsp;
-        <span *ngIf="filterWrapper.resolvedCount >= 0">({{ filterWrapper.resolvedCount }})</span>
-      </div>
-      <div tabindex="-1" *ngIf="filtersWrapper.length > filtersWrapperSmallLayout.length && !showFullFilters" (click)="toggleShowFullFilters()"
-        class="w-cursor-pointer w-chip mat-chip">
-        <span>+ {{ filtersWrapper.length - filtersWrapperSmallLayout.length }} </span>
-      </div>
-      <div tabindex="-1" *ngIf="filtersWrapperSmallLayout.length < filtersWrapper.length && showFullFilters" (click)="toggleShowFullFilters()"
-        class="w-cursor-pointer w-chip mat-chip">
-        <span>{{ 'webComponents.dataTable.showLess' | localize }}</span>
-      </div>
-    </div>
-  </div>
-
-
-</div>
 <ng-container *ngIf="config && config.mode === 0">
 
   <div [ngClass]="{'w-data-table': true, 'w-data-table-card': config.wrapInCard}">
 
     <loader [enabled]="loaderEnabled" type="linear"></loader>
-
-    <div fxFlexAlign="center" *ngIf="config.title" class="mat-title primary pad-top pad-left pad-right">
-      {{ config.title | async }}
-    </div>
 
     <error-message *ngIf="errorMessage" [text]="errorMessage"></error-message>
 
@@ -180,9 +182,11 @@
     </div>
 
     <!-- Paginator -->
-    <mat-paginator *ngIf="config && config.renderPager" #paginator style="margin-right:35px" [style.display]="totalItems === 0 ? 'none' : 'block'"
-      [length]="totalItems" [pageIndex]="paginatorPageIndex" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions">
-    </mat-paginator>
+    <div class="w-data-table-paginator" [style.display]="totalItems === 0 ? 'none' : 'block'">
+      <mat-paginator *ngIf="config && config.renderPager" #paginator [length]="totalItems" [pageIndex]="paginatorPageIndex" [pageSize]="pageSize"
+        [pageSizeOptions]="pageSizeOptions">
+      </mat-paginator>
+    </div>
 
   </div>
 </ng-container>
@@ -209,33 +213,29 @@
       </div>
     </div>
 
-    <ng-container *ngIf="groupedItems">
-      <ng-container *ngFor="let group of groupedItems">
-        <div fxLayout fxLayout.sm="column" fxLayout.xs="column" fxLayout.md="column">
-          <ng-container *ngFor="let item of group.items; let last = last">
-            <div [fxFlex]="(100 / this.config.groupByItemsCount)" fxFlex.sm="100%" fxFlex.xs="100%">
-              <div class="push-sm">
-                <mat-card [class.w-data-table-clickable-tile]="isClickable" (click)="isClickable ? handleOnClick(item) : undefined">
-                  <ng-container *ngIf="config.avatar && config.avatar(item) as avatar">
-                    <img mat-card-image *ngIf="avatar.isImage()" alt="avatar" [src]="avatar.imageUrl" />
-                  </ng-container>
-                  <mat-card-content>
-                    <div class="text-center">
-                      {{ getPreviewItemName(item) | async}}
-                    </div>
-                  </mat-card-content>
-                </mat-card>
+    <!-- Thumbs -->
+    <div fxLayout="row" fxLayoutWrap>
+      <div *ngFor="let item of items" fxLayout="column" [fxFlex]="config.thumbWidth.defaultWidth" [fxFlex.md]="config.thumbWidth.md"
+        [fxFlex.sm]="config.thumbWidth.sm" [fxFlex.xs]="config.thumbWidth.xs">
+        <div class="push-sm">
+          <mat-card [class.w-data-table-clickable-tile]="isClickable" (click)="isClickable ? handleOnClick(item) : undefined">
+            <ng-container *ngIf="config.avatar && config.avatar(item) as avatar">
+              <img mat-card-image *ngIf="avatar.isImage()" alt="avatar" [src]="avatar.imageUrl" />
+            </ng-container>
+            <mat-card-content>
+              <div class="text-center text-truncate">
+                {{ getPreviewItemName(item) | async}}
               </div>
-            </div>
-          </ng-container>
+            </mat-card-content>
+          </mat-card>
         </div>
-      </ng-container>
-    </ng-container>
+      </div>
+    </div>
 
     <!-- Paginator -->
-    <div class="w-data-table-paginator">
-      <mat-paginator *ngIf="config && config.renderPager" style="margin-right:35px" #tilesPaginator [style.display]="totalItems === 0 ? 'none' : 'block'"
-        [length]="totalItems" [pageIndex]="paginatorPageIndex" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions">
+    <div class="w-data-table-paginator" [style.display]="totalItems === 0 ? 'none' : 'block'">
+      <mat-paginator *ngIf="config && config.renderPager" #tilesPaginator [length]="totalItems" [pageIndex]="paginatorPageIndex"
+        [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions">
       </mat-paginator>
     </div>
 

@@ -9,6 +9,7 @@ import {
     DataTableField,
     DataTableResponse,
     DynamicFilter,
+    DataTableThumbWidth
 } from './data-table-models';
 import { IDataTableSort, IFilter } from './data-table.interfaces';
 import { DataTableMode } from './data-table-mode.enum';
@@ -122,9 +123,9 @@ export class DataTableConfig {
     public renderPager: boolean = true;
 
     /**
-     * Number by which tiles will be grouped by
+     * Width of thumb in %
      */
-    public groupByItemsCount: number = 4;
+    public thumbWidth?: DataTableThumbWidth;
 
     /**
      * Data table mode.

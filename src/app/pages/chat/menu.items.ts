@@ -9,7 +9,7 @@ export class ChatMenuItems {
     constructor(users: User[]) {
         users.forEach(user => {
             this.menuItems.push(
-                new MenuItem({ key: user.getFullName() }, MenuItemType.auth, 'chat/' + user.id, { imageUrl: user.getAvatarOrGravatarUrl() ? user.getAvatarOrGravatarUrl() : AppConfig.DefaultUserAvatarUrl })
+                new MenuItem({ key: user.getFullName() }, MenuItemType.auth, 'chat/' + user.id )
             );
         });
     }

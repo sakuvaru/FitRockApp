@@ -14,7 +14,7 @@
       <div fxLayout="column" class="push-left push-right-sm" [class.accent]="menuItemIsActive(item.action, item.type, false)" >
         <mat-icon class="w-layout-menu-item-icon">{{item.icon}}</mat-icon>
       </div>
-      <div fxLayout="column" fxFlex>
+      <div fxLayout="column" [class.accent]="menuItemIsActive(item.action, item.type, false)" fxFlex>
         {{item.label.key | localize}}
       </div>
       <div fxLayout="column" *ngIf="item.nestedItems && item.nestedItems.length > 0" class="pad-right">
@@ -33,9 +33,6 @@
       fxLayout.xs="row" class="w-layout-component-menu push-top pad-left pad-right">
       <div fxLayout="column" *ngFor="let item of menuItems" [routerLink]="getMenuItemUrl(item.action, item.type)" class="push-right pad-top pad-bottom w-layout-component-menu-item">
         <div fxLayout="row" fxLayoutAlign="start center" [ngClass.xs]="'push-top'">
-          <div fxLayout="column" *ngIf="item.imageUrl">
-            <img alt="" [src]="item.imageUrl">
-          </div>
           <div fxLayout="column" *ngIf="item.icon" class="push-right-sm">
             <mat-icon [class.accent]="menuItemIsActive(item.action, item.type)">{{item.icon}}</mat-icon>
           </div>

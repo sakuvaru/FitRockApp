@@ -34,6 +34,8 @@ export class ChatComponent extends BaseModuleComponent implements OnInit, OnChan
 
     public readonly defaultAvatarUrl: string = AppConfig.DefaultUserAvatarUrl;
 
+    public users: User[] = [];
+
     constructor(
         protected componentDependencyService: ComponentDependencyService
     ) {
@@ -65,6 +67,15 @@ export class ChatComponent extends BaseModuleComponent implements OnInit, OnChan
         super.subscribeToObservable(this.getChatMessagesObservable(this.conversationUserId, this.chatMessagesPage, true, this.chatMessagesSearch));
     }
 
+    getUserImageUrl(user: User): string {
+        const avatarOrGravatar = user.getAvatarOrGravatarUrl();
+        if (avatarOrGravatar) {
+            return avatarOrGravatar;
+        }
+
+        return AppConfig.DefaultUserAvatarUrl;
+    }
+
     private initMenuAndUsers(): void {
         super.subscribeToObservable(this.getSearchAndMenuObservable());
         // make sure the menu is initialized by searching for all users at the init
@@ -85,6 +96,7 @@ export class ChatComponent extends BaseModuleComponent implements OnInit, OnChan
                     .get();
             })
             .map(response => {
+                this.users = response.items;
                 this.usersLoaded.next(response);
             });
     }

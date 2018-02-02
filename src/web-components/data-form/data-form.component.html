@@ -9,7 +9,9 @@
 
             <mat-card>
 
-                <loader [enabled]="loaderEnabled" type="linear"></loader>
+                <div class="pad-bottom-sm">
+                    <loader [enabled]="loaderEnabled" type="linear"></loader>
+                </div>
 
                 <mat-card-content>
 
@@ -71,7 +73,9 @@
 </ng-container>
 
 <ng-container *ngIf="config && !config.wrapInCard">
-    <loader [enabled]="loaderEnabled" type="linear"></loader>
+    <div class="pad-bottom-sm">
+        <loader [enabled]="loaderEnabled" type="linear"></loader>
+    </div>
     <div *ngIf="formGroup">
         <form [formGroup]="formGroup" autocomplete="off">
 
@@ -100,7 +104,7 @@
                 <error-message *ngIf="formError" [text]="formError"></error-message>
                 <error-message *ngIf="unknownError" text="{{ 'webComponents.dataForm.internalError' | localize }}"></error-message>
 
-                <div *ngIf="config.renderButtons" fxFlex fxLayout="row" class="push-left push-right push-top-sm push-bottom-sm">
+                <div *ngIf="config.renderButtons" fxFlex fxLayout="row" class="push-top-sm push-bottom-sm">
                     <button *ngIf="isInsertForm" mat-raised-button color="accent" (click)="handleInsertItem()" [disabled]="!formGroup.valid">
                         <ng-container *ngIf="config.customButtonSaveText">
                             {{ config.customButtonSaveText | async }}

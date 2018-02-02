@@ -6,7 +6,7 @@ import {
     CovalentChipsModule, CovalentCommonModule, CovalentDataTableModule, CovalentDialogsModule, CovalentExpansionPanelModule,
     CovalentFileModule, CovalentJsonFormatterModule, CovalentLayoutModule, CovalentLoadingModule, CovalentMediaModule,
     CovalentMenuModule, CovalentMessageModule, CovalentNotificationsModule, CovalentPagingModule, CovalentSearchModule,
-    CovalentStepsModule
+    CovalentStepsModule, CovalentVirtualScrollModule
 } from '@covalent/core';
 
 @NgModule({
@@ -15,7 +15,7 @@ import {
         CovalentChipsModule, CovalentCommonModule, CovalentDataTableModule, CovalentDialogsModule, CovalentExpansionPanelModule,
         CovalentFileModule, CovalentJsonFormatterModule, CovalentLayoutModule, CovalentLoadingModule, CovalentMediaModule,
         CovalentMenuModule, CovalentMessageModule, CovalentNotificationsModule, CovalentPagingModule, CovalentSearchModule,
-        CovalentStepsModule
+        CovalentStepsModule, CovalentVirtualScrollModule
     ],
     declarations: [
     ],
@@ -26,7 +26,7 @@ import {
         CovalentChipsModule, CovalentCommonModule, CovalentDataTableModule, CovalentDialogsModule, CovalentExpansionPanelModule,
         CovalentFileModule, CovalentJsonFormatterModule, CovalentLayoutModule, CovalentLoadingModule, CovalentMediaModule,
         CovalentMenuModule, CovalentMessageModule, CovalentNotificationsModule, CovalentPagingModule, CovalentSearchModule,
-        CovalentStepsModule
+        CovalentStepsModule, CovalentVirtualScrollModule
     ]
 })
 export class CovalentModule { }

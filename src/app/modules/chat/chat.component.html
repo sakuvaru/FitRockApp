@@ -1,4 +1,27 @@
-<ng-container *ngIf="formConfig && chatMessages">
+<ng-container *ngIf="formConfig && chatMessages && users">
+    <div fxLayout="row">
+        <div fxLayout="column" fxFlex="25">
+            <td-virtual-scroll-container [data]="users" [trackBy]="trackByFn">
+                <ng-template let-row="user" let-index="index" let-first="first" let-last="last" let-odd="odd" let-even="even" tdVirtualScrollRow>
+                    <div fxLayout="row" fxLayoutAlign="start center" *ngFor="let user of users" class="push-top-sm">
+                        <div fxLayout="column">
+                            <img class="w-site-avatar-image" alt="user avatar" src="{{ getUserImageUrl(user) }}" />
+                        </div>
+                        <div fxLayout="column" class="push-top-sm">
+                            {{ user.getUsername()}}
+                        </div>
+                    </div>
+                </ng-template>
+            </td-virtual-scroll-container>
+        </div>
+        <div fxLayout="column">
+            messages
+        </div>
+    </div>
+
+</ng-container>
+
+<!--<ng-container *ngIf="formConfig && chatMessages">
 
     <div fxLayout="row">
         <div fxLayout="column" fxFlex="20%" fxFlex.md="20%" fxFlex.sm="100%" fxFlex.xs="100%">
@@ -25,3 +48,4 @@
     </div>
 
 </ng-container>
+-->

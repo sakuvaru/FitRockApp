@@ -10,11 +10,13 @@ import {
     NumberBoxConfig,
     TableBoxConfig,
     TableBoxLine,
+    ListBoxLine
 } from '../../../../web-components/boxes';
 import { GraphConfig, PieChart, SingleSeries } from '../../../../web-components/graph';
 import { BaseModuleComponent, ComponentDependencyService } from '../../../core';
 import { Food } from '../../../models';
 import { TextAlignEnum } from 'web-components';
+import { TextClass } from 'web-components/shared/enums/text-class.enum';
 
 @Component({
     selector: 'mod-preview-meal',
@@ -69,12 +71,15 @@ export class PreviewMealComponent extends BaseModuleComponent implements OnInit,
     private initMealFoods(food: Food): void {
         this.mealFoodsBox = this.dependencies.webComponentServices.boxService.listBox(
             Observable.of(food.childFoods.map(m => new ListBoxItem(
-                Observable.of(m.food.foodName),
-                {
-                    secondLine: this.dependencies.coreServices.localizationHelperService.translateFoodAmountAndUnit(
+                [
+                    new ListBoxLine(Observable.of(m.food.foodName), TextClass.Body2, {
+                        lineExtra: this.dependencies.coreServices.localizationHelperService.translateKcalWithKj(this.dependencies.itemServices.foodService.calculateFoodWithAmount(m.food, m.amount).kcal),
+                    }),
+                    new ListBoxLine(this.dependencies.coreServices.localizationHelperService.translateFoodAmountAndUnit(
                         m.amount, m.food.foodUnit.unitCode
-                    ),
-                    extra: this.dependencies.coreServices.localizationHelperService.translateKcalWithKj(this.dependencies.itemServices.foodService.calculateFoodWithAmount(m.food, m.amount).kcal),
+                    ), TextClass.Caption),
+                ]
+                , {
                     linkUrl: this.dependencies.coreServices.navigateService.foodPreviewPage(m.food.id).getUrl()
                 }))),
             {

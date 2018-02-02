@@ -106,11 +106,6 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
     }
 
     /**
-     * Grouped items
-     */
-    public groupedItems?: GroupedItems[];
-
-    /**
      * Indicates if any data was already loaded
      */
     public anyDataLoaded: boolean = false;
@@ -904,7 +899,6 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
 
                 // set items
                 this.items = response.items;
-                this.groupedItems = this.getGroupedItems(this.items);
 
                 // set filters
                 // this is used here beacuse we want both items & filters to appear at the same time
@@ -919,41 +913,6 @@ export class DataTableComponent extends BaseWebComponent implements OnInit, OnCh
                 this.anyDataLoaded = true;
             });
     }
-
-    private getGroupedItems(items: any[]): GroupedItems[] | undefined {
-        if (!items) {
-            return undefined;
-        }
-
-        const groupByItemsCount: number = this.config.groupByItemsCount;
-        const groupedItems: GroupedItems[] = [];
-        let currentItemIndex: number = 0;
-        let currentGroupIndex: number = 0;
-
-        items.forEach(item => {
-            if (currentItemIndex === groupByItemsCount) {
-                currentItemIndex = 0;
-            }
-
-            if (currentItemIndex === 0) {
-                currentGroupIndex++;
-                groupedItems.push(new GroupedItems(groupByItemsCount, currentGroupIndex, [item]));
-            } else {
-                const existingGroup = groupedItems.find(m => m.groupIndex === currentGroupIndex);
-
-                if (!existingGroup) {
-                    throw Error(`Could not find group with index '${currentGroupIndex}'. This is an internal error.`);
-                }
-                existingGroup.items.push(item);
-            }
-
-            currentItemIndex++;
-
-        });
-
-        return groupedItems;
-    }
-
 
     private setCurrentSort(sort: Sort): void {
         if (!sort) {
@@ -1178,21 +1137,6 @@ class LocalStorageHelper {
     }
 }
 
-class GroupedItems {
-    constructor(
-        public groupItemsCount: number,
-        public groupIndex: number,
-        public items: any[]
-    ) { }
-
-    fillEmptySpace(): boolean {
-        return this.groupItemsCount !== this.items.length;
-    }
-
-    getMissingItemsCount(): number {
-        return this.groupItemsCount - this.items.length;
-    }
-}
 
 
 

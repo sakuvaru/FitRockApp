@@ -2,11 +2,11 @@
     <div class="w-boxes w-boxes-list-box">
         <div [ngClass]="{'w-box-card': config.wrapInCard, 'pad': config.wrapInCard, 'push': config.wrapInCard}">
             <loader [enabled]="loaderEnabled"></loader>
-            <div *ngIf="config.title" fxLayoutAlign=" center" fxLayout="row">
-                <div fxFlex fxLayout="column" [class]="config.titleAlign">
-                    <span class="mat-title primary">
+            <div fxLayout="row" fxLayoutAlign="start center" >
+                <div *ngIf="config.title" fxFlex fxLayout="column" [class]="config.titleAlign">
+                    <div class="mat-title primary">
                         {{ config.title | async }}
-                    </span>
+                    </div>
                 </div>
                 <div *ngIf="config.actions && config.actions.length > 0" fxLayout="column">
                     <button class="w-boxes-icon-fix" mat-icon-button *ngFor="let action of config.actions" (click)="resolveAction(action.action)">
@@ -20,15 +20,10 @@
                     <mat-list-item *ngFor="let item of items" (click)="item.linkUrl ? redirectTo(item.linkUrl) : undefined">
                         <img *ngIf="item.imageUrl" matListAvatar [src]="item.imageUrl" alt="list image for {{ item.text }}">
                         <mat-icon *ngIf="item.icon" mat-list-icon>{{ item.icon }}</mat-icon>
-                        <div matLine>
-                            {{ item.firstLine | async }}
-                            <span *ngIf="item.extra" fxFlex></span>
-                            <span *ngIf="item.extra">{{ item.extra | async }}</span>
-                        </div>
-                        <div *ngIf="item.secondLine" matLine>
-                            <div class="w-boxes-caption pad-top-sm">
-                                {{ item.secondLine | async }}
-                            </div>
+                        <div *ngFor="let line of item.lines" matLine>
+                            <span [class]="line.type">{{ line.text | async }}</span>
+                            <span *ngIf="line.lineExtra" fxFlex></span>
+                            <span *ngIf="line.lineExtra">{{ line.lineExtra | async }}</span>
                         </div>
                     </mat-list-item>
                 </mat-nav-list>

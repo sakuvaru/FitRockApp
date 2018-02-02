@@ -95,7 +95,12 @@ export class ClientsOverviewComponent extends BaseModuleComponent implements OnI
         },
       ]
       )
-      .groupByItemsCount(6)
+      .thumbWidth({
+        defaultWidth: 16,
+        md: 22,
+        sm: 50,
+        xs: 100
+      })
       .pageSize(12)
       .mode(
       this.dependencies.coreServices.rememberService.get<string>(this.rememberDataTableStateName, 'tiles') === 'standard' ? DataTableMode.Standard : DataTableMode.Tiles

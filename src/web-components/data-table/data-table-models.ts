@@ -39,6 +39,15 @@ export class DataTableField<T> implements IDataTableField<T> {
     }
 }
 
+export class DataTableThumbWidth {
+    constructor(
+        public defaultWidth: number,
+        public md: number,
+        public sm: number,
+        public xs: number
+    ) { }
+}
+
 export class DataTableButton<T> implements DataTableButton<T> {
 
     constructor(

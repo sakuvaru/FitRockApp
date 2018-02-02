@@ -19,7 +19,6 @@ export class ResourceKey {
 
 export class MenuItem {
     public icon?: string;
-    public imageUrl?: string;
     public nestedItems?: MenuItemNested[];
 
     public identifier: string = guidHelper.newGuid();
@@ -30,7 +29,6 @@ export class MenuItem {
         public action: string,
         options?: {
             icon?: string,
-            imageUrl?: string,
             nestedItems?: MenuItemNested[],
         }
     ) {

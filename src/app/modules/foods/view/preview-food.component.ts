@@ -30,7 +30,7 @@ export class PreviewFoodComponent extends BaseModuleComponent implements OnInit,
 
     public foodOverviewBox?: TableBoxConfig;
 
-    public usedInDishesDataForm?: DataTableConfig;
+    public usedInDishesDataTable?: DataTableConfig;
 
     public foodGraph?: GraphConfig<PieChart>;
 
@@ -61,7 +61,7 @@ export class PreviewFoodComponent extends BaseModuleComponent implements OnInit,
     }
 
     private initUsedInFoodsDataForm(): void {
-        this.usedInDishesDataForm = this.dependencies.itemServices.foodDishService.buildDataTable(
+        this.usedInDishesDataTable = this.dependencies.itemServices.foodDishService.buildDataTable(
             (query, search) => query
                 .byCurrentUser()
                 .whereLike('ParentFood.FoodName', search)

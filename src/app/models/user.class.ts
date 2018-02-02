@@ -45,6 +45,14 @@ export class User extends BaseItem {
     getFullName(): string {
         return this.firstName + ' ' + this.lastName;
     }
+
+    getUsername(): string {
+        if (this.firstName && this.lastName) {
+            return this.getFullName();
+        }
+
+        return this.email;
+    }
 }
 
 export class UserFilterWithCount {

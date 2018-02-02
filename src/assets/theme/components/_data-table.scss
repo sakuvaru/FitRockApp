@@ -1,15 +1,14 @@
-.w-data-table-titles {
 
-    .w-data-table-paginator {
-        margin-top: 15px;
-        background-color: #ffffff;
-        @include box-shadow();
-    }
 
-    .w-data-table-clickable-tile {
-        cursor: pointer;
-    }
+.w-data-table-paginator {
+    margin-top: 15px;
+    margin-right: 50px;
 }
+
+.w-data-table-clickable-tile {
+    cursor: pointer;
+}
+
 
 .w-data-table-card {
     @include card-box();

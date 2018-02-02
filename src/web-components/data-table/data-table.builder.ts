@@ -13,6 +13,7 @@ import {
     DataTableResponse,
     DynamicFilter,
     Filter,
+    DataTableThumbWidth,
 } from './data-table-models';
 import { DataTableSortEnum } from './data-table-sort.enum';
 import { DataTableConfig } from './data-table.config';
@@ -57,10 +58,10 @@ export class DataTableBuilder<TItem extends IItem> {
     }
 
     /**
-    * Number by which tiles will be grouped by
+    * Width of thumb in %
     */
-    groupByItemsCount(number: number = 4): this {
-        this.config.groupByItemsCount = number;
+    thumbWidth(width: DataTableThumbWidth): this {
+        this.config.thumbWidth = width;
         return this;
     }
 
