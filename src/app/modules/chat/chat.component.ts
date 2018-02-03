@@ -28,7 +28,7 @@ export class ChatComponent extends BaseModuleComponent implements OnInit, OnChan
     public chatMessages?: ChatMessage[];
 
     public chatMessagesPage: number = 1;
-    public chatMessagesPageSize: number = 10;
+    public chatMessagesPageSize: number = 25;
     public chatMessagesSearch: string = '';
     public allChatMessagesLoaded: boolean = false;
 
