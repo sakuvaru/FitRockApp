@@ -23,8 +23,8 @@
     </div>
 
   </mat-sidenav>
+  <!-- 'w-layout-sidenav-content' class is required for infinite scroll to work. For some reason it cannot be made as property as it kept throwing errors -->
   <mat-sidenav-content class="w-layout-sidenav-content">
-
     <div class="w-layout-top-panel">
       <admin-toolbar [matRightSidenav]="_rightSidenav" [matSidenav]="snav"></admin-toolbar>
     </div>
@@ -48,7 +48,8 @@
     </page-wrapper>
   </mat-sidenav-content>
 
-  <mat-sidenav #rightSidenav *ngIf="rightMenu" class="w-layout-right-sidenav" [mode]="isMobile ? 'over' : 'side'" [opened]="isMobile ? 'false' : 'true'" position="end">
+  <mat-sidenav #rightSidenav *ngIf="rightMenu" class="w-layout-right-sidenav" [mode]="isMobile ? 'over' : 'side'" [opened]="isMobile ? 'false' : 'true'"
+    position="end">
     <div *ngIf="rightMenu.title" class="push-top mat-title text-center">
       {{ rightMenu.title | async }}
     </div>

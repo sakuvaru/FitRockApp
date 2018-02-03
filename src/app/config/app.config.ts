@@ -54,6 +54,11 @@ export class AppConfig {
     public static DefaultDialogPanelClass = 'w-dialog-panel';
 
     /**
+     * Class wrapping all content. Used e.g. by infinite scrolling as a point of reference. Should be set on master template.
+     */
+    public static MainContentWrapperClass = 'w-layout-sidenav-content';
+
+    /**
      * Default url to image used as avatar
      */
     public static DefaultUserAvatarUrl = AppConfig.ServerUrl + '/system/images/default_avatar.png';
@@ -62,7 +67,6 @@ export class AppConfig {
      * No data image url
      */
     public static NoDataImageUrl = AppConfig.ServerUrl + '/system/images/empty.png';
-
     
      /**
      * App logo url

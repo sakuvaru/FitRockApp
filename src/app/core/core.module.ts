@@ -6,8 +6,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { DragulaModule } from 'ng2-dragula';
-import { StickyModule } from 'ng2-sticky-kit';
-
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { DirectivesModule } from '../../directives';
 import { AuthModule } from '../../lib/auth';
 import { CovalentModule } from '../../lib/covalent';
@@ -46,7 +45,7 @@ import {
         DragulaModule,
         DirectivesModule,
         LocalizationModule,
-        StickyModule
+        InfiniteScrollModule
     ],
     declarations: [
         BaseDialogComponent
@@ -79,7 +78,7 @@ import {
         DragulaModule,
         DirectivesModule,
         LocalizationModule,
-        StickyModule
+        InfiniteScrollModule
     ]
 })
 export class CoreModule { }

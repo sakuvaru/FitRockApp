@@ -5,6 +5,7 @@ import { stringHelper } from '../../../lib/utilities';
 import { AdminMenu, ComponentAction, ComponentDependencyService, MenuItem, RightMenu } from '../../core';
 import { BaseLayoutComponent } from './base-layout.component';
 import { FormControl } from '@angular/forms';
+import { AppConfig } from 'app/config';
 
 export class BaseAdminLayoutComponent extends BaseLayoutComponent implements OnDestroy, AfterViewInit {
 
@@ -44,6 +45,11 @@ export class BaseAdminLayoutComponent extends BaseLayoutComponent implements OnD
      * Right menu items
      */
     public rightMenu?: RightMenu;
+
+    /**
+     * Wrapper for main content
+     */
+    public mainContentClass: string = AppConfig.MainContentWrapperClass;
 
     /**
      * Search control

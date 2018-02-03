@@ -19,6 +19,11 @@ export class ChatComponent extends BaseModuleComponent implements OnInit, OnChan
     @Output() usersLoaded = new EventEmitter<ResponseMultiple<User>>();
     @Output() activeUserLoad = new EventEmitter<User>();
 
+     /**
+     * Wrapper for main content
+     */
+    public readonly mainContentClass: string = '.' + AppConfig.MainContentWrapperClass;
+
     public formConfig?: DataFormConfig;
     public chatMessages?: ChatMessage[];
 
@@ -37,6 +42,8 @@ export class ChatComponent extends BaseModuleComponent implements OnInit, OnChan
     public users: User[] = [];
 
     public currentUserId: number = 0;
+
+    public loadMoreLoaderEnabled: boolean = false;
 
     constructor(
         protected componentDependencyService: ComponentDependencyService
@@ -64,7 +71,10 @@ export class ChatComponent extends BaseModuleComponent implements OnInit, OnChan
     }
 
     loadMoreMessages(): void {
-        super.subscribeToObservable(this.getChatMessagesObservable(this.conversationUserId, this.chatMessagesPage, false, this.chatMessagesSearch));
+        this.loadMoreLoaderEnabled = true;
+        super.subscribeToObservable(this.getChatMessagesObservable(this.conversationUserId, this.chatMessagesPage, false, this.chatMessagesSearch), {
+            enableLoader: false
+        });
     }
 
     searchConversation(search: string): void {
@@ -80,6 +90,10 @@ export class ChatComponent extends BaseModuleComponent implements OnInit, OnChan
         }
 
         return AppConfig.DefaultUserAvatarUrl;
+    }
+
+    onScroll(): void {
+        this.loadMoreMessages();
     }
 
     private initMenuAndUsers(): void {
@@ -134,6 +148,8 @@ export class ChatComponent extends BaseModuleComponent implements OnInit, OnChan
             }
 
             activeUser = response.items[0];
+
+            this.conversationUserId = activeUser.id;
 
             this.activeUserLoad.next(activeUser);
 
@@ -214,6 +230,8 @@ export class ChatComponent extends BaseModuleComponent implements OnInit, OnChan
                     }
                     this.allChatMessagesLoaded = true;
                 }
+
+                this.loadMoreLoaderEnabled = false;
             });
     }
 }
