@@ -1,16 +1,8 @@
-<ng-container *ngIf="formConfig && chatMessages && users">
-    <data-form [config]="formConfig"></data-form>
+<data-form [config]="formConfig"></data-form>
 
-    <div>
-        <ng-container *ngFor="let chatMessage of chatMessages">
-
-            <comment [text]="chatMessage.message" [date]="formatDate(chatMessage.created)" [name]="chatMessage.sender.getFullName()"
-                [type]="currentUserId === chatMessage.sender.id ? 'primary' : 'secondary'" [avatarUrl]="chatMessage.sender.getAvatarOrGravatarUrl() ? chatMessage.sender.getAvatarOrGravatarUrl() : defaultAvatarUrl"></comment>
-
-
-        </ng-container>
-    </div>
-
+<ng-container *ngFor="let chatMessage of chatMessages">
+    <comment [text]="chatMessage.message" [date]="formatTime(chatMessage.created)" [name]="chatMessage.sender.getFullName()"
+        [type]="currentUserId === chatMessage.sender.id ? 'primary' : 'secondary'" [avatarUrl]="chatMessage.sender.getAvatarOrGravatarUrl() ? chatMessage.sender.getAvatarOrGravatarUrl() : defaultAvatarUrl"></comment>
 </ng-container>
 
 <div fxLayout="row" fxLayoutAlign="center center">

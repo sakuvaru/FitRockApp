@@ -5,11 +5,11 @@
             </div>
             <div fxFlex fxLayout="column" class="text-right push-right-md">
                 <div class="mat-body-1 text-break">
-                    <span class="w-comment-text">{{ text }}</span>
+                    <span [matTooltip]="date" class="w-comment-text">{{ text }}</span>
                 </div>
             </div>
             <div fxLayout="column">
-                <img class="w-comments-image" alt="avatar" [src]="avatarUrl" [matTooltip]="date">
+                <img [matTooltip]="name" class="w-comments-image" alt="avatar" [src]="avatarUrl">
             </div>
         </div>
     </div>
@@ -17,11 +17,11 @@
     <div *ngIf="type === 'secondary'" class="w-comment-secondary">
         <div fxLayout="row" fxLayoutAlign="start center">
             <div fxLayout="column">
-                <img class="w-comments-image" alt="avatar" [src]="avatarUrl" [matTooltip]="date">
+                <img [matTooltip]="name" class="w-comments-image" alt="avatar" [src]="avatarUrl">
             </div>
             <div fxFlex fxLayout="column" class="push-left-md">
                 <div class="mat-body-1 text-break">
-                    <span class="w-comment-text">{{ text }}</span>
+                    <span [matTooltip]="date" class="w-comment-text">{{ text }}</span>
                 </div>
             </div>
             <div fxFlex="20" fxLayout="column">
