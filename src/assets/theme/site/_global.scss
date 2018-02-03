@@ -2,3 +2,26 @@ a {
     text-decoration: none;
     color: $primary;
 }
+
+/* Pretty scrollbars start */
+::-webkit-scrollbar {
+    width: 6px;
+}
+ 
+/* Track */
+::-webkit-scrollbar-track {
+    -webkit-border-radius: 0;
+    border-radius: 0;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 0;
+    border-radius: 0;
+    background: lighten($menu-background, 40%);
+}
+::-webkit-scrollbar-thumb:window-inactive {
+	background: lighten($menu-background, 40%);
+}
+
+/* Pretty scrollbars end */

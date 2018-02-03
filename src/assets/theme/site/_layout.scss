@@ -9,9 +9,6 @@
     width: $leftSideNavSize;
     background-color:#FFFFFF;
     height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     color: #353943;
 
     border-left: solid 1px #e6e6e6;
@@ -31,9 +28,17 @@
     }
 }
 
+/**
+This fixes an issue where there is a thick box at the bottom of a sidenav. This was an issue in 'chat' application
+where the items caused sidenav overflow in combination with custom design of scrollbars
+**/
+.w-layout-right-sidenav.mat-drawer {
+    box-sizing: initial!important;
+}
+
 .w-layout-sidenav {
     width: 250px;
-    background-color: #353943;
+    background-color: $menu-background;
     height: 100%;
     display: flex;
     align-items: center;
