@@ -182,10 +182,16 @@
     </div>
 
     <!-- Paginator -->
-    <div class="w-data-table-paginator" [style.display]="totalItems === 0 ? 'none' : 'block'">
-      <mat-paginator *ngIf="config && config.renderPager" #paginator [length]="totalItems" [pageIndex]="paginatorPageIndex" [pageSize]="pageSize"
-        [pageSizeOptions]="pageSizeOptions">
-      </mat-paginator>
+    <div fxLayout="row">
+      <div fxLayout="column">
+        <div class="w-data-table-paginator" [style.display]="totalItems === 0 ? 'none' : 'block'">
+          <mat-paginator *ngIf="config && config.renderPager" #paginator [length]="totalItems" [pageIndex]="paginatorPageIndex" [pageSize]="pageSize"
+            [pageSizeOptions]="pageSizeOptions">
+          </mat-paginator>
+        </div>
+      </div>
+      <div fxLayout="column" fxFlex>
+      </div>
     </div>
 
   </div>
@@ -222,11 +228,16 @@
     </div>
 
     <!-- Paginator -->
-    <div class="w-data-table-paginator" [style.display]="totalItems === 0 ? 'none' : 'block'">
-      <mat-paginator *ngIf="config && config.renderPager" #tilesPaginator [length]="totalItems" [pageIndex]="paginatorPageIndex"
-        [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions">
-      </mat-paginator>
+    <div fxLayout="row">
+      <div fxLayout="column">
+        <div class="w-data-table-paginator" [style.display]="totalItems === 0 ? 'none' : 'block'">
+          <mat-paginator *ngIf="config && config.renderPager" #tilesPaginator [length]="totalItems" [pageIndex]="paginatorPageIndex"
+            [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions">
+          </mat-paginator>
+        </div>
+      </div>
+      <div fxLayout="column" fxFlex>
+      </div>
     </div>
-
   </div>
 </ng-container>
