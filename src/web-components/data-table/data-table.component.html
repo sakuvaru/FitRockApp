@@ -212,17 +212,15 @@
     <div fxLayout="row" fxLayoutWrap>
       <div *ngFor="let item of items" fxLayout="column" [fxFlex]="config.thumbWidth.defaultWidth" [fxFlex.md]="config.thumbWidth.md"
         [fxFlex.sm]="config.thumbWidth.sm" [fxFlex.xs]="config.thumbWidth.xs">
-        <div class="push-sm">
-          <mat-card [class.w-data-table-clickable-tile]="isClickable" (click)="isClickable ? handleOnClick(item) : undefined">
+        <div class="push-sm text-center">
+          <div [class.w-data-table-clickable-tile]="isClickable" (click)="isClickable ? handleOnClick(item) : undefined">
             <ng-container *ngIf="config.avatar && config.avatar(item) as avatar">
-              <img mat-card-image *ngIf="avatar.isImage()" alt="avatar" [src]="avatar.imageUrl" />
+              <img class="w-data-table-tile-image" *ngIf="avatar.isImage()" alt="avatar" [src]="avatar.imageUrl" />
             </ng-container>
-            <mat-card-content>
-              <div class="text-center text-truncate">
-                {{ getPreviewItemName(item) | async}}
-              </div>
-            </mat-card-content>
-          </mat-card>
+            <div class="text-truncate">
+              {{ getPreviewItemName(item) | async}}
+            </div>
+          </div>
         </div>
       </div>
     </div>
