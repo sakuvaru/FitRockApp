@@ -31,6 +31,13 @@ export class TimeService {
         return moment(date).locale(this.currentLanguage.locale).format('LL');
     }
 
+    formatTime(date: Date): string {
+        if (!this.currentLanguage.locale) {
+            throw Error('Locale has to be set');
+        }
+        return moment(date).locale(this.currentLanguage.locale).format('LLL');
+    }
+
     fromNow(date: Date): string {
         if (!this.currentLanguage.locale) {
             throw Error('Locale has to be set');

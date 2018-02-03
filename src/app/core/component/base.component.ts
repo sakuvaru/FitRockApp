@@ -140,6 +140,10 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
         return this.dependencies.coreServices.timeService.formatDate(date);
     }
 
+    formatTime(date: Date): string {
+        return this.dependencies.coreServices.timeService.formatTime(date);
+    }
+
     fromNow(date: Date): string {
         return this.dependencies.coreServices.timeService.fromNow(date);
     }
