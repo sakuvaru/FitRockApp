@@ -1,11 +1,11 @@
-import { Component, NgZone, Input } from '@angular/core';
+import { Component, Input, NgZone } from '@angular/core';
+import { MatSidenav } from '@angular/material';
 import { Observable } from 'rxjs/Rx';
 
 import { AppConfig, UrlConfig } from '../../config';
-import { ComponentDependencyService, AuthenticatedUser } from '../../core';
+import { AuthenticatedUser, ComponentDependencyService } from '../../core';
 import { Feed } from '../../models';
 import { BaseLayoutComponent } from '../base/base-layout.component';
-import { MatSidenav } from '@angular/material';
 
 @Component({
     selector: 'admin-toolbar',
@@ -14,6 +14,8 @@ import { MatSidenav } from '@angular/material';
 export class AdminToolbarComponent extends BaseLayoutComponent {
 
     @Input() matSidenav: MatSidenav;
+
+    @Input() matRightSidenav: MatSidenav;
 
     public feedsCount: number;
     public feeds: Feed[];

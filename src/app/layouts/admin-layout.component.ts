@@ -1,9 +1,10 @@
 import { Location } from '@angular/common';
-import { ChangeDetectorRef, Component, NgZone } from '@angular/core';
+import { ChangeDetectorRef, Component, NgZone, ViewChild } from '@angular/core';
 import { TdRotateAnimation } from '@covalent/core';
 
 import { ComponentDependencyService, MenuItem } from '../core';
 import { BaseAdminLayoutComponent } from './base/base-admin-layout.component';
+import { MatSidenav } from '@angular/material';
 
 @Component({
     templateUrl: 'admin-layout.component.html',
@@ -14,6 +15,13 @@ import { BaseAdminLayoutComponent } from './base/base-admin-layout.component';
 export class AdminLayoutComponent extends BaseAdminLayoutComponent  {
 
     public triggeredItems = {};
+
+    private _rightSidenav: MatSidenav;
+    @ViewChild('rightSidenav') set rightSidenav(content: MatSidenav) {
+        if (content) {
+            this._rightSidenav = content;
+        }
+    }
 
     constructor(
         protected dependencies: ComponentDependencyService,

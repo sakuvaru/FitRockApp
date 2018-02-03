@@ -38,6 +38,12 @@
       </button>
     </div>
 
+    <div *ngIf="matRightSidenav" fxLayout="column" class="push-left-sm">
+      <button mat-icon-button (click)="matRightSidenav.toggle()">
+        <mat-icon>menu</mat-icon>
+      </button>
+    </div>
+
     <mat-menu #moreMenu="matMenu" xPosition="after" yPosition="below" [overlapTrigger]="false">
       <td-menu>
         <button mat-button td-menu-footer [routerLink]="getAuthUrl('logout')">
@@ -78,70 +84,3 @@
     </mat-menu>
   </div>
 </div>
-
-<!--
-<div fxLayout="row" fxLayoutAlign="start center" fxFlex>
-  <button mat-icon-button>
-    <mat-icon>menu</mat-icon>
-  </button>
-  <a mat-button [routerLink]="'/' + getDashboardUrl()">{{appName}}</a>
-  <span fxFlex></span>
-
-  <span class="mat-caption">
-    {{ license }}
-  </span>
-
-  <button mat-icon-button [matMenuTriggerFor]="feedsMenu" matTooltip="{{ 'userMenu.notifications' | localize }}">
-    <td-notification-count [notifications]="feedsCount">
-      <mat-icon>notifications</mat-icon>
-    </td-notification-count>
-  </button>
-
-  <button mat-icon-button [matMenuTriggerFor]="moreMenu" matTooltip="{{ 'userMenu.more' | localize }}">
-    <mat-icon>more_vert</mat-icon>
-  </button>
-
-  <mat-menu #moreMenu="matMenu">
-    <td-menu>
-      <button mat-button td-menu-footer [routerLink]="getAuthUrl('logout')">
-        <mat-icon>exit_to_app</mat-icon> {{ 'userMenu.logout' | localize }}
-      </button>
-    </td-menu>
-  </mat-menu>
-
-  <img *ngIf="showAvatar" mat-icon-button class="w-toolbar-avatar w-cursor-pointer" alt="profile image" [routerLink]="getAuthUrl('profile/edit')"
-    matTooltip="{{ 'userMenu.profile' | localize }}" [src]="userAvatarUrl ? userAvatarUrl : defaultAvatarUrl" />
-
-  <mat-menu class="w-feed-menu" #feedsMenu="matMenu" [overlapTrigger]="false">
-    <td-menu>
-      <ng-container *ngFor="let feed of feeds; let last = last">
-        <ng-container *ngIf="{ icon: getFeedIcon(feed), image: getFeedImage(feed) }; let data">
-          <mat-nav-list dense style="padding-top: 0px">
-            <a mat-list-item [class.bgc-grey-100]="!feed.markedAsRead || (preventFeedChange && !feed.markedAsRead)" (click)="handleClickFeed(feed)">
-              <mat-icon *ngIf="data.icon" matListIcon>{{ data.icon }}</mat-icon>
-              <img *ngIf="data.image" matListAvatar [src]="data.image" alt="" />
-              <h3 matLine>
-                <span class="w-feed-menu-subject" [innerHtml]="getFeedSubject(feed)"></span>
-                <span class="w-feed-menu-date">{{ fromNow(feed.created) }}</span>
-              </h3>
-              <h4 matLine>
-                <span class="text-wrap">
-                  <span [innerHtml]="getFeedText(feed) | async "></span>
-                </span>
-              </h4>
-            </a>
-            <mat-divider *ngIf="!last"></mat-divider>
-          </mat-nav-list>
-        </ng-container>
-      </ng-container>
-      <button mat-button td-menu-footer *ngIf="!feeds || (feeds && feeds.length <= 0)">
-        {{ 'userMenu.noNotifications' | localize }}
-      </button>
-      <button *ngIf="feeds && feeds.length > 0" mat-button color="primary" td-menu-footer routerLink="{{ getAuthUrl('profile/feeds') }}">
-        {{ 'userMenu.seeAllNotifications' | localize }}
-      </button>
-    </td-menu>
-  </mat-menu>
-</div>
-
--->

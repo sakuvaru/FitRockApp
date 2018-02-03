@@ -26,7 +26,7 @@
   <mat-sidenav-content class="w-layout-sidenav-content">
 
     <div class="w-layout-top-panel">
-      <admin-toolbar [matSidenav]="snav"></admin-toolbar>
+      <admin-toolbar [matRightSidenav]="_rightSidenav" [matSidenav]="snav"></admin-toolbar>
     </div>
 
     <div fxLayout="row" fxLayoutWrap fxLayoutAlign="start center" fxLayoutAlign.xs="start " fxLayoutAlign.sm="start " fxLayout.sm="row"
@@ -48,7 +48,7 @@
     </page-wrapper>
   </mat-sidenav-content>
 
-  <mat-sidenav *ngIf="rightMenu" class="w-layout-right-sidenav" opened mode="side" position="end">
+  <mat-sidenav #rightSidenav *ngIf="rightMenu" class="w-layout-right-sidenav" [mode]="isMobile ? 'over' : 'side'" [opened]="isMobile ? 'false' : 'true'" position="end">
     <div *ngIf="rightMenu.title" class="push-top mat-title text-center">
       {{ rightMenu.title | async }}
     </div>
