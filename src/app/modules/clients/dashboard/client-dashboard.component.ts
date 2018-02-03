@@ -9,6 +9,7 @@ import {
   ListBoxConfig,
   ListBoxItem,
   MapBoxConfig,
+  ListBoxLine,
 } from 'web-components/boxes';
 
 import { AppConfig, UrlConfig } from '../../../config';
@@ -66,8 +67,9 @@ export class ClientDashboardComponent extends BaseClientModuleComponent implemen
         .orderByDesc('Id')
         .get()
         .map(response => {
-          return response.items.map(item => new ListBoxItem(
-            Observable.of(item.workoutName),
+          return response.items.map(item => new ListBoxItem([
+            new ListBoxLine(Observable.of(item.workoutName))
+          ],
             {
               linkUrl: UrlConfig.getWorkoutUrl(item.clientId ? item.clientId : 0, item.id)
             }
@@ -88,8 +90,9 @@ export class ClientDashboardComponent extends BaseClientModuleComponent implemen
         .orderByDesc('Id')
         .get()
         .map(response => {
-          return response.items.map(item => new ListBoxItem(
-            Observable.of(item.dietName),
+          return response.items.map(item => new ListBoxItem([
+            new ListBoxLine(Observable.of(item.dietName))
+          ],
             {
               linkUrl: UrlConfig.getDietUrl(item.clientId ? item.clientId : 0, item.id)
             }
@@ -109,7 +112,9 @@ export class ClientDashboardComponent extends BaseClientModuleComponent implemen
         .get()
         .map(response => {
           return response.items.map(item => new ListBoxItem(
-            Observable.of(item.message),
+            [
+              new ListBoxLine(Observable.of(item.message))
+            ],
             {
               linkUrl: UrlConfig.getChatMessageUrl(this.client.id),
               imageUrl: item.sender.getAvatarOrGravatarUrl() ? item.sender.getAvatarOrGravatarUrl() : this.defaultAvatarUrl
