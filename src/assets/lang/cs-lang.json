@@ -527,7 +527,11 @@
 			"differentAccount": "Přepnout účet"
 		},
 		"chat": {
-			"send": "Odeslat"
+			"submenu": {
+				"title": "Zprávy"
+			},
+			"send": "Odeslat",
+			"contacts": "Kontakty"			
 		},
 		"days": {
 			"none": "Nepřiřazeno",

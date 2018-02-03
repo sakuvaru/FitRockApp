@@ -8,6 +8,8 @@ import { BaseWebComponent } from '../../base-web-component.class';
 })
 export class CommentComponent extends BaseWebComponent {
 
+    @Input() type: 'primary' | 'secondary';
+
     /**
      * Text of the message / comment
      */

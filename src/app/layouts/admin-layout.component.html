@@ -11,7 +11,7 @@
     </div>
 
     <div fxLayout="row" fxLayoutAlign="center center" *ngFor="let item of adminMenu.trainerMenu" class="w-layout-menu-item" (click)="handleMenuItemClick(item)">
-      <div fxLayout="column" class="push-left push-right-sm" [class.accent]="menuItemIsActive(item.action, item.type, false)" >
+      <div fxLayout="column" class="push-left push-right-sm" [class.accent]="menuItemIsActive(item.action, item.type, false)">
         <mat-icon class="w-layout-menu-item-icon">{{item.icon}}</mat-icon>
       </div>
       <div fxLayout="column" [class.accent]="menuItemIsActive(item.action, item.type, false)" fxFlex>
@@ -47,4 +47,38 @@
       <router-outlet></router-outlet>
     </page-wrapper>
   </mat-sidenav-content>
+
+  <mat-sidenav *ngIf="rightMenu" class="w-layout-right-sidenav" opened mode="side" position="end">
+    <div *ngIf="rightMenu.title" class="push-top mat-title text-center">
+      {{ rightMenu.title | async }}
+    </div>
+
+    <ng-container *ngIf="enableComponentSearch">
+      <div fxLayout="row" fxLayoutAlign="center center">
+        <div fxLayout="column" fxFlex="80%">
+          <mat-form-field floatPlaceholder="never">
+            <input matInput placeholder="{{ 'shared.search' | localize }}" [formControl]="searchControl" [value]="search" />
+            <span matPrefix>
+              <mat-icon>search</mat-icon>
+            </span>
+          </mat-form-field>
+        </div>
+      </div>
+    </ng-container>
+
+    <div fxLayout="row" fxLayoutAlign="start center" *ngFor="let item of rightMenu.menuItems" class="w-layout-right-menu-item"
+      (click)="handleMenuItemClick(item)">
+      <div *ngIf="item.icon" fxLayout="column" class="push-left push-right-sm" [class.primary]="menuItemIsActive(item.action, item.type, false)">
+        <mat-icon class="w-layout-menu-item-icon">{{item.icon}}</mat-icon>
+      </div>
+      <div *ngIf="item.imageUrl" fxLayout="column" class="push-left push-right-sm" [class.primary]="menuItemIsActive(item.action, item.type, false)">
+        <img alt="menu image" [src]="item.imageUrl" />
+      </div>
+      <div fxLayout="column" class="text-truncate" fxFlex>
+        <span [class.primary]="menuItemIsActive(item.action, item.type, false)">{{item.label.key | localize}}</span>
+      </div>
+    </div>
+    <div class="push-top"></div>
+  </mat-sidenav>
+
 </mat-sidenav-container>

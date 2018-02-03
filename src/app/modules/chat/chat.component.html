@@ -1,24 +1,12 @@
 <ng-container *ngIf="formConfig && chatMessages && users">
-    <div fxLayout="row">
-        <div fxLayout="column" fxFlex="25">
-            <td-virtual-scroll-container [data]="users" [trackBy]="trackByFn">
-                <ng-template let-row="user" let-index="index" let-first="first" let-last="last" let-odd="odd" let-even="even" tdVirtualScrollRow>
-                    <div fxLayout="row" fxLayoutAlign="start center" *ngFor="let user of users" class="push-top-sm">
-                        <div fxLayout="column">
-                            <img class="w-site-avatar-image" alt="user avatar" src="{{ getUserImageUrl(user) }}" />
-                        </div>
-                        <div fxLayout="column" class="push-top-sm">
-                            {{ user.getUsername()}}
-                        </div>
-                    </div>
-                </ng-template>
-            </td-virtual-scroll-container>
-        </div>
-        <div fxLayout="column">
-            messages
-        </div>
-    </div>
+    <data-form [config]="formConfig"></data-form>
 
+    <ng-container *ngFor="let chatMessage of chatMessages">
+
+        <comment [text]="chatMessage.message" [date]="formatDate(chatMessage.created)" [name]="chatMessage.sender.getFullName()" [type]="currentUserId === chatMessage.sender.id ? 'primary' : 'secondary'"
+            [avatarUrl]="chatMessage.sender.getAvatarOrGravatarUrl() ? chatMessage.sender.getAvatarOrGravatarUrl() : defaultAvatarUrl"></comment>
+
+    </ng-container>
 </ng-container>
 
 <!--<ng-container *ngIf="formConfig && chatMessages">

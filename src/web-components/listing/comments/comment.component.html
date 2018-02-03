@@ -1,15 +1,32 @@
-<div fxLayout class="w-comment">
-    <div fxFlex="150px" fxFlex.sm="100px" class="text-center">
-        <img class="w-comments-image" alt="avatar" [src]="avatarUrl">
-    </div>
-    <div fxFlex class="text-left">
-        <div class="mat-subhead">{{ name }}</div>
-        <div class="w-comment-date push-top-sm tc-grey-600">
-            <mat-icon>query_builder</mat-icon>
-            <span>&nbsp;{{ date }}</span>
+<div class="w-comment">
+    <div *ngIf="type === 'primary'" class="w-comment-primary">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <div fxFlex="20" fxLayout="column">
+            </div>
+            <div fxFlex fxLayout="column" class="text-right push-right-md">
+                <div class="mat-body-1 text-break">
+                    <span class="w-comment-text">{{ text }}</span>
+                </div>
+            </div>
+            <div fxLayout="column">
+                <img class="w-comments-image" alt="avatar" [src]="avatarUrl" [matTooltip]="date">
+            </div>
         </div>
-        <div class="push-top-sm push-bottom-md mat-body-1 text-break">
-            {{ text }}
+    </div>
+
+    <div *ngIf="type === 'secondary'" class="w-comment-secondary">
+        <div fxLayout="row" fxLayoutAlign="start center">
+            <div fxLayout="column">
+                <img class="w-comments-image" alt="avatar" [src]="avatarUrl" [matTooltip]="date">
+            </div>
+            <div fxFlex fxLayout="column" class="push-left-md">
+                <div class="mat-body-1 text-break">
+                    <span class="w-comment-text">{{ text }}</span>
+                </div>
+            </div>
+            <div fxFlex="20" fxLayout="column">
+            </div>
         </div>
     </div>
+
 </div>

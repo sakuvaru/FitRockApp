@@ -5,6 +5,32 @@
     height: 100%;
 }
 
+.w-layout-right-sidenav {
+    width: $leftSideNavSize;
+    background-color:#FFFFFF;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #353943;
+
+    border-left: solid 1px #e6e6e6;
+
+    img {
+        height: 24px;
+        width: 24px;
+    }
+
+    .w-layout-right-menu-item {
+        cursor: pointer;
+        margin-bottom: 15px;
+    }
+
+    .w-layout-right-menu-item:hover {
+        color: $primary;
+    }
+}
+
 .w-layout-sidenav {
     width: 250px;
     background-color: #353943;

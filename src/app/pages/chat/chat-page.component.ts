@@ -3,8 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { User } from 'app/models';
 import { ResponseMultiple } from 'lib/repository';
 
-import { BasePageComponent, ComponentDependencyService } from '../../core';
-import { ChatMenuItems } from './menu.items';
+import { BasePageComponent, ComponentDependencyService, RightMenu } from '../../core';
+import { ChatMenuItems, ChatSelectedUserItems } from './menu.items';
 
 @Component({
     templateUrl: 'chat-page.component.html'
@@ -27,7 +27,7 @@ export class ChatPageComponent extends BasePageComponent implements OnInit {
 
     configureMenuItems(response: ResponseMultiple<User>): void {
         this.setConfig({
-            menuItems: new ChatMenuItems(response.items).menuItems,
+            rightMenu: new RightMenu(new ChatMenuItems(response.items).menuItems, super.translate('module.chat.contacts')),
             enableSearch: true
         });
     }
@@ -35,7 +35,9 @@ export class ChatPageComponent extends BasePageComponent implements OnInit {
     changeComponentTitle(user: User): void {
         // update component config with user's name
         super.setConfig({
-            componentTitle: { key: user.getFullName() }
+            menuTitle: { key: 'module.chat.submenu.title'},
+            componentTitle: { key: user.getFullName() },
+            menuItems: new ChatSelectedUserItems(user).menuItems
         });
     }
 

@@ -36,6 +36,8 @@ export class ChatComponent extends BaseModuleComponent implements OnInit, OnChan
 
     public users: User[] = [];
 
+    public currentUserId: number = 0;
+
     constructor(
         protected componentDependencyService: ComponentDependencyService
     ) {
@@ -48,6 +50,10 @@ export class ChatComponent extends BaseModuleComponent implements OnInit, OnChan
         this.initMenuAndUsers();
         if (!this.conversationUserId) {
             this.initConversation();
+        }
+
+        if (this.authUser) {
+            this.currentUserId = this.authUser.id;
         }
     }
 
@@ -170,6 +176,7 @@ export class ChatComponent extends BaseModuleComponent implements OnInit, OnChan
                 }
                 return Observable.of(field);
             })
+            .hideButtonsOnLargeScreen(true)
             .customButtonSaveText(super.translate('module.chat.send'))
             .wrapInCard(false)
             .onAfterInsert((response) => {

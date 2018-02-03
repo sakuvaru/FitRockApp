@@ -1,9 +1,10 @@
 import { Location } from '@angular/common';
-import { AfterViewInit, ChangeDetectorRef, NgZone, OnDestroy } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, NgZone, OnDestroy, ViewChild } from '@angular/core';
 
 import { stringHelper } from '../../../lib/utilities';
-import { AdminMenu, ComponentAction, ComponentDependencyService, MenuItem } from '../../core';
+import { AdminMenu, ComponentAction, ComponentDependencyService, MenuItem, RightMenu } from '../../core';
 import { BaseLayoutComponent } from './base-layout.component';
+import { FormControl } from '@angular/forms';
 
 export class BaseAdminLayoutComponent extends BaseLayoutComponent implements OnDestroy, AfterViewInit {
 
@@ -39,6 +40,20 @@ export class BaseAdminLayoutComponent extends BaseLayoutComponent implements OnD
      */
     public menuItems?: MenuItem[];
 
+     /**
+     * Right menu items
+     */
+    public rightMenu?: RightMenu;
+
+    /**
+     * Search control
+     */
+    public searchControl = new FormControl();
+
+    public searchDebounceTime = 200;
+
+    public search: string = '';
+
     constructor(
         protected dependencies: ComponentDependencyService,
         protected cdr: ChangeDetectorRef,
@@ -47,6 +62,8 @@ export class BaseAdminLayoutComponent extends BaseLayoutComponent implements OnD
     ) {
         super(dependencies, ngZone);
 
+        // init search
+        this.subscribeToSearch();
 
         // init user texts
         const user = this.dependencies.authenticatedUserService.getUser();
@@ -76,6 +93,9 @@ export class BaseAdminLayoutComponent extends BaseLayoutComponent implements OnD
 
                 // set menu items
                 this.menuItems = componentConfig.menuItems;
+
+                // right menu 
+                this.rightMenu = componentConfig.rightMenu;
 
                 // set actions
                 this.actions = componentConfig.actions;
@@ -120,5 +140,17 @@ export class BaseAdminLayoutComponent extends BaseLayoutComponent implements OnD
 
     shortenTitle(text: string): string | null {
         return stringHelper.shorten(text, this.titleCharsLength, true);
+    }
+
+    private subscribeToSearch(): void {
+        this.searchControl.valueChanges
+            .debounceTime(this.searchDebounceTime)
+            .takeUntil(this.ngUnsubscribe)
+            .subscribe(searchTerm => {
+                // update searched variable
+                this.search = searchTerm;
+                this.handleComponentSearch(searchTerm);
+            },
+            error => console.error(error));
     }
 }
