@@ -200,17 +200,6 @@
       <loader [enabled]="loaderEnabled" type="linear"></loader>
 
       <error-message *ngIf="errorMessage" [text]="errorMessage"></error-message>
-
-      <!-- Search -->
-      <div class="w-data-table-filter">
-        <mat-form-field floatPlaceholder="never">
-          <input matInput placeholder="{{ 'webComponents.dataTable.searchPlaceholder' | localize }}" [formControl]="searchControl"
-            [value]="search" />
-          <span matPrefix>
-            <mat-icon>search</mat-icon>
-          </span>
-        </mat-form-field>
-      </div>
     </div>
 
     <!-- Thumbs -->

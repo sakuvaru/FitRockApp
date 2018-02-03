@@ -38,7 +38,7 @@
                 </mat-card-content>
                 <mat-card-actions *ngIf="config.renderButtons">
                     <div fxFlex layout="row" class="push-left push-right push-top-sm push-bottom-sm">
-                        <button *ngIf="isInsertForm" mat-raised-button color="accent" (click)="handleInsertItem()" [disabled]="!formGroup.valid">
+                        <button *ngIf="isInsertForm" mat-raised-button color="accent" (click)="handleInsertItem()" [disabled]="!formGroup.valid" [fxHide]="config.hideButtonsOnLargeScreen" [fxShow.sm]="config.hideButtonsOnLargeScreen" [fxShow.xs]="config.hideButtonsOnLargeScreen">
                             <ng-container *ngIf="config.customButtonSaveText">
                                 {{ config.customButtonSaveText | async }}
                             </ng-container>
@@ -46,7 +46,7 @@
                                 {{ 'webComponents.dataForm.insert' | localize }}
                             </ng-container>
                         </button>
-                        <button *ngIf="isEditForm" mat-raised-button color="accent" (click)="handleEditItem()" [disabled]="!formGroup.valid">
+                        <button *ngIf="isEditForm" mat-raised-button color="accent" (click)="handleEditItem()" [disabled]="!formGroup.valid" [fxHide]="config.hideButtonsOnLargeScreen" [fxShow.sm]="config.hideButtonsOnLargeScreen" [fxShow.xs]="config.hideButtonsOnLargeScreen">
                             <ng-container *ngIf="config.customButtonSaveText">
                                 {{ config.customButtonSaveText | async }}
                             </ng-container>
@@ -54,7 +54,7 @@
                                 {{ 'webComponents.dataForm.save' | localize }}
                             </ng-container>
                         </button>
-                        <div style="margin-top:10px; margin-left: 6px">
+                        <div *ngIf="!config.hideButtonsOnLargeScreen" style="margin-top:10px; margin-left: 6px">
                             <loader [enabled]="loaderEnabled" type="mat-circle"></loader>
                         </div>
                         <div fxFlex></div>
@@ -65,8 +65,8 @@
 
             <!-- Hidden save button used so that forms can be submitted by hitting enter. 
                  This is useful if buttons are not rendered in the form -->
-            <button *ngIf="!config.renderButtons && isInsertForm" (click)="handleInsertItem()" style="display:none" type="submit">Hidden submit</button>
-            <button *ngIf="!config.renderButtons && isEditForm" (click)="handleEditItem()" style="display:none" type="submit">Hidden submit</button>
+            <button *ngIf="isInsertForm" (click)="handleInsertItem()" style="display:none" type="submit">Hidden submit</button>
+            <button *ngIf="isEditForm" (click)="handleEditItem()" style="display:none" type="submit">Hidden submit</button>
 
         </form>
     </div>
@@ -105,7 +105,7 @@
                 <error-message *ngIf="unknownError" text="{{ 'webComponents.dataForm.internalError' | localize }}"></error-message>
 
                 <div *ngIf="config.renderButtons" fxFlex fxLayout="row" class="push-top-sm push-bottom-sm">
-                    <button *ngIf="isInsertForm" mat-raised-button color="accent" (click)="handleInsertItem()" [disabled]="!formGroup.valid">
+                    <button *ngIf="isInsertForm" mat-raised-button color="accent" (click)="handleInsertItem()" [disabled]="!formGroup.valid" [fxHide]="config.hideButtonsOnLargeScreen" [fxShow.sm]="config.hideButtonsOnLargeScreen" [fxShow.xs]="config.hideButtonsOnLargeScreen">
                         <ng-container *ngIf="config.customButtonSaveText">
                             {{ config.customButtonSaveText | async }}
                         </ng-container>
@@ -113,7 +113,7 @@
                             {{ 'webComponents.dataForm.insert' | localize }}
                         </ng-container>
                     </button>
-                    <button *ngIf="isEditForm" mat-raised-button color="accent" (click)="handleEditItem()" [disabled]="!formGroup.valid">
+                    <button *ngIf="isEditForm" mat-raised-button color="accent" (click)="handleEditItem()" [disabled]="!formGroup.valid" [fxHide]="config.hideButtonsOnLargeScreen" [fxShow.sm]="config.hideButtonsOnLargeScreen" [fxShow.xs]="config.hideButtonsOnLargeScreen">
                         <ng-container *ngIf="config.customButtonSaveText">
                             {{ config.customButtonSaveText | async }}
                         </ng-container>
@@ -121,7 +121,7 @@
                             {{ 'webComponents.dataForm.save' | localize }}
                         </ng-container>
                     </button>
-                    <div style="margin-top:10px; margin-left: 6px">
+                    <div *ngIf="!config.hideButtonsOnLargeScreen" style="margin-top:10px; margin-left: 6px">
                         <loader [enabled]="loaderEnabled" type="mat-circle"></loader>
                     </div>
                     <div fxFlex></div>
@@ -131,8 +131,8 @@
 
             <!-- Hidden save button used so that forms can be submitted by hitting enter. 
                  This is useful if buttons are not rendered in the form -->
-            <button *ngIf="!config.renderButtons && isInsertForm" (click)="handleInsertItem()" style="display:none" type="submit">Hidden submit</button>
-            <button *ngIf="!config.renderButtons && isEditForm" (click)="handleEditItem()" style="display:none" type="submit">Hidden submit</button>
+            <button *ngIf="isInsertForm" (click)="handleInsertItem()" style="display:none" type="submit">Hidden submit</button>
+            <button *ngIf="isEditForm" (click)="handleEditItem()" style="display:none" type="submit">Hidden submit</button>
         </form>
 
     </div>

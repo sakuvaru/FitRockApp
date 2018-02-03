@@ -166,6 +166,11 @@ export class DataFormConfig {
      */
     public configField?: (field: DataFormField, item: any) => Observable<DataFormField>;
 
+    /**
+     * If enabled, form can be send only by hitting enter. Small devices will have button displayed
+     */
+    public hideButtonsOnLargeScreen: boolean = false;
+
     constructor(
         /**
         * Type of the form

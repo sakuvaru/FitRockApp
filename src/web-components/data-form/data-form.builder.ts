@@ -104,6 +104,14 @@ export class DataFormBuilder<TItem extends IItem> {
     }
 
     /**
+     * If enabled, form can be send only by hitting enter. Small devices will have button displayed
+     */
+    hideButtonsOnLargeScreen(hide: boolean): this{
+        this.config.hideButtonsOnLargeScreen = hide;
+        return this;
+    }
+
+    /**
      * Section
      * @param section Section
      */
