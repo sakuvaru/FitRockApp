@@ -1,40 +1,38 @@
-<div fxFlexFill class="container" fxLayout fxLayout.sm="column">
-    <div fxFlex="50%" class="push-sm">
-        <mat-card fxFlex>
-            <mat-card-content class="push-top">
-                <h3>{{'module.clients.progress.newProgressItemRecord' | localize}}</h3>
-                <data-form #progressItemForm *ngIf="progressItemTypes && progressItemTypes.length > 0" [config]="formConfig"></data-form>
-                <info-message *ngIf="progressItemTypes && progressItemTypes.length === 0" text="{{ 'module.clients.progress.addProgressTypeFirst' | localize }}"></info-message>
-            </mat-card-content>
-        </mat-card>
+<div fxLayout="row" fxLayoutWrap>
+    <div fxLayout="column" fxFlex="50%" fxFlex.sm="100%" fxFlex.xs="100%">
+        <title-2>{{'module.clients.progress.newProgressItemRecord' | localize}}</title-2>
+        <data-form #progressItemForm *ngIf="progressItemTypes && progressItemTypes.length > 0" [config]="formConfig"></data-form>
+        <info-message *ngIf="progressItemTypes && progressItemTypes.length === 0" text="{{ 'module.clients.progress.addProgressTypeFirst' | localize }}"></info-message>
     </div>
-    <div fxFlex="50%" class="push-sm">
-        <mat-card fxFlex>
-            <mat-card-content>
-                <button mat-raised-button color="primary" (click)="openSelectTypeDialog()">{{'module.clients.progress.assignProgressItemType' | localize}}</button>
-                <button mat-button class="push-left" (click)="openAddNewProgressItemTypeDialog()">{{'module.clients.progress.newProgressItemType' | localize}}</button>
+    <div fxLayout="column" fxFlex="50%" fxFlex.sm="100%" fxFlex.xs="100%">
+        <title-2>{{'module.clients.progress.existingProgressItemTypes' | localize}}</title-2>
 
-                <div class="push-top">
-                    <mat-chip-list selectable="false">
-                        <mat-chip *ngFor="let progressItemType of progressItemTypes">
-                            <ng-container *ngIf="progressItemType.translateValue">
-                                {{'module.progressItemTypes.globalTypes.' + progressItemType.codename | localize}}
-                            </ng-container>
-                            <ng-container *ngIf="!progressItemType.translateValue">
-                                {{progressItemType.typeName}}
-                            </ng-container>
-                            &nbsp;
-                            <delete-button [enableConfirm]="true" mode="simple" (confirm)="handleDeleteType(progressItemType)"></delete-button>
-                        </mat-chip>
-                    </mat-chip-list>
-                </div>
-            </mat-card-content>
-        </mat-card>
+        <div>
+            <button mat-raised-button color="primary" (click)="openSelectTypeDialog()">{{'module.clients.progress.assignProgressItemType' | localize}}</button>
+            <button mat-raised-button class="push-left" (click)="openAddNewProgressItemTypeDialog()">{{'module.clients.progress.newProgressItemType' | localize}}</button>
+        </div>
+
+        <div class="push-top">
+            <mat-chip-list selectable="false">
+                <mat-chip *ngFor="let progressItemType of progressItemTypes">
+                    <ng-container *ngIf="progressItemType.translateValue">
+                        {{'module.progressItemTypes.globalTypes.' + progressItemType.codename | localize}}
+                    </ng-container>
+                    <ng-container *ngIf="!progressItemType.translateValue">
+                        {{progressItemType.typeName}}
+                    </ng-container>
+                    &nbsp;
+                    <delete-button [enableConfirm]="true" mode="simple" color="warn" (confirm)="handleDeleteType(progressItemType)"></delete-button>
+                </mat-chip>
+            </mat-chip-list>
+        </div>
     </div>
 </div>
 
-<div class="container" fxLayout fxLayout.sm="column">
-    <div fxFlex="100%" class="push-sm">
+
+<div fxLayout="row" class="push-top">
+    <div fxLayout="column" fxFlex>
+        <title-2>{{ 'module.clients.progress.data' | localize }}</title-2>
         <data-table #progressItemsDataTable [config]="dataTableConfig"></data-table>
     </div>
 </div>

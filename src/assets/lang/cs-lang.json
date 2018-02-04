@@ -148,7 +148,9 @@
 				"newProgressItemRecord": "Nový záznam měření",
 				"editProgressItem": "Upravit záznam",
 				"addProgressType": "Přidat typ",
-				"addProgressTypeFirst": "Pro záznamy měření musíš prvně přidat typy"
+				"addProgressTypeFirst": "Pro záznamy měření musíš prvně přidat typy",
+				"existingProgressItemTypes": "Přirazené typy",
+				"data": "Data"
 			},
 			"chat": {
 				"submit": "Odeslat",
