@@ -30,7 +30,7 @@
 
     .w-toolbar-avatar {
         @include border-radius(50%); 
-        height: 38px;
-        width: 38px;
+        height: $avatar-height;
+        width: $avatar-width;
         cursor: pointer;
     }
