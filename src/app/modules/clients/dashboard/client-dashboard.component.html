@@ -1,43 +1,31 @@
-<div>
-    <div fxFlexFill fxLayout fxLayout.md="column" fxLayout.sm="column" fxLayout.xs="column">
-        <div fxFlex="30%" class="push-sm">
-            <info-box *ngIf="!appointmentMapBox" [config]="appointmentInfoBox"></info-box>
-            <div fxLayout="column" *ngIf="appointmentMapBox">
-                <info-box [config]="appointmentInfoBox"></info-box>
-            </div>
-            <div *ngIf="appointmentMapBox" fxLayout="column" class="push-top-sm">
-                <map-box [config]="appointmentMapBox"></map-box>
-            </div>
-        </div>
-        <div fxFlex="70%" class="push-sm">
-            <list-box [config]="chatMessagesListBox"></list-box>
-        </div>
-    </div>
+<div fxLayout="row" fxLayoutAlign="space-between none">
+    <div fxLayout="column" fxFlex="48%">
+        <title-2>{{ 'module.clients.dashboard.nextAppointment' | localize }}</title-2>
+        <table-box [config]="appointmentBox"></table-box>
+        <map-box *ngIf="appointmentMapBox" [config]="appointmentMapBox"></map-box>
 
-    <div fxFlexFill fxLayout fxLayout.md="column" fxLayout.sm="column" fxLayout.xs="column">
-        <div fxFlex="50%" class="push-sm">
+        <info-message *ngIf="noAppointment" text="{{ 'module.clients.dashboard.noAppointment' | localize }}"></info-message>
+
+        <div class="push-top">
+            <title-2>{{ 'module.clients.dashboard.diets' | localize }}</title-2>
             <list-box [config]="dietsListBox"></list-box>
         </div>
-        <div fxFlex="50%" class="push-sm">
+
+        <div class="push-top">
+            <title-2>{{ 'module.clients.dashboard.workouts' | localize }}</title-2>
             <list-box [config]="workoutsListBox"></list-box>
         </div>
-    </div>
 
-    <div fxLayout fxLayout.sm="column" fxLayout.xs="column">
-        <div fxFlex="100%" class="push-sm">
-            <mod-user-stats [client]="client"></mod-user-stats>
+        <div *ngIf="client && client.trainerPrivateNotes" class="push-top">
+            <title-2>{{ 'module.clients.dashboard.privateNotes' | localize }}</title-2>
+            <p class="push-top-sm">{{ client.trainerPrivateNotes }}</p>
         </div>
     </div>
 
-    <div *ngIf="client && client.trainerPrivateNotes" fxLayout fxLayout.sm="column" fxLayout.xs="column">
-        <div fxFlex="100%" class="push-sm">
-            <info-box [config]="privateNotesInfoBox"></info-box>
-        </div>
-    </div>
-
-    <div *ngIf="client && client.trainerPublicNotes" fxLayout fxLayout.sm="column" fxLayout.xs="column">
-        <div fxFlex="100%" class="push-sm">
-            <info-box [config]="publicNotesInfoBox"></info-box>
-        </div>
+    <div fxLayout="column" fxFlex="48%">
+        <title-2>{{ 'module.clients.dashboard.latestMessages' | localize }}</title-2>
+        <mod-chat *ngIf="client" [disableLoadMore]="true" pageSize="10" [initUsers]="false" [conversationUserId]="client.id"></mod-chat>
     </div>
 </div>
+
+

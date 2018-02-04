@@ -15,9 +15,9 @@ import { ChatMessage, User } from '../../models';
 export class ChatComponent extends BaseModuleComponent implements OnInit, OnChanges {
 
     @Input() initUsers: boolean = false;
-
+    @Input() disableLoadMore: boolean = false;
+    @Input() pageSize: number = 25;
     @Input() conversationUserId: number;
-
     @Output() usersLoaded = new EventEmitter<ResponseMultiple<User>>();
     @Output() activeUserLoad = new EventEmitter<User>();
 
@@ -30,7 +30,6 @@ export class ChatComponent extends BaseModuleComponent implements OnInit, OnChan
     public chatMessages?: ChatMessage[];
 
     public chatMessagesPage: number = 1;
-    public chatMessagesPageSize: number = 25;
     public chatMessagesSearch: string = '';
     public allChatMessagesLoaded: boolean = false;
 
@@ -98,6 +97,10 @@ export class ChatComponent extends BaseModuleComponent implements OnInit, OnChan
     }
 
     onScroll(): void {
+        if (this.disableLoadMore) {
+            return;
+        }
+        
         this.loadMoreMessages();
     }
 
@@ -213,7 +216,7 @@ export class ChatComponent extends BaseModuleComponent implements OnInit, OnChan
             .includeMultiple(['Sender', 'Recipient'])
             .orderByDesc('Created')
             .page(page)
-            .pageSize(this.chatMessagesPageSize)
+            .pageSize(this.pageSize)
             .whereLike('Message', search ? search : '')
             .get()
             .map(response => {

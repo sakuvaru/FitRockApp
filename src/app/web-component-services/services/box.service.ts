@@ -19,8 +19,6 @@ export class BoxService {
 
     infoBox(
         lines: Observable<InfoBoxLine[]>,
-        title: Observable<string>,
-        titleAlign: TextAlignEnum,
         options?: {
             noDataMessage?: Observable<string>,
             actions?: ActionButton[],
