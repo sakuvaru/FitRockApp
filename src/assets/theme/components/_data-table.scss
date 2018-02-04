@@ -14,14 +14,14 @@
     @include card-box();
 }
 
+.w-data-table-tile-image {
+    width: 100%;
+}
+
 .w-data-table {
     .w-data-table-filter {
         min-height: 64px;
         padding: 8px 24px 0;
-    }
-
-    .w-data-table-tile-image {
-        width: 100%;
     }
 
     .w-data-table-no-data {
