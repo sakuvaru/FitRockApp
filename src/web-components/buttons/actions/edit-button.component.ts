@@ -10,6 +10,9 @@ import { BaseWebComponent } from '../../base-web-component.class';
 })
 export class EditButtonComponent extends BaseWebComponent implements OnInit {
 
+    @Input() color: 'none' | 'warn' | 'accent' | 'primary' = 'none';
+    @Output() editAction = new EventEmitter();
+
     public tooltipText: string;
 
     constructor(
@@ -19,9 +22,6 @@ export class EditButtonComponent extends BaseWebComponent implements OnInit {
     ) { super();
     }
 
-    @Input() color: 'none' | 'warn' | 'accent' | 'primary' = 'none';
-
-    @Output() editAction = new EventEmitter();
 
     ngOnInit() {
         this.localizationService.get('webComponents.buttons.editButton.tooltip').subscribe(text => this.tooltipText = text);

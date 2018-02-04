@@ -1,22 +1,53 @@
-<mat-card>
-    <mat-card-content>
-        <button *ngIf="client" mat-raised-button color="primary" [routerLink]="[getTrainerUrl('clients/edit/' + client.id + '/new-diet')]">{{'module.clients.diet.newDiet' | localize}}</button>
-    </mat-card-content>
-    <mat-divider></mat-divider>
-    <mat-card-content>
-        <div class="w-site-copy-select-wrapper">
-            <mat-form-field>
-                <mat-select #copyFromDiet [disabled]="!dietTemplates" placeholder="{{'module.clients.diet.copyDietLabel' | localize}}">
-                    <mat-option *ngFor="let diet of dietTemplates" [value]="diet">
-                        {{ diet.dietName }}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
-            <button mat-raised-button class="push-left" color="primary" [disabled]="!copyFromDiet.selected" (click)="newDietFromTemplate(copyFromDiet)">{{'module.clients.copyFromTemplate' | localize}}</button>
+<div fxLayout="row" class="w-site-copy-select-wrapper" fxLayoutWrap>
+    <div fxLayout="column">
+        <mat-form-field>
+            <mat-select #copyFromDiet [disabled]="!dietTemplates" placeholder="{{'module.clients.diet.copyDietLabel' | localize}}">
+                <mat-option *ngFor="let diet of dietTemplates" [value]="diet">
+                    {{ diet.dietName }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+    <div fxLayout="column" fxFlex>
+        <div>
+            <button mat-raised-button class="push-left" color="primary" [disabled]="!copyFromDiet.selected" (click)="newDietFromTemplate(copyFromDiet)">
+                {{'module.clients.copyFromTemplate' | localize}}
+            </button>
         </div>
-    </mat-card-content>
-</mat-card>
+    </div>
+    <div *ngIf="client" fxLayout="column">
+        <div>
+            <button mat-button class="push-left-sm" [routerLink]="[getTrainerUrl('clients/edit/' + client.id + '/new-diet')]">
+                <mat-icon class="w-site-icon-button-fix">add</mat-icon> {{'module.clients.diet.newDiet' | localize}}
+            </button>
+        </div>
+    </div>
+</div>
 
+<div fxLayout="row" fxLayoutWrap fxLayoutAlign="space-between center" class="push-top">
+    <div *ngFor="let day of days" fxLayout="column" fxFlex="23%" fxFlex.md="31%" fxFlex.sm="48%" fxFlex.xs="100%" [dragulaModel]="days"
+        [dragula]='"dragula-bag-parent"'>
+        <title-3 class="w-diet-and-workout-day">{{ day.day.localizationKey | localize }}</title-3>
+        <div [attr.day]="day.day.day" class="pad-md w-diet-and-workout-drag-area" [dragulaModel]="day.diets" [dragula]='"dragula-bag"'>
+            <div class="w-diet-and-workout-drag-item" *ngFor="let diet of day.diets">
+                <div class="dragula-move-handle" fxLayout="row" fxLayoutAlign="start center">
+                    <div fxLayout="column" fxFlex class="dragula-move-handle text-truncate" [attr.dietId]="diet.id">
+                        {{ diet.dietName }}
+                    </div>
+                    <div fxLayout="column">
+                        <edit-button size="small" (editAction)="goToEditDiet(diet)"></edit-button>
+                    </div>
+                    <div fxLayout="column">
+                        <delete-button [enableConfirm]="true" (confirm)="deleteDiet(diet)"></delete-button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--
 <div *ngFor="let day of days" class="push-top" [dragulaModel]="days" [dragula]='"dragula-bag-parent"'>
     <div fxLayout="row">
         <div fxLayout="column" class="push-right-sm">
@@ -37,5 +68,5 @@
             actions
         </div>
     </div>
-
 </div>
+-->

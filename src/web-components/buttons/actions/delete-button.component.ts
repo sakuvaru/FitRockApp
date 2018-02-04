@@ -11,6 +11,11 @@ import { Subject } from 'rxjs/Rx';
 })
 export class DeleteButtonComponent extends BaseWebComponent implements OnInit, OnChanges {
 
+    @Input() color: 'none' | 'warn' | 'accent' | 'primary' = 'none';
+    @Input() mode: 'button' | 'simple' = 'button';
+    @Input() enableConfirm: boolean;
+    @Output() confirm = new EventEmitter();
+
     private titleText: string;
     private messageText: string;
     private cancelText: string;
@@ -28,14 +33,6 @@ export class DeleteButtonComponent extends BaseWebComponent implements OnInit, O
     ) {
         super();
     }
-
-    @Input() color: 'none' | 'warn' | 'accent' | 'primary' = 'none';
-
-    @Input() mode: 'button' | 'simple' = 'button';
-
-    @Input() enableConfirm: boolean;
-
-    @Output() confirm = new EventEmitter();
 
     ngOnInit() {
         this.initButton();

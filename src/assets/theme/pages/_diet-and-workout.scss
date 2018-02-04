@@ -1,0 +1,29 @@
+.w-diet-and-workout-drag-area {
+    min-height: 50px;
+    display: block;
+    background-color: white;
+    outline: 2px dashed #c0c0c0;
+    outline-offset: -10px;
+}
+
+.w-diet-and-workout-day {
+    margin-left: 7px;
+    margin-right: 7px;
+}
+
+.w-diet-and-workout-drag-item {
+    background-color: $accent;
+    color: $accent-contrast;
+    padding: 4px 7px;
+    cursor: move;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.w-diet-and-workout-drag-item:last-of-type {
+    margin-bottom: 0;
+}
+
+.w-diet-and-workout-drag-item:first-of-type {
+    margin-top: 0;
+}

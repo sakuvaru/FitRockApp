@@ -3,8 +3,7 @@ import { BaseWebComponent } from '../../base-web-component.class';
 
 @Component({
     selector: 'google-button',
-    templateUrl: 'google-button.component.html',
-    styleUrls: ['social-buttons.scss']
+    templateUrl: 'google-button.component.html'
 })
 export class GoogleButtonComponent extends BaseWebComponent {
 

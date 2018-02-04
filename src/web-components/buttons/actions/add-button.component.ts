@@ -1,4 +1,3 @@
-// common
 import { Component, Input } from '@angular/core';
 import { BaseWebComponent } from '../../base-web-component.class';
 

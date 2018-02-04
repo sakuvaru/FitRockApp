@@ -3,8 +3,7 @@ import { BaseWebComponent } from '../../base-web-component.class';
 
 @Component({
     selector: 'facebook-button',
-    templateUrl: 'facebook-button.component.html',
-    styleUrls: ['social-buttons.scss']
+    templateUrl: 'facebook-button.component.html'
 })
 export class FacebookButtonComponent extends BaseWebComponent {
 

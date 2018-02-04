@@ -3,8 +3,7 @@ import { BaseWebComponent } from '../../base-web-component.class';
 
 @Component({
     selector: 'twitter-button',
-    templateUrl: 'twitter-button.component.html',
-    styleUrls: ['social-buttons.scss']
+    templateUrl: 'twitter-button.component.html'
 })
 export class TwitterButtonComponent extends BaseWebComponent {
 
