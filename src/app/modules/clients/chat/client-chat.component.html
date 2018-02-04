@@ -1,24 +1,2 @@
-<div fxLayout="row">
-    <div fxLayout="column" fxFlex="20%" fxFlex.md="20%" fxFlex.sm="100%" fxFlex.xs="100%">
-        <td-search-input (searchDebounce)="searchConversation($event)" [showUnderline]="true" debounce="200" placeholder="{{ 'shared.search' | localize }}"></td-search-input>
-    </div>
-</div>
+<mod-chat *ngIf="client" [initUsers]="false" [conversationUserId]="client.id"></mod-chat> 
 
-<mat-card>
-    <mat-card-content>
-        <data-form [config]="formConfig"></data-form>
-    </mat-card-content>
-    <mat-divider class="push-bottom-md"></mat-divider>
-    <mat-card-content>
-        <ng-container *ngFor="let chatMessage of chatMessages">
-            <comment [text]="chatMessage.message" [date]="formatDate(chatMessage.created)" [name]="chatMessage.sender.getFullName()"
-                [avatarUrl]="chatMessage.sender.getAvatarOrGravatarUrl() ? chatMessage.sender.getAvatarOrGravatarUrl() : defaultAvatarUrl"></comment>
-        </ng-container>
-    </mat-card-content>
-</mat-card>
-
-
-<div class="text-center push">
-    <button *ngIf="!allChatMessagesLoaded" mat-raised-button color="primary" (click)="loadMoreMessages()">{{ 'shared.loadMore' | localize }}</button>
-    <button *ngIf="allChatMessagesLoaded" mat-raised-button>{{ 'module.clients.chat.allMessagesLoaded' | localize }}</button>
-</div>

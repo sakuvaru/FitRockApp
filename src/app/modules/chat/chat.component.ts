@@ -14,6 +14,8 @@ import { ChatMessage, User } from '../../models';
 })
 export class ChatComponent extends BaseModuleComponent implements OnInit, OnChanges {
 
+    @Input() initUsers: boolean = false;
+
     @Input() conversationUserId: number;
 
     @Output() usersLoaded = new EventEmitter<ResponseMultiple<User>>();
@@ -54,7 +56,10 @@ export class ChatComponent extends BaseModuleComponent implements OnInit, OnChan
     ngOnInit(): void {
         super.ngOnInit();
 
-        this.initMenuAndUsers();
+        if (this.initUsers) {
+            this.initMenuAndUsers();
+        } 
+
         if (!this.conversationUserId) {
             this.initConversation();
         }
@@ -65,7 +70,7 @@ export class ChatComponent extends BaseModuleComponent implements OnInit, OnChan
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        if (!changes.conversationUserId.firstChange) {
+        if (changes.conversationUserId.currentValue) {
             this.initConversation();
         }
     }

@@ -52,6 +52,7 @@ import { ClientDashboardComponent } from './dashboard/client-dashboard.component
 import { SharedModule} from '../shared/shared.module';
 import { WorkoutsModule} from '../workouts/workouts.module';
 import { DietsModule} from '../diets/diets.module';
+import { ChatModule} from '../chat/chat.module';
 
 @NgModule({
     imports: [
@@ -59,7 +60,8 @@ import { DietsModule} from '../diets/diets.module';
         CommonModule,
         SharedModule,
         WorkoutsModule,
-        DietsModule
+        DietsModule,
+        ChatModule
     ],
     entryComponents: [
         EditProgressItemDialogComponent,
