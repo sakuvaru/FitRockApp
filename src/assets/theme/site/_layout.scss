@@ -118,3 +118,10 @@ where the items caused sidenav overflow in combination with custom design of scr
         transition: color 0.2s ease;
     }
 }
+
+.w-layout-component-title {
+    img {
+        height: 35px;
+        width: 35px
+    }
+}

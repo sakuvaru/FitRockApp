@@ -620,7 +620,6 @@ export class DataFormComponent extends BaseWebComponent implements OnInit, OnCha
 
     private handleLoadError(error: DataFormError | any): void {
         console.error(error);
-
         if (error instanceof DataFormError) {
 
             if (this.config.onError) {

@@ -29,6 +29,15 @@
       <admin-toolbar [matRightSidenav]="_rightSidenav" [matSidenav]="snav"></admin-toolbar>
     </div>
 
+    <div fxLayout="row" fxLayoutAlign="start center" class="push w-layout-component-title">
+      <div fxLayout="column" *ngIf="menuAvatarUrl" class="push-right-sm">
+        <img alt="menu avatar" [src]="menuAvatarUrl" />
+      </div>
+      <div fxLayout="column">
+        <title-1>{{ menuTitle }}</title-1>
+      </div>
+    </div>
+
     <div fxLayout="row" fxLayoutWrap fxLayoutAlign="start center" fxLayoutAlign.xs="start " fxLayoutAlign.sm="start " fxLayout.sm="row"
       fxLayout.xs="row" class="w-layout-component-menu push-top pad-left pad-right">
       <div fxLayout="column" *ngFor="let item of menuItems" [routerLink]="getMenuItemUrl(item.action, item.type)" class="push-right pad-top pad-bottom w-layout-component-menu-item">
