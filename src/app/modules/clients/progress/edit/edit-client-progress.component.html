@@ -1,13 +1,13 @@
-<div fxLayout="row" fxLayoutWrap>
-    <div fxLayout="column" fxFlex="50%" fxFlex.sm="100%" fxFlex.xs="100%">
+<div fxLayout="row" fxLayoutWrap fxLayoutAlign="space-between">
+    <div fxLayout="column" fxFlex="48%" fxFlex.sm="100%" fxFlex.xs="100%">
         <title-2>{{'module.clients.progress.newProgressItemRecord' | localize}}</title-2>
         <data-form #progressItemForm *ngIf="progressItemTypes && progressItemTypes.length > 0" [config]="formConfig"></data-form>
         <info-message *ngIf="progressItemTypes && progressItemTypes.length === 0" text="{{ 'module.clients.progress.addProgressTypeFirst' | localize }}"></info-message>
     </div>
-    <div fxLayout="column" fxFlex="50%" fxFlex.sm="100%" fxFlex.xs="100%">
+    <div fxLayout="column" fxFlex="48%" fxFlex.sm="100%" fxFlex.xs="100%">
         <title-2>{{'module.clients.progress.existingProgressItemTypes' | localize}}</title-2>
 
-        <div>
+        <div class="push-top-sm">
             <button mat-raised-button color="primary" (click)="openSelectTypeDialog()">{{'module.clients.progress.assignProgressItemType' | localize}}</button>
             <button mat-raised-button class="push-left" (click)="openAddNewProgressItemTypeDialog()">{{'module.clients.progress.newProgressItemType' | localize}}</button>
         </div>
