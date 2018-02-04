@@ -486,6 +486,7 @@
 				"Outdoors": "Venkovní posilovna",
 				"Others": "Jiné"
 			},
+			"locationType": "Typ lokace",
 			"address": "Adresa",
 			"lng": "Zem. délka",
 			"lat": "Zem. šířka",

@@ -1,0 +1,17 @@
+<!-- Large layout -->
+<div fxShow fxHide.xs fxHide.sm class="w-web-table-cell mat-body-2 pad-right-sm pad-top-sm">{{ name }}: </div>
+<div fxShow fxHide.xs fxHide.sm class="w-web-table-cell pad-top-sm"> {{ value }}</div>
+
+<!-- Small layout -->
+<div fxHide fxShow.xs fxShow.sm>
+    <mat-list>
+        <mat-list-item>
+            <div matLine>
+                <span class="mat-body-2">{{ name }}</span>
+            </div>
+            <div matLine>
+                {{ value }}
+            </div>
+        </mat-list-item>
+    </mat-list>
+</div>

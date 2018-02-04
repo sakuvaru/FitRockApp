@@ -1,7 +1,7 @@
 <ng-container *ngIf="config">
     <div class="w-boxes w-boxes-table-box">
         <div [ngClass]="{'w-box-card': config.wrapInCard, 'pad': config.wrapInCard}">
-            <div *ngIf="config.title" fxLayoutAlign=" center" fxLayout="row">
+            <div *ngIf="config.title" fxLayoutAlign="start center" fxLayout="row">
                 <div fxFlex [class]="config.titleAlign">
                     <div class="mat-title primary">
                         {{ config.title | async }}
@@ -9,18 +9,33 @@
                 </div>
             </div>
 
-            <div *ngIf="config.lines | async; let lines" fxFlexFill fxLayout="row" fxLayout.sm="100" fxLayout.xs="100" fxLayout.md="100">
-                <div fxLayout="column" fxFlex="initial" [ngClass]="{'push-sm': config.wrapInCard, 'push-right-sm': !config.wrapInCard}">
-                    <div *ngFor="let line of lines" fxLayout="row" class="push-top-sm">
-                        <strong>{{ line.text | async }}:</strong>
+            <div *ngIf="config.lines | async; let lines">
+
+                <!-- Large layout -->
+                <div fxShow fxHide.xs fxHide.sm>
+                    <div class="w-boxes-row" *ngFor="let line of lines">
+                        <div class="w-boxes-cell mat-body-2 pad-right-sm pad-top-sm">{{ line.text | async }}: </div>
+                        <div class="w-boxes-cell pad-top-sm">{{ line.value | async }}</div>
                     </div>
                 </div>
-                <div fxLayout="column" fxFlex.md="100" fxFlex.xs="100" fxFlex.sm="100" [ngClass]="{'push-sm': config.wrapInCard, 'push-left-sm': !config.wrapInCard}">
-                    <div *ngFor="let line of lines" fxLayout="row" class="push-top-sm">
-                        {{ line.value | async }}
-                    </div>
+
+                <!-- Small layout -->
+                <div fxHide fxShow.xs fxShow.sm>
+                    <mat-list>
+                        <mat-list-item *ngFor="let line of lines">
+                            <div matLine>
+                                <span class="mat-body-2">{{ line.text | async }}</span>
+                            </div>
+                            <div matLine>
+                                {{ line.value | async }}
+                            </div>
+                        </mat-list-item>
+                    </mat-list>
                 </div>
+
             </div>
         </div>
     </div>
+
+
 </ng-container>

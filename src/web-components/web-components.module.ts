@@ -18,7 +18,9 @@ import { LoaderModule } from './loader/loader.module';
 import { MapModule } from './map/map.module';
 import { MessagesModule } from './messages/messages.module';
 import { TextModule } from './text/text.module';
+import { TitlesModule } from './titles/title.module';
 import { UploaderModule } from './uploader/uploader.module';
+import { WebTableModule } from './web-table/web-table.module';
 
 @NgModule({
     imports: [
@@ -44,7 +46,9 @@ import { UploaderModule } from './uploader/uploader.module';
         CalendarModule,
         BoxesModule,
         AnimateModule,
-        BadgesModule
+        BadgesModule,
+        TitlesModule,
+        WebTableModule
     ]
 })
 export class WebComponentsModule {

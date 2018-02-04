@@ -1,30 +1,22 @@
-<div fxFlexFill *ngIf="location" class="container" fxLayout fxLayout.sm="column" fxLayout.xs="column">
-    <div fxFlex="40%" class="push-sm">
-        <mat-card fxFlex>
-            <mat-card-content>
-                <p class="mat-headline">
-                    {{ location.locationName }}
-                </p>
-                <p class="mat-caption">
-                    {{ 'module.locations.type.' + location.locationTypeAsString | localize }}
-                </p>
-                <p>
-                    <span class="mat-caption">{{ 'module.locations.address' | localize }}: </span> {{ location.address }}
-                </p>
-                <p>
-                    <span class="mat-caption">{{ 'module.locations.lat' | localize }}: </span> {{ location.lat }}
-                </p>
-                <p>
-                    <span class="mat-caption">{{ 'module.locations.lng' | localize }}: </span> {{ location.lng }}
-                </p>
-            </mat-card-content>
-        </mat-card>
+<ng-container *ngIf="location">
+    <div fxLayout="row">
+        <div fxFlex fxLayout="column">
+            <title-1>{{ location.locationName }}</title-1>
+        </div>
     </div>
-    <div fxFlex="60%" class="push-sm">
-        <mat-card fxFlex>
-            <mat-card-content>
-                <map [apiKey]="googleApiKey" [address]="location.address" [lat]="location.lat" [lng]="location.lng"></map>
-            </mat-card-content>
-        </mat-card>
+    <div fxLayout="row">
+        <div fxFlex fxLayout="column">
+            <web-table>
+                <web-table-line name="{{ 'module.locations.locationType' | localize }}" value="{{ 'module.locations.type.' + location.locationTypeAsString | localize}}"></web-table-line>
+                <web-table-line name="{{ 'module.locations.address' | localize }}" value="{{ location.address }}"></web-table-line>
+                <web-table-line *ngIf="location.lng && location.lat" name="{{ 'module.locations.lng' | localize }}" value="{{ location.lng }}"></web-table-line>
+                <web-table-line *ngIf="location.lng && location.lat" name="{{ 'module.locations.lat' | localize }}" value="{{ location.lat }}"></web-table-line>
+            </web-table>
+        </div>
     </div>
-</div>
+    <div fxLayout="row" class="push-top">
+        <div fxFlex fxLayout="column">
+            <map [apiKey]="googleApiKey" [address]="location.address" [lat]="location.lat" [lng]="location.lng"></map>
+        </div>
+    </div>
+</ng-container>

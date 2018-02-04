@@ -1,0 +1,12 @@
+<div class="w-web-table">
+    <ng-content select="web-table-title"></ng-content>
+
+    <!-- Large layout -->
+    <ng-content select="web-table-line"></ng-content>
+
+    <!-- Small layout -->
+    <div fxHide fxShow.xs fxShow.sm>
+        <mat-list>
+        </mat-list>
+    </div>
+</div>

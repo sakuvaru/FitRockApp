@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
+import { TableBoxConfig } from 'web-components/boxes';
 
 import { AppConfig } from '../../../config';
 import { BaseModuleComponent, ComponentDependencyService } from '../../../core';
@@ -15,9 +16,10 @@ export class PreviewLocationComponent extends BaseModuleComponent implements OnI
 
     @Output() loadLocation = new EventEmitter<Location>();
 
-    public location: Location;
+    public readonly googleApiKey: string = AppConfig.GoogleApiKey;
 
-    public googleApiKey: string = AppConfig.GoogleApiKey;
+    public location?: Location;
+    public locationTableBox?: TableBoxConfig;
 
     constructor(
         protected componentDependencyService: ComponentDependencyService,
@@ -37,14 +39,16 @@ export class PreviewLocationComponent extends BaseModuleComponent implements OnI
         }
     }
 
-    private getItemObservable(): Observable<any> {
+    private getItemObservable(): Observable<void> {
         return this.dependencies.itemServices.locationService.item()
             .byId(this.locationId)
             .get()
             .map(response => {
                 this.location = response.item;
 
-                this.loadLocation.next(this.location);
+                if (this.location) {
+                    this.loadLocation.next(this.location);
+                }
             });
     }
 }

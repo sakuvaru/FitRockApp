@@ -52,6 +52,13 @@
 .w-boxes.w-boxes-table-box {
     /* Box should fill all available height */
     height: 100%;
+
+    .w-boxes-row { 
+        display: table-row;
+    }
+    .w-boxes-cell { 
+        display: table-cell 
+    }
 }
 
 .w-boxes.w-boxes-mini-box {
