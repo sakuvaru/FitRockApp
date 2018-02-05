@@ -1,7 +1,7 @@
 import { BaseItem } from '../../../lib/repository';
+import { User } from '../user.class';
 import { WorkoutCategory } from './workout-category.class';
 import { WorkoutExercise } from './workout-exercise.class';
-import { User } from '../user.class';
 
 export class Workout extends BaseItem {
 
@@ -12,5 +12,9 @@ export class Workout extends BaseItem {
     public clientId?: number;
     public client?: User;
     public order: number;
+    public dayString: string;
+    public day: number;
+
     public workoutExercises: WorkoutExercise[];
+    
 }
