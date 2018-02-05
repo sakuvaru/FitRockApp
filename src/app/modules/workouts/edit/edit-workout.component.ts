@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Rx';
 import { DataFormConfig } from '../../../../web-components/data-form';
 import { BaseModuleComponent, ComponentDependencyService } from '../../../core';
 import { Workout } from '../../../models';
+import { stringHelper } from 'lib/utilities';
 
 @Component({
     selector: 'mod-edit-workout',
@@ -43,6 +44,9 @@ export class EditWorkoutComponent extends BaseModuleComponent implements OnInit,
             .optionLabelResolver((field, label) => {
                 if (field.key === 'WorkoutCategoryId') {
                     return super.translate(`module.workoutCategories.categories.${label}`);
+                }
+                if (field.key === 'Day') {
+                    return super.translate('module.days.' + stringHelper.firstCharToLowerCase(label));
                 }
 
                 return Observable.of(label);

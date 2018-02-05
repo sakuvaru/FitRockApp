@@ -23,7 +23,9 @@ export class NewWorkoutComponent extends BaseModuleComponent implements OnInit {
     }
 
     private initFom() {
-        this.formConfig = this.dependencies.itemServices.workoutService.buildInsertForm()
+        this.formConfig = this.dependencies.itemServices.workoutService.buildInsertForm({
+            modifyDefaultDefinitionQuery: (query) => query.withData('IsTemplate', true)
+        })
             .onAfterInsert((response) => this.navigate([this.getTrainerUrl('workouts/edit-plan'), response.item.id]))
             .optionLabelResolver((field, label) => {
                 if (field.key === 'WorkoutCategoryId') {
