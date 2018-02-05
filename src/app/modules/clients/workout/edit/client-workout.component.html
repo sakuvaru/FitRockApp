@@ -1,3 +1,54 @@
+<div fxLayout="row" class="w-site-copy-select-wrapper" fxLayoutWrap>
+    <div fxLayout="column">
+        <mat-form-field>
+            <mat-select #copyFromWorkout [disabled]="!workoutTemplates" placeholder="{{'module.clients.workout.copyWorkoutLabel' | localize}}">
+                <mat-option *ngFor="let workout of workoutTemplates" [value]="workout">
+                    {{ workout.workoutName }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+    <div fxLayout="column" fxFlex>
+        <div>
+            <button mat-raised-button class="push-left" color="primary" [disabled]="!copyFromWorkout.selected" (click)="newWorkoutFromTemplate(copyFromWorkout)">
+                {{'module.clients.copyFromTemplate' | localize}}
+            </button>
+        </div>
+    </div>
+    <div *ngIf="client" fxLayout="column">
+        <div>
+            <button mat-button class="push-left-sm" [routerLink]="[getTrainerUrl('clients/edit/' + client.id + '/new-workout')]">
+                <mat-icon class="w-site-icon-button-fix">add</mat-icon> {{'module.clients.workout.newWorkout' | localize}}
+            </button>
+        </div>
+    </div>
+</div>
+
+<div fxLayout="row" fxLayoutWrap fxLayoutAlign="space-between center" class="push-top">
+    <div *ngFor="let day of days" fxLayout="column" fxFlex="23%" fxFlex.md="31%" fxFlex.sm="48%" fxFlex.xs="100%" [dragulaModel]="days"
+        [dragula]='"dragula-bag-parent"'>
+        <title-3 class="w-diet-and-workout-day">{{ day.day.localizationKey | localize }}</title-3>
+        <div [attr.day]="day.day.day" class="pad-md w-diet-and-workout-drag-area" [dragulaModel]="day.workouts" [dragula]='"dragula-bag"'>
+            <div class="w-diet-and-workout-drag-item dragula-move-handle" *ngFor="let workout of day.workouts">
+                <div class="dragula-move-handle" fxLayout="row" fxLayoutAlign="start center">
+                    <div fxLayout="column" fxFlex class="text-truncate dragula-move-handle">
+                        {{ workout.workoutName }}
+                    </div>
+                    <div fxLayout="column" class="dragula-move-handle" >
+                        <edit-button size="small" (editAction)="goToEditWorkout(workout)"></edit-button>
+                    </div>
+                    <div fxLayout="column" class="dragula-move-handle" >
+                        <delete-button [enableConfirm]="true" (confirm)="deleteWorkout(workout)"></delete-button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!--
 <mat-card>
     <mat-card-content>
         <button *ngIf="client" mat-raised-button color="primary" [routerLink]="[getTrainerUrl('clients/edit/' + client.id + '/new-workout')]">{{'module.clients.workout.newWorkout' | localize}}</button>
@@ -36,3 +87,4 @@
         </ng-container>
     </mat-list>
 </div>
+-->

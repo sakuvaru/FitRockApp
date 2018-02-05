@@ -58,7 +58,6 @@ export class ClientDietComponent extends BaseClientModuleComponent implements On
     }
 
     deleteDiet(diet: Diet): void {
-        this.startGlobalLoader();
         super.subscribeToObservable(this.dependencies.itemServices.dietService.delete(diet.id)
             .set()
             .map(response => {
@@ -148,9 +147,8 @@ export class ClientDietComponent extends BaseClientModuleComponent implements On
                 }
             }));
 
-        observables.push(this.existingDietsObservable());
-
-        observables.push(this.getInitDaysObservable());
+        // days need to loaded before diets can be initialized
+        observables.push(this.getInitDaysObservable().flatMap(() => this.existingDietsObservable()));
 
         super.subscribeToObservables(observables);
 

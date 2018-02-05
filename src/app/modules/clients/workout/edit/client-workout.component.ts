@@ -9,7 +9,7 @@ import * as _ from 'underscore';
 import { stringHelper } from '../../../../../lib/utilities';
 import { AppConfig } from '../../../../config';
 import { ComponentDependencyService } from '../../../../core';
-import { Workout, WorkoutExercise } from '../../../../models';
+import { Workout, WorkoutExercise, Day } from '../../../../models';
 import { BaseClientModuleComponent } from '../../base-client-module.component';
 import { WorkoutListDialogComponent } from '../dialogs/workout-list-dialog.component';
 
@@ -19,14 +19,13 @@ import { WorkoutListDialogComponent } from '../dialogs/workout-list-dialog.compo
 })
 export class ClientWorkoutComponent extends BaseClientModuleComponent implements OnInit, OnDestroy, OnChanges {
 
-    public workoutExists: boolean = true;
-    public workoutTemplates: Workout[];
-    public existingWorkouts: Workout[];
+    public workoutTemplates: Workout[] = [];
 
     /**
-     * Name of the dragula bag - used in template & config
+     * Name of the dragula bag - used in the template & config
      */
     public readonly dragulaBag: string = 'dragula-bag';
+    public readonly dragulaBagParent: string = 'dragula-bag-parent';
 
     /**
      * Class of the handle used to drag & drop dragula items
@@ -38,10 +37,7 @@ export class ClientWorkoutComponent extends BaseClientModuleComponent implements
      */
     private dropSubscription: Subscription;
 
-    /**
-     * Indicates which workout is expanded
-     */
-    public expandedWorkoutId: number | null = null;
+    public days: DayWithWorkouts[] = [];
 
     constructor(
         protected componentDependencyService: ComponentDependencyService,
@@ -55,17 +51,14 @@ export class ClientWorkoutComponent extends BaseClientModuleComponent implements
             this.init();
         }
     }
-
     ngOnInit(): void {
         super.ngOnInit();
+        this.makeSureDragulaIsUnsubscribed();
     }
 
     ngOnDestroy() {
         super.ngOnDestroy();
-
-        // unsubscribe from dragula drop events
-        this.dropSubscription.unsubscribe();
-        this.dragulaService.destroy(this.dragulaBag);
+        this.makeSureDragulaIsUnsubscribed();
     }
 
     newWorkoutFromTemplate(data: any): void {
@@ -83,11 +76,12 @@ export class ClientWorkoutComponent extends BaseClientModuleComponent implements
         super.subscribeToObservable(this.dependencies.itemServices.workoutService.copyFromWorkout(selectedWorkout.id, this.client.id)
             .set()
             .flatMap(response => {
-                super.showSavedSnackbar();
-                return this.reloadExistingWorkoutsObservable(this.client.id);
+                // reload workouts
+                return this.existingWorkoutsObservable();
             })
-        );
-
+            .map(response => {
+                super.showSavedSnackbar();
+            }));
     }
 
     deleteWorkout(workout: Workout): void {
@@ -95,7 +89,7 @@ export class ClientWorkoutComponent extends BaseClientModuleComponent implements
             .set()
             .map(response => {
                 // remove workout  from local letiable
-                this.existingWorkouts = _.reject(this.existingWorkouts, function (item) { return item.id === response.deletedItemId; });
+                this.days.map(day => day.workouts = _.reject(day.workouts, function (item) { return item.id === response.deletedItemId; }));
                 this.showDeletedSnackbar();
             }));
     }
@@ -114,36 +108,25 @@ export class ClientWorkoutComponent extends BaseClientModuleComponent implements
         });
     }
 
-    private initDragula(): void {
-        // set handle for dragula
-        const that = this;
-        this.dragulaService.setOptions(this.dragulaBag, {
-            moves: function (el: any, container: any, handle: any): any {
-                return stringHelper.contains(el.className, that.dragulaMoveHandle);
-            }
-        });
+    private makeSureDragulaIsUnsubscribed(): void {
+        // unsubscribe from dragula drop events
+        if (this.dropSubscription) {
+            this.dropSubscription.unsubscribe();
+        }
 
-        // subscribe to drop events
-        this.dropSubscription = this.dragulaService.drop
-            .do(() => super.startGlobalLoader())
-            .debounceTime(500)
-            .takeUntil(this.ngUnsubscribe)
-            .switchMap(() => {
-                return this.dependencies.itemServices.workoutService.updateItemsOrder(this.existingWorkouts, this.client.id).set();
-            })
-            .subscribe(() => {
-                super.stopGlobalLoader();
-                super.showSavedSnackbar();
-            });
+        if (this.dragulaService.find(this.dragulaBag)) {
+            this.dragulaService.destroy(this.dragulaBag);
+        }
+        if (this.dragulaService.find(this.dragulaBagParent)) {
+            this.dragulaService.destroy(this.dragulaBagParent);
+        }
     }
 
     private init(): void {
-        const observables: Observable<any>[] = [];
-
-        observables.push(this.existingWorkoutsObservable());
+        const observables: Observable<void>[] = [];
         observables.push(this.dependencies.itemServices.workoutService.items()
             .byCurrentUser()
-            .whereEmpty('ClientId')
+            .whereNull('ClientId')
             .orderByAsc('WorkoutName')
             .get()
             .map(response => {
@@ -152,32 +135,88 @@ export class ClientWorkoutComponent extends BaseClientModuleComponent implements
                 }
             }));
 
+
+        // days need to loaded before workouts can be initialized
+        observables.push(this.getInitDaysObservable().flatMap(() => this.existingWorkoutsObservable()));
+
         super.subscribeToObservables(observables);
 
         this.initDragula();
     }
 
-    private existingWorkoutsObservable(): Observable<any> {
+    private initDragula(): void {
+        // set handle for dragula
+        const that = this;
+        this.dragulaService.setOptions(this.dragulaBag, {
+            moves: function (el: any, container: any, handle: any): any {
+                return stringHelper.contains(handle.className, that.dragulaMoveHandle);
+            }
+        });
+
+        this.dragulaService.setOptions(this.dragulaBagParent, {
+            moves: function (el: any, container: any, handle: any): any {
+                // we don't want parent to move 
+                return false;
+            }
+        });
+
+        // subscribe to drop events
+        this.dropSubscription = this.dragulaService.drop
+            .do(() => super.startGlobalLoader())
+            .debounceTime(500)
+            .flatMap(value => {
+                const updateOrderObservable = this.dependencies.itemServices.workoutService.updateItemsOrder(this.getOrderedWorkoutsFromDays(), this.client.id).set();
+                const updateWorkoutObservable = this.getUpdateWorkoutDayObservable();
+
+                return updateOrderObservable.zip(updateWorkoutObservable);
+            })
+
+            .takeUntil(this.ngUnsubscribe)
+            .subscribe(() => {
+                super.stopGlobalLoader();
+                super.showSavedSnackbar();
+            });
+    }
+
+    private getOrderedWorkoutsFromDays(): Workout[] {
+        const orderedWorkouts: Workout[] = [];
+        this.days.map(day => day.workouts.map(s => orderedWorkouts.push(s)));
+
+        return orderedWorkouts;
+    }
+
+    private getUpdateWorkoutDayObservable(): Observable<void> {
+        // go through all days and find diet which were updated
+        let saveObservable = Observable.of(undefined);
+        this.days.map(day => day.workouts.map(workout => {
+            if (workout.day !== day.day.day) {
+                // Day was change, update local variables 
+                workout.day = day.day.day;
+                workout.dayString = day.day.dayString;
+
+                saveObservable = this.dependencies.itemServices.workoutService.edit(workout).set().map(response => undefined);
+            }
+        }));
+
+        return saveObservable;
+    }
+
+    private existingWorkoutsObservable(): Observable<void> {
         return this.dependencies.itemServices.workoutService.items()
             .byCurrentUser()
             .includeMultiple(['WorkoutExercises', 'WorkoutExercises.Exercise'])
             .whereEquals('ClientId', this.client.id)
             .orderByAsc('Order')
             .get()
-
             .map(response => {
                 if (!response.isEmpty()) {
-                    this.existingWorkouts = response.items;
-
-                    // order workout exercises
-                    this.existingWorkouts.forEach(workout => {
-                        workout.workoutExercises = _.sortBy(workout.workoutExercises, m => m.order);
-                    });
+                    // assign workouts to days
+                    this.assignWorkoutToDays(response.items);
                 }
             });
     }
 
-    private reloadExistingWorkoutsObservable(clientId: number): Observable<any> {
+    private reloadExistingWorkoutsObservable(clientId: number): Observable<void> {
         return this.dependencies.itemServices.workoutService.items()
             .byCurrentUser()
             .includeMultiple(['WorkoutExercises', 'WorkoutExercises.Exercise'])
@@ -190,5 +229,52 @@ export class ClientWorkoutComponent extends BaseClientModuleComponent implements
                 }
             });
     }
+
+    private assignWorkoutToDays(workouts: Workout[]): void {
+        if (!workouts || workouts.length === 0) {
+            return;
+        }
+
+        // first make sure that days contain no diets
+        this.days.map(day => {
+            day.workouts = [];
+        });
+
+        const unassignedDayValue = 0;
+        const unassignedDay = this.days.find(m => m.day.day === unassignedDayValue);
+
+        if (!unassignedDay) {
+            throw Error(`Could not find unassigned day with value '${unassignedDayValue}'`);
+        }
+
+        workouts.forEach(workout => {
+            const day = this.days.find(m => m.day.day === workout.day);
+
+            if (!day) {
+                // unassigned diet
+                unassignedDay.workouts.push(workout);
+            } else {
+                day.workouts.push(workout);
+            }
+        });
+
+        // order workouts based on their order
+        this.days.map(day => {
+            day.workouts = _.sortBy(day.workouts, m => m.order);
+        });
+    }
+
+    private getInitDaysObservable(): Observable<void> {
+        return this.dependencies.coreServices.serverService.getDays()
+            .map(days => {
+                this.days = days.map(day => new DayWithWorkouts(day, []));
+            });
+    }
 }
 
+class DayWithWorkouts {
+    constructor(
+        public day: Day,
+        public workouts: Workout[] = []
+    ) { }
+}

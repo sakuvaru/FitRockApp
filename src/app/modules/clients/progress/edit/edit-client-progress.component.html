@@ -2,7 +2,10 @@
     <div fxLayout="column" fxFlex="48%" fxFlex.sm="100%" fxFlex.xs="100%">
         <title-2>{{'module.clients.progress.newProgressItemRecord' | localize}}</title-2>
         <data-form #progressItemForm *ngIf="progressItemTypes && progressItemTypes.length > 0" [config]="formConfig"></data-form>
-        <info-message *ngIf="progressItemTypes && progressItemTypes.length === 0" text="{{ 'module.clients.progress.addProgressTypeFirst' | localize }}"></info-message>
+
+        <div class="push-top">
+            <info-message *ngIf="progressItemTypes && progressItemTypes.length === 0" text="{{ 'module.clients.progress.addProgressTypeFirst' | localize }}"></info-message>
+        </div>
     </div>
     <div fxLayout="column" fxFlex="48%" fxFlex.sm="100%" fxFlex.xs="100%">
         <title-2>{{'module.clients.progress.existingProgressItemTypes' | localize}}</title-2>

@@ -29,15 +29,15 @@
         [dragula]='"dragula-bag-parent"'>
         <title-3 class="w-diet-and-workout-day">{{ day.day.localizationKey | localize }}</title-3>
         <div [attr.day]="day.day.day" class="pad-md w-diet-and-workout-drag-area" [dragulaModel]="day.diets" [dragula]='"dragula-bag"'>
-            <div class="w-diet-and-workout-drag-item" *ngFor="let diet of day.diets">
+            <div class="w-diet-and-workout-drag-item dragula-move-handle" *ngFor="let diet of day.diets">
                 <div class="dragula-move-handle" fxLayout="row" fxLayoutAlign="start center">
-                    <div fxLayout="column" fxFlex class="dragula-move-handle text-truncate" [attr.dietId]="diet.id">
+                    <div fxLayout="column" fxFlex class="dragula-move-handle text-truncate">
                         {{ diet.dietName }}
                     </div>
-                    <div fxLayout="column">
+                    <div fxLayout="column" class="dragula-move-handle">
                         <edit-button size="small" (editAction)="goToEditDiet(diet)"></edit-button>
                     </div>
-                    <div fxLayout="column">
+                    <div fxLayout="column" class="dragula-move-handle">
                         <delete-button [enableConfirm]="true" (confirm)="deleteDiet(diet)"></delete-button>
                     </div>
                 </div>
@@ -46,27 +46,3 @@
     </div>
 </div>
 
-
-<!--
-<div *ngFor="let day of days" class="push-top" [dragulaModel]="days" [dragula]='"dragula-bag-parent"'>
-    <div fxLayout="row">
-        <div fxLayout="column" class="push-right-sm">
-            {{ day.day.localizationKey | localize }}
-        </div>
-    </div>
-    <div fxLayout="row">
-        <div fxLayout="column" class="push-right-sm" fxFlex>
-            <div [attr.day]="day.day.day" class="pad-md" style="display:block; background-color:yellow; height: 40px" [dragulaModel]="day.diets" [dragula]='"dragula-bag"'>
-                <div *ngFor="let diet of day.diets">
-                    <div class="dragula-move-handle" [attr.dietId]="diet.id">
-                        {{ diet.dietName }}
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div fxLayout="column">
-            actions
-        </div>
-    </div>
-</div>
--->
