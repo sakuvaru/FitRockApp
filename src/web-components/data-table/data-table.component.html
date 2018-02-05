@@ -23,8 +23,8 @@
     <mat-chip style="cursor: pointer" *ngFor="let filterWrapper of filtersWrapper" selected="false" (click)="runFilter(filterWrapper.resolvedName)" [selected]="filterWrapper.resolvedName === activeFilterName ? true : false">
       {{ filterWrapper.resolvedName }} ({{ filterWrapper.resolvedCount }})
     </mat-chip>
-  </mat-chip-list>
-  -->
+    </mat-chip-list>
+    -->
 
     <div class="mat-chip-list" fxHide.sm="true" fxHide.xs="true">
       <!-- Large layout -->
@@ -68,9 +68,15 @@
 
     <div [class.w-data-table-clickable]="isClickable">
 
-      <div *ngIf="totalItems === 0 && anyDataLoaded" class="w-data-table-no-data push-bottom-md">
-        <img *ngIf="config.noDataImageUrl" alt="no items found" [src]="config.noDataImageUrl" />
-        <span> {{ 'webComponents.dataTable.noData' | localize }} </span>
+      <div fxLayout="row">
+        <div fxLayout="column">
+          <div *ngIf="totalItems === 0 && anyDataLoaded" class="w-data-table-no-data push-bottom-md">
+            <img *ngIf="config.noDataImageUrl" alt="no items found" [src]="config.noDataImageUrl" />
+            <span> {{ 'webComponents.dataTable.noData' | localize }} </span>
+          </div>
+        </div>
+        <div fxLayout="column" fxFlex>
+        </div>
       </div>
 
       <!-- Using ngIf to hide data table would reset active sort filters -->
@@ -204,7 +210,6 @@
 
     <div class="push-sm">
       <loader [enabled]="loaderEnabled" type="linear"></loader>
-
       <error-message *ngIf="errorMessage" [text]="errorMessage"></error-message>
     </div>
 
