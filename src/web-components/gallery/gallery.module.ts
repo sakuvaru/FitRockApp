@@ -11,6 +11,7 @@ import { LoaderModule } from '../loader/loader.module';
 import { MessagesModule } from '../messages/messages.module';
 import { SharedWebComponentModule } from '../shared-web-components.module';
 import { GalleryComponent } from './gallery.component';
+import { TypographyModule } from '../typography';
 
 @NgModule({
     imports: [
@@ -20,7 +21,8 @@ import { GalleryComponent } from './gallery.component';
         ModalGalleryModule,
         ButtonsModule,
         MessagesModule,
-        LoaderModule
+        LoaderModule,
+        TypographyModule
     ],
     declarations: [
         GalleryComponent,

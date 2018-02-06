@@ -13,7 +13,9 @@
     <div style="width: 100%">
       <mat-selection-list #selectionList>
         <mat-list-option *ngFor="let multipleChoiceItem of multipleChoiceItems" [value]="multipleChoiceItem.identifier">
-          <h4 matLine [innerHtml]="multipleChoiceItem.itemName | async"></h4>
+          <div matLine>
+              <title-4>{{ multipleChoiceItem.itemName | async }}</title-4>
+          </div>
           <p matLine *ngFor="let line of multipleChoiceItem.metaLines" class="force-caption-font multiple-choice-item-margin" [innerHtml]="line | async">
           </p>
         </mat-list-option>
