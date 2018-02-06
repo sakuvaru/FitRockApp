@@ -216,20 +216,6 @@ export class ClientWorkoutComponent extends BaseClientModuleComponent implements
             });
     }
 
-    private reloadExistingWorkoutsObservable(clientId: number): Observable<void> {
-        return this.dependencies.itemServices.workoutService.items()
-            .byCurrentUser()
-            .includeMultiple(['WorkoutExercises', 'WorkoutExercises.Exercise'])
-            .whereEquals('ClientId', clientId)
-            .orderByAsc('Order')
-            .get()
-            .map(response => {
-                if (!response.isEmpty()) {
-                    this.existingWorkouts = response.items;
-                }
-            });
-    }
-
     private assignWorkoutToDays(workouts: Workout[]): void {
         if (!workouts || workouts.length === 0) {
             return;
