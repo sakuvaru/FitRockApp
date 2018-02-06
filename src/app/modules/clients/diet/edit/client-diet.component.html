@@ -17,8 +17,8 @@
     </div>
     <div *ngIf="client" fxLayout="column">
         <div>
-            <button mat-button class="push-left-sm" [routerLink]="[getTrainerUrl('clients/edit/' + client.id + '/new-diet')]">
-                <mat-icon class="w-site-icon-button-fix">add</mat-icon> {{'module.clients.diet.newDiet' | localize}}
+            <button mat-flat-button class="push-left-sm" [routerLink]="[getTrainerUrl('clients/edit/' + client.id + '/new-diet')]">
+               {{'module.clients.diet.newDiet' | localize}}
             </button>
         </div>
     </div>
