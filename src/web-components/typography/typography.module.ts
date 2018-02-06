@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import { SharedWebComponentModule } from '../shared-web-components.module';
-import { Title1Component, Title2Component, Title3Component, Title4Component } from './titles';
+import { Title1Component, Title2Component, Title3Component, Title4Component } from './types/titles';
 
 @NgModule({
     imports: [
@@ -24,4 +24,4 @@ import { Title1Component, Title2Component, Title3Component, Title4Component } fr
         Title4Component
     ]
 })
-export class TitlesModule { }
+export class TypographyModule { }

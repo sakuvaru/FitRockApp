@@ -18,7 +18,7 @@ import { LoaderModule } from './loader/loader.module';
 import { MapModule } from './map/map.module';
 import { MessagesModule } from './messages/messages.module';
 import { TextModule } from './text/text.module';
-import { TitlesModule } from './titles/title.module';
+import { TypographyModule } from './typography/typography.module';
 import { UploaderModule } from './uploader/uploader.module';
 import { WebTableModule } from './web-table/web-table.module';
 
@@ -47,7 +47,7 @@ import { WebTableModule } from './web-table/web-table.module';
         BoxesModule,
         AnimateModule,
         BadgesModule,
-        TitlesModule,
+        TypographyModule,
         WebTableModule
     ]
 })
