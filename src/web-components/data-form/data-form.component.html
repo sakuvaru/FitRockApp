@@ -18,9 +18,9 @@
 
                 <ng-container *ngFor="let row of rows">
                     <div *ngIf="row.section" class="push-left push-right">
-                        <h2 *ngIf="row.isLargeSection()" class="title">{{ row.section.title | async }}</h2>
-                        <h3 *ngIf="row.isMediumSection()" class="subheading-2">{{ row.section.title | async }}</h3>
-                        <h4 *ngIf="row.isSmallSection()" class="subheading-1">{{ row.section.title | async }}</h4>
+                        <title-2 *ngIf="row.isLargeSection()" class="title">{{ row.section.title | async }}</title-2>
+                        <title-3 *ngIf="row.isMediumSection()" class="subheading-2">{{ row.section.title | async }}</title-3>
+                        <title-4 *ngIf="row.isSmallSection()" class="subheading-1">{{ row.section.title | async }}</title-4>
                     </div>
                     <div fxLayout fxLayout.sm="column" fxLayout.xs="column" fxLayout.md="row">
                         <ng-container *ngFor="let field of row.fields">
@@ -86,9 +86,9 @@
             <div style="width: 100%">
                 <ng-container *ngFor="let row of rows">
                     <div *ngIf="row.section" class="push-left push-right">
-                        <h2 *ngIf="row.isLargeSection()" class="title">{{ row.section.title | async }}</h2>
-                        <h3 *ngIf="row.isMediumSection()" class="subheading-2">{{ row.section.title | async }}</h3>
-                        <h4 *ngIf="row.isSmallSection()" class="subheading-1">{{ row.section.title | async }}</h4>
+                        <title-2 *ngIf="row.isLargeSection()" class="title">{{ row.section.title | async }}</title-2>
+                        <title-3 *ngIf="row.isMediumSection()" class="subheading-2">{{ row.section.title | async }}</title-3>
+                        <title-4 *ngIf="row.isSmallSection()" class="subheading-1">{{ row.section.title | async }}</title-4>
                     </div>
                     <div fxLayout fxLayout.sm="column" fxLayout.xs="column" fxLayout.md="row">
                         <ng-container *ngFor="let field of row.fields">

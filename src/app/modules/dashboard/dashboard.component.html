@@ -6,7 +6,7 @@
     <button routerLink="/app/auth/logout" type="submit">Logout</button>
 </p>
 
-<h2>Single log</h2>
+<title-2>Single log</title-2>
 
 <div *ngIf="log">
     <ul>
@@ -25,7 +25,7 @@
     </ul>
 </div>
 
-<h2>Logs</h2>
+<title-2>Logs</title-2>
 <ul *ngFor="let log of logs">
     <li>
         <strong>{{log.id}} - {{log.errorMessage}}</strong>

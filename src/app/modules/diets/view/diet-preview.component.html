@@ -1,10 +1,6 @@
 <div fxFlexFill fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayout.md="column">
   <div fxLayout="column" fxFlex="80%" class="push-sm">
 
-    <h1 *ngIf="diet" class="mat-headline">
-      {{ diet.dietName }}
-    </h1>
-
     <div>
       <table-box [config]="dietOverviewBox"></table-box>
     </div>
@@ -96,9 +92,7 @@
 
 <div *ngIf="diet && diet.dietFoods && diet.dietFoods.length > 0" fxLayout="row" class="push-top push-left-sm push-right-sm">
   <div fxFlex="100%" fxLayout="column">
-    <h2>
-      {{ 'module.diets.nutritionDistribution' | localize }}
-    </h2>
+    <title-2>{{ 'module.diets.nutritionDistribution' | localize }}</title-2>
     <graph #graph [config]="dietGraph"></graph>
   </div>
 </div>

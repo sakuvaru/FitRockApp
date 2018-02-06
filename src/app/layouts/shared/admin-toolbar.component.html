@@ -60,15 +60,19 @@
               <a mat-list-item [class.bgc-grey-100]="!feed.markedAsRead || (preventFeedChange && !feed.markedAsRead)" (click)="handleClickFeed(feed)">
                 <mat-icon *ngIf="data.icon" matListIcon>{{ data.icon }}</mat-icon>
                 <img *ngIf="data.image" matListAvatar [src]="data.image" alt="" />
-                <h3 matLine>
-                  <span class="w-feed-menu-subject" [innerHtml]="getFeedSubject(feed)"></span>
-                  <span class="w-feed-menu-date">{{ fromNow(feed.created) }}</span>
-                </h3>
-                <h4 matLine>
-                  <span class="text-wrap">
-                    <span [innerHtml]="getFeedText(feed) | async "></span>
-                  </span>
-                </h4>
+                <div matLine>
+                  <title-3>
+                    <span class="w-feed-menu-subject" [innerHtml]="getFeedSubject(feed)"></span>
+                    <span class="w-feed-menu-date">{{ fromNow(feed.created) }}</span>
+                  </title-3>
+                </div>
+                <div matLine>
+                  <title-4>
+                    <span class="text-wrap">
+                      <span [innerHtml]="getFeedText(feed) | async "></span>
+                    </span>
+                  </title-4>
+                </div>
               </a>
               <mat-divider *ngIf="!last"></mat-divider>
             </mat-nav-list>

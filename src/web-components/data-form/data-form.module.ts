@@ -26,6 +26,7 @@ import { PhoneNumberComponent } from './form-controls/phone-number.component';
 import { RadioBooleanComponent } from './form-controls/radio-boolean.component';
 import { TextAreaComponent } from './form-controls/text-area.component';
 import { TextComponent } from './form-controls/text.component';
+import { TypographyModule } from '../typography';
 
 @NgModule({
     imports: [
@@ -39,7 +40,8 @@ import { TextComponent } from './form-controls/text.component';
         MessagesModule,
         TextMaskModule,
         OwlDateTimeModule,
-        OwlNativeDateTimeModule
+        OwlNativeDateTimeModule,
+        TypographyModule
     ],
     entryComponents: [
     ],
